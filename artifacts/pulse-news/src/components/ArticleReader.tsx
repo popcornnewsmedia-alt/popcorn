@@ -25,21 +25,21 @@ export function ArticleReader({ article, onClose }: ArticleReaderProps) {
               onClose();
             }
           }}
-          className="fixed inset-0 z-50 flex flex-col bg-background"
-          style={{
-            backgroundImage: `linear-gradient(to bottom, ${article.gradientStart}22, ${article.gradientEnd}11)`
-          }}
+          className="fixed inset-0 z-50 flex flex-col"
+          style={{ background: '#f9faf8' }}
         >
+          <div className="ink-diffusion-bg" />
+          
           {/* Header Bar */}
-          <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 bg-background/80 backdrop-blur-xl border-b border-white/5 pt-safe">
+          <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 bg-white/80 backdrop-blur-xl border-b border-black/5 pt-safe">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-semibold uppercase tracking-widest text-primary/60">
+              <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#474747]">
                 {article.tag}
               </span>
             </div>
             <button 
               onClick={onClose}
-              className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-foreground transition-colors"
+              className="p-2 rounded-full bg-black/8 hover:bg-black/12 text-[#191c1b] transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
@@ -50,8 +50,8 @@ export function ArticleReader({ article, onClose }: ArticleReaderProps) {
             <div className="max-w-3xl mx-auto px-6 py-10 sm:px-12 sm:py-16">
               
               {/* Metadata */}
-              <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-muted-foreground mb-8">
-                <span className="text-primary">{article.source}</span>
+              <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-[#474747] mb-8">
+                <span className="text-[#191c1b] font-bold">{article.source}</span>
                 <span>•</span>
                 <span className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4" />
@@ -65,15 +65,15 @@ export function ArticleReader({ article, onClose }: ArticleReaderProps) {
               </div>
 
               {/* Title & Summary */}
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold leading-[1.1] text-foreground mb-6">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold leading-[1.1] text-[#191c1b] mb-6">
                 {article.title}
               </h1>
-              <p className="text-xl sm:text-2xl text-foreground/70 leading-relaxed mb-12 font-display italic">
+              <p className="text-xl sm:text-2xl text-[#474747] leading-relaxed mb-12 font-display italic">
                 {article.summary}
               </p>
 
-              {/* Fake Content for Demo purposes if content is missing, otherwise render real content */}
-              <div className="prose prose-invert prose-lg max-w-none">
+              {/* Content */}
+              <div className="prose prose-lg max-w-none text-[#191c1b]">
                 {article.content ? (
                   <div dangerouslySetSection={{ __html: article.content }} />
                 ) : (
@@ -113,10 +113,10 @@ export function ArticleReader({ article, onClose }: ArticleReaderProps) {
                 )}
               </div>
               
-              <div className="mt-16 pt-8 border-t border-white/10 flex justify-center">
+              <div className="mt-16 pt-8 border-t border-[#c6c6c6]/30 flex justify-center pb-12">
                 <button 
                   onClick={onClose}
-                  className="px-8 py-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors font-semibold text-white"
+                  className="px-8 py-3 rounded-full bg-[#191c1b] text-[#e5e2e1] hover:bg-[#3c3b3b] transition-colors font-semibold"
                 >
                   Finished Reading
                 </button>

@@ -108,7 +108,7 @@ export function FeedPage() {
   const articles = data?.pages.flatMap((page) => page.articles) || [];
 
   return (
-    <div className="h-[100dvh] w-full bg-black relative">
+    <div className="h-[100dvh] w-full relative">
       <TopNav 
         selectedCategory={selectedCategory} 
         onSelectCategory={setSelectedCategory} 

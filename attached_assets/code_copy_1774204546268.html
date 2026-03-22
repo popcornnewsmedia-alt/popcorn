@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Verdant AI | Explore</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f9faf8",
+              "tertiary": "#224134",
+              "on-surface-variant": "#474747",
+              "on-tertiary": "#c7ebd7",
+              "on-surface": "#191c1b",
+              "on-secondary-fixed": "#1b1c1c",
+              "tertiary-container": "#5b7b6c",
+              "surface-container": "#edeeec",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed": "#ffffff",
+              "surface-variant": "#e2e3e1",
+              "primary-container": "#3c3b3b",
+              "inverse-primary": "#c8c6c5",
+              "surface-container-highest": "#e2e3e1",
+              "on-primary": "#e5e2e1",
+              "on-primary-fixed": "#ffffff",
+              "on-error-container": "#410002",
+              "tertiary-fixed-dim": "#2e4d3f",
+              "on-secondary-container": "#1b1c1c",
+              "secondary-fixed-dim": "#acabab",
+              "surface-tint": "#5f5e5e",
+              "primary": "#000000",
+              "on-primary-container": "#ffffff",
+              "secondary": "#5f5e5e",
+              "error-container": "#ffdad6",
+              "inverse-surface": "#2e3130",
+              "on-error": "#ffffff",
+              "surface-container-high": "#e7e8e6",
+              "surface-dim": "#d9dad8",
+              "on-primary-fixed-variant": "#e5e2e1",
+              "on-secondary": "#ffffff",
+              "on-tertiary-container": "#ffffff",
+              "error": "#ba1a1a",
+              "inverse-on-surface": "#f0f1ef",
+              "on-background": "#191c1b",
+              "secondary-container": "#d6d4d3",
+              "primary-fixed-dim": "#474746",
+              "on-secondary-fixed-variant": "#3b3b3b",
+              "on-tertiary-fixed-variant": "#c7ebd7",
+              "surface": "#f9faf8",
+              "primary-fixed": "#5f5e5e",
+              "tertiary-fixed": "#456556",
+              "outline-variant": "#c6c6c6",
+              "outline": "#777777",
+              "surface-container-low": "#f3f4f2",
+              "secondary-fixed": "#c8c6c6",
+              "surface-bright": "#f9faf8"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Manrope"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ink-diffusion {
+            background: radial-gradient(circle at 10% 20%, #224134 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, #2e4d3f 0%, transparent 40%);
+            filter: blur(80px);
+            opacity: 0.15;
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-tertiary selection:text-white">
+<!-- Background Atmospheric Layer -->
+<div class="ink-diffusion"></div>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(25,28,27,0.06)] flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-black dark:text-white" data-icon="bubble_chart">bubble_chart</span>
+<h1 class="font-['Manrope'] font-bold tracking-tight text-xl font-black text-black dark:text-white tracking-tighter">Verdant AI</h1>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-gray-500 dark:text-gray-400 font-medium hover:opacity-80 transition-opacity" href="#">Discover</a>
+<a class="text-black dark:text-white font-bold hover:opacity-80 transition-opacity" href="#">Explore</a>
+<a class="text-gray-500 dark:text-gray-400 font-medium hover:opacity-80 transition-opacity" href="#">Canvas</a>
+<a class="text-gray-500 dark:text-gray-400 font-medium hover:opacity-80 transition-opacity" href="#">Profile</a>
+</nav>
+<button class="material-symbols-outlined text-black dark:text-white p-2 hover:opacity-80 transition-opacity" data-icon="search">search</button>
+</header>
+<main class="pt-32 pb-40 px-6 max-w-7xl mx-auto">
+<!-- Editorial Header -->
+<section class="mb-16">
+<p class="font-label text-on-surface-variant uppercase tracking-[0.2em] mb-4 text-[10px]">Curation Hub</p>
+<h2 class="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none max-w-2xl">
+                Broaden your <br/><span class="text-tertiary-container">Intelligence.</span>
+</h2>
+</section>
+<!-- Category Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24">
+<!-- Science - Large Featured -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl glass-card p-10 flex flex-col justify-between h-[450px] hover:shadow-2xl transition-all duration-500">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-4xl text-on-surface opacity-40 group-hover:scale-110 transition-transform duration-500" data-icon="science">science</span>
+<span class="font-label text-[10px] tracking-widest uppercase border border-outline-variant/30 rounded-full px-3 py-1">64 Articles</span>
+</div>
+<div>
+<h3 class="text-4xl font-bold tracking-tight mb-2">Science</h3>
+<p class="text-on-surface-variant max-w-md text-lg">Exploring the frontier of neural networks, quantum computing, and biological synthesis.</p>
+</div>
+<div class="absolute -right-12 -bottom-12 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity duration-700">
+<span class="material-symbols-outlined text-[300px]" data-icon="science">science</span>
+</div>
+</div>
+<!-- Tech - Smaller Square -->
+<div class="md:col-span-4 group relative overflow-hidden rounded-xl glass-card p-8 flex flex-col justify-between h-[450px] hover:shadow-2xl transition-all duration-500">
+<span class="material-symbols-outlined text-4xl text-on-surface opacity-40" data-icon="settings_input_component">settings_input_component</span>
+<div>
+<h3 class="text-3xl font-bold tracking-tight mb-2">Tech</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Infrastructure, LLM benchmarks, and the evolution of edge computing.</p>
+</div>
+</div>
+<!-- Culture - Smaller Square -->
+<div class="md:col-span-4 group relative overflow-hidden rounded-xl glass-card p-8 flex flex-col justify-between h-[450px] hover:shadow-2xl transition-all duration-500">
+<span class="material-symbols-outlined text-4xl text-on-surface opacity-40" data-icon="theater_comedy">theater_comedy</span>
+<div>
+<h3 class="text-3xl font-bold tracking-tight mb-2">Culture</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">The intersection of creative expression and synthetic intelligence.</p>
+</div>
+</div>
+<!-- Economy - Medium Rectangle -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl glass-card p-10 flex flex-col justify-between h-[450px] hover:shadow-2xl transition-all duration-500">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-4xl text-on-surface opacity-40" data-icon="monitoring">monitoring</span>
+<span class="font-label text-[10px] tracking-widest uppercase bg-primary text-on-primary rounded-full px-3 py-1">Trending</span>
+</div>
+<div>
+<h3 class="text-4xl font-bold tracking-tight mb-2">Economy</h3>
+<p class="text-on-surface-variant max-w-md text-lg">Market shifts, labor transformation, and the new algorithmic wealth distribution.</p>
+</div>
+</div>
+</div>
+<!-- Curated Discovery Feature -->
+<section class="mt-20">
+<div class="bg-surface-container-low rounded-xl p-1 md:p-12 relative overflow-hidden">
+<div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
+<div class="order-2 md:order-1">
+<img alt="Curated Discovery" class="rounded-lg shadow-xl grayscale hover:grayscale-0 transition-all duration-700 w-full aspect-square object-cover" data-alt="Abstract fluid emerald and black painting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAN57d6rkVl8umNFnoT2nXT544TBaJh5jTCFpoetyBTtdR3xiFdlFfJju4_PjSdQWdhvBaAUw6sligKn4AXjNzwAxtDO1B-Rlc5j3I5-DI3CIj4nqcCRhfSk73wJhHNjpqXGW9wefi4nnyhMPwzeZiDI2fhmm8Mar5yEOlXoz-Njxq1Omi2kVIeSngZHkcux-t15iH3H_e_1cav-TWbbeVaMjdaROTcRa6f1hOOfWR2Qj_Yt1kSGg7HYTifN5NzdV-QApP50rx8zwY"/>
+</div>
+<div class="order-1 md:order-2 p-8 md:p-0">
+<p class="font-label text-on-surface-variant text-xs uppercase tracking-widest mb-6">Editorial Feature</p>
+<h2 class="text-4xl md:text-5xl font-bold tracking-tighter mb-6 leading-tight">The 2024 AI Ethics Whitepaper.</h2>
+<p class="text-on-surface-variant text-lg mb-8 leading-relaxed">A deep dive into the governance structures being built by the next generation of neural pioneers. Curated by our lead researchers.</p>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-lg font-bold hover:opacity-90 transition-all flex items-center gap-2">
+                            Read Publication
+                            <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-8 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-2xl rounded-full px-6 py-3 border border-white/20 shadow-2xl md:hidden">
+<button class="text-gray-600 dark:text-gray-400 p-2 hover:scale-105 transition-transform active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</button>
+<button class="bg-black dark:bg-white text-white dark:text-black rounded-full p-2 scale-110 hover:scale-105 transition-transform active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+</button>
+<button class="text-gray-600 dark:text-gray-400 p-2 hover:scale-105 transition-transform active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</button>
+<button class="text-gray-600 dark:text-gray-400 p-2 hover:scale-105 transition-transform active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</nav>
+</body></html>
