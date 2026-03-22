@@ -65,11 +65,11 @@
   }
   
   html {
-    background: #eaf2ed;
+    background: #ecf3ef;
     background-image:
-      radial-gradient(circle at 8% 15%, #16523599 0%, transparent 45%),
-      radial-gradient(circle at 88% 78%, #265a4088 0%, transparent 45%),
-      radial-gradient(circle at 50% 50%, #1a543840 0%, transparent 62%);
+      radial-gradient(circle at 8% 15%, #1a443099 0%, transparent 45%),
+      radial-gradient(circle at 88% 78%, #2c523e88 0%, transparent 45%),
+      radial-gradient(circle at 50% 50%, #1f4b3840 0%, transparent 62%);
     background-attachment: fixed;
     background-size: 100% 100%;
     min-height: 100dvh;
@@ -125,7 +125,7 @@
   }
 
   .glass-nav {
-    background: rgba(234, 242, 237, 0.58);
+    background: rgba(236, 243, 239, 0.58);
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
   }
