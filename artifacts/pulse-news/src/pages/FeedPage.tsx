@@ -114,7 +114,7 @@ export function FeedPage() {
         onSelectCategory={setSelectedCategory} 
       />
 
-      <div className="h-[100dvh] w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide overscroll-y-none">
+      <div className="h-[100dvh] w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide overscroll-y-none" style={{scrollPaddingBottom: '64px'}}>
         
         {articles.length === 0 ? (
            <div className="h-[100dvh] w-full flex flex-col items-center justify-center snap-start snap-always relative text-center px-6">
