@@ -6,4 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./bookmarkResponse";
+export * from "./categoryList";
+export * from "./getNewsArticlesParams";
 export * from "./healthStatus";
+export * from "./likeResponse";
+export * from "./newsArticle";
+export * from "./newsArticleList";

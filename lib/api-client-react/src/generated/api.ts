@@ -5,15 +5,26 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  BookmarkResponse,
+  CategoryList,
+  GetNewsArticlesParams,
+  HealthStatus,
+  LikeResponse,
+  NewsArticle,
+  NewsArticleList,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
 import type { ErrorType } from "../custom-fetch";
@@ -92,6 +103,431 @@ export function useHealthCheck<
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getHealthCheckQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Returns a feed of AI news articles
+ * @summary Get news articles
+ */
+export const getGetNewsArticlesUrl = (params?: GetNewsArticlesParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/news?${stringifiedParams}`
+    : `/api/news`;
+};
+
+export const getNewsArticles = async (
+  params?: GetNewsArticlesParams,
+  options?: RequestInit,
+): Promise<NewsArticleList> => {
+  return customFetch<NewsArticleList>(getGetNewsArticlesUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetNewsArticlesQueryKey = (params?: GetNewsArticlesParams) => {
+  return [`/api/news`, ...(params ? [params] : [])] as const;
+};
+
+export const getGetNewsArticlesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getNewsArticles>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: GetNewsArticlesParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getNewsArticles>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetNewsArticlesQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getNewsArticles>>> = ({
+    signal,
+  }) => getNewsArticles(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getNewsArticles>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetNewsArticlesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getNewsArticles>>
+>;
+export type GetNewsArticlesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get news articles
+ */
+
+export function useGetNewsArticles<
+  TData = Awaited<ReturnType<typeof getNewsArticles>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: GetNewsArticlesParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getNewsArticles>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetNewsArticlesQueryOptions(params, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get a single news article
+ */
+export const getGetNewsArticleByIdUrl = (id: number) => {
+  return `/api/news/${id}`;
+};
+
+export const getNewsArticleById = async (
+  id: number,
+  options?: RequestInit,
+): Promise<NewsArticle> => {
+  return customFetch<NewsArticle>(getGetNewsArticleByIdUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetNewsArticleByIdQueryKey = (id: number) => {
+  return [`/api/news/${id}`] as const;
+};
+
+export const getGetNewsArticleByIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getNewsArticleById>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getNewsArticleById>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetNewsArticleByIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getNewsArticleById>>
+  > = ({ signal }) => getNewsArticleById(id, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getNewsArticleById>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetNewsArticleByIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getNewsArticleById>>
+>;
+export type GetNewsArticleByIdQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get a single news article
+ */
+
+export function useGetNewsArticleById<
+  TData = Awaited<ReturnType<typeof getNewsArticleById>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getNewsArticleById>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetNewsArticleByIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Like a news article
+ */
+export const getLikeNewsArticleUrl = (id: number) => {
+  return `/api/news/${id}/like`;
+};
+
+export const likeNewsArticle = async (
+  id: number,
+  options?: RequestInit,
+): Promise<LikeResponse> => {
+  return customFetch<LikeResponse>(getLikeNewsArticleUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getLikeNewsArticleMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof likeNewsArticle>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof likeNewsArticle>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["likeNewsArticle"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof likeNewsArticle>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return likeNewsArticle(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type LikeNewsArticleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof likeNewsArticle>>
+>;
+
+export type LikeNewsArticleMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Like a news article
+ */
+export const useLikeNewsArticle = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof likeNewsArticle>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof likeNewsArticle>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getLikeNewsArticleMutationOptions(options));
+};
+
+/**
+ * @summary Bookmark a news article
+ */
+export const getBookmarkNewsArticleUrl = (id: number) => {
+  return `/api/news/${id}/bookmark`;
+};
+
+export const bookmarkNewsArticle = async (
+  id: number,
+  options?: RequestInit,
+): Promise<BookmarkResponse> => {
+  return customFetch<BookmarkResponse>(getBookmarkNewsArticleUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getBookmarkNewsArticleMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof bookmarkNewsArticle>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof bookmarkNewsArticle>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["bookmarkNewsArticle"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof bookmarkNewsArticle>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return bookmarkNewsArticle(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type BookmarkNewsArticleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof bookmarkNewsArticle>>
+>;
+
+export type BookmarkNewsArticleMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Bookmark a news article
+ */
+export const useBookmarkNewsArticle = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof bookmarkNewsArticle>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof bookmarkNewsArticle>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getBookmarkNewsArticleMutationOptions(options));
+};
+
+/**
+ * @summary Get available news categories
+ */
+export const getGetCategoriesUrl = () => {
+  return `/api/categories`;
+};
+
+export const getCategories = async (
+  options?: RequestInit,
+): Promise<CategoryList> => {
+  return customFetch<CategoryList>(getGetCategoriesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetCategoriesQueryKey = () => {
+  return [`/api/categories`] as const;
+};
+
+export const getGetCategoriesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getCategories>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getCategories>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetCategoriesQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCategories>>> = ({
+    signal,
+  }) => getCategories({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCategories>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetCategoriesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getCategories>>
+>;
+export type GetCategoriesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get available news categories
+ */
+
+export function useGetCategories<
+  TData = Awaited<ReturnType<typeof getCategories>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getCategories>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetCategoriesQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

@@ -1,0 +1,177 @@
+import { db } from "@workspace/db";
+import { articlesTable } from "@workspace/db/schema";
+
+const articles = [
+  {
+    title: "The Diffusion Paradox: Beyond Neural Limits",
+    summary: "How emergent architectures are redefining the relationship between computational cost and creative fidelity in the next generation of AI models.",
+    content: `The fundamental tension at the heart of modern AI development has always been a trade-off: more compute buys you better outputs, but the curve is never quite as linear as you'd hope. Diffusion models upended this assumption when they arrived, demonstrating that iterative refinement could produce outputs of startling quality — but the costs remained steep.\n\nNow, a new wave of researchers is attacking the problem from a different angle entirely. Rather than scaling raw compute, they're asking whether the architecture itself can be made more efficient. The answer, it turns out, is a resounding yes.\n\nEmergent architectures like flow matching and consistency models are showing that the traditional diffusion pipeline — with its hundreds of denoising steps — can be compressed without meaningful quality loss. In some benchmarks, these models achieve comparable outputs in a fraction of the inference time.\n\nWhat's driving this? Partly it's better training objectives. The original DDPM formulation required models to learn an unnecessarily noisy path from data to noise and back. Flow matching models take a more direct route, learning to transport distributions along cleaner trajectories.\n\nThe implications for creative AI are profound. Lower inference costs mean these models can run at the edge — on laptops, phones, even embedded devices. This distributes creative power in ways that centralized API access never could.`,
+    category: "Models",
+    source: "The Gradient",
+    readTimeMinutes: 4,
+    publishedAt: new Date("2026-03-22T08:00:00Z"),
+    likes: 1842,
+    isBookmarked: false,
+    gradientStart: "#1a2e22",
+    gradientEnd: "#6b9e7e",
+    tag: "ANALYSIS",
+  },
+  {
+    title: "OpenAI's o3-mini Quietly Overtakes GPT-4 on Coding Benchmarks",
+    summary: "Internal evaluations suggest the compact model outperforms its larger predecessor on software engineering tasks — at one-fifth the inference cost.",
+    content: `The race to build the world's most capable AI system has always been associated with scale. More parameters, more data, more compute. But a quiet revolution is underway at OpenAI, and it's happening at the small end of the scale spectrum.\n\nThe o3-mini, released with relatively little fanfare, has been quietly accumulating benchmark victories in domains where its larger sibling GPT-4 once dominated. On HumanEval, SWE-Bench, and several proprietary coding assessments, o3-mini is posting scores that not only match GPT-4 — they exceed it.\n\nHow? The key is what OpenAI calls "chain-of-thought distillation." Rather than training a small model from scratch, they've used GPT-4's reasoning traces as training data, teaching o3-mini to replicate the larger model's problem-solving strategies in a compressed form.\n\nThe result is a model that thinks in ways more similar to a strong programmer than a general assistant. It breaks problems into steps, checks its own work, and backtracks when it spots errors — behaviors that emerge naturally from the distillation process.\n\nFor enterprise customers, the economics are transformative. At one-fifth the inference cost of GPT-4, a coding assistant powered by o3-mini becomes viable for ambient, always-on applications that would be prohibitively expensive with larger models.`,
+    category: "Models",
+    source: "AI Insider",
+    readTimeMinutes: 5,
+    publishedAt: new Date("2026-03-22T07:30:00Z"),
+    likes: 3201,
+    isBookmarked: false,
+    gradientStart: "#1e1e2e",
+    gradientEnd: "#4a4a7a",
+    tag: "BREAKING",
+  },
+  {
+    title: "Anthropic's Constitutional AI Grows Up",
+    summary: "Three years after the original paper, the technique behind Claude's safety guardrails is being deployed at a scale the original researchers never imagined.",
+    content: `When Anthropic published the Constitutional AI paper in December 2022, the research community received it with a mixture of curiosity and skepticism. Training AI systems to critique themselves using a written "constitution" of values seemed elegant in theory — but would it hold at scale?\n\nThe answer, three years later, appears to be yes. Anthropic has refined and extended the technique across successive Claude generations, and the results have been striking. Not only have the constitutional approaches improved Claude's safety properties, they've unexpectedly improved its helpfulness too.\n\nThe mechanism is more sophisticated now than the original paper described. Rather than a static set of constitutional principles, modern Claude models are trained with dynamic constitutions that can be updated based on observed failure modes. The models learn not just to follow rules, but to reason about why certain responses might be harmful — and to find alternative ways of being helpful within those constraints.\n\nCritics initially worried that constitutional training would produce an AI that was excessively cautious — one that refused benign requests out of an abundance of caution. The opposite seems to have occurred. By giving the model a principled framework for reasoning about harm, Anthropic appears to have reduced the incidence of both over-refusals and genuinely harmful outputs.`,
+    category: "Research",
+    source: "Machine Intelligence Review",
+    readTimeMinutes: 6,
+    publishedAt: new Date("2026-03-22T06:00:00Z"),
+    likes: 2567,
+    isBookmarked: false,
+    gradientStart: "#2a1a1a",
+    gradientEnd: "#8a5a5a",
+    tag: "RESEARCH",
+  },
+  {
+    title: "The EU AI Act Enters Its Compliance Phase",
+    summary: "With enforcement deadlines now active, European companies are scrambling to audit their systems — and discovering that compliance is harder than expected.",
+    content: `The European Union's AI Act was signed into law with considerable optimism about its ability to govern AI development without stifling innovation. Now, as enforcement deadlines arrive, a more complicated picture is emerging.\n\nCompliance officers across the continent are discovering that the Act's risk-tiered framework is more ambiguous in practice than it appeared on paper. The question of what constitutes a "high-risk" AI system — one subject to the Act's most stringent requirements — has generated thousands of legal opinions and no clear consensus.\n\nHealthcare is proving particularly contentious. Diagnostic tools that use AI to assist clinicians clearly fall under the high-risk category. But what about scheduling software that uses machine learning to optimize hospital bed allocation? Or a clinical documentation tool that transcribes physician notes? The line between assistive tools and clinical decision-making systems is blurrier than legislators anticipated.\n\nFor companies with significant EU operations, the practical impact is substantial. High-risk systems require conformity assessments, detailed technical documentation, human oversight mechanisms, and ongoing monitoring regimes. Smaller companies, in particular, are finding the compliance burden disproportionate.\n\nSome are choosing a different path: simply withdrawing certain AI-enhanced products from European markets rather than bearing the compliance costs. Critics argue this represents exactly the kind of innovation stifling the EU sought to avoid.`,
+    category: "Policy",
+    source: "Tech Policy Review",
+    readTimeMinutes: 7,
+    publishedAt: new Date("2026-03-21T14:00:00Z"),
+    likes: 1923,
+    isBookmarked: false,
+    gradientStart: "#1a1a2a",
+    gradientEnd: "#5a6a9a",
+    tag: "POLICY",
+  },
+  {
+    title: "Google DeepMind's AlphaFold 3 Unlocks Drug Design",
+    summary: "The latest version of the protein structure predictor can model entire molecular systems — potentially compressing decades of pharmaceutical research into months.",
+    content: `AlphaFold's original impact on structural biology was difficult to overstate. By solving the protein folding problem — how a sequence of amino acids folds into a three-dimensional structure — it opened up research possibilities that had previously been locked behind years of experimental work.\n\nAlphaFold 3 is a more ambitious leap. Where previous versions focused on proteins in isolation, AF3 can model the interactions between proteins, DNA, RNA, and small molecules simultaneously. For drug discovery, this is transformative.\n\nThe key innovation is a joint structure prediction framework that learns from co-crystallography data — experimental structures that capture molecules in complex with their binding partners. This teaches the model not just how individual components fold, but how they interact and what conformational changes occur upon binding.\n\nEarly results from pharmaceutical partners are striking. For several target-disease pairs where experimental data was limited, AF3-guided virtual screening has identified candidate molecules that perform comparably to those discovered through years of traditional medicinal chemistry.\n\nThe implications extend beyond speed. Traditional drug discovery is heavily biased toward druggable targets — proteins with convenient binding pockets that small molecules can access. AF3's ability to model entire protein complexes opens up previously undruggable targets, including protein-protein interactions that have been implicated in diseases ranging from cancer to neurodegeneration.`,
+    category: "Research",
+    source: "Nature Biotechnology",
+    readTimeMinutes: 8,
+    publishedAt: new Date("2026-03-21T10:00:00Z"),
+    likes: 4102,
+    isBookmarked: false,
+    gradientStart: "#0a2a1a",
+    gradientEnd: "#3a7a5a",
+    tag: "BREAKTHROUGH",
+  },
+  {
+    title: "The Open-Source Model Ecosystem Is Winning",
+    summary: "A year after Llama 3's release, the open ecosystem has produced models that challenge closed frontier systems across nearly every benchmark.",
+    content: `When Meta released Llama 3 in April 2025, the response from the AI research community was cautiously optimistic. The model was impressive, but frontier capabilities — the kind demonstrated by GPT-4 or Claude 3 — seemed safely out of reach for open systems. That assumption no longer holds.\n\nThe year since has seen an extraordinary acceleration in open-source AI development. Dozens of organizations and individual researchers have built on the Llama 3 foundation, fine-tuning, extending, and in some cases fundamentally redesigning the architecture.\n\nThe result is an ecosystem of models that, on many practical tasks, are indistinguishable from their closed counterparts. On coding, mathematical reasoning, and instruction following, the best open models now score within noise of GPT-4 and Claude 3. On some specialized tasks, they outperform.\n\nWhat's driving this? Several factors are converging. Training recipes have been refined and shared openly. Compute costs have fallen. And critically, the research community has gotten much better at efficient fine-tuning — techniques like LoRA and QLoRA allow researchers to adapt large models for specific tasks using modest hardware.\n\nFor enterprises, the implications are significant. Running AI systems on controlled infrastructure, without data leaving the organization, was previously a major capability trade-off. Now it's increasingly a viable choice without meaningful performance penalties.`,
+    category: "Industry",
+    source: "Model Watch",
+    readTimeMinutes: 5,
+    publishedAt: new Date("2026-03-21T09:00:00Z"),
+    likes: 2891,
+    isBookmarked: false,
+    gradientStart: "#2a1a0a",
+    gradientEnd: "#8a6a3a",
+    tag: "OPINION",
+  },
+  {
+    title: "Cursor and the Future of AI-Native Development",
+    summary: "The IDE that put AI at the center of coding has raised at a $9B valuation. But the real story is what happens to software development as a profession.",
+    content: `Cursor's growth trajectory has been one of the more remarkable stories in enterprise software. Starting as an AI-enhanced fork of VS Code, it has captured a loyal following among professional developers who describe it not as a productivity tool but as a fundamentally different way of writing software.\n\nThe latest funding round — $900M at a $9 billion valuation — reflects investor conviction that AI-native development tooling is a winner-take-most market. But the more interesting question isn't whether Cursor wins. It's what happens to software development when tools like Cursor become universal.\n\nEarly indicators suggest the impact is more nuanced than the headlines suggest. Raw code output has increased dramatically among teams using AI-assisted development. But the nature of what developers spend their time on is shifting. Mechanical translation of requirements into code — historically a significant portion of a developer's day — is being automated. What remains is the higher-order work: architecture decisions, product judgment, navigating ambiguity.\n\nSome observers see this as straightforward good news: developers get to focus on more interesting problems. Others worry about the long-term implications for how developers learn their craft. If junior developers skip the years of grinding through boilerplate, do they develop the foundational intuitions that let them recognize when AI-generated code is subtly wrong?`,
+    category: "Tools",
+    source: "Software Futures",
+    readTimeMinutes: 6,
+    publishedAt: new Date("2026-03-20T16:00:00Z"),
+    likes: 3445,
+    isBookmarked: false,
+    gradientStart: "#1a0a2a",
+    gradientEnd: "#6a3a8a",
+    tag: "INDUSTRY",
+  },
+  {
+    title: "Multimodal Models Learn to See the World Differently",
+    summary: "New research suggests that vision-language models trained on diverse data develop genuinely novel representations — not just mappings between existing modalities.",
+    content: `The conventional wisdom about multimodal AI has been that vision-language models are essentially translation systems: they learn to map visual inputs to the language representations that describe them. New research from a collaboration between MIT and Google DeepMind suggests this picture is incomplete.\n\nUsing novel probing techniques, the researchers discovered that frontier multimodal models develop intermediate representations that correspond to neither pure visual nor pure linguistic concepts. These "modal-agnostic" representations appear to capture abstract properties — spatial relationships, physical dynamics, semantic relationships — in a format that's equally accessible from either modality.\n\nThe finding has implications for how we think about model capabilities. If multimodal models are truly developing hybrid representations rather than just translation tables, they should be better at tasks that require genuine cross-modal reasoning — like inferring physical properties from visual descriptions or generating accurate visualizations from complex text.\n\nPreliminary experiments support this hypothesis. Models trained with diverse multimodal data outperform text-only models on certain spatial reasoning tasks, even when the test inputs are purely textual. Something learned from visual experience seems to be transferring to language-only contexts.\n\nFor AI safety, the finding raises interesting questions about how we probe and audit model capabilities. If the representations that drive behavior aren't cleanly organized by modality, standard interpretability techniques may miss important patterns.`,
+    category: "Research",
+    source: "AI Research Weekly",
+    readTimeMinutes: 7,
+    publishedAt: new Date("2026-03-20T12:00:00Z"),
+    likes: 1678,
+    isBookmarked: false,
+    gradientStart: "#1a2a0a",
+    gradientEnd: "#5a8a3a",
+    tag: "RESEARCH",
+  },
+  {
+    title: "Sam Altman on What Comes After ChatGPT",
+    summary: "In a rare long-form interview, OpenAI's CEO sketches out a vision for AI that sounds less like a product roadmap and more like a theory of civilization.",
+    content: `Sam Altman has become one of the more polarizing figures in Silicon Valley — simultaneously celebrated as a visionary and criticized as a reckless accelerationist. In a rare sit-down interview that ran nearly three hours, he laid out a vision for AI's future that, whether you find it inspiring or terrifying, is worth understanding.\n\nThe central thesis: AGI, broadly defined as AI systems that can perform any cognitive task a human can, is likely to arrive within the current decade. Altman doesn't treat this as speculation — he speaks about it with the matter-of-fact confidence of someone describing a product roadmap he's already building.\n\nWhat's more interesting is his theory of what happens next. Post-AGI, he argues, economic growth could accelerate dramatically as AI systems begin contributing to scientific research, engineering, and policy analysis. The bottlenecks that have historically limited human progress — the scarcity of expert attention, the slowness of experimental iteration, the limits of human memory and pattern recognition — would begin to dissolve.\n\nCritics of this view are quick to point out the distributional question: who captures the value created by AGI? Altman's answer is characteristically ambitious: he envisions a form of "AI dividend" where productivity gains are distributed broadly, potentially through UBI-style mechanisms.\n\nWhether or not you believe the AGI timeline, the interview offers a rare window into the thinking of the person arguably most responsible for accelerating the technology.`,
+    category: "Industry",
+    source: "Stratechery",
+    readTimeMinutes: 9,
+    publishedAt: new Date("2026-03-19T08:00:00Z"),
+    likes: 5213,
+    isBookmarked: false,
+    gradientStart: "#2a2a1a",
+    gradientEnd: "#8a8a4a",
+    tag: "INTERVIEW",
+  },
+  {
+    title: "The Hidden Cost of AI Inference",
+    summary: "As AI adoption scales, the energy demands of inference are becoming a more pressing concern than training. The data centers of the future may look very different.",
+    content: `The conversation around AI's environmental impact has historically focused on training. Training a large language model consumes enormous amounts of energy — a fact that has attracted criticism and prompted some organizations to offset or disclose their training footprints.\n\nBut a less-discussed dynamic is emerging as AI systems are deployed at scale: inference, the process of generating outputs from a trained model, is increasingly the dominant energy cost. As AI assistants are integrated into search, productivity tools, and consumer applications, the compute demands of serving billions of daily requests are beginning to dwarf the one-time cost of training.\n\nThe math is stark. A single training run, however expensive, is finite. But inference serves requests continuously, and as adoption grows, so does the cumulative energy demand. Google's integration of AI into search, for instance, is estimated to have increased per-query energy consumption by a factor of five to ten.\n\nThis is driving a significant shift in how AI hardware companies are thinking about their products. Specialized inference chips — designed to generate tokens as efficiently as possible, rather than to maximize throughput during training — are becoming a major focus. Companies like Groq, Cerebras, and Etched are building purpose-built silicon that offers order-of-magnitude improvements in inference efficiency compared to training-optimized GPUs.\n\nThe architectural implications extend to data centers themselves. Training clusters are optimized for all-to-all communication between GPUs. Inference at scale benefits from different topologies — more memory bandwidth, lower latency communication patterns, geographic distribution closer to end users.`,
+    category: "Industry",
+    source: "Data Center Dynamics",
+    readTimeMinutes: 6,
+    publishedAt: new Date("2026-03-18T10:00:00Z"),
+    likes: 2134,
+    isBookmarked: false,
+    gradientStart: "#2a1a2a",
+    gradientEnd: "#7a5a7a",
+    tag: "ANALYSIS",
+  },
+  {
+    title: "Reasoning Models Are Changing What 'Smart' Means",
+    summary: "The emergence of explicit chain-of-thought reasoning in frontier models has forced a rethink of how we evaluate AI intelligence.",
+    content: `For years, AI benchmarks have measured what models know. Can the model recall facts? Can it complete code? Can it answer questions correctly? These evaluations have been useful proxies for capability, but they've always been imperfect.\n\nThe emergence of reasoning models — systems that generate explicit chains of thought before arriving at answers — has exposed a deeper limitation in standard benchmarks: they measure outcomes, not processes. A model that arrives at the right answer via a flawed reasoning process is indistinguishable from one that reasoned correctly, until you stress-test it with harder variants.\n\nThis distinction matters for deployment. In high-stakes domains — medical diagnosis, legal analysis, financial modeling — the quality of the reasoning process, not just the final answer, is what determines whether a system is trustworthy. A model that gets the right answer for the wrong reasons is a reliability risk.\n\nReasoning models make the process visible, which is both an opportunity and a challenge. The opportunity: you can audit the reasoning, catch errors before they propagate, and build systems that flag low-confidence chains for human review. The challenge: explicit reasoning chains are much longer and more expensive to generate than direct answers. And the models are still prone to "reasoning theater" — producing superficially coherent chains that lead to incorrect conclusions.\n\nThe field is actively working on evaluation methodologies that go beyond outcome measurement. Process-based evaluation — grading the quality of the reasoning chain independently from the final answer — is gaining traction, though it introduces its own challenges around what constitutes good reasoning.`,
+    category: "Research",
+    source: "LessWrong",
+    readTimeMinutes: 7,
+    publishedAt: new Date("2026-03-17T09:00:00Z"),
+    likes: 3678,
+    isBookmarked: false,
+    gradientStart: "#0a1a2a",
+    gradientEnd: "#3a5a7a",
+    tag: "ANALYSIS",
+  },
+];
+
+async function seed() {
+  console.log("Seeding news articles...");
+  
+  await db.delete(articlesTable);
+  
+  for (const article of articles) {
+    await db.insert(articlesTable).values(article);
+  }
+  
+  console.log(`Seeded ${articles.length} articles successfully.`);
+  process.exit(0);
+}
+
+seed().catch((err) => {
+  console.error("Seed failed:", err);
+  process.exit(1);
+});

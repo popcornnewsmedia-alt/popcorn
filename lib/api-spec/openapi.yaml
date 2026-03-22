@@ -1,6 +1,5 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
   description: API specification
@@ -10,6 +9,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: news
+    description: AI news feed operations
 paths:
   /healthz:
     get:
@@ -24,6 +25,100 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /news:
+    get:
+      operationId: getNewsArticles
+      tags: [news]
+      summary: Get news articles
+      description: Returns a feed of AI news articles
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of news articles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticleList"
+  /news/{id}:
+    get:
+      operationId: getNewsArticleById
+      tags: [news]
+      summary: Get a single news article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A single news article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+  /news/{id}/like:
+    post:
+      operationId: likeNewsArticle
+      tags: [news]
+      summary: Like a news article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Like count updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LikeResponse"
+  /news/{id}/bookmark:
+    post:
+      operationId: bookmarkNewsArticle
+      tags: [news]
+      summary: Bookmark a news article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Bookmark toggled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookmarkResponse"
+  /categories:
+    get:
+      operationId: getCategories
+      tags: [news]
+      summary: Get available news categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryList"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +128,97 @@ components:
           type: string
       required:
         - status
-
+    NewsArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        summary:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        source:
+          type: string
+        readTimeMinutes:
+          type: integer
+        publishedAt:
+          type: string
+          format: date-time
+        likes:
+          type: integer
+        isBookmarked:
+          type: boolean
+        gradientStart:
+          type: string
+        gradientEnd:
+          type: string
+        tag:
+          type: string
+      required:
+        - id
+        - title
+        - summary
+        - content
+        - category
+        - source
+        - readTimeMinutes
+        - publishedAt
+        - likes
+        - isBookmarked
+        - gradientStart
+        - gradientEnd
+        - tag
+    NewsArticleList:
+      type: object
+      properties:
+        articles:
+          type: array
+          items:
+            $ref: "#/components/schemas/NewsArticle"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        hasMore:
+          type: boolean
+      required:
+        - articles
+        - total
+        - page
+        - limit
+        - hasMore
+    LikeResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        likes:
+          type: integer
+      required:
+        - id
+        - likes
+    BookmarkResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        isBookmarked:
+          type: boolean
+      required:
+        - id
+        - isBookmarked
+    CategoryList:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+      required:
+        - categories

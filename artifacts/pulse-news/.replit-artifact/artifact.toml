@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Pulse — AI News Feed"
+version = "1.0.0"
+id = "artifacts/pulse-news"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22510
+
+[services.development]
+run = "pnpm --filter @workspace/pulse-news run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/pulse-news", "run", "build" ]
+publicDir = "artifacts/pulse-news/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22510"
+BASE_PATH = "/"

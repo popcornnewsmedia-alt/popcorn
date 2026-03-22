@@ -1,0 +1,14 @@
+packages:
+  "framer-motion": "For fluid, TikTok-style swipe animations and the sliding reading mode"
+  "date-fns": "For elegant date formatting in the editorial UI"
+  "lucide-react": "For beautiful crisp UI icons"
+  "clsx": "For conditional class merging"
+  "tailwind-merge": "For reliable tailwind class overriding"
+
+images: []
+
+notes:
+  - "Using Framer Motion for the slide-up reading experience and smooth transitions"
+  - "Implementing an infinite scrolling feed based on the pagination in the NewsArticleList schema"
+  - "Optimistic updates implemented for liking and bookmarking articles"
+  - "Assumes @workspace/api-client-react is available for direct API fetches to build useInfiniteQuery"

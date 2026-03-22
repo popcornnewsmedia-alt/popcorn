@@ -14,3 +14,94 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * Returns a feed of AI news articles
+ * @summary Get news articles
+ */
+export const getNewsArticlesQueryPageDefault = 1;
+export const getNewsArticlesQueryLimitDefault = 20;
+
+export const GetNewsArticlesQueryParams = zod.object({
+  page: zod.coerce.number().default(getNewsArticlesQueryPageDefault),
+  limit: zod.coerce.number().default(getNewsArticlesQueryLimitDefault),
+  category: zod.coerce.string().optional(),
+});
+
+export const GetNewsArticlesResponse = zod.object({
+  articles: zod.array(
+    zod.object({
+      id: zod.number(),
+      title: zod.string(),
+      summary: zod.string(),
+      content: zod.string(),
+      category: zod.string(),
+      source: zod.string(),
+      readTimeMinutes: zod.number(),
+      publishedAt: zod.date(),
+      likes: zod.number(),
+      isBookmarked: zod.boolean(),
+      gradientStart: zod.string(),
+      gradientEnd: zod.string(),
+      tag: zod.string(),
+    }),
+  ),
+  total: zod.number(),
+  page: zod.number(),
+  limit: zod.number(),
+  hasMore: zod.boolean(),
+});
+
+/**
+ * @summary Get a single news article
+ */
+export const GetNewsArticleByIdParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetNewsArticleByIdResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  summary: zod.string(),
+  content: zod.string(),
+  category: zod.string(),
+  source: zod.string(),
+  readTimeMinutes: zod.number(),
+  publishedAt: zod.date(),
+  likes: zod.number(),
+  isBookmarked: zod.boolean(),
+  gradientStart: zod.string(),
+  gradientEnd: zod.string(),
+  tag: zod.string(),
+});
+
+/**
+ * @summary Like a news article
+ */
+export const LikeNewsArticleParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const LikeNewsArticleResponse = zod.object({
+  id: zod.number(),
+  likes: zod.number(),
+});
+
+/**
+ * @summary Bookmark a news article
+ */
+export const BookmarkNewsArticleParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const BookmarkNewsArticleResponse = zod.object({
+  id: zod.number(),
+  isBookmarked: zod.boolean(),
+});
+
+/**
+ * @summary Get available news categories
+ */
+export const GetCategoriesResponse = zod.object({
+  categories: zod.array(zod.string()),
+});

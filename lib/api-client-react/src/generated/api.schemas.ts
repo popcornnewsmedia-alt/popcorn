@@ -8,3 +8,47 @@
 export interface HealthStatus {
   status: string;
 }
+
+export interface NewsArticle {
+  id: number;
+  title: string;
+  summary: string;
+  content: string;
+  category: string;
+  source: string;
+  readTimeMinutes: number;
+  publishedAt: string;
+  likes: number;
+  isBookmarked: boolean;
+  gradientStart: string;
+  gradientEnd: string;
+  tag: string;
+}
+
+export interface NewsArticleList {
+  articles: NewsArticle[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+}
+
+export interface LikeResponse {
+  id: number;
+  likes: number;
+}
+
+export interface BookmarkResponse {
+  id: number;
+  isBookmarked: boolean;
+}
+
+export interface CategoryList {
+  categories: string[];
+}
+
+export type GetNewsArticlesParams = {
+  page?: number;
+  limit?: number;
+  category?: string;
+};

@@ -4,6 +4,18 @@
 
 pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
 
+## Artifacts
+
+### Pulse — AI News Feed (`artifacts/pulse-news`)
+TikTok-style vertical scroll news app for AI headlines. Full-screen snap-scrolling cards with moody gradient backgrounds, large editorial typography, and an in-app article reader.
+
+- React + Vite frontend at `/`
+- Categories: All, Models, Research, Industry, Policy, Tools
+- Like, bookmark, and share actions per article
+- Tap a card to open a full article reader (slide-up from bottom)
+- Infinite scroll feed powered by REST API
+- Seed data: `pnpm --filter @workspace/scripts run seed-news`
+
 ## Stack
 
 - **Monorepo tool**: pnpm workspaces
