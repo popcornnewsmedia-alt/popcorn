@@ -64,7 +64,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
         >
           <span
             className="font-['Manrope'] font-bold tracking-tight"
-            style={{ fontSize: '64px', color: '#0f2a1a', letterSpacing: '-0.04em', lineHeight: 1 }}
+            style={{ fontSize: '64px', color: '#000000', letterSpacing: '-0.04em', lineHeight: 1 }}
           >
             Bref.
           </span>
@@ -75,7 +75,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
           className="font-['Inter'] font-medium"
           style={{
             fontSize: '14px',
-            color: 'rgba(15,42,26,0.45)',
+            color: 'rgba(0,0,0,0.40)',
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
             animation: 'tagline-reveal 0.6s cubic-bezier(0.22,1,0.36,1) 1.0s both',
@@ -96,7 +96,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
                 width: '4px',
                 height: '18px',
                 borderRadius: '9999px',
-                background: '#0f2a1a',
+                background: '#000000',
                 animation: `dot-pulse 1.2s ease-in-out ${i * 0.18}s infinite`,
               }}
             />
