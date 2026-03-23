@@ -10,6 +10,7 @@ const article = {
   title: 'The Diffusion Paradox: Beyond Neural Limits',
   summary: 'How emergent architectures are redefining the relationship between computational cost and model capability.',
   likes: 1842,
+  image: '/__mockup/images/article-diffusion.png',
 };
 
 const categories = ['For You', 'Models', 'Research', 'Industry', 'Policy'];
@@ -20,61 +21,64 @@ export function RefinedEditorial() {
 
   return (
     <div
-      className="relative overflow-hidden flex flex-col"
       style={{
         width: 390,
         height: 844,
-        background: '#ecf3ef',
-        backgroundImage: `
-          radial-gradient(circle at 8% 15%, #1a443099 0%, transparent 45%),
-          radial-gradient(circle at 88% 78%, #2c523e88 0%, transparent 45%),
-          radial-gradient(circle at 50% 50%, #1f4b3840 0%, transparent 62%)
-        `,
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#0a0f0d',
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      {/* Upper atmosphere — breathes freely */}
-      <div className="flex-1" />
+      {/* Full-bleed article image */}
+      <img
+        src={article.image}
+        alt={article.title}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center top',
+        }}
+      />
+
+      {/* Gradient overlay — heavy at bottom for card legibility */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.28) 50%, rgba(0,0,0,0.62) 70%, rgba(0,0,0,0.82) 100%)',
+          zIndex: 1,
+        }}
+      />
+
+      {/* Spacer */}
+      <div style={{ flex: 1, position: 'relative', zIndex: 2 }} />
 
       {/* Glass card panel */}
-      <div className="px-4 pb-0">
+      <div style={{ position: 'relative', zIndex: 2, padding: '0 16px' }}>
         <div
-          className="rounded-2xl px-6 pt-6 pb-5"
           style={{
-            background: 'rgba(255,255,255,0.45)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-            border: '1px solid rgba(255,255,255,0.40)',
-            boxShadow: '0 8px 40px rgba(25,28,27,0.10)',
+            borderRadius: '18px 18px 0 0',
+            padding: '20px 20px 16px',
+            background: 'rgba(255,255,255,0.13)',
+            backdropFilter: 'blur(28px)',
+            WebkitBackdropFilter: 'blur(28px)',
+            border: '1px solid rgba(255,255,255,0.20)',
+            borderBottom: 'none',
           }}
         >
-          {/* Eyebrow — editorial style, no pill */}
-          <div
-            className="flex items-center gap-2 mb-3"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            <span
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#191c1b',
-              }}
-            >
+          {/* Eyebrow — editorial, no pill */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.95)' }}>
               {article.tag}
             </span>
-            <span style={{ color: '#191c1b', opacity: 0.25, fontSize: 10 }}>·</span>
-            <span
-              style={{
-                fontSize: 10,
-                fontWeight: 600,
-                letterSpacing: '0.10em',
-                textTransform: 'uppercase',
-                color: '#474747',
-                opacity: 0.7,
-              }}
-            >
+            <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: 10 }}>·</span>
+            <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.55)' }}>
               {article.source}
             </span>
           </div>
@@ -83,12 +87,12 @@ export function RefinedEditorial() {
           <h2
             style={{
               fontFamily: "'Manrope', sans-serif",
-              fontSize: 34,
+              fontSize: 30,
               fontWeight: 800,
-              lineHeight: 1.06,
-              color: '#191c1b',
+              lineHeight: 1.08,
+              color: '#ffffff',
               letterSpacing: '-0.02em',
-              marginBottom: 12,
+              marginBottom: 10,
             }}
           >
             {article.title}
@@ -97,46 +101,35 @@ export function RefinedEditorial() {
           {/* Summary */}
           <p
             style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 13.5,
-              color: '#474747',
+              fontSize: 13,
+              color: 'rgba(255,255,255,0.68)',
               lineHeight: 1.55,
-              marginBottom: 16,
+              marginBottom: 14,
               display: '-webkit-box',
               WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
+              WebkitBoxOrient: 'vertical' as const,
               overflow: 'hidden',
             }}
           >
             {article.summary}
           </p>
 
-          {/* Bottom row — metadata + actions in one clean strip */}
+          {/* Bottom row */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              borderTop: '1px solid rgba(25,28,27,0.07)',
-              paddingTop: 14,
+              borderTop: '1px solid rgba(255,255,255,0.10)',
+              paddingTop: 12,
             }}
           >
             {/* Meta */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 11.5,
-                fontWeight: 500,
-                color: 'rgba(71,71,71,0.55)',
-              }}
-            >
+            <div style={{ fontSize: 11.5, fontWeight: 500, color: 'rgba(255,255,255,0.42)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <span>{article.date}</span>
-              <span style={{ opacity: 0.4 }}>·</span>
+              <span>·</span>
               <span>{article.readTime} min</span>
-              <span style={{ opacity: 0.4 }}>·</span>
+              <span>·</span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                 <ChevronUp size={11} />
                 Tap
@@ -144,59 +137,27 @@ export function RefinedEditorial() {
             </div>
 
             {/* Action pills */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
               <button
                 onClick={() => setLiked(!liked)}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 5,
-                  padding: '6px 12px',
-                  borderRadius: 999,
-                  background: liked ? 'rgba(239,68,68,0.12)' : 'rgba(25,28,27,0.07)',
-                  border: 'none',
-                  cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', gap: 5,
+                  padding: '5px 11px', borderRadius: 999,
+                  background: liked ? 'rgba(239,68,68,0.22)' : 'rgba(255,255,255,0.12)',
+                  border: '1px solid rgba(255,255,255,0.16)',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 600,
+                  color: liked ? '#fca5a5' : 'rgba(255,255,255,0.82)',
                   fontFamily: "'Inter', sans-serif",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: liked ? '#dc2626' : '#191c1b',
                 }}
               >
-                <Heart size={13} fill={liked ? '#dc2626' : 'none'} stroke={liked ? '#dc2626' : '#191c1b'} strokeWidth={2} />
+                <Heart size={12} fill={liked ? '#fca5a5' : 'none'} stroke={liked ? '#fca5a5' : 'rgba(255,255,255,0.82)'} strokeWidth={2} />
                 {article.likes + (liked ? 1 : 0)}
               </button>
-              <button
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: 34,
-                  height: 34,
-                  borderRadius: 999,
-                  background: 'rgba(25,28,27,0.07)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: '#191c1b',
-                }}
-              >
-                <Bookmark size={14} strokeWidth={2} />
-              </button>
-              <button
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: 34,
-                  height: 34,
-                  borderRadius: 999,
-                  background: 'rgba(25,28,27,0.07)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: '#191c1b',
-                }}
-              >
-                <Share2 size={14} strokeWidth={2} />
-              </button>
+              {[Bookmark, Share2].map((Icon, i) => (
+                <button key={i} style={{ width: 30, height: 30, borderRadius: 999, background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'rgba(255,255,255,0.82)' }}>
+                  <Icon size={12} strokeWidth={2} />
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -205,55 +166,33 @@ export function RefinedEditorial() {
       {/* Bottom nav */}
       <div
         style={{
-          background: 'rgba(236,243,239,0.62)',
+          position: 'relative', zIndex: 2,
+          background: 'rgba(10,15,13,0.78)',
           backdropFilter: 'blur(28px)',
           WebkitBackdropFilter: 'blur(28px)',
-          borderTop: '1px solid rgba(255,255,255,0.25)',
+          borderTop: '1px solid rgba(255,255,255,0.10)',
           padding: '10px 16px 12px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
+          display: 'flex', alignItems: 'center', gap: 10,
         }}
       >
-        {/* Logo */}
-        <div style={{ flexShrink: 0, paddingRight: 10, borderRight: '1px solid rgba(25,28,27,0.10)' }}>
-          <div
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: 8,
-              background: '#191c1b',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Sparkles size={14} color="white" />
+        <div style={{ flexShrink: 0, paddingRight: 10, borderRight: '1px solid rgba(255,255,255,0.12)' }}>
+          <div style={{ width: 28, height: 28, borderRadius: 8, background: 'rgba(255,255,255,0.95)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Sparkles size={14} color="#191c1b" />
           </div>
         </div>
-
-        {/* Category pills */}
-        <div style={{ display: 'flex', gap: 6, overflowX: 'auto', flex: 1 }}>
+        <div style={{ display: 'flex', gap: 5, overflowX: 'auto', flex: 1 }}>
           {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCat(cat)}
+            <button key={cat} onClick={() => setSelectedCat(cat)}
               style={{
-                padding: '7px 14px',
-                borderRadius: 999,
-                background: selectedCat === cat ? '#191c1b' : 'rgba(255,255,255,0.35)',
-                color: selectedCat === cat ? '#e5e2e1' : '#191c1b',
-                fontSize: 13,
-                fontWeight: 600,
-                whiteSpace: 'nowrap',
-                border: 'none',
-                cursor: 'pointer',
-                flexShrink: 0,
+                padding: '7px 13px', borderRadius: 999,
+                background: selectedCat === cat ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.10)',
+                color: selectedCat === cat ? '#191c1b' : 'rgba(255,255,255,0.72)',
+                fontSize: 12.5, fontWeight: 600, whiteSpace: 'nowrap',
+                border: '1px solid rgba(255,255,255,0.12)',
+                cursor: 'pointer', flexShrink: 0,
                 fontFamily: "'Inter', sans-serif",
               }}
-            >
-              {cat}
-            </button>
+            >{cat}</button>
           ))}
         </div>
       </div>

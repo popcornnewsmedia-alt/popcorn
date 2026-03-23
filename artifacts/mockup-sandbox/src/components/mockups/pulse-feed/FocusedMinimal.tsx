@@ -9,6 +9,7 @@ const article = {
   readTime: 5,
   title: 'The Diffusion Paradox: Beyond Neural Limits',
   likes: 1842,
+  image: '/__mockup/images/article-chip.png',
 };
 
 const categories = ['For You', 'Models', 'Research', 'Industry', 'Policy'];
@@ -26,197 +27,137 @@ export function FocusedMinimal() {
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        background: '#ecf3ef',
-        backgroundImage: `
-          radial-gradient(circle at 8% 15%, #1a443099 0%, transparent 45%),
-          radial-gradient(circle at 88% 78%, #2c523e88 0%, transparent 45%),
-          radial-gradient(circle at 50% 50%, #1f4b3840 0%, transparent 62%)
-        `,
+        background: '#0a0f0d',
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      {/* Atmosphere — fills the top ~55% */}
-      <div style={{ flex: 1 }} />
+      {/* Full-bleed article image */}
+      <img
+        src={article.image}
+        alt={article.title}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center top',
+        }}
+      />
 
-      {/* Thin ruled separator — whisper-light */}
-      <div style={{ height: 1, background: 'rgba(25,28,27,0.10)', margin: '0 20px' }} />
-
-      {/* Card content — open, no rounded panel box */}
+      {/* Gradient — lighter fade, keeps more of the image visible */}
       <div
         style={{
-          background: 'rgba(255,255,255,0.50)',
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.20) 55%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.78) 100%)',
+          zIndex: 1,
+        }}
+      />
+
+      {/* Spacer — image breathes in the top ~55% */}
+      <div style={{ flex: 1, position: 'relative', zIndex: 2 }} />
+
+      {/* Thin ruled separator */}
+      <div style={{ height: 1, background: 'rgba(255,255,255,0.12)', margin: '0 20px', position: 'relative', zIndex: 2 }} />
+
+      {/* Card content — open layout, no rounded box */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          background: 'rgba(255,255,255,0.08)',
           backdropFilter: 'blur(32px)',
           WebkitBackdropFilter: 'blur(32px)',
-          padding: '20px 24px 16px',
+          padding: '18px 24px 14px',
         }}
       >
-        {/* Eyebrow — single line, wide tracking */}
-        <div
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'rgba(71,71,71,0.6)',
-            marginBottom: 10,
-            display: 'flex',
-            gap: 8,
-            alignItems: 'center',
-          }}
-        >
-          <span style={{ color: '#191c1b', opacity: 1 }}>{article.tag}</span>
-          <span style={{ opacity: 0.3 }}>—</span>
-          <span>{article.source}</span>
+        {/* Eyebrow */}
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 10, fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' as const }}>
+          <span style={{ color: 'rgba(255,255,255,0.95)' }}>{article.tag}</span>
+          <span style={{ color: 'rgba(255,255,255,0.25)' }}>—</span>
+          <span style={{ color: 'rgba(255,255,255,0.50)' }}>{article.source}</span>
         </div>
 
-        {/* Headline — dominant, full weight */}
+        {/* Headline — dominant */}
         <h2
           style={{
             fontFamily: "'Manrope', sans-serif",
-            fontSize: 38,
+            fontSize: 36,
             fontWeight: 800,
             lineHeight: 1.0,
-            color: '#191c1b',
+            color: '#ffffff',
             letterSpacing: '-0.025em',
-            marginBottom: 18,
+            marginBottom: 16,
           }}
         >
           {article.title}
         </h2>
 
-        {/* Bottom bar — date/time on left, compact icon row on right */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 11.5,
-              fontWeight: 500,
-              color: 'rgba(71,71,71,0.50)',
-              display: 'flex',
-              gap: 8,
-              alignItems: 'center',
-            }}
-          >
+        {/* Bottom bar */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ fontSize: 11.5, fontWeight: 500, color: 'rgba(255,255,255,0.40)', display: 'flex', gap: 8, alignItems: 'center' }}>
             <span>{article.date}</span>
             <span>·</span>
             <span>{article.readTime} min read</span>
           </div>
 
-          {/* Icon-only actions — very compact */}
+          {/* Compact icon actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <button
               onClick={() => setLiked(!liked)}
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4,
-                padding: '5px 10px',
-                borderRadius: 999,
-                background: liked ? 'rgba(239,68,68,0.10)' : 'rgba(25,28,27,0.06)',
-                border: 'none',
-                cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 4,
+                padding: '5px 10px', borderRadius: 999,
+                background: liked ? 'rgba(239,68,68,0.20)' : 'rgba(255,255,255,0.10)',
+                border: '1px solid rgba(255,255,255,0.14)',
+                cursor: 'pointer', fontSize: 11.5, fontWeight: 600,
+                color: liked ? '#fca5a5' : 'rgba(255,255,255,0.80)',
                 fontFamily: "'Inter', sans-serif",
-                fontSize: 11.5,
-                fontWeight: 600,
-                color: liked ? '#dc2626' : '#191c1b',
               }}
             >
-              <Heart size={12} fill={liked ? '#dc2626' : 'none'} stroke={liked ? '#dc2626' : '#191c1b'} strokeWidth={2.2} />
+              <Heart size={12} fill={liked ? '#fca5a5' : 'none'} stroke={liked ? '#fca5a5' : 'rgba(255,255,255,0.80)'} strokeWidth={2.2} />
               {article.likes + (liked ? 1 : 0)}
             </button>
-            <button
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 30,
-                height: 30,
-                borderRadius: 999,
-                background: 'rgba(25,28,27,0.06)',
-                border: 'none',
-                cursor: 'pointer',
-                color: '#191c1b',
-              }}
-            >
-              <Bookmark size={12} strokeWidth={2.2} />
-            </button>
-            <button
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 30,
-                height: 30,
-                borderRadius: 999,
-                background: 'rgba(25,28,27,0.06)',
-                border: 'none',
-                cursor: 'pointer',
-                color: '#191c1b',
-              }}
-            >
-              <Share2 size={12} strokeWidth={2.2} />
-            </button>
+            {[Bookmark, Share2].map((Icon, i) => (
+              <button key={i} style={{ width: 30, height: 30, borderRadius: 999, background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'rgba(255,255,255,0.80)' }}>
+                <Icon size={12} strokeWidth={2.2} />
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Bottom nav — same green glass */}
+      {/* Bottom nav */}
       <div
         style={{
-          background: 'rgba(236,243,239,0.65)',
+          position: 'relative', zIndex: 2,
+          background: 'rgba(10,15,13,0.80)',
           backdropFilter: 'blur(28px)',
           WebkitBackdropFilter: 'blur(28px)',
-          borderTop: '1px solid rgba(255,255,255,0.28)',
+          borderTop: '1px solid rgba(255,255,255,0.10)',
           padding: '10px 16px 12px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
+          display: 'flex', alignItems: 'center', gap: 10,
         }}
       >
-        <div style={{ flexShrink: 0, paddingRight: 10, borderRight: '1px solid rgba(25,28,27,0.09)' }}>
-          <div
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: 8,
-              background: '#191c1b',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Sparkles size={14} color="white" />
+        <div style={{ flexShrink: 0, paddingRight: 10, borderRight: '1px solid rgba(255,255,255,0.12)' }}>
+          <div style={{ width: 28, height: 28, borderRadius: 8, background: 'rgba(255,255,255,0.95)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Sparkles size={14} color="#191c1b" />
           </div>
         </div>
-
         <div style={{ display: 'flex', gap: 5, overflowX: 'auto', flex: 1 }}>
           {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCat(cat)}
+            <button key={cat} onClick={() => setSelectedCat(cat)}
               style={{
-                padding: '7px 13px',
-                borderRadius: 999,
-                background: selectedCat === cat ? '#191c1b' : 'rgba(255,255,255,0.32)',
-                color: selectedCat === cat ? '#e5e2e1' : '#191c1b',
-                fontSize: 12.5,
-                fontWeight: 600,
-                whiteSpace: 'nowrap',
-                border: 'none',
-                cursor: 'pointer',
-                flexShrink: 0,
+                padding: '7px 13px', borderRadius: 999,
+                background: selectedCat === cat ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.10)',
+                color: selectedCat === cat ? '#191c1b' : 'rgba(255,255,255,0.72)',
+                fontSize: 12.5, fontWeight: 600, whiteSpace: 'nowrap',
+                border: '1px solid rgba(255,255,255,0.12)',
+                cursor: 'pointer', flexShrink: 0,
                 fontFamily: "'Inter', sans-serif",
               }}
-            >
-              {cat}
-            </button>
+            >{cat}</button>
           ))}
         </div>
       </div>
