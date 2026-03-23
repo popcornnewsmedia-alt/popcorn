@@ -15,6 +15,7 @@ const articles = [
     gradientStart: "#1a2e22",
     gradientEnd: "#6b9e7e",
     tag: "ANALYSIS",
+    imageUrl: "/images/article-diffusion.png",
   },
   {
     title: "OpenAI's o3-mini Quietly Overtakes GPT-4 on Coding Benchmarks",
@@ -29,6 +30,7 @@ const articles = [
     gradientStart: "#1e1e2e",
     gradientEnd: "#4a4a7a",
     tag: "BREAKING",
+    imageUrl: "/images/article-o3mini.png",
   },
   {
     title: "Anthropic's Constitutional AI Grows Up",
@@ -43,6 +45,7 @@ const articles = [
     gradientStart: "#2a1a1a",
     gradientEnd: "#8a5a5a",
     tag: "RESEARCH",
+    imageUrl: "/images/article-constitutional-ai.png",
   },
   {
     title: "The EU AI Act Enters Its Compliance Phase",
@@ -57,6 +60,7 @@ const articles = [
     gradientStart: "#1a1a2a",
     gradientEnd: "#5a6a9a",
     tag: "POLICY",
+    imageUrl: "/images/article-eu-act.png",
   },
   {
     title: "Google DeepMind's AlphaFold 3 Unlocks Drug Design",
@@ -71,6 +75,7 @@ const articles = [
     gradientStart: "#0a2a1a",
     gradientEnd: "#3a7a5a",
     tag: "BREAKTHROUGH",
+    imageUrl: "/images/article-alphafold.png",
   },
   {
     title: "The Open-Source Model Ecosystem Is Winning",
@@ -85,6 +90,7 @@ const articles = [
     gradientStart: "#2a1a0a",
     gradientEnd: "#8a6a3a",
     tag: "OPINION",
+    imageUrl: "/images/article-opensource.png",
   },
   {
     title: "Cursor and the Future of AI-Native Development",
@@ -99,6 +105,7 @@ const articles = [
     gradientStart: "#1a0a2a",
     gradientEnd: "#6a3a8a",
     tag: "INDUSTRY",
+    imageUrl: "/images/article-cursor.png",
   },
   {
     title: "Multimodal Models Learn to See the World Differently",
@@ -113,6 +120,7 @@ const articles = [
     gradientStart: "#1a2a0a",
     gradientEnd: "#5a8a3a",
     tag: "RESEARCH",
+    imageUrl: "/images/article-multimodal.png",
   },
   {
     title: "Sam Altman on What Comes After ChatGPT",
@@ -127,6 +135,7 @@ const articles = [
     gradientStart: "#2a2a1a",
     gradientEnd: "#8a8a4a",
     tag: "INTERVIEW",
+    imageUrl: "/images/article-altman.png",
   },
   {
     title: "The Hidden Cost of AI Inference",
@@ -141,6 +150,7 @@ const articles = [
     gradientStart: "#2a1a2a",
     gradientEnd: "#7a5a7a",
     tag: "ANALYSIS",
+    imageUrl: "/images/article-inference.png",
   },
   {
     title: "Reasoning Models Are Changing What 'Smart' Means",
@@ -155,6 +165,7 @@ const articles = [
     gradientStart: "#0a1a2a",
     gradientEnd: "#3a5a7a",
     tag: "ANALYSIS",
+    imageUrl: "/images/article-inference.png",
   },
 ];
 

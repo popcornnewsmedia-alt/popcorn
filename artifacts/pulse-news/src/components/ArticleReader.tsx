@@ -20,109 +20,108 @@ export function ArticleReader({ article, onClose }: ArticleReaderProps) {
           drag="y"
           dragConstraints={{ top: 0, bottom: 0 }}
           dragElastic={0.2}
-          onDragEnd={(e, info) => {
-            if (info.offset.y > 100 || info.velocity.y > 500) {
-              onClose();
-            }
+          onDragEnd={(_, info) => {
+            if (info.offset.y > 100 || info.velocity.y > 500) onClose();
           }}
           className="fixed inset-0 z-50 flex flex-col"
-          style={{ background: '#f9faf8' }}
+          style={{ background: '#ecf3ef' }}
         >
-          <div className="ink-diffusion-bg" />
-          
-          {/* Header Bar */}
-          <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 bg-white/80 backdrop-blur-xl border-b border-black/5 pt-safe">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#474747]">
-                {article.tag}
-              </span>
-            </div>
-            <button 
-              onClick={onClose}
-              className="p-2 rounded-full bg-black/8 hover:bg-black/12 text-[#191c1b] transition-colors"
+          {/* Floating header — overlaid on the image */}
+          <div className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-4 py-3">
+            <span
+              className="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest font-['Inter']"
+              style={{ background: 'rgba(0,0,0,0.30)', backdropFilter: 'blur(12px)', color: 'rgba(255,255,255,0.92)', border: '1px solid rgba(255,255,255,0.16)' }}
             >
-              <X className="w-6 h-6" />
+              {article.tag}
+            </span>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-full transition-colors"
+              style={{ background: 'rgba(0,0,0,0.30)', backdropFilter: 'blur(12px)', color: 'white', border: '1px solid rgba(255,255,255,0.16)' }}
+            >
+              <X className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Scrollable Content */}
+          {/* Scrollable content */}
           <div className="flex-1 overflow-y-auto overscroll-contain">
-            <div className="max-w-3xl mx-auto px-6 py-10 sm:px-12 sm:py-16">
-              
-              {/* Metadata */}
-              <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-[#474747] mb-8">
-                <span className="text-[#191c1b] font-bold">{article.source}</span>
-                <span>•</span>
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4" />
-                  {format(new Date(article.publishedAt), 'MMMM d, yyyy')}
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1.5">
-                  <Clock className="w-4 h-4" />
-                  {article.readTimeMinutes} min read
-                </span>
-              </div>
 
-              {/* Title & Summary */}
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold leading-[1.1] text-[#191c1b] mb-6">
-                {article.title}
-              </h1>
-              <p className="text-xl sm:text-2xl text-[#474747] leading-relaxed mb-12 font-display italic">
-                {article.summary}
-              </p>
-
-              {/* Content */}
-              <div className="prose prose-lg max-w-none text-[#191c1b]">
-                {article.content ? (
-                  <div dangerouslySetSection={{ __html: article.content }} />
-                ) : (
-                  <>
-                    <p>
-                      The artificial intelligence landscape continues to evolve at a breakneck pace. 
-                      In recent developments, industry leaders have unveiled new architectures that 
-                      dramatically reduce compute requirements while maintaining, and in some cases 
-                      exceeding, state-of-the-art performance.
-                    </p>
-                    <h2>The Shift Toward Efficiency</h2>
-                    <p>
-                      Historically, the prevailing wisdom in model scaling was straightforward: more 
-                      parameters and more data reliably led to better performance. However, as 
-                      computational costs soar and physical constraints on data centers become 
-                      apparent, researchers are finding innovative ways to achieve intelligence.
-                    </p>
-                    <blockquote>
-                      "We are moving from the era of brute-force scaling to an era of algorithmic 
-                      elegance. The next major breakthroughs will come from how we structure networks, 
-                      not just how large we can build them."
-                    </blockquote>
-                    <p>
-                      Early benchmarks suggest these new methods could reduce training costs by up 
-                      to 40%, potentially democratizing access to high-tier AI capabilities. Startups 
-                      and independent researchers may soon be able to deploy models that previously 
-                      required massive corporate backing.
-                    </p>
-                    <h3>Regulatory Implications</h3>
-                    <p>
-                      As these highly capable, lightweight models approach deployment, policymakers 
-                      are accelerating their efforts to establish coherent frameworks for AI safety. 
-                      The focus is shifting from simply monitoring massive data centers to establishing 
-                      robust evaluation criteria for models that could potentially run on edge devices.
-                    </p>
-                  </>
-                )}
+            {/* Hero image */}
+            {article.imageUrl && (
+              <div className="relative h-72 sm:h-80 flex-shrink-0">
+                <img
+                  src={article.imageUrl}
+                  alt={article.title}
+                  className="w-full h-full object-cover object-top"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0) 40%, rgba(236,243,239,0) 70%, rgba(236,243,239,1) 100%)' }}
+                />
               </div>
-              
-              <div className="mt-16 pt-8 border-t border-[#c6c6c6]/30 flex justify-center pb-12">
-                <button 
-                  onClick={onClose}
-                  className="px-8 py-3 rounded-full bg-[#191c1b] text-[#e5e2e1] hover:bg-[#3c3b3b] transition-colors font-semibold"
-                >
-                  Finished Reading
-                </button>
-              </div>
+            )}
 
+            {/* Green atmospheric content */}
+            <div
+              style={{
+                background: '#ecf3ef',
+                backgroundImage: 'radial-gradient(circle at 8% 30%, #1a443066 0%, transparent 50%), radial-gradient(circle at 88% 70%, #2c523e55 0%, transparent 50%)',
+                minHeight: '100%',
+              }}
+            >
+              <div className="max-w-2xl mx-auto px-6 py-8 sm:px-10 pb-16">
+
+                {/* Source + metadata */}
+                <div className="flex flex-wrap items-center gap-3 text-xs font-medium mb-6 font-['Inter']" style={{ color: 'rgba(71,71,71,0.60)' }}>
+                  <span className="font-bold text-sm" style={{ color: '#191c1b' }}>{article.source}</span>
+                  <span>·</span>
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {format(new Date(article.publishedAt), 'MMMM d, yyyy')}
+                  </span>
+                  <span>·</span>
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5" />
+                    {article.readTimeMinutes} min read
+                  </span>
+                </div>
+
+                {/* Headline */}
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold leading-[1.08] text-[#191c1b] mb-5 tracking-tight">
+                  {article.title}
+                </h1>
+
+                {/* Summary lede */}
+                <p className="text-lg sm:text-xl text-[#474747] leading-relaxed mb-10 font-display italic border-b border-[#191c1b]/10 pb-8">
+                  {article.summary}
+                </p>
+
+                {/* Body content */}
+                <div className="prose prose-lg max-w-none text-[#191c1b]">
+                  {article.content ? (
+                    <div dangerouslySetInnerHTML={{ __html: article.content }} />
+                  ) : (
+                    <>
+                      <p>The artificial intelligence landscape continues to evolve at a breakneck pace. In recent developments, industry leaders have unveiled new architectures that dramatically reduce compute requirements while maintaining, and in some cases exceeding, state-of-the-art performance.</p>
+                      <h2>The Shift Toward Efficiency</h2>
+                      <p>Historically, the prevailing wisdom in model scaling was straightforward: more parameters and more data reliably led to better performance. However, as computational costs soar and physical constraints on data centers become apparent, researchers are finding innovative ways to achieve intelligence.</p>
+                      <blockquote>"We are moving from the era of brute-force scaling to an era of algorithmic elegance. The next major breakthroughs will come from how we structure networks, not just how large we can build them."</blockquote>
+                    </>
+                  )}
+                </div>
+
+                <div className="mt-16 pt-8 border-t border-[#c6c6c6]/30 flex justify-center">
+                  <button
+                    onClick={onClose}
+                    className="px-8 py-3 rounded-full bg-[#191c1b] text-[#e5e2e1] hover:bg-[#3c3b3b] transition-colors font-semibold"
+                  >
+                    Finished Reading
+                  </button>
+                </div>
+
+              </div>
             </div>
+
           </div>
         </motion.div>
       )}

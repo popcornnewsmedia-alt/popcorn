@@ -16,6 +16,7 @@ export const articlesTable = pgTable("articles", {
   gradientStart: text("gradient_start").notNull().default("#2d4a3e"),
   gradientEnd: text("gradient_end").notNull().default("#8fb8a0"),
   tag: text("tag").notNull().default("ANALYSIS"),
+  imageUrl: text("image_url"),
 });
 
 export const insertArticleSchema = createInsertSchema(articlesTable).omit({ id: true });

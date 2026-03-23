@@ -23,6 +23,7 @@ export interface NewsArticle {
   gradientStart: string;
   gradientEnd: string;
   tag: string;
+  imageUrl?: string | null;
 }
 
 export interface NewsArticleList {
