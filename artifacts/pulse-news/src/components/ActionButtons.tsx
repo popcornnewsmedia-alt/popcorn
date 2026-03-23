@@ -1,25 +1,36 @@
 import { useState } from "react";
-import { Heart, Bookmark, Share2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Heart, MessageCircle, Bookmark, Share2 } from "lucide-react";
 import { useLikeArticle, useBookmarkArticle } from "@/hooks/use-news";
 import type { NewsArticle } from "@workspace/api-client-react";
 
 interface ActionButtonsProps {
   article: NewsArticle;
-  hasImage?: boolean;
 }
 
-export function ActionButtons({ article, hasImage = false }: ActionButtonsProps) {
+const glassBtn = {
+  background: 'rgba(236, 243, 239, 0.75)',
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  border: '1px solid rgba(26,68,48,0.14)',
+  boxShadow: '0 4px 16px rgba(26,68,48,0.14)',
+};
+
+const glassBtnActive = {
+  background: 'rgba(220, 242, 230, 0.90)',
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  border: '1px solid rgba(26,68,48,0.28)',
+  boxShadow: '0 4px 16px rgba(26,68,48,0.20)',
+};
+
+export function ActionButtons({ article }: ActionButtonsProps) {
   const [localLiked, setLocalLiked] = useState(false);
   const { mutate: likeMutation } = useLikeArticle();
   const { mutate: bookmarkMutation } = useBookmarkArticle();
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!localLiked) {
-      setLocalLiked(true);
-      likeMutation(article.id);
-    }
+    if (!localLiked) { setLocalLiked(true); likeMutation(article.id); }
   };
 
   const handleBookmark = (e: React.MouseEvent) => {
@@ -30,62 +41,74 @@ export function ActionButtons({ article, hasImage = false }: ActionButtonsProps)
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (navigator.share) {
-      navigator.share({
-        title: article.title,
-        text: article.summary,
-        url: window.location.href,
-      }).catch(() => {});
+      navigator.share({ title: article.title, text: article.summary, url: window.location.href }).catch(() => {});
     } else {
       navigator.clipboard.writeText(window.location.href);
     }
   };
 
-  const isLiked = localLiked || false;
+  const handleComment = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
-  const iconBg = hasImage ? 'bg-white/12 border border-white/18' : 'bg-[#191c1b]/8';
-  const iconColor = hasImage ? 'text-white/85' : 'text-[#191c1b]';
-  const labelColor = hasImage ? 'text-white/50' : 'text-[#474747]';
+  const isLiked = localLiked;
+  const isSaved = article.isBookmarked;
 
   return (
-    <div className="flex items-center gap-4 z-30">
-      <button 
+    <div className="flex flex-col items-center gap-3">
+
+      {/* Like */}
+      <button
         onClick={handleLike}
-        className="flex flex-col items-center gap-1 group transition-transform active:scale-90"
+        className="flex flex-col items-center gap-1 transition-transform active:scale-90"
       >
-        <div className={cn(
-          "p-2.5 rounded-full transition-colors",
-          iconBg,
-          isLiked ? "bg-red-500/15 text-red-400 border-red-400/20" : iconColor
-        )}>
-          <Heart className={cn("w-5 h-5 transition-all", isLiked && "fill-current")} />
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={isLiked ? glassBtnActive : glassBtn}>
+          <Heart
+            className="w-5 h-5 transition-all"
+            style={{ color: isLiked ? '#e11d48' : '#0f2a1a', fill: isLiked ? '#e11d48' : 'none' }}
+          />
         </div>
-        <span className={cn("text-[11px] font-semibold", labelColor)}>
-          {article.likes + (localLiked ? 1 : 0)}
+        <span className="text-[10px] font-semibold font-['Inter'] text-white/70">
+          {(article.likes + (localLiked ? 1 : 0)).toLocaleString()}
         </span>
       </button>
 
-      <button 
-        onClick={handleBookmark}
-        className="flex flex-col items-center gap-1 group transition-transform active:scale-90"
+      {/* Comment */}
+      <button
+        onClick={handleComment}
+        className="flex flex-col items-center gap-1 transition-transform active:scale-90"
       >
-        <div className={cn(
-          "p-2.5 rounded-full transition-colors",
-          article.isBookmarked ? "bg-primary/20 text-primary" : cn(iconBg, iconColor)
-        )}>
-          <Bookmark className={cn("w-5 h-5 transition-all", article.isBookmarked && "fill-current")} />
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={glassBtn}>
+          <MessageCircle className="w-5 h-5" style={{ color: '#0f2a1a' }} />
         </div>
-        <span className={cn("text-[11px] font-semibold", labelColor)}>Save</span>
+        <span className="text-[10px] font-semibold font-['Inter'] text-white/70">Comment</span>
       </button>
 
-      <button 
-        onClick={handleShare}
-        className="flex flex-col items-center gap-1 group transition-transform active:scale-90"
+      {/* Save */}
+      <button
+        onClick={handleBookmark}
+        className="flex flex-col items-center gap-1 transition-transform active:scale-90"
       >
-        <div className={cn("p-2.5 rounded-full transition-colors", iconBg, iconColor)}>
-          <Share2 className="w-5 h-5" />
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={isSaved ? glassBtnActive : glassBtn}>
+          <Bookmark
+            className="w-5 h-5 transition-all"
+            style={{ color: '#0f2a1a', fill: isSaved ? '#0f2a1a' : 'none' }}
+          />
         </div>
-        <span className={cn("text-[11px] font-semibold", labelColor)}>Share</span>
+        <span className="text-[10px] font-semibold font-['Inter'] text-white/70">Save</span>
       </button>
+
+      {/* Share */}
+      <button
+        onClick={handleShare}
+        className="flex flex-col items-center gap-1 transition-transform active:scale-90"
+      >
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={glassBtn}>
+          <Share2 className="w-5 h-5" style={{ color: '#0f2a1a' }} />
+        </div>
+        <span className="text-[10px] font-semibold font-['Inter'] text-white/70">Share</span>
+      </button>
+
     </div>
   );
 }

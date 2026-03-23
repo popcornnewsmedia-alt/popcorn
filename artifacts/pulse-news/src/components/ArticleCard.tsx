@@ -18,7 +18,6 @@ export function ArticleCard({ article, onReadMore }: ArticleCardProps) {
     >
       {hasImage ? (
         <>
-          {/* Full-bleed image */}
           <img
             src={article.imageUrl!}
             alt={article.title}
@@ -37,15 +36,19 @@ export function ArticleCard({ article, onReadMore }: ArticleCardProps) {
           />
         </>
       ) : (
-        /* No-image fallback: atmospheric green background */
         <div className="absolute inset-0 ink-diffusion-bg" />
       )}
+
+      {/* Vertical action buttons — right side */}
+      <div className="absolute right-4 bottom-[110px] z-30" onClick={(e) => e.stopPropagation()}>
+        <ActionButtons article={article} />
+      </div>
 
       {/* Spacer */}
       <div className="flex-1 relative z-20" />
 
-      {/* Content — sits directly on the gradient, no box */}
-      <div className="relative z-20 px-5 pb-[100px] sm:px-7">
+      {/* Bottom text content — left side, clear of the buttons */}
+      <div className="relative z-20 px-5 pb-[100px] pr-24 sm:px-7 sm:pr-28">
 
         {/* Tag + source row */}
         <div className="flex items-center gap-3 mb-3">
@@ -68,27 +71,22 @@ export function ArticleCard({ article, onReadMore }: ArticleCardProps) {
         </div>
 
         {/* Headline */}
-        <h2
-          className="text-[clamp(26px,7vw,42px)] font-bold leading-[1.08] mb-5 font-['Manrope'] tracking-tight text-white"
-        >
+        <h2 className="text-[clamp(22px,6vw,38px)] font-bold leading-[1.1] mb-4 font-['Manrope'] tracking-tight text-white">
           {article.title}
         </h2>
 
-        {/* Bottom row: date + actions */}
-        <div className="flex items-center justify-between">
-          <div
-            className="flex items-center gap-3 text-xs font-medium font-['Inter']"
-            style={{ color: 'rgba(255,255,255,0.45)' }}
-          >
-            <span>{format(new Date(article.publishedAt), 'MMM d')}</span>
-            <span className="w-0.5 h-0.5 rounded-full bg-white/35" />
-            <span>{article.readTimeMinutes} min read</span>
-            <span className="flex items-center gap-1">
-              <ChevronUp className="w-3 h-3" />
-              Swipe
-            </span>
-          </div>
-          <ActionButtons article={article} hasImage={true} />
+        {/* Date row */}
+        <div
+          className="flex items-center gap-3 text-xs font-medium font-['Inter']"
+          style={{ color: 'rgba(255,255,255,0.45)' }}
+        >
+          <span>{format(new Date(article.publishedAt), 'MMM d')}</span>
+          <span className="w-0.5 h-0.5 rounded-full bg-white/35" />
+          <span>{article.readTimeMinutes} min read</span>
+          <span className="flex items-center gap-1">
+            <ChevronUp className="w-3 h-3" />
+            Swipe
+          </span>
         </div>
       </div>
     </div>
