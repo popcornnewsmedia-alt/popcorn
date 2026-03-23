@@ -86,9 +86,9 @@ function SavedScreen({ onBrowse }: { onBrowse: () => void }) {
         <button
           onClick={onBrowse}
           className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
-          style={{ background: '#0f2a1a', color: '#ecf3ef' }}
+          style={{ background: '#000000', color: '#ffffff' }}
         >
-          Browse the feed
+          Browse
         </button>
       </div>
     </div>
@@ -132,7 +132,7 @@ function ProfileScreen() {
 
         <button
           className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
-          style={{ background: '#0f2a1a', color: '#ecf3ef' }}
+          style={{ background: '#000000', color: '#ffffff' }}
         >
           Sign in
         </button>
