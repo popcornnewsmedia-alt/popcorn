@@ -87,7 +87,7 @@ export function FeedPage() {
     if (activeTab === "saved") {
       return (
         <div className="h-[100dvh] w-full flex flex-col items-center justify-center gap-4 text-center px-8">
-          <div className="w-16 h-16 rounded-3xl flex items-center justify-center mb-2" style={{ background: 'rgba(26,68,48,0.10)', border: '1px solid rgba(44,130,80,0.20)' }}>
+          <div className="w-16 h-16 rounded-3xl flex items-center justify-center mb-2" style={{ background: 'rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.18)' }}>
             <Bookmark className="w-7 h-7" style={{ color: '#0f2a1a' }} />
           </div>
           <h2 className="text-2xl font-display font-bold text-[#191c1b]">Nothing saved yet</h2>
@@ -98,7 +98,7 @@ export function FeedPage() {
     if (activeTab === "profile") {
       return (
         <div className="h-[100dvh] w-full flex flex-col items-center justify-center gap-4 text-center px-8">
-          <div className="w-16 h-16 rounded-3xl flex items-center justify-center mb-2" style={{ background: 'rgba(26,68,48,0.10)', border: '1px solid rgba(44,130,80,0.20)' }}>
+          <div className="w-16 h-16 rounded-3xl flex items-center justify-center mb-2" style={{ background: 'rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.18)' }}>
             <User className="w-7 h-7" style={{ color: '#0f2a1a' }} />
           </div>
           <h2 className="text-2xl font-display font-bold text-[#191c1b]">Your Profile</h2>
