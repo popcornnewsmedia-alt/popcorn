@@ -69,14 +69,14 @@ function SavedScreen({ onBrowse }: { onBrowse: () => void }) {
 
         <div className="flex flex-col gap-2">
           <h1
-            className="font-['Manrope'] font-bold tracking-tight text-[#0f2a1a]"
-            style={{ fontSize: '28px', lineHeight: 1.1 }}
+            className="font-['Manrope'] font-bold tracking-tight"
+            style={{ fontSize: '28px', lineHeight: 1.1, color: '#000' }}
           >
             Nothing saved yet
           </h1>
           <p
-            className="font-['Manrope'] italic text-[#1a4430]/55 leading-relaxed"
-            style={{ fontSize: '16px' }}
+            className="font-['Manrope'] italic leading-relaxed"
+            style={{ fontSize: '16px', color: 'rgba(0,0,0,0.45)' }}
           >
             Bookmark articles as you scroll to build your reading list.
           </p>
@@ -116,14 +116,14 @@ function ProfileScreen() {
 
         <div className="flex flex-col gap-2">
           <h1
-            className="font-['Manrope'] font-bold tracking-tight text-[#0f2a1a]"
-            style={{ fontSize: '28px', lineHeight: 1.1 }}
+            className="font-['Manrope'] font-bold tracking-tight"
+            style={{ fontSize: '28px', lineHeight: 1.1, color: '#000' }}
           >
             Your Profile
           </h1>
           <p
-            className="font-['Manrope'] italic text-[#1a4430]/55 leading-relaxed"
-            style={{ fontSize: '16px' }}
+            className="font-['Manrope'] italic leading-relaxed"
+            style={{ fontSize: '16px', color: 'rgba(0,0,0,0.45)' }}
           >
             Sign in to personalise your feed and keep your reading history in sync.
           </p>
