@@ -49,11 +49,8 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
   }, [articleId]);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (isOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
@@ -80,7 +77,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
       <div
         className="fixed inset-0 z-50 transition-opacity duration-300"
         style={{
-          background: 'rgba(0,0,0,0.55)',
+          background: 'rgba(0,0,0,0.40)',
           opacity: isOpen ? 1 : 0,
           pointerEvents: isOpen ? 'auto' : 'none',
         }}
@@ -92,38 +89,53 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
         className="fixed inset-x-0 bottom-0 z-50 flex flex-col transition-transform duration-350 ease-out"
         style={{
           height: '78dvh',
-          background: 'rgba(9, 13, 11, 0.98)',
-          backdropFilter: 'blur(40px)',
-          WebkitBackdropFilter: 'blur(40px)',
+          background: 'rgba(236, 243, 239, 0.97)',
+          backdropFilter: 'blur(48px)',
+          WebkitBackdropFilter: 'blur(48px)',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
         }}
       >
+        {/* Atmospheric blobs */}
+        <div className="absolute inset-0 rounded-[20px_20px_0_0] overflow-hidden pointer-events-none -z-0">
+          <div style={{
+            position: 'absolute', inset: 0,
+            backgroundImage: `
+              radial-gradient(circle at 15% 25%, rgba(26,68,48,0.18) 0%, transparent 50%),
+              radial-gradient(circle at 85% 70%, rgba(44,82,62,0.14) 0%, transparent 50%)
+            `,
+            filter: 'blur(40px)',
+          }} />
+        </div>
+
         {/* Handle */}
-        <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
-          <div className="w-9 h-1 rounded-full" style={{ background: 'rgba(255,255,255,0.18)' }} />
+        <div className="relative z-10 flex justify-center pt-3 pb-1 flex-shrink-0">
+          <div className="w-9 h-1 rounded-full" style={{ background: 'rgba(15,42,26,0.20)' }} />
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-          <span className="font-['Manrope'] font-bold text-white" style={{ fontSize: '17px' }}>
+        <div
+          className="relative z-10 flex items-center justify-between px-5 py-3 flex-shrink-0"
+          style={{ borderBottom: '1px solid rgba(15,42,26,0.10)' }}
+        >
+          <span className="font-['Manrope'] font-bold" style={{ fontSize: '17px', color: '#0f2a1a' }}>
             Comments
           </span>
-          <span className="font-['Inter'] text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          <span className="font-['Inter'] text-xs" style={{ color: 'rgba(15,42,26,0.35)' }}>
             {comments.length}
           </span>
           <button onClick={onClose} className="p-1 rounded-full transition-opacity hover:opacity-70">
-            <X className="w-5 h-5" style={{ color: 'rgba(255,255,255,0.5)' }} />
+            <X className="w-5 h-5" style={{ color: 'rgba(15,42,26,0.45)' }} />
           </button>
         </div>
 
         {/* Comments list */}
-        <div className="flex-1 overflow-y-auto py-2" style={{ scrollbarWidth: 'none' }}>
+        <div className="relative z-10 flex-1 overflow-y-auto py-2" style={{ scrollbarWidth: 'none' }}>
           {comments.map((c, i) => (
             <div
               key={c.id}
               className="flex gap-3 px-5 py-4"
-              style={{ borderBottom: i < comments.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
+              style={{ borderBottom: i < comments.length - 1 ? '1px solid rgba(15,42,26,0.07)' : 'none' }}
             >
               {/* Avatar */}
               <div
@@ -136,36 +148,30 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-baseline gap-2 mb-1">
-                  <span className="font-['Inter'] font-semibold text-white" style={{ fontSize: '13px' }}>{c.author}</span>
-                  <span className="font-['Inter']" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.30)' }}>{c.time}</span>
+                  <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: '#0f2a1a' }}>{c.author}</span>
+                  <span className="font-['Inter']" style={{ fontSize: '11px', color: 'rgba(15,42,26,0.38)' }}>{c.time}</span>
                 </div>
-                <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.78)' }}>
+                <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '14px', color: 'rgba(15,42,26,0.80)' }}>
                   {c.text}
                 </p>
 
                 {/* Vote row */}
                 <div className="flex items-center gap-4 mt-2.5">
-                  <button
-                    onClick={() => vote(c.id, "up")}
-                    className="flex items-center gap-1 transition-opacity active:scale-95"
-                  >
+                  <button onClick={() => vote(c.id, "up")} className="flex items-center gap-1 active:scale-95 transition-transform">
                     <ChevronUp
                       className="w-4 h-4"
-                      style={{ color: c.vote === "up" ? '#4ade80' : 'rgba(255,255,255,0.35)', strokeWidth: 2.5 }}
+                      style={{ color: c.vote === "up" ? '#1b7a4a' : 'rgba(15,42,26,0.35)', strokeWidth: 2.5 }}
                     />
-                    <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: c.vote === "up" ? '#4ade80' : 'rgba(255,255,255,0.35)' }}>
+                    <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: c.vote === "up" ? '#1b7a4a' : 'rgba(15,42,26,0.40)' }}>
                       {c.upvotes}
                     </span>
                   </button>
-                  <button
-                    onClick={() => vote(c.id, "down")}
-                    className="flex items-center gap-1 transition-opacity active:scale-95"
-                  >
+                  <button onClick={() => vote(c.id, "down")} className="flex items-center gap-1 active:scale-95 transition-transform">
                     <ChevronDown
                       className="w-4 h-4"
-                      style={{ color: c.vote === "down" ? '#f87171' : 'rgba(255,255,255,0.35)', strokeWidth: 2.5 }}
+                      style={{ color: c.vote === "down" ? '#c0392b' : 'rgba(15,42,26,0.35)', strokeWidth: 2.5 }}
                     />
-                    <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: c.vote === "down" ? '#f87171' : 'rgba(255,255,255,0.35)' }}>
+                    <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: c.vote === "down" ? '#c0392b' : 'rgba(15,42,26,0.40)' }}>
                       {c.downvotes}
                     </span>
                   </button>
