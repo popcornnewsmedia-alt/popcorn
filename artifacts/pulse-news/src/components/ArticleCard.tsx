@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
 import { ChevronUp } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
@@ -8,14 +8,27 @@ import { CommentSheet } from "./CommentSheet";
 interface ArticleCardProps {
   article: NewsArticle;
   onReadMore: (article: NewsArticle) => void;
+  onEnter?: (publishedAt: string) => void;
 }
 
-export function ArticleCard({ article, onReadMore }: ArticleCardProps) {
+export function ArticleCard({ article, onReadMore, onEnter }: ArticleCardProps) {
   const hasImage = !!article.imageUrl;
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!onEnter || !cardRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) onEnter(article.publishedAt); },
+      { threshold: 0.6 }
+    );
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [article.publishedAt, onEnter]);
 
   return (
     <div
+      ref={cardRef}
       className="h-[100dvh] w-full snap-start snap-always relative overflow-hidden flex flex-col cursor-pointer"
       onClick={() => onReadMore(article)}
     >

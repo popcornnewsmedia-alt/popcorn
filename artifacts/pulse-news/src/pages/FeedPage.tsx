@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { isSameDay, startOfDay } from "date-fns";
 import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
 import { ArticleCard } from "@/components/ArticleCard";
 import { ArticleReader } from "@/components/ArticleReader";
 import { SplashScreen } from "@/components/SplashScreen";
 import { SignUpFlow } from "@/components/SignUpFlow";
+import { DateToast } from "@/components/DateToast";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useIntersection } from "@/hooks/use-intersection";
 import { Loader2, AlertCircle, RefreshCw, Bookmark, User } from "lucide-react";
@@ -158,6 +160,19 @@ export function FeedPage() {
   const [readingArticle, setReadingArticle] = useState<NewsArticle | null>(null);
   const [signUpOpen, setSignUpOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>(startOfDay(new Date()));
+  const [toastDate, setToastDate] = useState<Date | null>(null);
+  const [toastKey, setToastKey] = useState(0);
+  const lastSeenDate = useRef<string | null>(null);
+
+  const handleArticleEnter = useCallback((publishedAt: string) => {
+    const dateStr = startOfDay(new Date(publishedAt)).toISOString();
+    if (lastSeenDate.current !== null && lastSeenDate.current !== dateStr) {
+      setToastDate(startOfDay(new Date(publishedAt)));
+      setToastKey(k => k + 1);
+    }
+    lastSeenDate.current = dateStr;
+  }, []);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch } =
     useInfiniteNewsFeed(undefined);
@@ -210,7 +225,10 @@ export function FeedPage() {
     );
   }
 
-  const articles = data?.pages.flatMap((page) => page.articles) || [];
+  const allArticles = data?.pages.flatMap((page) => page.articles) || [];
+  const articles = allArticles.filter(a =>
+    isSameDay(new Date(a.publishedAt), selectedDate)
+  );
 
   const renderTab = () => {
     if (activeTab === "saved") return <SavedScreen onBrowse={() => setActiveTab("feed")} />;
@@ -224,12 +242,23 @@ export function FeedPage() {
         {articles.length === 0 ? (
           <div className="relative h-[100dvh] w-full flex flex-col items-center justify-center snap-start snap-always text-center px-6 overflow-hidden">
             <GreenAtmosphere />
-            <h2 className="font-['Manrope'] font-bold text-2xl text-[#0f2a1a] mb-2">You're all caught up</h2>
-            <p className="font-['Manrope'] italic text-[#1a4430]/55">No more stories right now — check back soon.</p>
+            <h2 className="font-['Manrope'] font-bold text-2xl mb-2" style={{ color: '#000' }}>
+              {isSameDay(selectedDate, new Date()) ? "You're all caught up" : "No stories found"}
+            </h2>
+            <p className="font-['Manrope'] italic" style={{ color: 'rgba(0,0,0,0.45)' }}>
+              {isSameDay(selectedDate, new Date())
+                ? "No more stories right now — check back soon."
+                : "No articles were published on this day."}
+            </p>
           </div>
         ) : (
           articles.map((article) => (
-            <ArticleCard key={article.id} article={article} onReadMore={setReadingArticle} />
+            <ArticleCard
+              key={article.id}
+              article={article}
+              onReadMore={setReadingArticle}
+              onEnter={handleArticleEnter}
+            />
           ))
         )}
 
@@ -245,7 +274,8 @@ export function FeedPage() {
   return (
     <div className="h-[100dvh] w-full relative">
       {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
-      <TopBar />
+      <TopBar selectedDate={selectedDate} onDateChange={setSelectedDate} />
+      <DateToast triggerKey={toastKey} date={toastDate} />
       {renderTab()}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       <ArticleReader article={readingArticle} onClose={() => setReadingArticle(null)} />
