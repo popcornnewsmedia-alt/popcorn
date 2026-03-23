@@ -131,6 +131,55 @@
   }
 }
 
+/* ── Splash & Onboarding Animations ────────────────────── */
+@keyframes blob-breathe {
+  0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.55; }
+  33%       { transform: scale(1.12) translate(3%, -4%); opacity: 0.70; }
+  66%       { transform: scale(0.94) translate(-2%, 3%); opacity: 0.48; }
+}
+@keyframes blob-breathe-b {
+  0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.45; }
+  33%       { transform: scale(0.92) translate(-4%, 3%); opacity: 0.60; }
+  66%       { transform: scale(1.10) translate(4%, -3%); opacity: 0.38; }
+}
+@keyframes blob-breathe-c {
+  0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.30; }
+  50%       { transform: scale(1.08) translate(2%, 5%); opacity: 0.50; }
+}
+@keyframes bref-reveal {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes tagline-reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes dot-pulse {
+  0%, 80%, 100% { opacity: 0.20; transform: scaleY(0.6); }
+  40%           { opacity: 0.85; transform: scaleY(1.0); }
+}
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes step-in {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes step-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-28px); }
+}
+@keyframes check-pop {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.blob-a { animation: blob-breathe   6s ease-in-out infinite; }
+.blob-b { animation: blob-breathe-b 7s ease-in-out infinite; }
+.blob-c { animation: blob-breathe-c 9s ease-in-out infinite; }
+
 /* Base Prose Styles for Reader */
 .prose {
   @apply text-foreground/90 max-w-none;

@@ -3,6 +3,8 @@ import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
 import { ArticleCard } from "@/components/ArticleCard";
 import { ArticleReader } from "@/components/ArticleReader";
+import { SplashScreen } from "@/components/SplashScreen";
+import { SignUpFlow } from "@/components/SignUpFlow";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useIntersection } from "@/hooks/use-intersection";
 import { Loader2, AlertCircle, RefreshCw, Bookmark, User } from "lucide-react";
@@ -95,7 +97,7 @@ function SavedScreen({ onBrowse }: { onBrowse: () => void }) {
 }
 
 /* Profile empty state */
-function ProfileScreen() {
+function ProfileScreen({ onSignIn, userName }: { onSignIn: () => void; userName: string | null }) {
   return (
     <div className="relative h-[100dvh] w-full flex flex-col items-center justify-center px-8 text-center overflow-hidden">
       <GreenAtmosphere />
@@ -104,13 +106,19 @@ function ProfileScreen() {
         <div
           className="w-24 h-24 rounded-full flex items-center justify-center mb-2"
           style={{
-            background: 'rgba(255,255,255,0.45)',
+            background: userName ? '#000' : 'rgba(255,255,255,0.45)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             boxShadow: '0 8px 32px rgba(26,68,48,0.16)',
           }}
         >
-          <User className="w-9 h-9" style={{ color: '#0f2a1a', strokeWidth: 1.6 }} />
+          {userName ? (
+            <span className="font-['Manrope'] font-bold text-white" style={{ fontSize: '28px' }}>
+              {userName[0].toUpperCase()}
+            </span>
+          ) : (
+            <User className="w-9 h-9" style={{ color: '#0f2a1a', strokeWidth: 1.6 }} />
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
@@ -118,30 +126,38 @@ function ProfileScreen() {
             className="font-['Manrope'] font-bold tracking-tight"
             style={{ fontSize: '28px', lineHeight: 1.1, color: '#000' }}
           >
-            Your Profile
+            {userName ? `Hi, ${userName}.` : "Your Profile"}
           </h1>
           <p
             className="font-['Manrope'] italic leading-relaxed"
             style={{ fontSize: '16px', color: 'rgba(0,0,0,0.45)' }}
           >
-            Sign in to personalise your feed and keep your reading history in sync.
+            {userName
+              ? "Your feed is personalised and your reading history is syncing."
+              : "Sign in to personalise your feed and keep your reading history in sync."}
           </p>
         </div>
 
-        <button
-          className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
-          style={{ background: '#000000', color: '#ffffff' }}
-        >
-          Sign in
-        </button>
+        {!userName && (
+          <button
+            onClick={onSignIn}
+            className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+            style={{ background: '#000000', color: '#ffffff' }}
+          >
+            Sign in
+          </button>
+        )}
       </div>
     </div>
   );
 }
 
 export function FeedPage() {
+  const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState<Tab>("feed");
   const [readingArticle, setReadingArticle] = useState<NewsArticle | null>(null);
+  const [signUpOpen, setSignUpOpen] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch } =
     useInfiniteNewsFeed(undefined);
@@ -198,7 +214,7 @@ export function FeedPage() {
 
   const renderTab = () => {
     if (activeTab === "saved") return <SavedScreen onBrowse={() => setActiveTab("feed")} />;
-    if (activeTab === "profile") return <ProfileScreen />;
+    if (activeTab === "profile") return <ProfileScreen onSignIn={() => setSignUpOpen(true)} userName={userName} />;
 
     return (
       <div
@@ -228,10 +244,16 @@ export function FeedPage() {
 
   return (
     <div className="h-[100dvh] w-full relative">
+      {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
       <TopBar />
       {renderTab()}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       <ArticleReader article={readingArticle} onClose={() => setReadingArticle(null)} />
+      <SignUpFlow
+        isOpen={signUpOpen}
+        onClose={() => setSignUpOpen(false)}
+        onComplete={(name) => { setUserName(name); setSignUpOpen(false); }}
+      />
     </div>
   );
 }
