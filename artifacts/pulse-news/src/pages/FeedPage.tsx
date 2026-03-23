@@ -178,10 +178,10 @@ export function FeedPage() {
     return (
       <div className="relative h-screen w-full flex flex-col items-center justify-center gap-5 overflow-hidden">
         <GreenAtmosphere />
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#1a4430' }} />
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#000000' }} />
         <p
           className="font-['Inter'] font-semibold uppercase tracking-widest animate-pulse"
-          style={{ fontSize: '11px', color: 'rgba(26,68,48,0.50)' }}
+          style={{ fontSize: '11px', color: 'rgba(0,0,0,0.40)' }}
         >
           Curating your feed
         </p>
