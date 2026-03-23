@@ -27,7 +27,7 @@ export function TopBar() {
         className="font-['Inter'] font-medium"
         style={{ fontSize: '12px', color: '#ffffff', letterSpacing: '0.03em' }}
       >
-        {format(today, 'EEE d MMM').toUpperCase()}
+        {format(today, 'do MMMM').toUpperCase()}
       </span>
     </div>
   );
