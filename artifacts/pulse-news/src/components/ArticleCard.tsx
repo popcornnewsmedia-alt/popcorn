@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { format } from "date-fns";
 import { ChevronUp } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { ActionButtons } from "./ActionButtons";
+import { CommentSheet } from "./CommentSheet";
 
 interface ArticleCardProps {
   article: NewsArticle;
@@ -10,6 +12,7 @@ interface ArticleCardProps {
 
 export function ArticleCard({ article, onReadMore }: ArticleCardProps) {
   const hasImage = !!article.imageUrl;
+  const [commentsOpen, setCommentsOpen] = useState(false);
 
   return (
     <div
@@ -41,8 +44,10 @@ export function ArticleCard({ article, onReadMore }: ArticleCardProps) {
 
       {/* Vertical action buttons — right side */}
       <div className="absolute right-4 bottom-[110px] z-30" onClick={(e) => e.stopPropagation()}>
-        <ActionButtons article={article} />
+        <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} />
       </div>
+
+      <CommentSheet isOpen={commentsOpen} articleId={article.id} onClose={() => setCommentsOpen(false)} />
 
       {/* Spacer */}
       <div className="flex-1 relative z-20" />

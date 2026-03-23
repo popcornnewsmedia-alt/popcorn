@@ -5,9 +5,10 @@ import type { NewsArticle } from "@workspace/api-client-react";
 
 interface ActionButtonsProps {
   article: NewsArticle;
+  onOpenComments: () => void;
 }
 
-export function ActionButtons({ article }: ActionButtonsProps) {
+export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
   const [localLiked, setLocalLiked] = useState(false);
   const { mutate: likeMutation } = useLikeArticle();
   const { mutate: bookmarkMutation } = useBookmarkArticle();
@@ -31,7 +32,7 @@ export function ActionButtons({ article }: ActionButtonsProps) {
     }
   };
 
-  const handleComment = (e: React.MouseEvent) => { e.stopPropagation(); };
+  const handleComment = (e: React.MouseEvent) => { e.stopPropagation(); onOpenComments(); };
 
   const isLiked = localLiked;
   const isSaved = article.isBookmarked;
