@@ -305,8 +305,8 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
                         onClick={(e) => toggleReplies(e, c.id)}
                         className="flex items-center gap-1.5 mt-2 transition-opacity hover:opacity-70"
                       >
-                        <CornerDownRight className="w-3.5 h-3.5" style={{ color: '#1b7a4a' }} />
-                        <span className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: '#1b7a4a' }}>
+                        <CornerDownRight className="w-3.5 h-3.5" style={{ color: '#000000' }} />
+                        <span className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: '#000000' }}>
                           {repliesOpen ? 'Hide' : `View`} {c.replies.length} {c.replies.length === 1 ? 'reply' : 'replies'}
                         </span>
                       </button>
