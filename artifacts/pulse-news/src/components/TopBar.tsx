@@ -25,7 +25,7 @@ export function TopBar() {
       {/* Date */}
       <span
         className="font-['Inter'] font-medium"
-        style={{ fontSize: '12px', color: 'rgba(255,255,255,0.45)', letterSpacing: '0.03em' }}
+        style={{ fontSize: '12px', color: '#ffffff', letterSpacing: '0.03em' }}
       >
         {format(today, 'EEE d MMM').toUpperCase()}
       </span>
