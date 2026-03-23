@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { BottomNav } from "@/components/BottomNav";
+import { TopBar } from "@/components/TopBar";
 import { ArticleCard } from "@/components/ArticleCard";
 import { ArticleReader } from "@/components/ArticleReader";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
@@ -229,6 +230,7 @@ export function FeedPage() {
 
   return (
     <div className="h-[100dvh] w-full relative">
+      <TopBar />
       {renderTab()}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       <ArticleReader article={readingArticle} onClose={() => setReadingArticle(null)} />
