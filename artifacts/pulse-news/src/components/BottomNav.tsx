@@ -22,8 +22,8 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           background: 'rgba(236, 243, 239, 0.88)',
           backdropFilter: 'blur(32px)',
           WebkitBackdropFilter: 'blur(32px)',
-          border: '1px solid rgba(255,255,255,0.70)',
-          boxShadow: '0 8px 40px rgba(26,68,48,0.18), 0 2px 8px rgba(26,68,48,0.10), inset 0 1px 0 rgba(255,255,255,0.90)',
+          border: '1px solid rgba(26,68,48,0.14)',
+          boxShadow: '0 8px 40px rgba(26,68,48,0.18), 0 2px 8px rgba(26,68,48,0.10)',
         }}
       >
         {tabs.map(({ id, label, Icon }) => {
