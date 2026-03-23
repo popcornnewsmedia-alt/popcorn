@@ -15,15 +15,17 @@ const tabs: { id: Tab; label: string; Icon: typeof Sparkles }[] = [
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <div className="fixed bottom-6 inset-x-0 z-40 flex justify-center pointer-events-none pb-safe">
+    <div className="fixed bottom-5 inset-x-0 z-40 flex justify-center pointer-events-none">
       <div
-        className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full"
+        className="pointer-events-auto flex items-center rounded-full"
         style={{
-          background: 'rgba(236, 243, 239, 0.88)',
-          backdropFilter: 'blur(32px)',
-          WebkitBackdropFilter: 'blur(32px)',
-          border: '1px solid rgba(26,68,48,0.14)',
-          boxShadow: '0 8px 40px rgba(26,68,48,0.18), 0 2px 8px rgba(26,68,48,0.10)',
+          background: 'rgba(236, 243, 239, 0.92)',
+          backdropFilter: 'blur(40px)',
+          WebkitBackdropFilter: 'blur(40px)',
+          border: '1px solid rgba(26,68,48,0.12)',
+          boxShadow: '0 4px 24px rgba(26,68,48,0.14)',
+          padding: '5px',
+          gap: '2px',
         }}
       >
         {tabs.map(({ id, label, Icon }) => {
@@ -32,24 +34,35 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             <button
               key={id}
               onClick={() => onTabChange(id)}
-              className="relative flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-200"
-              style={active ? {
-                background: 'rgba(26, 68, 48, 0.10)',
-              } : {}}
+              className="flex flex-col items-center justify-center transition-all duration-200 rounded-full"
+              style={{
+                width: '80px',
+                paddingTop: '8px',
+                paddingBottom: '8px',
+                gap: '3px',
+                background: active ? 'rgba(15,42,26,0.09)' : 'transparent',
+              }}
             >
               <Icon
-                className="w-4 h-4 transition-all duration-200"
-                style={{ color: active ? '#0f2a1a' : 'rgba(0,0,0,0.35)' }}
-                strokeWidth={active ? 2.2 : 1.6}
+                className="transition-all duration-200"
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  color: active ? '#0f2a1a' : 'rgba(15,42,26,0.30)',
+                  strokeWidth: active ? 2.1 : 1.6,
+                }}
               />
-              {active && (
-                <span
-                  className="text-xs font-semibold font-['Inter'] tracking-wide"
-                  style={{ color: '#0f2a1a' }}
-                >
-                  {label}
-                </span>
-              )}
+              <span
+                className="font-['Inter'] tracking-wide transition-all duration-200"
+                style={{
+                  fontSize: '10px',
+                  fontWeight: active ? 700 : 500,
+                  color: active ? '#0f2a1a' : 'rgba(15,42,26,0.30)',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                {label}
+              </span>
             </button>
           );
         })}

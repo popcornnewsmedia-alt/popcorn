@@ -25,6 +25,121 @@ const FALLBACK_ARTICLE: NewsArticle = {
   tag: "BREAKING",
 };
 
+/* Shared atmospheric background for non-feed screens */
+function GreenAtmosphere() {
+  return (
+    <div
+      className="absolute inset-0 -z-0"
+      style={{ background: '#ecf3ef' }}
+    >
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+            radial-gradient(circle at 15% 20%, rgba(26,68,48,0.32) 0%, transparent 48%),
+            radial-gradient(circle at 82% 75%, rgba(44,82,62,0.26) 0%, transparent 48%),
+            radial-gradient(circle at 50% 50%, rgba(26,68,48,0.10) 0%, transparent 65%)
+          `,
+          filter: 'blur(48px)',
+        }}
+      />
+    </div>
+  );
+}
+
+/* Saved empty state */
+function SavedScreen({ onBrowse }: { onBrowse: () => void }) {
+  return (
+    <div className="relative h-[100dvh] w-full flex flex-col items-center justify-center px-8 text-center overflow-hidden">
+      <GreenAtmosphere />
+      <div className="relative z-10 flex flex-col items-center gap-5 max-w-xs">
+        {/* Glass orb */}
+        <div
+          className="w-24 h-24 rounded-full flex items-center justify-center mb-2"
+          style={{
+            background: 'rgba(255,255,255,0.45)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.70)',
+            boxShadow: '0 8px 32px rgba(26,68,48,0.16)',
+          }}
+        >
+          <Bookmark className="w-9 h-9" style={{ color: '#0f2a1a', strokeWidth: 1.6 }} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h1
+            className="font-['Manrope'] font-bold tracking-tight text-[#0f2a1a]"
+            style={{ fontSize: '28px', lineHeight: 1.1 }}
+          >
+            Nothing saved yet
+          </h1>
+          <p
+            className="font-['Manrope'] italic text-[#1a4430]/55 leading-relaxed"
+            style={{ fontSize: '16px' }}
+          >
+            Bookmark articles as you scroll to build your reading list.
+          </p>
+        </div>
+
+        <button
+          onClick={onBrowse}
+          className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+          style={{ background: '#0f2a1a', color: '#ecf3ef' }}
+        >
+          Browse the feed
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* Profile empty state */
+function ProfileScreen() {
+  return (
+    <div className="relative h-[100dvh] w-full flex flex-col items-center justify-center px-8 text-center overflow-hidden">
+      <GreenAtmosphere />
+      <div className="relative z-10 flex flex-col items-center gap-5 max-w-xs">
+        {/* Glass orb */}
+        <div
+          className="w-24 h-24 rounded-full flex items-center justify-center mb-2"
+          style={{
+            background: 'rgba(255,255,255,0.45)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.70)',
+            boxShadow: '0 8px 32px rgba(26,68,48,0.16)',
+          }}
+        >
+          <User className="w-9 h-9" style={{ color: '#0f2a1a', strokeWidth: 1.6 }} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h1
+            className="font-['Manrope'] font-bold tracking-tight text-[#0f2a1a]"
+            style={{ fontSize: '28px', lineHeight: 1.1 }}
+          >
+            Your Profile
+          </h1>
+          <p
+            className="font-['Manrope'] italic text-[#1a4430]/55 leading-relaxed"
+            style={{ fontSize: '16px' }}
+          >
+            Sign in to personalise your feed and keep your reading history in sync.
+          </p>
+        </div>
+
+        <button
+          className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+          style={{ background: '#0f2a1a', color: '#ecf3ef' }}
+        >
+          Sign in
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function FeedPage() {
   const [activeTab, setActiveTab] = useState<Tab>("feed");
   const [readingArticle, setReadingArticle] = useState<NewsArticle | null>(null);
@@ -43,80 +158,59 @@ export function FeedPage() {
     return () => { document.body.style.overflow = ""; };
   }, [readingArticle]);
 
-  /* ── Loading ─────────────────────────────────────────── */
+  /* Loading */
   if (status === "pending") {
     return (
-      <div className="h-screen w-full bg-background flex flex-col items-center justify-center gap-6">
-        <Loader2 className="w-10 h-10 text-primary animate-spin" />
-        <p className="text-primary/60 font-display text-xl font-medium tracking-widest uppercase animate-pulse">
-          Curating your feed...
+      <div className="relative h-screen w-full flex flex-col items-center justify-center gap-5 overflow-hidden">
+        <GreenAtmosphere />
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#1a4430' }} />
+        <p
+          className="font-['Inter'] font-semibold uppercase tracking-widest animate-pulse"
+          style={{ fontSize: '11px', color: 'rgba(26,68,48,0.50)' }}
+        >
+          Curating your feed
         </p>
       </div>
     );
   }
 
-  /* ── Error ───────────────────────────────────────────── */
+  /* Error */
   if (status === "error") {
     return (
-      <div className="h-[100dvh] w-full relative overflow-hidden flex flex-col">
+      <div className="relative h-[100dvh] w-full flex flex-col items-center justify-center p-8 text-center overflow-hidden">
+        <GreenAtmosphere />
+        <AlertCircle className="w-10 h-10 text-red-500 mb-6" />
+        <h2 className="font-['Manrope'] font-bold text-2xl text-[#0f2a1a] mb-3">Connection lost</h2>
+        <p className="font-['Inter'] text-[#1a4430]/55 mb-8 max-w-xs">We couldn't reach the Pulse network. Check your connection and try again.</p>
+        <button
+          onClick={() => refetch()}
+          className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm"
+          style={{ background: '#0f2a1a', color: '#ecf3ef' }}
+        >
+          <RefreshCw className="w-4 h-4" />
+          Try Again
+        </button>
         <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-8 text-center">
-          <div className="w-20 h-20 rounded-3xl bg-red-500/10 flex items-center justify-center mb-8 border border-red-500/20">
-            <AlertCircle className="w-10 h-10 text-red-500" />
-          </div>
-          <h2 className="text-3xl font-display font-bold text-foreground mb-4">Connection Lost</h2>
-          <p className="text-muted-foreground text-lg max-w-md mb-8">
-            We couldn't connect to the Pulse network. Please check your connection and try again.
-          </p>
-          <button
-            onClick={() => refetch()}
-            className="flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
-          >
-            <RefreshCw className="w-5 h-5" />
-            Try Again
-          </button>
-        </div>
       </div>
     );
   }
 
   const articles = data?.pages.flatMap((page) => page.articles) || [];
 
-  /* ── Placeholder screens ─────────────────────────────── */
   const renderTab = () => {
-    if (activeTab === "saved") {
-      return (
-        <div className="h-[100dvh] w-full flex flex-col items-center justify-center gap-4 text-center px-8">
-          <div className="w-16 h-16 rounded-3xl flex items-center justify-center mb-2" style={{ background: 'rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.18)' }}>
-            <Bookmark className="w-7 h-7" style={{ color: '#0f2a1a' }} />
-          </div>
-          <h2 className="text-2xl font-display font-bold text-[#191c1b]">Nothing saved yet</h2>
-          <p className="text-[#474747]/60 font-['Inter']">Bookmark articles from your feed to read them later.</p>
-        </div>
-      );
-    }
-    if (activeTab === "profile") {
-      return (
-        <div className="h-[100dvh] w-full flex flex-col items-center justify-center gap-4 text-center px-8">
-          <div className="w-16 h-16 rounded-3xl flex items-center justify-center mb-2" style={{ background: 'rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.18)' }}>
-            <User className="w-7 h-7" style={{ color: '#0f2a1a' }} />
-          </div>
-          <h2 className="text-2xl font-display font-bold text-[#191c1b]">Your Profile</h2>
-          <p className="text-[#474747]/60 font-['Inter']">Sign in to personalise your feed and sync your activity.</p>
-        </div>
-      );
-    }
+    if (activeTab === "saved") return <SavedScreen onBrowse={() => setActiveTab("feed")} />;
+    if (activeTab === "profile") return <ProfileScreen />;
 
-    /* ── Feed tab ──────────────────────────────────────── */
     return (
       <div
         className="h-[100dvh] w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide overscroll-y-none"
         style={{ scrollPaddingBottom: "64px" }}
       >
         {articles.length === 0 ? (
-          <div className="h-[100dvh] w-full flex flex-col items-center justify-center snap-start snap-always text-center px-6">
-            <h2 className="text-3xl font-display font-bold text-foreground mb-4">You're all caught up.</h2>
-            <p className="text-muted-foreground text-lg">No more stories right now.</p>
+          <div className="relative h-[100dvh] w-full flex flex-col items-center justify-center snap-start snap-always text-center px-6 overflow-hidden">
+            <GreenAtmosphere />
+            <h2 className="font-['Manrope'] font-bold text-2xl text-[#0f2a1a] mb-2">You're all caught up</h2>
+            <p className="font-['Manrope'] italic text-[#1a4430]/55">No more stories right now — check back soon.</p>
           </div>
         ) : (
           articles.map((article) => (
@@ -135,13 +229,8 @@ export function FeedPage() {
 
   return (
     <div className="h-[100dvh] w-full relative">
-      {/* Green atmospheric background for non-feed tabs */}
-      {activeTab !== "feed" && <div className="absolute inset-0 ink-diffusion-bg" style={{ background: '#ecf3ef' }} />}
-
       {renderTab()}
-
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
-
       <ArticleReader article={readingArticle} onClose={() => setReadingArticle(null)} />
     </div>
   );
