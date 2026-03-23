@@ -61,7 +61,6 @@ function SavedScreen({ onBrowse }: { onBrowse: () => void }) {
             background: 'rgba(255,255,255,0.45)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.70)',
             boxShadow: '0 8px 32px rgba(26,68,48,0.16)',
           }}
         >
@@ -108,7 +107,6 @@ function ProfileScreen() {
             background: 'rgba(255,255,255,0.45)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.70)',
             boxShadow: '0 8px 32px rgba(26,68,48,0.16)',
           }}
         >
