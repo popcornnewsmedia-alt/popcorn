@@ -32,23 +32,11 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             onClick={() => onTabChange(id)}
             className="flex-1 flex flex-col items-center justify-center gap-1 py-3 relative transition-all duration-150"
           >
-            {/* Active indicator line */}
-            {active && (
-              <span
-                className="absolute top-0 left-1/2 -translate-x-1/2 rounded-full"
-                style={{
-                  width: '24px',
-                  height: '2px',
-                  background: '#0f2a1a',
-                }}
-              />
-            )}
-
             <Icon
               style={{
                 width: '20px',
                 height: '20px',
-                color: active ? '#0f2a1a' : 'rgba(15,42,26,0.28)',
+                color: active ? '#000000' : 'rgba(0,0,0,0.28)',
                 strokeWidth: active ? 2.1 : 1.6,
                 transition: 'all 0.15s',
               }}
@@ -59,7 +47,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: active ? 700 : 500,
                 letterSpacing: '0.02em',
-                color: active ? '#0f2a1a' : 'rgba(15,42,26,0.28)',
+                color: active ? '#000000' : 'rgba(0,0,0,0.28)',
                 transition: 'all 0.15s',
               }}
             >
