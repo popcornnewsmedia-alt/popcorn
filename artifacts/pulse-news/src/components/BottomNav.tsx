@@ -7,10 +7,10 @@ interface BottomNavProps {
   onTabChange: (tab: Tab) => void;
 }
 
-const tabs: { id: Tab; label: string; Icon: typeof House }[] = [
-  { id: "feed",    label: "Home",    Icon: House    },
-  { id: "saved",   label: "Saved",   Icon: Bookmark },
-  { id: "profile", label: "Profile", Icon: User     },
+const tabs: { id: Tab; Icon: typeof House }[] = [
+  { id: "feed",    Icon: House    },
+  { id: "saved",   Icon: Bookmark },
+  { id: "profile", Icon: User     },
 ];
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
@@ -24,37 +24,24 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
         borderTop: '1px solid rgba(26,68,48,0.12)',
       }}
     >
-      {tabs.map(({ id, label, Icon }) => {
+      {tabs.map(({ id, Icon }) => {
         const active = activeTab === id;
         return (
           <button
             key={id}
             onClick={() => onTabChange(id)}
-            className="flex-1 flex flex-col items-center justify-center gap-1.5 py-4 transition-all duration-150"
+            className="flex-1 flex items-center justify-center py-5 transition-all duration-150"
           >
             <Icon
               style={{
-                width: '22px',
-                height: '22px',
+                width: '24px',
+                height: '24px',
                 color: '#000000',
-                opacity: active ? 1 : 0.38,
-                strokeWidth: active ? 2.2 : 1.5,
+                fill: active ? '#000000' : 'none',
+                strokeWidth: active ? 1.8 : 1.6,
                 transition: 'all 0.15s',
               }}
             />
-            <span
-              style={{
-                fontSize: '11px',
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: active ? 700 : 400,
-                letterSpacing: '0.01em',
-                color: '#000000',
-                opacity: active ? 1 : 0.38,
-                transition: 'all 0.15s',
-              }}
-            >
-              {label}
-            </span>
           </button>
         );
       })}
