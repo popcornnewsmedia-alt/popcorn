@@ -8,59 +8,49 @@ interface BottomNavProps {
 }
 
 const tabs: { id: Tab; label: string; Icon: typeof Sparkles }[] = [
-  { id: "feed",    label: "For You",  Icon: Sparkles  },
-  { id: "saved",   label: "Saved",    Icon: Bookmark  },
-  { id: "profile", label: "Profile",  Icon: User      },
+  { id: "feed",    label: "For You",  Icon: Sparkles },
+  { id: "saved",   label: "Saved",    Icon: Bookmark },
+  { id: "profile", label: "Profile",  Icon: User     },
 ];
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <div
-      className="fixed bottom-0 inset-x-0 z-40 pb-safe"
-      style={{
-        background: 'rgba(236, 243, 239, 0.72)',
-        backdropFilter: 'blur(32px)',
-        WebkitBackdropFilter: 'blur(32px)',
-        borderTop: '1px solid rgba(255,255,255,0.55)',
-        boxShadow: '0 -4px 32px rgba(26,68,48,0.10)',
-      }}
-    >
-      {/* Subtle green atmospheric bloom behind the bar */}
+    <div className="fixed bottom-6 inset-x-0 z-40 flex justify-center pointer-events-none pb-safe">
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full"
         style={{
-          background: 'radial-gradient(ellipse at 50% 120%, rgba(44,82,62,0.18) 0%, transparent 70%)',
+          background: 'rgba(10, 22, 14, 0.82)',
+          backdropFilter: 'blur(28px)',
+          WebkitBackdropFilter: 'blur(28px)',
+          border: '1px solid rgba(86, 185, 130, 0.18)',
+          boxShadow: '0 8px 40px rgba(10,22,14,0.45), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08)',
         }}
-      />
-
-      <div className="relative flex items-center justify-around px-6 py-2">
+      >
         {tabs.map(({ id, label, Icon }) => {
           const active = activeTab === id;
           return (
             <button
               key={id}
               onClick={() => onTabChange(id)}
-              className="flex flex-col items-center gap-1 py-1 px-5 transition-all"
+              className="relative flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-200"
+              style={active ? {
+                background: 'rgba(86, 185, 130, 0.15)',
+                boxShadow: '0 0 16px rgba(86,185,130,0.20)',
+              } : {}}
             >
-              <div
-                className="w-9 h-9 rounded-2xl flex items-center justify-center transition-all"
-                style={active ? {
-                  background: 'rgba(26, 68, 48, 0.12)',
-                  border: '1px solid rgba(44, 130, 80, 0.22)',
-                } : {}}
-              >
-                <Icon
-                  className="w-5 h-5 transition-all"
-                  style={{ color: active ? '#1a4430' : 'rgba(71,71,71,0.45)' }}
-                  strokeWidth={active ? 2.2 : 1.7}
-                />
-              </div>
-              <span
-                className="text-[10px] font-semibold tracking-wide font-['Inter'] transition-all"
-                style={{ color: active ? '#1a4430' : 'rgba(71,71,71,0.45)' }}
-              >
-                {label}
-              </span>
+              <Icon
+                className="w-4 h-4 transition-all duration-200"
+                style={{ color: active ? '#86efac' : 'rgba(255,255,255,0.38)' }}
+                strokeWidth={active ? 2.2 : 1.6}
+              />
+              {active && (
+                <span
+                  className="text-xs font-semibold font-['Inter'] tracking-wide"
+                  style={{ color: '#86efac' }}
+                >
+                  {label}
+                </span>
+              )}
             </button>
           );
         })}

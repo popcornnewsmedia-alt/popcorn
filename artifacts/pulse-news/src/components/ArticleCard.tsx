@@ -45,7 +45,7 @@ export function ArticleCard({ article, onReadMore }: ArticleCardProps) {
       <div className="flex-1 relative z-20" />
 
       {/* Content — sits directly on the gradient, no box */}
-      <div className="relative z-20 px-5 pb-[84px] sm:px-7">
+      <div className="relative z-20 px-5 pb-[100px] sm:px-7">
 
         {/* Tag + source row */}
         <div className="flex items-center gap-3 mb-3">
