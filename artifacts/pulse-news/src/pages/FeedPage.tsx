@@ -88,7 +88,7 @@ export function FeedPage() {
       return (
         <div className="h-[100dvh] w-full flex flex-col items-center justify-center gap-4 text-center px-8">
           <div className="w-16 h-16 rounded-3xl flex items-center justify-center mb-2" style={{ background: 'rgba(26,68,48,0.10)', border: '1px solid rgba(44,130,80,0.20)' }}>
-            <Bookmark className="w-7 h-7" style={{ color: '#1a4430' }} />
+            <Bookmark className="w-7 h-7" style={{ color: '#0f2a1a' }} />
           </div>
           <h2 className="text-2xl font-display font-bold text-[#191c1b]">Nothing saved yet</h2>
           <p className="text-[#474747]/60 font-['Inter']">Bookmark articles from your feed to read them later.</p>
@@ -99,7 +99,7 @@ export function FeedPage() {
       return (
         <div className="h-[100dvh] w-full flex flex-col items-center justify-center gap-4 text-center px-8">
           <div className="w-16 h-16 rounded-3xl flex items-center justify-center mb-2" style={{ background: 'rgba(26,68,48,0.10)', border: '1px solid rgba(44,130,80,0.20)' }}>
-            <User className="w-7 h-7" style={{ color: '#1a4430' }} />
+            <User className="w-7 h-7" style={{ color: '#0f2a1a' }} />
           </div>
           <h2 className="text-2xl font-display font-bold text-[#191c1b]">Your Profile</h2>
           <p className="text-[#474747]/60 font-['Inter']">Sign in to personalise your feed and sync your activity.</p>

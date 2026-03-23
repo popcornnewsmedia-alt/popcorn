@@ -39,7 +39,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             >
               <Icon
                 className="w-4 h-4 transition-all duration-200"
-                style={{ color: active ? '#0f2a1a' : 'rgba(15,42,26,0.35)' }}
+                style={{ color: active ? '#0f2a1a' : 'rgba(0,0,0,0.35)' }}
                 strokeWidth={active ? 2.2 : 1.6}
               />
               {active && (
