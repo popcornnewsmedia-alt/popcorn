@@ -7,22 +7,6 @@ interface ActionButtonsProps {
   article: NewsArticle;
 }
 
-const glassBtn = {
-  background: 'rgba(210, 238, 220, 0.78)',
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: '1px solid rgba(26,68,48,0.16)',
-  boxShadow: '0 4px 16px rgba(26,68,48,0.14)',
-};
-
-const glassBtnActive = {
-  background: 'rgba(190, 232, 208, 0.92)',
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: '1px solid rgba(26,68,48,0.30)',
-  boxShadow: '0 4px 16px rgba(26,68,48,0.22)',
-};
-
 export function ActionButtons({ article }: ActionButtonsProps) {
   const [localLiked, setLocalLiked] = useState(false);
   const { mutate: likeMutation } = useLikeArticle();
@@ -53,39 +37,39 @@ export function ActionButtons({ article }: ActionButtonsProps) {
   const isSaved = article.isBookmarked;
   const likeCount = article.likes + (localLiked ? 1 : 0);
 
+  const iconStyle = { filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.55))' };
+
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-5">
 
       {/* Like */}
       <button onClick={handleLike} className="flex flex-col items-center gap-1 transition-transform active:scale-90">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={isLiked ? glassBtnActive : glassBtn}>
-          <Heart className="w-5 h-5 transition-all" style={{ color: isLiked ? '#e11d48' : '#0f2a1a', fill: isLiked ? '#e11d48' : 'none' }} />
-        </div>
-        <span className="text-[10px] font-semibold font-['Inter'] text-white/70">
+        <Heart
+          className="w-7 h-7 transition-all"
+          style={{ color: isLiked ? '#e11d48' : 'white', fill: isLiked ? '#e11d48' : 'none', ...iconStyle }}
+        />
+        <span className="text-[11px] font-semibold font-['Inter'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
           {likeCount >= 1000 ? `${(likeCount / 1000).toFixed(1)}k` : likeCount}
         </span>
       </button>
 
       {/* Comment */}
       <button onClick={handleComment} className="flex flex-col items-center gap-1 transition-transform active:scale-90">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={glassBtn}>
-          <MessageCircle className="w-5 h-5" style={{ color: '#0f2a1a' }} />
-        </div>
-        <span className="text-[10px] font-semibold font-['Inter'] text-white/70">0</span>
+        <MessageCircle className="w-7 h-7" style={{ color: 'white', ...iconStyle }} />
+        <span className="text-[11px] font-semibold font-['Inter'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>0</span>
       </button>
 
       {/* Save */}
       <button onClick={handleBookmark} className="flex flex-col items-center gap-1 transition-transform active:scale-90">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={isSaved ? glassBtnActive : glassBtn}>
-          <Bookmark className="w-5 h-5 transition-all" style={{ color: '#0f2a1a', fill: isSaved ? '#0f2a1a' : 'none' }} />
-        </div>
+        <Bookmark
+          className="w-7 h-7 transition-all"
+          style={{ color: 'white', fill: isSaved ? 'white' : 'none', ...iconStyle }}
+        />
       </button>
 
       {/* Share */}
       <button onClick={handleShare} className="flex flex-col items-center gap-1 transition-transform active:scale-90">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={glassBtn}>
-          <Share2 className="w-5 h-5" style={{ color: '#0f2a1a' }} />
-        </div>
+        <Share2 className="w-7 h-7" style={{ color: 'white', ...iconStyle }} />
       </button>
 
     </div>

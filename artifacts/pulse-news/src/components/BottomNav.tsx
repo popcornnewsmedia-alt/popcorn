@@ -19,7 +19,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       <div
         className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full"
         style={{
-          background: 'rgba(210, 238, 220, 0.88)',
+          background: 'rgba(236, 243, 239, 0.88)',
           backdropFilter: 'blur(32px)',
           WebkitBackdropFilter: 'blur(32px)',
           border: '1px solid rgba(26,68,48,0.14)',
