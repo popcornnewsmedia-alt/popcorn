@@ -19,11 +19,11 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       <div
         className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full"
         style={{
-          background: 'rgba(10, 22, 14, 0.82)',
-          backdropFilter: 'blur(28px)',
-          WebkitBackdropFilter: 'blur(28px)',
-          border: '1px solid rgba(86, 185, 130, 0.18)',
-          boxShadow: '0 8px 40px rgba(10,22,14,0.45), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08)',
+          background: 'rgba(236, 243, 239, 0.88)',
+          backdropFilter: 'blur(32px)',
+          WebkitBackdropFilter: 'blur(32px)',
+          border: '1px solid rgba(255,255,255,0.70)',
+          boxShadow: '0 8px 40px rgba(26,68,48,0.18), 0 2px 8px rgba(26,68,48,0.10), inset 0 1px 0 rgba(255,255,255,0.90)',
         }}
       >
         {tabs.map(({ id, label, Icon }) => {
@@ -34,19 +34,18 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
               onClick={() => onTabChange(id)}
               className="relative flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-200"
               style={active ? {
-                background: 'rgba(86, 185, 130, 0.15)',
-                boxShadow: '0 0 16px rgba(86,185,130,0.20)',
+                background: 'rgba(26, 68, 48, 0.10)',
               } : {}}
             >
               <Icon
                 className="w-4 h-4 transition-all duration-200"
-                style={{ color: active ? '#86efac' : 'rgba(255,255,255,0.38)' }}
+                style={{ color: active ? '#0f2a1a' : 'rgba(15,42,26,0.35)' }}
                 strokeWidth={active ? 2.2 : 1.6}
               />
               {active && (
                 <span
                   className="text-xs font-semibold font-['Inter'] tracking-wide"
-                  style={{ color: '#86efac' }}
+                  style={{ color: '#0f2a1a' }}
                 >
                   {label}
                 </span>
