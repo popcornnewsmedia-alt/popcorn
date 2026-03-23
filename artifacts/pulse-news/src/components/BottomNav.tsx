@@ -1,4 +1,4 @@
-import { Newspaper, Bookmark, User } from "lucide-react";
+import { House, Bookmark, User } from "lucide-react";
 
 type Tab = "feed" | "saved" | "profile";
 
@@ -7,10 +7,10 @@ interface BottomNavProps {
   onTabChange: (tab: Tab) => void;
 }
 
-const tabs: { id: Tab; label: string; Icon: typeof Newspaper }[] = [
-  { id: "feed",    label: "For You",  Icon: Newspaper },
-  { id: "saved",   label: "Saved",    Icon: Bookmark  },
-  { id: "profile", label: "Profile",  Icon: User      },
+const tabs: { id: Tab; label: string; Icon: typeof House }[] = [
+  { id: "feed",    label: "Home",    Icon: House    },
+  { id: "saved",   label: "Saved",   Icon: Bookmark },
+  { id: "profile", label: "Profile", Icon: User     },
 ];
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
@@ -24,23 +24,21 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
         borderTop: '1px solid rgba(26,68,48,0.12)',
       }}
     >
-      {tabs.map(({ id, label, Icon }, i) => {
+      {tabs.map(({ id, label, Icon }) => {
         const active = activeTab === id;
         return (
           <button
             key={id}
             onClick={() => onTabChange(id)}
-            className="flex-1 flex flex-col items-center justify-center gap-1.5 py-4 relative transition-all duration-150"
-            style={{
-              borderRight: i < tabs.length - 1 ? '1px solid rgba(0,0,0,0.07)' : 'none',
-            }}
+            className="flex-1 flex flex-col items-center justify-center gap-1.5 py-4 transition-all duration-150"
           >
             <Icon
               style={{
                 width: '22px',
                 height: '22px',
-                color: active ? '#000000' : 'rgba(0,0,0,0.28)',
-                strokeWidth: active ? 2.0 : 1.5,
+                color: '#000000',
+                opacity: active ? 1 : 0.38,
+                strokeWidth: active ? 2.2 : 1.5,
                 transition: 'all 0.15s',
               }}
             />
@@ -48,9 +46,10 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
               style={{
                 fontSize: '11px',
                 fontFamily: 'Inter, sans-serif',
-                fontWeight: active ? 700 : 500,
+                fontWeight: active ? 700 : 400,
                 letterSpacing: '0.01em',
-                color: active ? '#000000' : 'rgba(0,0,0,0.28)',
+                color: '#000000',
+                opacity: active ? 1 : 0.38,
                 transition: 'all 0.15s',
               }}
             >
