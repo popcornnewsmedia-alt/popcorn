@@ -17,7 +17,7 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
   const goForward = () => { if (!isAtToday) onDateChange(addDays(selectedDate, 1)); };
 
   const barStyle = {
-    background: 'rgba(189, 208, 199, 0.96)',
+    background: 'rgba(236, 243, 239, 0.96)',
     backdropFilter: 'blur(32px)',
     WebkitBackdropFilter: 'blur(32px)',
   };

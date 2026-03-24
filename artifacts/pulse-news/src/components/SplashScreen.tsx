@@ -18,7 +18,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden"
       style={{
-        background: '#bdd0c7',
+        background: '#ecf3ef',
         opacity: phase === "fading" ? 0 : 1,
         transition: 'opacity 0.6s ease-out',
         pointerEvents: phase === "fading" ? 'none' : 'auto',
@@ -31,8 +31,8 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
           style={{
             width: '420px', height: '420px',
             top: '-80px', left: '-100px',
-            background: 'radial-gradient(circle, rgba(50,85,68,0.72) 0%, transparent 70%)',
-            filter: 'blur(60px)',
+            background: 'radial-gradient(circle, rgba(26,68,48,0.55) 0%, transparent 70%)',
+            filter: 'blur(56px)',
           }}
         />
         <div
@@ -40,8 +40,8 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
           style={{
             width: '380px', height: '380px',
             bottom: '-60px', right: '-80px',
-            background: 'radial-gradient(circle, rgba(58,95,76,0.60) 0%, transparent 70%)',
-            filter: 'blur(56px)',
+            background: 'radial-gradient(circle, rgba(44,82,62,0.48) 0%, transparent 70%)',
+            filter: 'blur(52px)',
           }}
         />
         <div
@@ -49,8 +49,8 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
           style={{
             width: '280px', height: '280px',
             top: '40%', left: '55%',
-            background: 'radial-gradient(circle, rgba(155,195,175,0.35) 0%, transparent 70%)',
-            filter: 'blur(52px)',
+            background: 'radial-gradient(circle, rgba(82,183,136,0.30) 0%, transparent 70%)',
+            filter: 'blur(48px)',
           }}
         />
       </div>
