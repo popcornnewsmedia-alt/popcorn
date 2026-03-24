@@ -234,6 +234,9 @@ export function FeedPage() {
 
   const allArticles = data?.pages.flatMap((page) => page.articles) ?? [];
   const savedArticles = allArticles.filter((a) => a.isBookmarked);
+  const liveReadingArticle = readingArticle
+    ? (allArticles.find((a) => a.id === readingArticle.id) ?? readingArticle)
+    : null;
 
   type FeedItem =
     | { kind: "article"; article: NewsArticle }
@@ -375,12 +378,12 @@ export function FeedPage() {
       {renderTab()}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       <ArticleReader
-        article={readingArticle}
+        article={liveReadingArticle}
         onClose={() => setReadingArticle(null)}
-        isRead={readingArticle ? readIds.has(readingArticle.id) : false}
-        onMarkRead={() => readingArticle && setReadIds(prev => {
+        isRead={liveReadingArticle ? readIds.has(liveReadingArticle.id) : false}
+        onMarkRead={() => liveReadingArticle && setReadIds(prev => {
           const next = new Set(prev);
-          next.has(readingArticle.id) ? next.delete(readingArticle.id) : next.add(readingArticle.id);
+          next.has(liveReadingArticle.id) ? next.delete(liveReadingArticle.id) : next.add(liveReadingArticle.id);
           return next;
         })}
       />
