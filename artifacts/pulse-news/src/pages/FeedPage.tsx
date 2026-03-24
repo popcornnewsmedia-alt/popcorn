@@ -270,6 +270,10 @@ export function FeedPage() {
 
   const [dayProgress, setDayProgress] = useState(0);
 
+  // Keep a stable ref to allArticles so callbacks don't need to change reference
+  const allArticlesRef = useRef(allArticles);
+  useEffect(() => { allArticlesRef.current = allArticles; }, [allArticles]);
+
   const handleItemEnter = useCallback((date: Date) => {
     setSelectedDate(startOfDay(date));
     setDayProgress(0); // reset bar when a day-divider scrolls in
@@ -278,16 +282,17 @@ export function FeedPage() {
   const handleArticleEnter = useCallback((publishedAt: string) => {
     const articleDate = new Date(publishedAt);
     setSelectedDate(startOfDay(articleDate));
-    // calculate position within this day
+    // calculate position within this day using the ref (stable callback)
     const currentDay = startOfDay(articleDate);
-    const dayArticles = allArticles.filter(a =>
+    const articles = allArticlesRef.current;
+    const dayArticles = articles.filter(a =>
       isSameDay(startOfDay(new Date(a.publishedAt)), currentDay)
     );
     const idx = dayArticles.findIndex(a => a.publishedAt === publishedAt);
     if (dayArticles.length > 0 && idx >= 0) {
       setDayProgress((idx + 1) / dayArticles.length);
     }
-  }, [allArticles]);
+  }, []); // stable — reads allArticles via ref
 
   const handleDatePick = useCallback((date: Date) => {
     if (isSameDay(date, startOfDay(new Date()))) {
@@ -359,14 +364,15 @@ export function FeedPage() {
       {activeTab === 'feed' && (
         <div
           className="fixed inset-x-0 overflow-hidden"
-          style={{ top: '48px', height: '3px', background: 'rgba(255,255,255,0.06)', zIndex: 39 }}
+          style={{ top: '48px', height: '3px', background: 'rgba(255,255,255,0.12)', zIndex: 39 }}
         >
           <div
             style={{
               height: '100%',
               width: `${dayProgress * 100}%`,
-              background: 'linear-gradient(90deg, rgba(26,68,48,0.70) 0%, rgba(44,130,85,0.65) 45%, rgba(82,183,136,0.75) 80%, rgba(200,235,218,0.60) 100%)',
+              background: 'linear-gradient(90deg, #2d8a58 0%, #52b788 50%, #b7e4c7 100%)',
               transition: 'width 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              minWidth: dayProgress > 0 ? '6px' : '0px',
             }}
           />
         </div>
