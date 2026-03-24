@@ -330,7 +330,7 @@ export function FeedPage() {
   return (
     <div className="h-[100dvh] w-full relative">
       {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
-      <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker={activeTab === 'feed'} />
+      {activeTab === 'feed' && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker />}
 
       {/* Feed — always mounted so scroll position is preserved when switching tabs */}
       <div
