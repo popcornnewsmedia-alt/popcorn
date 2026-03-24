@@ -41,8 +41,8 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
           Bref.
         </span>
 
-        {/* Date button */}
-        {showDatePicker && (
+        {/* Date — clickable on feed, static label elsewhere */}
+        {showDatePicker ? (
           <button
             onClick={() => setPickerOpen(o => !o)}
             className="flex items-center gap-1.5 transition-opacity hover:opacity-75"
@@ -63,6 +63,13 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
               }}
             />
           </button>
+        ) : (
+          <span
+            className="font-['Inter'] font-medium"
+            style={{ fontSize: '12px', color: 'rgba(255,255,255,0.45)', letterSpacing: '0.03em' }}
+          >
+            {format(selectedDate, 'do MMMM').toUpperCase()}
+          </span>
         )}
       </div>
 

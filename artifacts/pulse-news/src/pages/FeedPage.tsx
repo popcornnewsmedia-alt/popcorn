@@ -321,15 +321,22 @@ export function FeedPage() {
     );
   }
 
-  const renderTab = () => {
+  const renderOverlayTab = () => {
     if (activeTab === "saved") return <SavedScreen onBrowse={() => setActiveTab("feed")} articles={savedArticles} onReadMore={setReadingArticle} />;
     if (activeTab === "profile") return <ProfileScreen onSignIn={() => setSignUpOpen(true)} userName={userName} />;
+    return null;
+  };
 
-    return (
+  return (
+    <div className="h-[100dvh] w-full relative">
+      {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
+      <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker={activeTab === 'feed'} />
+
+      {/* Feed — always mounted so scroll position is preserved when switching tabs */}
       <div
         ref={scrollContainerRef}
         className="h-[100dvh] w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide overscroll-y-none"
-        style={{ scrollPaddingBottom: "64px" }}
+        style={{ scrollPaddingBottom: "64px", display: activeTab === 'feed' ? 'block' : 'none' }}
       >
         {feedItems.length === 0 ? (
           <div className="relative h-[100dvh] w-full flex flex-col items-center justify-center snap-start snap-always text-center px-6 overflow-hidden">
@@ -361,21 +368,16 @@ export function FeedPage() {
             )
           )
         )}
-
         {hasNextPage && (
           <div ref={loadMoreRef} className="h-[20vh] w-full flex items-center justify-center snap-start">
             <Loader2 className="w-8 h-8 text-white/50 animate-spin" />
           </div>
         )}
       </div>
-    );
-  };
 
-  return (
-    <div className="h-[100dvh] w-full relative">
-      {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
-      <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker={activeTab === 'feed'} />
-      {renderTab()}
+      {/* Overlay screens for other tabs */}
+      {renderOverlayTab()}
+
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       <ArticleReader
         article={liveReadingArticle}
