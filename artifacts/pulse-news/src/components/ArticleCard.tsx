@@ -97,7 +97,7 @@ export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: Ar
       <div className="flex-1 relative z-20" />
 
       {/* Glass card panel */}
-      <div className="relative z-20 px-4">
+      <div className="relative z-20 px-4 pb-[84px]">
         <div
           style={{
             borderRadius: '18px 18px 0 0',
