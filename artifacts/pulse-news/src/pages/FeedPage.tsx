@@ -21,17 +21,27 @@ function dividerIdForDate(d: Date) {
 function GreenAtmosphere() {
   return (
     <div className="absolute inset-0 -z-0" style={{ background: "#ecf3ef" }}>
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 15% 20%, rgba(26,68,48,0.32) 0%, transparent 48%),
-            radial-gradient(circle at 82% 75%, rgba(44,82,62,0.26) 0%, transparent 48%),
-            radial-gradient(circle at 50% 50%, rgba(26,68,48,0.10) 0%, transparent 65%)
-          `,
-          filter: "blur(48px)",
-        }}
-      />
+      {/* Top-left dark blob */}
+      <div className="blob-a absolute rounded-full" style={{
+        width: '420px', height: '420px',
+        top: '-80px', left: '-100px',
+        background: 'radial-gradient(circle, rgba(26,68,48,0.55) 0%, transparent 70%)',
+        filter: 'blur(56px)',
+      }} />
+      {/* Bottom-right dark blob */}
+      <div className="blob-b absolute rounded-full" style={{
+        width: '380px', height: '380px',
+        bottom: '-60px', right: '-80px',
+        background: 'radial-gradient(circle, rgba(44,82,62,0.48) 0%, transparent 70%)',
+        filter: 'blur(52px)',
+      }} />
+      {/* Mid accent blob */}
+      <div className="absolute rounded-full" style={{
+        width: '280px', height: '280px',
+        top: '40%', left: '55%',
+        background: 'radial-gradient(circle, rgba(82,183,136,0.30) 0%, transparent 70%)',
+        filter: 'blur(48px)',
+      }} />
     </div>
   );
 }
