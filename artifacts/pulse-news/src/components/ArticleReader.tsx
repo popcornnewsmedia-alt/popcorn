@@ -112,7 +112,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                     </h2>
                     <div
                       className="rounded-2xl px-5 py-4"
-                      style={{ background: 'rgba(27,122,74,0.06)', border: '1px solid rgba(27,122,74,0.18)' }}
+                      style={{ background: 'rgba(27,122,74,0.06)', border: '1px solid #191c1b' }}
                     >
                       <div className="flex justify-between items-center mb-3">
                         <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)' }}>Noise</span>
