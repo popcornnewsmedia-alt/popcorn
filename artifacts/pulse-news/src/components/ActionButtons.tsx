@@ -51,7 +51,7 @@ export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
           className="w-7 h-7 transition-all"
           style={{ color: isLiked ? '#e11d48' : 'white', fill: isLiked ? '#e11d48' : 'none', ...iconStyle }}
         />
-        <span className="text-[11px] font-semibold font-['Neue_Montreal'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
+        <span className="text-[11px] font-semibold font-['Inter'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
           {likeCount >= 1000 ? `${(likeCount / 1000).toFixed(1)}k` : likeCount}
         </span>
       </button>
@@ -59,7 +59,7 @@ export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
       {/* Comment */}
       <button onClick={handleComment} className="flex flex-col items-center gap-1 transition-transform active:scale-90">
         <MessageCircle className="w-7 h-7" style={{ color: 'white', ...iconStyle }} />
-        <span className="text-[11px] font-semibold font-['Neue_Montreal'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>{commentCount}</span>
+        <span className="text-[11px] font-semibold font-['Inter'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>{commentCount}</span>
       </button>
 
       {/* Save */}

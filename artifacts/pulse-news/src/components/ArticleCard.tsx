@@ -63,7 +63,7 @@ export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: Ar
           style={{ background: 'rgba(27,122,74,0.85)', backdropFilter: 'blur(8px)' }}
         >
           <CheckCircle2 className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
-          <span className="font-['Neue_Montreal'] font-semibold text-white" style={{ fontSize: '11px', letterSpacing: '0.02em' }}>Read</span>
+          <span className="font-['Inter'] font-semibold text-white" style={{ fontSize: '11px', letterSpacing: '0.02em' }}>Read</span>
         </div>
       )}
 
@@ -83,7 +83,7 @@ export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: Ar
         {/* Tag + source row */}
         <div className="flex items-center gap-3 mb-3">
           <span
-            className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest font-['Neue_Montreal']"
+            className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest font-['Inter']"
             style={{
               background: 'rgba(255,255,255,0.15)',
               border: '1px solid rgba(255,255,255,0.28)',
@@ -93,7 +93,7 @@ export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: Ar
             {article.tag}
           </span>
           <span
-            className="px-3 py-1 rounded-full text-[10px] font-semibold font-['Neue_Montreal'] tracking-wide"
+            className="px-3 py-1 rounded-full text-[10px] font-semibold font-['Inter'] tracking-wide"
             style={{
               background: 'rgba(255,255,255,0.10)',
               border: '1px solid rgba(255,255,255,0.18)',
@@ -111,7 +111,7 @@ export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: Ar
 
         {/* Date row */}
         <div
-          className="flex items-center gap-3 text-xs font-medium font-['Neue_Montreal']"
+          className="flex items-center gap-3 text-xs font-medium font-['Inter']"
           style={{ color: 'rgba(255,255,255,0.45)' }}
         >
           <span>{format(new Date(article.publishedAt), 'MMM d')}</span>

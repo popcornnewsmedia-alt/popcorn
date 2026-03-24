@@ -52,7 +52,7 @@ export function DateDividerCard({ date, dateId, onEnter }: DateDividerCardProps)
             {label}
           </span>
           <span
-            className="font-['Neue_Montreal']"
+            className="font-['Inter']"
             style={{ fontSize: "14px", color: "rgba(0,0,0,0.4)", letterSpacing: "0.04em" }}
           >
             {sub}
@@ -61,7 +61,7 @@ export function DateDividerCard({ date, dateId, onEnter }: DateDividerCardProps)
         <div style={{ width: 40, height: 1, background: "rgba(0,0,0,0.18)" }} />
 
         <p
-          className="font-['Neue_Montreal'] mt-3"
+          className="font-['Inter'] mt-3"
           style={{ fontSize: "12px", color: "rgba(0,0,0,0.3)", letterSpacing: "0.06em" }}
         >
           SCROLL TO CONTINUE

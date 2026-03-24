@@ -221,11 +221,11 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
     <div className="flex items-center gap-4 mt-2">
       <button onClick={onUp} className="flex items-center gap-1 active:scale-95 transition-transform">
         <ChevronUp className="w-4 h-4" style={{ color: vote === "up" ? '#1b7a4a' : 'rgba(0,0,0,0.30)', strokeWidth: 2.5 }} />
-        <span className="font-['Neue_Montreal'] font-medium" style={{ fontSize: '12px', color: vote === "up" ? '#1b7a4a' : 'rgba(0,0,0,0.35)' }}>{upvotes}</span>
+        <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: vote === "up" ? '#1b7a4a' : 'rgba(0,0,0,0.35)' }}>{upvotes}</span>
       </button>
       <button onClick={onDown} className="flex items-center gap-1 active:scale-95 transition-transform">
         <ChevronDown className="w-4 h-4" style={{ color: vote === "down" ? '#c0392b' : 'rgba(0,0,0,0.30)', strokeWidth: 2.5 }} />
-        <span className="font-['Neue_Montreal'] font-medium" style={{ fontSize: '12px', color: vote === "down" ? '#c0392b' : 'rgba(0,0,0,0.35)' }}>{downvotes}</span>
+        <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: vote === "down" ? '#c0392b' : 'rgba(0,0,0,0.35)' }}>{downvotes}</span>
       </button>
     </div>
   );
@@ -267,7 +267,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
         <div className="relative z-10 flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
           <div className="flex items-baseline gap-2">
             <span className="font-['Manrope'] font-bold" style={{ fontSize: '17px', color: '#000' }}>Comments</span>
-            <span className="font-['Neue_Montreal']" style={{ fontSize: '13px', color: 'rgba(0,0,0,0.35)' }}>{totalCount}</span>
+            <span className="font-['Inter']" style={{ fontSize: '13px', color: 'rgba(0,0,0,0.35)' }}>{totalCount}</span>
           </div>
           <button onClick={(e) => { e.stopPropagation(); onClose(); }} className="p-1 rounded-full transition-opacity hover:opacity-70">
             <X className="w-5 h-5" style={{ color: 'rgba(0,0,0,0.40)' }} />
@@ -283,14 +283,14 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
                 {/* Top-level comment */}
                 <div className="flex gap-3 px-5 pt-4 pb-3">
                   <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: c.color }}>
-                    <span className="font-['Neue_Montreal'] font-bold text-white" style={{ fontSize: '11px' }}>{c.initials}</span>
+                    <span className="font-['Inter'] font-bold text-white" style={{ fontSize: '11px' }}>{c.initials}</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-baseline gap-2 mb-1">
-                      <span className="font-['Neue_Montreal'] font-semibold" style={{ fontSize: '13px', color: '#000' }}>{c.author}</span>
-                      <span className="font-['Neue_Montreal']" style={{ fontSize: '11px', color: 'rgba(0,0,0,0.35)' }}>{c.time}</span>
+                      <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: '#000' }}>{c.author}</span>
+                      <span className="font-['Inter']" style={{ fontSize: '11px', color: 'rgba(0,0,0,0.35)' }}>{c.time}</span>
                     </div>
-                    <p className="font-['Neue_Montreal'] leading-relaxed" style={{ fontSize: '14px', color: 'rgba(0,0,0,0.75)' }}>{c.text}</p>
+                    <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '14px', color: 'rgba(0,0,0,0.75)' }}>{c.text}</p>
                     <div className="flex items-center gap-4 mt-2">
                       <VoteRow
                         upvotes={c.upvotes} downvotes={c.downvotes} vote={c.vote}
@@ -299,7 +299,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
                       />
                       <button
                         onClick={(e) => { e.stopPropagation(); setReplyTo({ id: c.id, author: c.author }); }}
-                        className="font-['Neue_Montreal'] font-semibold transition-opacity hover:opacity-70"
+                        className="font-['Inter'] font-semibold transition-opacity hover:opacity-70"
                         style={{ fontSize: '12px', color: 'rgba(0,0,0,0.40)', marginTop: '0.5rem' }}
                       >
                         Reply
@@ -313,7 +313,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
                         className="flex items-center gap-1.5 mt-2 transition-opacity hover:opacity-70"
                       >
                         <CornerDownRight className="w-3.5 h-3.5" style={{ color: '#000000' }} />
-                        <span className="font-['Neue_Montreal'] font-semibold" style={{ fontSize: '12px', color: '#000000' }}>
+                        <span className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: '#000000' }}>
                           {repliesOpen ? 'Hide' : `View`} {c.replies.length} {c.replies.length === 1 ? 'reply' : 'replies'}
                         </span>
                       </button>
@@ -325,14 +325,14 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
                 {repliesOpen && c.replies.map((r) => (
                   <div key={r.id} className="flex gap-3 pl-14 pr-5 py-3" style={{ background: 'rgba(0,0,0,0.025)', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
                     <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: r.color }}>
-                      <span className="font-['Neue_Montreal'] font-bold text-white" style={{ fontSize: '10px' }}>{r.initials}</span>
+                      <span className="font-['Inter'] font-bold text-white" style={{ fontSize: '10px' }}>{r.initials}</span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-baseline gap-2 mb-1">
-                        <span className="font-['Neue_Montreal'] font-semibold" style={{ fontSize: '12px', color: '#000' }}>{r.author}</span>
-                        <span className="font-['Neue_Montreal']" style={{ fontSize: '10px', color: 'rgba(0,0,0,0.35)' }}>{r.time}</span>
+                        <span className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: '#000' }}>{r.author}</span>
+                        <span className="font-['Inter']" style={{ fontSize: '10px', color: 'rgba(0,0,0,0.35)' }}>{r.time}</span>
                       </div>
-                      <p className="font-['Neue_Montreal'] leading-relaxed" style={{ fontSize: '13px', color: 'rgba(0,0,0,0.72)' }}>{r.text}</p>
+                      <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '13px', color: 'rgba(0,0,0,0.72)' }}>{r.text}</p>
                       <VoteRow
                         upvotes={r.upvotes} downvotes={r.downvotes} vote={r.vote}
                         onUp={(e) => voteReply(e, c.id, r.id, "up")}
@@ -354,7 +354,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
           {/* Reply target chip */}
           {replyTo && (
             <div className="flex items-center justify-between mb-2 px-1">
-              <span className="font-['Neue_Montreal']" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.45)' }}>
+              <span className="font-['Inter']" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.45)' }}>
                 Replying to <span style={{ color: '#1b7a4a', fontWeight: 600 }}>@{replyTo.author}</span>
               </span>
               <button onClick={(e) => { e.stopPropagation(); setReplyTo(null); }} className="p-0.5">
@@ -366,7 +366,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
           <div className="flex items-center gap-3">
             {/* Your avatar */}
             <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: YOU.color }}>
-              <span className="font-['Neue_Montreal'] font-bold text-white" style={{ fontSize: '10px' }}>{YOU.initials}</span>
+              <span className="font-['Inter'] font-bold text-white" style={{ fontSize: '10px' }}>{YOU.initials}</span>
             </div>
 
             {/* Input */}
@@ -381,7 +381,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
                 onClick={stopProp}
                 onKeyDown={(e) => { e.stopPropagation(); if (e.key === 'Enter') handleSend(e as any); }}
                 placeholder={replyTo ? `Reply to ${replyTo.author}…` : "Add a comment…"}
-                className="flex-1 bg-transparent outline-none font-['Neue_Montreal']"
+                className="flex-1 bg-transparent outline-none font-['Inter']"
                 style={{ fontSize: '14px', color: '#000' }}
               />
             </div>

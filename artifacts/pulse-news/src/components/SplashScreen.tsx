@@ -72,7 +72,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
 
         {/* Tagline */}
         <p
-          className="font-['Neue_Montreal'] font-medium"
+          className="font-['Inter'] font-medium"
           style={{
             fontSize: '14px',
             color: 'rgba(0,0,0,0.40)',

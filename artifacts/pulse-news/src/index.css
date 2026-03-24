@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: 'Neue Montreal', sans-serif;
+  --font-sans: 'Inter', sans-serif;
   --font-display: 'Manrope', sans-serif;
 
   --color-background: hsl(var(--background));

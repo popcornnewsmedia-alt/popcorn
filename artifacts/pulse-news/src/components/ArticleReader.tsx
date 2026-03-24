@@ -34,7 +34,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
           {/* Floating header — overlaid on the image */}
           <div className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-4 py-3">
             <span
-              className="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest font-['Neue_Montreal']"
+              className="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest font-['Inter']"
               style={{ background: 'rgba(0,0,0,0.30)', backdropFilter: 'blur(12px)', color: 'rgba(255,255,255,0.92)', border: '1px solid rgba(255,255,255,0.16)' }}
             >
               {article.tag}
@@ -77,7 +77,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
               <div className="max-w-2xl mx-auto px-6 py-8 sm:px-10 pb-16">
 
                 {/* Source + metadata */}
-                <div className="flex flex-wrap items-center gap-3 text-xs font-medium mb-6 font-['Neue_Montreal']" style={{ color: 'rgba(71,71,71,0.60)' }}>
+                <div className="flex flex-wrap items-center gap-3 text-xs font-medium mb-6 font-['Inter']" style={{ color: 'rgba(71,71,71,0.60)' }}>
                   <span className="font-bold text-sm" style={{ color: '#191c1b' }}>{article.source}</span>
                   <span>·</span>
                   <span className="flex items-center gap-1.5">
@@ -115,7 +115,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                       style={{ background: 'rgba(27,122,74,0.06)', border: '1px solid rgba(27,122,74,0.18)' }}
                     >
                       <div className="flex justify-between items-center mb-3">
-                        <span className="font-['Neue_Montreal'] font-medium" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)' }}>Noise</span>
+                        <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)' }}>Noise</span>
                         <span
                           className="font-['Manrope'] font-bold px-3 py-0.5 rounded-full"
                           style={{
@@ -126,7 +126,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                         >
                           {article.signalScore >= 70 ? 'High Signal' : article.signalScore >= 45 ? 'Mixed' : 'Low Signal'}
                         </span>
-                        <span className="font-['Neue_Montreal'] font-medium" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)' }}>Signal</span>
+                        <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)' }}>Signal</span>
                       </div>
                       <div className="relative rounded-full" style={{ height: 8, background: 'rgba(27,122,74,0.10)' }}>
                         <div
@@ -170,7 +170,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                             className="flex-shrink-0 mt-[7px]"
                             style={{ width: 6, height: 6, borderRadius: '50%', background: '#191c1b', flexShrink: 0 }}
                           />
-                          <p className="font-['Neue_Montreal'] leading-relaxed flex-1" style={{ fontSize: '15px', color: '#191c1b' }}>{point}</p>
+                          <p className="font-['Inter'] leading-relaxed flex-1" style={{ fontSize: '15px', color: '#191c1b' }}>{point}</p>
                         </li>
                       ))}
                     </ul>
@@ -185,7 +185,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                   >
                     Story
                   </h2>
-                  <div className="font-['Neue_Montreal'] leading-relaxed space-y-4" style={{ fontSize: '16px', color: '#191c1b' }}>
+                  <div className="font-['Inter'] leading-relaxed space-y-4" style={{ fontSize: '16px', color: '#191c1b' }}>
                     {article.content.split('\n\n').map((para, i) => (
                       <p key={i}>{para}</p>
                     ))}
@@ -205,7 +205,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                       className="pl-4"
                       style={{ borderLeft: '3px solid #1b7a4a' }}
                     >
-                      <p className="font-['Neue_Montreal'] leading-relaxed" style={{ fontSize: '15px', color: '#191c1b' }}>{article.impact}</p>
+                      <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '15px', color: '#191c1b' }}>{article.impact}</p>
                     </div>
                   </div>
                 )}
@@ -214,7 +214,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                   {/* Mark as Read / Unmark */}
                   <button
                     onClick={() => { onMarkRead?.(); onClose(); }}
-                    className="flex items-center gap-2 px-6 py-3 rounded-full font-['Neue_Montreal'] font-semibold text-sm transition-all"
+                    className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm transition-all"
                     style={{
                       background: isRead ? '#1b7a4a' : '#191c1b',
                       color: '#fff',
