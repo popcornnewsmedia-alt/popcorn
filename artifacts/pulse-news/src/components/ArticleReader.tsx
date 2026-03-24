@@ -29,7 +29,16 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
             if (info.offset.y > 100 || info.velocity.y > 500) onClose();
           }}
           className="fixed inset-0 z-50 flex flex-col"
-          style={{ background: '#ecf3ef' }}
+          style={{
+            background: '#ecf3ef',
+            backgroundImage: [
+              'radial-gradient(ellipse 70% 50% at 15% 10%, rgba(26,68,48,0.28) 0%, transparent 65%)',
+              'radial-gradient(ellipse 55% 45% at 90% 20%, rgba(44,82,62,0.22) 0%, transparent 60%)',
+              'radial-gradient(ellipse 60% 55% at 80% 80%, rgba(26,68,48,0.24) 0%, transparent 60%)',
+              'radial-gradient(ellipse 50% 40% at 10% 85%, rgba(44,82,62,0.18) 0%, transparent 55%)',
+              'radial-gradient(ellipse 40% 35% at 50% 48%, rgba(31,75,56,0.12) 0%, transparent 60%)',
+            ].join(', '),
+          }}
         >
           {/* Floating header — overlaid on the image */}
           <div className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-4 py-3">
@@ -66,14 +75,8 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
               </div>
             )}
 
-            {/* Green atmospheric content */}
-            <div
-              style={{
-                background: '#ecf3ef',
-                backgroundImage: 'radial-gradient(circle at 8% 30%, #1a443066 0%, transparent 50%), radial-gradient(circle at 88% 70%, #2c523e55 0%, transparent 50%)',
-                minHeight: '100%',
-              }}
-            >
+            {/* Content area — transparent so outer atmospheric blobs show through */}
+            <div style={{ minHeight: '100%' }}>
               <div className="max-w-2xl mx-auto px-6 py-8 sm:px-10 pb-16">
 
                 {/* Source + metadata */}
