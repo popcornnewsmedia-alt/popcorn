@@ -101,35 +101,12 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                   {article.summary}
                 </p>
 
-                {/* Key Points */}
-                {article.keyPoints && article.keyPoints.length > 0 && (
-                  <div className="mb-8">
-                    <h2
-                      className="font-['Manrope'] font-bold mb-4 uppercase tracking-widest"
-                      style={{ fontSize: '11px', color: '#191c1b', letterSpacing: '0.10em' }}
-                    >
-                      Key Points
-                    </h2>
-                    <ul className="flex flex-col gap-3">
-                      {article.keyPoints.map((point, i) => (
-                        <li key={i} className="flex gap-3 items-start">
-                          <span
-                            className="flex-shrink-0 mt-[7px]"
-                            style={{ width: 6, height: 6, borderRadius: '50%', background: '#191c1b', flexShrink: 0 }}
-                          />
-                          <p className="font-['Inter'] leading-relaxed flex-1" style={{ fontSize: '15px', color: '#191c1b' }}>{point}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
                 {/* Importance meter */}
                 {article.signalScore != null && (
                   <div className="mb-8">
                     <h2
                       className="font-['Manrope'] font-bold mb-3 uppercase tracking-widest"
-                      style={{ fontSize: '11px', color: '#191c1b', letterSpacing: '0.10em' }}
+                      style={{ fontSize: '13px', color: '#191c1b', letterSpacing: '0.10em', textDecoration: 'underline', textUnderlineOffset: '4px' }}
                     >
                       Importance
                     </h2>
@@ -151,7 +128,6 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                         </span>
                         <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)' }}>Signal</span>
                       </div>
-                      {/* Track */}
                       <div className="relative rounded-full" style={{ height: 8, background: 'rgba(27,122,74,0.10)' }}>
                         <div
                           className="absolute inset-y-0 left-0 rounded-full"
@@ -164,7 +140,6 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                               : 'linear-gradient(to right, rgba(180,40,40,0.25), rgba(180,40,40,0.55))',
                           }}
                         />
-                        {/* Thumb dot */}
                         <div
                           className="absolute top-1/2 -translate-y-1/2 rounded-full border-2 border-white"
                           style={{
@@ -179,11 +154,34 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                   </div>
                 )}
 
+                {/* Key Points */}
+                {article.keyPoints && article.keyPoints.length > 0 && (
+                  <div className="mb-8">
+                    <h2
+                      className="font-['Manrope'] font-bold mb-4 uppercase tracking-widest"
+                      style={{ fontSize: '13px', color: '#191c1b', letterSpacing: '0.10em', textDecoration: 'underline', textUnderlineOffset: '4px' }}
+                    >
+                      Key Points
+                    </h2>
+                    <ul className="flex flex-col gap-3">
+                      {article.keyPoints.map((point, i) => (
+                        <li key={i} className="flex gap-3 items-start">
+                          <span
+                            className="flex-shrink-0 mt-[7px]"
+                            style={{ width: 6, height: 6, borderRadius: '50%', background: '#191c1b', flexShrink: 0 }}
+                          />
+                          <p className="font-['Inter'] leading-relaxed flex-1" style={{ fontSize: '15px', color: '#191c1b' }}>{point}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {/* Story */}
                 <div className="mb-8">
                   <h2
                     className="font-['Manrope'] font-bold mb-4 uppercase tracking-widest"
-                    style={{ fontSize: '11px', color: '#191c1b', letterSpacing: '0.10em' }}
+                    style={{ fontSize: '13px', color: '#191c1b', letterSpacing: '0.10em', textDecoration: 'underline', textUnderlineOffset: '4px' }}
                   >
                     Story
                   </h2>
@@ -198,26 +196,16 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                 {article.impact && (
                   <div className="mb-8">
                     <h2
-                      className="font-['Manrope'] font-bold mb-3 uppercase tracking-widest"
-                      style={{ fontSize: '11px', color: '#191c1b', letterSpacing: '0.10em' }}
+                      className="font-['Manrope'] font-bold mb-4 uppercase tracking-widest"
+                      style={{ fontSize: '13px', color: '#191c1b', letterSpacing: '0.10em', textDecoration: 'underline', textUnderlineOffset: '4px' }}
                     >
                       Impact
                     </h2>
                     <div
-                      className="rounded-2xl overflow-hidden"
-                      style={{ border: '1px solid rgba(27,122,74,0.20)' }}
+                      className="pl-4"
+                      style={{ borderLeft: '3px solid #1b7a4a' }}
                     >
-                      <div
-                        className="px-1 py-1"
-                        style={{ background: 'linear-gradient(135deg, #1b7a4a 0%, #2d9e66 100%)' }}
-                      >
-                        <div
-                          className="rounded-xl px-5 py-4"
-                          style={{ background: 'rgba(236,243,239,0.97)' }}
-                        >
-                          <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '15px', color: '#191c1b' }}>{article.impact}</p>
-                        </div>
-                      </div>
+                      <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '15px', color: '#191c1b' }}>{article.impact}</p>
                     </div>
                   </div>
                 )}
