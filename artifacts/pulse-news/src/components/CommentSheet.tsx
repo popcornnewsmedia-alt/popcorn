@@ -111,6 +111,11 @@ interface CommentSheetProps {
   onClose: () => void;
 }
 
+export function getInitialCommentCount(articleId: number): number {
+  const pool = SEED_POOLS[articleId % SEED_POOLS.length];
+  return pool.reduce((n, c) => n + 1 + c.replies.length, 0);
+}
+
 let nextId = 1000;
 
 export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) {
@@ -260,8 +265,10 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
 
         {/* Header */}
         <div className="relative z-10 flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
-          <span className="font-['Manrope'] font-bold" style={{ fontSize: '17px', color: '#000' }}>Comments</span>
-          <span className="font-['Inter'] text-xs" style={{ color: 'rgba(0,0,0,0.35)' }}>{totalCount}</span>
+          <div className="flex items-baseline gap-2">
+            <span className="font-['Manrope'] font-bold" style={{ fontSize: '17px', color: '#000' }}>Comments</span>
+            <span className="font-['Inter']" style={{ fontSize: '13px', color: 'rgba(0,0,0,0.35)' }}>{totalCount}</span>
+          </div>
           <button onClick={(e) => { e.stopPropagation(); onClose(); }} className="p-1 rounded-full transition-opacity hover:opacity-70">
             <X className="w-5 h-5" style={{ color: 'rgba(0,0,0,0.40)' }} />
           </button>

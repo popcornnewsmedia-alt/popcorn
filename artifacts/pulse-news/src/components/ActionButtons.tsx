@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Heart, MessageCircle, Bookmark, Share2 } from "lucide-react";
 import { useLikeArticle, useBookmarkArticle } from "@/hooks/use-news";
+import { getInitialCommentCount } from "@/components/CommentSheet";
 import type { NewsArticle } from "@workspace/api-client-react";
 
 interface ActionButtonsProps {
@@ -12,6 +13,7 @@ export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
   const [localLiked, setLocalLiked] = useState(false);
   const { mutate: likeMutation } = useLikeArticle();
   const { mutate: bookmarkMutation } = useBookmarkArticle();
+  const commentCount = getInitialCommentCount(article.id);
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -57,7 +59,7 @@ export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
       {/* Comment */}
       <button onClick={handleComment} className="flex flex-col items-center gap-1 transition-transform active:scale-90">
         <MessageCircle className="w-7 h-7" style={{ color: 'white', ...iconStyle }} />
-        <span className="text-[11px] font-semibold font-['Inter'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>0</span>
+        <span className="text-[11px] font-semibold font-['Inter'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>{commentCount}</span>
       </button>
 
       {/* Save */}
