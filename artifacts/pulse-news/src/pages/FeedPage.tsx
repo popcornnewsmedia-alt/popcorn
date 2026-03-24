@@ -165,6 +165,10 @@ export function FeedPage() {
   const [toastKey, setToastKey] = useState(0);
   const lastSeenDate = useRef<string | null>(null);
 
+  useEffect(() => {
+    lastSeenDate.current = null;
+  }, [selectedDate]);
+
   const handleArticleEnter = useCallback((publishedAt: string) => {
     const dateStr = startOfDay(new Date(publishedAt)).toISOString();
     if (lastSeenDate.current !== null && lastSeenDate.current !== dateStr) {
