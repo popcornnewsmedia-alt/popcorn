@@ -134,16 +134,15 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                     onClick={() => article && bookmarkMutation(article.id)}
                     className="flex items-center justify-center w-11 h-11 rounded-full transition-all"
                     style={{
-                      background: article?.isBookmarked ? 'rgba(27,122,74,0.12)' : 'transparent',
+                      background: article?.isBookmarked ? '#191c1b' : 'transparent',
                       border: '1.5px solid rgba(0,0,0,0.15)',
                     }}
                   >
                     <Bookmark
-                      className="w-4.5 h-4.5"
                       style={{
                         width: 18, height: 18,
-                        fill: article?.isBookmarked ? '#1b7a4a' : 'none',
-                        color: article?.isBookmarked ? '#1b7a4a' : 'rgba(0,0,0,0.55)',
+                        fill: article?.isBookmarked ? 'white' : 'none',
+                        color: article?.isBookmarked ? 'white' : 'rgba(0,0,0,0.55)',
                       }}
                     />
                   </button>
