@@ -6,9 +6,10 @@ interface TopBarProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   showDatePicker?: boolean;
+  dayProgress?: number;
 }
 
-export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: TopBarProps) {
+export function TopBar({ selectedDate, onDateChange, showDatePicker = true, dayProgress = 0 }: TopBarProps) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const today = startOfDay(new Date());
   const isAtToday = isSameDay(selectedDate, today);
@@ -26,58 +27,78 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
     <>
       {/* Main bar */}
       <div
-        className="fixed top-0 inset-x-0 z-40 flex items-center justify-between px-5 py-3"
+        className="fixed top-0 inset-x-0 z-40 flex flex-col"
         style={{
           ...barStyle,
-          borderBottom: pickerOpen ? 'none' : '1px solid rgba(255,255,255,0.06)',
           boxShadow: pickerOpen ? 'none' : '0 2px 16px rgba(0,0,0,0.18)',
         }}
       >
-        {/* Brand */}
-        <span
-          className="font-['Manrope'] font-bold tracking-tight"
-          style={{ fontSize: '22px', color: '#ffffff', letterSpacing: '-0.02em' }}
+        {/* Brand + date row */}
+        <div
+          className="flex items-center justify-between px-5 py-3"
+          style={{ borderBottom: pickerOpen ? 'none' : '1px solid rgba(255,255,255,0.06)' }}
         >
-          Bref.
-        </span>
-
-        {/* Date — clickable on feed, static label elsewhere */}
-        {showDatePicker ? (
-          <button
-            onClick={() => setPickerOpen(o => !o)}
-            className="flex items-center gap-1.5 transition-opacity hover:opacity-75"
+          {/* Brand */}
+          <span
+            className="font-['Manrope'] font-bold tracking-tight"
+            style={{ fontSize: '22px', color: '#ffffff', letterSpacing: '-0.02em' }}
           >
+            Bref.
+          </span>
+
+          {/* Date — clickable on feed, static label elsewhere */}
+          {showDatePicker ? (
+            <button
+              onClick={() => setPickerOpen(o => !o)}
+              className="flex items-center gap-1.5 transition-opacity hover:opacity-75"
+            >
+              <span
+                className="font-['Inter'] font-medium"
+                style={{ fontSize: '12px', color: '#ffffff', letterSpacing: '0.03em' }}
+              >
+                {format(selectedDate, 'do MMMM').toUpperCase()}
+              </span>
+              <ChevronDown
+                className="transition-transform duration-200"
+                style={{
+                  width: '13px',
+                  height: '13px',
+                  color: 'rgba(255,255,255,0.60)',
+                  transform: pickerOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                }}
+              />
+            </button>
+          ) : (
             <span
               className="font-['Inter'] font-medium"
-              style={{ fontSize: '12px', color: '#ffffff', letterSpacing: '0.03em' }}
+              style={{ fontSize: '12px', color: 'rgba(255,255,255,0.45)', letterSpacing: '0.03em' }}
             >
               {format(selectedDate, 'do MMMM').toUpperCase()}
             </span>
-            <ChevronDown
-              className="transition-transform duration-200"
+          )}
+        </div>
+
+        {/* Progress bar — always at exact bottom of the TopBar */}
+        {showDatePicker && (
+          <div style={{ height: '4px', background: 'rgba(82,183,136,0.28)', width: '100%' }}>
+            <div
               style={{
-                width: '13px',
-                height: '13px',
-                color: 'rgba(255,255,255,0.60)',
-                transform: pickerOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                height: '100%',
+                width: `${dayProgress * 100}%`,
+                background: 'linear-gradient(90deg, #1a4430 0%, #2d8a58 40%, #52b788 75%, #b7e4c7 100%)',
+                transition: 'width 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
               }}
             />
-          </button>
-        ) : (
-          <span
-            className="font-['Inter'] font-medium"
-            style={{ fontSize: '12px', color: 'rgba(255,255,255,0.45)', letterSpacing: '0.03em' }}
-          >
-            {format(selectedDate, 'do MMMM').toUpperCase()}
-          </span>
+          </div>
         )}
       </div>
 
       {/* Date picker panel */}
       {showDatePicker && <div
-        className="fixed inset-x-0 z-39 overflow-hidden"
+        className="fixed inset-x-0 overflow-hidden"
         style={{
-          top: '48px',
+          top: '58px',
+          zIndex: 39,
           maxHeight: pickerOpen ? '56px' : '0px',
           opacity: pickerOpen ? 1 : 0,
           transition: 'max-height 0.25s ease, opacity 0.20s ease',
@@ -124,7 +145,8 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
       {/* Tap-outside dismiss overlay */}
       {pickerOpen && (
         <div
-          className="fixed inset-0 z-38"
+          className="fixed inset-0"
+          style={{ zIndex: 38 }}
           onClick={() => setPickerOpen(false)}
         />
       )}

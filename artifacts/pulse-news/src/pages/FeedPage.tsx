@@ -370,25 +370,7 @@ export function FeedPage() {
   return (
     <div className="h-[100dvh] w-full relative">
       {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
-      {activeTab === 'feed' && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker />}
-
-      {/* Day progress bar — liquid green fill, sits flush under the top bar */}
-      {activeTab === 'feed' && (
-        <div
-          className="fixed inset-x-0 overflow-hidden"
-          style={{ top: '48px', height: '3px', background: 'rgba(82,183,136,0.22)', zIndex: 39 }}
-        >
-          <div
-            style={{
-              height: '100%',
-              width: `${dayProgress * 100}%`,
-              background: 'linear-gradient(90deg, #2d8a58 0%, #52b788 50%, #b7e4c7 100%)',
-              transition: 'width 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-              minWidth: dayProgress > 0 ? '6px' : '0px',
-            }}
-          />
-        </div>
-      )}
+      {activeTab === 'feed' && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker dayProgress={dayProgress} />}
 
       {/* Feed — always mounted so scroll position is preserved when switching tabs */}
       <div
