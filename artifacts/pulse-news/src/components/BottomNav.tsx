@@ -19,12 +19,12 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       <div
         className="flex items-center gap-1 px-3 py-2.5 pointer-events-auto"
         style={{
-          background: 'linear-gradient(135deg, rgba(26,68,48,0.88) 0%, rgba(44,92,66,0.84) 50%, rgba(20,55,38,0.90) 100%)',
+          background: 'linear-gradient(135deg, rgba(26,68,48,0.94) 0%, rgba(44,82,62,0.90) 100%)',
           backdropFilter: 'blur(32px)',
           WebkitBackdropFilter: 'blur(32px)',
           borderRadius: '100px',
-          border: '1px solid rgba(120,200,150,0.18)',
-          boxShadow: '0 8px 32px rgba(10,40,22,0.35), 0 2px 8px rgba(0,0,0,0.18), inset 0 1px 0 rgba(180,255,210,0.10)',
+          border: '1px solid rgba(44,82,62,0.40)',
+          boxShadow: '0 8px 32px rgba(26,68,48,0.40), 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(236,243,239,0.10)',
         }}
       >
         {tabs.map(({ id, Icon }) => {
