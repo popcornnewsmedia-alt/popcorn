@@ -19,12 +19,12 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       <div
         className="flex items-center gap-1 px-3 py-2.5 pointer-events-auto"
         style={{
-          background: 'linear-gradient(135deg, rgba(26,68,48,0.94) 0%, rgba(44,82,62,0.90) 100%)',
+          background: 'rgba(236,243,239,0.82)',
           backdropFilter: 'blur(32px)',
           WebkitBackdropFilter: 'blur(32px)',
           borderRadius: '100px',
-          border: '1px solid rgba(44,82,62,0.40)',
-          boxShadow: '0 8px 32px rgba(26,68,48,0.40), 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(236,243,239,0.10)',
+          border: '1px solid rgba(26,68,48,0.14)',
+          boxShadow: '0 8px 32px rgba(26,68,48,0.16), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.60)',
         }}
       >
         {tabs.map(({ id, Icon }) => {
@@ -38,15 +38,15 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 width: 52,
                 height: 44,
                 borderRadius: 80,
-                background: active ? 'rgba(255,255,255,0.12)' : 'transparent',
+                background: active ? 'rgba(26,68,48,0.12)' : 'transparent',
               }}
             >
               <Icon
                 style={{
                   width: 21,
                   height: 21,
-                  color: active ? '#ffffff' : 'rgba(255,255,255,0.45)',
-                  fill: active ? '#ffffff' : 'none',
+                  color: '#191c1b',
+                  fill: active ? '#191c1b' : 'none',
                   strokeWidth: active ? 1.8 : 1.6,
                   transition: 'all 0.2s',
                 }}
