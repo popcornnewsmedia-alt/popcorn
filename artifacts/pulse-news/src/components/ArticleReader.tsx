@@ -30,13 +30,10 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
           }}
           className="fixed inset-0 z-50 flex flex-col"
           style={{
-            background: '#ecf3ef',
+            background: '#f8faf9',
             backgroundImage: [
-              'radial-gradient(ellipse 70% 50% at 15% 10%, rgba(26,68,48,0.28) 0%, transparent 65%)',
-              'radial-gradient(ellipse 55% 45% at 90% 20%, rgba(44,82,62,0.22) 0%, transparent 60%)',
-              'radial-gradient(ellipse 60% 55% at 80% 80%, rgba(26,68,48,0.24) 0%, transparent 60%)',
-              'radial-gradient(ellipse 50% 40% at 10% 85%, rgba(44,82,62,0.18) 0%, transparent 55%)',
-              'radial-gradient(ellipse 40% 35% at 50% 48%, rgba(31,75,56,0.12) 0%, transparent 60%)',
+              'radial-gradient(ellipse 80% 60% at 10% 0%, rgba(26,68,48,0.09) 0%, transparent 70%)',
+              'radial-gradient(ellipse 70% 50% at 95% 100%, rgba(44,82,62,0.08) 0%, transparent 70%)',
             ].join(', '),
           }}
         >
