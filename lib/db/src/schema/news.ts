@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -17,6 +17,9 @@ export const articlesTable = pgTable("articles", {
   gradientEnd: text("gradient_end").notNull().default("#8fb8a0"),
   tag: text("tag").notNull().default("ANALYSIS"),
   imageUrl: text("image_url"),
+  keyPoints: jsonb("key_points").$type<string[]>().default([]),
+  impact: text("impact").default(""),
+  signalScore: integer("signal_score").default(50),
 });
 
 export const insertArticleSchema = createInsertSchema(articlesTable).omit({ id: true });

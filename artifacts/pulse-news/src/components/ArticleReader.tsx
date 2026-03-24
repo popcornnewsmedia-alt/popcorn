@@ -101,18 +101,112 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                   {article.summary}
                 </p>
 
-                {/* Body content */}
-                <div className="prose prose-lg max-w-none text-[#191c1b]">
-                  {article.content ? (
-                    <div dangerouslySetInnerHTML={{ __html: article.content }} />
-                  ) : (
-                    <>
-                      <p>The artificial intelligence landscape continues to evolve at a breakneck pace. In recent developments, industry leaders have unveiled new architectures that dramatically reduce compute requirements while maintaining, and in some cases exceeding, state-of-the-art performance.</p>
-                      <h2>The Shift Toward Efficiency</h2>
-                      <p>Historically, the prevailing wisdom in model scaling was straightforward: more parameters and more data reliably led to better performance. However, as computational costs soar and physical constraints on data centers become apparent, researchers are finding innovative ways to achieve intelligence.</p>
-                      <blockquote>"We are moving from the era of brute-force scaling to an era of algorithmic elegance. The next major breakthroughs will come from how we structure networks, not just how large we can build them."</blockquote>
-                    </>
-                  )}
+                {/* Key Points */}
+                {article.keyPoints && article.keyPoints.length > 0 && (
+                  <div className="mb-8">
+                    <h2
+                      className="font-['Manrope'] font-bold mb-4 uppercase tracking-widest"
+                      style={{ fontSize: '11px', color: 'rgba(0,0,0,0.38)', letterSpacing: '0.10em' }}
+                    >
+                      Key Points
+                    </h2>
+                    <ul className="flex flex-col gap-3">
+                      {article.keyPoints.map((point, i) => (
+                        <li key={i} className="flex gap-3 items-start">
+                          <span
+                            className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5"
+                            style={{ background: 'rgba(27,122,74,0.12)' }}
+                          >
+                            <span className="font-['Inter'] font-bold" style={{ fontSize: '10px', color: '#1b7a4a' }}>{i + 1}</span>
+                          </span>
+                          <p className="font-['Inter'] leading-relaxed flex-1" style={{ fontSize: '15px', color: '#191c1b' }}>{point}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Impact */}
+                {article.impact && (
+                  <div className="mb-8">
+                    <h2
+                      className="font-['Manrope'] font-bold mb-3 uppercase tracking-widest"
+                      style={{ fontSize: '11px', color: 'rgba(0,0,0,0.38)', letterSpacing: '0.10em' }}
+                    >
+                      Impact
+                    </h2>
+                    <div
+                      className="rounded-2xl px-5 py-4"
+                      style={{ background: 'rgba(27,122,74,0.07)', border: '1px solid rgba(27,122,74,0.14)' }}
+                    >
+                      <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '15px', color: '#191c1b' }}>{article.impact}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Signal / Noise meter */}
+                {article.signalScore != null && (
+                  <div className="mb-8">
+                    <h2
+                      className="font-['Manrope'] font-bold mb-3 uppercase tracking-widest"
+                      style={{ fontSize: '11px', color: 'rgba(0,0,0,0.38)', letterSpacing: '0.10em' }}
+                    >
+                      Signal vs Noise
+                    </h2>
+                    <div
+                      className="rounded-2xl px-5 py-4"
+                      style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}
+                    >
+                      <div className="flex justify-between items-center mb-2.5">
+                        <span className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)' }}>Noise</span>
+                        <span
+                          className="font-['Manrope'] font-bold"
+                          style={{ fontSize: '13px', color: article.signalScore >= 70 ? '#1b7a4a' : article.signalScore >= 45 ? '#191c1b' : 'rgba(0,0,0,0.45)' }}
+                        >
+                          {article.signalScore >= 70 ? 'High Signal' : article.signalScore >= 45 ? 'Mixed' : 'Low Signal'}
+                        </span>
+                        <span className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)' }}>Signal</span>
+                      </div>
+                      {/* Track */}
+                      <div className="relative h-2 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.08)' }}>
+                        <div
+                          className="absolute inset-y-0 left-0 rounded-full transition-all"
+                          style={{
+                            width: `${article.signalScore}%`,
+                            background: article.signalScore >= 70
+                              ? 'linear-gradient(to right, rgba(27,122,74,0.4), #1b7a4a)'
+                              : article.signalScore >= 45
+                              ? 'linear-gradient(to right, rgba(0,0,0,0.15), rgba(0,0,0,0.4))'
+                              : 'linear-gradient(to right, rgba(180,40,40,0.3), rgba(180,40,40,0.6))',
+                          }}
+                        />
+                        {/* Thumb dot */}
+                        <div
+                          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 border-white"
+                          style={{
+                            left: `calc(${article.signalScore}% - 6px)`,
+                            background: article.signalScore >= 70 ? '#1b7a4a' : article.signalScore >= 45 ? '#191c1b' : '#b42828',
+                            boxShadow: '0 1px 4px rgba(0,0,0,0.25)',
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Full text */}
+                <div>
+                  <h2
+                    className="font-['Manrope'] font-bold mb-4 uppercase tracking-widest"
+                    style={{ fontSize: '11px', color: 'rgba(0,0,0,0.38)', letterSpacing: '0.10em' }}
+                  >
+                    Full Story
+                  </h2>
+                  <div className="font-['Inter'] leading-relaxed space-y-4" style={{ fontSize: '16px', color: '#191c1b' }}>
+                    {article.content.split('\n\n').map((para, i) => (
+                      <p key={i}>{para}</p>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="mt-16 pt-8 border-t border-[#c6c6c6]/30 flex items-center justify-center gap-3">
