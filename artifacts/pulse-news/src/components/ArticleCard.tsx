@@ -81,8 +81,12 @@ export function ArticleCard({ article, onReadMore, onEnter }: ArticleCardProps) 
             {article.tag}
           </span>
           <span
-            className="font-medium text-xs font-['Inter'] uppercase tracking-widest"
-            style={{ color: 'rgba(255,255,255,0.50)' }}
+            className="px-3 py-1 rounded-full text-[10px] font-semibold font-['Inter'] tracking-wide"
+            style={{
+              background: 'rgba(255,255,255,0.10)',
+              border: '1px solid rgba(255,255,255,0.18)',
+              color: 'rgba(255,255,255,0.80)',
+            }}
           >
             {article.source}
           </span>
