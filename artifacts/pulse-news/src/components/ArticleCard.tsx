@@ -85,9 +85,9 @@ export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: Ar
           <span
             className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest font-['Inter']"
             style={{
-              background: 'rgba(255,255,255,0.15)',
-              border: '1px solid rgba(255,255,255,0.28)',
-              color: 'rgba(255,255,255,0.92)',
+              background: 'rgba(44,130,85,0.30)',
+              border: '1px solid rgba(82,183,136,0.45)',
+              color: 'rgba(220,245,232,0.95)',
             }}
           >
             {article.tag}
@@ -95,9 +95,9 @@ export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: Ar
           <span
             className="px-3 py-1 rounded-full text-[10px] font-semibold font-['Inter'] tracking-wide"
             style={{
-              background: 'rgba(255,255,255,0.10)',
-              border: '1px solid rgba(255,255,255,0.18)',
-              color: 'rgba(255,255,255,0.80)',
+              background: 'rgba(44,130,85,0.18)',
+              border: '1px solid rgba(82,183,136,0.28)',
+              color: 'rgba(200,235,218,0.90)',
             }}
           >
             {article.source}

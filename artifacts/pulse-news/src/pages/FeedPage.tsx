@@ -268,13 +268,26 @@ export function FeedPage() {
     return items;
   }, [allArticles]);
 
+  const [dayProgress, setDayProgress] = useState(0);
+
   const handleItemEnter = useCallback((date: Date) => {
     setSelectedDate(startOfDay(date));
+    setDayProgress(0); // reset bar when a day-divider scrolls in
   }, []);
 
   const handleArticleEnter = useCallback((publishedAt: string) => {
-    handleItemEnter(new Date(publishedAt));
-  }, [handleItemEnter]);
+    const articleDate = new Date(publishedAt);
+    setSelectedDate(startOfDay(articleDate));
+    // calculate position within this day
+    const currentDay = startOfDay(articleDate);
+    const dayArticles = allArticles.filter(a =>
+      isSameDay(startOfDay(new Date(a.publishedAt)), currentDay)
+    );
+    const idx = dayArticles.findIndex(a => a.publishedAt === publishedAt);
+    if (dayArticles.length > 0 && idx >= 0) {
+      setDayProgress((idx + 1) / dayArticles.length);
+    }
+  }, [allArticles]);
 
   const handleDatePick = useCallback((date: Date) => {
     if (isSameDay(date, startOfDay(new Date()))) {
@@ -341,6 +354,23 @@ export function FeedPage() {
     <div className="h-[100dvh] w-full relative">
       {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
       {activeTab === 'feed' && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker />}
+
+      {/* Day progress bar — liquid green fill, sits flush under the top bar */}
+      {activeTab === 'feed' && (
+        <div
+          className="fixed inset-x-0 z-39 overflow-hidden"
+          style={{ top: '48px', height: '3px', background: 'rgba(255,255,255,0.06)' }}
+        >
+          <div
+            style={{
+              height: '100%',
+              width: `${dayProgress * 100}%`,
+              background: 'linear-gradient(90deg, rgba(26,68,48,0.70) 0%, rgba(44,130,85,0.65) 45%, rgba(82,183,136,0.75) 80%, rgba(200,235,218,0.60) 100%)',
+              transition: 'width 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            }}
+          />
+        </div>
+      )}
 
       {/* Feed — always mounted so scroll position is preserved when switching tabs */}
       <div
