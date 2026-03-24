@@ -17,9 +17,9 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
   const goForward = () => { if (!isAtToday) onDateChange(addDays(selectedDate, 1)); };
 
   const barStyle = {
-    background: 'linear-gradient(120deg, rgba(208,228,218,0.93) 0%, rgba(236,243,239,0.90) 55%, rgba(220,236,228,0.93) 100%)',
-    backdropFilter: 'blur(40px)',
-    WebkitBackdropFilter: 'blur(40px)',
+    background: 'rgba(10, 14, 11, 0.92)',
+    backdropFilter: 'blur(32px)',
+    WebkitBackdropFilter: 'blur(32px)',
   };
 
   return (
@@ -29,14 +29,14 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
         className="fixed top-0 inset-x-0 z-40 flex items-center justify-between px-5 py-3"
         style={{
           ...barStyle,
-          borderBottom: pickerOpen ? 'none' : '1px solid rgba(0,0,0,0.06)',
-          boxShadow: pickerOpen ? 'none' : '0 2px 16px rgba(0,0,0,0.06)',
+          borderBottom: pickerOpen ? 'none' : '1px solid rgba(255,255,255,0.06)',
+          boxShadow: pickerOpen ? 'none' : '0 2px 16px rgba(0,0,0,0.18)',
         }}
       >
         {/* Brand */}
         <span
           className="font-['Manrope'] font-bold tracking-tight"
-          style={{ fontSize: '22px', color: '#000000', letterSpacing: '-0.02em' }}
+          style={{ fontSize: '22px', color: '#ffffff', letterSpacing: '-0.02em' }}
         >
           Bref.
         </span>
@@ -49,7 +49,7 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
           >
             <span
               className="font-['Inter'] font-medium"
-              style={{ fontSize: '12px', color: 'rgba(0,0,0,0.70)', letterSpacing: '0.03em' }}
+              style={{ fontSize: '12px', color: '#ffffff', letterSpacing: '0.03em' }}
             >
               {format(selectedDate, 'do MMMM').toUpperCase()}
             </span>
@@ -58,7 +58,7 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
               style={{
                 width: '13px',
                 height: '13px',
-                color: 'rgba(0,0,0,0.40)',
+                color: 'rgba(255,255,255,0.60)',
                 transform: pickerOpen ? 'rotate(180deg)' : 'rotate(0deg)',
               }}
             />
@@ -66,7 +66,7 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
         ) : (
           <span
             className="font-['Inter'] font-medium"
-            style={{ fontSize: '12px', color: 'rgba(0,0,0,0.35)', letterSpacing: '0.03em' }}
+            style={{ fontSize: '12px', color: 'rgba(255,255,255,0.45)', letterSpacing: '0.03em' }}
           >
             {format(selectedDate, 'do MMMM').toUpperCase()}
           </span>
@@ -82,8 +82,8 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
           opacity: pickerOpen ? 1 : 0,
           transition: 'max-height 0.25s ease, opacity 0.20s ease',
           ...barStyle,
-          borderBottom: '1px solid rgba(0,0,0,0.06)',
-          boxShadow: pickerOpen ? '0 4px 20px rgba(0,0,0,0.08)' : 'none',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          boxShadow: pickerOpen ? '0 4px 20px rgba(0,0,0,0.22)' : 'none',
         }}
       >
         <div className="flex items-center justify-between px-5 py-3">
@@ -91,16 +91,16 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
           <button
             onClick={goBack}
             className="p-1.5 rounded-full transition-opacity hover:opacity-70 active:opacity-50"
-            style={{ background: 'rgba(0,0,0,0.06)' }}
+            style={{ background: 'rgba(255,255,255,0.08)' }}
           >
-            <ChevronLeft className="w-4 h-4" style={{ color: '#000000' }} />
+            <ChevronLeft className="w-4 h-4 text-white" />
           </button>
 
           {/* Current date */}
           <div className="text-center">
             <span
-              className="font-['Inter'] font-semibold"
-              style={{ fontSize: '14px', letterSpacing: '0.01em', color: '#000000' }}
+              className="font-['Inter'] font-semibold text-white"
+              style={{ fontSize: '14px', letterSpacing: '0.01em' }}
             >
               {isAtToday ? 'Today' : format(selectedDate, 'EEEE, do MMMM')}
             </span>
@@ -111,12 +111,12 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: To
             onClick={goForward}
             className="p-1.5 rounded-full transition-opacity active:opacity-50"
             style={{
-              background: 'rgba(0,0,0,0.06)',
+              background: 'rgba(255,255,255,0.08)',
               opacity: isAtToday ? 0.25 : 1,
               cursor: isAtToday ? 'default' : 'pointer',
             }}
           >
-            <ChevronRight className="w-4 h-4" style={{ color: '#000000' }} />
+            <ChevronRight className="w-4 h-4 text-white" />
           </button>
         </div>
       </div>}
