@@ -30,7 +30,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
           }}
           className="fixed inset-0 z-50 flex flex-col"
           style={{
-            background: '#eff5f1',
+            background: '#ecf3ef',
           }}
         >
           {/* Floating header — overlaid on the image */}
