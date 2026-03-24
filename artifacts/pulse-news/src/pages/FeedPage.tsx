@@ -270,29 +270,41 @@ export function FeedPage() {
 
   const [dayProgress, setDayProgress] = useState(0);
 
-  // Keep a stable ref to allArticles so callbacks don't need to change reference
-  const allArticlesRef = useRef(allArticles);
-  useEffect(() => { allArticlesRef.current = allArticles; }, [allArticles]);
-
   const handleItemEnter = useCallback((date: Date) => {
     setSelectedDate(startOfDay(date));
-    setDayProgress(0); // reset bar when a day-divider scrolls in
   }, []);
 
   const handleArticleEnter = useCallback((publishedAt: string) => {
-    const articleDate = new Date(publishedAt);
-    setSelectedDate(startOfDay(articleDate));
-    // calculate position within this day using the ref (stable callback)
-    const currentDay = startOfDay(articleDate);
-    const articles = allArticlesRef.current;
-    const dayArticles = articles.filter(a =>
-      isSameDay(startOfDay(new Date(a.publishedAt)), currentDay)
-    );
-    const idx = dayArticles.findIndex(a => a.publishedAt === publishedAt);
-    if (dayArticles.length > 0 && idx >= 0) {
-      setDayProgress((idx + 1) / dayArticles.length);
+    setSelectedDate(startOfDay(new Date(publishedAt)));
+  }, []);
+
+  // Scroll-based progress — each card is 100dvh so card index = round(scrollTop / vh)
+  const feedItemsRef = useRef(feedItems);
+  useEffect(() => { feedItemsRef.current = feedItems; }, [feedItems]);
+
+  const handleFeedScroll = useCallback(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const cardIndex = Math.round(container.scrollTop / window.innerHeight);
+    const items = feedItemsRef.current;
+    if (cardIndex >= items.length) return;
+    const current = items[cardIndex];
+    if (current.kind === 'article') {
+      const articleDay = startOfDay(new Date(current.article.publishedAt));
+      const dayItems = items.filter(
+        i => i.kind === 'article' && isSameDay(startOfDay(new Date(i.article.publishedAt)), articleDay)
+      );
+      const idx = dayItems.findIndex(
+        i => i.kind === 'article' && i.article.publishedAt === current.article.publishedAt
+      );
+      if (dayItems.length > 0 && idx >= 0) setDayProgress((idx + 1) / dayItems.length);
+    } else {
+      setDayProgress(0);
     }
-  }, []); // stable — reads allArticles via ref
+  }, []);
+
+  // Fire once when feed data loads so bar reflects initial position
+  useEffect(() => { handleFeedScroll(); }, [feedItems, handleFeedScroll]);
 
   const handleDatePick = useCallback((date: Date) => {
     if (isSameDay(date, startOfDay(new Date()))) {
@@ -364,7 +376,7 @@ export function FeedPage() {
       {activeTab === 'feed' && (
         <div
           className="fixed inset-x-0 overflow-hidden"
-          style={{ top: '48px', height: '3px', background: 'rgba(255,255,255,0.12)', zIndex: 39 }}
+          style={{ top: '48px', height: '3px', background: 'rgba(82,183,136,0.22)', zIndex: 39 }}
         >
           <div
             style={{
@@ -381,6 +393,7 @@ export function FeedPage() {
       {/* Feed — always mounted so scroll position is preserved when switching tabs */}
       <div
         ref={scrollContainerRef}
+        onScroll={handleFeedScroll}
         className="h-[100dvh] w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide overscroll-y-none"
         style={{ scrollPaddingBottom: "64px", display: activeTab === 'feed' ? 'block' : 'none' }}
       >
