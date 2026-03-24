@@ -20,13 +20,8 @@ export function DateDividerCard({ date, dateId, onEnter }: DateDividerCardProps)
     return () => observer.disconnect();
   }, [date, onEnter]);
 
-  const label = isToday(date)
-    ? "Today"
-    : isYesterday(date)
-    ? "Yesterday"
-    : format(date, "EEEE, do MMMM");
-
-  const sub = isToday(date) || isYesterday(date) ? format(date, "do MMMM yyyy") : format(date, "yyyy");
+  const label = isToday(date) ? "Today" : isYesterday(date) ? "Yesterday" : format(date, "EEEE");
+  const sub = isToday(date) || isYesterday(date) ? format(date, "do MMMM yyyy") : format(date, "do MMMM");
 
   return (
     <div
