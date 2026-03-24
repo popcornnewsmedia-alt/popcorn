@@ -80,12 +80,12 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, dayP
 
         {/* Progress bar — always at exact bottom of the TopBar */}
         {showDatePicker && (
-          <div style={{ height: '4px', background: 'rgba(82,183,136,0.28)', width: '100%' }}>
+          <div style={{ height: '4px', background: 'rgba(44,82,62,0.30)', width: '100%' }}>
             <div
+              className="progress-liquid"
               style={{
                 height: '100%',
                 width: `${dayProgress * 100}%`,
-                background: 'linear-gradient(90deg, #1a4430 0%, #2d8a58 40%, #52b788 75%, #b7e4c7 100%)',
                 transition: 'width 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
               }}
             />
