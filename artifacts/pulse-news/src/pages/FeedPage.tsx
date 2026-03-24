@@ -77,7 +77,7 @@ function SavedScreen({
           </div>
           <button
             onClick={onBrowse}
-            className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+            className="mt-3 px-8 py-3 rounded-full font-['Neue_Montreal'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
             style={{ background: "#000000", color: "#ffffff" }}
           >
             Browse
@@ -98,7 +98,7 @@ function SavedScreen({
           >
             Saved
           </h2>
-          <p className="font-['Inter'] mt-0.5" style={{ fontSize: "13px", color: "rgba(0,0,0,0.4)" }}>
+          <p className="font-['Neue_Montreal'] mt-0.5" style={{ fontSize: "13px", color: "rgba(0,0,0,0.4)" }}>
             {articles.length} {articles.length === 1 ? "article" : "articles"}
           </p>
         </div>
@@ -128,7 +128,7 @@ function SavedScreen({
               <div className="flex-1 p-3 flex flex-col justify-between min-w-0">
                 <div className="flex flex-col gap-1">
                   <span
-                    className="font-['Inter'] font-semibold uppercase tracking-widest"
+                    className="font-['Neue_Montreal'] font-semibold uppercase tracking-widest"
                     style={{ fontSize: "9px", color: "rgba(0,0,0,0.38)" }}
                   >
                     {article.tag}
@@ -141,7 +141,7 @@ function SavedScreen({
                   </p>
                 </div>
                 <p
-                  className="font-['Inter'] mt-1"
+                  className="font-['Neue_Montreal'] mt-1"
                   style={{ fontSize: "11px", color: "rgba(0,0,0,0.38)" }}
                 >
                   {article.source} · {article.readTimeMinutes} min
@@ -196,7 +196,7 @@ function ProfileScreen({ onSignIn, userName }: { onSignIn: () => void; userName:
         {!userName && (
           <button
             onClick={onSignIn}
-            className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+            className="mt-3 px-8 py-3 rounded-full font-['Neue_Montreal'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
             style={{ background: "#000000", color: "#ffffff" }}
           >
             Sign in
@@ -290,7 +290,7 @@ export function FeedPage() {
         <GreenAtmosphere />
         <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#000000" }} />
         <p
-          className="font-['Inter'] font-semibold uppercase tracking-widest animate-pulse"
+          className="font-['Neue_Montreal'] font-semibold uppercase tracking-widest animate-pulse"
           style={{ fontSize: "11px", color: "rgba(0,0,0,0.40)" }}
         >
           Curating your feed
@@ -305,12 +305,12 @@ export function FeedPage() {
         <GreenAtmosphere />
         <AlertCircle className="w-10 h-10 text-red-500 mb-6" />
         <h2 className="font-['Manrope'] font-bold text-2xl text-[#0f2a1a] mb-3">Connection lost</h2>
-        <p className="font-['Inter'] text-[#1a4430]/55 mb-8 max-w-xs">
+        <p className="font-['Neue_Montreal'] text-[#1a4430]/55 mb-8 max-w-xs">
           We couldn't reach the Pulse network. Check your connection and try again.
         </p>
         <button
           onClick={() => refetch()}
-          className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm"
+          className="flex items-center gap-2 px-6 py-3 rounded-full font-['Neue_Montreal'] font-semibold text-sm"
           style={{ background: "#0f2a1a", color: "#ecf3ef" }}
         >
           <RefreshCw className="w-4 h-4" />

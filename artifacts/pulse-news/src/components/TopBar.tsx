@@ -46,7 +46,7 @@ export function TopBar({ selectedDate, onDateChange }: TopBarProps) {
           className="flex items-center gap-1.5 transition-opacity hover:opacity-75"
         >
           <span
-            className="font-['Inter'] font-medium"
+            className="font-['Neue_Montreal'] font-medium"
             style={{ fontSize: '12px', color: '#ffffff', letterSpacing: '0.03em' }}
           >
             {format(selectedDate, 'do MMMM').toUpperCase()}
@@ -89,7 +89,7 @@ export function TopBar({ selectedDate, onDateChange }: TopBarProps) {
           {/* Current date */}
           <div className="text-center">
             <span
-              className="font-['Inter'] font-semibold text-white"
+              className="font-['Neue_Montreal'] font-semibold text-white"
               style={{ fontSize: '14px', letterSpacing: '0.01em' }}
             >
               {isAtToday ? 'Today' : format(selectedDate, 'EEEE, do MMMM')}

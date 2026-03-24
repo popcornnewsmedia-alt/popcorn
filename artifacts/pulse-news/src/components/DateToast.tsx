@@ -48,7 +48,7 @@ export function DateToast({ triggerKey, date }: DateToastProps) {
           style={{ background: '#4ade80' }}
         />
         <span
-          className="font-['Inter'] font-semibold text-white"
+          className="font-['Neue_Montreal'] font-semibold text-white"
           style={{ fontSize: '13px', letterSpacing: '0.01em' }}
         >
           {label}

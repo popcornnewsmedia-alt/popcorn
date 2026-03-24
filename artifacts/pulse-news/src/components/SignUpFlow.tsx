@@ -132,7 +132,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
                 <h2 className="font-['Manrope'] font-bold mb-2" style={{ fontSize: '28px', color: '#000' }}>
                   You're all set, {name.trim() || "Reader"}.
                 </h2>
-                <p className="font-['Inter']" style={{ fontSize: '15px', color: 'rgba(0,0,0,0.45)' }}>
+                <p className="font-['Neue_Montreal']" style={{ fontSize: '15px', color: 'rgba(0,0,0,0.45)' }}>
                   Your personalised feed is ready.
                 </p>
               </div>
@@ -144,45 +144,45 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
                 <h2 className="font-['Manrope'] font-bold mb-1.5" style={{ fontSize: '30px', color: '#000', lineHeight: 1.1 }}>
                   Create your account.
                 </h2>
-                <p className="font-['Inter']" style={{ fontSize: '15px', color: 'rgba(0,0,0,0.45)' }}>
+                <p className="font-['Neue_Montreal']" style={{ fontSize: '15px', color: 'rgba(0,0,0,0.45)' }}>
                   Start reading smarter in under a minute.
                 </p>
               </div>
 
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.45)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>Name</label>
+                  <label className="font-['Neue_Montreal'] font-semibold" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.45)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>Name</label>
                   <input
                     value={name}
                     onChange={e => setName(e.target.value)}
                     onClick={stopProp}
                     placeholder="Your name"
-                    className="w-full rounded-xl px-4 py-3.5 font-['Inter'] outline-none transition-shadow"
+                    className="w-full rounded-xl px-4 py-3.5 font-['Neue_Montreal'] outline-none transition-shadow"
                     style={{ background: 'rgba(0,0,0,0.06)', fontSize: '16px', color: '#000', border: '1px solid rgba(0,0,0,0.08)' }}
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.45)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>Email</label>
+                  <label className="font-['Neue_Montreal'] font-semibold" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.45)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>Email</label>
                   <input
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     onClick={stopProp}
                     placeholder="you@example.com"
-                    className="w-full rounded-xl px-4 py-3.5 font-['Inter'] outline-none"
+                    className="w-full rounded-xl px-4 py-3.5 font-['Neue_Montreal'] outline-none"
                     style={{ background: 'rgba(0,0,0,0.06)', fontSize: '16px', color: '#000', border: '1px solid rgba(0,0,0,0.08)' }}
                   />
                 </div>
 
                 <div className="flex items-center gap-3 mt-1">
                   <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.10)' }} />
-                  <span className="font-['Inter']" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.30)' }}>or</span>
+                  <span className="font-['Neue_Montreal']" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.30)' }}>or</span>
                   <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.10)' }} />
                 </div>
 
                 <button
                   onClick={stopProp}
-                  className="w-full flex items-center justify-center gap-3 rounded-xl py-3.5 font-['Inter'] font-semibold transition-opacity hover:opacity-80"
+                  className="w-full flex items-center justify-center gap-3 rounded-xl py-3.5 font-['Neue_Montreal'] font-semibold transition-opacity hover:opacity-80"
                   style={{ background: 'rgba(0,0,0,0.06)', fontSize: '15px', color: '#000', border: '1px solid rgba(0,0,0,0.08)' }}
                 >
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -201,7 +201,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
               <h2 className="font-['Manrope'] font-bold mb-1.5" style={{ fontSize: '28px', color: '#000', lineHeight: 1.1 }}>
                 What interests you?
               </h2>
-              <p className="font-['Inter'] mb-7" style={{ fontSize: '15px', color: 'rgba(0,0,0,0.45)' }}>
+              <p className="font-['Neue_Montreal'] mb-7" style={{ fontSize: '15px', color: 'rgba(0,0,0,0.45)' }}>
                 Pick at least one topic to shape your feed.
               </p>
 
@@ -212,7 +212,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
                     <button
                       key={t}
                       onClick={(e) => toggleTopic(e, t)}
-                      className="px-4 py-2.5 rounded-full font-['Inter'] font-medium transition-all duration-150"
+                      className="px-4 py-2.5 rounded-full font-['Neue_Montreal'] font-medium transition-all duration-150"
                       style={{
                         fontSize: '13px',
                         background: sel ? '#000' : 'rgba(0,0,0,0.07)',
@@ -233,7 +233,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
                 <h2 className="font-['Manrope'] font-bold mb-1.5" style={{ fontSize: '28px', color: '#000', lineHeight: 1.1 }}>
                   Stay in the loop.
                 </h2>
-                <p className="font-['Inter']" style={{ fontSize: '15px', color: 'rgba(0,0,0,0.45)' }}>
+                <p className="font-['Neue_Montreal']" style={{ fontSize: '15px', color: 'rgba(0,0,0,0.45)' }}>
                   Choose how Bref. reaches you.
                 </p>
               </div>
@@ -281,8 +281,8 @@ function NotifToggle({ label, sub }: { label: string; sub: string }) {
       onClick={(e) => { e.stopPropagation(); setOn(v => !v); }}
     >
       <div>
-        <p className="font-['Inter'] font-semibold" style={{ fontSize: '14px', color: '#000' }}>{label}</p>
-        <p className="font-['Inter']" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.40)' }}>{sub}</p>
+        <p className="font-['Neue_Montreal'] font-semibold" style={{ fontSize: '14px', color: '#000' }}>{label}</p>
+        <p className="font-['Neue_Montreal']" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.40)' }}>{sub}</p>
       </div>
       <div
         className="flex-shrink-0 w-12 h-7 rounded-full relative transition-colors duration-200"
