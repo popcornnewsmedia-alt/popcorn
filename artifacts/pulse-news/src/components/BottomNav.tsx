@@ -15,30 +15,46 @@ const tabs: { id: Tab; Icon: typeof House }[] = [
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <div className="fixed bottom-0 inset-x-0 z-40 flex justify-around items-end pb-8 pointer-events-none">
-      {tabs.map(({ id, Icon }) => {
-        const active = activeTab === id;
-        return (
-          <button
-            key={id}
-            onClick={() => onTabChange(id)}
-            className="pointer-events-auto flex items-center justify-center transition-all duration-200"
-            style={{ width: 52, height: 52 }}
-          >
-            <Icon
+    <div className="fixed bottom-0 inset-x-0 z-40 flex justify-center pb-4 pointer-events-none">
+      <div
+        className="flex items-center gap-1 px-3 py-2.5 pointer-events-auto"
+        style={{
+          background: 'rgba(10,14,11,0.92)',
+          backdropFilter: 'blur(32px)',
+          WebkitBackdropFilter: 'blur(32px)',
+          borderRadius: '100px',
+          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.32), 0 2px 8px rgba(0,0,0,0.20)',
+        }}
+      >
+        {tabs.map(({ id, Icon }) => {
+          const active = activeTab === id;
+          return (
+            <button
+              key={id}
+              onClick={() => onTabChange(id)}
+              className="flex items-center justify-center transition-all duration-200"
               style={{
-                width: 24,
-                height: 24,
-                color: '#191c1b',
-                fill: active ? '#191c1b' : 'none',
-                strokeWidth: active ? 1.8 : 1.5,
-                filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.22))',
-                transition: 'all 0.2s',
+                width: 52,
+                height: 44,
+                borderRadius: 80,
+                background: active ? 'rgba(255,255,255,0.10)' : 'transparent',
               }}
-            />
-          </button>
-        );
-      })}
+            >
+              <Icon
+                style={{
+                  width: 21,
+                  height: 21,
+                  color: active ? '#ffffff' : 'rgba(255,255,255,0.45)',
+                  fill: active ? '#ffffff' : 'none',
+                  strokeWidth: active ? 1.8 : 1.6,
+                  transition: 'all 0.2s',
+                }}
+              />
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
