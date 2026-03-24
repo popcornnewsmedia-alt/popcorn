@@ -358,8 +358,8 @@ export function FeedPage() {
       {/* Day progress bar — liquid green fill, sits flush under the top bar */}
       {activeTab === 'feed' && (
         <div
-          className="fixed inset-x-0 z-39 overflow-hidden"
-          style={{ top: '48px', height: '3px', background: 'rgba(255,255,255,0.06)' }}
+          className="fixed inset-x-0 overflow-hidden"
+          style={{ top: '48px', height: '3px', background: 'rgba(255,255,255,0.06)', zIndex: 39 }}
         >
           <div
             style={{
