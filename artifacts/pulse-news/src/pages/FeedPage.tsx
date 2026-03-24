@@ -20,19 +20,7 @@ function dividerIdForDate(d: Date) {
 
 function GreenAtmosphere() {
   return (
-    <div className="absolute inset-0 -z-0" style={{ background: "#cce0d4" }}>
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 15% 20%, rgba(26,68,48,0.07) 0%, transparent 55%),
-            radial-gradient(circle at 82% 75%, rgba(44,82,62,0.06) 0%, transparent 55%),
-            radial-gradient(circle at 50% 50%, rgba(26,68,48,0.03) 0%, transparent 70%)
-          `,
-          filter: "blur(96px)",
-        }}
-      />
-    </div>
+    <div className="absolute inset-0 -z-0" style={{ background: "#b8d4c2" }} />
   );
 }
 
