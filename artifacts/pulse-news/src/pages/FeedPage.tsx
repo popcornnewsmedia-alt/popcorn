@@ -214,6 +214,7 @@ export function FeedPage() {
   const [signUpOpen, setSignUpOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(startOfDay(new Date()));
+  const [readIds, setReadIds] = useState<Set<number>>(new Set());
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -352,6 +353,7 @@ export function FeedPage() {
                 article={item.article}
                 onReadMore={setReadingArticle}
                 onEnter={handleArticleEnter}
+                isRead={readIds.has(item.article.id)}
               />
             )
           )
@@ -372,7 +374,12 @@ export function FeedPage() {
       <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} />
       {renderTab()}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
-      <ArticleReader article={readingArticle} onClose={() => setReadingArticle(null)} />
+      <ArticleReader
+        article={readingArticle}
+        onClose={() => setReadingArticle(null)}
+        isRead={readingArticle ? readIds.has(readingArticle.id) : false}
+        onMarkRead={() => readingArticle && setReadIds(prev => new Set(prev).add(readingArticle.id))}
+      />
       <SignUpFlow
         isOpen={signUpOpen}
         onClose={() => setSignUpOpen(false)}

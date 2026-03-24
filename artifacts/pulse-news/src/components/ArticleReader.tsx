@@ -1,14 +1,19 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Clock, Calendar } from "lucide-react";
+import { X, Clock, Calendar, Check, Bookmark } from "lucide-react";
 import { format } from "date-fns";
 import type { NewsArticle } from "@workspace/api-client-react";
+import { useBookmarkArticle } from "@/hooks/use-news";
 
 interface ArticleReaderProps {
   article: NewsArticle | null;
   onClose: () => void;
+  isRead?: boolean;
+  onMarkRead?: () => void;
 }
 
-export function ArticleReader({ article, onClose }: ArticleReaderProps) {
+export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: ArticleReaderProps) {
+  const { mutate: bookmarkMutation } = useBookmarkArticle();
+
   return (
     <AnimatePresence>
       {article && (
@@ -110,12 +115,35 @@ export function ArticleReader({ article, onClose }: ArticleReaderProps) {
                   )}
                 </div>
 
-                <div className="mt-16 pt-8 border-t border-[#c6c6c6]/30 flex justify-center">
+                <div className="mt-16 pt-8 border-t border-[#c6c6c6]/30 flex items-center justify-center gap-3">
+                  {/* Mark as Read */}
                   <button
-                    onClick={onClose}
-                    className="px-8 py-3 rounded-full bg-[#191c1b] text-[#e5e2e1] hover:bg-[#3c3b3b] transition-colors font-semibold"
+                    onClick={() => { onMarkRead?.(); onClose(); }}
+                    className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm transition-all"
+                    style={{
+                      background: isRead ? '#1b7a4a' : '#191c1b',
+                      color: '#fff',
+                    }}
                   >
-                    Finished Reading
+                    <Check className="w-4 h-4" strokeWidth={2.5} />
+                    {isRead ? 'Marked as Read' : 'Mark as Read'}
+                  </button>
+
+                  {/* Save for Later */}
+                  <button
+                    onClick={() => article && bookmarkMutation(article.id)}
+                    className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm transition-all"
+                    style={{
+                      background: article?.isBookmarked ? 'rgba(0,0,0,0.08)' : 'transparent',
+                      border: '1.5px solid rgba(0,0,0,0.18)',
+                      color: article?.isBookmarked ? '#1b7a4a' : '#191c1b',
+                    }}
+                  >
+                    <Bookmark
+                      className="w-4 h-4"
+                      style={{ fill: article?.isBookmarked ? '#1b7a4a' : 'none', color: article?.isBookmarked ? '#1b7a4a' : '#191c1b' }}
+                    />
+                    {article?.isBookmarked ? 'Saved' : 'Save for Later'}
                   </button>
                 </div>
 

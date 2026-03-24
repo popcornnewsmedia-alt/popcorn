@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp, CheckCircle2 } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { ActionButtons } from "./ActionButtons";
 import { CommentSheet } from "./CommentSheet";
@@ -9,9 +9,10 @@ interface ArticleCardProps {
   article: NewsArticle;
   onReadMore: (article: NewsArticle) => void;
   onEnter?: (publishedAt: string) => void;
+  isRead?: boolean;
 }
 
-export function ArticleCard({ article, onReadMore, onEnter }: ArticleCardProps) {
+export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: ArticleCardProps) {
   const hasImage = !!article.imageUrl;
   const [commentsOpen, setCommentsOpen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -53,6 +54,17 @@ export function ArticleCard({ article, onReadMore, onEnter }: ArticleCardProps) 
         </>
       ) : (
         <div className="absolute inset-0 ink-diffusion-bg" />
+      )}
+
+      {/* Read indicator badge */}
+      {isRead && (
+        <div
+          className="absolute top-[68px] left-4 z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+          style={{ background: 'rgba(27,122,74,0.85)', backdropFilter: 'blur(8px)' }}
+        >
+          <CheckCircle2 className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
+          <span className="font-['Inter'] font-semibold text-white" style={{ fontSize: '11px', letterSpacing: '0.02em' }}>Read</span>
+        </div>
       )}
 
       {/* Vertical action buttons — right side */}
