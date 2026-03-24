@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { format } from "date-fns";
 
 interface SplashScreenProps {
   onDone: () => void;
@@ -82,6 +83,19 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
           }}
         >
           News in seconds.
+        </p>
+
+        {/* Today's date */}
+        <p
+          className="font-['Inter'] font-medium"
+          style={{
+            fontSize: '12px',
+            color: 'rgba(0,0,0,0.28)',
+            letterSpacing: '0.08em',
+            animation: 'tagline-reveal 0.6s cubic-bezier(0.22,1,0.36,1) 1.2s both',
+          }}
+        >
+          {format(new Date(), 'd MMMM yyyy').toUpperCase()}
         </p>
 
         {/* Loading dots */}
