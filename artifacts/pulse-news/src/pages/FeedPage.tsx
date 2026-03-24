@@ -36,43 +36,120 @@ function GreenAtmosphere() {
   );
 }
 
-function SavedScreen({ onBrowse }: { onBrowse: () => void }) {
-  return (
-    <div className="relative h-[100dvh] w-full flex flex-col items-center justify-center px-8 text-center overflow-hidden">
-      <GreenAtmosphere />
-      <div className="relative z-10 flex flex-col items-center gap-5 max-w-xs">
-        <div
-          className="w-24 h-24 rounded-full flex items-center justify-center mb-2"
-          style={{
-            background: "rgba(255,255,255,0.45)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            boxShadow: "0 8px 32px rgba(26,68,48,0.16)",
-          }}
-        >
-          <Bookmark className="w-9 h-9" style={{ color: "#0f2a1a", strokeWidth: 1.6 }} />
+function SavedScreen({
+  onBrowse,
+  articles,
+  onReadMore,
+}: {
+  onBrowse: () => void;
+  articles: NewsArticle[];
+  onReadMore: (article: NewsArticle) => void;
+}) {
+  if (articles.length === 0) {
+    return (
+      <div className="relative h-[100dvh] w-full flex flex-col items-center justify-center px-8 text-center overflow-hidden">
+        <GreenAtmosphere />
+        <div className="relative z-10 flex flex-col items-center gap-5 max-w-xs">
+          <div
+            className="w-24 h-24 rounded-full flex items-center justify-center mb-2"
+            style={{
+              background: "rgba(255,255,255,0.45)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              boxShadow: "0 8px 32px rgba(26,68,48,0.16)",
+            }}
+          >
+            <Bookmark className="w-9 h-9" style={{ color: "#0f2a1a", strokeWidth: 1.6 }} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <h1
+              className="font-['Manrope'] font-bold tracking-tight"
+              style={{ fontSize: "28px", lineHeight: 1.1, color: "#000" }}
+            >
+              Nothing saved yet
+            </h1>
+            <p
+              className="font-['Manrope'] italic leading-relaxed"
+              style={{ fontSize: "16px", color: "rgba(0,0,0,0.45)" }}
+            >
+              Bookmark articles as you scroll to build your reading list.
+            </p>
+          </div>
+          <button
+            onClick={onBrowse}
+            className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+            style={{ background: "#000000", color: "#ffffff" }}
+          >
+            Browse
+          </button>
         </div>
-        <div className="flex flex-col gap-2">
-          <h1
-            className="font-['Manrope'] font-bold tracking-tight"
-            style={{ fontSize: "28px", lineHeight: 1.1, color: "#000" }}
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative h-[100dvh] w-full overflow-hidden flex flex-col" style={{ background: "#ecf3ef" }}>
+      <GreenAtmosphere />
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="px-5 pt-[72px] pb-3">
+          <h2
+            className="font-['Manrope'] font-bold"
+            style={{ fontSize: "22px", color: "#000" }}
           >
-            Nothing saved yet
-          </h1>
-          <p
-            className="font-['Manrope'] italic leading-relaxed"
-            style={{ fontSize: "16px", color: "rgba(0,0,0,0.45)" }}
-          >
-            Bookmark articles as you scroll to build your reading list.
+            Saved
+          </h2>
+          <p className="font-['Inter'] mt-0.5" style={{ fontSize: "13px", color: "rgba(0,0,0,0.4)" }}>
+            {articles.length} {articles.length === 1 ? "article" : "articles"}
           </p>
         </div>
-        <button
-          onClick={onBrowse}
-          className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
-          style={{ background: "#000000", color: "#ffffff" }}
-        >
-          Browse
-        </button>
+
+        <div className="flex-1 overflow-y-auto px-4 pb-24 scrollbar-hide flex flex-col gap-3">
+          {articles.map((article) => (
+            <button
+              key={article.id}
+              onClick={() => onReadMore(article)}
+              className="w-full text-left rounded-2xl overflow-hidden flex gap-0 transition-opacity active:opacity-75"
+              style={{
+                background: "rgba(255,255,255,0.55)",
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+              }}
+            >
+              {article.imageUrl && (
+                <div className="w-24 h-24 flex-shrink-0">
+                  <img
+                    src={article.imageUrl}
+                    alt={article.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="flex-1 p-3 flex flex-col justify-between min-w-0">
+                <div className="flex flex-col gap-1">
+                  <span
+                    className="font-['Inter'] font-semibold uppercase tracking-widest"
+                    style={{ fontSize: "9px", color: "rgba(0,0,0,0.38)" }}
+                  >
+                    {article.tag}
+                  </span>
+                  <p
+                    className="font-['Manrope'] font-bold leading-snug line-clamp-2"
+                    style={{ fontSize: "14px", color: "#000" }}
+                  >
+                    {article.title}
+                  </p>
+                </div>
+                <p
+                  className="font-['Inter'] mt-1"
+                  style={{ fontSize: "11px", color: "rgba(0,0,0,0.38)" }}
+                >
+                  {article.source} · {article.readTimeMinutes} min
+                </p>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -155,6 +232,7 @@ export function FeedPage() {
   }, [readingArticle]);
 
   const allArticles = data?.pages.flatMap((page) => page.articles) ?? [];
+  const savedArticles = allArticles.filter((a) => a.isBookmarked);
 
   type FeedItem =
     | { kind: "article"; article: NewsArticle }
@@ -240,7 +318,7 @@ export function FeedPage() {
   }
 
   const renderTab = () => {
-    if (activeTab === "saved") return <SavedScreen onBrowse={() => setActiveTab("feed")} />;
+    if (activeTab === "saved") return <SavedScreen onBrowse={() => setActiveTab("feed")} articles={savedArticles} onReadMore={setReadingArticle} />;
     if (activeTab === "profile") return <ProfileScreen onSignIn={() => setSignUpOpen(true)} userName={userName} />;
 
     return (
