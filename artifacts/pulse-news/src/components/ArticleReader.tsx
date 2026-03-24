@@ -116,7 +116,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                 </div>
 
                 <div className="mt-16 pt-8 border-t border-[#c6c6c6]/30 flex items-center justify-center gap-3">
-                  {/* Mark as Read */}
+                  {/* Mark as Read / Unmark */}
                   <button
                     onClick={() => { onMarkRead?.(); onClose(); }}
                     className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm transition-all"
@@ -126,24 +126,26 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                     }}
                   >
                     <Check className="w-4 h-4" strokeWidth={2.5} />
-                    {isRead ? 'Marked as Read' : 'Mark as Read'}
+                    {isRead ? 'Unmark as Read' : 'Mark as Read'}
                   </button>
 
-                  {/* Save for Later */}
+                  {/* Save / Unsave — icon only */}
                   <button
                     onClick={() => article && bookmarkMutation(article.id)}
-                    className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm transition-all"
+                    className="flex items-center justify-center w-11 h-11 rounded-full transition-all"
                     style={{
-                      background: article?.isBookmarked ? 'rgba(0,0,0,0.08)' : 'transparent',
-                      border: '1.5px solid rgba(0,0,0,0.18)',
-                      color: article?.isBookmarked ? '#1b7a4a' : '#191c1b',
+                      background: article?.isBookmarked ? 'rgba(27,122,74,0.12)' : 'transparent',
+                      border: '1.5px solid rgba(0,0,0,0.15)',
                     }}
                   >
                     <Bookmark
-                      className="w-4 h-4"
-                      style={{ fill: article?.isBookmarked ? '#1b7a4a' : 'none', color: article?.isBookmarked ? '#1b7a4a' : '#191c1b' }}
+                      className="w-4.5 h-4.5"
+                      style={{
+                        width: 18, height: 18,
+                        fill: article?.isBookmarked ? '#1b7a4a' : 'none',
+                        color: article?.isBookmarked ? '#1b7a4a' : 'rgba(0,0,0,0.55)',
+                      }}
                     />
-                    {article?.isBookmarked ? 'Saved' : 'Save for Later'}
                   </button>
                 </div>
 

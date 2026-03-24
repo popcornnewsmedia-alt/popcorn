@@ -378,7 +378,11 @@ export function FeedPage() {
         article={readingArticle}
         onClose={() => setReadingArticle(null)}
         isRead={readingArticle ? readIds.has(readingArticle.id) : false}
-        onMarkRead={() => readingArticle && setReadIds(prev => new Set(prev).add(readingArticle.id))}
+        onMarkRead={() => readingArticle && setReadIds(prev => {
+          const next = new Set(prev);
+          next.has(readingArticle.id) ? next.delete(readingArticle.id) : next.add(readingArticle.id);
+          return next;
+        })}
       />
       <SignUpFlow
         isOpen={signUpOpen}
