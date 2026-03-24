@@ -5,9 +5,10 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 interface TopBarProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
+  showDatePicker?: boolean;
 }
 
-export function TopBar({ selectedDate, onDateChange }: TopBarProps) {
+export function TopBar({ selectedDate, onDateChange, showDatePicker = true }: TopBarProps) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const today = startOfDay(new Date());
   const isAtToday = isSameDay(selectedDate, today);
@@ -41,30 +42,32 @@ export function TopBar({ selectedDate, onDateChange }: TopBarProps) {
         </span>
 
         {/* Date button */}
-        <button
-          onClick={() => setPickerOpen(o => !o)}
-          className="flex items-center gap-1.5 transition-opacity hover:opacity-75"
-        >
-          <span
-            className="font-['Inter'] font-medium"
-            style={{ fontSize: '12px', color: '#ffffff', letterSpacing: '0.03em' }}
+        {showDatePicker && (
+          <button
+            onClick={() => setPickerOpen(o => !o)}
+            className="flex items-center gap-1.5 transition-opacity hover:opacity-75"
           >
-            {format(selectedDate, 'do MMMM').toUpperCase()}
-          </span>
-          <ChevronDown
-            className="transition-transform duration-200"
-            style={{
-              width: '13px',
-              height: '13px',
-              color: 'rgba(255,255,255,0.60)',
-              transform: pickerOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-            }}
-          />
-        </button>
+            <span
+              className="font-['Inter'] font-medium"
+              style={{ fontSize: '12px', color: '#ffffff', letterSpacing: '0.03em' }}
+            >
+              {format(selectedDate, 'do MMMM').toUpperCase()}
+            </span>
+            <ChevronDown
+              className="transition-transform duration-200"
+              style={{
+                width: '13px',
+                height: '13px',
+                color: 'rgba(255,255,255,0.60)',
+                transform: pickerOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              }}
+            />
+          </button>
+        )}
       </div>
 
       {/* Date picker panel */}
-      <div
+      {showDatePicker && <div
         className="fixed inset-x-0 z-39 overflow-hidden"
         style={{
           top: '48px',
@@ -109,7 +112,7 @@ export function TopBar({ selectedDate, onDateChange }: TopBarProps) {
             <ChevronRight className="w-4 h-4 text-white" />
           </button>
         </div>
-      </div>
+      </div>}
 
       {/* Tap-outside dismiss overlay */}
       {pickerOpen && (

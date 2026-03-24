@@ -374,7 +374,7 @@ export function FeedPage() {
   return (
     <div className="h-[100dvh] w-full relative">
       {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
-      <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} />
+      <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker={activeTab === 'feed'} />
       {renderTab()}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       <ArticleReader
