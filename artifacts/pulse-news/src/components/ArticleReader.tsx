@@ -32,8 +32,9 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
           style={{
             background: '#f8faf9',
             backgroundImage: [
-              'radial-gradient(ellipse 80% 60% at 10% 0%, rgba(26,68,48,0.09) 0%, transparent 70%)',
-              'radial-gradient(ellipse 70% 50% at 95% 100%, rgba(44,82,62,0.08) 0%, transparent 70%)',
+              'radial-gradient(ellipse 80% 60% at 10% 0%, rgba(26,68,48,0.16) 0%, transparent 70%)',
+              'radial-gradient(ellipse 70% 50% at 95% 100%, rgba(44,82,62,0.14) 0%, transparent 70%)',
+              'radial-gradient(ellipse 50% 40% at 50% 55%, rgba(31,75,56,0.06) 0%, transparent 65%)',
             ].join(', '),
           }}
         >
