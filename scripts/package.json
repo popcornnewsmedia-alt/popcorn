@@ -6,6 +6,7 @@
   "scripts": {
     "hello": "tsx ./src/hello.ts",
     "seed-news": "tsx ./src/seed-news.ts",
+    "ingest-rss": "tsx ./src/ingest-rss.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

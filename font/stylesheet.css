@@ -1,0 +1,156 @@
+@font-face {
+    font-family: 'MACABROROUGH';
+    src: url('MACABROROUGH.eot');
+    src: local('☞MACABROROUGH'), local('MACABROROUGH'),
+        url('MACABROROUGH.eot?#iefix') format('embedded-opentype'),
+        url('MACABROROUGH.woff2') format('woff2'),
+        url('MACABROROUGH.woff') format('woff'),
+        url('MACABROROUGH.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MACABROOUTLINEROUGH';
+    src: url('MACABROOUTLINEROUGH.eot');
+    src: local('☞MACABROOUTLINEROUGH'), local('MACABROOUTLINEROUGH'),
+        url('MACABROOUTLINEROUGH.eot?#iefix') format('embedded-opentype'),
+        url('MACABROOUTLINEROUGH.woff2') format('woff2'),
+        url('MACABROOUTLINEROUGH.woff') format('woff'),
+        url('MACABROOUTLINEROUGH.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MACABROOUTLINEROUGHITALIC';
+    src: url('MACABROOUTLINEROUGHITALIC.eot');
+    src: local('☞MACABROOUTLINEROUGHITALIC'), local('MACABROOUTLINEROUGHITALIC'),
+        url('MACABROOUTLINEROUGHITALIC.eot?#iefix') format('embedded-opentype'),
+        url('MACABROOUTLINEROUGHITALIC.woff2') format('woff2'),
+        url('MACABROOUTLINEROUGHITALIC.woff') format('woff'),
+        url('MACABROOUTLINEROUGHITALIC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'MACABROSTYLEROUGH';
+    src: url('MACABROSTYLEROUGH.eot');
+    src: local('☞MACABROSTYLEROUGH-Normal'), local('MACABROSTYLEROUGH'),
+        url('MACABROSTYLEROUGH.eot?#iefix') format('embedded-opentype'),
+        url('MACABROSTYLEROUGH.woff2') format('woff2'),
+        url('MACABROSTYLEROUGH.woff') format('woff'),
+        url('MACABROSTYLEROUGH.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MACABROSTYLEROUGHITALIC';
+    src: url('MACABROSTYLEROUGHITALIC.eot');
+    src: local('☞MACABROSTYLEROUGHITALIC'), local('MACABROSTYLEROUGHITALIC'),
+        url('MACABROSTYLEROUGHITALIC.eot?#iefix') format('embedded-opentype'),
+        url('MACABROSTYLEROUGHITALIC.woff2') format('woff2'),
+        url('MACABROSTYLEROUGHITALIC.woff') format('woff'),
+        url('MACABROSTYLEROUGHITALIC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'MACABROOUTLINEITALIC';
+    src: url('MACABROOUTLINEITALIC.eot');
+    src: local('☞MACABROOUTLINEITALIC'), local('MACABROOUTLINEITALIC'),
+        url('MACABROOUTLINEITALIC.eot?#iefix') format('embedded-opentype'),
+        url('MACABROOUTLINEITALIC.woff2') format('woff2'),
+        url('MACABROOUTLINEITALIC.woff') format('woff'),
+        url('MACABROOUTLINEITALIC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'MACABRO';
+    src: url('MACABRO.eot');
+    src: local('☞MACABRO'), local('MACABRO'),
+        url('MACABRO.eot?#iefix') format('embedded-opentype'),
+        url('MACABRO.woff2') format('woff2'),
+        url('MACABRO.woff') format('woff'),
+        url('MACABRO.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MACABROSTYLEITALIC';
+    src: url('MACABROSTYLEITALIC.eot');
+    src: local('☞MACABROSTYLEITALIC'), local('MACABROSTYLEITALIC'),
+        url('MACABROSTYLEITALIC.eot?#iefix') format('embedded-opentype'),
+        url('MACABROSTYLEITALIC.woff2') format('woff2'),
+        url('MACABROSTYLEITALIC.woff') format('woff'),
+        url('MACABROSTYLEITALIC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'MACABRODINGBAT';
+    src: url('MACABRODINGBAT.eot');
+    src: local('☞MACABRODINGBAT'), local('MACABRODINGBAT'),
+        url('MACABRODINGBAT.eot?#iefix') format('embedded-opentype'),
+        url('MACABRODINGBAT.woff2') format('woff2'),
+        url('MACABRODINGBAT.woff') format('woff'),
+        url('MACABRODINGBAT.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MACABROSTYLE';
+    src: url('MACABROSTYLE.eot');
+    src: local('☞MACABROSTYLE'), local('MACABROSTYLE'),
+        url('MACABROSTYLE.eot?#iefix') format('embedded-opentype'),
+        url('MACABROSTYLE.woff2') format('woff2'),
+        url('MACABROSTYLE.woff') format('woff'),
+        url('MACABROSTYLE.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MACABROROUGHITALIC';
+    src: url('MACABROROUGHITALIC.eot');
+    src: local('☞MACABROROUGHITALIC'), local('MACABROROUGHITALIC'),
+        url('MACABROROUGHITALIC.eot?#iefix') format('embedded-opentype'),
+        url('MACABROROUGHITALIC.woff2') format('woff2'),
+        url('MACABROROUGHITALIC.woff') format('woff'),
+        url('MACABROROUGHITALIC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'MACABROITALIC';
+    src: url('MACABROITALIC.eot');
+    src: local('☞MACABROITALIC'), local('MACABROITALIC'),
+        url('MACABROITALIC.eot?#iefix') format('embedded-opentype'),
+        url('MACABROITALIC.woff2') format('woff2'),
+        url('MACABROITALIC.woff') format('woff'),
+        url('MACABROITALIC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'MACABROOUTLINE';
+    src: url('MACABROOUTLINE.eot');
+    src: local('☞MACABROOUTLINE'), local('MACABROOUTLINE'),
+        url('MACABROOUTLINE.eot?#iefix') format('embedded-opentype'),
+        url('MACABROOUTLINE.woff2') format('woff2'),
+        url('MACABROOUTLINE.woff') format('woff'),
+        url('MACABROOUTLINE.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+

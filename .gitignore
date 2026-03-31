@@ -47,3 +47,11 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Local env files (contain API keys — never commit)
+.env
+.env.local
+.env.*.local
+
+# Claude Code project files
+.claude/
