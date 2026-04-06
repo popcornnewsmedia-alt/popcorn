@@ -58,7 +58,7 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead }: SignInSheetPro
       <div
         className="fixed inset-x-0 bottom-0 z-50 flex flex-col overflow-hidden"
         style={{
-          background: '#204a52',
+          background: '#053980',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
           transition: 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
@@ -69,23 +69,23 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead }: SignInSheetPro
 
         {/* Handle */}
         <div className="relative z-10 flex justify-center pt-3 pb-1 flex-shrink-0">
-          <div className="w-9 h-1 rounded-full" style={{ background: 'rgba(255,243,211,0.30)' }} />
+          <div className="w-9 h-1 rounded-full" style={{ background: 'rgba(255,241,205,0.30)' }} />
         </div>
 
         {/* Close */}
         <button
           onClick={handleClose}
           className="absolute top-5 right-5 z-20 p-2 rounded-full transition-opacity hover:opacity-60 active:opacity-50"
-          style={{ background: 'rgba(255,243,211,0.10)' }}
+          style={{ background: 'rgba(255,241,205,0.10)' }}
         >
-          <X className="w-4 h-4" style={{ color: 'rgba(255,243,211,0.65)' }} />
+          <X className="w-4 h-4" style={{ color: 'rgba(255,241,205,0.65)' }} />
         </button>
 
         {/* Content */}
         <div className="relative z-10 flex flex-col px-6 pt-7 pb-5 gap-6">
           {/* Heading */}
           <div>
-            <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '20px', color: '#fff3d3', lineHeight: 1, letterSpacing: '0.02em' }}>
+            <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '15px', color: '#fff1cd', lineHeight: 1, letterSpacing: '0.02em' }}>
               WELCOME BACK.
             </h2>
           </div>
@@ -93,27 +93,27 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead }: SignInSheetPro
           {/* Fields */}
           <div className="flex flex-col gap-3.5">
             <div className="flex flex-col gap-1.5">
-              <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,243,211,0.42)' }}>Email</label>
+              <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 onClick={stopProp}
                 placeholder="you@example.com"
-                className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,243,211,0.22)]"
-                style={{ background: 'rgba(255,243,211,0.07)', fontSize: '15px', color: '#fff3d3', border: '1px solid rgba(255,243,211,0.13)' }}
+                className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
+                style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,243,211,0.42)' }}>Password</label>
+              <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 onClick={stopProp}
                 placeholder="••••••••"
-                className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,243,211,0.22)]"
-                style={{ background: 'rgba(255,243,211,0.07)', fontSize: '15px', color: '#fff3d3', border: '1px solid rgba(255,243,211,0.13)' }}
+                className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
+                style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
               />
             </div>
 
@@ -123,16 +123,16 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead }: SignInSheetPro
 
             {/* Divider */}
             <div className="flex items-center gap-3 my-0.5">
-              <div className="flex-1 h-px" style={{ background: 'rgba(255,243,211,0.12)' }} />
-              <span className="font-['Inter']" style={{ fontSize: '11px', color: 'rgba(255,243,211,0.25)' }}>or</span>
-              <div className="flex-1 h-px" style={{ background: 'rgba(255,243,211,0.12)' }} />
+              <div className="flex-1 h-px" style={{ background: 'rgba(255,241,205,0.12)' }} />
+              <span className="font-['Inter']" style={{ fontSize: '11px', color: 'rgba(255,241,205,0.25)' }}>or</span>
+              <div className="flex-1 h-px" style={{ background: 'rgba(255,241,205,0.12)' }} />
             </div>
 
             {/* Google */}
             <button
               onClick={handleGoogle}
               className="w-full flex items-center justify-center gap-3 rounded-xl py-3.5 font-['Inter'] font-semibold transition-opacity hover:opacity-80 active:opacity-60"
-              style={{ background: 'rgba(255,243,211,0.07)', fontSize: '14px', color: '#fff3d3', border: '1px solid rgba(255,243,211,0.13)' }}
+              style={{ background: 'rgba(255,241,205,0.07)', fontSize: '14px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
             >
               <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
                 <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
@@ -155,8 +155,8 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead }: SignInSheetPro
               fontFamily: "'Macabro', 'Anton', sans-serif",
               fontSize: '14px',
               letterSpacing: '0.08em',
-              background: canSubmit && !loading ? '#fff3d3' : 'rgba(255,243,211,0.12)',
-              color: canSubmit && !loading ? '#204a52' : 'rgba(255,243,211,0.28)',
+              background: canSubmit && !loading ? '#fff1cd' : 'rgba(255,241,205,0.12)',
+              color: canSubmit && !loading ? '#053980' : 'rgba(255,241,205,0.28)',
             }}
           >
             {loading ? "SIGNING IN…" : "SIGN IN"}
@@ -165,10 +165,10 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead }: SignInSheetPro
           <button
             onClick={(e) => { e.stopPropagation(); reset(); onClose(); onSignUpInstead(); }}
             className="w-full py-2.5 text-center font-['Inter'] font-medium"
-            style={{ fontSize: '13px', color: 'rgba(255,243,211,0.38)' }}
+            style={{ fontSize: '13px', color: 'rgba(255,241,205,0.38)' }}
           >
             No account?{" "}
-            <span style={{ color: '#fff3d3', fontWeight: 600 }}>Create one</span>
+            <span style={{ color: '#fff1cd', fontWeight: 600 }}>Create one</span>
           </button>
         </div>
       </div>

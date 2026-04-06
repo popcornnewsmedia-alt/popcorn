@@ -1,0 +1,882 @@
+{
+  "fetchedAt": "2026-04-06T06:27:43.146Z",
+  "totalRawItems": 87,
+  "uniqueStories": 84,
+  "sentToClaude": 84,
+  "selectedCount": 2,
+  "rejectedCount": 82,
+  "rankedOutCount": 0,
+  "dedupedCount": 3,
+  "articles": [
+    {
+      "title": "Watch: Semafor World Economy Day 4",
+      "source": "Semafor",
+      "pubDate": "Sun, 05 Apr 2026 17:22:16 +0000",
+      "link": "https://www.semafor.com/article/04/05/2026/watch-semafor-world-economy-day-4",
+      "dedupRank": 1,
+      "dedupScore": 13.45,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Watch: Semafor World Economy Day 3",
+      "source": "Semafor",
+      "pubDate": "Sun, 05 Apr 2026 17:22:11 +0000",
+      "link": "https://www.semafor.com/article/04/05/2026/watch-semafor-world-economy-day-3",
+      "dedupRank": 1,
+      "dedupScore": 13.45,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Watch: Semafor World Economy Day 4\" (Semafor)"
+    },
+    {
+      "title": "Watch: Semafor World Economy Day 2",
+      "source": "Semafor",
+      "pubDate": "Sun, 05 Apr 2026 17:22:06 +0000",
+      "link": "https://www.semafor.com/article/04/05/2026/watch-semafor-world-economy-day-2",
+      "dedupRank": 1,
+      "dedupScore": 13.45,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Watch: Semafor World Economy Day 4\" (Semafor)"
+    },
+    {
+      "title": "Watch: Semafor World Economy Day 1",
+      "source": "Semafor",
+      "pubDate": "Sun, 05 Apr 2026 17:22:00 +0000",
+      "link": "https://www.semafor.com/article/04/05/2026/watch-semafor-world-economy-day-1",
+      "dedupRank": 1,
+      "dedupScore": 13.45,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Watch: Semafor World Economy Day 4\" (Semafor)"
+    },
+    {
+      "title": "Iran threatens Trump with 'devastating, widespread' retaliations following his expletive-filled vow to hit the country's power plants",
+      "source": "Daily Mail",
+      "pubDate": "Mon, 06 Apr 2026 06:20:54 GMT",
+      "link": "https://www.dailymail.co.uk/news/article-15708995/Iran-threatens-Trump-devastating-widespread-retaliations-following-expletive-filled-vow-hit-countrys-power-plants.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "dedupRank": 2,
+      "dedupScore": 5,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "What President Trump said as he launched the most daring US rescue mission in history.. and why the Pentagon feared they were flying into a TRAP",
+      "source": "Daily Mail",
+      "pubDate": "Mon, 06 Apr 2026 06:00:53 GMT",
+      "link": "https://www.dailymail.co.uk/news/article-15708609/Reaper-drones-hundreds-crack-troops-daring-rescues-military-history.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "dedupRank": 3,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Anthony calls Red Sox's 2-7 start 'unacceptable'",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:53:06 EST",
+      "link": "",
+      "dedupRank": 4,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "📈 Masters tiers: Ranking favorites, contenders",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:53:06 EST",
+      "link": "",
+      "dedupRank": 5,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Luka to seek care in Europe, aims for playoffs",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:53:05 EST",
+      "link": "",
+      "dedupRank": 6,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "'We did it!': UCLA wins first women's NCAA title",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:53:05 EST",
+      "link": "",
+      "dedupRank": 7,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Staley praises Close: Happy for 'quality people'",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:53:05 EST",
+      "link": "",
+      "dedupRank": 8,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Flagg flips ROY odds after latest 'statement' game",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:53:05 EST",
+      "link": "",
+      "dedupRank": 9,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Sources: Michigan's May not pursuing other jobs",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:53:05 EST",
+      "link": "",
+      "dedupRank": 10,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Vitello ejected, 'frustration' mounts for 3-7 Giants",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:53:05 EST",
+      "link": "",
+      "dedupRank": 11,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Scheffler, 9-day-old son Remy arrive at Masters",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:53:05 EST",
+      "link": "",
+      "dedupRank": 12,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Kim and Khloe Kardashian share how their family celebrated Easter including saucy photoshoot from Kylie Jenner",
+      "source": "Daily Mail",
+      "pubDate": "Mon, 06 Apr 2026 05:44:05 GMT",
+      "link": "https://www.dailymail.co.uk/tvshowbiz/article-15708685/kim-kardashian-kylie-jenner-khloe-easter.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "dedupRank": 13,
+      "dedupScore": 4.97,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "ANDREW PIERCE: Do Labour know what a child is?",
+      "source": "Daily Mail",
+      "pubDate": "Mon, 06 Apr 2026 05:37:02 GMT",
+      "link": "https://www.dailymail.co.uk/debate/article-15708279/ANDREW-PIERCE-Labour-know-child-is.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "dedupRank": 14,
+      "dedupScore": 4.97,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "RICHARD TICE: For too long, ideology has trumped common sense. It's our patriotic duty to tap ALL our oil and gas reserves",
+      "source": "Daily Mail",
+      "pubDate": "Mon, 06 Apr 2026 05:36:32 GMT",
+      "link": "https://www.dailymail.co.uk/debate/article-15708239/RICHARD-TICE-ideology-common-sense-oil-gas-reserves.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "dedupRank": 15,
+      "dedupScore": 4.96,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "How the US unleashed overwhelming firepower to save stranded airman under enemy fire in Iran... then obliterated every weapon left behind",
+      "source": "Daily Mail",
+      "pubDate": "Mon, 06 Apr 2026 05:29:16 GMT",
+      "link": "https://www.dailymail.co.uk/news/article-15708691/US-rescue-airman-Iran-destroy-aircraft.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "dedupRank": 16,
+      "dedupScore": 4.96,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Trump says Iranian civilians want America to unleash military power as he threatens to wipe out 'every power plant' and leave no bridges standing",
+      "source": "Daily Mail",
+      "pubDate": "Mon, 06 Apr 2026 05:23:13 GMT",
+      "link": "https://www.dailymail.co.uk/news/article-15708433/Trump-Iran-America-plants-bridges.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "dedupRank": 17,
+      "dedupScore": 4.96,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "'The best decision I ever made': How UCLA's roster converged to become NCAA champs",
+      "source": "ESPN",
+      "pubDate": "Mon, 6 Apr 2026 00:02:51 EST",
+      "link": "",
+      "dedupRank": 18,
+      "dedupScore": 4.94,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "How Michigan, UConn won Saturday's Final Four -- and keys to Monday's title game",
+      "source": "ESPN",
+      "pubDate": "Sun, 5 Apr 2026 22:44:09 EST",
+      "link": "",
+      "dedupRank": 19,
+      "dedupScore": 4.89,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "F-bombs, herky jerks and the Final Straw: Every Dan Hurley reaction from the Final Four",
+      "source": "ESPN",
+      "pubDate": "Sun, 5 Apr 2026 22:44:09 EST",
+      "link": "",
+      "dedupRank": 20,
+      "dedupScore": 4.89,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "&#8216;Forza Horizon 6&#8217; PS5 release date window, everything we know",
+      "source": "NME",
+      "pubDate": "Sun, 05 Apr 2026 23:50:58 +0000",
+      "link": "https://www.nme.com/guides/gaming-guides/forza-horizon-6-ps5-release-date-3925404?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=forza-horizon-6-ps5-release-date",
+      "dedupRank": 21,
+      "dedupScore": 4.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Framed answer today &#8211; here’s the solution for April 06",
+      "source": "NME",
+      "pubDate": "Sun, 05 Apr 2026 23:00:09 +0000",
+      "link": "https://www.nme.com/guides/gaming-guides/framed-answer-today-3192186?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=framed-answer-today",
+      "dedupRank": 22,
+      "dedupScore": 4.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "AI flattery makes you meaner, study finds",
+      "source": "Semafor",
+      "pubDate": "Sun, 05 Apr 2026 21:58:39 +0000",
+      "link": "https://www.semafor.com/article/04/05/2026/ai-flattery-makes-you-meaner-study-finds",
+      "dedupRank": 23,
+      "dedupScore": 4.65,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Dan Levy Says He Considered a &#8216;Schitt’s Creek&#8217; Sequel Series Before Catherine O’Hara’s Death",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Sun, 05 Apr 2026 21:39:32 +0000",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/dan-levy-considered-schitts-creek-sequel-catherine-ohara-died-1236556194/",
+      "dedupRank": 24,
+      "dedupScore": 4.63,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Despite Controversy, Ye&#8217;s &#8216;Bully&#8217; Debuts at Number Two on the Billboard 200",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 05 Apr 2026 20:48:09 +0000",
+      "link": "https://www.rollingstone.com/music/music-news/kanye-bully-charts-no-2-1235542052/",
+      "dedupRank": 25,
+      "dedupScore": 4.6,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "How to watch &#8216;Real Housewives of Atlanta&#8217; Season 17 premiere for free",
+      "source": "Page Six",
+      "pubDate": "Sun, 05 Apr 2026 16:30:00 -0400",
+      "link": "https://pagesix.com/2026/04/05/entertainment/how-to-watch-rhoa-season-17-premiere-for-free-time-cast/",
+      "dedupRank": 26,
+      "dedupScore": 4.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Savannah Guthrie Shares Emotional Easter Message Amid Her Mom&#8217;s Disappearance: &#8216;I Have Questioned Whether Jesus Really Ever Experienced This Particular Wound That I Feel&#8217;",
+      "source": "Variety",
+      "pubDate": "Sun, 05 Apr 2026 20:12:15 +0000",
+      "link": "https://variety.com/2026/tv/news/savannah-guthrie-easter-mom-disappearance-questioned-jesus-1236708959/",
+      "dedupRank": 27,
+      "dedupScore": 4.57,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Kanye West&#8217;s &#8216;Bully&#8217; Debuts at No. 2 on Albums Chart as BTS Holds Top Spot With &#8216;Arirang&#8217;",
+      "source": "Variety",
+      "pubDate": "Sun, 05 Apr 2026 19:50:46 +0000",
+      "link": "https://variety.com/2026/music/news/kanye-wests-bully-debuts-at-no-2-albums-chart-bts-arirang-1236708933/",
+      "dedupRank": 28,
+      "dedupScore": 4.56,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Saturday Night Live Recap: Jack Black Brings The Energy",
+      "source": "Vulture",
+      "pubDate": "Sun, 05 Apr 2026 14:07:11 -0400",
+      "link": "http://www.vulture.com/article/saturday-night-live-recap-snl-season-51-episode-16-jack-black-nbc.html?utm_source=flipboard&amp;utm_medium=s1&amp;utm_campaign=nymag",
+      "dedupRank": 29,
+      "dedupScore": 4.49,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Triplets of Belleville’s director just invented the cozy ghost biopic",
+      "source": "Polygon",
+      "pubDate": "Sun, 05 Apr 2026 18:00:18 GMT",
+      "link": "https://www.polygon.com/magnificent-life-review-triplets-of-belleville-sylvain-chomet/",
+      "dedupRank": 30,
+      "dedupScore": 4.48,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "A Social Experiment Within an Airbnb",
+      "source": "The Atlantic",
+      "pubDate": "Sun, 05 Apr 2026 13:53:18 -0400",
+      "link": "https://www.theatlantic.com/culture/2026/04/saturday-night-live-jack-black-airbnb-sketch/686698/?utm_source=feed",
+      "dedupRank": 31,
+      "dedupScore": 4.48,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Trump Warns Iran on Easter: &#8216;Open the F-ckin&#8217; Strait, You Crazy Bastards&#8217;",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 05 Apr 2026 17:32:48 +0000",
+      "link": "https://www.rollingstone.com/politics/politics-news/trump-iran-easter-open-the-f-ckin-strait-you-crazy-bastards-1235542031/",
+      "dedupRank": 32,
+      "dedupScore": 4.46,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "&#8216;Friends&#8217; Star Lisa Kudrow Says New Sitcoms are &#8216;Too Afraid&#8217; to Make Jokes That Make People &#8216;Uncomfortable&#8217;: &#8216;I&#8217;m Not Buying It&#8217;",
+      "source": "Variety",
+      "pubDate": "Sun, 05 Apr 2026 17:27:05 +0000",
+      "link": "https://variety.com/2026/tv/news/lisa-kudrow-new-sitcoms-afraid-jokes-friends-1236708803/",
+      "dedupRank": 33,
+      "dedupScore": 4.46,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Jack White Puts Domingo Out of His Misery",
+      "source": "Vulture",
+      "pubDate": "Sun, 05 Apr 2026 13:16:14 -0400",
+      "link": "http://www.vulture.com/article/jack-black-white-snl-monologue.html?utm_source=flipboard&amp;utm_medium=s1&amp;utm_campaign=nymag",
+      "dedupRank": 34,
+      "dedupScore": 4.45,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "‘Malcolm In The Middle’ Star Erik Per Sullivan Turned Down &#8216;Buckets Of Money&#8217; to Return as Dewey in Series Revival, Says Jane Kaczmarek",
+      "source": "Variety",
+      "pubDate": "Sun, 05 Apr 2026 17:10:03 +0000",
+      "link": "https://variety.com/2026/tv/news/malcolm-in-the-middle-revival-erik-per-sullivan-money-1236708796/",
+      "dedupRank": 35,
+      "dedupScore": 4.45,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "There's one essential Star Wars comic you need to read before Maul: Shadow Lord",
+      "source": "Polygon",
+      "pubDate": "Sun, 05 Apr 2026 17:00:19 GMT",
+      "link": "https://www.polygon.com/star-wars-maul-son-of-dathomir-comic/",
+      "dedupRank": 36,
+      "dedupScore": 4.44,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "UCLA vs. South Carolina Livestream: Watch the NCAA Women&#8217;s Basketball Championship Game Online Free",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Sun, 05 Apr 2026 17:00:00 +0000",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/ucla-vs-south-carolina-ncaa-womens-basketball-live-stream-1236555982/",
+      "dedupRank": 37,
+      "dedupScore": 4.44,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Best Mario games to play if you loved The Super Mario Galaxy Movie",
+      "source": "Polygon",
+      "pubDate": "Sun, 05 Apr 2026 16:00:17 GMT",
+      "link": "https://www.polygon.com/super-mario-galaxy-movie-game-recommendations/",
+      "dedupRank": 38,
+      "dedupScore": 4.4,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Dreams in April",
+      "source": "The Atlantic",
+      "pubDate": "Sun, 05 Apr 2026 12:00:00 -0400",
+      "link": "https://www.theatlantic.com/books/2026/04/poem-traci-brimhall-dreams-in-april/686678/?utm_source=feed",
+      "dedupRank": 39,
+      "dedupScore": 4.4,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Super Mario Galaxy Movie doesn't need defenders for bad reviews",
+      "source": "Polygon",
+      "pubDate": "Sun, 05 Apr 2026 15:30:18 GMT",
+      "link": "https://www.polygon.com/patch-notes-super-mario-galaxy-movie/",
+      "dedupRank": 40,
+      "dedupScore": 4.38,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Pets in China now have their own dedicated streaming service",
+      "source": "Dexerto",
+      "pubDate": "Sun, 05 Apr 2026 15:24:42 GMT",
+      "link": "https://www.dexerto.com/entertainment/pets-in-china-now-have-their-own-dedicated-streaming-service-3346696/",
+      "dedupRank": 41,
+      "dedupScore": 4.37,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "One Piece finally reveals the look and powers of Imu, its ultimate villain",
+      "source": "Polygon",
+      "pubDate": "Sun, 05 Apr 2026 15:10:09 GMT",
+      "link": "https://www.polygon.com/one-piece-imu-reveal-chapter-1179-look-powers-devil-fruit/",
+      "dedupRank": 42,
+      "dedupScore": 4.36,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Influencer banned from major airline after chemical fart prank causes midair chaos",
+      "source": "Dexerto",
+      "pubDate": "Sun, 05 Apr 2026 15:05:19 GMT",
+      "link": "https://www.dexerto.com/youtube/influencer-banned-from-major-airline-after-chemical-fart-prank-causes-midair-chaos-3346701/",
+      "dedupRank": 43,
+      "dedupScore": 4.36,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "30 years ago, Primal Fear perfected the art of the twist ending",
+      "source": "Polygon",
+      "pubDate": "Sun, 05 Apr 2026 15:00:19 GMT",
+      "link": "https://www.polygon.com/primal-fear-twist-ending-30-year-anniversary/",
+      "dedupRank": 44,
+      "dedupScore": 4.36,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "A History of Mario, Nintendo&#8217;s Golden Boy",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 05 Apr 2026 15:00:00 +0000",
+      "link": "https://www.rollingstone.com/culture/rs-gaming/mario-nintendo-movie-history-1235541356/",
+      "dedupRank": 45,
+      "dedupScore": 4.36,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Star Fox for Nintendo Switch 2 should not be a retread of what has come before",
+      "source": "Polygon",
+      "pubDate": "Sun, 05 Apr 2026 14:54:53 GMT",
+      "link": "https://www.polygon.com/star-fox/",
+      "dedupRank": 46,
+      "dedupScore": 4.35,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Small State, Big Attitude: How Bravo Brought Its Splashy New ‘Real Housewives’ Entry to Rhode Island",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Sun, 05 Apr 2026 14:33:11 +0000",
+      "link": "https://www.hollywoodreporter.com/tv/tv-features/real-housewives-rhode-island-creation-casting-1236556036/",
+      "dedupRank": 47,
+      "dedupScore": 4.34,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Police carry out major sting operation to catch serial Pokemon card robber",
+      "source": "Dexerto",
+      "pubDate": "Sun, 05 Apr 2026 14:14:17 GMT",
+      "link": "https://www.dexerto.com/pokemon/police-carry-out-major-sting-operation-to-catch-serial-pokemon-card-robber-3346693/",
+      "dedupRank": 48,
+      "dedupScore": 4.32,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "90-year-old woman breaks world record for dead hang",
+      "source": "Dexerto",
+      "pubDate": "Sun, 05 Apr 2026 13:54:05 GMT",
+      "link": "https://www.dexerto.com/entertainment/90-year-old-woman-breaks-world-record-for-dead-hang-3346682/",
+      "dedupRank": 49,
+      "dedupScore": 4.31,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "American Greatness, American Barbarism",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 05 Apr 2026 13:00:00 +0000",
+      "link": "https://www.rollingstone.com/politics/political-commentary/american-greatness-artemis-ii-american-barbarism-iran-war-1235541998/",
+      "dedupRank": 50,
+      "dedupScore": 4.27,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "The Man Holding MAHA Together",
+      "source": "The Atlantic",
+      "pubDate": "Sun, 05 Apr 2026 09:00:00 -0400",
+      "link": "https://www.theatlantic.com/health/2026/04/tony-lyons-maha-skyhorse/686696/?utm_source=feed",
+      "dedupRank": 51,
+      "dedupScore": 4.27,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "James review – special band still filling arenas with anthems of warmth and humanity",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 05 Apr 2026 12:57:55 GMT",
+      "link": "https://www.theguardian.com/music/2026/apr/05/james-review-special-band-still-filling-arenas-with-anthems-of-warmth-and-humanity",
+      "dedupRank": 52,
+      "dedupScore": 4.27,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "How the Amazon Echo learned to talk — and listen",
+      "source": "The Verge",
+      "pubDate": "2026-04-05T08:24:45-04:00",
+      "link": "https://www.theverge.com/podcast/907146/amazon-echo-alexa-version-history",
+      "dedupRank": 53,
+      "dedupScore": 4.25,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Scientists create world’s first ‘T-Rex leather’ handbag with $600k starting price",
+      "source": "Dexerto",
+      "pubDate": "Sun, 05 Apr 2026 12:05:49 GMT",
+      "link": "https://www.dexerto.com/entertainment/scientists-create-worlds-first-t-rex-leather-handbag-with-600k-starting-price-3346664/",
+      "dedupRank": 54,
+      "dedupScore": 4.24,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Best Apple Watch Bands of 2026: Nike, Hermés, and More",
+      "source": "Wired",
+      "pubDate": "Sun, 05 Apr 2026 12:00:00 +0000",
+      "link": "https://www.wired.com/story/best-apple-watch-bands/",
+      "dedupRank": 55,
+      "dedupScore": 4.23,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Grammarly’s sloppelganger saga",
+      "source": "The Verge",
+      "pubDate": "2026-04-05T08:00:00-04:00",
+      "link": "https://www.theverge.com/column/906606/grammarly-expert-review-ai-saga",
+      "dedupRank": 56,
+      "dedupScore": 4.23,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Victoria: A Queen Unbound review – darkness lurks beneath the myth of a model royal marriage",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 05 Apr 2026 11:33:55 GMT",
+      "link": "https://www.theguardian.com/stage/2026/apr/05/victoria-a-queen-unbound-review-watermill-theatre-newbury",
+      "dedupRank": 57,
+      "dedupScore": 4.21,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Heatbit Maxi Pro Review: a Space Heater That Also Mines Bitcoin",
+      "source": "Wired",
+      "pubDate": "Sun, 05 Apr 2026 11:04:00 +0000",
+      "link": "https://www.wired.com/review/heatbit-maxi-pro-bitcoin-miner-heater/",
+      "dedupRank": 58,
+      "dedupScore": 4.19,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "How to use procrastination to your advantage",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 05 Apr 2026 11:00:50 GMT",
+      "link": "https://www.theguardian.com/books/2026/apr/05/how-to-use-procrastination-to-your-advantage",
+      "dedupRank": 59,
+      "dedupScore": 4.19,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Life of Pi author Yann Martel: ‘I thought the Iliad was a book for old farts… then I started getting ideas’",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 05 Apr 2026 11:00:49 GMT",
+      "link": "https://www.theguardian.com/books/2026/apr/05/life-of-pi-author-yann-martel-i-thought-the-iliad-was-a-book-for-old-farts-then-i-started-getting-ideas",
+      "dedupRank": 60,
+      "dedupScore": 4.19,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "The Real Intelligence Failure in Iran",
+      "source": "The Atlantic",
+      "pubDate": "Sun, 05 Apr 2026 07:00:00 -0400",
+      "link": "https://www.theatlantic.com/national-security/2026/04/iran-war-intelligence-failure-trump/686694/?utm_source=feed",
+      "dedupRank": 61,
+      "dedupScore": 4.19,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Artemis II Crew Watched Project Hail Mary While in Quarantine Before Takeoff, Astronaut Gives Ryan Gosling the Thumbs Up More Than Halfway to the Moon",
+      "source": "IGN",
+      "pubDate": "Sun, 5 Apr 2026 10:32:27 +0000",
+      "link": "https://www.ign.com/articles/artemis-ii-crew-watched-project-hail-mary-while-in-quarantine-before-takeoff-astronaut-gives-ryan-gosling-the-thumbs-up-more-than-halfway-to-the-moon",
+      "dedupRank": 62,
+      "dedupScore": 4.17,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Stone Island Drops North America-Exclusive All-White \"Ghost\" Capsule",
+      "source": "Hypebeast",
+      "pubDate": "Sun, 05 Apr 2026 10:31:44 +0000",
+      "link": "https://hypebeast.com/2026/4/stone-island-north-america-exclusive-all-white-ghost-ss26-capsule-release-info",
+      "dedupRank": 63,
+      "dedupScore": 4.17,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Sperm Racing World Cup opens applications with $100,000 grand prize",
+      "source": "Dexerto",
+      "pubDate": "Sun, 05 Apr 2026 10:15:24 GMT",
+      "link": "https://www.dexerto.com/entertainment/sperm-racing-world-cup-opens-applications-with-100000-grand-prize-3346633/",
+      "dedupRank": 64,
+      "dedupScore": 4.16,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Why Trump Thinks He Can Walk Away From the Strait of Hormuz",
+      "source": "The Atlantic",
+      "pubDate": "Sun, 05 Apr 2026 06:00:00 -0400",
+      "link": "https://www.theatlantic.com/ideas/2026/04/energy-price-consequences-iran-war/686687/?utm_source=feed",
+      "dedupRank": 65,
+      "dedupScore": 4.15,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Ben Lerner and the Impossible Interview",
+      "source": "The New Yorker",
+      "pubDate": "Sun, 05 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/culture/the-new-yorker-interview/ben-lerner-and-the-impossible-interview",
+      "dedupRank": 66,
+      "dedupScore": 4.15,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Catherine Lacey’s Escape from the Self",
+      "source": "The New Yorker",
+      "pubDate": "Sun, 05 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/books/this-week-in-fiction/catherine-lacey-04-13-26",
+      "dedupRank": 67,
+      "dedupScore": 4.15,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Trump’s Offshore-Drilling Dream Is a Recipe for Poisoning the Oceans",
+      "source": "The New Yorker",
+      "pubDate": "Sun, 05 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/news/annals-of-a-warming-planet/how-to-poison-an-ocean",
+      "dedupRank": 68,
+      "dedupScore": 4.15,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "“Rate Your Happiness,” by Catherine Lacey",
+      "source": "The New Yorker",
+      "pubDate": "Sun, 05 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/magazine/2026/04/13/rate-your-happiness-fiction-catherine-lacey",
+      "dedupRank": 69,
+      "dedupScore": 4.15,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Restaurant Review: Kelang",
+      "source": "The New Yorker",
+      "pubDate": "Sun, 05 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/culture/the-food-scene/a-malaysian-menu-laced-with-the-flavors-of-brooklyn",
+      "dedupRank": 70,
+      "dedupScore": 4.15,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Hasbro Unveils 'The Super Mario Galaxy Movie' Monopoly Edition",
+      "source": "Hypebeast",
+      "pubDate": "Sun, 05 Apr 2026 09:32:48 +0000",
+      "link": "https://hypebeast.com/2026/4/hasbro-unveils-the-super-mario-galaxy-movie-monopoly-board-game-edition-release-info",
+      "dedupRank": 71,
+      "dedupScore": 4.13,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Sony’s PS5 Price Hikes Prove This Console Generation Is Far From Over. Good.",
+      "source": "Wired",
+      "pubDate": "Sun, 05 Apr 2026 09:30:00 +0000",
+      "link": "https://www.wired.com/story/sonys-ps5-price-hikes-prove-this-console-generation-is-far-from-over-good/",
+      "dedupRank": 72,
+      "dedupScore": 4.13,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "With One Million Displaced, Lebanon Turns to Digital Wallets for Aid",
+      "source": "Wired",
+      "pubDate": "Sun, 05 Apr 2026 09:30:00 +0000",
+      "link": "https://www.wired.com/story/with-one-million-displaced-lebanon-turns-to-digital-wallets-for-aid/",
+      "dedupRank": 73,
+      "dedupScore": 4.13,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Mexican art world protests over plan to send Frida Kahlo masterpieces to Spain",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 05 Apr 2026 09:00:47 GMT",
+      "link": "https://www.theguardian.com/world/2026/apr/05/mexican-art-world-protests-over-plan-to-send-frida-kahlo-masterpieces-to-spain",
+      "dedupRank": 74,
+      "dedupScore": 4.11,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Cinematrix No. 740: April 5, 2026",
+      "source": "Vulture",
+      "pubDate": "Sun, 05 Apr 2026 05:00:00 -0400",
+      "link": "http://www.vulture.com/article/daily-movie-grid-trivia-game-cinematrix.html?utm_source=flipboard&amp;utm_medium=s1&amp;utm_campaign=nymag",
+      "dedupRank": 75,
+      "dedupScore": 4.11,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "The Hack That Exposed Syria’s Sweeping Security Failures",
+      "source": "Wired",
+      "pubDate": "Sun, 05 Apr 2026 09:00:00 +0000",
+      "link": "https://www.wired.com/story/inside-the-hack-that-exposed-syrias-security-failures/",
+      "dedupRank": 76,
+      "dedupScore": 4.11,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "‘I was getting down with a guy and he decided to put on One Love. It was creepy’: Duncan James from Blue’s honest playlist",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 05 Apr 2026 08:00:45 GMT",
+      "link": "https://www.theguardian.com/music/2026/apr/05/duncan-james-blue-honest-playlist-geri-halliwell-elvis-tight-fit",
+      "dedupRank": 77,
+      "dedupScore": 4.06,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "thisisneverthat’s “Mowgli” Collection Channels Urban Cool for Summer 2026",
+      "source": "Hypebeast",
+      "pubDate": "Sun, 05 Apr 2026 06:55:46 +0000",
+      "link": "https://hypebeast.com/2026/4/thisisneverthat-summer-2026-collection-mowgli-lookbook-info",
+      "dedupRank": 78,
+      "dedupScore": 4.02,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "&#8216;SNL&#8217;: Watch Jack White Perform &#8216;Derecho Demonico,&#8217; &#8216;G.O.D. And The Broken Ribs&#8217;",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 05 Apr 2026 06:22:22 +0000",
+      "link": "https://www.rollingstone.com/music/music-news/snl-watch-jack-white-perform-derecho-demonico-g-o-d-the-broken-ribs-1235541948/",
+      "dedupRank": 79,
+      "dedupScore": 4,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Crunchyroll Streams ‘Daemons of the Shadow Realm’ Anime With Same-Day English Dub",
+      "source": "Hypebeast",
+      "pubDate": "Sun, 05 Apr 2026 05:40:27 +0000",
+      "link": "https://hypebeast.com/2026/4/crunchyroll-daemons-of-the-shadow-realm-global-premiere-same-day-english-dub",
+      "dedupRank": 80,
+      "dedupScore": 3.97,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "Jack White Lets It Rip on SNL: Watch",
+      "source": "Consequence",
+      "pubDate": "Sun, 05 Apr 2026 05:26:22 +0000",
+      "link": "https://consequence.net/2026/04/jack-white-snl-performance/",
+      "dedupRank": 81,
+      "dedupScore": 3.96,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "&#8216;SNL&#8217; Weekend Update Roasts Pam Bondi, JD Vance&#8217;s Adult Catholic Conversion",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 05 Apr 2026 05:14:56 +0000",
+      "link": "https://www.rollingstone.com/tv-movies/tv-movie-news/snl-weekend-update-roasts-pam-bondi-jd-vance-catholic-conversion-1235541970/",
+      "dedupRank": 82,
+      "dedupScore": 3.95,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "SNL: Jack Black Rocks Out With Jack White, Stars In &#8220;Carry On Wayward Son&#8221; Sketch",
+      "source": "Stereogum",
+      "pubDate": "Sun, 05 Apr 2026 05:07:00 +0000",
+      "link": "https://stereogum.com/2494821/snl-jack-black-rock-outs-with-jack-white-stars-in-carry-on-wayward-son-sketch/news/",
+      "dedupRank": 83,
+      "dedupScore": 3.94,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    },
+    {
+      "title": "‘Nobody would forgive me if I told the truth’: new film about pacifist turned Nazi collaborator divides France",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 05 Apr 2026 05:00:41 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/05/les-rayons-et-les-ombres-rays-and-shadows-xavier-giannoli-jean-dujardin",
+      "dedupRank": 84,
+      "dedupScore": 3.94,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude"
+    }
+  ]
+}

@@ -1,0 +1,2539 @@
+/**
+ * RSS Enricher — fetches live pop culture news from RSS feeds and enriches each article
+ * with Claude to generate summaries, key points, signal scores, etc.
+ *
+ * Cache: writes to /tmp/bref-articles-YYYY-MM-DD.json so Claude is only
+ * called once per day (per machine restart).
+ */
+
+import https from "node:https";
+import fs from "node:fs";
+import path from "node:path";
+import { supabase } from "./supabase-client.js";
+
+// ─── Image pool ────────────────────────────────────────────────────────────
+// Curated Unsplash photos that work well as article hero images.
+// Claude picks an index from this list for each article.
+// Category-matched fallback images — used only when a real image cannot be found
+const CATEGORY_FALLBACK_IMAGES: Record<string, string[]> = {
+  "Music": [
+    "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1600&q=90", // concert crowd
+    "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1600&q=90", // festival stage
+    "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1600&q=90", // microphone
+    "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1600&q=90", // recording studio
+    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1600&q=90", // DJ / nightlife
+  ],
+  "Film & TV": [
+    "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600&q=90", // movie theater
+    "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1600&q=90", // film camera
+    "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=1600&q=90", // retro TV
+    "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1600&q=90", // streaming glow
+  ],
+  "Gaming": [
+    "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600&q=90", // gaming setup
+    "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1600&q=90", // controller
+    "https://images.unsplash.com/photo-1518972734183-cc86ec78ee26?w=1600&q=90", // neon lights
+  ],
+  "Fashion": [
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=90", // runway
+    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1600&q=90", // sneakers
+    "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=1600&q=90", // editorial
+  ],
+  "Internet": [
+    "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1600&q=90", // phone / social
+    "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1600&q=90", // scrolling screen
+    "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?w=1600&q=90", // neon city night
+    "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=90", // crowd / viral energy
+  ],
+  "Sports": [
+    "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1600&q=90", // soccer ball
+    "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1600&q=90", // football match action
+    "https://images.unsplash.com/photo-1540747913346-19212a4f5f57?w=1600&q=90", // stadium crowd
+    "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=90", // pitch aerial
+  ],
+  "Tech": [
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=90", // circuit board
+    "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=1600&q=90", // laptop dark
+    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1600&q=90", // device glow
+  ],
+  "AI": [
+    "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1600&q=90", // neural abstract
+    "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=90", // robot/AI face
+    "https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?w=1600&q=90", // data streams
+  ],
+  "Culture": [
+    "https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=1600&q=90", // art gallery
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=90", // editorial
+    "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1600&q=90", // crowd at event
+  ],
+  "World": [
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=90", // earth from space
+    "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&q=90", // city aerial
+    "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1600&q=90", // globe map
+  ],
+  "Industry": [
+    "https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=1600&q=90", // office/business
+    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1600&q=90", // suited exec
+    "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1600&q=90", // deal/handshake
+  ],
+  "Books": [
+    "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=90", // library shelves
+    "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=1600&q=90", // open book
+    "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1600&q=90", // bookshelf warm
+  ],
+  "Science": [
+    "https://images.unsplash.com/photo-1532094349884-543559872441?w=1600&q=90", // lab/microscope
+    "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1600&q=90", // space/stars
+    "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?w=1600&q=90", // moon close
+  ],
+};
+
+// Flat pool kept for legacy reference
+const IMAGE_POOL = Object.values(CATEGORY_FALLBACK_IMAGES).flat();
+
+function fallbackImage(category: string, seed: number): string {
+  const pool = CATEGORY_FALLBACK_IMAGES[category] ?? CATEGORY_FALLBACK_IMAGES["Internet"];
+  return pool[seed % pool.length];
+}
+
+const CATEGORY_GRADIENTS: Record<string, [string, string]> = {
+  "Film & TV": ["#0e1a2e", "#2a3f6a"],  // deep navy blue
+  Music:       ["#1a0e2e", "#4a2a6a"],  // dark purple
+  Gaming:      ["#0a1e14", "#1e5a38"],  // dark forest green
+  Fashion:     ["#1e0a12", "#6a1e36"],  // dark crimson/rose
+  Internet:    ["#080e24", "#0e2a5a"],  // midnight blue
+  Sports:      ["#0f1a08", "#2a4a10"],  // dark olive green
+  Tech:        ["#0d1520", "#1a3858"],  // steel blue
+  AI:          ["#0a0818", "#260e52"],  // deep indigo/electric
+  Culture:     ["#1a0c08", "#4a2010"],  // dark burnt sienna
+  World:       ["#081018", "#103040"],  // dark teal-slate
+  Industry:    ["#111114", "#28282e"],  // near-black charcoal
+  Books:       ["#140e04", "#382210"],  // dark warm brown
+  Science:     ["#041418", "#0a3038"],  // deep teal/cyan
+};
+
+// ─── Types ──────────────────────────────────────────────────────────────────
+
+export interface RawRSSItem {
+  title: string;
+  description: string;
+  link: string;
+  pubDate: string;
+  source: string;
+  imageUrl?: string;
+}
+
+export interface ShortlistCandidate {
+  index: number;          // 1-based — what you reply with to publish
+  title: string;
+  source: string;
+  description: string;
+  score: number;          // dedupScore — coverage × recency signal
+  domain: SignalDomain;
+  pubDate: string;
+  link: string;
+  imageUrl?: string;
+  _raw: RawRSSItem;       // full raw item kept for enrichment lookup
+}
+
+export interface EnrichedArticle {
+  id: number;
+  title: string;
+  summary: string;
+  content: string;
+  category: string;
+  source: string;
+  readTimeMinutes: number;
+  publishedAt: string;
+  likes: number;
+  isBookmarked: boolean;
+  gradientStart: string;
+  gradientEnd: string;
+  tag: string;
+  imageUrl?: string | null;
+  imageWidth?: number | null;
+  imageHeight?: number | null;
+  keyPoints?: string[] | null;
+  signalScore?: number | null;
+  wikiSearchQuery?: string;
+}
+
+// ─── XML helpers ─────────────────────────────────────────────────────────────
+
+function stripHtml(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractTag(block: string, tag: string): string {
+  // Handles CDATA and plain content
+  const re = new RegExp(
+    `<${tag}[^>]*>(?:<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>|([\\s\\S]*?))<\\/${tag}>`,
+    "i"
+  );
+  const m = block.match(re);
+  if (!m) return "";
+  return stripHtml((m[1] ?? m[2] ?? "").trim());
+}
+
+function extractImage(block: string): string | undefined {
+  // media:content url (most common in modern RSS — TMZ, Variety, etc.)
+  const mc = block.match(/<media:content[^>]+url="([^"]+)"/i);
+  if (mc && /\.(jpg|jpeg|png|webp|gif)/i.test(mc[1])) return mc[1];
+
+  // media:thumbnail
+  const mt = block.match(/<media:thumbnail[^>]+url="([^"]+)"/i);
+  if (mt) return mt[1];
+
+  // enclosure with image type
+  const enc =
+    block.match(/<enclosure[^>]+url="([^"]+)"[^>]+type="image/i) ||
+    block.match(/<enclosure[^>]+type="image[^"]*"[^>]+url="([^"]+)"/i);
+  if (enc) return enc[1];
+
+  // <img src="..."> inside description/content
+  const img = block.match(/<img[^>]+src="([^"]+)"/i);
+  if (img && /^https?:\/\//.test(img[1])) return img[1];
+
+  return undefined;
+}
+
+function parseRSSItems(xml: string, source: string): RawRSSItem[] {
+  const isAtom = /<feed[\s>]/i.test(xml);
+  const pattern = isAtom
+    ? /<entry>([\s\S]*?)<\/entry>/gi
+    : /<item>([\s\S]*?)<\/item>/gi;
+
+  const items: RawRSSItem[] = [];
+  let m: RegExpExecArray | null;
+
+  while ((m = pattern.exec(xml)) !== null && items.length < 12) {
+    const block = m[1];
+
+    const title = extractTag(block, "title");
+    if (!title || title.length < 5) continue;
+
+    let description =
+      extractTag(block, "description") ||
+      extractTag(block, "summary") ||
+      extractTag(block, "content\\:encoded") ||
+      extractTag(block, "content");
+    description = description.slice(0, 250);
+
+    // Link
+    let link = "";
+    const linkM =
+      block.match(/<link>([^<]+)<\/link>/) ||
+      block.match(/<link[^>]+href="([^"]+)"/i);
+    if (linkM) link = linkM[1].trim();
+
+    // Date
+    let pubDate = new Date().toISOString();
+    const dateM =
+      block.match(/<pubDate>([^<]+)<\/pubDate>/i) ||
+      block.match(/<published>([^<]+)<\/published>/i) ||
+      block.match(/<updated>([^<]+)<\/updated>/i);
+    if (dateM) pubDate = dateM[1].trim();
+
+    const imageUrl = extractImage(block);
+    items.push({ title, description, link, pubDate, source, imageUrl });
+  }
+
+  return items;
+}
+
+// ─── Image fetchers ──────────────────────────────────────────────────────────
+
+const BAD_IMAGE_PATTERNS = [
+  /i\.imgur\.com/,           // generic imgur placeholders
+  /1x1/,                     // tracking pixels
+  /pixel\./,                 // tracking pixels
+  /spacer\.gif/,             // spacer GIFs
+  /placeholder/i,            // placeholder images
+  /default[-_]?(image|img|thumb)/i,
+  /pubads\.g\.doubleclick\.net/,  // ad server
+  /googlesyndication\.com/,       // ad server
+  /adserver\./i,                  // generic ad servers
+  /\/ad\?/,                       // ad request URLs
+  /[Gg][Ee][Nn][Ee][Rr][Ii][Cc]/,// generic / GENRIC share images
+  /Social_Share/i,                // generic social share images
+  // Branding / UI assets — never editorial
+  /[/_-]logo[/_.\-?]/i,
+  /[/_-]icon[/_.\-?]/i,
+  /[/_-]sprite[/_.\-?]/i,
+  /[/_-]avatar[/_.\-?]/i,
+  /[/_-]banner[/_.\-?]/i,
+  /\/thumbnail\//i,
+  /[/_-]tracking[/_.\-?]/i,
+  // Low-quality / heavily-compressed CDNs — always fall through to OG/Unsplash
+  /s\.yimg\.com/,
+  /i\.dailymail\.co\.uk/,
+  /cdn\.images\.express\.co\.uk/,
+  /img\.dealnews\.com/,
+  /cdn\.clovetech\.com/,
+];
+
+/** True if the URL looks structurally valid and is not a known bad source. */
+function isGoodImageUrl(url: string | undefined | null): boolean {
+  if (!url || !url.startsWith("http")) return false;
+  if (BAD_IMAGE_PATTERNS.some((p) => p.test(url))) return false;
+  // Reject images with an explicitly tiny width param (e.g. ?w=50, ?width=140)
+  try {
+    const u = new URL(url);
+    const w = parseInt(u.searchParams.get("w") ?? u.searchParams.get("width") ?? "0", 10);
+    if (w > 0 && w < 400) return false;
+  } catch { /* ignore malformed URLs */ }
+  return true;
+}
+
+/**
+ * HEAD-request quality check — rejects images that are provably tiny (<50 KB).
+ * Returns true if the image passes (or if we can't determine size — benefit of doubt).
+ * Uses a short timeout so it doesn't meaningfully slow enrichment.
+ */
+async function isHighQualityImage(url: string): Promise<boolean> {
+  try {
+    const res = await fetch(url, {
+      method: "HEAD",
+      signal: AbortSignal.timeout(3000),
+    });
+    if (!res.ok) return false;
+    const size = parseInt(res.headers.get("content-length") ?? "0", 10);
+    // Only hard-reject when content-length is explicitly present and tiny.
+    // Many CDNs omit it, so absence of the header is not a failure.
+    if (size > 0 && size < 80_000) return false;
+    return true;
+  } catch {
+    return true; // network error → don't penalise, let it through
+  }
+}
+
+/**
+ * Rejects extreme aspect ratios (letterbox banners, tall thin strips).
+ * Valid range: 0.5–2.0 (ratio = width / height).
+ * Portrait phone image 1080×1920 → 0.5625 ✓
+ * Landscape 16:9 (1920×1080) → 1.78 ✓
+ * Tracking strip 1200×60 → 20 ✗
+ * Very tall thin 100×600 → 0.17 ✗
+ */
+/**
+ * Backend rejection threshold for extreme aspect ratios.
+ * Ratio < 0.4 = ultra-tall strip; ratio > 3.0 = ultra-wide tracking banner.
+ * Both are always bad UX and should be discarded at enrichment time.
+ */
+function isValidAspectRatio(width: number, height: number): boolean {
+  if (!width || !height) return true; // unknown — pass
+  const ratio = width / height;
+  return ratio > 0.4 && ratio < 3.0;
+}
+
+/**
+ * Strict OG-image validator — applied only to scraped OG/Twitter images.
+ * Rejects logos, icons, avatars, banners, ads; too-small or extreme-ratio images.
+ */
+function isStrictOGValid(url: string, dims: { width: number; height: number } | null): boolean {
+  // Reject known branding/UI filenames
+  if (/[/_-](logo|icon|avatar|banner|sprite|ads?)[/_.\-?]/i.test(url)) return false;
+  if (!dims) return true; // can't determine — give benefit of the doubt
+  const { width, height } = dims;
+  if (width < 600) return false;           // too small to be editorial
+  const ratio = width / height;
+  if (ratio > 2.5 || ratio < 0.4) return false; // extreme strip or sliver
+  return true;
+}
+
+/**
+ * Fetch the first ~2 KB of an image and try to read its pixel dimensions.
+ * Supports PNG (IHDR), JPEG (SOF markers), and WebP (VP8 / VP8L / VP8X).
+ * Returns null if dimensions cannot be determined (caller should pass the image).
+ */
+async function fetchImageDimensions(url: string): Promise<{ width: number; height: number } | null> {
+  try {
+    const res = await fetch(url, {
+      headers: { Range: "bytes=0-2047" },
+      signal: AbortSignal.timeout(3000),
+    });
+    if (!res.ok && res.status !== 206) return null;
+    const buf = Buffer.from(await res.arrayBuffer());
+
+    // PNG: magic bytes 89 50 4E 47 — width at offset 16, height at 20 (big-endian)
+    if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) {
+      if (buf.length < 24) return null;
+      return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
+    }
+
+    // JPEG: starts FF D8 — scan for SOF0 (FF C0) or SOF2 (FF C2) marker
+    if (buf[0] === 0xff && buf[1] === 0xd8) {
+      let i = 2;
+      while (i < buf.length - 8) {
+        if (buf[i] !== 0xff) break;
+        const marker = buf[i + 1];
+        const segLen = buf.readUInt16BE(i + 2);
+        if (marker === 0xc0 || marker === 0xc2) {
+          return { height: buf.readUInt16BE(i + 5), width: buf.readUInt16BE(i + 7) };
+        }
+        i += 2 + segLen;
+      }
+    }
+
+    // WebP: RIFF????WEBP at bytes 0-11
+    if (
+      buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46 && // RIFF
+      buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50   // WEBP
+    ) {
+      const chunk = buf.slice(12, 16).toString("ascii");
+
+      // VP8 (lossy): key frame sync at offset 23, width/height at 26-29
+      if (chunk === "VP8 " && buf.length >= 30) {
+        if (buf[23] === 0x9d && buf[24] === 0x01 && buf[25] === 0x2a) {
+          const width  = buf.readUInt16LE(26) & 0x3fff;
+          const height = buf.readUInt16LE(28) & 0x3fff;
+          if (width > 0 && height > 0) return { width, height };
+        }
+      }
+
+      // VP8L (lossless): 28-bit packed header at offset 21
+      if (chunk === "VP8L" && buf.length >= 25) {
+        if (buf[20] === 0x2f) {
+          const bits = buf.readUInt32LE(21);
+          const width  = (bits & 0x3fff) + 1;
+          const height = ((bits >> 14) & 0x3fff) + 1;
+          if (width > 0 && height > 0) return { width, height };
+        }
+      }
+
+      // VP8X (extended / animated): canvas w-1 at 24-26, h-1 at 27-29 (24-bit LE)
+      if (chunk === "VP8X" && buf.length >= 30) {
+        const width  = (buf[24] | (buf[25] << 8) | (buf[26] << 16)) + 1;
+        const height = (buf[27] | (buf[28] << 8) | (buf[29] << 16)) + 1;
+        if (width > 0 && height > 0) return { width, height };
+      }
+    }
+
+    return null; // AVIF / other — can't determine
+  } catch {
+    return null;
+  }
+}
+
+async function fetchOGImage(articleUrl: string): Promise<string | undefined> {
+  try {
+    const res = await fetch(articleUrl, {
+      signal: AbortSignal.timeout(8000),
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Cache-Control": "no-cache",
+      },
+    });
+    if (!res.ok) return undefined;
+    // Only read the first 20 KB — the <head> is always near the top
+    const reader = res.body?.getReader();
+    if (!reader) return undefined;
+    let html = "";
+    while (html.length < 20000) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      html += new TextDecoder().decode(value);
+    }
+    reader.cancel();
+    // og:image
+    const ogMatch = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
+      ?? html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+    if (ogMatch?.[1]?.startsWith("http")) return ogMatch[1];
+    // twitter:image as fallback
+    const twMatch = html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i)
+      ?? html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i);
+    if (twMatch?.[1]?.startsWith("http")) return twMatch[1];
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+// iTunes Search API (free, no key) — returns album/artist artwork at up to 600×600.
+// Best for Music articles: searches album art first, then falls back to artist image.
+async function fetchItunesImage(query: string): Promise<string | undefined> {
+  if (!query?.trim()) return undefined;
+  try {
+    // Try to find a specific album first
+    const albumUrl =
+      `https://itunes.apple.com/search?term=${encodeURIComponent(query)}` +
+      `&entity=album&media=music&limit=1`;
+    const albumRes = await fetch(albumUrl, { signal: AbortSignal.timeout(6000) });
+    if (albumRes.ok) {
+      const albumData = await albumRes.json();
+      const art: string | undefined = albumData?.results?.[0]?.artworkUrl100;
+      if (art) return art.replace("100x100bb", "3000x3000bb");
+    }
+    // Fall back to artist image
+    const artistUrl =
+      `https://itunes.apple.com/search?term=${encodeURIComponent(query)}` +
+      `&entity=musicArtist&media=music&limit=1`;
+    const artistRes = await fetch(artistUrl, { signal: AbortSignal.timeout(6000) });
+    if (artistRes.ok) {
+      const artistData = await artistRes.json();
+      const art: string | undefined = artistData?.results?.[0]?.artworkUrl100;
+      if (art) return art.replace("100x100bb", "3000x3000bb");
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+// Visual context appended per category so Unsplash returns editorially relevant photos
+// even when the raw wikiSearchQuery is a person name or niche topic.
+const UNSPLASH_CATEGORY_HINT: Record<string, string> = {
+  "Music":    "music concert stage performance",
+  "Film & TV":"film cinema entertainment screen",
+  "Gaming":   "gaming video games technology",
+  "Fashion":  "fashion style clothing design",
+  "Internet": "digital social media culture viral",
+  "Tech":     "technology digital innovation device",
+  "AI":       "artificial intelligence technology data",
+  "Culture":  "culture art creative people",
+  "World":    "city people travel international",
+  "Industry": "business entertainment industry",
+  "Books":    "books reading literature library",
+  "Science":  "science research space discovery",
+  "Sports":   "sport athlete competition",
+};
+
+// Search Unsplash for a keyword-relevant editorial photo.
+// Combines 2–3 topic keywords with category-specific visual context words.
+async function fetchUnsplashImage(query: string, category?: string): Promise<string | undefined> {
+  const key = process.env.UNSPLASH_ACCESS_KEY;
+  if (!key || !query?.trim()) return undefined;
+  try {
+    // Strip stopwords and take up to 3 topic signal words
+    const topicWords = query
+      .replace(/\b(the|a|an|and|or|of|in|on|at|to|for|with|is|are|was|were|has|have|had|be|been|being|that|this|these|those|it|its|gets?|says?|new|just|now|first|last|big|top|best|worst|how|why|what|when|who|will|can|may|more|most|all|one|two|three|its?|his|her|they|their|from|into|over|also|even|than|then|very|each|only)\b/gi, " ")
+      .replace(/[^a-z0-9\s]/gi, " ")
+      .trim()
+      .split(/\s+/)
+      .filter(w => w.length > 3)
+      .slice(0, 3)
+      .join(" ");
+
+    // Append category visual hint so Unsplash returns contextually relevant images
+    // even when the topic keywords alone are too abstract or person-specific
+    const hint = category ? (UNSPLASH_CATEGORY_HINT[category] ?? "") : "";
+    const keywords = [topicWords, hint].filter(Boolean).join(" ").trim();
+    if (!keywords) return undefined;
+
+    // Portrait orientation for full-screen mobile cards; strict content filter; more candidates
+    const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keywords)}&per_page=5&orientation=portrait&content_filter=high`;
+    const res = await fetch(url, {
+      headers: { Authorization: `Client-ID ${key}` },
+      signal: AbortSignal.timeout(6000),
+    });
+    if (!res.ok) return undefined;
+    const data = await res.json();
+    const results: any[] = data?.results ?? [];
+    for (const photo of results) {
+      const src: string | undefined = photo?.urls?.full ?? photo?.urls?.regular;
+      if (src?.startsWith("http")) return src;
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+// ─── Google Custom Search image fetcher ──────────────────────────────────────
+
+/**
+ * Strip to 2–3 strong signal nouns for Google Image queries.
+ * Removes stopwords, filler journalism words, and noise.
+ */
+function cleanGoogleQuery(query: string): string {
+  return query
+    .replace(/\b(the|a|an|and|or|of|in|on|at|to|for|with|is|are|was|were|has|have|had|be|been|being|that|this|these|those|it|its|his|her|they|their|from|into|over|also|even|than|then|very|each|only|just|now|new|big|top|best|worst|first|last|one|two|three|more|most|all|any|no|not|so|but|if|as|by|up|out|about|after|before|says?|gets?|will|can|may|how|why|what|when|who|report|reveals?|breaking|latest|update|exclusive|source|news|confirms?|shows?)\b/gi, " ")
+    .replace(/[^a-z0-9\s]/gi, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(w => w.length > 2)
+    .slice(0, 3)
+    .join(" ");
+}
+
+/**
+ * Extra URL-level filter for Google results — rejects branding/UI assets
+ * that slip past the general BAD_IMAGE_PATTERNS check.
+ */
+function isGoodGoogleImage(url: string): boolean {
+  if (!url?.startsWith("http")) return false;
+  if (/\.(svg)(\?|$)/i.test(url)) return false;  // SVGs are almost always logos
+  if (/[/_-](logo|icon|avatar|banner|sprite|ads?)([/_.\-?]|$)/i.test(url)) return false;
+  if (/[/_-]thumbnail[/_.\-?]/i.test(url)) return false;
+  // Reject tracking/redirect URLs (excessively long query strings)
+  try {
+    const u = new URL(url);
+    if (u.search.length > 200) return false;
+  } catch { return false; }
+  return true;
+}
+
+/**
+ * Fetch up to 5 Google Custom Search image results, validate each with
+ * dimension + ratio + URL checks, score by area + aspect ratio, return best.
+ * Requires GOOGLE_CSE_API_KEY + GOOGLE_CSE_CX env vars.
+ */
+async function fetchBingImage(query: string): Promise<string | undefined> {
+  const apiKey = process.env.BING_API_KEY;
+  if (!apiKey || !query?.trim()) return undefined;
+  try {
+    const url = new URL("https://api.bing.microsoft.com/v7.0/images/search");
+    url.searchParams.set("q", query);
+    url.searchParams.set("count", "5");
+    url.searchParams.set("imageType", "Photo");
+    url.searchParams.set("size", "Large");
+    url.searchParams.set("safeSearch", "Strict");
+    const res = await fetch(url.toString(), {
+      headers: { "Ocp-Apim-Subscription-Key": apiKey },
+      signal: AbortSignal.timeout(4000),
+    });
+    if (!res.ok) return undefined;
+    const data = await res.json();
+    const candidates: string[] = (data?.value ?? [])
+      .map((item: any) => item?.contentUrl as string | undefined)
+      .filter((u: string | undefined): u is string =>
+        !!u && isGoodImageUrl(u) && !/\.(svg|gif)(\?|$)/i.test(u)
+      );
+    if (!candidates.length) return undefined;
+    const scored = await Promise.all(
+      candidates.map(async (u) => {
+        const dims = await fetchImageDimensions(u);
+        if (!dims) return { u, score: 0, valid: true };
+        if (dims.width < 600) return { u, score: -1, valid: false };
+        const r = dims.width / dims.height;
+        if (r > 3 || r < 0.4) return { u, score: -1, valid: false };
+        let score = dims.width * dims.height;
+        if (r >= 0.7 && r <= 1.8) score += 500_000;
+        if (r > 2.5) score -= 300_000;
+        return { u, score, valid: true };
+      })
+    );
+    const best = scored.filter(c => c.valid && c.score >= 0).sort((a, b) => b.score - a.score)[0];
+    return best?.u;
+  } catch { return undefined; }
+}
+
+async function fetchGoogleImage(query: string): Promise<string | undefined> {
+  const apiKey = process.env.GOOGLE_CSE_API_KEY;
+  const cx     = process.env.GOOGLE_CSE_CX;
+  if (!apiKey || !cx || !query?.trim()) return undefined;
+
+  const q = cleanGoogleQuery(query);
+  if (!q) return undefined;
+
+  try {
+    const searchUrl = new URL("https://www.googleapis.com/customsearch/v1");
+    searchUrl.searchParams.set("q", q);
+    searchUrl.searchParams.set("cx", cx);
+    searchUrl.searchParams.set("key", apiKey);
+    searchUrl.searchParams.set("searchType", "image");
+    searchUrl.searchParams.set("num", "5");
+    searchUrl.searchParams.set("imgSize", "large");
+    searchUrl.searchParams.set("imgType", "photo");
+    searchUrl.searchParams.set("safe", "active");
+
+    const res = await fetch(searchUrl.toString(), { signal: AbortSignal.timeout(4000) });
+    if (!res.ok) return undefined;
+
+    const data = await res.json();
+    const candidates: string[] = (data?.items ?? [])
+      .map((item: any) => item?.link as string | undefined)
+      .filter((url: string | undefined): url is string =>
+        !!url && isGoodImageUrl(url) && isGoodGoogleImage(url)
+      );
+
+    if (candidates.length === 0) return undefined;
+
+    // Validate + score all candidates in parallel
+    const scored = await Promise.all(
+      candidates.map(async (url) => {
+        const dims = await fetchImageDimensions(url);
+        if (!dims) return { url, score: 0, valid: true }; // unknown dims — allow, zero score
+        const { width, height } = dims;
+        if (width < 600) return { url, score: -1, valid: false };
+        const ratio = width / height;
+        if (ratio > 3 || ratio < 0.4) return { url, score: -1, valid: false };
+
+        // Score: prefer large images with portrait-to-landscape ratios
+        let score = width * height;
+        if (ratio >= 0.7 && ratio <= 1.8) score += 500_000;  // ideal editorial ratio
+        if (ratio > 2.5)                  score -= 300_000;  // penalise ultra-wide
+        return { url, score, valid: true };
+      })
+    );
+
+    const best = scored
+      .filter(c => c.valid && c.score >= 0)
+      .sort((a, b) => b.score - a.score)[0];
+
+    return best?.url;
+  } catch {
+    return undefined;
+  }
+}
+
+// Fetch the main image from a Wikipedia page that matches the search query.
+// Uses a two-step Wikipedia API call — no API key required.
+async function fetchWikipediaImage(query: string): Promise<string | undefined> {
+  if (!query?.trim()) return undefined;
+  try {
+    // Step 1: find the best-matching Wikipedia page title
+    const searchUrl =
+      `https://en.wikipedia.org/w/api.php?action=query&list=search` +
+      `&srsearch=${encodeURIComponent(query)}&format=json&origin=*&srlimit=1`;
+    const searchRes = await fetch(searchUrl, { signal: AbortSignal.timeout(6000) });
+    if (!searchRes.ok) return undefined;
+    const searchData = await searchRes.json();
+    const pageTitle: string | undefined = searchData?.query?.search?.[0]?.title;
+    if (!pageTitle) return undefined;
+
+    // Sanity check for person-focused queries (e.g. "Tiger Woods golfer"):
+    // if the first name isn't in the returned page title, retry with just the name
+    // (dropping the role word — e.g. "Tiger Woods golfer" → "Tiger Woods").
+    const PERSON_ROLES = ["golfer","singer","rapper","actor","actress","musician","athlete","player","director","artist","comedian","presenter"];
+    const isPersonQuery = PERSON_ROLES.some((r) => query.toLowerCase().includes(r));
+    let resolvedTitle = pageTitle;
+    if (isPersonQuery) {
+      const firstName = query.split(/\s+/)[0].toLowerCase();
+      if (!pageTitle.toLowerCase().includes(firstName)) {
+        // Role word caused wrong result — retry with name only (strip role words)
+        const nameOnly = query.split(/\s+/).filter((w) => !PERSON_ROLES.includes(w.toLowerCase())).join(" ");
+        if (!nameOnly.trim()) return undefined;
+        const retryRes = await fetch(
+          `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(nameOnly)}&format=json&origin=*&srlimit=1`,
+          { signal: AbortSignal.timeout(6000) }
+        );
+        if (!retryRes.ok) return undefined;
+        const retryData = await retryRes.json();
+        const retryTitle: string | undefined = retryData?.query?.search?.[0]?.title;
+        if (!retryTitle || !retryTitle.toLowerCase().includes(firstName)) return undefined;
+        resolvedTitle = retryTitle;
+      }
+    }
+
+    // Step 2: get the original/thumbnail image for that page
+    const imgUrl =
+      `https://en.wikipedia.org/w/api.php?action=query` +
+      `&titles=${encodeURIComponent(resolvedTitle)}` +
+      `&prop=pageimages&piprop=original|thumbnail&pithumbsize=1600` +
+      `&format=json&origin=*`;
+    const imgRes = await fetch(imgUrl, { signal: AbortSignal.timeout(6000) });
+    if (!imgRes.ok) return undefined;
+    const imgData = await imgRes.json();
+    const pages = Object.values(imgData?.query?.pages ?? {}) as any[];
+    const src: string | undefined =
+      pages[0]?.original?.source ?? pages[0]?.thumbnail?.source;
+    // Skip SVG icons / logos / flags (bad hero images)
+    if (src && src.startsWith("http") && !/\.svg$/i.test(src)) return src;
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+// ─── YouTube ──────────────────────────────────────────────────────────────────
+// Only used when the article HTML explicitly embeds a YouTube video.
+// Never searches YouTube blindly — that would give irrelevant thumbnails.
+function extractYouTubeId(html: string): string | null {
+  const match =
+    html.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/) ||
+    html.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/) ||
+    html.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
+
+// ─── TMDb ─────────────────────────────────────────────────────────────────────
+// The Movie Database — high-quality posters for Film & TV articles.
+// Requires TMDB_API_KEY env var.
+async function fetchTMDbImage(query: string): Promise<string | undefined> {
+  const key = process.env.TMDB_API_KEY;
+  if (!key || !query?.trim()) return undefined;
+  try {
+    const searchUrl =
+      `https://api.themoviedb.org/3/search/multi?query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`;
+    const res = await fetch(searchUrl, {
+      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(6000),
+    });
+    if (!res.ok) return undefined;
+    const data = await res.json();
+    const result = data?.results?.[0];
+    // poster_path (movie/tv) or profile_path (person)
+    const imagePath = result?.poster_path ?? result?.profile_path;
+    if (!imagePath) return undefined;
+    // Use original resolution
+    return `https://image.tmdb.org/t/p/original${imagePath}`;
+  } catch {
+    return undefined;
+  }
+}
+
+// ─── Spotify ──────────────────────────────────────────────────────────────────
+// Spotify album/artist artwork — high-quality square art for Music articles.
+// Requires SPOTIFY_CLIENT_ID + SPOTIFY_CLIENT_SECRET env vars.
+// Uses Client Credentials flow with an in-memory token cache.
+let _spotifyToken: string | null = null;
+let _spotifyTokenExpiry = 0;
+
+async function getSpotifyToken(): Promise<string | null> {
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+  if (!clientId || !clientSecret) return null;
+  if (_spotifyToken && Date.now() < _spotifyTokenExpiry) return _spotifyToken;
+  try {
+    const creds = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+    const res = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: { Authorization: `Basic ${creds}`, "Content-Type": "application/x-www-form-urlencoded" },
+      body: "grant_type=client_credentials",
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    _spotifyToken = data.access_token ?? null;
+    _spotifyTokenExpiry = Date.now() + (data.expires_in ?? 3600) * 1000 - 60_000;
+    return _spotifyToken;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchSpotifyImage(query: string): Promise<string | undefined> {
+  if (!query?.trim()) return undefined;
+  const token = await getSpotifyToken();
+  if (!token) return undefined;
+  try {
+    // Try album art first, then artist image
+    for (const type of ["album", "artist"] as const) {
+      const url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=${type}&limit=1`;
+      const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` },
+        signal: AbortSignal.timeout(5000),
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const items = data?.[`${type}s`]?.items ?? [];
+      const images: Array<{ url: string; width: number; height: number }> = items[0]?.images ?? [];
+      // Pick the largest image (Spotify returns sorted largest→smallest)
+      const src = images[0]?.url;
+      if (src?.startsWith("http")) return src;
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+// ─── Fetch ───────────────────────────────────────────────────────────────────
+
+async function fetchFeed(
+  url: string,
+  sourceName: string
+): Promise<RawRSSItem[]> {
+  try {
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(15000),
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        Accept: "application/rss+xml, application/xml, text/xml, */*",
+      },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const xml = await res.text();
+    const items = parseRSSItems(xml, sourceName);
+    console.log(`[rss] ${sourceName}: ${items.length} items`);
+    return items;
+  } catch (e) {
+    console.warn(`[rss] ⚠ Failed to fetch ${sourceName} (${url}): ${e}`);
+    return [];
+  }
+}
+
+// ─── Deduplication + ranking ─────────────────────────────────────────────────
+
+// High-signal keyword triggers — hints for the override layer to expand the candidate pool.
+// Keywords are NOT gates. Claude makes the final inclusion decision based on cultural gravity.
+const HIGH_SIGNAL_TRIGGERS = [
+  // Dramatic events
+  /\bfirst\b/i, /\breturns?\b/i, /\bshock(s|ed|ing)?\b/i, /\brecord\b/i, /\bhighest\b/i,
+  /\bbans?\b/i, /\barrested?\b/i, /\bcancell?ed\b/i, /\bdies?\b/i, /\bdead\b/i,
+  /\bcomeback\b/i, /\bbreakthrough\b/i, /\boutrage\b/i, /\bcontrovers/i,
+  /\bscandal\b/i, /\bdisappear\b/i, /\breappear\b/i,
+  /\$[\d,]{3,}/,                       // economic shock: price in thousands
+  /\bworst\b.{0,30}\bever\b/i,         // superlatives
+  /\bmost\b.{0,30}\bever\b/i,
+  // Franchise / product lifecycle
+  /\bdelay(s|ed|ing)?\b/i,
+  /\bpostpon(e|ed|ing|ement)\b/i,
+  /\bbroken\b/i,                       // broken records, broken promises
+  /\bcancel(led?|ation)?\b/i,
+  /\bleaked?\b/i,                      // franchise leaks
+  /\btrailers?\b/i,                    // major property trailers
+  // AI / cognition structural signals
+  /\bemotion(s|al|ally)?\b/i,
+  /\bcognition\b/i, /\bsentient\b/i, /\bconscious(ness)?\b/i,
+  /\bautonomous?\b/i, /\bself.aware\b/i,
+  /\bclaims?\b/i,
+  // Viral / cultural momentum
+  /\bviral\b/i, /\btrending\b/i,
+  /\bmeltdown\b/i, /\bfeud\b/i,
+];
+
+// ─── Domain classification ────────────────────────────────────────────────────
+// Every candidate item is tagged with a SignalDomain before the pool is built.
+// This tag drives domain-balanced candidate selection and is shown to Claude
+// in the article list so it can apply domain-aware editorial judgment.
+
+type SignalDomain = 'AI_TECH' | 'ECONOMIC' | 'FANDOM' | 'INTERNET' | 'SPORTS' | 'CROSSDOMAIN' | 'ENTERTAINMENT';
+
+// Source-level domain assignment (takes precedence over keyword detection)
+const DOMAIN_BY_SOURCE: Partial<Record<string, SignalDomain>> = {
+  "The Verge":        "AI_TECH",
+  "TechCrunch":       "AI_TECH",
+  "Wired":            "AI_TECH",
+  "ESPN":             "SPORTS",
+  "Know Your Meme":   "INTERNET",
+  "Dexerto":          "INTERNET",
+  "Semafor":          "CROSSDOMAIN",
+  "The Atlantic":     "CROSSDOMAIN",
+  "The New Yorker":   "CROSSDOMAIN",
+  "Hypebeast":        "ECONOMIC",
+  "Highsnobiety":     "ECONOMIC",
+};
+
+// Keyword-based domain detection — applied when source doesn't give a clear domain
+const DOMAIN_KEYWORD_RULES: Array<[SignalDomain, RegExp[]]> = [
+  ["AI_TECH", [
+    /\bAI\b/, /artificial intelligence/i, /\bChatGPT\b/i, /\bOpenAI\b/i,
+    /\bAnthropic\b/i, /\bGemini\b/i, /\bClaude\b.{0,20}\b(AI|model)\b/i,
+    /\bLLM\b/, /\bmachine learning\b/i, /\bsentient\b/i, /\bautonomous?\b/i,
+    /\bmodel\b.{0,20}\b(launch|update|release|emotion|think|feel)\b/i,
+  ]],
+  ["ECONOMIC", [
+    /\$[\d,]+\s*billion/i, /\bwealth.{0,30}(drop|loss|lost|fell)\b/i,
+    /\bstreaming record\b/i, /\bbox office record\b/i,
+    /\bticket.{0,10}\$[\d,]{3,}/, /\$[\d,]{3,}.{0,10}ticket/i,
+    /\brecord.{0,20}(revenue|sales|gross)\b/i, /\brichest\b/i,
+  ]],
+  ["FANDOM", [
+    /\bchart.{0,20}(number one|#1|top)\b/i,
+    /\bstreaming record\b/i, /\bworld record\b/i,
+    /\bglobal.{0,20}chart\b/i, /\bfan.{0,20}(campaign|mob)\b/i,
+    /\bnumber one.{0,20}(album|song|chart)\b/i,
+  ]],
+  ["INTERNET", [
+    /\bviral\b/i, /\bTikTok\b/i, /\bmeme\b/i, /\btrending\b/i,
+    /\bReddit\b/i, /\bX\.com\b/i,
+  ]],
+  ["CROSSDOMAIN", [
+    /\b(president|congress|white house).{0,40}(music|film|sport|celebrity)\b/i,
+    /\b(musician|artist|rapper|singer).{0,40}(sport|politics|tech)\b/i,
+  ]],
+];
+
+function classifyDomain(item: RawRSSItem): SignalDomain {
+  const sourceDomain = DOMAIN_BY_SOURCE[item.source];
+  if (sourceDomain) return sourceDomain;
+  const text = `${item.title} ${item.description ?? ""}`;
+  for (const [domain, patterns] of DOMAIN_KEYWORD_RULES) {
+    if (patterns.some((p) => p.test(text))) return domain;
+  }
+  return "ENTERTAINMENT";
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Titles matching these patterns are junk that should never reach Claude
+const JUNK_TITLE_PATTERNS = [
+  /promo\s*code/i,
+  /coupon/i,
+  /\b\d+%\s*off\b/i,
+  /\bdeal\s+(alert|of\s+the\s+day)\b/i,
+  /\bwordle\b.{0,30}(answer|hint|today|solution)/i,
+  /\bstrands\b.{0,30}(answer|hint|today|solution)/i,
+  /\bconnections\b.{0,30}(answer|hint|today|solution)/i,
+  /\bpuzzle\b.{0,30}(answer|hint|solution)/i,
+  /\bwalkthrough\b/i,
+  /\bhow\s+to\s+(beat|unlock|get|complete)\b/i,
+  /\bbest\s+(laptops?|phones?|tvs?|monitors?|headphones?)\b/i,
+  // Product roundups / gear listicles
+  /\b\d+\s+(best|top|great|design.forward|worth\s+buying|must.have)\b/i,
+  /\bworth\s+(upgrading|buying|trying)\b/i,
+  /\bgear\s+(guide|roundup|picks?)\b/i,
+  /\bbest\s+(tools?|gadgets?|apps?|products?|items?)\b/i,
+  // Hard-blocked content — explicit/bait titles that must never reach Claude
+  /\bdrop\s+(an?\s+)?f.?bomb\b/i,
+  /\bf.?bomb\b.{0,40}(movie|film|trailer|show|scene|episode|clip)/i,
+];
+
+const STOP_WORDS = new Set([
+  "a","an","the","is","are","was","were","be","been","being",
+  "has","have","had","do","does","did","will","would","could","should","may","might",
+  "and","or","but","if","as","at","by","for","in","of","on","to","up","from","with",
+  "that","this","these","those","it","its","he","she","they","we","you","i",
+  "his","her","their","our","your","my","new","say","says","said","just","now",
+  "after","before","over","about","how","why","what","when","where","who","which",
+  "more","one","two","three","first","last","top","big","make","get","see","go",
+]);
+
+function titleTokens(title: string): Set<string> {
+  return new Set(
+    title.toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length > 2 && !STOP_WORDS.has(w))
+  );
+}
+
+function jaccardSim(a: Set<string>, b: Set<string>): number {
+  if (a.size === 0 || b.size === 0) return 0;
+  let intersection = 0;
+  for (const t of a) if (b.has(t)) intersection++;
+  return intersection / (a.size + b.size - intersection);
+}
+
+interface DedupeAuditEntry {
+  item: RawRSSItem;
+  /** Whether this item was sent to Claude, ranked out, or collapsed as a duplicate */
+  status: "sent_to_claude" | "ranked_out" | "deduplicated";
+  /** 1-based rank of this item's story group among all unique stories */
+  rank: number;
+  /** Dedup score for the group */
+  score: number;
+  /** For deduplicated items: the title of the representative that survived */
+  groupedWith?: string;
+  /** For deduplicated items: the source of the representative */
+  groupedWithSource?: string;
+}
+
+/**
+ * Deduplicate articles by title similarity, then rank by coverage × recency.
+ * Returns the top `topN` unique story representatives plus a full audit of
+ * every raw item (deduplicated, ranked-out, or sent-to-Claude).
+ */
+function deduplicateAndRank(
+  items: RawRSSItem[],
+  topN = 25
+): { topN: RawRSSItem[]; allRanked: RawRSSItem[]; audit: DedupeAuditEntry[] } {
+  type Group = {
+    representative: RawRSSItem;
+    members: RawRSSItem[];
+    sourceCount: number;
+    latestMs: number;
+    tokens: Set<string>;
+  };
+
+  const groups: Group[] = [];
+
+  for (const item of items) {
+    const tokens = titleTokens(item.title);
+    const dateMs = new Date(item.pubDate).getTime() || Date.now();
+
+    let bestGroup: Group | null = null;
+    let bestSim = 0.35; // minimum Jaccard threshold to be considered a duplicate
+
+    for (const g of groups) {
+      const sim = jaccardSim(tokens, g.tokens);
+      if (sim > bestSim) {
+        bestSim = sim;
+        bestGroup = g;
+      }
+    }
+
+    if (bestGroup) {
+      bestGroup.members.push(item);
+      bestGroup.sourceCount++;
+      // Prefer the most recent version; break ties in favour of articles with images
+      if (
+        dateMs > bestGroup.latestMs ||
+        (dateMs === bestGroup.latestMs &&
+          item.imageUrl &&
+          !bestGroup.representative.imageUrl)
+      ) {
+        bestGroup.latestMs = dateMs;
+        bestGroup.representative = item;
+      }
+    } else {
+      groups.push({ representative: item, members: [item], sourceCount: 1, latestMs: dateMs, tokens });
+    }
+  }
+
+  // Score = coverage bonus + recency bonus
+  const now = Date.now();
+  const scored = groups.map((g) => {
+    const ageHours = (now - g.latestMs) / 3_600_000;
+    const recency = Math.max(0, 1 - ageHours / 48); // 1 = fresh, 0 = 2 days old
+    const score = g.sourceCount * 3 + recency * 2;
+    return { score, g };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+
+  console.log(
+    `[rss] Deduplicated ${items.length} raw items → ${groups.length} unique stories → keeping top ${topN}`
+  );
+
+  const topNItems = scored.slice(0, topN).map((s) => s.g.representative);
+  const allRanked = scored.map((s) => s.g.representative);
+
+  // Build per-item audit entries
+  const audit: DedupeAuditEntry[] = [];
+  scored.forEach(({ score, g }, rankIdx) => {
+    const rank = rankIdx + 1;
+    const sentToClaude = rank <= topN;
+    for (const item of g.members) {
+      if (item === g.representative) {
+        audit.push({ item, status: sentToClaude ? "sent_to_claude" : "ranked_out", rank, score });
+      } else {
+        audit.push({
+          item,
+          status: "deduplicated",
+          rank,
+          score,
+          groupedWith: g.representative.title,
+          groupedWithSource: g.representative.source,
+        });
+      }
+    }
+  });
+
+  return { topN: topNItems, allRanked, audit };
+}
+
+// ─── Claude enrichment ───────────────────────────────────────────────────────
+
+interface ClaudeDecision {
+  sourceIndex: number;
+  selected: boolean;
+  rejectionReason?: string;
+}
+
+/**
+ * Fixes literal newlines/tabs inside JSON string values — a common Claude output issue.
+ * Iterates character-by-character to stay inside string boundaries correctly.
+ */
+function sanitizeClaudeJson(raw: string): string {
+  let out = "";
+  let inString = false;
+  let escaped = false;
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i];
+    if (escaped) {
+      out += ch;
+      escaped = false;
+      continue;
+    }
+    if (ch === "\\") {
+      out += ch;
+      escaped = true;
+      continue;
+    }
+    if (ch === '"') {
+      inString = !inString;
+      out += ch;
+      continue;
+    }
+    if (inString) {
+      if (ch === "\n") { out += "\\n"; continue; }
+      if (ch === "\r") { out += "\\r"; continue; }
+      if (ch === "\t") { out += "\\t"; continue; }
+    }
+    out += ch;
+  }
+  return out;
+}
+
+// ─── Post-selection entity dedup ─────────────────────────────────────────────
+// After Claude picks articles, deduplicate pairs that share a named entity
+// (≥2 consecutive Title-Cased words, e.g. "Tiger Woods", "Kanye West", "GTA 6").
+// The earlier item in the list (higher ranked / first selected) is kept.
+
+function extractNamedEntities(title: string): Set<string> {
+  const matches = title.match(/[A-Z][a-z]+(?:\s+[A-Z0-9][a-zA-Z0-9]*){1,3}/g) ?? [];
+  return new Set(matches.map((m) => m.toLowerCase().trim()));
+}
+
+function applyEntityDedup(
+  items: RawRSSItem[],
+  indices: number[]
+): { items: RawRSSItem[]; indices: number[] } {
+  const keptItems: RawRSSItem[] = [];
+  const keptIndices: number[] = [];
+  const seenEntities = new Set<string>();
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const entities = extractNamedEntities(item.title);
+    const hasDuplicate = [...entities].some((e) => seenEntities.has(e));
+    if (hasDuplicate) {
+      console.log(`[rss] Entity dedup — dropped: "${item.title}"`);
+      continue;
+    }
+    entities.forEach((e) => seenEntities.add(e));
+    keptItems.push(item);
+    keptIndices.push(indices[i]);
+  }
+  return { items: keptItems, indices: keptIndices };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function enrichWithClaude(
+  rawItems: RawRSSItem[],
+  alreadyPublished: { title: string; link: string }[] = [],
+  publishToday = false
+): Promise<{ articles: EnrichedArticle[]; decisions: ClaudeDecision[] }> {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) throw new Error("ANTHROPIC_API_KEY not set");
+
+  const today = new Date().toLocaleDateString("en-GB", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const articleList = rawItems
+    .map(
+      (item, i) =>
+        `[${i + 1}] DOMAIN: ${classifyDomain(item)} | SOURCE: ${item.source}\nDATE: ${item.pubDate}\nTITLE: ${item.title}\nDESCRIPTION: ${item.description || "(none)"}${item.imageUrl ? `\nIMAGE: ${item.imageUrl}` : ""}`
+    )
+    .join("\n\n---\n\n");
+
+  // ── Helper: call Anthropic API via node:https (bypasses undici's fetch pool) ──
+  const callClaude = (userPrompt: string, maxTokens: number): Promise<string> =>
+    new Promise<string>((resolve, reject) => {
+      const body = JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: maxTokens,
+        messages: [{ role: "user", content: userPrompt }],
+      });
+      const req = https.request(
+        {
+          hostname: "api.anthropic.com",
+          path: "/v1/messages",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+            "anthropic-version": "2023-06-01",
+            "Content-Length": Buffer.byteLength(body),
+          },
+        },
+        (res) => {
+          let data = "";
+          res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
+          res.on("end", () => {
+            if ((res.statusCode ?? 0) >= 400) {
+              reject(new Error(`Anthropic API ${res.statusCode}: ${data.slice(0, 300)}`));
+            } else {
+              try {
+                const json = JSON.parse(data);
+                const content = json?.content?.[0];
+                resolve(content?.type === "text" ? content.text : "");
+              } catch {
+                reject(new Error(`Failed to parse Anthropic response: ${data.slice(0, 200)}`));
+              }
+            }
+          });
+        }
+      );
+      req.setTimeout(180_000, () => {
+        req.destroy(new Error("Anthropic API request timed out after 180s"));
+      });
+      req.on("error", reject);
+      req.write(body);
+      req.end();
+    });
+
+  // ── Call 1: Selection ────────────────────────────────────────────────────────
+  const alreadyPublishedBlock = alreadyPublished.length > 0
+    ? `ALREADY IN TODAY'S FEED — do not re-select these stories:\n${alreadyPublished.map((a, i) => `${i + 1}. ${a.title}`).join("\n")}\nYour selections must all be NEW stories not already in today's feed. Judge by story identity, not headline wording. If nothing new clears the bar, select zero.\n\n`
+    : "";
+
+  const selectionPrompt = `You are the editorial voice for Popcorn — a cultural lens app. Today is ${today}.
+
+Popcorn is not a general news feed. It is not a tabloid. It is not an intellectual reading list.
+It is a high-signal, opinionated snapshot of what actually matters in culture right now.
+
+You are a cultural signal detector across all domains — not an entertainment aggregator.
+You must be selective, decisive, and willing to exclude "good" content that is not culturally consequential today.
+
+━━━ CORE TEST ━━━
+Every story must answer yes to: "Is this culturally consequential right now?"
+A story qualifies only if it meets at least one:
+  • SCALE — widely discussed, trending, or dominating attention right now
+  • INFLUENCE — actively shaping taste, behaviour, or public discourse
+  • SIGNAL — indicates a real shift in culture, media, or society
+
+If none apply → exclude it, even if it involves a famous name or major franchise.
+
+━━━ SIGNAL CATEGORIES — SCAN ALL OF THESE ━━━
+You must actively detect signals across every category below, not just entertainment headlines.
+A strong feed is balanced across domains. Do not over-index on any single category.
+
+1. ENTERTAINMENT MOMENTS (high bar required)
+   Include only: major releases with proven audience scale, breakout moments generating genuine discourse, significant industry power shifts
+   Exclude: appearances, premieres, red carpets, casting, trailers, production updates, gossip, commentary
+
+2. AI AND INTERNET CULTURE SHIFTS
+   Include: AI systems behaving unexpectedly in ways that spread widely online, viral AI-generated content trends that become memes or public debates, major model updates that change how people actually use AI tools
+   These matter because they reshape internet behaviour — not because they are tech news
+
+3. ECONOMIC AND CULTURAL POWER SIGNALS
+   Include: major wealth shifts involving cultural figures or luxury brands (e.g. a significant public loss of wealth), extreme pricing changes for cultural access (e.g. concert or sports tickets hitting historic levels), record-breaking streaming, box office, or revenue moments that reflect global attention shifts
+   These signal changes in access, status, and consumption — they are cultural, not financial
+
+4. GLOBAL FANDOM AND SCALE EVENTS
+   Include: massive coordinated fandom activity (e.g. streaming mobilisation at BTS scale), global chart dominance or record-breaking releases driven by fan ecosystems, online fan campaigns that dominate social platforms
+   These indicate cultural scale and collective behaviour — not just popularity
+
+5. CROSS-DOMAIN CULTURAL COLLISIONS
+   Include: artists entering sports, politics, or tech in ways that generate broad public debate, sports controversies that spill into meme culture or mainstream discourse, tech or platform decisions that directly affect entertainment consumption or creative industries
+   These are high value because they connect multiple cultural systems and generate wider conversation
+
+━━━ SCORING (0–100) ━━━
+Assign each article a cultural relevance score from 0 to 100:
+  • 90–100 → Dominant cultural moment → must include
+  • 75–89  → Strong relevance, widely discussed → include
+  • 60–74  → Borderline → include only if clearly additive to the feed and not covered by a stronger story
+  • Below 60 → Exclude
+
+Mandatory score penalties — apply strictly, reduce score significantly if:
+  - Trailer, teaser, or promotional content
+  - Casting announcement or routine project news
+  - Celebrity gossip, commentary, or low-stakes personal drama
+  - Premiere, appearance, or red carpet coverage
+  - Industry-only news with no demonstrated public traction
+  - Not time-sensitive or already widely known
+
+━━━ CULTURAL EVENT THRESHOLD ━━━
+A story qualifies as a "cultural event" only if it has at least ONE of:
+  • Demonstrated widespread public discourse (people are actively talking about it, not just reading about it)
+  • Meme or viral propagation that has spread beyond the original domain
+  • Cross-platform visibility (the story has broken out of its originating community)
+  • A controversy, value conflict, or moral tension that generates opposing reactions
+  • A measurable audience-scale reaction (streaming numbers, social volume, ticket sales, fan mobilisation)
+
+"Interesting" alone is NOT sufficient. "Surprising" alone is NOT sufficient.
+Platform milestones (a website leaving beta, a UI change, a new default setting) are interesting system updates — they are not cultural events unless they generate public outrage or discourse at scale.
+Political appointments and cabinet reshuffles are politics news — they are not cultural events unless directly involving a cultural figure (musician, artist, athlete, entertainer).
+
+━━━ KNOWN FAILURE PATTERNS — NEVER INCLUDE THESE ━━━
+These story types have been incorrectly included before. Reject them on sight:
+  - Celebrity premiere or red carpet appearances (e.g. two stars attending a screening together)
+  - Legal dispute framing without a significant new ruling or cultural turning point (e.g. a lawsuit being "whittled down")
+  - Celebrity making remarks or commentary about another celebrity
+  - Personal milestones with no wider cultural reaction (e.g. returning to a role after illness)
+  - SNL appearances or celebrity pairings unless they generate sustained discourse beyond the initial moment
+  - Routine casting reveals for existing franchises
+  - Speculative delays, rumours, or "may happen" reporting
+  - Production changes with no public reaction (e.g. an actor quietly exiting a project)
+  - Prestige project announcements years away from release
+  - Platform or product "coming of age" milestones (e.g. a website finally leaving beta after years, an app changing a default setting, a feed being retired) — these are interesting system changes, not cultural events
+  - Political cabinet reshuffles, appointments, or personnel changes with no direct connection to a cultural figure or event
+  - Articles where the source description lacks specific named details — real people, specific titles, verifiable facts. If you cannot confidently name who this is about and what specifically happened, reject it. Vague community or niche stories without publicly verifiable specifics are not Popcorn material.
+
+━━━ STORY CHAIN RULE ━━━
+When multiple articles in the candidate pool cover the SAME story at different stages (a trigger event followed by a downstream consequence), select ONLY the most consequential article — not both.
+Examples of trigger → consequence chains:
+  - "Person X says Y" → "Brand Z drops Person X because of Y" → select the BRAND DROP only
+  - "Artist makes controversial statement" → "Sponsor withdraws" → select the SPONSOR WITHDRAWAL only
+  - "Event causes outrage" → "Platform bans content" → select the PLATFORM BAN only
+The downstream consequence (economic action, cancellation, brand response, ban) is always more culturally significant than the initial trigger statement alone. Selecting both dilutes the feed and buries the more impactful story. If you see a chain, pick the furthest downstream consequence and reject everything earlier in the chain.
+
+━━━ EDITORIAL FILTERS ━━━
+
+REPLACEABILITY TEST — "If this story was removed, would the feed feel weaker?" If no → remove it.
+
+CONVERSATION STRENGTH — Prioritise stories with debate, tension, controversy, a clear discussion hook, an unexpected crossover, or a surprising and extreme angle. Avoid passive, informational, or "nice to know" stories.
+
+BAR TEST — "Would two culturally aware people across different interests bring this up today?" If no → exclude.
+
+CONTENT-ABOUT-CONTENT PENALTY — Deprioritise trailers, teasers, and promotional cycles unless they have clear, demonstrated cultural traction beyond the fanbase.
+
+━━━ INTELLECTUAL CONTENT RULE ━━━
+Include only if actively part of a current cultural conversation, directly connected to a major trend (AI, loneliness, internet behaviour), or unusually surprising and broadly relatable. Rare — 0 to 2 stories maximum.
+
+━━━ STRICT EXCLUSIONS ━━━
+Reject without hesitation:
+  - Any celebrity appearance, sighting, or red carpet coverage
+  - Fashion or aesthetic coverage without cultural impact or discourse
+  - Routine industry updates of any kind
+  - Niche fandom content that has not broken into mainstream conversation
+  - Speculative or rumour-based reporting
+  - Duplicate coverage — pick the single strongest version only
+  - Filler of any kind — do not include to hit a number
+  - Pure politics: cabinet reshuffles, appointments, policy changes — unless directly involving a cultural figure
+  - Platform/product changes (UI updates, beta exits, default setting changes, app updates) without demonstrated public outrage or cultural reaction at scale
+  - Privacy setting defaults or tech company policy changes that affect individual behaviour but have not generated widespread public discourse
+
+━━━ SPORTS RULE ━━━
+Only when crossing into mainstream cultural conversation: major championship wins with broad societal resonance (e.g. first-ever title for an underdog, historic firsts that non-fans would celebrate), major controversies, record-breaking moments non-fans would react to, economic shock (historic ticket prices, jaw-dropping contracts). Never: match results, standings, transfers, injury reports, or routine playoff coverage.
+Example of what qualifies: UCLA winning the first women's NCAA title — a historic first with cultural resonance beyond the sport.
+
+━━━ CURIOSITY & VIRAL ODDITY RULE ━━━
+Include genuinely weird, surprising, or high-curiosity stories with strong shareability — even if they do not fit a traditional cultural category. These often become the most-forwarded stories in the feed.
+Qualifiers: Unusual science-culture crossover (e.g. scientists creating dinosaur leather luxury goods), absurd but real new technology or services (e.g. a dedicated pet streaming platform), stories where the premise itself is the hook. The test: would someone immediately screenshot this and send it to a group chat?
+
+━━━ NOSTALGIA FRANCHISE RULE ━━━
+Include when a well-known franchise from a previous generation resurfaces with a meaningful development — especially when a key person publicly refuses to participate, challenges the revival, or an unexpected casting decision generates discourse.
+Example of what qualifies: A beloved childhood show's revival being rejected by a main cast member who turned down significant money — this signals both public appetite for the franchise and internal resistance worth discussing.
+Do NOT include: Routine revival announcements, casting news without tension, or sequels with no attached controversy or surprise.
+
+━━━ ART & CULTURAL HERITAGE RULE ━━━
+Include when recognisable cultural masterworks, iconic artists, or globally known cultural institutions are at the centre of a dispute, controversy, or power struggle — especially when national identity, access, or ownership is at stake.
+Example of what qualifies: The Mexican art world protesting plans to send Frida Kahlo masterpieces abroad — a recognisable name, a clear controversy, and a cultural sovereignty angle.
+Do NOT include: Routine exhibition announcements, artist retrospectives, or gallery openings without conflict.
+
+━━━ LOW-WEIGHT SOURCES ━━━
+Daily Mail and Page Six are signal detectors only. They do not justify inclusion independently — the story must pass the core test on its own merits.
+
+━━━ RUN CONTEXT ━━━
+${alreadyPublished.length === 0
+  ? `This is a full reset run with no existing feed. Apply the full editorial bar across all signal categories. Do not pad with borderline entertainment content — if the strong stories only cover 3 domains, that is fine.`
+  : `This is an incremental update. ${alreadyPublished.length} stories are already in today's feed (including cross-day historical dedup from all previously published editions). Only add stories clearly stronger than the weakest already published. Prefer 2 excellent new stories over 8 mediocre ones.`
+}
+
+━━━ HISTORICAL DEDUP ━━━
+The "already in today's feed" list above includes ALL articles published in previous editions of this feed — not just today. Do not re-select any story that is the same topic or event as something already covered, even if the headline or angle differs slightly. A story covered two days ago is still covered. Judge by story identity, not headline wording.
+
+━━━ OUTPUT PHILOSOPHY ━━━
+Do not target a fixed number. Include only what genuinely earns its place.
+A feed of 8 strong stories is better than 20 diluted ones.
+Including weak stories is a failure. Missing strong non-entertainment stories is also a failure.
+The goal is balanced cultural signal detection — not a filtered celebrity feed.
+
+━━━ FINAL STANDARD ━━━
+The feed should feel like: "The most important things that happened in culture in the last 48 hours — across entertainment, internet behaviour, economic power, global fandom, and cultural collisions."
+Not noisy. Not tabloid-driven. Not niche. Not entertainment-biased.
+
+━━━ DOMAIN LABELS ━━━
+Each article below is tagged with a DOMAIN. Use this to maintain balanced coverage:
+  • AI_TECH — AI systems, model behaviour, internet-reshaping tech
+  • ECONOMIC — wealth signals, pricing events, streaming/box office records
+  • FANDOM — fan-scale events, chart records, global audience mobilisation
+  • INTERNET — viral content, memes, TikTok trends, online discourse
+  • SPORTS — athlete controversies, record moments, economic shock
+  • CROSSDOMAIN — collisions across politics, sport, tech, and culture
+  • ENTERTAINMENT — film, TV, music, creators
+
+Do not over-index on ENTERTAINMENT. If AI_TECH, ECONOMIC, FANDOM, or CROSSDOMAIN stories meet the bar, include them even if entertainment stories score similarly.
+
+${alreadyPublishedBlock}ARTICLES:
+${articleList}
+
+Output ONLY the articles you select as a compact JSON array — one object per selected article:
+{"sourceIndex":N,"score":N,"bucket":"CULTURE|INTERNET|CREATOR ECONOMY|CULTURAL SPILLOVER"}
+If nothing qualifies, output [].
+Respond with ONLY the JSON array — no markdown, no code fences, no rejected entries.`;
+
+  console.log("[rss] Call 1/2 — selecting articles...");
+  const selectionText = await callClaude(selectionPrompt, 2000);
+
+  const selectionMatch = selectionText.match(/\[[\s\S]*\]/);
+  if (!selectionMatch) throw new Error("Call 1: Claude did not return a JSON array");
+  const selectionParsed: any[] = JSON.parse(sanitizeClaudeJson(selectionMatch[0]));
+
+  const selectedIndices = selectionParsed.map((x: any) => x.sourceIndex as number).filter(Boolean);
+  const selectedRawItems = selectedIndices.map((idx) => rawItems[idx - 1]).filter(Boolean);
+
+  // Build decisions for audit: selected = in response, rejected = everything else
+  const selectedSet = new Set(selectedIndices);
+  const decisions: ClaudeDecision[] = rawItems.map((_, i) => {
+    const sourceIndex = i + 1;
+    return selectedSet.has(sourceIndex)
+      ? { sourceIndex, selected: true }
+      : { sourceIndex, selected: false, rejectionReason: "Not selected by Claude" };
+  });
+  console.log(`[rss] Call 1 complete — ${selectedRawItems.length} selected, ${rawItems.length - selectedRawItems.length} rejected`);
+
+  // ── Post-selection entity dedup ───────────────────────────────────────────
+  const { items: dedupedRawItems, indices: dedupedIndices } = applyEntityDedup(selectedRawItems, selectedIndices);
+  if (dedupedRawItems.length < selectedRawItems.length) {
+    console.log(`[rss] Entity dedup removed ${selectedRawItems.length - dedupedRawItems.length} duplicate(s) → ${dedupedRawItems.length} to enrich`);
+  }
+
+  // ── Call 2: Enrichment — batched in groups of 5 to prevent socket timeouts ──
+  // Large article counts in a single call produce responses too big for the socket.
+  const ENRICH_BATCH = 5;
+  const batchCount = Math.ceil(dedupedRawItems.length / ENRICH_BATCH);
+
+  const makeEnrichmentPrompt = (articleList: string, count: number) =>
+    `You are the editorial voice for Popcorn — a cultural lens app that surfaces what actually matters in culture right now. Today is ${today}.
+
+Write full articles for each of the ${count} stories below.
+
+WRITING RULES:
+- ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show or game.
+- Write like you are talking to a friend. Short sentences. Simple words. No jargon.
+- No dashes or hyphens used as pauses in sentences. Use plain punctuation.
+- No bullet points inside the story content.
+- Keep it upbeat and engaging. Tell people why they should care.
+- Paragraphs MUST be separated by a blank line (\\n\\n). Never run paragraphs together.
+- If a story references something unfamiliar (an award, a franchise, a past incident), briefly explain it in plain English. Do not assume the reader already knows.
+- Keep articles concise. Aim for 3 short paragraphs. Add context without padding.
+- For stories with past-event context (sequels, legal disputes, returning artists), include a brief 1–2 sentence backstory so new readers are not lost.
+
+ARTICLES:
+${articleList}
+
+For each article output a JSON object:
+{
+  "title": "Short punchy headline, max 10 words — MUST include the real name",
+  "summary": "2 sentences. First sentence names who/what and what happened. Second sentence says why it matters.",
+  "content": "3 short paragraphs separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people and things throughout. Include brief backstory where needed.",
+  "keyPoints": ["3 to 5 short plain-English takeaways (no dashes, no jargon)"],
+  "signalScore": 0-100 (cultural significance / buzz level),
+  "tag": "ONE of: BREAKING | HOT TAKE | REVIEW | INTERVIEW | FEATURE | RELEASE | TREND",
+  "category": "ONE of: Film & TV | Music | Gaming | Fashion | Internet | Tech | AI | Culture | World | Industry | Books | Science | Sports — Film & TV: movies, shows, streaming, franchises; Music: albums, artists, tours, labels, festivals; Gaming: video games, esports, gaming culture; Fashion: fashion, style, brands, streetwear, beauty; Internet: viral moments, memes, social media, creator economy, platform news; Tech: consumer tech, gadgets, hardware, software, apps; AI: artificial intelligence tools, models, research, AI industry moves; Culture: art, design, museums, architecture, broader cultural movements and moments; World: international stories with genuine cultural crossover beyond politics; Industry: entertainment business — deals, box office, streaming numbers, label moves, M&A; Books: books, publishing, authors, literary prizes, reading culture; Science: space, research, discoveries with cultural relevance; Sports: athletes/sporting events with genuine cultural crossover only",
+  "source": "Original source name",
+  "imageUrl": "The IMAGE URL from the source article if one was provided, otherwise null",
+  "wikiSearchQuery": "Search query for the article's main SUBJECT — prioritise the specific title over the person. Wikipedia pages for films, albums, and shows use poster/cover art as their main image, making far better hero images than headshots. Rules: (1) Film/TV → use the title + year: 'Challengers 2024 film', 'The White Lotus season 3', 'Black Mirror TV series'. (2) Music → use artist + album if known: 'Taylor Swift Tortured Poets Department album', 'BTS Map of the Soul Persona', else just the artist 'John Summit DJ'. (3) Gaming → game title: 'The Last of Us Part II game'. (4) If the story is purely about a person (death, scandal, tour announcement with no specific release), use name + role: 'Celine Dion singer', 'Tiger Woods golfer'.",
+  "readTimeMinutes": <integer 2–6>,
+  "sourceIndex": <the [N] number in the list above — use the global number, not 1>
+}
+
+Respond with ONLY a valid JSON array — no markdown, no code fences, no commentary.`;
+
+  console.log(`[rss] Call 2/2 — writing ${dedupedRawItems.length} articles in ${batchCount} batch(es)...`);
+
+  const selectedItems: any[] = [];
+  for (let b = 0; b < batchCount; b++) {
+    const batchItems = dedupedRawItems.slice(b * ENRICH_BATCH, (b + 1) * ENRICH_BATCH);
+    const offset = b * ENRICH_BATCH;
+    const batchList = batchItems
+      .map((item, i) =>
+        `[${offset + i + 1}] SOURCE: ${item.source}\nDATE: ${item.pubDate}\nTITLE: ${item.title}\nDESCRIPTION: ${item.description || "(none)"}${item.imageUrl ? `\nIMAGE: ${item.imageUrl}` : ""}`
+      )
+      .join("\n\n---\n\n");
+
+    const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 6000);
+    const batchMatch = batchText.match(/\[[\s\S]*\]/);
+    if (!batchMatch) throw new Error(`Call 2 batch ${b + 1}: Claude did not return a JSON array`);
+    selectedItems.push(...JSON.parse(sanitizeClaudeJson(batchMatch[0])));
+  }
+
+  // sourceIndex from each batch is globally numbered (offset + i + 1),
+  // mapping into dedupedRawItems; dedupedIndices maps back to rawItems.
+  for (const item of selectedItems) {
+    const originalIdx = dedupedIndices[item.sourceIndex - 1];
+    if (originalIdx !== undefined) item._originalSourceIndex = originalIdx;
+  }
+
+  console.log(`[rss] Call 2 complete — ${selectedItems.length} articles written`);
+
+  // First pass — build articles, mark ones that still need an OG image fetch
+  const articles: EnrichedArticle[] = selectedItems.map((item: any, i: number) => {
+    const cat = item.category in CATEGORY_GRADIENTS ? item.category : "Internet";
+    const [gradientStart, gradientEnd] = CATEGORY_GRADIENTS[cat];
+    const rssImageUrl = typeof item.imageUrl === "string" ? item.imageUrl : null;
+    const imageUrl = isGoodImageUrl(rssImageUrl) ? rssImageUrl! : null;
+
+    // sourceIndex from Call 2 is 1-based within selectedRawItems; _originalSourceIndex maps back to rawItems
+    const originalRawItem = rawItems[(item._originalSourceIndex ?? item.sourceIndex) - 1];
+
+    return {
+      id: i + 1,
+      title: String(item.title ?? ""),
+      summary: String(item.summary ?? ""),
+      content: String(item.content ?? ""),
+      category: cat,
+      source: String(item.source ?? "Unknown"),
+      readTimeMinutes: Number(item.readTimeMinutes) || 5,
+      publishedAt: (() => {
+        // publishToday: stamp everything with today's date so articles fetched
+        // from a wider lookback window (e.g. yesterday noon) appear in today's
+        // section of the feed rather than being bucketed into a past day.
+        if (publishToday) return new Date().toISOString();
+        if (originalRawItem?.pubDate) {
+          const d = new Date(originalRawItem.pubDate);
+          if (!isNaN(d.getTime())) return d.toISOString();
+        }
+        return new Date().toISOString();
+      })(),
+      likes: Math.floor(Math.random() * 4500) + 500,
+      isBookmarked: false,
+      gradientStart,
+      gradientEnd,
+      tag: String(item.tag ?? "ANALYSIS"),
+      imageUrl: imageUrl ?? `__NEEDS_OG__${originalRawItem?.link ?? ""}`,
+      wikiSearchQuery: typeof item.wikiSearchQuery === "string" ? item.wikiSearchQuery : "",
+      keyPoints: Array.isArray(item.keyPoints) ? item.keyPoints : [],
+      signalScore: typeof item.signalScore === "number" ? item.signalScore : null,
+    } satisfies EnrichedArticle;
+  });
+
+  // Second pass — fetch real images for articles that couldn't get one from RSS.
+  // Priority: YouTube (embedded only) → OG (quality-checked) → TMDb (Film & TV) →
+  //           Spotify (Music) → Unsplash (portrait) → iTunes (Music) → Wikipedia → OG fallback → category
+  const ogNeeded = articles.filter((a) => a.imageUrl?.startsWith("__NEEDS_OG__"));
+  if (ogNeeded.length > 0) {
+    console.log(`[rss] Fetching images for ${ogNeeded.length} articles…`);
+    await Promise.all(
+      ogNeeded.map(async (article, idx) => {
+        const articleUrl = (article.imageUrl as string).replace("__NEEDS_OG__", "");
+        const wikiQuery = (article as any).wikiSearchQuery as string | undefined;
+
+        // 1. YouTube thumbnail — ONLY if the article page embeds a YouTube video
+        if (articleUrl) {
+          try {
+            const htmlRes = await fetch(articleUrl, { signal: AbortSignal.timeout(5000), headers: { "User-Agent": "Mozilla/5.0" } });
+            if (htmlRes.ok) {
+              const html = await htmlRes.text();
+              const videoId = extractYouTubeId(html);
+              if (videoId) {
+                const ytUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                if (await isHighQualityImage(ytUrl)) {
+                  article.imageUrl = ytUrl;
+                  console.log(`[rss]   YouTube ✓ ${article.title.slice(0, 40)}`);
+                  return;
+                }
+              }
+            }
+          } catch { /* ignore */ }
+        }
+
+        // 2. OG image — strict validation: quality + aspect ratio + no logos/icons/banners
+        const ogUrl = articleUrl ? await fetchOGImage(articleUrl) : undefined;
+        if (isGoodImageUrl(ogUrl) && await isHighQualityImage(ogUrl!)) {
+          const dims = await fetchImageDimensions(ogUrl!);
+          if (isStrictOGValid(ogUrl!, dims) && (!dims || isValidAspectRatio(dims.width, dims.height))) {
+            article.imageUrl = ogUrl!;
+            return;
+          }
+        }
+
+        // 3. TMDb — Film & TV posters (requires TMDB_API_KEY)
+        if (article.category === "Film & TV" && wikiQuery) {
+          const tmdbUrl = await fetchTMDbImage(wikiQuery);
+          if (isGoodImageUrl(tmdbUrl)) {
+            console.log(`[rss]   TMDb ✓ ${article.title.slice(0, 40)}`);
+            article.imageUrl = tmdbUrl!;
+            return;
+          }
+        }
+
+        // 5. Spotify — album/artist art (Music only, requires Spotify credentials)
+        if (article.category === "Music" && wikiQuery) {
+          const spotifyUrl = await fetchSpotifyImage(wikiQuery);
+          if (isGoodImageUrl(spotifyUrl)) {
+            console.log(`[rss]   Spotify ✓ ${article.title.slice(0, 40)}`);
+            article.imageUrl = spotifyUrl!;
+            return;
+          }
+        }
+
+        // 6. Unsplash — portrait, strict content filter, 3 keywords max
+        if (wikiQuery) {
+          const unsplashUrl = await fetchUnsplashImage(wikiQuery, article.category);
+          if (isGoodImageUrl(unsplashUrl)) {
+            console.log(`[rss]   Unsplash ✓ ${article.title.slice(0, 40)}`);
+            article.imageUrl = unsplashUrl!;
+            return;
+          }
+        }
+
+        // 7. iTunes album/artist art (Music only — free, no key)
+        if (article.category === "Music" && wikiQuery) {
+          const itunesUrl = await fetchItunesImage(wikiQuery);
+          if (isGoodImageUrl(itunesUrl)) {
+            console.log(`[rss]   iTunes ✓ ${article.title.slice(0, 40)}`);
+            article.imageUrl = itunesUrl!;
+            return;
+          }
+        }
+
+        // 8. Wikipedia — last resort before OG fallback
+        if (wikiQuery) {
+          const wikiUrl = await fetchWikipediaImage(wikiQuery);
+          if (isGoodImageUrl(wikiUrl) && await isHighQualityImage(wikiUrl!)) {
+            console.log(`[rss]   Wikipedia ✓ ${article.title.slice(0, 40)}`);
+            article.imageUrl = wikiUrl!;
+            return;
+          }
+        }
+
+        // 9. OG without quality check — better than category fallback
+        if (isGoodImageUrl(ogUrl)) {
+          article.imageUrl = ogUrl!;
+          return;
+        }
+
+        // 10. Category-matched Unsplash fallback
+        article.imageUrl = fallbackImage(article.category, idx);
+      })
+    );
+
+    const ogCount      = ogNeeded.filter((a) => !["unsplash","wikimedia","mzstatic","spotify","youtube","tmdb"].some(d => a.imageUrl?.includes(d))).length;
+    const itunesCount  = ogNeeded.filter((a) => a.imageUrl?.includes("mzstatic")).length;
+    const wikiCount    = ogNeeded.filter((a) => a.imageUrl?.includes("wikimedia")).length;
+    const unsplashCount = ogNeeded.filter((a) => a.imageUrl?.includes("unsplash")).length;
+    const spotifyCount = ogNeeded.filter((a) => a.imageUrl?.includes("spotify")).length;
+    const ytCount      = ogNeeded.filter((a) => a.imageUrl?.includes("youtube")).length;
+    const tmdbCount    = ogNeeded.filter((a) => a.imageUrl?.includes("tmdb")).length;
+    console.log(`[rss] Image results: ${ogCount} OG | ${ytCount} YouTube | ${tmdbCount} TMDb | ${spotifyCount} Spotify | ${unsplashCount} Unsplash | ${itunesCount} iTunes | ${wikiCount} Wikipedia`);
+  }
+
+  // Post-process: fetch pixel dimensions for all articles with a resolved image.
+  // Stored as imageWidth / imageHeight for frontend aspect-ratio rendering logic.
+  await Promise.all(
+    articles
+      .filter((a) => a.imageUrl && !a.imageUrl.startsWith("__NEEDS_OG__"))
+      .map(async (article) => {
+        const dims = await fetchImageDimensions(article.imageUrl!);
+        if (dims) {
+          article.imageWidth = dims.width;
+          article.imageHeight = dims.height;
+        }
+      })
+  );
+
+  return { articles, decisions };
+}
+
+// ─── Cache + public API ───────────────────────────────────────────────────────
+
+function cachePath(): string {
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0, 10); // YYYY-MM-DD
+  const hourBlock = Math.floor(now.getHours() / 2); // 0–11, refreshes every 2 hours
+  return path.join("/tmp", `popcorn-articles-${dateStr}-${hourBlock}.json`);
+}
+
+/** Returns the set of article links Claude already rejected in today's runs. */
+function loadTodayRejectedLinks(): Set<string> {
+  try {
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const auditPath = `/tmp/popcorn-audit-${dateStr}.json`;
+    if (!fs.existsSync(auditPath)) return new Set();
+    const data = JSON.parse(fs.readFileSync(auditPath, "utf-8"));
+    const articles: any[] = data?.articles ?? [];
+    return new Set(
+      articles
+        .filter((e) => e.stage === "rejected_by_claude")
+        .map((e) => e.link)
+        .filter(Boolean)
+    );
+  } catch {
+    return new Set();
+  }
+}
+
+function _writeAuditFile(
+  toEnrich: RawRSSItem[],
+  dedupAudit: DedupeAuditEntry[],
+  decisions: ClaudeDecision[]
+): void {
+  try {
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const auditPath = `/tmp/popcorn-audit-${dateStr}.json`;
+    const decisionByIdx = new Map(decisions.map((d) => [d.sourceIndex, d]));
+    const claudeIndexByTitle = new Map(toEnrich.map((item, i) => [item.title, i + 1]));
+
+    const auditEntries = dedupAudit.map(({ item, status, rank, score, groupedWith, groupedWithSource }) => {
+      const base = {
+        title: item.title,
+        source: item.source,
+        pubDate: item.pubDate,
+        link: item.link,
+        dedupRank: rank,
+        dedupScore: Math.round(score * 100) / 100,
+      };
+      if (status === "deduplicated") {
+        return { ...base, stage: "deduplicated", reason: `Grouped as duplicate of "${groupedWith}" (${groupedWithSource})` };
+      }
+      if (status === "ranked_out") {
+        return { ...base, stage: "ranked_out", reason: `Unique story but ranked #${rank} — outside top 25 sent to Claude`, _raw: item };
+      }
+      const claudeIdx = claudeIndexByTitle.get(item.title);
+      const decision = claudeIdx !== undefined ? decisionByIdx.get(claudeIdx) : undefined;
+      if (!decision || decision.selected) {
+        return { ...base, stage: "selected", reason: "Selected by editorial AI" };
+      }
+      return { ...base, stage: "rejected_by_claude", reason: decision.rejectionReason ?? "(no reason given)", _raw: item };
+    });
+
+    const selectedCount  = auditEntries.filter((e) => e.stage === "selected").length;
+    const rejectedCount  = auditEntries.filter((e) => e.stage === "rejected_by_claude").length;
+    const rankedOutCount = auditEntries.filter((e) => e.stage === "ranked_out").length;
+    const dedupedCount   = auditEntries.filter((e) => e.stage === "deduplicated").length;
+
+    const auditPayload = JSON.stringify({
+      fetchedAt: new Date().toISOString(),
+      totalRawItems: dedupAudit.length,
+      uniqueStories: dedupAudit.filter((e) => e.status !== "deduplicated").length,
+      sentToClaude: toEnrich.length,
+      selectedCount,
+      rejectedCount,
+      rankedOutCount,
+      dedupedCount,
+      articles: auditEntries,
+    }, null, 2);
+
+    // Write to /tmp (ephemeral)
+    fs.writeFileSync(auditPath, auditPayload);
+    console.log(`[rss] ✓ Wrote full audit to ${auditPath} (${dedupAudit.length} raw → ${toEnrich.length} to Claude → ${selectedCount} selected)`);
+
+    // Write to data/uncurated/ (git-tracked, survives deploys)
+    const dataDir = path.resolve(process.cwd(), "data", "uncurated");
+    fs.mkdirSync(dataDir, { recursive: true });
+    const committedPath = path.join(dataDir, `uncurated-${dateStr}.json`);
+    fs.writeFileSync(committedPath, auditPayload);
+    console.log(`[rss] ✓ Committed uncurated list → ${committedPath}`);
+
+    // Write human-readable .txt to Uncurated Lists/ folder (matches manual format)
+    _writeUncuratedTxt(auditEntries, dateStr);
+  } catch (e) {
+    console.warn("[rss] Could not write audit file:", e);
+  }
+}
+
+function _writeUncuratedTxt(
+  auditEntries: { title: string; source: string; pubDate: string; link: string; dedupRank: number; dedupScore: number; stage: string; reason: string }[],
+  dateStr: string
+): void {
+  try {
+    const [year, month, day] = dateStr.split("-");
+    const ddmmyy = `${day}_${month}_${year.slice(2)}`;
+    const BORDER = "═".repeat(100);
+
+    const decodeHtml = (s: string) =>
+      s.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+       .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+       .replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+
+    const allSorted = [...auditEntries]
+      .filter((a) => a.stage !== "deduplicated")
+      .sort((a, b) => b.dedupScore - a.dedupScore || (a.stage === "selected" ? -1 : 1));
+    const selected = auditEntries.filter((a) => a.stage === "selected");
+    const dupes    = auditEntries.filter((a) => a.stage === "deduplicated");
+    const total    = auditEntries.length;
+    const unique   = auditEntries.filter((a) => a.stage !== "deduplicated").length;
+
+    const lines: string[] = [];
+    lines.push(BORDER);
+    lines.push(`  POPCORN CANDIDATES — ${dateStr}   (MAIN RUN)`);
+    lines.push(`  ${total} articles fetched   ${unique} unique stories   ${selected.length} selected by Claude`);
+    lines.push(BORDER);
+    lines.push("");
+
+    lines.push(`── FIRST PASS — Claude's picks (${selected.length} selected) ${"─".repeat(60)}`);
+    if (selected.length > 0) {
+      selected.forEach((a, i) => {
+        const score = Math.round(a.dedupScore);
+        const src = a.source.slice(0, 28).padEnd(28);
+        lines.push(`  #${String(i + 1).padEnd(4)} ${String(score).padEnd(5)} ${src}  ${decodeHtml(a.title)}`);
+      });
+    } else {
+      lines.push("  (none selected this run)");
+    }
+    lines.push("");
+
+    lines.push(`── ALL CANDIDATES (sorted by score) ${"─".repeat(65)}`);
+    let rank = 0;
+    for (const a of allSorted) {
+      rank++;
+      const score = Math.round(a.dedupScore);
+      const src = a.source.slice(0, 28).padEnd(28);
+      const prefix = a.stage === "selected" ? " ✓" : "  ";
+      lines.push(`${prefix} #${String(rank).padEnd(4)} ${String(score).padEnd(5)} ${src}  ${decodeHtml(a.title)}`);
+      if (a.stage === "rejected_by_claude" && a.reason && a.reason !== "Not selected by Claude") {
+        lines.push(`${" ".repeat(43)}↳ ${a.reason.slice(0, 85)}`);
+      }
+    }
+    lines.push("");
+
+    if (dupes.length > 0) {
+      lines.push(`── GROUPED DUPLICATES (excluded from candidate pool) ${"─".repeat(50)}`);
+      for (const a of dupes) {
+        const src = a.source.slice(0, 28).padEnd(28);
+        lines.push(`   ${src}  ${decodeHtml(a.title).slice(0, 70)}`);
+        lines.push(`${"".padEnd(32)}↳ ${a.reason.slice(0, 85)}`);
+      }
+      lines.push("");
+    }
+
+    // Resolve path relative to this package root (api-server/../../../Uncurated Lists)
+    const listDir = path.resolve(process.cwd(), "..", "..", "Uncurated Lists");
+    fs.mkdirSync(listDir, { recursive: true });
+    const txtPath = path.join(listDir, `${ddmmyy}_uncurated_list.txt`);
+    fs.writeFileSync(txtPath, lines.join("\n"), "utf-8");
+    console.log(`[rss] ✓ Uncurated list written → ${txtPath}`);
+  } catch (e) {
+    console.warn("[rss] Could not write uncurated .txt:", e);
+  }
+}
+
+// In-memory cache tracks the 2-hour block key so it auto-expires mid-session
+let _inMemoryCache: EnrichedArticle[] | null = null;
+let _inMemoryCacheKey: string | null = null;
+
+// Holds the last-fetched raw items + dedup audit so Claude-call retries
+// don't need to re-fetch all RSS feeds (which re-saturates the connection pool).
+let _pendingRawItems: RawRSSItem[] | null = null;
+let _pendingDedupAudit: DedupeAuditEntry[] | null = null;
+
+/**
+ * Load the latest batch of live articles from RSS + Claude.
+ * Always runs fresh — the curated-store handles daily persistence.
+ *
+ * @param alreadyPublished - Articles already in today's curated feed. Claude
+ *   will be told not to re-select these, and their links are pre-filtered out.
+ */
+export async function loadLiveArticles(
+  alreadyPublished: { title: string; link: string }[] = [],
+  windowStart?: Date,
+  publishToday = false
+): Promise<EnrichedArticle[]> {
+  // If a previous attempt already fetched + deduped the RSS items, skip straight
+  // to Claude — re-fetching would re-saturate undici's connection pool.
+  if (_pendingRawItems && _pendingDedupAudit) {
+    console.log(`[rss] Re-using ${_pendingRawItems.length} cached candidates — skipping RSS fetch.`);
+    const { articles: enriched, decisions } = await enrichWithClaude(_pendingRawItems, alreadyPublished, publishToday);
+    _writeAuditFile(_pendingRawItems, _pendingDedupAudit, decisions);
+    _pendingRawItems = null;
+    _pendingDedupAudit = null;
+    return enriched;
+  }
+
+  // Fetch RSS feeds
+  console.log("[rss] Fetching RSS feeds…");
+  const feeds: [string, string][] = [
+    // ── Core sources ─────────────────────────────────────────────────────────
+    // Music
+    ["https://www.rollingstone.com/feed/",                             "Rolling Stone"],
+    ["https://www.billboard.com/feed/",                                "Billboard"],
+    ["https://pitchfork.com/rss/news/",                                "Pitchfork"],
+    ["https://www.stereogum.com/feed/",                                "Stereogum"],
+    ["https://consequence.net/feed/",                                  "Consequence"],
+    // Film & TV
+    ["https://variety.com/feed/",                                      "Variety"],
+    ["https://www.hollywoodreporter.com/feed/",                        "The Hollywood Reporter"],
+    ["https://www.indiewire.com/feed/",                                "IndieWire"],
+    ["https://www.vulture.com/feeds/flipboard.rss",                    "Vulture"],
+    // Gaming
+    ["https://www.polygon.com/rss/index.xml",                          "Polygon"],
+    ["https://feeds.feedburner.com/ign/all",                           "IGN"],
+    // Fashion & Taste
+    ["https://hypebeast.com/feed",                                     "Hypebeast"],
+    ["https://www.dazeddigital.com/rss",                               "Dazed"],
+    // Culture, Ideas, Tech
+    ["https://www.theatlantic.com/feed/all/",                          "The Atlantic"],
+    ["https://www.wired.com/feed/rss",                                 "Wired"],
+    ["https://www.theguardian.com/culture/rss",                        "The Guardian Culture"],
+    ["https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml",          "NYT Arts"],
+    ["https://www.newyorker.com/feed/everything",                      "The New Yorker"],
+    // AI & Tech culture — dedicated sources for AI/internet behavior signals
+    ["https://www.theverge.com/rss/index.xml",                         "The Verge"],
+    ["https://techcrunch.com/feed/",                                   "TechCrunch"],
+    // Global fandom & music scale — international chart records, fan-driven events
+    ["https://www.nme.com/feed",                                       "NME"],
+    // Sports (cultural crossover only)
+    ["https://www.espn.com/espn/rss/news",                             "ESPN"],
+    // ── Supplementary sources ─────────────────────────────────────────────────
+    // Internet & Emerging Culture — memes, trends, online discourse
+    ["https://www.dexerto.com/feed/",                                  "Dexerto"],
+    ["https://knowyourmeme.com/newsfeed.rss",                          "Know Your Meme"],
+    // Power & Industry Insight — strategy, business of culture
+    ["https://www.semafor.com/rss.xml",                                "Semafor"],
+    // Modern Taste & Aesthetic Culture — youth culture, fashion signals
+    ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
+    // ── Low-weight signal sources (early detection only) ─────────────────────
+    ["https://www.dailymail.co.uk/home/index.rss",                     "Daily Mail"],
+    ["https://pagesix.com/feed/",                                      "Page Six"],
+  ];
+
+  // Fetch in batches of 5 — prevents undici's connection pool from becoming
+  // saturated (which corrupts all subsequent network calls, including Claude).
+  const BATCH = 5;
+  const results: PromiseSettledResult<RawRSSItem[]>[] = [];
+  for (let i = 0; i < feeds.length; i += BATCH) {
+    const batch = feeds.slice(i, i + BATCH);
+    const batchResults = await Promise.allSettled(
+      batch.map(([url, name]) => fetchFeed(url, name))
+    );
+    results.push(...batchResults);
+    if (i + BATCH < feeds.length) await new Promise((r) => setTimeout(r, 150));
+  }
+
+  // Sort by most recent first so Claude sees the freshest stories at the top
+  const allItems = results
+    .filter((r): r is PromiseFulfilledResult<RawRSSItem[]> => r.status === "fulfilled")
+    .flatMap((r) => r.value)
+    .sort((a, b) => {
+      const tA = new Date(a.pubDate).getTime();
+      const tB = new Date(b.pubDate).getTime();
+      if (isNaN(tA) && isNaN(tB)) return 0;
+      if (isNaN(tA)) return 1;
+      if (isNaN(tB)) return -1;
+      return tB - tA;
+    });
+
+  // Time window: use explicit windowStart if provided, otherwise default to last 25 hours.
+  // 25h (vs 24h) ensures we always reach back to at least noon the previous day in any timezone.
+  const cutoff = windowStart ? windowStart.getTime() : Date.now() - 25 * 60 * 60 * 1000;
+  const recentItems = allItems.filter((item) => {
+    const t = new Date(item.pubDate).getTime();
+    return !isNaN(t) && t >= cutoff;
+  });
+
+  const windowDesc = windowStart
+    ? `since ${windowStart.toISOString()}`
+    : "last 25h";
+  console.log(`[rss] Total raw items: ${allItems.length} (${recentItems.length} ${windowDesc})`);
+
+  if (recentItems.length < 5) {
+    throw new Error(`Only ${recentItems.length} articles in window — too few to enrich`);
+  }
+
+  // Strip junk titles (promo codes, puzzle answers, how-to guides)
+  const cleanItems = recentItems.filter(
+    (item) => !JUNK_TITLE_PATTERNS.some((p) => p.test(item.title))
+  );
+  const junkCount = recentItems.length - cleanItems.length;
+  if (junkCount > 0) {
+    console.log(`[rss] Filtered out ${junkCount} junk articles (promo codes, puzzle answers, guides)`);
+  }
+
+  // Pre-filter out articles whose link is already in today's published feed
+  const publishedLinks = new Set(alreadyPublished.map((a) => a.link).filter(Boolean));
+  const linkFilteredItems = publishedLinks.size > 0
+    ? cleanItems.filter((item) => !publishedLinks.has(item.link))
+    : cleanItems;
+  if (publishedLinks.size > 0) {
+    console.log(`[rss] ${linkFilteredItems.length} new items after excluding ${publishedLinks.size} already-published links`);
+  }
+
+  // Also remove items whose title is too similar to an already-published story,
+  // so their dedup groups don't consume ranking slots.
+  let filteredItems = linkFilteredItems;
+  if (alreadyPublished.length > 0) {
+    const pubTokenSets = alreadyPublished.map((a) => titleTokens(a.title));
+    const before = filteredItems.length;
+    filteredItems = filteredItems.filter((item) => {
+      const tokens = titleTokens(item.title);
+      return !pubTokenSets.some((pt) => jaccardSim(tokens, pt) >= 0.35);
+    });
+    const titleFiltered = before - filteredItems.length;
+    if (titleFiltered > 0) {
+      console.log(`[rss] ${titleFiltered} items removed as title-duplicates of already-published stories`);
+    }
+  }
+
+  // ── Exclude articles Claude already rejected in earlier runs today ───────────
+  const prevRejectedLinks = loadTodayRejectedLinks();
+  if (prevRejectedLinks.size > 0) {
+    const before = filteredItems.length;
+    filteredItems = filteredItems.filter((item) => !prevRejectedLinks.has(item.link));
+    const excluded = before - filteredItems.length;
+    if (excluded > 0) {
+      console.log(`[rss] ${excluded} items excluded — already rejected by Claude today`);
+    }
+  }
+
+  // ── Domain-balanced candidate pool ──────────────────────────────────────────
+  // Rank all items, then enforce minimum slots per non-entertainment domain
+  // so high-signal AI/economic/fandom/internet stories can't be crowded out
+  // by entertainment volume before Claude ever sees them.
+
+  const { allRanked, audit: dedupAudit } = deduplicateAndRank(filteredItems, filteredItems.length);
+
+  // How many candidates to guarantee per non-entertainment domain (from full ranked list)
+  const DOMAIN_SLOTS: Partial<Record<SignalDomain, number>> = {
+    AI_TECH:      10,
+    ECONOMIC:      8,
+    FANDOM:        8,
+    INTERNET:      6,
+    SPORTS:        6,
+    CROSSDOMAIN:   5,
+  };
+  const ENTERTAINMENT_CAP = 40; // max entertainment slots
+
+  // Group all ranked items by domain (preserving rank order within each group)
+  const byDomain = new Map<SignalDomain, RawRSSItem[]>();
+  for (const item of allRanked) {
+    const d = classifyDomain(item);
+    if (!byDomain.has(d)) byDomain.set(d, []);
+    byDomain.get(d)!.push(item);
+  }
+
+  const candidateSet = new Set<RawRSSItem>();
+
+  // Step 1: fill guaranteed domain slots (non-entertainment first)
+  for (const [domain, slots] of Object.entries(DOMAIN_SLOTS) as [SignalDomain, number][]) {
+    (byDomain.get(domain) ?? []).slice(0, slots).forEach((item) => candidateSet.add(item));
+  }
+
+  // Step 2: fill entertainment slots up to cap
+  let entCount = 0;
+  for (const item of allRanked) {
+    if (classifyDomain(item) === "ENTERTAINMENT" && entCount < ENTERTAINMENT_CAP) {
+      candidateSet.add(item);
+      entCount++;
+    }
+    if (candidateSet.size >= 100) break;
+  }
+
+  // Step 3: top-up any remaining slots with the next highest-ranked items (any domain)
+  for (const item of allRanked) {
+    if (candidateSet.size >= 100) break;
+    candidateSet.add(item);
+  }
+
+  // Preserve original rank order for Claude
+  const toEnrich = allRanked.filter((item) => candidateSet.has(item));
+
+  // Log domain distribution so we can see balance in the logs
+  const domainCounts: Partial<Record<SignalDomain, number>> = {};
+  for (const item of toEnrich) {
+    const d = classifyDomain(item);
+    domainCounts[d] = (domainCounts[d] ?? 0) + 1;
+  }
+  console.log(
+    `[rss] Candidate pool: ${toEnrich.length} stories | ` +
+    Object.entries(domainCounts).map(([d, n]) => `${d}:${n}`).join(" | ")
+  );
+  _pendingRawItems = toEnrich;
+  _pendingDedupAudit = dedupAudit;
+
+  const { articles: enriched, decisions } = await enrichWithClaude(toEnrich, alreadyPublished, publishToday);
+
+  _writeAuditFile(toEnrich, dedupAudit, decisions);
+  _pendingRawItems = null;
+  _pendingDedupAudit = null;
+
+  return enriched;
+}
+
+/** Clear caches (useful for testing) */
+export function clearCache(): void {
+  _inMemoryCache = null;
+  const cp = cachePath();
+  if (fs.existsSync(cp)) fs.unlinkSync(cp);
+}
+
+// ─── Shortlist path ───────────────────────────────────────────────────────────
+
+function shortlistPath(): string {
+  const dateStr = new Date().toISOString().slice(0, 10);
+  return path.join("/tmp", `popcorn-shortlist-${dateStr}.json`);
+}
+
+/**
+ * Fetch, deduplicate and rank today's RSS candidates — NO Claude calls.
+ * Saves the top 50 to a shortlist temp file for the user to review.
+ * Returns the candidates formatted for display.
+ */
+export async function generateShortlist(
+  alreadyPublished: { title: string; link: string }[] = [],
+  windowStart?: Date,  // defaults to 24h ago
+  windowEnd?: Date,    // defaults to now
+): Promise<ShortlistCandidate[]> {
+  console.log("[shortlist] Fetching RSS feeds for shortlist generation…");
+
+  const feeds: [string, string][] = [
+    ["https://www.rollingstone.com/feed/",                             "Rolling Stone"],
+    ["https://www.billboard.com/feed/",                                "Billboard"],
+    ["https://pitchfork.com/rss/news/",                                "Pitchfork"],
+    ["https://www.stereogum.com/feed/",                                "Stereogum"],
+    ["https://consequence.net/feed/",                                  "Consequence"],
+    ["https://variety.com/feed/",                                      "Variety"],
+    ["https://www.hollywoodreporter.com/feed/",                        "The Hollywood Reporter"],
+    ["https://www.indiewire.com/feed/",                                "IndieWire"],
+    ["https://www.vulture.com/rss/index.xml",                          "Vulture"],
+    ["https://www.polygon.com/rss/index.xml",                          "Polygon"],
+    ["https://www.wired.com/feed/rss",                                 "Wired"],
+    ["https://www.theatlantic.com/feed/all/",                          "The Atlantic"],
+    ["https://www.dazeddigital.com/rss",                               "Dazed"],
+    ["https://www.hypebeast.com/feed",                                 "Hypebeast"],
+    ["https://www.ign.com/rss/articles.json",                         "IGN"],
+    ["https://www.newyorker.com/feed/everything",                      "The New Yorker"],
+    ["https://techcrunch.com/feed/",                                   "TechCrunch"],
+    ["https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml",         "NYT Arts"],
+    ["https://www.theverge.com/rss/index.xml",                         "The Verge"],
+    ["https://www.theguardian.com/culture/rss",                        "The Guardian Culture"],
+    ["https://www.dexerto.com/feed/",                                  "Dexerto"],
+    ["https://www.nme.com/feed",                                       "NME"],
+    ["https://semafor.com/rss.xml",                                    "Semafor"],
+    ["https://knowyourmeme.com/memes/all/rss",                         "Know Your Meme"],
+    ["https://www.espn.com/espn/rss/news",                             "ESPN"],
+    ["https://pagesix.com/feed/",                                      "Page Six"],
+    ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
+    ["https://www.dailymail.co.uk/home/index.rss",                     "Daily Mail"],
+  ];
+
+  const BATCH = 5;
+  const allItems: RawRSSItem[] = [];
+  for (let i = 0; i < feeds.length; i += BATCH) {
+    const batch = feeds.slice(i, i + BATCH);
+    const results = await Promise.allSettled(
+      batch.map(([url, src]) => fetchFeed(url, src))
+    );
+    for (let j = 0; j < results.length; j++) {
+      const r = results[j];
+      const src = batch[j][1];
+      if (r.status === "fulfilled") {
+        allItems.push(...r.value);
+        console.log(`[shortlist] ${src}: ${r.value.length} items`);
+      } else {
+        console.warn(`[shortlist] ⚠ Failed to fetch ${src}: ${r.reason?.message ?? r.reason}`);
+      }
+    }
+  }
+
+  // Time window filter
+  const startMs = windowStart ? windowStart.getTime() : Date.now() - 24 * 60 * 60 * 1000;
+  const endMs   = windowEnd   ? windowEnd.getTime()   : Date.now();
+  const recentItems = allItems.filter((item) => {
+    const t = new Date(item.pubDate).getTime();
+    return !isNaN(t) && t >= startMs && t <= endMs;
+  });
+  console.log(`[shortlist] ${allItems.length} raw items, ${recentItems.length} within window`);
+
+  // Junk filter
+  const junkFiltered = recentItems.filter(
+    (item) => !JUNK_TITLE_PATTERNS.some((p) => p.test(item.title))
+  );
+  const junkRemoved = recentItems.length - junkFiltered.length;
+  if (junkRemoved > 0) console.log(`[shortlist] Filtered out ${junkRemoved} junk articles`);
+
+  // Already-published title filter
+  let filteredItems = junkFiltered;
+  if (alreadyPublished.length > 0) {
+    const pubTokenSets = alreadyPublished.map((a) => titleTokens(a.title));
+    const before = filteredItems.length;
+    filteredItems = filteredItems.filter((item) => {
+      const tokens = titleTokens(item.title);
+      return !pubTokenSets.some((pt) => jaccardSim(tokens, pt) >= 0.35);
+    });
+    const removed = before - filteredItems.length;
+    if (removed > 0) console.log(`[shortlist] ${removed} items removed as already-published`);
+  }
+
+  // Dedup + rank
+  const { allRanked } = deduplicateAndRank(filteredItems, filteredItems.length);
+
+  // Domain-balanced pool — same slots as main pipeline
+  const DOMAIN_SLOTS: Partial<Record<SignalDomain, number>> = {
+    AI_TECH: 10, ECONOMIC: 8, FANDOM: 8, INTERNET: 6, SPORTS: 6, CROSSDOMAIN: 5,
+  };
+  const ENTERTAINMENT_CAP = 13; // tighter cap — shortlist is user-curated so balance matters more
+
+  const byDomain = new Map<SignalDomain, RawRSSItem[]>();
+  for (const item of allRanked) {
+    const d = classifyDomain(item);
+    if (!byDomain.has(d)) byDomain.set(d, []);
+    byDomain.get(d)!.push(item);
+  }
+
+  const candidateSet = new Set<RawRSSItem>();
+  for (const [domain, slots] of Object.entries(DOMAIN_SLOTS) as [SignalDomain, number][]) {
+    (byDomain.get(domain) ?? []).slice(0, slots).forEach((item) => candidateSet.add(item));
+  }
+  let entCount = 0;
+  for (const item of allRanked) {
+    if (classifyDomain(item) === "ENTERTAINMENT" && entCount < ENTERTAINMENT_CAP) {
+      candidateSet.add(item); entCount++;
+    }
+    if (candidateSet.size >= 50) break;
+  }
+  for (const item of allRanked) {
+    if (candidateSet.size >= 50) break;
+    candidateSet.add(item);
+  }
+
+  const pool = allRanked.filter((item) => candidateSet.has(item)).slice(0, 50);
+
+  // Score map from dedup audit
+  const { audit: dedupAudit } = deduplicateAndRank(filteredItems, filteredItems.length);
+  const scoreByLink = new Map(dedupAudit.map((e) => [e.item.link, e.score]));
+
+  // Build shortlist candidates
+  const candidates: ShortlistCandidate[] = pool.map((item, i) => ({
+    index: i + 1,
+    title: item.title.replace(/&#\d+;/g, " ").replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").trim(),
+    source: item.source,
+    description: (item.description ?? "")
+      .replace(/<[^>]+>/g, "")
+      .replace(/&#\d+;/g, " ")
+      .replace(/&amp;/g, "&")
+      .trim()
+      .slice(0, 160),
+    score: Math.round((scoreByLink.get(item.link) ?? 0) * 10) / 10,
+    domain: classifyDomain(item),
+    pubDate: item.pubDate,
+    link: item.link,
+    imageUrl: item.imageUrl,
+    _raw: item,
+  }));
+
+  // Persist to disk so publish can look up by index
+  fs.writeFileSync(shortlistPath(), JSON.stringify({ generatedAt: new Date().toISOString(), candidates }, null, 2));
+  console.log(`[shortlist] ✓ Saved ${candidates.length} candidates to ${shortlistPath()}`);
+
+  return candidates;
+}
+
+/** Load the most recently saved shortlist from disk. */
+export function loadShortlist(): ShortlistCandidate[] | null {
+  const p = shortlistPath();
+  if (!fs.existsSync(p)) return null;
+  try {
+    const data = JSON.parse(fs.readFileSync(p, "utf-8"));
+    return data?.candidates ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Enrich only the user-selected articles — runs Call 2 only (no Claude selection).
+ * Takes raw items directly; no Claude needed to choose them.
+ */
+export async function enrichSelectedItems(items: RawRSSItem[], publishToday = false): Promise<EnrichedArticle[]> {
+  if (items.length === 0) return [];
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) throw new Error("ANTHROPIC_API_KEY not set");
+
+  const callClaude = (userPrompt: string, maxTokens: number): Promise<string> =>
+    new Promise<string>((resolve, reject) => {
+      const body = JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: maxTokens,
+        messages: [{ role: "user", content: userPrompt }],
+      });
+      const req = https.request(
+        {
+          hostname: "api.anthropic.com",
+          path: "/v1/messages",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+            "anthropic-version": "2023-06-01",
+            "Content-Length": Buffer.byteLength(body),
+          },
+        },
+        (res) => {
+          let data = "";
+          res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
+          res.on("end", () => {
+            if ((res.statusCode ?? 0) >= 400) {
+              reject(new Error(`Anthropic API ${res.statusCode}: ${data.slice(0, 300)}`));
+            } else {
+              try {
+                const json = JSON.parse(data);
+                const content = json?.content?.[0];
+                resolve(content?.type === "text" ? content.text : "");
+              } catch {
+                reject(new Error(`Failed to parse Anthropic response: ${data.slice(0, 200)}`));
+              }
+            }
+          });
+        }
+      );
+      req.setTimeout(180_000, () => { req.destroy(new Error("Anthropic API request timed out after 180s")); });
+      req.on("error", reject);
+      req.write(body);
+      req.end();
+    });
+
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long", year: "numeric", month: "long", day: "numeric",
+  });
+
+  const ENRICH_BATCH = 5;
+  const batchCount = Math.ceil(items.length / ENRICH_BATCH);
+
+  const makePrompt = (articleList: string, count: number) =>
+    `You are the editorial voice for Popcorn — a cultural lens app that surfaces what actually matters in culture right now. Today is ${today}.
+
+Write full articles for each of the ${count} stories below.
+
+WRITING RULES:
+- ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show or game.
+- Write like you are talking to a friend. Short sentences. Simple words. No jargon.
+- No dashes or hyphens used as pauses in sentences. Use plain punctuation.
+- No bullet points inside the story content.
+- Keep it upbeat and engaging. Tell people why they should care.
+- Paragraphs MUST be separated by a blank line (\\n\\n). Never run paragraphs together.
+- If a story references something unfamiliar (an award, a franchise, a past incident), briefly explain it in plain English.
+- Keep articles concise. Aim for 3 short paragraphs. Add context without padding.
+- For stories with past-event context (sequels, legal disputes, returning artists), include a brief 1–2 sentence backstory.
+
+ARTICLES:
+${articleList}
+
+For each article output a JSON object:
+{
+  "title": "Short punchy headline, max 10 words — MUST include the real name",
+  "summary": "2 sentences. First sentence names who/what and what happened. Second sentence says why it matters.",
+  "content": "3 short paragraphs separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation.",
+  "keyPoints": ["3 to 5 short plain-English takeaways"],
+  "signalScore": 0-100,
+  "tag": "ONE of: BREAKING | HOT TAKE | REVIEW | INTERVIEW | FEATURE | RELEASE | TREND",
+  "category": "ONE of: Film & TV | Music | Gaming | Fashion | Internet | Tech | AI | Culture | World | Industry | Books | Science | Sports — Film & TV: movies, shows, streaming, franchises; Music: albums, artists, tours, labels, festivals; Gaming: video games, esports, gaming culture; Fashion: fashion, style, brands, streetwear, beauty; Internet: viral moments, memes, social media, creator economy, platform news; Tech: consumer tech, gadgets, hardware, software, apps; AI: artificial intelligence tools, models, research, AI industry moves; Culture: art, design, museums, architecture, broader cultural movements and moments; World: international stories with genuine cultural crossover beyond politics; Industry: entertainment business — deals, box office, streaming numbers, label moves, M&A; Books: books, publishing, authors, literary prizes, reading culture; Science: space, research, discoveries with cultural relevance; Sports: athletes/sporting events with genuine cultural crossover only",
+  "source": "Original source name",
+  "imageUrl": "IMAGE URL from source if provided, otherwise null",
+  "wikiSearchQuery": "Wikipedia search query for the article subject. Film/TV: title + year. Music: artist + album. Person only: name + role.",
+  "readTimeMinutes": <integer 2–6>,
+  "sourceIndex": <the [N] number in the list above>
+}
+
+Respond with ONLY a valid JSON array — no markdown, no code fences.`;
+
+  console.log(`[shortlist] Enriching ${items.length} selected articles in ${batchCount} batch(es)…`);
+
+  const enriched: any[] = [];
+  for (let b = 0; b < batchCount; b++) {
+    const batchItems = items.slice(b * ENRICH_BATCH, (b + 1) * ENRICH_BATCH);
+    const offset = b * ENRICH_BATCH;
+    const articleList = batchItems
+      .map((item, i) =>
+        `[${offset + i + 1}] SOURCE: ${item.source}\nDATE: ${item.pubDate}\nTITLE: ${item.title}\nDESCRIPTION: ${item.description || "(none)"}${item.imageUrl ? `\nIMAGE: ${item.imageUrl}` : ""}`
+      )
+      .join("\n\n---\n\n");
+
+    const raw = await callClaude(makePrompt(articleList, batchItems.length), 6000);
+    const match = raw.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error(`Enrichment batch ${b + 1}: no JSON array in response`);
+    const parsed = JSON.parse(sanitizeClaudeJson(match[0]));
+    for (const p of parsed) {
+      // Map sourceIndex back to the correct raw item within this batch
+      p._rawItem = batchItems[(p.sourceIndex - 1) - offset] ?? batchItems[p.sourceIndex - 1];
+    }
+    enriched.push(...parsed);
+  }
+
+  // Build EnrichedArticle[]
+  const articles: EnrichedArticle[] = enriched.map((item: any, i: number) => {
+    const cat = item.category in CATEGORY_GRADIENTS ? item.category : "Internet";
+    const [gradientStart, gradientEnd] = CATEGORY_GRADIENTS[cat];
+    const rssImageUrl = typeof item.imageUrl === "string" ? item.imageUrl : null;
+    const imageUrl = isGoodImageUrl(rssImageUrl) ? rssImageUrl! : null;
+    const rawItem: RawRSSItem | undefined = item._rawItem;
+
+    return {
+      id: i + 1,
+      title: String(item.title ?? ""),
+      summary: String(item.summary ?? ""),
+      content: String(item.content ?? ""),
+      category: cat,
+      source: String(item.source ?? "Unknown"),
+      readTimeMinutes: Number(item.readTimeMinutes) || 5,
+      publishedAt: (() => {
+        if (publishToday) return new Date().toISOString();
+        if (rawItem?.pubDate) {
+          const d = new Date(rawItem.pubDate);
+          if (!isNaN(d.getTime())) return d.toISOString();
+        }
+        return new Date().toISOString();
+      })(),
+      likes: Math.floor(Math.random() * 4500) + 500,
+      isBookmarked: false,
+      gradientStart,
+      gradientEnd,
+      tag: String(item.tag ?? "FEATURE"),
+      imageUrl: imageUrl ?? `__NEEDS_OG__${rawItem?.link ?? ""}`,
+      wikiSearchQuery: typeof item.wikiSearchQuery === "string" ? item.wikiSearchQuery : "",
+      keyPoints: Array.isArray(item.keyPoints) ? item.keyPoints : [],
+      signalScore: typeof item.signalScore === "number" ? item.signalScore : null,
+    } satisfies EnrichedArticle;
+  });
+
+  // Image resolution — same priority chain as main pipeline
+  // YouTube (embedded) → OG (strict) → Google → TMDb → Spotify → Unsplash → iTunes → Wikipedia → OG fallback → category
+  const ogNeeded = articles.filter((a) => a.imageUrl?.startsWith("__NEEDS_OG__"));
+  if (ogNeeded.length > 0) {
+    console.log(`[shortlist] Fetching images for ${ogNeeded.length} articles…`);
+    await Promise.all(
+      ogNeeded.map(async (article, idx) => {
+        const articleUrl = (article.imageUrl as string).replace("__NEEDS_OG__", "");
+        const wikiQuery = (article as any).wikiSearchQuery as string | undefined;
+
+        // 1. YouTube (embedded only)
+        if (articleUrl) {
+          try {
+            const htmlRes = await fetch(articleUrl, { signal: AbortSignal.timeout(5000), headers: { "User-Agent": "Mozilla/5.0" } });
+            if (htmlRes.ok) {
+              const videoId = extractYouTubeId(await htmlRes.text());
+              if (videoId) {
+                const ytUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                if (await isHighQualityImage(ytUrl)) { article.imageUrl = ytUrl; return; }
+              }
+            }
+          } catch { /* ignore */ }
+        }
+        // 2. OG (strict: quality + aspect ratio + no logos/banners)
+        const ogUrl = articleUrl ? await fetchOGImage(articleUrl) : undefined;
+        if (isGoodImageUrl(ogUrl) && await isHighQualityImage(ogUrl!)) {
+          const dims = await fetchImageDimensions(ogUrl!);
+          if (isStrictOGValid(ogUrl!, dims) && (!dims || isValidAspectRatio(dims.width, dims.height))) {
+            article.imageUrl = ogUrl!; return;
+          }
+        }
+        // 3. TMDb (Film & TV)
+        if (article.category === "Film & TV" && wikiQuery) {
+          const tmdbUrl = await fetchTMDbImage(wikiQuery);
+          if (isGoodImageUrl(tmdbUrl)) { article.imageUrl = tmdbUrl!; return; }
+        }
+        // 5. Spotify (Music)
+        if (article.category === "Music" && wikiQuery) {
+          const spotifyUrl = await fetchSpotifyImage(wikiQuery);
+          if (isGoodImageUrl(spotifyUrl)) { article.imageUrl = spotifyUrl!; return; }
+        }
+        // 6. Unsplash (portrait, strict)
+        if (wikiQuery) {
+          const unsplashUrl = await fetchUnsplashImage(wikiQuery, article.category);
+          if (isGoodImageUrl(unsplashUrl)) { article.imageUrl = unsplashUrl!; return; }
+        }
+        // 7. iTunes (Music)
+        if (article.category === "Music" && wikiQuery) {
+          const itunesUrl = await fetchItunesImage(wikiQuery);
+          if (isGoodImageUrl(itunesUrl)) { article.imageUrl = itunesUrl!; return; }
+        }
+        // 8. Wikipedia
+        if (wikiQuery) {
+          const wikiUrl = await fetchWikipediaImage(wikiQuery);
+          if (isGoodImageUrl(wikiUrl) && await isHighQualityImage(wikiUrl!)) { article.imageUrl = wikiUrl!; return; }
+        }
+        // 9. OG without quality check
+        if (isGoodImageUrl(ogUrl)) { article.imageUrl = ogUrl!; return; }
+        // 10. Category fallback
+        article.imageUrl = fallbackImage(article.category, idx);
+      })
+    );
+  }
+
+  // Post-process: fetch image dimensions for aspect-ratio-aware rendering
+  await Promise.all(
+    articles
+      .filter((a) => a.imageUrl && !a.imageUrl.startsWith("__NEEDS_OG__"))
+      .map(async (article) => {
+        const dims = await fetchImageDimensions(article.imageUrl!);
+        if (dims) { article.imageWidth = dims.width; article.imageHeight = dims.height; }
+      })
+  );
+
+  return articles;
+}

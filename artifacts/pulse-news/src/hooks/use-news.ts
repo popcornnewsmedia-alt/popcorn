@@ -20,7 +20,7 @@ export function useInfiniteNewsFeed(category?: string) {
   return useInfiniteQuery({
     queryKey: ['news', 'feed', category],
     queryFn: async ({ pageParam = 1 }) => {
-      return getNewsArticles({ page: pageParam, limit: 10, category });
+      return getNewsArticles({ page: pageParam, limit: 50, category });
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -36,15 +36,11 @@ export function useLikeArticle() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => likeNewsArticle(id),
-    onMutate: async (id) => {
-      // Cancel any outgoing refetches to avoid overwriting optimistic update
+    mutationFn: ({ id, liked }: { id: number; liked: boolean }) =>
+      liked ? likeNewsArticle(id) : Promise.resolve(null),
+    onMutate: async ({ id, liked }) => {
       await queryClient.cancelQueries({ queryKey: ['news', 'feed'] });
-
-      // Snapshot previous value
       const previousQueries = queryClient.getQueriesData({ queryKey: ['news', 'feed'] });
-
-      // Optimistically update to the new value
       queryClient.setQueriesData({ queryKey: ['news', 'feed'] }, (oldData: any) => {
         if (!oldData) return oldData;
         return {
@@ -52,27 +48,20 @@ export function useLikeArticle() {
           pages: oldData.pages.map((page: any) => ({
             ...page,
             articles: page.articles.map((article: any) => {
-              if (article.id === id) {
-                return { ...article, likes: article.likes + 1 };
-              }
+              if (article.id === id) return { ...article, likes: article.likes + (liked ? 1 : -1) };
               return article;
             }),
           })),
         };
       });
-
       return { previousQueries };
     },
-    onError: (err, newTodo, context) => {
+    onError: (_err, _vars, context) => {
       if (context?.previousQueries) {
         context.previousQueries.forEach(([queryKey, data]) => {
           queryClient.setQueryData(queryKey, data);
         });
       }
-    },
-    onSettled: () => {
-      // We don't invalidate here to prevent the UI from jittering, 
-      // but in a real app we might invalidate in the background.
     },
   });
 }

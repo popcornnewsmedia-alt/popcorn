@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* Article card image animations — CSS-only, no JS onLoad dependency */
+@keyframes articleImageIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes articleSkeletonOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
 @font-face {
   font-family: 'Macabro';
   src: url('/fonts/MACABRO.woff2') format('woff2'),
@@ -72,17 +82,42 @@
   * {
     @apply border-border;
   }
-  
+
+  /* Lock height chain: html → body → #root → FeedPage.
+     Each level is exactly the viewport. The feed scroll container
+     (position:fixed inset:0) and its children (height:100%) both
+     resolve to the same pixel value — no dvh/svh/lvh ambiguity. */
   html {
-    background: #204a52;
-    min-height: 100dvh;
+    height: 100%;
+    background: #053980;
+    overflow: hidden;
   }
 
   body {
+    height: 100%;
     @apply text-foreground font-sans antialiased overflow-hidden;
     background: transparent;
-    /* Prevent pull-to-refresh on mobile */
-    overscroll-behavior-y: none; 
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Only constrain width — do NOT set height:auto.
+     height:auto on absolutely-positioned feed images was overriding
+     the inline height:100% in mobile WebKit, causing cropped images. */
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Snap scroll containers get GPU compositing for smooth mobile scroll */
+  .snap-y {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 
   h1, h2, h3, h4, h5, h6 {

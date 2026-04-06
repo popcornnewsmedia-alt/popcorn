@@ -101,70 +101,70 @@ function PopcornAnim() {
       `}</style>
 
       {/* Heat glow — ellipse at bucket mouth */}
-      <ellipse className="heat-glow" cx="50" cy="61" rx="19" ry="10" fill="#fff3d3"/>
+      <ellipse className="heat-glow" cx="50" cy="61" rx="19" ry="10" fill="#fff1cd"/>
 
       {/* Bucket — rumbles subtly */}
       <g className="bucket-grp">
-        <rect x="28" y="58" width="44" height="7" rx="2.5" fill="#fff3d3"/>
-        <path d="M30 65 L35 94 L65 94 L70 65Z" fill="transparent" stroke="#fff3d3" strokeWidth="1.8" strokeLinejoin="round"/>
+        <rect x="28" y="58" width="44" height="7" rx="2.5" fill="#fff1cd"/>
+        <path d="M30 65 L35 94 L65 94 L70 65Z" fill="transparent" stroke="#fff1cd" strokeWidth="1.8" strokeLinejoin="round"/>
       </g>
 
       {/* Flying kernels — all originate from bucket mouth ~(50,60) */}
       <g className="k1">
-        <circle cx="50" cy="60" r="3.6" fill="#fff3d3"/>
-        <circle cx="47" cy="58" r="2.6" fill="#fff3d3"/>
-        <circle cx="53" cy="58" r="2.3" fill="#fff3d3"/>
+        <circle cx="50" cy="60" r="3.6" fill="#fff1cd"/>
+        <circle cx="47" cy="58" r="2.6" fill="#fff1cd"/>
+        <circle cx="53" cy="58" r="2.3" fill="#fff1cd"/>
       </g>
       <g className="k2">
-        <circle cx="50" cy="60" r="3.1" fill="#fff3d3"/>
-        <circle cx="48" cy="57.5" r="2.1" fill="#fff3d3"/>
-        <circle cx="53" cy="58.5" r="2.3" fill="#fff3d3"/>
+        <circle cx="50" cy="60" r="3.1" fill="#fff1cd"/>
+        <circle cx="48" cy="57.5" r="2.1" fill="#fff1cd"/>
+        <circle cx="53" cy="58.5" r="2.3" fill="#fff1cd"/>
       </g>
       <g className="k3">
-        <circle cx="50" cy="60" r="3.3" fill="#fff3d3"/>
-        <circle cx="47.5" cy="58" r="2.4" fill="#fff3d3"/>
-        <circle cx="52.5" cy="57.5" r="2.1" fill="#fff3d3"/>
+        <circle cx="50" cy="60" r="3.3" fill="#fff1cd"/>
+        <circle cx="47.5" cy="58" r="2.4" fill="#fff1cd"/>
+        <circle cx="52.5" cy="57.5" r="2.1" fill="#fff1cd"/>
       </g>
       <g className="k4">
-        <circle cx="50" cy="60" r="2.9" fill="#fff3d3"/>
-        <circle cx="52.5" cy="58.5" r="2.2" fill="#fff3d3"/>
-        <circle cx="48"   cy="58"   r="1.9" fill="#fff3d3"/>
+        <circle cx="50" cy="60" r="2.9" fill="#fff1cd"/>
+        <circle cx="52.5" cy="58.5" r="2.2" fill="#fff1cd"/>
+        <circle cx="48"   cy="58"   r="1.9" fill="#fff1cd"/>
       </g>
       <g className="k5">
-        <circle cx="50"   cy="60"   r="3.1" fill="#fff3d3"/>
-        <circle cx="47"   cy="58.5" r="2.3" fill="#fff3d3"/>
-        <circle cx="52.5" cy="57.5" r="1.9" fill="#fff3d3"/>
+        <circle cx="50"   cy="60"   r="3.1" fill="#fff1cd"/>
+        <circle cx="47"   cy="58.5" r="2.3" fill="#fff1cd"/>
+        <circle cx="52.5" cy="57.5" r="1.9" fill="#fff1cd"/>
       </g>
       <g className="k6">
-        <circle cx="50"   cy="60"   r="2.7" fill="#fff3d3"/>
-        <circle cx="48"   cy="57.5" r="2.1" fill="#fff3d3"/>
-        <circle cx="52.5" cy="58.5" r="1.9" fill="#fff3d3"/>
+        <circle cx="50"   cy="60"   r="2.7" fill="#fff1cd"/>
+        <circle cx="48"   cy="57.5" r="2.1" fill="#fff1cd"/>
+        <circle cx="52.5" cy="58.5" r="1.9" fill="#fff1cd"/>
       </g>
 
       {/* Left puff */}
       <g className="pca">
-        <circle cx="35" cy="50" r="6"   fill="#fff3d3"/>
-        <circle cx="29" cy="46" r="4.5" fill="#fff3d3"/>
-        <circle cx="35" cy="42" r="5"   fill="#fff3d3"/>
-        <circle cx="41" cy="46" r="4.5" fill="#fff3d3"/>
+        <circle cx="35" cy="50" r="6"   fill="#fff1cd"/>
+        <circle cx="29" cy="46" r="4.5" fill="#fff1cd"/>
+        <circle cx="35" cy="42" r="5"   fill="#fff1cd"/>
+        <circle cx="41" cy="46" r="4.5" fill="#fff1cd"/>
       </g>
 
       {/* Centre puff */}
       <g className="pcb">
-        <circle cx="50" cy="46" r="7"   fill="#fff3d3"/>
-        <circle cx="43" cy="41" r="5"   fill="#fff3d3"/>
-        <circle cx="50" cy="36" r="6"   fill="#fff3d3"/>
-        <circle cx="57" cy="41" r="5"   fill="#fff3d3"/>
-        <circle cx="44" cy="49" r="4"   fill="#fff3d3"/>
-        <circle cx="56" cy="49" r="4"   fill="#fff3d3"/>
+        <circle cx="50" cy="46" r="7"   fill="#fff1cd"/>
+        <circle cx="43" cy="41" r="5"   fill="#fff1cd"/>
+        <circle cx="50" cy="36" r="6"   fill="#fff1cd"/>
+        <circle cx="57" cy="41" r="5"   fill="#fff1cd"/>
+        <circle cx="44" cy="49" r="4"   fill="#fff1cd"/>
+        <circle cx="56" cy="49" r="4"   fill="#fff1cd"/>
       </g>
 
       {/* Right puff */}
       <g className="pcc">
-        <circle cx="65" cy="50" r="6"   fill="#fff3d3"/>
-        <circle cx="59" cy="46" r="4.5" fill="#fff3d3"/>
-        <circle cx="65" cy="42" r="5"   fill="#fff3d3"/>
-        <circle cx="71" cy="46" r="4.5" fill="#fff3d3"/>
+        <circle cx="65" cy="50" r="6"   fill="#fff1cd"/>
+        <circle cx="59" cy="46" r="4.5" fill="#fff1cd"/>
+        <circle cx="65" cy="42" r="5"   fill="#fff1cd"/>
+        <circle cx="71" cy="46" r="4.5" fill="#fff1cd"/>
       </g>
     </svg>
   );
@@ -189,7 +189,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden"
       style={{
-        backgroundColor: '#204a52',
+        backgroundColor: '#053980',
         isolation: 'isolate',
         opacity: phase === "fading" ? 0 : 1,
         transition: 'opacity 0.6s ease-out',
@@ -217,7 +217,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
             fontFamily: "'Macabro', 'Anton', sans-serif",
             fontWeight: 400,
             fontSize: 'clamp(37px, 10.4vw, 50px)',
-            color: '#fff3d3',
+            color: '#fff1cd',
             letterSpacing: '0.03em',
             lineHeight: 1,
             textTransform: 'uppercase',
@@ -234,7 +234,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
             fontFamily: "'Inter', sans-serif",
             fontWeight: 700,
             fontSize: '13px',
-            color: '#fff3d3',
+            color: '#fff1cd',
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
             margin: 0,

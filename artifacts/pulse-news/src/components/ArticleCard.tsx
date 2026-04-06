@@ -1,52 +1,130 @@
-import { useState, useEffect, useRef } from "react";
-import { format } from "date-fns";
+import { useState } from "react";
 import { ChevronUp, CheckCircle2 } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { ActionButtons } from "./ActionButtons";
 import { CommentSheet } from "./CommentSheet";
 
+const CATEGORY_COLORS: Record<string, string> = {
+  'Music':        '#e879f9',  // fuchsia
+  'Film & TV':    '#60a5fa',  // sky blue
+  'Gaming':       '#a3e635',  // lime
+  'Fashion':      '#f472b6',  // hot pink
+  'Culture':      '#fb923c',  // orange
+  'Sports':       '#34d399',  // emerald
+  'Science':      '#22d3ee',  // cyan
+  'AI':           '#818cf8',  // indigo
+  'Social Media': '#fbbf24',  // amber
+  'Technology':   '#2dd4bf',  // teal
+  'Psychology':   '#c084fc',  // soft purple
+  'Philosophy':   '#94a3b8',  // slate
+  'Business':     '#f59e0b',  // gold
+  'World':        '#6ee7b7',  // mint green
+};
+
 interface ArticleCardProps {
   article: NewsArticle;
   onReadMore: (article: NewsArticle) => void;
-  onEnter?: (publishedAt: string) => void;
   isRead?: boolean;
+  viewportHeight?: number;
+  /** When false, renders a same-height empty snap shell — no images, no decode work */
+  renderContent?: boolean;
+  /** True only for the card at currentCardIndex — gets fetchpriority="high" */
+  isActive?: boolean;
 }
 
-export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: ArticleCardProps) {
+export function ArticleCard({
+  article, onReadMore, isRead = false, viewportHeight,
+  renderContent = true, isActive = false,
+}: ArticleCardProps) {
   const hasImage = !!article.imageUrl;
   const [commentsOpen, setCommentsOpen] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!onEnter || !cardRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) onEnter(article.publishedAt); },
-      { threshold: 0.6 }
+  // If dimensions are missing, default to cover (safe assumption — no gaps)
+  const hasDimensions =
+    typeof article.imageWidth === 'number' &&
+    typeof article.imageHeight === 'number';
+
+  const aspectRatio = hasDimensions
+    ? (article.imageWidth as number) / (article.imageHeight as number)
+    : null;
+
+  // Default to cover when dimensions unknown; contain only for proven extreme ratios
+  const shouldCover = !aspectRatio || (aspectRatio > 0.6 && aspectRatio < 2.2);
+
+  // Out-of-window: same-height snap placeholder, zero memory / decode pressure.
+  if (!renderContent) {
+    return (
+      <div
+        className="snap-start snap-always"
+        style={{ height: viewportHeight, width: '100vw', position: 'relative', overflow: 'hidden', background: '#053980' }}
+      />
     );
-    observer.observe(cardRef.current);
-    return () => observer.disconnect();
-  }, [article.publishedAt, onEnter]);
+  }
 
   return (
     <div
-      ref={cardRef}
-      className="h-[100dvh] w-full snap-start snap-always relative overflow-hidden flex flex-col cursor-pointer"
+      className="snap-start snap-always flex flex-col cursor-pointer"
+      style={{
+        height: viewportHeight,
+        width: '100vw',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
       onClick={() => onReadMore(article)}
     >
       {hasImage ? (
         <>
-          <img
-            src={article.imageUrl!}
-            alt={article.title}
-            className="absolute inset-0 w-full h-full object-cover object-top"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-          />
-          {/* Green atmospheric tint */}
+          {/* SKELETON — fades out via CSS, no JS dependency */}
           <div
-            className="absolute inset-0 z-10"
-            style={{ background: 'rgba(15, 46, 30, 0.32)', mixBlendMode: 'multiply' }}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 0,
+              background: 'linear-gradient(135deg, #042f6a 0%, #053980 40%, #063d8f 60%, #042f6a 100%)',
+              animation: 'articleSkeletonOut 0.5s ease 0.15s forwards',
+            }}
           />
-          {/* Bottom gradient for legibility */}
+
+          {/* BACKDROP — CSS background-image avoids a second decode of the same URL */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 1,
+              backgroundImage: `url(${article.imageUrl})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              filter: 'blur(40px)',
+              transform: 'scale(1.2)',
+              opacity: 0,
+              animation: 'articleImageIn 0.4s ease 0.05s forwards',
+            }}
+          />
+
+          {/* FOREGROUND — fetchpriority="high" for active card, "low" for neighbours */}
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            loading="eager"
+            decoding="async"
+            fetchPriority={isActive ? 'high' : 'low'}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100%',
+              objectFit: shouldCover ? 'cover' : 'contain',
+              objectPosition: 'center',
+              zIndex: 5,
+              opacity: 0,
+              animation: 'articleImageIn 0.3s ease forwards',
+            }}
+          />
+          {/* Subtle dark tint — z-10 */}
+          <div className="absolute inset-0 z-10" style={{ background: 'rgba(0,0,0,0.20)' }} />
+          {/* Bottom gradient — z-10 */}
           <div
             className="absolute inset-0 z-10"
             style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.78) 80%, rgba(0,0,0,0.92) 100%)' }}
@@ -80,24 +158,44 @@ export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: Ar
       {/* Bottom text content — left side, clear of the buttons */}
       <div className="relative z-20 px-5 pb-[90px] pr-24 sm:px-7 sm:pr-28">
 
-        {/* Tag + source row */}
-        <div className="flex items-center gap-3 mb-3">
+        {/* Category pill + source pill */}
+        <div className="flex items-center gap-2 mb-3">
+          {/* Category pill with coloured dot */}
           <span
-            className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest font-['Inter']"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
             style={{
-              background: 'rgba(255,255,255,0.15)',
-              border: '1px solid rgba(255,255,255,0.28)',
-              color: 'rgba(255,255,255,0.92)',
+              background: 'rgba(255,255,255,0.12)',
+              border: '1px solid rgba(255,255,255,0.22)',
             }}
           >
-            {article.tag}
+            <span
+              style={{
+                display: 'inline-block',
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.5)',
+                boxShadow: `0 0 5px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.4)'}`,
+                flexShrink: 0,
+              }}
+            />
+            <span
+              className="uppercase tracking-widest"
+              style={{ fontSize: '10px', color: 'rgba(255,255,255,0.90)', fontFamily: "'Macabro', 'Anton', sans-serif" }}
+            >
+              {article.category}
+            </span>
           </span>
+
+          {/* Source pill */}
           <span
-            className="px-3 py-1 rounded-full text-[10px] font-semibold font-['Inter'] tracking-wide"
+            className="px-2.5 py-1 rounded-full tracking-wide"
             style={{
-              background: 'rgba(255,255,255,0.10)',
-              border: '1px solid rgba(255,255,255,0.18)',
-              color: 'rgba(255,255,255,0.80)',
+              fontSize: '10px',
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              color: 'rgba(255,255,255,0.65)',
+              fontFamily: "'Macabro', 'Anton', sans-serif",
             }}
           >
             {article.source}
@@ -105,22 +203,17 @@ export function ArticleCard({ article, onReadMore, onEnter, isRead = false }: Ar
         </div>
 
         {/* Headline */}
-        <h2 className="text-[clamp(22px,6vw,38px)] font-bold leading-[1.1] mb-4 font-['Manrope'] tracking-tight text-white">
+        <h2 className="text-[clamp(22px,6vw,38px)] font-['Manrope'] font-bold leading-[1.1] mb-3 tracking-tight text-white">
           {article.title}
         </h2>
 
-        {/* Date row */}
+        {/* Swipe hint */}
         <div
-          className="flex items-center gap-3 text-xs font-medium font-['Inter']"
-          style={{ color: 'rgba(255,255,255,0.45)' }}
+          className="flex items-center gap-1 text-xs font-medium font-['Inter']"
+          style={{ color: 'rgba(255,255,255,0.35)' }}
         >
-          <span>{format(new Date(article.publishedAt), 'MMM d')}</span>
-          <span className="w-0.5 h-0.5 rounded-full bg-white/35" />
-          <span>{article.readTimeMinutes} min read</span>
-          <span className="flex items-center gap-1">
-            <ChevronUp className="w-3 h-3" />
-            Swipe
-          </span>
+          <ChevronUp className="w-3 h-3" />
+          Swipe
         </div>
       </div>
     </div>

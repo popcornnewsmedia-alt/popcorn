@@ -24,6 +24,8 @@ export interface NewsArticle {
   gradientEnd: string;
   tag: string;
   imageUrl?: string | null;
+  imageWidth?: number | null;
+  imageHeight?: number | null;
   keyPoints?: string[] | null;
   impact?: string | null;
   signalScore?: number | null;

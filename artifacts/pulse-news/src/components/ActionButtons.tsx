@@ -17,7 +17,9 @@ export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!localLiked) { setLocalLiked(true); likeMutation(article.id); }
+    const next = !localLiked;
+    setLocalLiked(next);
+    likeMutation({ id: article.id, liked: next });
   };
 
   const handleBookmark = (e: React.MouseEvent) => {
@@ -38,7 +40,7 @@ export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
 
   const isLiked = localLiked;
   const isSaved = article.isBookmarked;
-  const likeCount = article.likes + (localLiked ? 1 : 0);
+  const likeCount = article.likes;
 
   const iconStyle = { filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.55))' };
 

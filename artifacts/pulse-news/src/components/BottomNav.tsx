@@ -2,55 +2,84 @@ import { House, Bookmark, User } from "lucide-react";
 
 type Tab = "feed" | "saved" | "profile";
 
-interface BottomNavProps {
-  activeTab: Tab;
-  onTabChange: (tab: Tab) => void;
-}
-
-const tabs: { id: Tab; Icon: typeof House }[] = [
-  { id: "feed",    Icon: House    },
-  { id: "saved",   Icon: Bookmark },
-  { id: "profile", Icon: User     },
+const TABS: { id: Tab; Icon: typeof House; label: string }[] = [
+  { id: "feed",    Icon: House,    label: "HOME"  },
+  { id: "saved",   Icon: Bookmark, label: "SAVED" },
+  { id: "profile", Icon: User,     label: "YOU"   },
 ];
 
-export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+const BTN_W = 68;
+const BTN_H = 54;
+const PAD   = 4;
+
+export function BottomNav({ activeTab, onTabChange }: { activeTab: Tab; onTabChange: (t: Tab) => void }) {
+  const activeIndex = TABS.findIndex(t => t.id === activeTab);
+
   return (
-    <div className="fixed bottom-0 inset-x-0 z-40 flex justify-center pb-4 pointer-events-none">
+    <div
+      className="fixed bottom-0 inset-x-0 z-40 flex justify-center pointer-events-none"
+      style={{ paddingBottom: 'max(18px, calc(env(safe-area-inset-bottom) + 8px))' }}
+    >
       <div
-        className="flex items-center gap-1 px-3 py-2.5 pointer-events-auto"
+        className="relative flex items-center pointer-events-auto"
         style={{
-          background: 'rgba(10,14,11,0.92)',
-          backdropFilter: 'blur(32px)',
-          WebkitBackdropFilter: 'blur(32px)',
-          borderRadius: '100px',
-          border: '1px solid rgba(255,255,255,0.08)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.32), 0 2px 8px rgba(0,0,0,0.20)',
+          background: 'rgba(7,11,9,0.93)',
+          backdropFilter: 'blur(40px)',
+          WebkitBackdropFilter: 'blur(40px)',
+          borderRadius: 999,
+          border: '1px solid rgba(255,241,205,0.10)',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.50), 0 1px 0 rgba(255,241,205,0.07) inset',
+          padding: `${PAD}px`,
         }}
       >
-        {tabs.map(({ id, Icon }) => {
+        {/* Sliding cream indicator */}
+        <div
+          style={{
+            position: 'absolute',
+            width: BTN_W,
+            height: BTN_H,
+            borderRadius: 999,
+            background: 'rgba(255,241,205,0.11)',
+            boxShadow: '0 0 16px rgba(255,241,205,0.07)',
+            transform: `translateX(${activeIndex * BTN_W}px)`,
+            transition: 'transform 0.42s cubic-bezier(0.34, 1.5, 0.64, 1)',
+            left: PAD,
+            top: PAD,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {TABS.map(({ id, Icon, label }) => {
           const active = activeTab === id;
           return (
             <button
               key={id}
               onClick={() => onTabChange(id)}
-              className="flex items-center justify-center transition-all duration-200"
-              style={{
-                width: 52,
-                height: 44,
-                borderRadius: 80,
-                background: active ? 'rgba(255,255,255,0.10)' : 'transparent',
-              }}
+              className="relative z-10 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition-transform duration-100"
+              style={{ width: BTN_W, height: BTN_H }}
             >
               <Icon
                 style={{
-                  width: 21,
-                  height: 21,
-                  color: active ? '#ffffff' : 'rgba(255,255,255,0.45)',
-                  fill: active ? '#ffffff' : 'none',
-                  strokeWidth: active ? 1.8 : 1.6,
-                  transition: 'all 0.2s',
+                  width: 19,
+                  height: 19,
+                  color: active ? '#fff1cd' : 'rgba(255,241,205,0.28)',
+                  fill: active && id !== 'profile' ? '#fff1cd' : 'none',
+                  strokeWidth: 1.6,
+                  transition: 'color 0.25s, fill 0.25s',
                 }}
               />
+              <span
+                style={{
+                  fontFamily: "'Macabro', 'Anton', sans-serif",
+                  fontSize: '7.5px',
+                  color: active ? 'rgba(255,241,205,0.80)' : 'rgba(255,241,205,0.22)',
+                  letterSpacing: '0.09em',
+                  lineHeight: 1,
+                  transition: 'color 0.25s',
+                }}
+              >
+                {label}
+              </span>
             </button>
           );
         })}

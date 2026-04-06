@@ -111,7 +111,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
         className="fixed inset-x-0 bottom-0 z-50 flex flex-col overflow-hidden"
         style={{
           height: '90dvh',
-          background: '#204a52',
+          background: '#053980',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
           transition: 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
@@ -122,16 +122,16 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
 
         {/* Handle */}
         <div className="relative z-10 flex justify-center pt-3 pb-1 flex-shrink-0">
-          <div className="w-9 h-1 rounded-full" style={{ background: 'rgba(255,243,211,0.30)' }} />
+          <div className="w-9 h-1 rounded-full" style={{ background: 'rgba(255,241,205,0.30)' }} />
         </div>
 
         {/* Close */}
         <button
           onClick={handleClose}
           className="absolute top-5 right-5 z-20 p-2 rounded-full transition-opacity hover:opacity-60 active:opacity-50"
-          style={{ background: 'rgba(255,243,211,0.10)' }}
+          style={{ background: 'rgba(255,241,205,0.10)' }}
         >
-          <X className="w-4 h-4" style={{ color: 'rgba(255,243,211,0.65)' }} />
+          <X className="w-4 h-4" style={{ color: 'rgba(255,241,205,0.65)' }} />
         </button>
 
         {/* Step progress */}
@@ -144,7 +144,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
                 style={{
                   width: i === step ? '22px' : '6px',
                   height: '6px',
-                  background: i === step ? '#fff3d3' : i < step ? 'rgba(255,243,211,0.45)' : 'rgba(255,243,211,0.18)',
+                  background: i === step ? '#fff1cd' : i < step ? 'rgba(255,241,205,0.45)' : 'rgba(255,241,205,0.18)',
                 }}
               />
             ))}
@@ -157,15 +157,15 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
             <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8 text-center">
               <div
                 className="w-20 h-20 rounded-full flex items-center justify-center"
-                style={{ background: '#fff3d3', animation: 'check-pop 0.5s cubic-bezier(0.22,1,0.36,1) both' }}
+                style={{ background: '#fff1cd', animation: 'check-pop 0.5s cubic-bezier(0.22,1,0.36,1) both' }}
               >
-                <Check className="w-9 h-9" style={{ color: '#204a52' }} strokeWidth={2.5} />
+                <Check className="w-9 h-9" style={{ color: '#053980' }} strokeWidth={2.5} />
               </div>
               <div style={{ animation: 'tagline-reveal 0.5s ease 0.35s both' }}>
-                <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '32px', color: '#fff3d3', lineHeight: 1.05, letterSpacing: '0.02em', marginBottom: '10px' }}>
+                <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '32px', color: '#fff1cd', lineHeight: 1.05, letterSpacing: '0.02em', marginBottom: '10px' }}>
                   YOU'RE ALL SET,<br />{(name.trim() || "READER").toUpperCase()}.
                 </h2>
-                <p className="font-['Inter']" style={{ fontSize: '14px', color: 'rgba(255,243,211,0.50)' }}>
+                <p className="font-['Inter']" style={{ fontSize: '14px', color: 'rgba(255,241,205,0.50)' }}>
                   Your personalised feed is ready.
                 </p>
               </div>
@@ -175,24 +175,24 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
             <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8 text-center">
               <div
                 className="w-20 h-20 rounded-full flex items-center justify-center"
-                style={{ background: 'rgba(255,243,211,0.10)', border: '1px solid rgba(255,243,211,0.18)' }}
+                style={{ background: 'rgba(255,241,205,0.10)', border: '1px solid rgba(255,241,205,0.18)' }}
               >
-                <Mail className="w-9 h-9" style={{ color: '#fff3d3' }} strokeWidth={1.5} />
+                <Mail className="w-9 h-9" style={{ color: '#fff1cd' }} strokeWidth={1.5} />
               </div>
               <div>
-                <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '32px', color: '#fff3d3', lineHeight: 1.05, letterSpacing: '0.02em', marginBottom: '10px' }}>
+                <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '22px', color: '#fff1cd', lineHeight: 1.1, letterSpacing: '0.02em', marginBottom: '10px' }}>
                   CHECK YOUR<br />INBOX.
                 </h2>
-                <p className="font-['Inter']" style={{ fontSize: '14px', color: 'rgba(255,243,211,0.50)', lineHeight: 1.6 }}>
+                <p className="font-['Inter']" style={{ fontSize: '14px', color: 'rgba(255,241,205,0.50)', lineHeight: 1.6 }}>
                   We sent a confirmation link to{" "}
-                  <span style={{ color: '#fff3d3', fontWeight: 600 }}>{email}</span>.
+                  <span style={{ color: '#fff1cd', fontWeight: 600 }}>{email}</span>.
                   Click it to activate your account.
                 </p>
               </div>
               <button
                 onClick={handleClose}
                 className="mt-2 px-8 py-3.5 rounded-full transition-opacity hover:opacity-80 active:scale-[0.98]"
-                style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '13px', letterSpacing: '0.08em', background: '#fff3d3', color: '#204a52' }}
+                style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '13px', letterSpacing: '0.08em', background: '#fff1cd', color: '#053980' }}
               >
                 GOT IT
               </button>
@@ -201,10 +201,10 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
           ) : step === 0 ? (
             <div className="flex-1 flex flex-col px-6 pt-7 pb-5 gap-6 overflow-y-auto" style={{ animation: 'step-in 0.35s ease both' }}>
               <div>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,243,211,0.38)', marginBottom: '8px' }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,241,205,0.38)', marginBottom: '8px' }}>
                   {stepLabels[0]} · 1 of 3
                 </p>
-                <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '20px', color: '#fff3d3', lineHeight: 1, letterSpacing: '0.02em' }}>
+                <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '15px', color: '#fff1cd', lineHeight: 1, letterSpacing: '0.02em' }}>
                   CREATE YOUR ACCOUNT.
                 </h2>
               </div>
@@ -216,15 +216,15 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
                   { label: "Password", type: "password", value: password, set: setPassword, placeholder: "Min. 8 characters" },
                 ].map(({ label, type, value, set, placeholder }) => (
                   <div key={label} className="flex flex-col gap-1.5">
-                    <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,243,211,0.42)' }}>{label}</label>
+                    <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>{label}</label>
                     <input
                       type={type}
                       value={value}
                       onChange={e => set(e.target.value)}
                       onClick={stopProp}
                       placeholder={placeholder}
-                      className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,243,211,0.22)]"
-                      style={{ background: 'rgba(255,243,211,0.07)', fontSize: '15px', color: '#fff3d3', border: '1px solid rgba(255,243,211,0.13)' }}
+                      className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
+                      style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
                     />
                   </div>
                 ))}
@@ -234,15 +234,15 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
                 )}
 
                 <div className="flex items-center gap-3 my-0.5">
-                  <div className="flex-1 h-px" style={{ background: 'rgba(255,243,211,0.12)' }} />
-                  <span className="font-['Inter']" style={{ fontSize: '11px', color: 'rgba(255,243,211,0.25)' }}>or</span>
-                  <div className="flex-1 h-px" style={{ background: 'rgba(255,243,211,0.12)' }} />
+                  <div className="flex-1 h-px" style={{ background: 'rgba(255,241,205,0.12)' }} />
+                  <span className="font-['Inter']" style={{ fontSize: '11px', color: 'rgba(255,241,205,0.25)' }}>or</span>
+                  <div className="flex-1 h-px" style={{ background: 'rgba(255,241,205,0.12)' }} />
                 </div>
 
                 <button
                   onClick={handleGoogle}
                   className="w-full flex items-center justify-center gap-3 rounded-xl py-3.5 font-['Inter'] font-semibold transition-opacity hover:opacity-80 active:opacity-60"
-                  style={{ background: 'rgba(255,243,211,0.07)', fontSize: '14px', color: '#fff3d3', border: '1px solid rgba(255,243,211,0.13)' }}
+                  style={{ background: 'rgba(255,241,205,0.07)', fontSize: '14px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
                 >
                   <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
                     <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
@@ -257,13 +257,13 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
 
           ) : step === 1 ? (
             <div className="flex-1 flex flex-col px-6 pt-7 pb-5 overflow-y-auto" style={{ animation: 'step-in 0.35s ease both' }}>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,243,211,0.38)', marginBottom: '8px' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,241,205,0.38)', marginBottom: '8px' }}>
                 {stepLabels[1]} · 2 of 3
               </p>
-              <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '34px', color: '#fff3d3', lineHeight: 1, letterSpacing: '0.02em', marginBottom: '6px' }}>
+              <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '34px', color: '#fff1cd', lineHeight: 1, letterSpacing: '0.02em', marginBottom: '6px' }}>
                 WHAT MOVES<br />YOU?
               </h2>
-              <p className="font-['Inter'] mb-6" style={{ fontSize: '13px', color: 'rgba(255,243,211,0.45)' }}>
+              <p className="font-['Inter'] mb-6" style={{ fontSize: '13px', color: 'rgba(255,241,205,0.45)' }}>
                 Pick at least one topic to shape your feed.
               </p>
               <div className="flex flex-wrap gap-2">
@@ -278,9 +278,9 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
                         fontFamily: "'Macabro', 'Anton', sans-serif",
                         fontSize: '10px',
                         letterSpacing: '0.06em',
-                        background: sel ? '#fff3d3' : 'rgba(255,243,211,0.07)',
-                        color: sel ? '#204a52' : 'rgba(255,243,211,0.65)',
-                        border: sel ? '1px solid #fff3d3' : '1px solid rgba(255,243,211,0.18)',
+                        background: sel ? '#fff1cd' : 'rgba(255,241,205,0.07)',
+                        color: sel ? '#053980' : 'rgba(255,241,205,0.65)',
+                        border: sel ? '1px solid #fff1cd' : '1px solid rgba(255,241,205,0.18)',
                       }}
                     >
                       {t.toUpperCase()}
@@ -293,10 +293,10 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
           ) : (
             <div className="flex-1 flex flex-col px-6 pt-7 pb-5 gap-5 overflow-y-auto" style={{ animation: 'step-in 0.35s ease both' }}>
               <div>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,243,211,0.38)', marginBottom: '8px' }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,241,205,0.38)', marginBottom: '8px' }}>
                   {stepLabels[2]} · 3 of 3
                 </p>
-                <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '34px', color: '#fff3d3', lineHeight: 1, letterSpacing: '0.02em' }}>
+                <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '34px', color: '#fff1cd', lineHeight: 1, letterSpacing: '0.02em' }}>
                   STAY IN<br />THE LOOP.
                 </h2>
               </div>
@@ -332,8 +332,8 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
                 fontFamily: "'Macabro', 'Anton', sans-serif",
                 fontSize: '14px',
                 letterSpacing: '0.08em',
-                background: canNext && !loading ? '#fff3d3' : 'rgba(255,243,211,0.12)',
-                color: canNext && !loading ? '#204a52' : 'rgba(255,243,211,0.28)',
+                background: canNext && !loading ? '#fff1cd' : 'rgba(255,241,205,0.12)',
+                color: canNext && !loading ? '#053980' : 'rgba(255,241,205,0.28)',
               }}
             >
               {loading ? "WORKING…" : step === 2 ? "FINISH" : "CONTINUE"}
@@ -350,22 +350,22 @@ function NotifToggle({ label, sub, on, onToggle }: { label: string; sub: string;
   return (
     <div
       className="flex items-center justify-between gap-4 p-4 rounded-2xl cursor-pointer transition-all active:opacity-70"
-      style={{ background: 'rgba(255,243,211,0.06)', border: `1px solid ${on ? 'rgba(255,243,211,0.28)' : 'rgba(255,243,211,0.10)'}` }}
+      style={{ background: 'rgba(255,241,205,0.06)', border: `1px solid ${on ? 'rgba(255,241,205,0.28)' : 'rgba(255,241,205,0.10)'}` }}
       onClick={(e) => { e.stopPropagation(); onToggle(); }}
     >
       <div>
-        <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '11px', letterSpacing: '0.04em', color: '#fff3d3', marginBottom: '2px' }}>{label.toUpperCase()}</p>
-        <p className="font-['Inter']" style={{ fontSize: '12px', color: 'rgba(255,243,211,0.40)' }}>{sub}</p>
+        <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '11px', letterSpacing: '0.04em', color: '#fff1cd', marginBottom: '2px' }}>{label.toUpperCase()}</p>
+        <p className="font-['Inter']" style={{ fontSize: '12px', color: 'rgba(255,241,205,0.40)' }}>{sub}</p>
       </div>
       <div
         className="flex-shrink-0 w-12 h-7 rounded-full relative transition-colors duration-200"
-        style={{ background: on ? '#fff3d3' : 'rgba(255,243,211,0.18)' }}
+        style={{ background: on ? '#fff1cd' : 'rgba(255,241,205,0.18)' }}
       >
         <div
           className="absolute top-1 w-5 h-5 rounded-full transition-transform duration-200"
           style={{
             transform: on ? 'translateX(24px)' : 'translateX(4px)',
-            background: on ? '#204a52' : 'rgba(255,243,211,0.55)',
+            background: on ? '#053980' : 'rgba(255,241,205,0.55)',
             boxShadow: '0 1px 4px rgba(0,0,0,0.22)',
           }}
         />

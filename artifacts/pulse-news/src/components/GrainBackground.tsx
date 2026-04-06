@@ -7,15 +7,16 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const W = window.innerWidth;
-    const H = window.innerHeight;
+    const W = canvas.parentElement?.clientWidth || window.innerWidth || 390;
+    const H = canvas.parentElement?.clientHeight || window.innerHeight || 844;
+    if (W === 0 || H === 0) return;
     canvas.width = W;
     canvas.height = H;
 
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
-    ctx.fillStyle = variant === "dark" ? '#b32b21' : variant === "cream" ? '#fff3d3' : variant === "pale" ? '#fbf8f2' : variant === "paper" ? '#fdf7e5' : variant === "white" ? '#ffffff' : '#204a52';
+    ctx.fillStyle = variant === "dark" ? '#b32b21' : variant === "cream" ? '#fff1cd' : variant === "pale" ? '#fbf8f2' : variant === "paper" ? '#fdf7e5' : variant === "white" ? '#ffffff' : '#053980';
     ctx.fillRect(0, 0, W, H);
 
     const DS = 4;
@@ -69,10 +70,10 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
           data[idx+1] = Math.max(0,   Math.min(93,  43  + Math.round(grain * 1.472 - 1.28)));
           data[idx+2] = Math.max(0,   Math.min(83,  33  + Math.round(grain * 1.472 - 1.28)));
         } else if (variant === "cream") {
-          // #fff3d3 — R=255,G=243,B=211 — R dominant
+          // #fff1cd — R=255,G=241,B=205 — R dominant
           data[idx]   = Math.max(205, Math.min(255, 255 + Math.round(grain * 2.048 - 2.56)));
-          data[idx+1] = Math.max(193, Math.min(255, 243 + Math.round(grain * 1.472 - 1.28)));
-          data[idx+2] = Math.max(161, Math.min(255, 211 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+1] = Math.max(191, Math.min(255, 241 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+2] = Math.max(155, Math.min(255, 205 + Math.round(grain * 1.472 - 1.28)));
         } else if (variant === "pale") {
           // #fbf8f2 — R=251,G=248,B=242 — light cream, slightly warmer, stronger grain
           data[idx]   = Math.max(201, Math.min(255, 251 + Math.round(grain * 2.048 - 2.56)));
@@ -89,10 +90,10 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
           data[idx+1] = Math.max(197, Math.min(255, 247 + Math.round(grain * 1.928 - 2.010)));
           data[idx+2] = Math.max(179, Math.min(255, 229 + Math.round(grain * 1.928 - 2.010)));
         } else {
-          // #204a52 — R=32,G=74,B=82 — B dominant
-          data[idx]   = Math.max(0,  Math.min(82,  32 + Math.round(grain * 1.472 - 1.28)));
-          data[idx+1] = Math.max(24, Math.min(124, 74 + Math.round(grain * 1.472 - 1.28)));
-          data[idx+2] = Math.max(32, Math.min(132, 82 + Math.round(grain * 2.048 - 2.56)));
+          // #053980 — R=5,G=57,B=128 — B dominant
+          data[idx]   = Math.max(0,  Math.min(55,   5 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+1] = Math.max(7,  Math.min(107, 57 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+2] = Math.max(78, Math.min(178, 128 + Math.round(grain * 2.048 - 2.56)));
         }
       }
     }

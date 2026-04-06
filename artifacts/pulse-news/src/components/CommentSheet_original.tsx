@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { X, ChevronUp, ChevronDown, SendHorizonal } from "lucide-react";
+import { X, ChevronUp, ChevronDown, SendHorizonal, CornerDownRight } from "lucide-react";
 import { GrainBackground } from "./GrainBackground";
 
 type Sort = "popular" | "newest" | "oldest";
@@ -121,8 +121,6 @@ export function getInitialCommentCount(articleId: number): number {
 
 let nextId = 1000;
 
-const SORT_LABELS: Record<Sort, string> = { newest: "NEWEST", oldest: "OLDEST", popular: "TOP" };
-
 export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) {
   const seed = SEED_POOLS[articleId % SEED_POOLS.length];
   const [comments, setComments] = useState<Comment[]>(seed.map(c => ({ ...c, replies: [...c.replies] })));
@@ -186,7 +184,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
     }));
   };
 
-  const handleSend = (e: React.MouseEvent | React.KeyboardEvent) => {
+  const handleSend = (e: React.MouseEvent) => {
     e.stopPropagation();
     const text = input.trim();
     if (!text) return;
@@ -222,56 +220,35 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
     const arr = [...comments];
     if (sort === "popular") return arr.sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
     if (sort === "oldest") return arr.reverse();
-    return arr;
+    return arr; // newest = default array order
   }, [comments, sort]);
 
   const totalCount = comments.reduce((n, c) => n + 1 + c.replies.length, 0);
 
-  const VoteRow = ({ upvotes, downvotes, vote, onUp, onDown, small = false }: {
+  const VoteRow = ({ upvotes, downvotes, vote, onUp, onDown }: {
     upvotes: number; downvotes: number; vote: "up" | "down" | null;
     onUp: (e: React.MouseEvent) => void; onDown: (e: React.MouseEvent) => void;
-    small?: boolean;
   }) => (
-    <div className="flex items-center gap-3">
-      <button onClick={onUp} className="flex items-center gap-1 active:scale-90 transition-transform">
-        <ChevronUp style={{
-          width: small ? 13 : 15, height: small ? 13 : 15,
-          color: vote === "up" ? '#053980' : 'rgba(0,0,0,0.22)',
-          strokeWidth: 2.5, transition: 'color 0.15s',
-        }} />
-        <span style={{
-          fontFamily: "'Manrope', sans-serif", fontWeight: 600,
-          fontSize: small ? '11px' : '12px',
-          color: vote === "up" ? '#053980' : 'rgba(0,0,0,0.30)',
-          transition: 'color 0.15s',
-        }}>{upvotes}</span>
+    <div className="flex items-center gap-4 mt-2">
+      <button onClick={onUp} className="flex items-center gap-1 active:scale-95 transition-transform">
+        <ChevronUp className="w-4 h-4" style={{ color: vote === "up" ? '#111111' : 'rgba(0,0,0,0.28)', strokeWidth: 2.5 }} />
+        <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: vote === "up" ? '#111111' : 'rgba(0,0,0,0.38)' }}>{upvotes}</span>
       </button>
-      <button onClick={onDown} className="flex items-center gap-1 active:scale-90 transition-transform">
-        <ChevronDown style={{
-          width: small ? 13 : 15, height: small ? 13 : 15,
-          color: vote === "down" ? 'rgba(0,0,0,0.55)' : 'rgba(0,0,0,0.22)',
-          strokeWidth: 2.5, transition: 'color 0.15s',
-        }} />
-        <span style={{
-          fontFamily: "'Manrope', sans-serif", fontWeight: 600,
-          fontSize: small ? '11px' : '12px',
-          color: vote === "down" ? 'rgba(0,0,0,0.55)' : 'rgba(0,0,0,0.30)',
-          transition: 'color 0.15s',
-        }}>{downvotes}</span>
+      <button onClick={onDown} className="flex items-center gap-1 active:scale-95 transition-transform">
+        <ChevronDown className="w-4 h-4" style={{ color: vote === "down" ? '#111111' : 'rgba(0,0,0,0.28)', strokeWidth: 2.5 }} />
+        <span className="font-['Inter'] font-medium" style={{ fontSize: '12px', color: vote === "down" ? '#111111' : 'rgba(0,0,0,0.38)' }}>{downvotes}</span>
       </button>
     </div>
   );
+
+  const SORT_LABELS: Record<Sort, string> = { newest: "Newest", oldest: "Oldest", popular: "Top" };
 
   return (
     <>
       {/* Backdrop */}
       <div
         className="fixed inset-0 z-50 transition-opacity duration-300"
-        style={{
-          background: 'rgba(0,0,0,0.30)',
-          opacity: isOpen ? 1 : 0,
-          pointerEvents: isOpen ? 'auto' : 'none',
-        }}
+        style={{ background: 'rgba(0,0,0,0.25)', opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'auto' : 'none' }}
         onClick={(e) => { e.stopPropagation(); onClose(); }}
       />
 
@@ -281,265 +258,156 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
         style={{
           height: '82dvh',
           background: '#fefbf2',
-          borderRadius: '22px 22px 0 0',
+          borderRadius: '20px 20px 0 0',
           overflow: 'hidden',
           transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
-          transition: 'transform 0.34s cubic-bezier(0.32,0.72,0,1)',
-          boxShadow: '0 -4px 32px rgba(0,0,0,0.18)',
+          transition: 'transform 0.32s cubic-bezier(0.32,0.72,0,1)',
         }}
         onClick={stopProp}
       >
+        {/* Grain texture */}
         <GrainBackground variant="paper" />
 
         {/* Handle */}
-        <div className="relative z-10 flex justify-center pt-3 pb-2 flex-shrink-0">
-          <div className="w-8 rounded-full" style={{ height: '3px', background: 'rgba(0,0,0,0.14)' }} />
+        <div className="relative z-10 flex justify-center pt-3 pb-1 flex-shrink-0">
+          <div className="w-9 h-1 rounded-full" style={{ background: 'rgba(0,0,0,0.18)' }} />
         </div>
 
         {/* Header */}
-        <div
-          className="relative z-10 flex-shrink-0 px-5 pt-2 pb-0"
-          style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}
-        >
-          {/* X button */}
-          <div className="flex justify-end mb-2">
-            <button
-              onClick={(e) => { e.stopPropagation(); onClose(); }}
-              className="flex items-center justify-center rounded-full transition-opacity active:opacity-50"
-              style={{
-                width: 28, height: 28,
-                background: 'rgba(0,0,0,0.06)',
-                border: '1px solid rgba(0,0,0,0.08)',
-              }}
-            >
-              <X style={{ width: 11, height: 11, color: 'rgba(0,0,0,0.40)' }} />
+        <div className="relative z-10 flex-shrink-0" style={{ borderBottom: '1px solid rgba(0,0,0,0.09)' }}>
+          {/* Close button — sits at top right */}
+          <div className="flex items-center justify-end px-5 pt-3 pb-1">
+            <button onClick={(e) => { e.stopPropagation(); onClose(); }} className="p-1 rounded-full transition-opacity hover:opacity-70">
+              <X className="w-5 h-5" style={{ color: 'rgba(0,0,0,0.50)' }} />
             </button>
           </div>
 
-          {/* Sort tabs + title in same row */}
-          <div className="flex items-center justify-between pb-3">
-            <div className="flex items-center gap-5">
+          {/* Sort pills + comment count — single row */}
+          <div className="flex items-center justify-between px-5 pb-3">
+            <div className="flex items-center gap-2">
               {(["newest", "oldest", "popular"] as Sort[]).map(s => (
                 <button
                   key={s}
                   onClick={(e) => { e.stopPropagation(); setSort(s); }}
-                  className="relative pb-2 transition-colors duration-150"
+                  className="px-3 py-1 rounded-full transition-all duration-150"
                   style={{
                     fontFamily: "'Macabro', 'Anton', sans-serif",
                     fontSize: '10px',
-                    letterSpacing: '0.12em',
-                    color: sort === s ? '#053980' : 'rgba(0,0,0,0.28)',
+                    letterSpacing: '0.08em',
+                    background: sort === s ? '#053980' : 'transparent',
+                    color: sort === s ? '#fff1cd' : 'rgba(0,0,0,0.42)',
+                    border: sort === s ? '1px solid transparent' : '1px solid rgba(0,0,0,0.16)',
                   }}
                 >
                   {SORT_LABELS[s]}
-                  {sort === s && (
-                    <span
-                      className="absolute bottom-0 left-0 right-0"
-                      style={{ height: '1.5px', background: '#053980', borderRadius: 1 }}
-                    />
-                  )}
                 </button>
               ))}
             </div>
-            <div className="flex items-baseline gap-1.5 pb-2">
-              <span style={{
-                fontFamily: "'Macabro', 'Anton', sans-serif",
-                fontSize: '9px',
-                color: '#053980',
-                letterSpacing: '0.14em',
-              }}>
-                COMMENTS
-              </span>
-              <span style={{
-                fontFamily: "'Macabro', 'Anton', sans-serif",
-                fontSize: '9px',
-                color: '#053980',
-                letterSpacing: '0.10em',
-              }}>
-                {totalCount}
-              </span>
-            </div>
+            <span style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '11px', color: '#053980', letterSpacing: '0.04em' }}>
+              {totalCount} comments
+            </span>
           </div>
         </div>
 
         {/* Comments list */}
         <div className="relative z-10 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
-          {sortedComments.map((c) => {
+          {sortedComments.map((c, i) => {
             const repliesOpen = expandedReplies.has(c.id);
             return (
-              <div key={c.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+              <div key={c.id} style={{ borderBottom: i < sortedComments.length - 1 ? '1px solid rgba(0,0,0,0.07)' : 'none' }}>
                 {/* Top-level comment */}
                 <div className="flex gap-3 px-5 pt-4 pb-3">
-                  <div
-                    className="flex items-center justify-center rounded-full flex-shrink-0 mt-0.5"
-                    style={{ width: 34, height: 34, background: c.color }}
-                  >
-                    <span style={{
-                      fontFamily: "'Manrope', sans-serif",
-                      fontWeight: 700, fontSize: '11px', color: 'white',
-                    }}>
-                      {c.initials}
-                    </span>
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: c.color }}>
+                    <span className="font-['Inter'] font-bold text-white" style={{ fontSize: '11px' }}>{c.initials}</span>
                   </div>
-
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-baseline gap-2 mb-1.5">
-                      <span style={{
-                        fontFamily: "'Manrope', sans-serif",
-                        fontWeight: 700, fontSize: '13px', color: '#111111',
-                      }}>
-                        {c.author}
-                      </span>
-                      <span style={{
-                        fontFamily: "'Manrope', sans-serif",
-                        fontSize: '11px', color: 'rgba(0,0,0,0.30)',
-                      }}>
-                        {c.time}
-                      </span>
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: '#111111' }}>{c.author}</span>
+                      <span className="font-['Inter']" style={{ fontSize: '11px', color: 'rgba(0,0,0,0.35)' }}>{c.time}</span>
                     </div>
-
-                    <p style={{
-                      fontFamily: "'Manrope', sans-serif",
-                      fontSize: '14px', color: 'rgba(0,0,0,0.72)', lineHeight: 1.55,
-                    }}>
-                      {c.text}
-                    </p>
-
-                    <div className="flex items-center gap-4 mt-2.5">
+                    <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '14px', color: 'rgba(0,0,0,0.80)' }}>{c.text}</p>
+                    <div className="flex items-center gap-4 mt-2">
                       <VoteRow
                         upvotes={c.upvotes} downvotes={c.downvotes} vote={c.vote}
                         onUp={(e) => voteComment(e, c.id, "up")}
                         onDown={(e) => voteComment(e, c.id, "down")}
                       />
-                      <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(0,0,0,0.14)', flexShrink: 0, display: 'inline-block' }} />
                       <button
                         onClick={(e) => { e.stopPropagation(); setReplyTo({ id: c.id, author: c.author }); }}
-                        className="active:opacity-50 transition-opacity"
-                        style={{
-                          fontFamily: "'Macabro', 'Anton', sans-serif",
-                          fontSize: '9px', letterSpacing: '0.12em', color: 'rgba(0,0,0,0.28)',
-                        }}
+                        className="font-['Inter'] font-semibold transition-opacity hover:opacity-70"
+                        style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)', marginTop: '0.5rem' }}
                       >
-                        REPLY
+                        Reply
                       </button>
-                      {c.replies.length > 0 && (
-                        <>
-                          <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(0,0,0,0.14)', flexShrink: 0, display: 'inline-block' }} />
-                          <button
-                            onClick={(e) => toggleReplies(e, c.id)}
-                            className="active:opacity-50 transition-opacity"
-                            style={{
-                              fontFamily: "'Macabro', 'Anton', sans-serif",
-                              fontSize: '9px', letterSpacing: '0.10em', color: 'rgba(0,0,0,0.28)',
-                            }}
-                          >
-                            {repliesOpen ? 'HIDE' : `${c.replies.length} ${c.replies.length === 1 ? 'REPLY' : 'REPLIES'}`}
-                          </button>
-                        </>
-                      )}
                     </div>
+
+                    {/* View replies toggle */}
+                    {c.replies.length > 0 && (
+                      <button
+                        onClick={(e) => toggleReplies(e, c.id)}
+                        className="flex items-center gap-1.5 mt-2 transition-opacity hover:opacity-70"
+                      >
+                        <CornerDownRight className="w-3.5 h-3.5" style={{ color: 'rgba(0,0,0,0.40)' }} />
+                        <span className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.40)' }}>
+                          {repliesOpen ? 'Hide' : 'View'} {c.replies.length} {c.replies.length === 1 ? 'reply' : 'replies'}
+                        </span>
+                      </button>
+                    )}
                   </div>
                 </div>
 
-                {/* Replies — indented with vertical thread line */}
-                {repliesOpen && c.replies.length > 0 && (
-                  <div
-                    className="ml-12 mr-5 mb-3"
-                    style={{ borderLeft: '1.5px solid rgba(0,0,0,0.09)', paddingLeft: 12 }}
-                  >
-                    {c.replies.map((r, ri) => (
-                      <div
-                        key={r.id}
-                        className="flex gap-2.5 py-2.5"
-                        style={{ borderTop: ri > 0 ? '1px solid rgba(0,0,0,0.05)' : 'none' }}
-                      >
-                        <div
-                          className="flex items-center justify-center rounded-full flex-shrink-0 mt-0.5"
-                          style={{ width: 26, height: 26, background: r.color }}
-                        >
-                          <span style={{
-                            fontFamily: "'Manrope', sans-serif",
-                            fontWeight: 700, fontSize: '9px', color: 'white',
-                          }}>
-                            {r.initials}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-baseline gap-2 mb-1">
-                            <span style={{
-                              fontFamily: "'Manrope', sans-serif",
-                              fontWeight: 700, fontSize: '12px', color: '#111111',
-                            }}>
-                              {r.author}
-                            </span>
-                            <span style={{
-                              fontFamily: "'Manrope', sans-serif",
-                              fontSize: '10px', color: 'rgba(0,0,0,0.28)',
-                            }}>
-                              {r.time}
-                            </span>
-                          </div>
-                          <p style={{
-                            fontFamily: "'Manrope', sans-serif",
-                            fontSize: '13px', color: 'rgba(0,0,0,0.62)', lineHeight: 1.5,
-                          }}>
-                            {r.text}
-                          </p>
-                          <div className="mt-2">
-                            <VoteRow
-                              upvotes={r.upvotes} downvotes={r.downvotes} vote={r.vote}
-                              onUp={(e) => voteReply(e, c.id, r.id, "up")}
-                              onDown={(e) => voteReply(e, c.id, r.id, "down")}
-                              small
-                            />
-                          </div>
-                        </div>
+                {/* Replies */}
+                {repliesOpen && c.replies.map((r) => (
+                  <div key={r.id} className="flex gap-3 pl-14 pr-5 py-3" style={{ background: 'rgba(0,0,0,0.03)', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: r.color }}>
+                      <span className="font-['Inter'] font-bold text-white" style={{ fontSize: '10px' }}>{r.initials}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="font-['Inter'] font-semibold" style={{ fontSize: '12px', color: '#111111' }}>{r.author}</span>
+                        <span className="font-['Inter']" style={{ fontSize: '10px', color: 'rgba(0,0,0,0.35)' }}>{r.time}</span>
                       </div>
-                    ))}
+                      <p className="font-['Inter'] leading-relaxed" style={{ fontSize: '13px', color: 'rgba(0,0,0,0.75)' }}>{r.text}</p>
+                      <VoteRow
+                        upvotes={r.upvotes} downvotes={r.downvotes} vote={r.vote}
+                        onUp={(e) => voteReply(e, c.id, r.id, "up")}
+                        onDown={(e) => voteReply(e, c.id, r.id, "down")}
+                      />
+                    </div>
                   </div>
-                )}
+                ))}
               </div>
             );
           })}
-          <div style={{ height: 12 }} />
         </div>
 
         {/* Composer */}
         <div
-          className="relative z-10 flex-shrink-0 px-4 pt-3 pb-5"
-          style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}
+          className="relative z-10 flex-shrink-0 px-4 py-3"
+          style={{ borderTop: '1px solid rgba(0,0,0,0.08)', background: 'transparent' }}
         >
+          {/* Reply target chip */}
           {replyTo && (
             <div className="flex items-center justify-between mb-2 px-1">
-              <span style={{
-                fontFamily: "'Manrope', sans-serif",
-                fontSize: '12px', color: 'rgba(0,0,0,0.38)',
-              }}>
-                Replying to{' '}
-                <span style={{ color: '#111111', fontWeight: 600 }}>@{replyTo.author}</span>
+              <span className="font-['Inter']" style={{ fontSize: '12px', color: 'rgba(0,0,0,0.45)' }}>
+                Replying to <span style={{ color: '#111111', fontWeight: 600 }}>@{replyTo.author}</span>
               </span>
-              <button onClick={(e) => { e.stopPropagation(); setReplyTo(null); }} className="p-0.5 active:opacity-50">
-                <X style={{ width: 13, height: 13, color: 'rgba(0,0,0,0.35)' }} />
+              <button onClick={(e) => { e.stopPropagation(); setReplyTo(null); }} className="p-0.5">
+                <X className="w-3.5 h-3.5" style={{ color: 'rgba(0,0,0,0.35)' }} />
               </button>
             </div>
           )}
 
-          <div className="flex items-center gap-2.5">
-            <div
-              className="flex items-center justify-center rounded-full flex-shrink-0"
-              style={{ width: 32, height: 32, background: YOU.color }}
-            >
-              <span style={{
-                fontFamily: "'Manrope', sans-serif",
-                fontWeight: 700, fontSize: '10px', color: 'white',
-              }}>
-                {YOU.initials}
-              </span>
+          <div className="flex items-center gap-3">
+            {/* Your avatar */}
+            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: YOU.color }}>
+              <span className="font-['Inter'] font-bold text-white" style={{ fontSize: '10px' }}>{YOU.initials}</span>
             </div>
 
+            {/* Input */}
             <div
-              className="flex-1 flex items-center rounded-2xl px-4 py-2.5"
-              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.09)' }}
+              className="flex-1 flex items-center rounded-full px-4 py-2"
+              style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)' }}
             >
               <input
                 ref={inputRef}
@@ -548,26 +416,18 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
                 onClick={stopProp}
                 onKeyDown={(e) => { e.stopPropagation(); if (e.key === 'Enter') handleSend(e as any); }}
                 placeholder={replyTo ? `Reply to ${replyTo.author}…` : "Add a comment…"}
-                className="flex-1 bg-transparent outline-none placeholder-[rgba(0,0,0,0.25)]"
-                style={{ fontFamily: "'Manrope', sans-serif", fontSize: '14px', color: '#111111' }}
+                className="flex-1 bg-transparent outline-none font-['Inter'] placeholder-[rgba(0,0,0,0.28)]"
+                style={{ fontSize: '14px', color: '#111111' }}
               />
             </div>
 
+            {/* Send */}
             <button
               onClick={handleSend}
-              className="flex items-center justify-center rounded-full flex-shrink-0 active:scale-90"
-              style={{
-                width: 36, height: 36,
-                background: input.trim() ? '#053980' : 'rgba(0,0,0,0.06)',
-                border: input.trim() ? 'none' : '1px solid rgba(0,0,0,0.10)',
-                pointerEvents: input.trim() ? 'auto' : 'none',
-                transition: 'all 0.18s cubic-bezier(0.34,1.56,0.64,1)',
-              }}
+              className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-opacity"
+              style={{ background: input.trim() ? '#111111' : 'rgba(0,0,0,0.10)', pointerEvents: input.trim() ? 'auto' : 'none' }}
             >
-              <SendHorizonal style={{
-                width: 15, height: 15,
-                color: input.trim() ? '#fff1cd' : 'rgba(0,0,0,0.20)',
-              }} />
+              <SendHorizonal className="w-4 h-4" style={{ color: input.trim() ? '#fff1cd' : 'rgba(0,0,0,0.22)' }} />
             </button>
           </div>
         </div>
