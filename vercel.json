@@ -1,5 +1,5 @@
 {
-  "installCommand": "pnpm install --frozen-lockfile",
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm --filter @workspace/pulse-news build",
   "outputDirectory": "artifacts/pulse-news/dist",
   "rewrites": [
