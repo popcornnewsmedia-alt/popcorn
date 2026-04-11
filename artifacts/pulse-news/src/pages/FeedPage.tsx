@@ -7,17 +7,77 @@ import { ArticleReader } from "@/components/ArticleReader";
 import { SplashScreen } from "@/components/SplashScreen";
 import { SignUpFlow } from "@/components/SignUpFlow";
 import { SignInSheet } from "@/components/SignInSheet";
+import { LegalSheet, type LegalKind } from "@/components/LegalSheet";
 import { DateDividerCard } from "@/components/DateDividerCard";
 import { GrainBackground } from "@/components/GrainBackground";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useAuth } from "@/hooks/use-auth";
-import { Loader2, AlertCircle, RefreshCw, Bookmark, User, LogOut } from "lucide-react";
+import { AlertCircle, RefreshCw, Bookmark, User, LogOut, ChevronRight } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 
 type Tab = "feed" | "saved" | "profile";
 
 function dividerIdForDate(d: Date) {
   return `day-divider-${startOfDay(d).getTime()}`;
+}
+
+// ── Image URL optimisation ─────────────────────────────────────────────────
+// The single biggest cause of visible transition lag on mobile is DECODE time
+// for 4000×6000+ source images — a flagship phone takes 300–500ms to decode
+// a 19-megapixel JPEG on the main thread. Rewriting the URL to a viewport-
+// friendly size at the CDN level drops decode time to ~40ms, which makes
+// transitions feel like a native TikTok/Instagram reel feed.
+//
+// 1080 is the sweet spot: it covers every phone at DPR 1-3 (iPhone 14 Pro
+// logical width = 393 → DPR 3 = 1179 native px) while keeping JPEG decode
+// under ~50ms on mid-range Android.
+//
+//  • Wikipedia Commons: rewrite bare-file URLs to the /thumb/ variant at
+//    1080px wide. Downsize existing /thumb/ URLs that are larger than 1080.
+//  • WordPress wp-content/uploads (Variety, NME, Consequence, Futurism,
+//    Pagesix, Stereogum, Verge, etc.): append ?w=1080 if no explicit width
+//    is already set. Jetpack / Photon respects this and returns a resized
+//    JPEG; sites without Photon fall back to serving the original (no error).
+//
+// All other URLs (YouTube thumbnails, Unsplash, iTunes, etc.) are left alone
+// because they're either already viewport-sized or don't support resize
+// query params.
+const TARGET_IMAGE_WIDTH = 1080;
+
+function optimizeImageUrl(url: string | null | undefined): string | null | undefined {
+  if (!url || typeof url !== 'string') return url;
+
+  // Wikipedia Commons bare file → 1080px thumbnail
+  //   https://upload.wikimedia.org/wikipedia/commons/a/ab/Foo.jpg
+  //   → https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Foo.jpg/1080px-Foo.jpg
+  const wikiBare = url.match(
+    /^(https?:\/\/upload\.wikimedia\.org\/wikipedia\/commons)\/([a-f0-9])\/([a-f0-9]{2})\/([^/?#]+\.(?:jpe?g|png))$/i,
+  );
+  if (wikiBare) {
+    const [, base, d1, d2, filename] = wikiBare;
+    return `${base}/thumb/${d1}/${d2}/${filename}/${TARGET_IMAGE_WIDTH}px-${filename}`;
+  }
+
+  // Wikipedia Commons thumb > 1080px → downsize
+  //   .../thumb/a/ab/Foo.jpg/2560px-Foo.jpg → .../1080px-Foo.jpg
+  const wikiThumb = url.match(
+    /^(https?:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/thumb\/[a-f0-9]\/[a-f0-9]{2}\/[^/]+\/)(\d+)px-(.+)$/i,
+  );
+  if (wikiThumb) {
+    const [, prefix, sizeStr, rest] = wikiThumb;
+    if (parseInt(sizeStr, 10) > TARGET_IMAGE_WIDTH) return `${prefix}${TARGET_IMAGE_WIDTH}px-${rest}`;
+  }
+
+  // WordPress wp-content/uploads JPG / PNG → ensure ?w=1080
+  const isWpImg =
+    /\/wp-content\/uploads\//i.test(url) &&
+    /\.(jpe?g|png)(\?|$)/i.test(url);
+  if (isWpImg && !/[?&]w=\d+/i.test(url)) {
+    const sep = url.includes('?') ? '&' : '?';
+    return `${url}${sep}w=${TARGET_IMAGE_WIDTH}`;
+  }
+
+  return url;
 }
 
 
@@ -169,10 +229,32 @@ function SavedScreen({
   );
 }
 
+const APP_VERSION = "1.0.0";
+
+function LegalRow({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full flex items-center justify-between px-4 py-3.5 transition-colors active:bg-white/5"
+      style={{
+        fontFamily: "'Inter', sans-serif",
+        fontWeight: 500,
+        fontSize: "14px",
+        color: "#fff1cd",
+        background: "transparent",
+      }}
+    >
+      <span>{label}</span>
+      <ChevronRight className="w-4 h-4" style={{ color: "rgba(255,241,205,0.38)" }} strokeWidth={2} />
+    </button>
+  );
+}
+
 function ProfileScreen({
   onSignIn,
   onCreateAccount,
   onSignOut,
+  onOpenLegal,
   userName,
   userEmail,
   userAvatar,
@@ -181,6 +263,7 @@ function ProfileScreen({
   onSignIn: () => void;
   onCreateAccount: () => void;
   onSignOut: () => void;
+  onOpenLegal: (kind: LegalKind) => void;
   userName: string | null;
   userEmail: string | null;
   userAvatar: string | null;
@@ -195,7 +278,10 @@ function ProfileScreen({
 
       {isLoggedIn ? (
         /* ── Signed-in view ── */
-        <div className="relative z-10 flex flex-col h-full pb-24" style={{ paddingTop: 'calc(72px + env(safe-area-inset-top))' }}>
+        <div
+          className="relative z-10 flex flex-col h-full overflow-y-auto scrollbar-hide pb-28"
+          style={{ paddingTop: 'calc(72px + env(safe-area-inset-top))' }}
+        >
 
           {/* Avatar + identity */}
           <div className="px-5 flex items-center gap-4 mb-6">
@@ -231,7 +317,7 @@ function ProfileScreen({
 
           {/* Topics */}
           {topics.length > 0 && (
-            <div className="px-5 mb-8">
+            <div className="px-5 mb-6">
               <div style={{ height: "1px", background: "rgba(255,241,205,0.08)", marginBottom: 16 }} />
               <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "10px", color: "rgba(255,241,205,0.38)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>
                 Your Topics
@@ -249,6 +335,47 @@ function ProfileScreen({
               </div>
             </div>
           )}
+
+          {/* Legal — stacked rows with chevrons */}
+          <div className="px-5 mb-6">
+            <div style={{ height: "1px", background: "rgba(255,241,205,0.08)", marginBottom: 16 }} />
+            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "10px", color: "rgba(255,241,205,0.38)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
+              Legal
+            </p>
+            <div
+              style={{
+                borderRadius: 16,
+                background: "rgba(255,241,205,0.05)",
+                border: "1px solid rgba(255,241,205,0.10)",
+                overflow: "hidden",
+              }}
+            >
+              <LegalRow label="Privacy Policy" onClick={() => onOpenLegal("privacy")} />
+              <div style={{ height: 1, background: "rgba(255,241,205,0.08)" }} />
+              <LegalRow label="Terms & Conditions" onClick={() => onOpenLegal("terms")} />
+              <div style={{ height: 1, background: "rgba(255,241,205,0.08)" }} />
+              <LegalRow
+                label="Contact us"
+                onClick={() => { window.location.href = "mailto:hello@popcorn.app"; }}
+              />
+            </div>
+          </div>
+
+          {/* About */}
+          <div className="px-5 mb-6">
+            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "10px", color: "rgba(255,241,205,0.38)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>
+              About
+            </p>
+            <p
+              className="font-['Lora'] italic"
+              style={{ fontSize: "13px", color: "rgba(255,241,205,0.55)", lineHeight: 1.65 }}
+            >
+              Popcorn is a hand-curated pop-culture reader. Five-minute stories on the things shaping music, film, gaming, and the internet — delivered fresh every morning.
+            </p>
+            <p className="font-['Inter']" style={{ marginTop: 10, fontSize: "11px", color: "rgba(255,241,205,0.32)", letterSpacing: "0.04em" }}>
+              Version {APP_VERSION}
+            </p>
+          </div>
 
           {/* Sign out — subtle text link */}
           <div className="mt-auto px-5">
@@ -308,7 +435,7 @@ function ProfileScreen({
 }
 
 export function FeedPage() {
-  const { user, signOut } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const userName = user?.user_metadata?.full_name ?? user?.email?.split("@")[0] ?? null;
   const userEmail = user?.email ?? null;
   const userAvatar = user?.user_metadata?.avatar_url ?? null;
@@ -319,6 +446,7 @@ export function FeedPage() {
   const [readingArticle, setReadingArticle] = useState<NewsArticle | null>(null);
   const [signUpOpen, setSignUpOpen] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
+  const [legalSheet, setLegalSheet] = useState<LegalKind | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(startOfDay(new Date()));
   const [readIds, setReadIds] = useState<Set<number>>(new Set());
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -367,8 +495,17 @@ export function FeedPage() {
 
   // Memoised so `feedItems` useMemo only recomputes when React Query actually
   // fetches new data — not on every render (flatMap always returns a new array).
+  // Image URLs are rewritten through optimizeImageUrl() here so that every
+  // downstream consumer (ArticleCard, ArticleReader, SavedScreen, the rAF
+  // prefetcher) sees the same viewport-sized URL — this guarantees the
+  // browser's decoded-image cache actually hits when the <img> tag mounts.
   const allArticles = useMemo(
-    () => data?.pages.flatMap((page) => page.articles) ?? [],
+    () => (data?.pages.flatMap((page) => page.articles) ?? []).map((article) => {
+      const optimized = optimizeImageUrl(article.imageUrl);
+      return optimized === article.imageUrl
+        ? article
+        : { ...article, imageUrl: optimized as typeof article.imageUrl };
+    }),
     [data]
   );
   const savedArticles = allArticles.filter((a) => a.isBookmarked);
@@ -411,80 +548,161 @@ export function FeedPage() {
       .filter((i) => i >= 0);
   }, [feedItems]);
 
-  // ── Task 1: Pure DOM rAF loop ────────────────────────────────────────────────
-  // Progress bar tracks position within the CURRENT DAY section only, resetting
-  // to 0 each time a new DateDivider card scrolls into view. Each feed item
-  // (divider or article) occupies exactly one clientHeight of scroll space.
-  // transform is compositor-only: no layout, no paint.
+  // feedItems exposed as a ref so the rAF loop can read the latest list (for
+  // prefetching next-card image URLs) without being a React dep of the loop.
+  const feedItemsDataRef = useRef<FeedItem[]>(feedItems);
+  useEffect(() => { feedItemsDataRef.current = feedItems; }, [feedItems]);
+
+  const feedItemsLengthRef = useRef(feedItems.length);
+  useEffect(() => { feedItemsLengthRef.current = feedItems.length; }, [feedItems.length]);
+
+  // Last rounded card index the rAF loop saw. -1 so the very first tick always
+  // fires setCurrentCardIndex + the initial prefetch pass.
+  const scrollIndexRef = useRef(-1);
+
+  // Keeps decoded Image references alive so the browser's internal pixel
+  // buffer cache doesn't evict them under memory pressure. This is the
+  // single most important trick for TikTok/Instagram-grade transitions: the
+  // moment React mounts an <img> with the same src, the browser reuses the
+  // already-decoded pixel buffer and paints it to screen synchronously
+  // (no fetch, no decode, no flash).
+  //
+  // LRU-bounded at MAX_DECODED_IMAGES. On mobile each 1080px JPEG is ~2MB
+  // decoded, so a budget of 20 keeps image memory under ~40MB. We need at
+  // least (render window ±3 = 7) + (prefetch ahead 6) + (behind 2) ≈ 15,
+  // so 20 gives headroom for direction changes without evicting live cards.
+  const decodedImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
+  const decodeOrderRef   = useRef<string[]>([]);
+  const MAX_DECODED_IMAGES = 20;
+
+  // Pre-fetch AND pre-decode an image. Fire and forget — the decoded buffer
+  // is retained in the JS Map reference until the LRU evicts it. If decode
+  // fails (CORS, unsupported format, network error), the entry is removed
+  // so the normal <img> path can retry.
+  const preloadImage = useCallback((url: string | null | undefined, priority: 'high' | 'auto' = 'auto') => {
+    if (!url || decodedImagesRef.current.has(url)) return;
+
+    const img = new Image();
+    // fetchPriority is a relatively new HTMLImageElement prop; TS lib doesn't
+    // always know about it. Cast and assign for Chrome/Safari 17+ support.
+    (img as unknown as { fetchPriority?: string }).fetchPriority = priority;
+    img.decoding = 'async';
+    img.src = url;
+
+    decodedImagesRef.current.set(url, img);
+    decodeOrderRef.current.push(url);
+
+    // Force decode off the main thread. On success the decoded frame sits in
+    // the browser's memory cache and any later <img src={url}> paints it
+    // instantly. On failure we drop the entry so the normal path can retry.
+    img.decode().catch(() => {
+      decodedImagesRef.current.delete(url);
+    });
+
+    // LRU eviction. Never evict the URL we just inserted.
+    while (decodeOrderRef.current.length > MAX_DECODED_IMAGES) {
+      const evict = decodeOrderRef.current.shift();
+      if (evict && evict !== url) decodedImagesRef.current.delete(evict);
+    }
+  }, []);
+
+  // ── Unified rAF loop: progress bar + card tracking + image prefetch ─────────
+  // Single rAF reads scrollTop each frame and does three things:
+  //   1. Updates the progress bar via compositor-only transform (zero layout).
+  //   2. When the rounded card index changes, flips React state so the ±2
+  //      render window follows the scroll WITHOUT the old 80ms debounce.
+  //   3. Prefetches the next 4 images beyond the render window, so the bytes
+  //      are already in the HTTP cache by the time their <img> tag mounts.
+  // This replaces the old (rAF progress bar) + (80ms debounced scroll listener
+  // for setCurrentCardIndex) + (single-image link preload effect) combo, all
+  // of which together were the cause of lag on fast flicks and mobile.
   useEffect(() => {
     let rafId: number;
     const loop = () => {
       const container = scrollContainerRef.current;
       const fill = feedBarFillRef.current;
-      if (container && fill) {
+      if (container) {
         const { scrollTop, clientHeight } = container;
         const totalItems = feedItemsLengthRef.current;
-        if (clientHeight > 0 && totalItems > 0) {
-          // Fractional index of the current scroll position within feedItems
-          const currentIndex = scrollTop / clientHeight;
 
-          // Find which day section we're in (largest divider index ≤ currentIndex)
-          const dividers = dividerIndicesRef.current;
-          let sectionStart = 0;
-          let sectionEnd = totalItems;
-          for (let i = 0; i < dividers.length; i++) {
-            if (dividers[i] <= currentIndex) {
-              sectionStart = dividers[i];
-              sectionEnd = dividers[i + 1] ?? totalItems;
+        if (clientHeight > 0 && totalItems > 0) {
+          // Fractional index drives the progress bar (smooth); rounded index
+          // drives the render window and prefetch (discrete snap positions).
+          const fractionalIdx = scrollTop / clientHeight;
+          const roundedIdx = Math.min(
+            Math.max(0, Math.round(fractionalIdx)),
+            totalItems - 1,
+          );
+
+          // 1. Progress bar — resets at each DateDivider.
+          if (fill) {
+            const dividers = dividerIndicesRef.current;
+            let sectionStart = 0;
+            let sectionEnd = totalItems;
+            for (let i = 0; i < dividers.length; i++) {
+              if (dividers[i] <= fractionalIdx) {
+                sectionStart = dividers[i];
+                sectionEnd = dividers[i + 1] ?? totalItems;
+              }
             }
+            const sectionLength = sectionEnd - sectionStart;
+            const denom = sectionLength > 1 ? sectionLength - 1 : 1;
+            const progress = Math.max(0, Math.min(1, (fractionalIdx - sectionStart) / denom));
+            fill.style.transform = `scaleX(${progress})`;
           }
 
-          // Progress within section: 0 at divider, 1.0 at last article
-          const sectionLength = sectionEnd - sectionStart;
-          const denom = sectionLength > 1 ? sectionLength - 1 : 1;
-          const progress = Math.max(0, Math.min(1, (currentIndex - sectionStart) / denom));
-          fill.style.transform = `scaleX(${progress})`;
+          // 2 + 3. Card transition — runs once per index change.
+          if (roundedIdx !== scrollIndexRef.current) {
+            scrollIndexRef.current = roundedIdx;
+
+            // Functional updater so React bails out if the value is unchanged
+            // (e.g. initial load when state already happens to equal 0).
+            setCurrentCardIndex(prev => (prev === roundedIdx ? prev : roundedIdx));
+
+            // Prefetch + pre-decode the next 6 images. The nearest two get
+            // fetchPriority=high so the network stack fetches them first on
+            // mobile, which matters on fast flicks when the user jumps 3+
+            // cards in a single momentum scroll. Images 3-6 fill the buffer
+            // ahead of the render window so even sustained rapid scrolling
+            // never outruns the decode pipeline. We also warm the next 2
+            // behind the cursor so back-scroll is instant too.
+            const items = feedItemsDataRef.current;
+            for (let offset = 1; offset <= 6; offset++) {
+              const item = items[roundedIdx + offset];
+              if (item?.kind === 'article' && item.article.imageUrl) {
+                preloadImage(item.article.imageUrl, offset <= 2 ? 'high' : 'auto');
+              }
+            }
+            for (let offset = 1; offset <= 2; offset++) {
+              const item = items[roundedIdx - offset];
+              if (item?.kind === 'article' && item.article.imageUrl) {
+                preloadImage(item.article.imageUrl, 'auto');
+              }
+            }
+          }
         }
       }
       rafId = requestAnimationFrame(loop);
     };
     rafId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(rafId);
-  }, []); // purely DOM — reads refs each frame, no React deps
+  }, [preloadImage]);
 
-  // ── Card tracking: scroll-end listener ───────────────────────────────────────
-  // IntersectionObserver is unreliable for this purpose on iOS Safari when the
-  // browser uses off-thread composited scrolling for snap containers.  A simple
-  // scroll-end listener (with debounce fallback for older iOS) is reliable.
-  // feedItemsLengthRef avoids re-registering the listener when pagination fires.
-  const feedItemsLengthRef = useRef(feedItems.length);
-  useEffect(() => { feedItemsLengthRef.current = feedItems.length; }, [feedItems.length]);
-
+  // ── Initial prefetch pass as soon as the first page of articles arrives ─────
+  // The rAF loop will ALSO prefetch on its first tick, but that's one frame
+  // later. Firing synchronously here makes the very first few cards load
+  // without a perceptible fetch delay even on cold navigation. The first 3
+  // get high priority so the network stack processes them before anything
+  // else on the page.
   useEffect(() => {
-    // status in deps so this re-runs once the scroll container is in the DOM.
-    // With [] deps the effect would capture container=null during the 'pending'
-    // early-return and never attach the listener.
-    if (status !== 'success') return;
-    const container = scrollContainerRef.current;
-    if (!container) return;
-    const update = () => {
-      const idx = Math.round(container.scrollTop / window.innerHeight);
-      setCurrentCardIndex(prev => {
-        const next = Math.min(Math.max(0, idx), feedItemsLengthRef.current - 1);
-        return next === prev ? prev : next;
-      });
-    };
-    let timer: ReturnType<typeof setTimeout>;
-    const onScroll = () => { clearTimeout(timer); timer = setTimeout(update, 80); };
-    update(); // sync with initial scroll position (may be non-zero after navigation)
-    container.addEventListener('scrollend', update, { passive: true });
-    container.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      container.removeEventListener('scrollend', update);
-      container.removeEventListener('scroll', onScroll);
-      clearTimeout(timer);
-    };
-  }, [status]); // re-runs when feed transitions from pending → success
+    if (feedItems.length === 0) return;
+    for (let i = 0; i < Math.min(6, feedItems.length); i++) {
+      const item = feedItems[i];
+      if (item.kind === 'article' && item.article.imageUrl) {
+        preloadImage(item.article.imageUrl, i < 3 ? 'high' : 'auto');
+      }
+    }
+  }, [feedItems, preloadImage]);
 
   // ── Task 2: Date sync on card change ─────────────────────────────────────────
   // Uses functional updater with isSameDay guard so React bails out when the
@@ -496,21 +714,6 @@ export function FeedPage() {
     if (item?.kind === 'article') newDate = startOfDay(new Date(item.article.publishedAt));
     else if (item?.kind === 'divider') newDate = item.date;
     if (newDate) setSelectedDate(prev => isSameDay(prev, newDate!) ? prev : newDate!);
-  }, [currentCardIndex, feedItems]);
-
-  // ── Task 3: <link rel="preload"> for the next card ───────────────────────────
-  // Injects a native preload hint so the browser fetches+decodes the next image
-  // at network priority without any JS Image() objects that Safari ignores.
-  useEffect(() => {
-    const next = feedItems[currentCardIndex + 1];
-    const url = next?.kind === 'article' ? next.article.imageUrl : null;
-    if (!url) return;
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = url;
-    document.head.appendChild(link);
-    return () => { if (document.head.contains(link)) document.head.removeChild(link); };
   }, [currentCardIndex, feedItems]);
 
   // ── Pagination: fetch next page when 5 cards from the end ───────────────────
@@ -552,19 +755,47 @@ export function FeedPage() {
     }
   }, [feedItems, viewportHeight]);
 
-  // Scroll to the top of the CURRENT day — i.e. to the DateDivider card that
-  // kicks off whichever day the user is currently scrolling through. If already
-  // on the divider, no-op. Triggered by tapping the top-right area of the feed.
+  // Tap-top handler — two behaviours based on where the user currently is:
+  //
+  //   • On an article card  → scroll to the CURRENT day's DateDivider (the
+  //     top of the current day section). This matches the iOS "tap status
+  //     bar to scroll to top" convention.
+  //
+  //   • On a DateDivider    → scroll to the NEXT newer day's DateDivider
+  //     (smaller index in the newest-first feed). Lets the user walk the
+  //     day-dividers without having to scroll through an entire day's
+  //     worth of articles. If already on the newest divider, no-op.
   const handleScrollToDayTop = useCallback(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
     const currentIndex = Math.round(container.scrollTop / viewportHeight);
     const dividers = dividerIndicesRef.current;
-    let sectionStart = 0;
-    for (let i = 0; i < dividers.length; i++) {
-      if (dividers[i] <= currentIndex) sectionStart = dividers[i];
+    if (dividers.length === 0) return;
+
+    // Are we currently parked on a divider card?
+    const isOnDivider = dividers.includes(currentIndex);
+
+    let targetIdx: number;
+    if (isOnDivider) {
+      // Walk backwards through the dividers list to find the nearest one
+      // with a smaller index (newer date in the newest-first feed ordering).
+      let prev = -1;
+      for (let i = 0; i < dividers.length; i++) {
+        if (dividers[i] < currentIndex) prev = dividers[i];
+        else break;
+      }
+      if (prev === -1) return; // already at the newest divider
+      targetIdx = prev;
+    } else {
+      // Find the largest divider index ≤ current → start of current day.
+      let sectionStart = dividers[0];
+      for (let i = 0; i < dividers.length; i++) {
+        if (dividers[i] <= currentIndex) sectionStart = dividers[i];
+      }
+      targetIdx = sectionStart;
     }
-    const target = sectionStart * viewportHeight;
+
+    const target = targetIdx * viewportHeight;
     if (Math.abs(container.scrollTop - target) < 8) return;
     container.scrollTo({ top: target, behavior: "smooth" });
   }, [viewportHeight]);
@@ -606,6 +837,7 @@ export function FeedPage() {
         onSignIn={() => setSignInOpen(true)}
         onCreateAccount={() => setSignUpOpen(true)}
         onSignOut={() => signOut()}
+        onOpenLegal={setLegalSheet}
         userName={userName}
         userEmail={userEmail}
         userAvatar={userAvatar}
@@ -617,7 +849,16 @@ export function FeedPage() {
 
   return (
     <div className="h-[100dvh] w-full relative">
-      {showSplash && <SplashScreen onDone={handleSplashDone} />}
+      {showSplash && (
+        <SplashScreen
+          onDone={handleSplashDone}
+          authLoading={authLoading}
+          isAuthed={!!user}
+          onCreateAccount={() => setSignUpOpen(true)}
+          onSignIn={() => setSignInOpen(true)}
+          onOpenLegal={setLegalSheet}
+        />
+      )}
       {activeTab === 'feed' && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker fillRef={feedBarFillRef} minDate={minDate} pickerOpen={pickerOpen} onPickerOpenChange={setPickerOpen} onScrollToDayTop={handleScrollToDayTop} />}
 
       {/* Picker dismiss overlay — lives here so it can forward scroll gestures to the feed */}
@@ -680,10 +921,19 @@ export function FeedPage() {
           </div>
         ) : (
           feedItems.map((item, index) => {
-            // Strict 3-card window: previous (-1), current (0), next (+1).
-            // Everything else is a same-height empty div — no image tags,
-            // no decode work, minimal memory footprint for iOS WebViews.
-            const renderContent = Math.abs(index - currentCardIndex) <= 1;
+            // 7-card render window (±3 from current): the neighbours
+            // already have their <img> in the DOM so decode starts before
+            // the user reaches them. Everything outside the window is a
+            // same-height empty div — no image tags, no decode work,
+            // minimal memory footprint for iOS WebViews. Combined with
+            // the rAF-driven prefetch (next 6 + prev 2 URLs pre-decoded),
+            // this gives seamless transitions even on fast flicks.
+            //
+            // Why ±3 and not ±2: on fast flicks the browser's decode-cache
+            // reuse on iOS Safari is unreliable — having the <img> already
+            // in the DOM guarantees the pixels are ready to composite when
+            // the user reaches the card.
+            const renderContent = Math.abs(index - currentCardIndex) <= 3;
             const isActive = index === currentCardIndex;
             return item.kind === "divider" ? (
               <DateDividerCard
@@ -725,12 +975,18 @@ export function FeedPage() {
         isOpen={signUpOpen}
         onClose={() => setSignUpOpen(false)}
         onComplete={() => setSignUpOpen(false)}
+        onOpenLegal={setLegalSheet}
       />
       <SignInSheet
         isOpen={signInOpen}
         onClose={() => setSignInOpen(false)}
         onSignUpInstead={() => { setSignInOpen(false); setSignUpOpen(true); }}
+        onOpenLegal={setLegalSheet}
       />
+
+      {/* Privacy / Terms sheet — reachable from the splash CTAs,
+          SignUp/SignIn flows, and the Profile tab. */}
+      <LegalSheet kind={legalSheet} onClose={() => setLegalSheet(null)} />
     </div>
   );
 }

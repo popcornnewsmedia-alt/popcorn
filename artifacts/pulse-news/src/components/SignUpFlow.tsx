@@ -2,6 +2,7 @@ import { useState } from "react";
 import { X, ArrowRight, Check, Mail } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
+import type { LegalKind } from "@/components/LegalSheet";
 
 const TOPICS = [
   "AI & Machine Learning", "Climate", "Markets", "Geopolitics",
@@ -12,9 +13,10 @@ interface SignUpFlowProps {
   isOpen: boolean;
   onClose: () => void;
   onComplete: (name: string) => void;
+  onOpenLegal?: (kind: LegalKind) => void;
 }
 
-export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
+export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpFlowProps) {
   const { signUp, signInWithGoogle, updateProfile } = useAuth();
 
   const [step, setStep] = useState(0);
@@ -102,13 +104,13 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
   return (
     <>
       <div
-        className="fixed inset-0 z-50 transition-opacity duration-300"
+        className="fixed inset-0 z-[220] transition-opacity duration-300"
         style={{ background: 'rgba(0,0,0,0.65)', opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'auto' : 'none' }}
         onClick={handleClose}
       />
 
       <div
-        className="fixed inset-x-0 bottom-0 z-50 flex flex-col overflow-hidden"
+        className="fixed inset-x-0 bottom-0 z-[220] flex flex-col overflow-hidden"
         style={{
           height: '90dvh',
           background: '#053980',
@@ -339,6 +341,35 @@ export function SignUpFlow({ isOpen, onClose, onComplete }: SignUpFlowProps) {
               {loading ? "WORKING…" : step === 2 ? "FINISH" : "CONTINUE"}
               {!loading && <ArrowRight className="w-4 h-4" strokeWidth={2.5} />}
             </button>
+            {step === 0 && onOpenLegal && (
+              <p
+                className="font-['Inter']"
+                style={{
+                  marginTop: '12px',
+                  textAlign: 'center',
+                  fontSize: '10.5px',
+                  lineHeight: 1.55,
+                  color: 'rgba(255,241,205,0.42)',
+                }}
+              >
+                By creating an account you agree to our{" "}
+                <button
+                  onClick={(e) => { e.stopPropagation(); onOpenLegal("terms"); }}
+                  className="inline"
+                  style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
+                >
+                  Terms
+                </button>{" "}
+                and{" "}
+                <button
+                  onClick={(e) => { e.stopPropagation(); onOpenLegal("privacy"); }}
+                  className="inline"
+                  style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
+                >
+                  Privacy Policy
+                </button>.
+              </p>
+            )}
           </div>
         )}
       </div>

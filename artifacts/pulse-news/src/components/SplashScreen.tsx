@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { GrainBackground } from "./GrainBackground";
+import type { LegalKind } from "./LegalSheet";
 
 interface SplashScreenProps {
+  /** Fired when the splash has fully faded out and the app can take over. */
   onDone: () => void;
+  /** Supabase auth loading state — splash waits for it to resolve before deciding its next phase. */
+  authLoading: boolean;
+  /** Supabase user — if truthy, splash auto-fades. If falsy, splash reveals CTAs and waits for sign-up/sign-in. */
+  isAuthed: boolean;
+  onCreateAccount: () => void;
+  onSignIn: () => void;
+  onOpenLegal: (kind: LegalKind) => void;
 }
 
 function PopcornAnim() {
@@ -170,24 +180,71 @@ function PopcornAnim() {
   );
 }
 
-export function SplashScreen({ onDone }: SplashScreenProps) {
+/**
+ * Splash screen — dual purpose:
+ *  • Returning signed-in users see a 4-second brand intro, then it fades into
+ *    the feed.
+ *  • New / signed-out users see the same popcorn animation, and after the
+ *    kernels start popping, two CTA buttons reveal beneath the bucket:
+ *    "Create your account" and "I already have an account". The splash does
+ *    NOT auto-fade in this case — it stays put until the user authenticates,
+ *    at which point the parent flips `isAuthed` and the splash fades away.
+ */
+export function SplashScreen({
+  onDone,
+  authLoading,
+  isAuthed,
+  onCreateAccount,
+  onSignIn,
+  onOpenLegal,
+}: SplashScreenProps) {
   const [phase, setPhase] = useState<"visible" | "fading">("visible");
   const [showPopcorn, setShowPopcorn] = useState(false);
+  const [showCTAs, setShowCTAs] = useState(false);
+  // Freeze a mount timestamp so we can guarantee a minimum brand display time,
+  // no matter how fast Supabase resolves the session.
+  const [splashStart] = useState(() => Date.now());
 
+  // Staggered reveal sequence:
+  //   0.40s → POPCORN wordmark fades up
+  //   1.40s → CULTURE CURATED DAILY tagline fades up
+  //   3.30s → popcorn SVG lifts + scales in
+  //   4.80s → LOG IN / CREATE YOUR ACCOUNT buttons rise into view
   useEffect(() => {
-    const popcornTimer = setTimeout(() => setShowPopcorn(true), 1500);
-    const fadeTimer    = setTimeout(() => setPhase("fading"), 4000);
-    const doneTimer    = setTimeout(() => onDone(), 4600);
-    return () => {
-      clearTimeout(popcornTimer);
-      clearTimeout(fadeTimer);
-      clearTimeout(doneTimer);
-    };
-  }, [onDone]);
+    const t = setTimeout(() => setShowPopcorn(true), 3300);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Auth-aware fade / CTA logic. Re-runs any time auth state changes.
+  useEffect(() => {
+    if (authLoading) return; // wait for Supabase to resolve the session
+
+    if (isAuthed) {
+      // Signed in — show brand for a minimum duration, then fade.
+      // Timed so the full staggered sequence can complete before fade-out.
+      const MIN_VISIBLE = 5800;
+      const elapsed = Date.now() - splashStart;
+      const wait = Math.max(0, MIN_VISIBLE - elapsed);
+      setShowCTAs(false);
+      const fadeTimer = setTimeout(() => setPhase("fading"), wait);
+      const doneTimer = setTimeout(() => onDone(), wait + 650);
+      return () => {
+        clearTimeout(fadeTimer);
+        clearTimeout(doneTimer);
+      };
+    }
+
+    // Signed out — CTAs arrive last, after the popcorn has fully popped.
+    const CTA_DELAY = 4200;
+    const elapsed = Date.now() - splashStart;
+    const wait = Math.max(0, CTA_DELAY - elapsed);
+    const ctaTimer = setTimeout(() => setShowCTAs(true), wait);
+    return () => clearTimeout(ctaTimer);
+  }, [authLoading, isAuthed, onDone, splashStart]);
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-[200] flex flex-col overflow-hidden"
       style={{
         backgroundColor: '#053980',
         isolation: 'isolate',
@@ -208,9 +265,26 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
 
       <GrainBackground />
 
+      <style>{`
+        @keyframes sp-rise {
+          0%   { opacity: 0; transform: translateY(14px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes sp-wordmark-in {
+          0%   { opacity: 0; transform: translateY(18px) scale(0.985); letter-spacing: 0.12em; }
+          60%  { opacity: 1; }
+          100% { opacity: 1; transform: translateY(0) scale(1); letter-spacing: 0.03em; }
+        }
+        @keyframes sp-tagline-in {
+          0%   { opacity: 0; transform: translateY(10px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      {/* Centre — wordmark, tagline, popcorn animation */}
       <div
-        className="flex flex-col items-center"
-        style={{ position: 'relative', zIndex: 10, gap: '14px' }}
+        className="relative z-10 flex-1 flex flex-col items-center justify-center"
+        style={{ gap: '14px' }}
       >
         <span
           style={{
@@ -223,7 +297,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
             textTransform: 'uppercase',
             display: 'block',
             filter: 'url(#sp-stamp)',
-            animation: 'infer-reveal 0.7s cubic-bezier(0.22,1,0.36,1) 0.4s both',
+            animation: 'sp-wordmark-in 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s both',
           }}
         >
           POPCORN
@@ -231,17 +305,17 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
 
         <p
           style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 700,
-            fontSize: '13px',
+            fontFamily: "'Macabro', 'Anton', sans-serif",
+            fontWeight: 400,
+            fontSize: '15px',
             color: '#fff1cd',
-            letterSpacing: '0.2em',
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
             margin: 0,
-            animation: 'tagline-reveal 0.6s cubic-bezier(0.22,1,0.36,1) 0.95s both',
+            animation: 'sp-tagline-in 1.25s cubic-bezier(0.22,1,0.36,1) 1.4s both',
           }}
         >
-          NEWS CAN BE FUN
+          CULTURE CURATED DAILY
         </p>
 
         <div
@@ -250,11 +324,105 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
             opacity: showPopcorn ? 1 : 0,
             transform: showPopcorn ? 'scale(1) translateY(0)' : 'scale(0.1) translateY(28px)',
             transition: showPopcorn
-              ? 'opacity 0.35s ease-out, transform 0.7s cubic-bezier(0.34, 1.95, 0.64, 1)'
+              ? 'opacity 0.9s ease-out, transform 1.5s cubic-bezier(0.34, 1.95, 0.64, 1)'
               : 'none',
           }}
         >
           <PopcornAnim />
+        </div>
+      </div>
+
+      {/* Bottom — sign-up CTAs, revealed only when signed-out and after the
+          popcorn has started popping. Stays out of the way for returning users. */}
+      <div
+        className="relative z-10 px-6 flex-shrink-0 flex justify-center"
+        style={{
+          paddingBottom: 'max(22px, calc(env(safe-area-inset-bottom) + 14px))',
+          pointerEvents: showCTAs ? 'auto' : 'none',
+        }}
+      >
+        <div
+          className="flex flex-col gap-2.5 w-full"
+          style={{
+            maxWidth: '300px',
+            opacity: showCTAs ? 1 : 0,
+            transform: showCTAs ? 'translateY(0)' : 'translateY(18px)',
+            transition: 'opacity 3s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 3s cubic-bezier(0.22,1,0.36,1) 0.3s',
+          }}
+        >
+          <button
+            onClick={onSignIn}
+            className="w-full flex items-center justify-center gap-2 rounded-full transition-all duration-150 active:scale-[0.98]"
+            style={{
+              fontFamily: "'Macabro', 'Anton', sans-serif",
+              fontSize: '13px',
+              letterSpacing: '0.10em',
+              padding: '13px 20px',
+              background: '#fff1cd',
+              color: '#053980',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.35) inset',
+            }}
+          >
+            LOG IN
+            <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
+          </button>
+
+          <button
+            onClick={onCreateAccount}
+            className="w-full rounded-full transition-opacity hover:opacity-80 active:opacity-60"
+            style={{
+              fontFamily: "'Macabro', 'Anton', sans-serif",
+              fontSize: '13px',
+              letterSpacing: '0.10em',
+              padding: '13px 20px',
+              color: '#fff1cd',
+              background: 'transparent',
+              border: '1px solid rgba(255,241,205,0.32)',
+            }}
+          >
+            CREATE YOUR ACCOUNT
+          </button>
+
+          {/* Legal footnote — tiny link line to Terms / Privacy */}
+          <p
+            className="font-['Inter']"
+            style={{
+              marginTop: '6px',
+              textAlign: 'center',
+              fontSize: '10.5px',
+              lineHeight: 1.55,
+              color: 'rgba(255,241,205,0.42)',
+              letterSpacing: '0.01em',
+            }}
+          >
+            By continuing you agree to our{" "}
+            <button
+              onClick={() => onOpenLegal("terms")}
+              className="inline"
+              style={{
+                color: '#fff1cd',
+                borderBottom: '1px solid rgba(255,241,205,0.45)',
+                paddingBottom: '1px',
+                fontWeight: 600,
+              }}
+            >
+              Terms
+            </button>
+            {" "}and{" "}
+            <button
+              onClick={() => onOpenLegal("privacy")}
+              className="inline"
+              style={{
+                color: '#fff1cd',
+                borderBottom: '1px solid rgba(255,241,205,0.45)',
+                paddingBottom: '1px',
+                fontWeight: 600,
+              }}
+            >
+              Privacy Policy
+            </button>
+            .
+          </p>
         </div>
       </div>
     </div>

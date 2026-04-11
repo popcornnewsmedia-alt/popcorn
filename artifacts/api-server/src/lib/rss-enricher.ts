@@ -153,6 +153,10 @@ export interface EnrichedArticle {
   imageUrl?: string | null;
   imageWidth?: number | null;
   imageHeight?: number | null;
+  /** Human-readable attribution for the hero image (e.g. "Wikimedia Commons",
+   *  "Variety", "The Verge"). Derived from the original source URL's host at
+   *  image-processing time, so it survives the rewrite to Supabase Storage. */
+  imageCredit?: string | null;
   /** Normalized focal point (0–1) of the main visual subject. */
   imageFocalX?: number | null;
   imageFocalY?: number | null;
@@ -223,6 +227,37 @@ function getDiversityPenalty(url: string): number {
   return (count - 1) * 30; // -30 per additional occurrence
 }
 
+// ── Specific-scene classifier (Option 4) ──────────────────────────────────────
+// Returns true when the article is about a SPECIFIC event / incident / scene
+// that only has meaning when you see THAT exact image. Returns false when
+// the article is about a general subject (a person, band, album, show, etc.)
+// where ANY high-quality representative image of that subject is acceptable.
+//
+// Rationale: for general subjects we can afford to be picky — fall through
+// to TMDb / Spotify / editorial CDNs for the canonical high-res portrait.
+// For specific scenes we MUST keep the story-specific image even if it's a
+// bit lower quality (we'd rather show a slightly grainy "Waymo in a
+// Whataburger drive-thru" than a pristine stock photo of a Waymo).
+function needsSpecificScene(
+  intent: ImageIntent,
+  title: string,
+  summary: string
+): boolean {
+  // General-subject intents are NEVER scene-specific by default
+  if (intent === "PERSON" || intent === "MUSIC_ARTIST" || intent === "MUSIC_ALBUM" ||
+      intent === "FILM_TV" || intent === "ABSTRACT") {
+    // …unless the headline is clearly about an incident
+    const incident = /\b(arrest|arrested|crash|crashed|collision|shoots?|shot|fire|fired at|explosion|protest|riot|collapse|injur(y|ed|ies)|stabbed|attack|raid|investigat|scandal|leaked|hack|breach|caught|filmed|video shows?|footage|goes wrong|went wrong|shut down|canceled|cancelled|evacuat)\b/i;
+    return incident.test(`${title} ${summary}`);
+  }
+
+  // EVENT / PLACE intents — usually scene-specific
+  // (a festival set, a ceremony, a venue, a specific moment)
+  if (intent === "EVENT" || intent === "PLACE") return true;
+
+  return false;
+}
+
 // ── Intent classifier ─────────────────────────────────────────────────────────
 // Rule-based: no LLM. Category is the strongest signal; title + summary break ties.
 
@@ -281,21 +316,123 @@ const SOURCE_BASE_SCORES: Record<ImageCandidate["source"], number> = {
   category_fallback: -20,
 };
 
+// ── Editorial CDN boost (Option 6) ────────────────────────────────────────────
+// URLs matching these patterns come from high-quality editorial publishers.
+// They're almost always sharp, well-lit, correctly licensed, editorially
+// appropriate. We give them a +20 score boost — big enough to push a
+// well-sourced RSS or OG image above a generic Wikipedia portrait.
+const EDITORIAL_URL_PATTERNS: RegExp[] = [
+  // Wire services / agencies
+  /gettyimages\.(com|co\.uk)/i,
+  /reuters\.com/i,
+  /apnews\.com/i,
+  /media\.bloomberg\.com/i,
+  /assets\.afp\.com/i,
+  // Photography-forward editorial outlets
+  /media\.(pitchfork|vogue|gq|wired|vanityfair|allure|glamour|self|architecturaldigest|cntraveler|bonappetit|newyorker|wmagazine|them|epicurious)\.com/i,
+  /media\.(rollingstone|variety|thehollywoodreporter|ew|people|usmagazine|harpersbazaar|elle|marieclaire|interview)\.com/i,
+  // Magazine CMS CDNs (WordPress and others)
+  /variety\.com\/wp-content\/uploads/i,
+  /consequence\.net\/wp-content\/uploads/i,
+  /stereogum\.com\/wp-content\/uploads/i,
+  /lede-admin\.stereogum\.com/i,
+  /pitchfork\.com\/photos/i,
+  /nme\.com\/wp-content\/uploads/i,
+  /rollingstone\.com\/wp-content\/uploads/i,
+  /theguardian\.com\/img/i,
+  /i\.guim\.co\.uk/i,
+  // Tech & editorial longform
+  /platform\.theverge\.com\/wp-content\/uploads/i,
+  /cdn\.vox-cdn\.com/i,
+  /futurism\.com\/wp-content\/uploads/i,
+  /techcrunch\.com\/wp-content\/uploads/i,
+  /arstechnica\.com\/wp-content\/uploads/i,
+  /wired\.com\/photos/i,
+  /media\.wired\.com/i,
+  // Tabloid photo desks (good editorial stock of celebrities)
+  /pagesix\.com\/wp-content/i,
+  /nypost\.com\/wp-content/i,
+  /people\.com\/thmb/i,
+  /media\.tmz\.com/i,
+  // Business / news wire photo desks (host genuine agency wire photos)
+  /i\.insider\.com/i,
+  /i\.businessinsider\.com/i,
+  /static\.independent\.co\.uk/i,
+  /img\.semafor\.com/i,
+  /d\.newsweek\.com/i,
+  /static\.politico\.com/i,
+  /assets\.nydailynews\.com/i,
+  /images\.thedailybeast\.com/i,
+  // Wikimedia commons (high-res portraits of public figures)
+  /upload\.wikimedia\.org\/wikipedia\/commons/i,
+  // US newspapers
+  /static0?1?\.nyt\.com/i,
+  /static\.nytimes\.com/i,
+  /washingtonpost\.com\/wp-apps\/imrs/i,
+  /wapo\.st/i,
+  /cdn\.cnn\.com/i,
+  /media\.cnn\.com/i,
+  /media\.npr\.org/i,
+  /s\.abcnews\.com/i,
+  // UK
+  /ichef\.bbci\.co\.uk/i,
+  /assets\.bbc\.co\.uk/i,
+  /i\.guim\.co\.uk/i,
+  // Entertainment wire
+  /media\.cnn\.com/i,
+  /image\.cnbcfm\.com/i,
+  // Sports
+  /cdn\.nba\.com/i,
+  /a\.espncdn\.com/i,
+  /sportshub\.cbsistatic\.com/i,
+  // Fashion
+  /media\.hypebeast\.com/i,
+  /image\.harpersbazaar\.com/i,
+  /cdn\.highsnobiety\.com/i,
+  // Music
+  /media\.billboard\.com/i,
+  /dailytrust-production\.s3\.amazonaws\.com/i,
+];
+
+function isEditorialUrl(url: string): boolean {
+  return EDITORIAL_URL_PATTERNS.some((re) => re.test(url));
+}
+
 function scoreCandidate(
   c: ImageCandidate,
   intent: ImageIntent,
-  isAlbumIntent: boolean
+  isAlbumIntent: boolean,
+  sceneSpecific: boolean
 ): number {
   let score = SOURCE_BASE_SCORES[c.source];
 
   const { width, height } = c;
 
   // Resolution bonus / penalty
+  //
+  // For scene-specific articles (incidents, events) the RSS image is often
+  // a generic publicity portrait rather than a wire photo of the actual
+  // scene. A real wire/agency photo is almost always ≥2000px wide. Anything
+  // under 1500px is almost certainly a file photo and should be penalised
+  // so YouTube news thumbnails / wire photo candidates can win.
+  //
+  // For non-scene-specific articles (portraits, general subjects) we lean
+  // harder on absolute resolution — a pristine 2000px photo is much better
+  // than a story-adjacent 900px one.
   if (width !== undefined) {
-    if      (width >= 1200) score += 15;
-    else if (width >= 800)  score += 10;
-    else if (width >= 600)  score +=  5;
-    else if (width < 400)   score -= 20;
+    if (sceneSpecific) {
+      if      (width >= 2000) score += 20;  // real wire/agency photo
+      else if (width >= 1500) score += 10;
+      else if (width >= 1200) score +=  5;
+      else                    score -= 10;  // probably stock portrait, not wire
+    } else {
+      if      (width >= 2000) score += 25;
+      else if (width >= 1600) score += 20;
+      else if (width >= 1200) score += 15;
+      else if (width >= 1000) score +=  5;
+      else if (width < 800)   score -= 25;  // stricter low-res penalty
+      if      (width < 600)   score -= 15;  // extra hit for really small
+    }
   }
 
   // Aspect ratio bonus / penalty
@@ -310,11 +447,34 @@ function scoreCandidate(
 
   // Intent-alignment bonuses
   if (intent === "FILM_TV"       && c.source === "tmdb")      score += 20;
-  if (intent === "MUSIC_ARTIST"  && c.source === "spotify")   score += 10;
+  if (intent === "MUSIC_ARTIST"  && c.source === "spotify")   score += 15;
+  if (intent === "MUSIC_ARTIST"  && c.source === "tmdb")      score +=  8;
   if (intent === "MUSIC_ALBUM"   && c.source === "spotify")   score += 15;
   if (intent === "MUSIC_ALBUM"   && c.source === "itunes")    score +=  5;
-  if (intent === "PERSON"        && c.source === "wikipedia") score += 10;
-  if (intent === "EVENT"         && c.source === "youtube")   score += 12;
+  if (intent === "PERSON"        && c.source === "tmdb")      score += 18;  // Option 3
+  if (intent === "PERSON"        && c.source === "spotify")   score += 12;  // Option 3
+  if (intent === "PERSON"        && c.source === "wikipedia") score +=  6;  // demoted — Wikipedia is often stale
+  // EVENT + youtube: bumped from +12 to +18. For event articles the only
+  // source of actual event footage is usually a news clip on YouTube —
+  // editorial RSS is almost always a stock portrait of the person, not
+  // a photo of the event itself.
+  if (intent === "EVENT"         && c.source === "youtube")   score += 18;
+
+  // PERSON + unsplash non-scene boost: for general celebrity news with no
+  // incident / movie scene to illustrate, a crisp generic Unsplash portrait
+  // looks better in the feed than a low-res Wikipedia file photo or a
+  // grainy YouTube news thumbnail. Only apply when the subject isn't
+  // scene-specific (i.e. we just want a flattering portrait, not a photo
+  // of *the* event). Capped at +10 so a legitimately good RSS / OG image
+  // (e.g. a Highsnobiety product shot when the classifier mislabels
+  // a product story as PERSON) still wins on its own merits.
+  if (intent === "PERSON" && !sceneSpecific && c.source === "unsplash") score += 10;
+
+  // Editorial URL boost (Option 6) — applies to ANY source whose final URL
+  // resolves to a top-tier editorial CDN. Stacks with source base scores so
+  // an RSS image from variety.com scores higher than an RSS image from a
+  // no-name publisher.
+  if (isEditorialUrl(c.url)) score += 20;
 
   // Diversity penalty
   score -= getDiversityPenalty(c.url);
@@ -325,11 +485,14 @@ function scoreCandidate(
 // ── Source priority map ───────────────────────────────────────────────────────
 // Determines which sources are attempted for each intent, and acts as a
 // tiebreaker when two candidates have equal scores.
-
+//
+// Option 3: PERSON now queries TMDb (actors/directors) and Spotify (musicians)
+// in addition to the legacy Wikipedia fallback. Both return high-res canonical
+// portraits where Wikipedia often gives an old/low-quality commons upload.
 const INTENT_SOURCE_ORDER: Record<ImageIntent, ImageCandidate["source"][]> = {
-  PERSON:       ["rss", "og", "wikipedia", "youtube", "spotify", "unsplash"],
+  PERSON:       ["rss", "og", "tmdb", "spotify", "wikipedia", "youtube", "unsplash"],
   FILM_TV:      ["rss", "og", "tmdb", "youtube", "wikipedia", "unsplash"],
-  MUSIC_ARTIST: ["rss", "og", "spotify", "youtube", "wikipedia", "unsplash"],
+  MUSIC_ARTIST: ["rss", "og", "spotify", "tmdb", "youtube", "wikipedia", "unsplash"],
   MUSIC_ALBUM:  ["rss", "og", "spotify", "itunes", "youtube", "wikipedia"],
   EVENT:        ["rss", "og", "youtube", "wikipedia", "unsplash"],
   PLACE:        ["rss", "og", "wikipedia", "unsplash"],
@@ -509,6 +672,7 @@ async function selectBestImage(
   focalY?: number;
   safeW?: number;
   safeH?: number;
+  debug?: { intent: ImageIntent; sceneSpecific: boolean; top3: string; winnerSource: string };
 }> {
   const wikiQuery = article.wikiSearchQuery ?? "";
   const intent = classifyImageIntent(
@@ -516,32 +680,48 @@ async function selectBestImage(
     article.title,
     article.summary ?? ""
   );
+  const sceneSpecific = needsSpecificScene(intent, article.title, article.summary ?? "");
   const isAlbumIntent = intent === "MUSIC_ALBUM";
   const applicableSources = INTENT_SOURCE_ORDER[intent];
+
+  // Quality gate parameters — portrait/general subjects get the strict bar
+  // (short edge ≥ 1000px, ≥ 40 KB/MP). Scene-specific articles get a more
+  // forgiving bar so we can keep the incident-specific image even if it's
+  // slightly smaller / more compressed than the ideal.
+  const qualityOpts = sceneSpecific
+    ? { minShortEdge: 600, minBytesPerMP: 18_000 }
+    : { minShortEdge: 1000, minBytesPerMP: 40_000 };
 
   // ── Collect all candidates in parallel ──────────────────────────────────────
   let resolvedOgUrl: string | undefined;
 
   const fetchTasks: Promise<ImageCandidate | null>[] = [
 
-    // 1. RSS image (already validated before this call; passed in directly)
-    Promise.resolve(
-      rssImageUrl && applicableSources.includes("rss")
-        ? ({ url: rssImageUrl, source: "rss" } as ImageCandidate)
-        : null
-    ),
+    // 1. RSS image (already validated before this call; passed in directly).
+    // We now ALSO fetch its dimensions so scoreCandidate can award the
+    // resolution bonus — without this, a pristine 4000×2667 Variety photo
+    // would score the same as a 600px thumbnail, losing to YouTube 1280×720.
+    (async (): Promise<ImageCandidate | null> => {
+      if (!rssImageUrl || !applicableSources.includes("rss")) return null;
+      const dims = await fetchImageDimensions(rssImageUrl).catch(() => null);
+      return {
+        url:    rssImageUrl,
+        source: "rss",
+        width:  dims?.width,
+        height: dims?.height,
+      };
+    })(),
 
     // 2. OG image — strict: quality + dims + isStrictOGValid
     (async (): Promise<ImageCandidate | null> => {
       if (!articleUrl || !applicableSources.includes("og")) return null;
       try { resolvedOgUrl = await fetchOGImage(articleUrl); } catch { return null; }
       if (!isGoodImageUrl(resolvedOgUrl)) return null;
-      const passesQuality = await isHighQualityImage(resolvedOgUrl!);
-      if (!passesQuality) return null;
-      const dims = await fetchImageDimensions(resolvedOgUrl!);
-      if (!isStrictOGValid(resolvedOgUrl!, dims)) return null;
-      if (dims && !isValidAspectRatio(dims.width, dims.height)) return null;
-      return { url: resolvedOgUrl!, source: "og", width: dims?.width, height: dims?.height };
+      // Pixel-quality gate: rejects low-res and heavily-compressed images.
+      const q = await isPixelQualityImage(resolvedOgUrl!, qualityOpts);
+      if (!q.pass) return null;
+      if (!isStrictOGValid(resolvedOgUrl!, q.width && q.height ? { width: q.width, height: q.height } : null)) return null;
+      return { url: resolvedOgUrl!, source: "og", width: q.width, height: q.height };
     })(),
 
     // 3. YouTube embedded thumbnail
@@ -556,10 +736,12 @@ async function selectBestImage(
         const videoId = extractYouTubeId(await htmlRes.text());
         if (!videoId) return null;
         const ytUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-        if (!(await isHighQualityImage(ytUrl))) return null;
-        const dims = await fetchImageDimensions(ytUrl);
-        if (dims && dims.width < 640) return null;
-        return { url: ytUrl, source: "youtube", width: dims?.width, height: dims?.height };
+        // YouTube maxresdefault is 1280×720 — always allowed for scene-specific,
+        // but blocked for portrait intents via the pixel gate's short-edge
+        // requirement. We still call the gate so we reject 404 / placeholder.
+        const q = await isPixelQualityImage(ytUrl, { minShortEdge: 640, minBytesPerMP: 15_000 });
+        if (!q.pass) return null;
+        return { url: ytUrl, source: "youtube", width: q.width, height: q.height };
       } catch { return null; }
     })(),
 
@@ -580,29 +762,36 @@ async function selectBestImage(
         const videoId: string | undefined = data?.items?.[0]?.id?.videoId;
         if (!videoId) return null;
         const ytUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-        if (!(await isHighQualityImage(ytUrl))) return null;
-        const dims = await fetchImageDimensions(ytUrl);
-        if (dims && dims.width < 640) return null;
-        return { url: ytUrl, source: "youtube", width: dims?.width, height: dims?.height };
+        const qr = await isPixelQualityImage(ytUrl, { minShortEdge: 640, minBytesPerMP: 15_000 });
+        if (!qr.pass) return null;
+        return { url: ytUrl, source: "youtube", width: qr.width, height: qr.height };
       } catch { return null; }
     })(),
 
-    // 5. TMDb — Film & TV posters / person profiles
+    // 5. TMDb — Film & TV posters / person profiles (Option 3: now also PERSON)
     (async (): Promise<ImageCandidate | null> => {
       if (!wikiQuery || !applicableSources.includes("tmdb")) return null;
       const url = await fetchTMDbImage(wikiQuery);
       if (!isGoodImageUrl(url)) return null;
-      const dims = await fetchImageDimensions(url!);
-      return { url: url!, source: "tmdb", width: dims?.width, height: dims?.height };
+      // TMDb original images are almost always high-res canonical portraits /
+      // posters, but we still gate so bad search hits don't slip through.
+      const q = await isPixelQualityImage(url!, qualityOpts);
+      if (!q.pass) return null;
+      return { url: url!, source: "tmdb", width: q.width, height: q.height };
     })(),
 
-    // 6. Spotify — artist / album art
+    // 6. Spotify — artist / album art (Option 3: now also PERSON)
     (async (): Promise<ImageCandidate | null> => {
       if (!wikiQuery || !applicableSources.includes("spotify")) return null;
       const url = await fetchSpotifyImage(wikiQuery);
       if (!isGoodImageUrl(url)) return null;
-      const dims = await fetchImageDimensions(url!);
-      return { url: url!, source: "spotify", width: dims?.width, height: dims?.height };
+      // Spotify's largest image is 640×640 for artists — that's below our
+      // strict portrait gate. Use a looser gate here (540 short-edge) so
+      // the high-quality canonical artist image isn't rejected, but keep
+      // the bytes-per-megapixel check so genuinely mushy thumbs still fail.
+      const q = await isPixelQualityImage(url!, { minShortEdge: 540, minBytesPerMP: 30_000 });
+      if (!q.pass) return null;
+      return { url: url!, source: "spotify", width: q.width, height: q.height };
     })(),
 
     // 7. iTunes — album / artist art
@@ -610,8 +799,9 @@ async function selectBestImage(
       if (!wikiQuery || !applicableSources.includes("itunes")) return null;
       const url = await fetchItunesImage(wikiQuery);
       if (!isGoodImageUrl(url)) return null;
-      const dims = await fetchImageDimensions(url!);
-      return { url: url!, source: "itunes", width: dims?.width, height: dims?.height };
+      const q = await isPixelQualityImage(url!, { minShortEdge: 1000, minBytesPerMP: 30_000 });
+      if (!q.pass) return null;
+      return { url: url!, source: "itunes", width: q.width, height: q.height };
     })(),
 
     // 8. Wikipedia — entity image (high trust for PERSON / FILM_TV / MUSIC)
@@ -619,9 +809,21 @@ async function selectBestImage(
       if (!wikiQuery || !applicableSources.includes("wikipedia")) return null;
       const url = await fetchWikipediaImage(wikiQuery);
       if (!isGoodImageUrl(url)) return null;
-      if (!(await isHighQualityImage(url!))) return null;
-      const dims = await fetchImageDimensions(url!);
-      return { url: url!, source: "wikipedia", width: dims?.width, height: dims?.height };
+      // Wikipedia is often stale — enforce strict portrait gate here so we
+      // only accept high-res commons uploads, never old 600px thumbnails.
+      const q = await isPixelQualityImage(url!, qualityOpts);
+      if (!q.pass) return null;
+      // Network flakiness: isPixelQualityImage can return pass=true with
+      // no dims when the 5s HEAD/Range request times out on slow Wikimedia
+      // mirrors. Retry the dim fetch once directly to avoid dropping the
+      // resolution bonus and losing to YouTube.
+      let width  = q.width;
+      let height = q.height;
+      if (width === undefined || height === undefined) {
+        const retry = await fetchImageDimensions(url!).catch(() => null);
+        if (retry) { width = retry.width; height = retry.height; }
+      }
+      return { url: url!, source: "wikipedia", width, height };
     })(),
 
     // 9. Unsplash — controlled editorial fallback (not last resort)
@@ -660,7 +862,7 @@ async function selectBestImage(
   // ── Score every candidate ────────────────────────────────────────────────────
   const scored = rawCandidates.map((c) => ({
     ...c,
-    score: scoreCandidate(c, intent, isAlbumIntent),
+    score: scoreCandidate(c, intent, isAlbumIntent, sceneSpecific),
   }));
 
   // Sort by score descending; use source priority order as a tiebreaker
@@ -679,8 +881,9 @@ async function selectBestImage(
 
   // Debug log
   const top3 = scored.slice(0, 3).map((c) => `${c.source}(${c.score})`).join(" > ");
+  const sceneTag = sceneSpecific ? " scene" : " portrait";
   console.log(
-    `[img] ${intent} | ${winner.source} score=${winner.score}${diversityPenaltyApplied ? " [diversity]" : ""} | ${top3} | ${article.title.slice(0, 40)}`
+    `[img] ${intent}${sceneTag} | ${winner.source} score=${winner.score}${diversityPenaltyApplied ? " [diversity]" : ""} | ${top3} | ${article.title.slice(0, 40)}`
   );
 
   // ── Focal point + safe-box detection (best-effort, null-safe) ───────────────
@@ -711,7 +914,73 @@ async function selectBestImage(
     focalY,
     safeW,
     safeH,
+    debug: {
+      intent,
+      sceneSpecific,
+      top3,
+      winnerSource: winner.source,
+    },
   };
+}
+
+// ── Public dry-run entry point ────────────────────────────────────────────────
+// Exposes the image selection engine for offline/test use (scripts/dry-run-*)
+// WITHOUT running the Vision focal-point detection (which is expensive and
+// orthogonal to quality selection). Returns the same shape as selectBestImage.
+//
+// If `startingImageUrl` is provided, it's seeded into the candidate pool as
+// an "rss" source — this mirrors how the real pipeline passes through the
+// RSS imageUrl that was captured during feed parsing, so offline testing
+// can give the existing image a fair shot against the new candidates.
+export async function selectBestImageForDryRun(
+  article: EnrichedArticle,
+  articleUrl: string,
+  startingImageUrl: string | null = null
+): Promise<{
+  url: string;
+  width?: number;
+  height?: number;
+  debug?: { intent: ImageIntent; sceneSpecific: boolean; top3: string; winnerSource: string };
+}> {
+  // Temporarily disable focal detection by clearing the env var so the
+  // detector short-circuits. Restore after so other callers in the same
+  // process are unaffected.
+  const prevKey = process.env.ANTHROPIC_API_KEY;
+  process.env.ANTHROPIC_API_KEY = "";
+  try {
+    const result = await selectBestImage(article, articleUrl, startingImageUrl, 0);
+    return {
+      url:    result.url,
+      width:  result.width,
+      height: result.height,
+      debug:  result.debug,
+    };
+  } finally {
+    if (prevKey !== undefined) process.env.ANTHROPIC_API_KEY = prevKey;
+    else delete process.env.ANTHROPIC_API_KEY;
+  }
+}
+
+// ── Public production entry point ─────────────────────────────────────────────
+// Same as selectBestImageForDryRun but KEEPS focal-point detection enabled
+// so the returned image has focal x/y and safe-area rectangles suitable for
+// writing directly into Supabase (image_focal_x, image_focal_y, image_safe_w,
+// image_safe_h).
+export async function selectBestImageForRerun(
+  article: EnrichedArticle,
+  articleUrl: string,
+  startingImageUrl: string | null = null
+): Promise<{
+  url: string;
+  width?: number;
+  height?: number;
+  focalX?: number;
+  focalY?: number;
+  safeW?: number;
+  safeH?: number;
+  debug?: { intent: ImageIntent; sceneSpecific: boolean; top3: string; winnerSource: string };
+}> {
+  return await selectBestImage(article, articleUrl, startingImageUrl, 0);
 }
 
 // ─── XML helpers ─────────────────────────────────────────────────────────────
@@ -852,9 +1121,13 @@ function isGoodImageUrl(url: string | undefined | null): boolean {
 }
 
 /**
- * HEAD-request quality check — rejects images that are provably tiny (<50 KB).
+ * HEAD-request quality check — rejects images that are provably tiny (<80 KB).
  * Returns true if the image passes (or if we can't determine size — benefit of doubt).
  * Uses a short timeout so it doesn't meaningfully slow enrichment.
+ *
+ * NOTE: This is the weak legacy gate. For strict selection, use
+ * `isPixelQualityImage()` which also enforces a minimum pixel count and
+ * rejects heavily-compressed images via a bytes-per-megapixel heuristic.
  */
 async function isHighQualityImage(url: string): Promise<boolean> {
   try {
@@ -871,6 +1144,87 @@ async function isHighQualityImage(url: string): Promise<boolean> {
   } catch {
     return true; // network error → don't penalise, let it through
   }
+}
+
+/**
+ * Strict pixel-based quality gate (Option 8).
+ * Instead of trusting `content-length` alone — which is often missing or
+ * misleading — this gate combines:
+ *
+ *   1. Real pixel dimensions (parsed from the first ~64 KB of the file)
+ *   2. `content-length` header (for size-per-megapixel compression check)
+ *
+ * Rules:
+ *   - Minimum short-edge in pixels (configurable — default 800, 1000 for
+ *     portrait/general subjects, 600 for "specific scene" where we're
+ *     desperate for ANY correct image of that exact event).
+ *   - Bytes-per-megapixel must exceed ~25 KB/MP for JPEGs. Below that the
+ *     image is so heavily compressed it looks mushy even at high res.
+ *     (Reference: a decent editorial JPEG at quality ~80 comes in around
+ *     60–120 KB/MP. A thumbnail blown up to 1200×800 at quality 30 might
+ *     be 18 KB/MP and look terrible.)
+ *
+ * Returns an object with the dimensions (if known) so the caller can use
+ * them downstream without re-fetching.
+ */
+async function isPixelQualityImage(
+  url: string,
+  opts: { minShortEdge?: number; minBytesPerMP?: number } = {}
+): Promise<{ pass: boolean; width?: number; height?: number; reason?: string }> {
+  const minShortEdge  = opts.minShortEdge  ?? 800;
+  const minBytesPerMP = opts.minBytesPerMP ?? 25_000;
+
+  // 1. Pixel dimensions (real — not the URL ?w= hint)
+  const dims = await fetchImageDimensions(url);
+
+  // 2. Content-length from HEAD (cheap — runs in parallel with the dimension
+  //    fetch via the shared connection on most hosts)
+  let contentLength = 0;
+  try {
+    const res = await fetch(url, {
+      method: "HEAD",
+      signal: AbortSignal.timeout(6000),
+    });
+    if (res.ok) {
+      contentLength = parseInt(res.headers.get("content-length") ?? "0", 10);
+    }
+  } catch {
+    /* ignore — missing headers are common */
+  }
+
+  if (!dims) {
+    // Unknown format or failed fetch — fall back to content-length check.
+    if (contentLength > 0 && contentLength < 80_000) {
+      return { pass: false, reason: `no-dims size=${contentLength}` };
+    }
+    return { pass: true }; // benefit of the doubt when genuinely unknown
+  }
+
+  const { width, height } = dims;
+  const shortEdge = Math.min(width, height);
+
+  if (shortEdge < minShortEdge) {
+    return { pass: false, width, height, reason: `short-edge=${shortEdge} < ${minShortEdge}` };
+  }
+
+  // Extreme aspect ratios sneak past the short-edge check (e.g. 2400×200 banners)
+  if (!isValidAspectRatio(width, height)) {
+    return { pass: false, width, height, reason: `bad-aspect=${(width / height).toFixed(2)}` };
+  }
+
+  // Compression check — only runs when both dimensions and content-length are known.
+  if (contentLength > 0) {
+    const megapixels   = (width * height) / 1_000_000;
+    const bytesPerMP   = contentLength / Math.max(megapixels, 0.01);
+    if (bytesPerMP < minBytesPerMP) {
+      return {
+        pass: false, width, height,
+        reason: `compressed ${(bytesPerMP / 1000).toFixed(0)}KB/MP < ${(minBytesPerMP / 1000)}KB/MP`,
+      };
+    }
+  }
+
+  return { pass: true, width, height };
 }
 
 /**
@@ -917,9 +1271,14 @@ export async function fetchImageDimensions(url: string): Promise<{ width: number
     // 64KB is enough to reach the SOF marker in almost every JPEG — even ones
     // with large EXIF / ICC profiles. 2KB was too stingy and left many images
     // (especially ones saved from Photoshop / CMS uploads) without dimensions.
+    //
+    // Timeout: 10s. Wikimedia mirrors in particular can be slow for the first
+    // range request on a cold cache, and 5s was timing out frequently for
+    // large commons uploads — which then caused the scoring to lose the
+    // resolution bonus and let a lower-quality YouTube thumbnail win.
     const res = await fetch(url, {
       headers: { Range: "bytes=0-65535" },
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(10000),
     });
     if (!res.ok && res.status !== 206) return null;
     const buf = Buffer.from(await res.arrayBuffer());

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import { ChevronUp, CheckCircle2 } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
@@ -39,6 +39,29 @@ export function ArticleCard({
 }: ArticleCardProps) {
   const hasImage = !!article.imageUrl;
   const [commentsOpen, setCommentsOpen] = useState(false);
+
+  // Synchronous cache-hit detection: if the browser already has this image
+  // decoded (from our <FeedPage> preloader or a prior render), skip the fade
+  // animation entirely and paint it instantly. This is what makes fast
+  // transitions feel native — no 300ms opacity fade for cached images.
+  //
+  // We start as `cached = null` (unknown) and let a layout-effect ref callback
+  // synchronously check `img.complete && img.naturalWidth > 0` the instant
+  // the <img> mounts. If true, we set the opacity to 1 with no animation.
+  // If false, we fall back to the existing CSS fade-in.
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [imgReady, setImgReady] = useState(false);
+  useLayoutEffect(() => {
+    const img = imgRef.current;
+    if (!img) return;
+    if (img.complete && img.naturalWidth > 0) {
+      setImgReady(true);
+      return;
+    }
+    const onLoad = () => setImgReady(true);
+    img.addEventListener('load', onLoad);
+    return () => img.removeEventListener('load', onLoad);
+  }, [article.imageUrl]);
 
   // Focal point support — when present, anchor the crop to the main subject.
   // This is the ONLY thing that affects how the image is positioned. Every
@@ -132,36 +155,28 @@ export function ArticleCard({
     >
       {hasImage ? (
         <>
-          {/* SKELETON — fades out via CSS, no JS dependency */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 0,
-              background: 'linear-gradient(135deg, #042f6a 0%, #053980 40%, #063d8f 60%, #042f6a 100%)',
-              animation: 'articleSkeletonOut 0.5s ease 0.15s forwards',
-            }}
-          />
+          {/* SKELETON — only shown until the image is ready. When cached, we
+              skip this entirely so there's zero perceptible lag on fast
+              transitions. For uncached images we display a solid gradient
+              (no fade animation — it's hidden the instant the img loads). */}
+          {!imgReady && (
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                zIndex: 0,
+                background: 'linear-gradient(135deg, #042f6a 0%, #053980 40%, #063d8f 60%, #042f6a 100%)',
+              }}
+            />
+          )}
 
-          {/* BACKDROP — CSS background-image avoids a second decode of the same URL */}
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 1,
-              backgroundImage: `url(${article.imageUrl})`,
-              backgroundSize: 'cover',
-              backgroundPosition: objectPosition,
-              filter: 'blur(40px)',
-              transform: 'scale(1.2)',
-              opacity: 0,
-              animation: 'articleImageIn 0.4s ease 0.05s forwards',
-            }}
-          />
-
-          {/* FOREGROUND — fetchpriority="high" for active card, "low" for neighbours */}
+          {/* FOREGROUND — the ONLY decode of this image. No backdrop blur
+              (it was invisible once the foreground loaded anyway and cost a
+              full extra decode + GPU Gaussian blur per card). When `imgReady`
+              is true we set opacity: 1 directly with no animation; when
+              false we fall back to a short CSS fade. */}
           <img
+            ref={imgRef}
             src={article.imageUrl}
             alt={article.title}
             loading="eager"
@@ -176,8 +191,8 @@ export function ArticleCard({
               objectFit: 'cover',
               objectPosition,
               zIndex: 5,
-              opacity: 0,
-              animation: 'articleImageIn 0.3s ease forwards',
+              opacity: imgReady ? 1 : 0,
+              transition: imgReady ? 'none' : 'opacity 0.18s ease',
             }}
           />
           {/* Subtle dark tint — z-10 */}

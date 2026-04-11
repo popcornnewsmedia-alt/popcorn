@@ -9,14 +9,13 @@
       "category": "Gaming",
       "source": "Dexerto",
       "readTimeMinutes": 3,
-      "publishedAt": "2026-04-03T09:13:30.000Z",
+      "publishedAt": "2026-04-03T09:13:30+00:00",
       "likes": 2922,
       "isBookmarked": false,
       "gradientStart": "#0a1e14",
       "gradientEnd": "#1e5a38",
       "tag": "BREAKING",
       "imageUrl": "https://images.unsplash.com/photo-1612373856198-8ff66f376aaa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxTdXBlciUyME1hcmlvJTIwR2FsYXh5JTIwTW92aWV8ZW58MXwwfHx8MTc3NTMwMTcyOXww&ixlib=rb-4.1.0&q=85",
-      "wikiSearchQuery": "The Super Mario Galaxy Movie 2026 film",
       "keyPoints": [
         "The Super Mario Galaxy Movie broke box office records including Day 1 earnings",
         "It outgrossed its predecessor The Super Mario Bros. Movie on opening day alone",
@@ -24,24 +23,51 @@
         "This cements Nintendo's animated film franchise as a major box office force",
         "The success is likely to accelerate video game to movie adaptations across the industry"
       ],
-      "signalScore": 95
+      "signalScore": 95,
+      "wikiSearchQuery": "The Super Mario Galaxy Movie 2026 film"
     },
     {
       "id": 2,
+      "title": "Spaceballs 2 Is Officially Coming in April 2027",
+      "summary": "The long awaited sequel to Mel Brooks's 1987 sci fi comedy Spaceballs now has an official release date of April 2027. Fans of the original have been waiting decades for this and it is finally, actually happening.",
+      "content": "Mel Brooks's Spaceballs is one of the most beloved comedy films ever made. Released in 1987, it was a lovingly ridiculous parody of Star Wars and it became a cult classic almost immediately. Brooks has joked about a sequel for years, literally joking about it inside the original film itself. Now in 2026, it is no longer a joke.\n\nThe sequel is officially confirmed with a release date locked in for April 2027. Details about the plot and cast are still thin but just getting a confirmed date is huge news for fans who have been waiting nearly 40 years. The original film featured Brooks himself alongside John Candy, Rick Moranis, and Bill Pullman. Who shows up for the sequel will be one of the most watched casting stories of the next 12 months.\n\nTiming matters here too. Parody comedies are having a real moment again and a Spaceballs sequel landing while Star Wars is still a massive cultural force feels perfectly placed. Whether it can capture the magic of the original is the big question. But the hype is already very real.",
+      "category": "Film & TV",
+      "source": "Variety",
+      "readTimeMinutes": 2,
+      "publishedAt": "2026-04-04T00:14:48+00:00",
+      "likes": 2913,
+      "isBookmarked": false,
+      "gradientStart": "#0e1a2e",
+      "gradientEnd": "#2a3f6a",
+      "tag": "BREAKING",
+      "imageUrl": "https://variety.com/wp-content/uploads/2025/09/spaceballs.jpg",
+      "keyPoints": [
+        "Spaceballs 2 has an official release date of April 2027",
+        "The original 1987 Mel Brooks comedy is a cult classic Star Wars parody",
+        "Fans have been waiting nearly 40 years for a follow up",
+        "Cast and plot details are still being kept under wraps",
+        "The film arrives at a time when comedy sequels and parodies are trending again"
+      ],
+      "signalScore": 88,
+      "wikiSearchQuery": "Spaceballs 1987 film Mel Brooks"
+    },
+    {
+      "id": 3,
       "title": "Brady Ebert Arrested for Attempted Murder of Brendan Yates's Father",
       "summary": "Brady Ebert, a founding guitarist of hardcore band Turnstile, was arrested after allegedly using his car to run over the father of lead singer Brendan Yates on March 29. This is a shocking act of violence that has rocked one of the most beloved bands in modern hardcore punk.",
       "content": "This one is hard to process. Brady Ebert, a founding member of Turnstile, was arrested Tuesday and charged with attempted murder. According to a statement from the band, Ebert used his vehicle to deliberately run over Brendan Yates's father on March 29, causing severe physical trauma. That is not a falling out between bandmates. That is a violent crime against someone's family.\n\nTurnstile is a Baltimore hardcore band that broke way beyond their scene in recent years. Their 2021 album Glow On got glowing reviews from critics who don't usually touch hardcore, and they toured with huge names and played massive festivals. They were genuinely one of the most exciting bands going. Ebert was a founding member, which makes this even more stunning.\n\nThe band has spoken publicly and confirmed what happened. There is no ambiguity here. Ebert is in custody and facing serious charges. Whatever comes next legally, the Turnstile that fans knew is fundamentally changed. Right now the focus should be on Brendan Yates and his family, and hoping his father makes a full recovery.",
       "category": "Music",
       "source": "Vulture",
       "readTimeMinutes": 2,
-      "publishedAt": "2026-04-03T16:56:04.000Z",
+      "publishedAt": "2026-04-03T16:56:04+00:00",
       "likes": 3585,
       "isBookmarked": false,
       "gradientStart": "#1a0e2e",
       "gradientEnd": "#4a2a6a",
       "tag": "BREAKING",
       "imageUrl": "https://pyxis.nymag.com/v1/imgs/de4/cf0/c3e0d07d15d24070f64e591ada4ed0aefb-GettyImages-1353053560.1x.rsocial.w1200.jpg",
-      "wikiSearchQuery": "Turnstile band hardcore punk",
+      "imageWidth": 1200,
+      "imageHeight": 630,
       "keyPoints": [
         "Brady Ebert, founding guitarist of Turnstile, was arrested for attempted murder",
         "He allegedly used his car to run over lead singer Brendan Yates's father on March 29",
@@ -50,33 +76,7 @@
         "Ebert is a founding member of the band, making this especially shocking for fans"
       ],
       "signalScore": 88,
-      "imageWidth": 1200,
-      "imageHeight": 630
-    },
-    {
-      "id": 3,
-      "title": "Spaceballs 2 Is Officially Coming in April 2027",
-      "summary": "The long awaited sequel to Mel Brooks's 1987 sci fi comedy Spaceballs now has an official release date of April 2027. Fans of the original have been waiting decades for this and it is finally, actually happening.",
-      "content": "Mel Brooks's Spaceballs is one of the most beloved comedy films ever made. Released in 1987, it was a lovingly ridiculous parody of Star Wars and it became a cult classic almost immediately. Brooks has joked about a sequel for years, literally joking about it inside the original film itself. Now in 2026, it is no longer a joke.\n\nThe sequel is officially confirmed with a release date locked in for April 2027. Details about the plot and cast are still thin but just getting a confirmed date is huge news for fans who have been waiting nearly 40 years. The original film featured Brooks himself alongside John Candy, Rick Moranis, and Bill Pullman. Who shows up for the sequel will be one of the most watched casting stories of the next 12 months.\n\nTiming matters here too. Parody comedies are having a real moment again and a Spaceballs sequel landing while Star Wars is still a massive cultural force feels perfectly placed. Whether it can capture the magic of the original is the big question. But the hype is already very real.",
-      "category": "Film & TV",
-      "source": "Variety",
-      "readTimeMinutes": 2,
-      "publishedAt": "2026-04-04T00:14:48.000Z",
-      "likes": 2913,
-      "isBookmarked": false,
-      "gradientStart": "#0e1a2e",
-      "gradientEnd": "#2a3f6a",
-      "tag": "BREAKING",
-      "imageUrl": "https://variety.com/wp-content/uploads/2025/09/spaceballs.jpg",
-      "wikiSearchQuery": "Spaceballs 1987 film Mel Brooks",
-      "keyPoints": [
-        "Spaceballs 2 has an official release date of April 2027",
-        "The original 1987 Mel Brooks comedy is a cult classic Star Wars parody",
-        "Fans have been waiting nearly 40 years for a follow up",
-        "Cast and plot details are still being kept under wraps",
-        "The film arrives at a time when comedy sequels and parodies are trending again"
-      ],
-      "signalScore": 88
+      "wikiSearchQuery": "Turnstile band hardcore punk"
     },
     {
       "id": 4,
@@ -86,14 +86,13 @@
       "category": "Internet",
       "source": "Tubefilter",
       "readTimeMinutes": 3,
-      "publishedAt": "2026-04-03T22:13:54.000Z",
+      "publishedAt": "2026-04-03T22:13:54+00:00",
       "likes": 1866,
       "isBookmarked": false,
       "gradientStart": "#080e24",
       "gradientEnd": "#0e2a5a",
       "tag": "TREND",
       "imageUrl": "https://www.tubefilter.com/wp-content/uploads/2026/04/jaredd-craig-HH4WBGNyltc-unsplash.jpg",
-      "wikiSearchQuery": "HarperCollins publishing company",
       "keyPoints": [
         "HarperCollins signed a multiyear deal to make AI generated YouTube Shorts from children's books",
         "The content will appear on YouTube in the short form vertical video format",
@@ -101,7 +100,8 @@
         "Authors and publishing experts are worried about AI replacing human creative work",
         "The deal could set a major precedent for how publishers use AI going forward"
       ],
-      "signalScore": 85
+      "signalScore": 85,
+      "wikiSearchQuery": "HarperCollins publishing company"
     },
     {
       "id": 5,
@@ -111,14 +111,13 @@
       "category": "Film & TV",
       "source": "The Guardian Culture",
       "readTimeMinutes": 2,
-      "publishedAt": "2026-04-03T06:00:44.000Z",
+      "publishedAt": "2026-04-03T06:00:44+00:00",
       "likes": 3400,
       "isBookmarked": false,
       "gradientStart": "#0e1a2e",
       "gradientEnd": "#2a3f6a",
       "tag": "BREAKING",
       "imageUrl": "https://images.unsplash.com/photo-1576670262809-30ab4519f5f7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxEb2N0b3IlMjBtaXNzaW5nJTIwZXBpc29kZXN8ZW58MXwxfHx8MTc3NTMyMDgyNHww&ixlib=rb-4.1.0&q=85",
-      "wikiSearchQuery": "Doctor Who missing episodes BBC history",
       "keyPoints": [
         "Two Doctor Who episodes from 1965 have been found in a private collection",
         "They were previously thought to be lost forever along with hundreds of other early BBC episodes",
@@ -127,35 +126,32 @@
         "The episodes have now been released publicly for fans to watch"
       ],
       "signalScore": 85,
-      "imageWidth": null,
-      "imageHeight": null
+      "wikiSearchQuery": "Doctor Who missing episodes BBC history"
     },
     {
       "id": 6,
-      "title": "Lily Allen's West End Girl Gets Even Better",
-      "summary": "Lily Allen released West End Girl last October, a raw concept album about the collapse of her marriage to actor David Harbour, and now it is getting a major moment. The album is being praised as one of the boldest pop records in years and it deserves every bit of attention it is getting.",
-      "content": "Lily Allen dropped West End Girl with just four days of warning last October and it hit like a freight train. The album is a concept record, meaning every song connects to tell one story. In this case the story is the painful breakdown of her second marriage to Stranger Things actor David Harbour. She does not hold back. At all.\n\nWhat makes West End Girl so striking is the detail. Allen does not just say the marriage failed. She takes you through it room by room, moment by moment. That is a brave thing to do in public. It is also what separates a good breakup album from a truly great one. Think Olivia Rodrigo's Sour or Beyoncé's Lemonade but with a very British edge.\n\nNow the record is getting a fresh wave of praise and it is easy to see why. If you slept on it when it first dropped, this is your sign to go back. West End Girl is the kind of album that gets better every time you listen. Allen has made her most personal and most powerful work yet.",
-      "category": "Music",
-      "source": "The Atlantic",
+      "title": "Netflix Price Hikes Ruled Unlawful in Italy",
+      "summary": "A court in Rome has ruled that Netflix's past price increases were unlawful, potentially allowing millions of Italian users to claim refunds worth hundreds of euros. This is a big deal because it could set a legal precedent that spreads across Europe and puts other streaming platforms on notice.",
+      "content": "A Roman court just handed Netflix a pretty significant loss. Judges ruled that the price hikes Netflix rolled out to Italian subscribers were unlawful. That means customers who paid more during those increases could have a real case for getting that money back.\n\nWe are talking about refunds potentially worth hundreds of euros per person. Netflix has raised its prices multiple times over the past few years, and Italy is now the first country where a court has said those increases crossed a legal line. If millions of users pile in with claims, the bill for Netflix could get very large very fast.\n\nThis story is worth watching closely even if you are not in Italy. Consumer protection laws vary across Europe but courts in one country ruling against a streaming giant can inspire similar action elsewhere. Netflix has not yet said how it plans to respond, but this is exactly the kind of case that could reshape how streaming services handle pricing for a long time.",
+      "category": "Film & TV",
+      "source": "Dexerto",
       "readTimeMinutes": 2,
-      "publishedAt": "2026-04-03T11:00:00.000Z",
-      "likes": 3848,
+      "publishedAt": "2026-04-03T18:59:51+00:00",
+      "likes": 2727,
       "isBookmarked": false,
-      "gradientStart": "#1a0e2e",
-      "gradientEnd": "#4a2a6a",
-      "tag": "REVIEW",
-      "imageUrl": "https://cdn.theatlantic.com/thumbor/fGjo4C4lXIol3XiZHScUIttlYFU=/media/img/mt/2026/04/2026_04_03_How_Lily_Allen_Upped_the_Ante/original.jpg",
-      "wikiSearchQuery": "Lily Allen West End Girl album",
+      "gradientStart": "#0e1a2e",
+      "gradientEnd": "#2a3f6a",
+      "tag": "BREAKING",
+      "imageUrl": "https://images.unsplash.com/photo-1588672455574-c4d93ec7e525?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxOZXRmbGl4JTIwcHJpY2UlMjBpbmNyZWFzZXN8ZW58MXwxfHx8MTc3NTMyMDgyNnww&ixlib=rb-4.1.0&q=85",
       "keyPoints": [
-        "Lily Allen released West End Girl in October 2025 with almost no warning",
-        "The album tells the story of her split from actor David Husband David Harbour",
-        "Every song connects as part of one larger narrative",
-        "Critics are now calling it one of the best pop albums in recent memory",
-        "If you missed it first time around, now is the perfect time to listen"
+        "A Rome court ruled Netflix's past price increases were unlawful",
+        "Italian subscribers could be entitled to refunds worth hundreds of euros",
+        "Millions of users may be eligible to make a claim",
+        "The ruling could inspire similar legal action in other European countries",
+        "Netflix has not yet publicly responded to the decision"
       ],
       "signalScore": 82,
-      "imageWidth": 4000,
-      "imageHeight": 2250
+      "wikiSearchQuery": "Netflix price increases Europe consumer rights"
     },
     {
       "id": 7,
@@ -165,14 +161,13 @@
       "category": "Internet",
       "source": "Stereogum",
       "readTimeMinutes": 2,
-      "publishedAt": "2026-04-03T15:09:12.000Z",
+      "publishedAt": "2026-04-03T15:09:12+00:00",
       "likes": 4092,
       "isBookmarked": false,
       "gradientStart": "#080e24",
       "gradientEnd": "#0e2a5a",
       "tag": "FEATURE",
       "imageUrl": "https://images.unsplash.com/photo-1636139626711-74363604ccd2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxDYXJkaSUyMEJ8ZW58MXwxfHx8MTc3NTMyNDA5MXww&ixlib=rb-4.1.0&q=85",
-      "wikiSearchQuery": "Zohran Mamdani NYC mayoral candidate 2025",
       "keyPoints": [
         "Cardi B starred in a viral video with NYC mayoral candidate Zohran Mamdani promoting free childcare",
         "Mamdani is a New York State Assembly member running to be the next mayor of New York City",
@@ -181,35 +176,34 @@
         "The video is gaining serious traction online and bringing new attention to Mamdani's campaign"
       ],
       "signalScore": 82,
-      "imageWidth": null,
-      "imageHeight": null
+      "wikiSearchQuery": "Zohran Mamdani NYC mayoral candidate 2025"
     },
     {
       "id": 8,
-      "title": "Netflix Price Hikes Ruled Unlawful in Italy",
-      "summary": "A court in Rome has ruled that Netflix's past price increases were unlawful, potentially allowing millions of Italian users to claim refunds worth hundreds of euros. This is a big deal because it could set a legal precedent that spreads across Europe and puts other streaming platforms on notice.",
-      "content": "A Roman court just handed Netflix a pretty significant loss. Judges ruled that the price hikes Netflix rolled out to Italian subscribers were unlawful. That means customers who paid more during those increases could have a real case for getting that money back.\n\nWe are talking about refunds potentially worth hundreds of euros per person. Netflix has raised its prices multiple times over the past few years, and Italy is now the first country where a court has said those increases crossed a legal line. If millions of users pile in with claims, the bill for Netflix could get very large very fast.\n\nThis story is worth watching closely even if you are not in Italy. Consumer protection laws vary across Europe but courts in one country ruling against a streaming giant can inspire similar action elsewhere. Netflix has not yet said how it plans to respond, but this is exactly the kind of case that could reshape how streaming services handle pricing for a long time.",
-      "category": "Film & TV",
-      "source": "Dexerto",
+      "title": "Lily Allen's West End Girl Gets Even Better",
+      "summary": "Lily Allen released West End Girl last October, a raw concept album about the collapse of her marriage to actor David Harbour, and now it is getting a major moment. The album is being praised as one of the boldest pop records in years and it deserves every bit of attention it is getting.",
+      "content": "Lily Allen dropped West End Girl with just four days of warning last October and it hit like a freight train. The album is a concept record, meaning every song connects to tell one story. In this case the story is the painful breakdown of her second marriage to Stranger Things actor David Harbour. She does not hold back. At all.\n\nWhat makes West End Girl so striking is the detail. Allen does not just say the marriage failed. She takes you through it room by room, moment by moment. That is a brave thing to do in public. It is also what separates a good breakup album from a truly great one. Think Olivia Rodrigo's Sour or Beyoncé's Lemonade but with a very British edge.\n\nNow the record is getting a fresh wave of praise and it is easy to see why. If you slept on it when it first dropped, this is your sign to go back. West End Girl is the kind of album that gets better every time you listen. Allen has made her most personal and most powerful work yet.",
+      "category": "Music",
+      "source": "The Atlantic",
       "readTimeMinutes": 2,
-      "publishedAt": "2026-04-03T18:59:51.000Z",
-      "likes": 2727,
+      "publishedAt": "2026-04-03T11:00:00+00:00",
+      "likes": 3848,
       "isBookmarked": false,
-      "gradientStart": "#0e1a2e",
-      "gradientEnd": "#2a3f6a",
-      "tag": "BREAKING",
-      "imageUrl": "https://images.unsplash.com/photo-1588672455574-c4d93ec7e525?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxOZXRmbGl4JTIwcHJpY2UlMjBpbmNyZWFzZXN8ZW58MXwxfHx8MTc3NTMyMDgyNnww&ixlib=rb-4.1.0&q=85",
-      "wikiSearchQuery": "Netflix price increases Europe consumer rights",
+      "gradientStart": "#1a0e2e",
+      "gradientEnd": "#4a2a6a",
+      "tag": "REVIEW",
+      "imageUrl": "https://cdn.theatlantic.com/thumbor/fGjo4C4lXIol3XiZHScUIttlYFU=/media/img/mt/2026/04/2026_04_03_How_Lily_Allen_Upped_the_Ante/original.jpg",
+      "imageWidth": 4000,
+      "imageHeight": 2250,
       "keyPoints": [
-        "A Rome court ruled Netflix's past price increases were unlawful",
-        "Italian subscribers could be entitled to refunds worth hundreds of euros",
-        "Millions of users may be eligible to make a claim",
-        "The ruling could inspire similar legal action in other European countries",
-        "Netflix has not yet publicly responded to the decision"
+        "Lily Allen released West End Girl in October 2025 with almost no warning",
+        "The album tells the story of her split from actor David Husband David Harbour",
+        "Every song connects as part of one larger narrative",
+        "Critics are now calling it one of the best pop albums in recent memory",
+        "If you missed it first time around, now is the perfect time to listen"
       ],
       "signalScore": 82,
-      "imageWidth": null,
-      "imageHeight": null
+      "wikiSearchQuery": "Lily Allen West End Girl album"
     },
     {
       "id": 9,
@@ -219,14 +213,15 @@
       "category": "Internet",
       "source": "Dexerto",
       "readTimeMinutes": 3,
-      "publishedAt": "2026-04-03T09:55:25.000Z",
+      "publishedAt": "2026-04-03T09:55:25+00:00",
       "likes": 1028,
       "isBookmarked": false,
       "gradientStart": "#080e24",
       "gradientEnd": "#0e2a5a",
       "tag": "FEATURE",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Linus_Sebastian_at_LTX_2023_%28cropped%29.jpg/1280px-Linus_Sebastian_at_LTX_2023_%28cropped%29.jpg",
-      "wikiSearchQuery": "Linus Tech Tips Linus Sebastian YouTube channel",
+      "imageWidth": 1280,
+      "imageHeight": 1568,
       "keyPoints": [
         "Linus Sebastian confirmed the private jet purchase was real after posing it as an April Fools joke",
         "The plane is a Dassault Falcon 900B and reportedly cost around 5 million dollars",
@@ -235,25 +230,50 @@
         "The reveal sparked debate about creator wealth and the scale of the modern creator economy"
       ],
       "signalScore": 79,
-      "imageWidth": 1280,
-      "imageHeight": 1568
+      "wikiSearchQuery": "Linus Tech Tips Linus Sebastian YouTube channel"
     },
     {
       "id": 10,
+      "title": "Messi and Ronaldo Get the Lego Treatment for World Cup",
+      "summary": "Lego has launched a World Cup campaign featuring miniaturised brick versions of Lionel Messi, Cristiano Ronaldo, Vinicius Jr and Kylian Mbappe. It is a fun collision of football royalty and one of the world's most beloved toy brands.",
+      "content": "Imagine the four biggest names in football right now but tiny and made of plastic. That is exactly what Lego has done with their new World Cup campaign, turning Lionel Messi, Cristiano Ronaldo, Vinicius Jr and Kylian Mbappe into miniaturised Lego versions of themselves. It is the kind of campaign that is almost impossible not to smile at.\n\nThe timing makes total sense. The 2026 FIFA World Cup is being hosted across the United States, Canada and Mexico, which means football fever is already building in a massive way. Lego tapping into that with four of the sport's most recognisable faces is a smart move. Messi and Ronaldo are two of the greatest players ever, while Vinicius Jr and Mbappe represent the next generation taking over the sport right now.\n\nThis is the kind of crossover that wins the internet for a day and probably sells a lot of Lego sets too. If you have even a passing interest in football or just love a well executed brand moment, this campaign is worth a look. Little plastic Ronaldo doing a celebration is genuinely great content.",
+      "category": "Sports",
+      "source": "Rolling Stone",
+      "readTimeMinutes": 2,
+      "publishedAt": "2026-04-03T20:26:53+00:00",
+      "likes": 2901,
+      "isBookmarked": false,
+      "gradientStart": "#0a1a0e",
+      "gradientEnd": "#1e4a2a",
+      "tag": "TREND",
+      "imageUrl": "https://images.unsplash.com/photo-1572202485381-6dc6f9ec721f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxMZWdvJTIwRklGQSUyMFdvcmxkJTIwQ3VwfGVufDF8MHx8fDE3NzUyOTE0NzR8MA&ixlib=rb-4.1.0&q=85",
+      "keyPoints": [
+        "Lego launched a World Cup campaign featuring Messi, Ronaldo, Vinicius Jr and Mbappe as mini figures",
+        "The 2026 FIFA World Cup is being hosted across the USA, Canada and Mexico",
+        "The campaign blends football's biggest current stars with one of the world's most popular toy brands",
+        "Messi and Ronaldo are widely considered two of the greatest footballers of all time",
+        "Vinicius Jr and Mbappe represent the new generation of global football superstars"
+      ],
+      "signalScore": 78,
+      "wikiSearchQuery": "Lego FIFA World Cup 2026 campaign"
+    },
+    {
+      "id": 11,
       "title": "San Francisco Protests Demand AI Industry Pump the Brakes",
       "summary": "Hundreds of protesters gathered in downtown San Francisco last month to push back against the rapid development of increasingly powerful AI systems. The protest is a sign that public unease about where AI is heading is turning into something louder and harder to ignore.",
       "content": "A large crowd filled the streets of San Francisco recently carrying signs that read Stop the AI Race and Don't Build It. The message was aimed squarely at the tech companies headquartered nearby. People are worried that the AI industry is moving faster than anyone can understand or safely manage. And they are starting to say so out loud.\n\nSilicon Valley has been in an all out sprint to build AI systems that can improve and update themselves with minimal human input. These are sometimes called self building or autonomous AI agents. The idea is that the AI gets smarter on its own. That sounds impressive until you start asking who is in control and what happens if something goes wrong.\n\nThe protest is part of a growing global conversation about whether the people building this technology are moving responsibly. Governments, researchers, and now regular citizens are all raising their hands. The frenzy in Silicon Valley is real, and so is the pushback. This story is not going away anytime soon.",
       "category": "Internet",
       "source": "The Atlantic",
       "readTimeMinutes": 2,
-      "publishedAt": "2026-04-03T17:35:00.000Z",
+      "publishedAt": "2026-04-03T17:35:00+00:00",
       "likes": 726,
       "isBookmarked": false,
       "gradientStart": "#080e24",
       "gradientEnd": "#0e2a5a",
       "tag": "TREND",
       "imageUrl": "https://cdn.theatlantic.com/thumbor/c3WP_48GLb1cNMqUeRDDbWFK0Ag=/media/img/mt/2026/04/2026_4_1_AI/original.png",
-      "wikiSearchQuery": "AI autonomous agents Silicon Valley 2026",
+      "imageWidth": 2000,
+      "imageHeight": 1125,
       "keyPoints": [
         "Protesters gathered in San Francisco to demand a slowdown in powerful AI development",
         "The focus is on AI systems that can build and improve themselves",
@@ -262,50 +282,48 @@
         "Public resistance to AI development is becoming louder and more organised"
       ],
       "signalScore": 78,
-      "imageWidth": 2000,
-      "imageHeight": 1125
-    },
-    {
-      "id": 11,
-      "title": "Messi and Ronaldo Get the Lego Treatment for World Cup",
-      "summary": "Lego has launched a World Cup campaign featuring miniaturised brick versions of Lionel Messi, Cristiano Ronaldo, Vinicius Jr and Kylian Mbappe. It is a fun collision of football royalty and one of the world's most beloved toy brands.",
-      "content": "Imagine the four biggest names in football right now but tiny and made of plastic. That is exactly what Lego has done with their new World Cup campaign, turning Lionel Messi, Cristiano Ronaldo, Vinicius Jr and Kylian Mbappe into miniaturised Lego versions of themselves. It is the kind of campaign that is almost impossible not to smile at.\n\nThe timing makes total sense. The 2026 FIFA World Cup is being hosted across the United States, Canada and Mexico, which means football fever is already building in a massive way. Lego tapping into that with four of the sport's most recognisable faces is a smart move. Messi and Ronaldo are two of the greatest players ever, while Vinicius Jr and Mbappe represent the next generation taking over the sport right now.\n\nThis is the kind of crossover that wins the internet for a day and probably sells a lot of Lego sets too. If you have even a passing interest in football or just love a well executed brand moment, this campaign is worth a look. Little plastic Ronaldo doing a celebration is genuinely great content.",
-      "category": "Sports",
-      "source": "Rolling Stone",
-      "readTimeMinutes": 2,
-      "publishedAt": "2026-04-03T20:26:53.000Z",
-      "likes": 2901,
-      "isBookmarked": false,
-      "gradientStart": "#0a1a0e",
-      "gradientEnd": "#1e4a2a",
-      "tag": "TREND",
-      "imageUrl": "https://images.unsplash.com/photo-1572202485381-6dc6f9ec721f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxMZWdvJTIwRklGQSUyMFdvcmxkJTIwQ3VwfGVufDF8MHx8fDE3NzUyOTE0NzR8MA&ixlib=rb-4.1.0&q=85",
-      "wikiSearchQuery": "Lego FIFA World Cup 2026 campaign",
-      "keyPoints": [
-        "Lego launched a World Cup campaign featuring Messi, Ronaldo, Vinicius Jr and Mbappe as mini figures",
-        "The 2026 FIFA World Cup is being hosted across the USA, Canada and Mexico",
-        "The campaign blends football's biggest current stars with one of the world's most popular toy brands",
-        "Messi and Ronaldo are widely considered two of the greatest footballers of all time",
-        "Vinicius Jr and Mbappe represent the new generation of global football superstars"
-      ],
-      "signalScore": 78
+      "wikiSearchQuery": "AI autonomous agents Silicon Valley 2026"
     },
     {
       "id": 12,
+      "title": "NASA's Artemis II Mission Has a Sailor Moon Connection",
+      "summary": "Anime fans spotted Sailor Moon imagery inside NASA's control room during coverage of the Artemis II moon mission, and the internet absolutely lost it. It is a small moment but it says something big about how anime has worked its way into every corner of culture, including space exploration.",
+      "content": "NASA's Artemis II mission is a historic one. It is sending humans back toward the Moon for the first time in decades, building toward an eventual crewed lunar landing. So the control room footage is naturally getting a lot of attention. What nobody expected was for eagle eyed anime fans to spot a Sailor Moon reference sitting right there among the equipment and monitors.\n\nSailor Moon is one of the most iconic anime series ever created. The original 1990s show follows a teenage girl named Usagi Tsukino who transforms into a magical warrior and fights evil by moonlight. The moon connection makes the Artemis II crossover feel almost too perfect. NASA has not officially explained the reference but the internet has already decided it is the best thing to happen this week.\n\nThis kind of moment is exactly why anime fandom is so powerful right now. The community notices everything and when they find something like this it spreads everywhere fast. Sailor Moon has been around for over 30 years and it is still showing up in the most unexpected places. Even, apparently, in the rooms where humanity plans its return to the Moon.",
+      "category": "Internet",
+      "source": "Dexerto",
+      "readTimeMinutes": 2,
+      "publishedAt": "2026-04-03T09:28:03+00:00",
+      "likes": 4416,
+      "isBookmarked": false,
+      "gradientStart": "#080e24",
+      "gradientEnd": "#0e2a5a",
+      "tag": "HOT TAKE",
+      "imageUrl": "https://images.unsplash.com/photo-1574111114169-48bceb906030?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxTYWlsb3IlMjBNb29uJTIwYW5pbWUlMjBzZXJpZXN8ZW58MXwwfHx8MTc3NTMwMTczM3ww&ixlib=rb-4.1.0&q=85",
+      "keyPoints": [
+        "Sailor Moon imagery was spotted in NASA's Artemis II mission control room",
+        "Artemis II is NASA's mission sending humans back toward the Moon",
+        "Sailor Moon is a beloved 1990s anime series centred on the Moon",
+        "The discovery went viral almost immediately among anime fans",
+        "It highlights just how deeply anime culture has embedded itself everywhere"
+      ],
+      "signalScore": 74,
+      "wikiSearchQuery": "Sailor Moon anime series"
+    },
+    {
+      "id": 13,
       "title": "K-Pop's AI Crisis Is Getting Impossible to Ignore",
       "summary": "The K-pop industry is facing a growing and genuinely uncomfortable reckoning with artificial intelligence, from AI-generated idols to deepfake content flooding fan spaces. It matters because K-pop is one of the biggest cultural exports in the world right now, and what happens there tends to ripple outward fast.",
       "content": "K-pop has always been a machine. Highly produced, image-obsessed, and built on a very controlled version of celebrity. But AI is pushing that to a place that is starting to feel genuinely unsettling. We are talking about fully synthetic idols, AI-generated voices mimicking real artists, and deepfake videos that fans sometimes cannot tell apart from the real thing.\n\nThe industry is in a weird spot because some labels are actually leaning into AI. A few groups have debuted with AI-assisted members or marketed AI-generated content as part of their brand. But at the same time, real artists and their fans are dealing with unauthorized deepfakes and voice clones that spread across social media with almost no accountability. There are no solid rules yet, and that gap is causing real harm.\n\nThis is not just a K-pop problem, but K-pop is where it is showing up loudest right now because the fandom culture is so intense and the parasocial bonds between fans and idols run so deep. When you cannot trust whether a video or voice is real, that bond gets corroded. The industry needs to figure this out quickly, because fan trust is literally the product.",
       "category": "Music",
       "source": "Dazed",
       "readTimeMinutes": 3,
-      "publishedAt": "2026-04-03T08:05:00.000Z",
+      "publishedAt": "2026-04-03T08:05:00+00:00",
       "likes": 2665,
       "isBookmarked": false,
       "gradientStart": "#1a0e2e",
       "gradientEnd": "#4a2a6a",
       "tag": "TREND",
       "imageUrl": "https://images.unsplash.com/photo-1741810977192-3470bb7c993d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxrcG9wJTIwY29uY2VydCUyMHN0YWdlJTIwcGVyZm9ybWFuY2UlMjBsaWdodHMlMjBjcm93ZHxlbnwxfDF8fHwxNzc1MzIzNTczfDA&ixlib=rb-4.1.0&q=85",
-      "wikiSearchQuery": "K-pop artificial intelligence music industry",
       "keyPoints": [
         "K-pop labels are increasingly using AI for music, visuals, and even synthetic idols",
         "Unauthorized deepfakes and AI voice clones of real K-pop artists are spreading online",
@@ -314,33 +332,7 @@
         "What K-pop does with AI could set a precedent for the wider music industry"
       ],
       "signalScore": 74,
-      "imageWidth": null,
-      "imageHeight": null
-    },
-    {
-      "id": 13,
-      "title": "NASA's Artemis II Mission Has a Sailor Moon Connection",
-      "summary": "Anime fans spotted Sailor Moon imagery inside NASA's control room during coverage of the Artemis II moon mission, and the internet absolutely lost it. It is a small moment but it says something big about how anime has worked its way into every corner of culture, including space exploration.",
-      "content": "NASA's Artemis II mission is a historic one. It is sending humans back toward the Moon for the first time in decades, building toward an eventual crewed lunar landing. So the control room footage is naturally getting a lot of attention. What nobody expected was for eagle eyed anime fans to spot a Sailor Moon reference sitting right there among the equipment and monitors.\n\nSailor Moon is one of the most iconic anime series ever created. The original 1990s show follows a teenage girl named Usagi Tsukino who transforms into a magical warrior and fights evil by moonlight. The moon connection makes the Artemis II crossover feel almost too perfect. NASA has not officially explained the reference but the internet has already decided it is the best thing to happen this week.\n\nThis kind of moment is exactly why anime fandom is so powerful right now. The community notices everything and when they find something like this it spreads everywhere fast. Sailor Moon has been around for over 30 years and it is still showing up in the most unexpected places. Even, apparently, in the rooms where humanity plans its return to the Moon.",
-      "category": "Internet",
-      "source": "Dexerto",
-      "readTimeMinutes": 2,
-      "publishedAt": "2026-04-03T09:28:03.000Z",
-      "likes": 4416,
-      "isBookmarked": false,
-      "gradientStart": "#080e24",
-      "gradientEnd": "#0e2a5a",
-      "tag": "HOT TAKE",
-      "imageUrl": "https://images.unsplash.com/photo-1574111114169-48bceb906030?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MTUxNzZ8MHwxfHNlYXJjaHwxfHxTYWlsb3IlMjBNb29uJTIwYW5pbWUlMjBzZXJpZXN8ZW58MXwwfHx8MTc3NTMwMTczM3ww&ixlib=rb-4.1.0&q=85",
-      "wikiSearchQuery": "Sailor Moon anime series",
-      "keyPoints": [
-        "Sailor Moon imagery was spotted in NASA's Artemis II mission control room",
-        "Artemis II is NASA's mission sending humans back toward the Moon",
-        "Sailor Moon is a beloved 1990s anime series centred on the Moon",
-        "The discovery went viral almost immediately among anime fans",
-        "It highlights just how deeply anime culture has embedded itself everywhere"
-      ],
-      "signalScore": 74
+      "wikiSearchQuery": "K-pop artificial intelligence music industry"
     },
     {
       "id": 14,
@@ -350,14 +342,15 @@
       "category": "Gaming",
       "source": "IGN",
       "readTimeMinutes": 2,
-      "publishedAt": "2026-04-03T23:14:02.000Z",
+      "publishedAt": "2026-04-03T23:14:02+00:00",
       "likes": 4467,
       "isBookmarked": false,
       "gradientStart": "#0a1e14",
       "gradientEnd": "#1e5a38",
       "tag": "TREND",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Mac_Donald-sponsored_kids_show_at_Azabujuban_festival.jpg/1280px-Mac_Donald-sponsored_kids_show_at_Azabujuban_festival.jpg",
-      "wikiSearchQuery": "McDonald's gaming collaboration marketing",
+      "imageWidth": 1280,
+      "imageHeight": 853,
       "keyPoints": [
         "McDonald's Türkiye launched a Pro Gamer Menu with a device called Archie to hold your food while gaming",
         "Archie is shaped like the iconic McDonald's golden arch",
@@ -366,8 +359,7 @@
         "The campaign is already going viral well beyond its local market"
       ],
       "signalScore": 70,
-      "imageWidth": 1280,
-      "imageHeight": 853
+      "wikiSearchQuery": "McDonald's gaming collaboration marketing"
     }
   ]
 }

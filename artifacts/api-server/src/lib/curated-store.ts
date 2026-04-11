@@ -14,6 +14,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { EnrichedArticle } from "./rss-enricher.js";
 import { supabase } from "./supabase-client.js";
+import { processAndUploadImage } from "./image-processor.js";
 
 const DATA_DIR = path.resolve(process.cwd(), "data");
 
@@ -76,6 +77,7 @@ function articleToRow(a: EnrichedArticle, feedDate: string): Record<string, unkn
     image_focal_y:      a.imageFocalY ?? null,
     image_safe_w:       a.imageSafeW ?? null,
     image_safe_h:       a.imageSafeH ?? null,
+    image_credit:       a.imageCredit ?? null,
     key_points:         a.keyPoints ?? [],
     signal_score:       a.signalScore ?? null,
     wiki_search_query:  a.wikiSearchQuery ?? null,
@@ -104,6 +106,7 @@ function rowToArticle(row: Record<string, unknown>, id: number): EnrichedArticle
     imageFocalY:      row.image_focal_y != null ? Number(row.image_focal_y) : undefined,
     imageSafeW:       row.image_safe_w  != null ? Number(row.image_safe_w)  : undefined,
     imageSafeH:       row.image_safe_h  != null ? Number(row.image_safe_h)  : undefined,
+    imageCredit:      row.image_credit ? String(row.image_credit) : null,
     keyPoints:        Array.isArray(row.key_points) ? row.key_points as string[] : [],
     signalScore:      row.signal_score != null ? Number(row.signal_score) : null,
     wikiSearchQuery:  row.wiki_search_query ? String(row.wiki_search_query) : undefined,
@@ -157,6 +160,7 @@ function stripUnknownColumns(row: Record<string, unknown>): Record<string, unkno
   const {
     image_focal_x, image_focal_y, // eslint-disable-line @typescript-eslint/no-unused-vars
     image_safe_w,  image_safe_h,  // eslint-disable-line @typescript-eslint/no-unused-vars
+    image_credit,                 // eslint-disable-line @typescript-eslint/no-unused-vars
     ...rest
   } = row;
   return rest;
@@ -164,7 +168,70 @@ function stripUnknownColumns(row: Record<string, unknown>): Record<string, unkno
 
 function isMissingColumnError(msg: string | undefined): boolean {
   if (!msg) return false;
-  return /image_focal|image_safe|column.*does not exist|schema cache/i.test(msg);
+  return /image_focal|image_safe|image_credit|column.*does not exist|schema cache/i.test(msg);
+}
+
+/**
+ * Process images for an array of articles BEFORE they get written to Supabase.
+ * Downloads each source image, resizes to 1080px JPEG, uploads to the
+ * `article-images` Storage bucket, and mutates `article.imageUrl` (plus
+ * width/height) to point at the Storage public URL.
+ *
+ * Any image that fails to process keeps its original URL — we never want a
+ * slow / broken image to block a curation run. Runs with limited concurrency
+ * so we don't hammer source CDNs.
+ *
+ * NOTE: this only touches the in-memory article objects. It does NOT rewrite
+ * any existing DB rows — that happens naturally when the caller inserts the
+ * mutated articles via articleToRow().
+ */
+async function processImagesForArticles(
+  articles: EnrichedArticle[],
+  feedDate: string,
+): Promise<void> {
+  // Only articles with a real http(s) imageUrl — skip placeholders and missing.
+  const targets = articles.filter(
+    (a) =>
+      a.imageUrl &&
+      typeof a.imageUrl === "string" &&
+      /^https?:\/\//.test(a.imageUrl) &&
+      !a.imageUrl.startsWith("__NEEDS_OG__") &&
+      // Skip articles that are already pointing at our Storage bucket
+      // (re-runs of curation on the same day shouldn't re-process).
+      !a.imageUrl.includes("/storage/v1/object/public/article-images/"),
+  );
+  if (targets.length === 0) return;
+
+  console.log(`[image-processor] processing ${targets.length} images → Storage`);
+
+  // Limit concurrency to 4 — sharp is CPU-bound and network fetches can stall,
+  // so 4 is a safe sweet spot that keeps the curation run fast without
+  // overloading the machine or getting rate-limited by source CDNs.
+  const CONCURRENCY = 4;
+  let processed = 0;
+  let failed = 0;
+
+  for (let i = 0; i < targets.length; i += CONCURRENCY) {
+    const batch = targets.slice(i, i + CONCURRENCY);
+    await Promise.all(
+      batch.map(async (article) => {
+        const result = await processAndUploadImage(article.imageUrl!, feedDate);
+        if (result) {
+          article.imageUrl = result.url;
+          article.imageWidth = result.width;
+          article.imageHeight = result.height;
+          article.imageCredit = result.credit;
+          processed++;
+        } else {
+          failed++;
+        }
+      }),
+    );
+  }
+
+  console.log(
+    `[image-processor] ✓ ${processed} uploaded, ${failed} kept original URL`,
+  );
 }
 
 async function upsertFeedToSupabase(articles: EnrichedArticle[], feedDate: string): Promise<void> {
@@ -190,9 +257,17 @@ async function upsertFeedToSupabase(articles: EnrichedArticle[], feedDate: strin
     .eq("stage", "prod");
   const prodTitles = new Set((prodRows ?? []).map((r: { title: string }) => r.title));
 
-  const newRows = articles
-    .filter((a) => !prodTitles.has(a.title))
-    .map((a) => articleToRow(a, feedDate));
+  const toInsert = articles.filter((a) => !prodTitles.has(a.title));
+
+  // ─── Image processing ───────────────────────────────────────────────────────
+  // Run the download → resize → upload pipeline on just the new articles
+  // (existing prod rows are excluded above, so they're never touched). Any
+  // image that processes successfully gets its `imageUrl` mutated in-place
+  // before articleToRow() captures it. This is the ONLY place new articles
+  // get their images rewritten — keeps the change surgical.
+  await processImagesForArticles(toInsert, feedDate);
+
+  const newRows = toInsert.map((a) => articleToRow(a, feedDate));
 
   if (newRows.length === 0) {
     console.log("[supabase] All articles for", feedDate, "already exist as prod — nothing to insert.");

@@ -203,6 +203,23 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
               {/* Article body */}
               <div className="max-w-2xl mx-auto px-5 pt-7 pb-28 sm:px-8">
 
+                {/* Image credit — subtle editorial caption under the hero */}
+                {article.imageCredit && (
+                  <p
+                    className="font-['Lora']"
+                    style={{
+                      fontSize: '11px',
+                      fontStyle: 'italic',
+                      color: 'rgba(0,0,0,0.42)',
+                      letterSpacing: '0.01em',
+                      marginBottom: '14px',
+                      marginTop: '-6px',
+                    }}
+                  >
+                    Photograph — {article.imageCredit}
+                  </p>
+                )}
+
                 {/* Category + source pills + date */}
                 <div className="flex flex-wrap items-center gap-2 mb-5">
                   <span

@@ -30,6 +30,7 @@ export interface NewsArticle {
   imageFocalY?: number | null;
   imageSafeW?: number | null;
   imageSafeH?: number | null;
+  imageCredit?: string | null;
   keyPoints?: string[] | null;
   impact?: string | null;
   signalScore?: number | null;

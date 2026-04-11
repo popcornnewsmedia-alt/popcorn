@@ -2,14 +2,16 @@ import { useState } from "react";
 import { X, ArrowRight } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
+import type { LegalKind } from "@/components/LegalSheet";
 
 interface SignInSheetProps {
   isOpen: boolean;
   onClose: () => void;
   onSignUpInstead: () => void;
+  onOpenLegal?: (kind: LegalKind) => void;
 }
 
-export function SignInSheet({ isOpen, onClose, onSignUpInstead }: SignInSheetProps) {
+export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal }: SignInSheetProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -50,13 +52,13 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead }: SignInSheetPro
   return (
     <>
       <div
-        className="fixed inset-0 z-50 transition-opacity duration-300"
+        className="fixed inset-0 z-[220] transition-opacity duration-300"
         style={{ background: 'rgba(0,0,0,0.65)', opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'auto' : 'none' }}
         onClick={handleClose}
       />
 
       <div
-        className="fixed inset-x-0 bottom-0 z-50 flex flex-col overflow-hidden"
+        className="fixed inset-x-0 bottom-0 z-[220] flex flex-col overflow-hidden"
         style={{
           background: '#053980',
           borderRadius: '20px 20px 0 0',
@@ -170,6 +172,35 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead }: SignInSheetPro
             No account?{" "}
             <span style={{ color: '#fff1cd', fontWeight: 600 }}>Create one</span>
           </button>
+          {onOpenLegal && (
+            <p
+              className="font-['Inter']"
+              style={{
+                textAlign: 'center',
+                fontSize: '10.5px',
+                lineHeight: 1.55,
+                color: 'rgba(255,241,205,0.35)',
+                marginTop: '-4px',
+              }}
+            >
+              By signing in you agree to our{" "}
+              <button
+                onClick={(e) => { e.stopPropagation(); onOpenLegal("terms"); }}
+                className="inline"
+                style={{ color: 'rgba(255,241,205,0.72)', borderBottom: '1px solid rgba(255,241,205,0.28)', fontWeight: 600 }}
+              >
+                Terms
+              </button>{" "}
+              &{" "}
+              <button
+                onClick={(e) => { e.stopPropagation(); onOpenLegal("privacy"); }}
+                className="inline"
+                style={{ color: 'rgba(255,241,205,0.72)', borderBottom: '1px solid rgba(255,241,205,0.28)', fontWeight: 600 }}
+              >
+                Privacy
+              </button>.
+            </p>
+          )}
         </div>
       </div>
     </>
