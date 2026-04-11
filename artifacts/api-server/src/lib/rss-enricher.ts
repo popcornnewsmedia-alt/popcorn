@@ -1906,6 +1906,14 @@ DEFAULT FAILURES — The following story types fail Question 1 by default and re
 
 SPECIFICITY — If you cannot name the person, the event, and the verifiable fact from the article alone, reject it. Stories that require insider knowledge to evaluate are not Popcorn material.
 
+CELEBRITY FEUDS & GOSSIP — Exclude low-stakes celebrity conflicts, beef responses, and diss tracks unless they: (a) trigger a meaningful public debate, (b) represent a real cultural rupture or unexpected collision, or (c) have already escaped the entertainment bubble and become broadly discussed. A rapper responding to another rapper is not culture — it is celebrity noise. The bar: would this matter to people outside that fanbase?
+
+UPDATES ON PAST EVENTS — Reject updates, follow-ups, and numbers-driven stories about events from prior news cycles (subscriber loss from a 2025 disaster, earnings announcements, status updates). These are not breaking developments — they are echo reporting. Include only if the update itself represents a surprising or unprecedented shift (e.g., a company's entire business model collapsing, not "they lost 200k users").
+
+MINOR NOVELTY INCIDENTS — Exclude freak accidents, one-off weird stories, and minor mishaps with no ripple effect (e.g., a self-driving car going the wrong way through a fast-food drive-thru). The shareability test does NOT override the "does this shape culture?" test. A story must be genuinely strange AND indicate a cultural shift, not just weird for its own sake.
+
+NICHE AUDIENCE CONTENT — Do not include stories whose significance is internal to a specific fanbase, industry, or subculture. If the story only matters to fans of a very specific artist, game, or creator, and has no broader cultural resonance, exclude it. A test: would this be on the homepage of a general culture outlet?
+
 ━━━ SPORTS ━━━
 Only qualifies when crossing into mainstream cultural conversation: historic firsts that non-fans would celebrate, major controversies spilling into broader discourse, record-breaking economic moments. Never: match results, standings, transfers, injuries, or routine playoff coverage.
 
