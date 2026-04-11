@@ -50,8 +50,63 @@ export function ArticleCard({
     typeof article.imageFocalX === 'number' &&
     typeof article.imageFocalY === 'number';
 
+  // Convert a normalised focal point (0–1) into the correct CSS object-position
+  // percentage for a cover-cropped image.
+  //
+  // WHY: `object-position: focalX% focalY%` is WRONG for images whose aspect
+  // ratio differs significantly from the container. CSS `object-position: X%`
+  // means "align the X%-point of the IMAGE with the X%-point of the BOX", not
+  // "show the image centred on the focal point". The correct value is:
+  //
+  //   px = (containerW/2 − focalX × scaledW) / (containerW − scaledW) × 100
+  //
+  // …clamped to [0, 100]. This centres the focal point in the visible crop area
+  // regardless of the image/container aspect ratio mismatch.
+  //
+  // Example — Bluesky article (5332×3000) on iPhone (393×844):
+  //   naive:   object-position: 82% → shows 73.7% of image from left (447 px off)
+  //   correct: object-position: 93.4% → correctly centres at 82%
+  function focalToObjectPosition(
+    fx: number, fy: number,
+    iw: number | null | undefined,
+    ih: number | null | undefined,
+    cw: number, ch: number,
+  ): string {
+    if (!iw || !ih) {
+      // No image dimensions stored — fall back to the naive approximation.
+      return `${(fx * 100).toFixed(1)}% ${(fy * 100).toFixed(1)}%`;
+    }
+    const scale  = Math.max(cw / iw, ch / ih);
+    const scaledW = iw * scale;
+    const scaledH = ih * scale;
+
+    let px = 50;
+    if (scaledW > cw + 0.5) {
+      px = ((cw / 2) - fx * scaledW) / (cw - scaledW) * 100;
+      px = Math.max(0, Math.min(100, px));
+    }
+
+    let py = 50;
+    if (scaledH > ch + 0.5) {
+      py = ((ch / 2) - fy * scaledH) / (ch - scaledH) * 100;
+      py = Math.max(0, Math.min(100, py));
+    }
+
+    return `${px.toFixed(1)}% ${py.toFixed(1)}%`;
+  }
+
+  const containerW = window.innerWidth;
+  const containerH = viewportHeight ?? window.innerHeight;
+
   const objectPosition = hasFocal
-    ? `${((article.imageFocalX as number) * 100).toFixed(1)}% ${((article.imageFocalY as number) * 100).toFixed(1)}%`
+    ? focalToObjectPosition(
+        article.imageFocalX as number,
+        article.imageFocalY as number,
+        article.imageWidth,
+        article.imageHeight,
+        containerW,
+        containerH,
+      )
     : 'center';
 
   // Out-of-window: same-height snap placeholder, zero memory / decode pressure.

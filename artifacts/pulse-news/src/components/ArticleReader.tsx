@@ -8,6 +8,32 @@ import { useBookmarkArticle, useLikeArticle } from "@/hooks/use-news";
 import { CommentSheet, getInitialCommentCount } from "@/components/CommentSheet";
 import { GrainBackground } from "@/components/GrainBackground";
 
+// Converts a normalised focal point (0–1) to the correct CSS object-position
+// percentage, taking the actual image and container dimensions into account.
+// See ArticleCard.tsx for a full explanation of the maths.
+function focalToObjectPosition(
+  fx: number, fy: number,
+  iw: number | null | undefined,
+  ih: number | null | undefined,
+  cw: number, ch: number,
+): string {
+  if (!iw || !ih) return `${(fx * 100).toFixed(1)}% ${(fy * 100).toFixed(1)}%`;
+  const scale  = Math.max(cw / iw, ch / ih);
+  const scaledW = iw * scale;
+  const scaledH = ih * scale;
+  let px = 50;
+  if (scaledW > cw + 0.5) {
+    px = ((cw / 2) - fx * scaledW) / (cw - scaledW) * 100;
+    px = Math.max(0, Math.min(100, px));
+  }
+  let py = 50;
+  if (scaledH > ch + 0.5) {
+    py = ((ch / 2) - fy * scaledH) / (ch - scaledH) * 100;
+    py = Math.max(0, Math.min(100, py));
+  }
+  return `${px.toFixed(1)}% ${py.toFixed(1)}%`;
+}
+
 const CATEGORY_COLORS: Record<string, string> = {
   'Music':        '#e879f9',
   'Film & TV':    '#60a5fa',
@@ -103,7 +129,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                       position: 'absolute', top: 0, left: 0, width: '100%', height: '300px',
                       objectFit: 'cover',
                       objectPosition: typeof article.imageFocalX === 'number' && typeof article.imageFocalY === 'number'
-                        ? `${(article.imageFocalX * 100).toFixed(1)}% ${(article.imageFocalY * 100).toFixed(1)}%`
+                        ? focalToObjectPosition(article.imageFocalX, article.imageFocalY, article.imageWidth, article.imageHeight, window.innerWidth, 300)
                         : 'center 20%',
                     }}
                   />
@@ -157,7 +183,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                     className="w-full h-full object-cover"
                     style={{
                       objectPosition: typeof article.imageFocalX === 'number' && typeof article.imageFocalY === 'number'
-                        ? `${(article.imageFocalX * 100).toFixed(1)}% ${(article.imageFocalY * 100).toFixed(1)}%`
+                        ? focalToObjectPosition(article.imageFocalX, article.imageFocalY, article.imageWidth, article.imageHeight, window.innerWidth, 288)
                         : 'center 30%',
                     }}
                     onError={() => setImgError(true)}
