@@ -4,18 +4,19 @@ import "./index.css";
 import { setBaseUrl } from "@workspace/api-client-react";
 
 // Point the API client at the real server.
-// In production: don't set a base URL - let requests be relative (will use current domain)
+// In production: use www.popcornmedia.org explicitly
 // In dev: if VITE_API_URL is not set, the mock middleware handles it
-const apiUrl = import.meta.env.VITE_API_URL;
+let apiUrl = import.meta.env.VITE_API_URL;
+
+if (!apiUrl && import.meta.env.PROD) {
+  // Hardcode production API URL
+  apiUrl = "https://www.popcornmedia.org";
+}
 
 if (apiUrl) {
   console.log("[Popcorn] Setting API base URL to:", apiUrl);
   setBaseUrl(apiUrl);
-} else if (import.meta.env.PROD) {
-  // In production without explicit VITE_API_URL, use relative paths (no base URL)
-  console.log("[Popcorn] Using relative API paths (no base URL)");
 } else {
-  // In dev, the mock middleware handles requests
   console.log("[Popcorn] Dev mode - using mock middleware");
 }
 
