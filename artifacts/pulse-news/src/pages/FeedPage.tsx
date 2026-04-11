@@ -402,28 +402,55 @@ export function FeedPage() {
   // Prevents scroll-based date updates from overriding an explicit picker selection
   const pickerNavLockRef = useRef(false);
 
+  // Divider positions within feedItems — kept in a ref so the rAF loop can read
+  // them without being a React dep (avoids tearing down/recreating the loop).
+  const dividerIndicesRef = useRef<number[]>([]);
+  useEffect(() => {
+    dividerIndicesRef.current = feedItems
+      .map((item, i) => (item.kind === 'divider' ? i : -1))
+      .filter((i) => i >= 0);
+  }, [feedItems]);
+
   // ── Task 1: Pure DOM rAF loop ────────────────────────────────────────────────
-  // Reads scrollTop / (scrollHeight - clientHeight) on every animation frame and
-  // writes scaleX() to the fill div. Zero React involvement — no state, no renders.
+  // Progress bar tracks position within the CURRENT DAY section only, resetting
+  // to 0 each time a new DateDivider card scrolls into view. Each feed item
+  // (divider or article) occupies exactly one clientHeight of scroll space.
   // transform is compositor-only: no layout, no paint.
-  // Refs are accessed fresh each frame (not captured at mount) so the loop still
-  // works even if the first render was the pending-state early-return — where
-  // scrollContainerRef and feedBarFillRef are both null at effect-run time.
   useEffect(() => {
     let rafId: number;
     const loop = () => {
       const container = scrollContainerRef.current;
       const fill = feedBarFillRef.current;
       if (container && fill) {
-        const { scrollTop, scrollHeight, clientHeight } = container;
-        const max = scrollHeight - clientHeight;
-        fill.style.transform = `scaleX(${max > 0 ? scrollTop / max : 0})`;
+        const { scrollTop, clientHeight } = container;
+        const totalItems = feedItemsLengthRef.current;
+        if (clientHeight > 0 && totalItems > 0) {
+          // Fractional index of the current scroll position within feedItems
+          const currentIndex = scrollTop / clientHeight;
+
+          // Find which day section we're in (largest divider index ≤ currentIndex)
+          const dividers = dividerIndicesRef.current;
+          let sectionStart = 0;
+          let sectionEnd = totalItems;
+          for (let i = 0; i < dividers.length; i++) {
+            if (dividers[i] <= currentIndex) {
+              sectionStart = dividers[i];
+              sectionEnd = dividers[i + 1] ?? totalItems;
+            }
+          }
+
+          // Progress within section: 0 at divider, 1.0 at last article
+          const sectionLength = sectionEnd - sectionStart;
+          const denom = sectionLength > 1 ? sectionLength - 1 : 1;
+          const progress = Math.max(0, Math.min(1, (currentIndex - sectionStart) / denom));
+          fill.style.transform = `scaleX(${progress})`;
+        }
       }
       rafId = requestAnimationFrame(loop);
     };
     rafId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(rafId);
-  }, []); // purely DOM — no React deps
+  }, []); // purely DOM — reads refs each frame, no React deps
 
   // ── Card tracking: scroll-end listener ───────────────────────────────────────
   // IntersectionObserver is unreliable for this purpose on iOS Safari when the
@@ -496,29 +523,51 @@ export function FeedPage() {
     }
   }, [currentCardIndex, feedItems.length, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // Always cap navigation at yesterday — we only keep today + yesterday
-  const minDate = useMemo(() => startOfDay(subDays(new Date(), 1)), []);
+  // Dynamic min date — based on the oldest article actually available in the feed.
+  // Falls back to yesterday if no articles are loaded yet.
+  const minDate = useMemo(() => {
+    if (allArticles.length === 0) return startOfDay(subDays(new Date(), 1));
+    const oldest = allArticles.reduce((min, a) => {
+      const d = new Date(a.publishedAt);
+      return d < min ? d : min;
+    }, new Date(allArticles[0].publishedAt));
+    return startOfDay(oldest);
+  }, [allArticles]);
 
   const handleDatePick = useCallback((date: Date) => {
     pickerNavLockRef.current = true;
     setTimeout(() => { pickerNavLockRef.current = false; }, 700);
-    setSelectedDate(startOfDay(date));
-    if (isSameDay(date, startOfDay(new Date()))) {
+    const d = startOfDay(date);
+    setSelectedDate(d);
+    if (isSameDay(d, startOfDay(new Date()))) {
       scrollContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    const id = dividerIdForDate(date);
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    } else {
-      const firstMatch = allArticles.find(a => isSameDay(new Date(a.publishedAt), date));
-      if (firstMatch) {
-        const articleEl = document.getElementById(`article-${firstMatch.id}`);
-        articleEl?.scrollIntoView({ behavior: "smooth" });
-      }
+    // Index-based scrollTo — reliable in snap containers; scrollIntoView is not.
+    const dividerIdx = feedItems.findIndex(
+      (item) => item.kind === 'divider' && isSameDay(item.date, d)
+    );
+    if (dividerIdx !== -1) {
+      scrollContainerRef.current?.scrollTo({ top: dividerIdx * viewportHeight, behavior: "smooth" });
     }
-  }, [allArticles]);
+  }, [feedItems, viewportHeight]);
+
+  // Scroll to the top of the CURRENT day — i.e. to the DateDivider card that
+  // kicks off whichever day the user is currently scrolling through. If already
+  // on the divider, no-op. Triggered by tapping the top-right area of the feed.
+  const handleScrollToDayTop = useCallback(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const currentIndex = Math.round(container.scrollTop / viewportHeight);
+    const dividers = dividerIndicesRef.current;
+    let sectionStart = 0;
+    for (let i = 0; i < dividers.length; i++) {
+      if (dividers[i] <= currentIndex) sectionStart = dividers[i];
+    }
+    const target = sectionStart * viewportHeight;
+    if (Math.abs(container.scrollTop - target) < 8) return;
+    container.scrollTo({ top: target, behavior: "smooth" });
+  }, [viewportHeight]);
 
   if (status === "pending") {
     return (
@@ -569,7 +618,7 @@ export function FeedPage() {
   return (
     <div className="h-[100dvh] w-full relative">
       {showSplash && <SplashScreen onDone={handleSplashDone} />}
-      {activeTab === 'feed' && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker fillRef={feedBarFillRef} minDate={minDate} pickerOpen={pickerOpen} onPickerOpenChange={setPickerOpen} />}
+      {activeTab === 'feed' && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker fillRef={feedBarFillRef} minDate={minDate} pickerOpen={pickerOpen} onPickerOpenChange={setPickerOpen} onScrollToDayTop={handleScrollToDayTop} />}
 
       {/* Picker dismiss overlay — lives here so it can forward scroll gestures to the feed */}
       {pickerOpen && activeTab === 'feed' && (

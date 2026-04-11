@@ -31,6 +31,7 @@ import {
   resetIfNewDay,
   resetTodayFeed,
   removeArticles,
+  updateArticleImage,
 } from "./curated-store.js";
 
 // ─── Static fallback dataset ──────────────────────────────────────────────────
@@ -139,11 +140,9 @@ const STATIC_ARTICLES: EnrichedArticle[] = [
 let _isLive = false;
 
 export function getArticles(): EnrichedArticle[] {
-  if (_isLive) {
-    resetIfNewDay();
-    const feed = getPublishedFeed();
-    if (feed.length > 0) return feed;
-  }
+  resetIfNewDay();
+  const feed = getPublishedFeed();
+  if (feed.length > 0) return feed;
   return STATIC_ARTICLES.map((a) => ({ ...a }));
 }
 
@@ -175,6 +174,21 @@ export function deleteArticles(ids: number[]): number {
   return removeArticles(ids);
 }
 
+export async function updateArticleImageById(
+  id: number,
+  imageUrl: string,
+): Promise<EnrichedArticle | null> {
+  // Fetch dimensions for the new URL so the frontend can layout correctly
+  let width: number | undefined;
+  let height: number | undefined;
+  try {
+    const { fetchImageDimensions } = await import("./rss-enricher.js");
+    const dims = await fetchImageDimensions(imageUrl);
+    if (dims) { width = dims.width; height = dims.height; }
+  } catch { /* dimensions are optional — proceed without */ }
+  return updateArticleImage(id, imageUrl, width, height);
+}
+
 // ─── Enrichment + recurring refresh ──────────────────────────────────────────
 
 const REFRESH_INTERVAL_MS = 3 * 60 * 60 * 1000; // 3 hours
@@ -203,7 +217,6 @@ function runCurationCycle(attempt: number, windowStart?: Date, publishToday = fa
   loadLiveArticles(alreadyPublished, windowStart, publishToday)
     .then((enriched) => {
       const added = mergeFeed(enriched);
-      saveDailyFeed();
       saveCommittedFeed();
       _isLive = true;
       const total = getPublishedFeed().length;
@@ -255,12 +268,16 @@ let _shortlistRunning = false;
  * Generate today's shortlist of ~50 ranked candidates without calling Claude.
  * Saves to /tmp/popcorn-shortlist-YYYY-MM-DD.json for publish to reference.
  */
-export async function triggerShortlist(windowStart?: Date, windowEnd?: Date): Promise<ShortlistCandidate[]> {
+export async function triggerShortlist(
+  windowStart?: Date,
+  windowEnd?: Date,
+  customFeeds?: [string, string][],
+): Promise<ShortlistCandidate[]> {
   if (_shortlistRunning) throw new Error("Shortlist generation already in progress");
   _shortlistRunning = true;
   try {
     const alreadyPublished = getPublishedRefs();
-    const candidates = await generateShortlist(alreadyPublished, windowStart, windowEnd);
+    const candidates = await generateShortlist(alreadyPublished, windowStart, windowEnd, customFeeds);
     return candidates;
   } finally {
     _shortlistRunning = false;
@@ -284,7 +301,6 @@ export async function publishSelected(indices: number[]): Promise<number> {
   const rawItems = selected.map((c) => c._raw);
   const enriched = await enrichSelectedItems(rawItems);
   const added = mergeFeed(enriched);
-  saveDailyFeed();
   saveCommittedFeed();
   _isLive = true;
   return added;
@@ -298,7 +314,6 @@ export async function publishRawItems(items: RawRSSItem[], reset: boolean, publi
   if (reset) resetTodayFeed();
   const enriched = await enrichSelectedItems(items, publishToday);
   const added = mergeFeed(enriched);
-  saveDailyFeed();
   saveCommittedFeed();
   _isLive = true;
   return added;

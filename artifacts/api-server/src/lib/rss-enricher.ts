@@ -40,7 +40,7 @@ const CATEGORY_FALLBACK_IMAGES: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=1600&q=90", // editorial
   ],
   "Internet": [
-    "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1600&q=90", // phone / social
+    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=90", // people on phones / social scrolling
     "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1600&q=90", // scrolling screen
     "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?w=1600&q=90", // neon city night
     "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=90", // crowd / viral energy
@@ -153,9 +153,565 @@ export interface EnrichedArticle {
   imageUrl?: string | null;
   imageWidth?: number | null;
   imageHeight?: number | null;
+  /** Normalized focal point (0–1) of the main visual subject. */
+  imageFocalX?: number | null;
+  imageFocalY?: number | null;
+  /**
+   * Minimum normalized fraction (0–1) of the image width / height that must
+   * stay visible to preserve the story. Used by the card renderer to decide
+   * whether a cover-crop would sacrifice critical content (multi-subject
+   * compositions, product shots, group photos) and should fall back to
+   * contain-on-blurred-backdrop instead.
+   */
+  imageSafeW?: number | null;
+  imageSafeH?: number | null;
   keyPoints?: string[] | null;
   signalScore?: number | null;
   wikiSearchQuery?: string;
+}
+
+// ─── Image selection engine ───────────────────────────────────────────────────
+
+type ImageIntent =
+  | "PERSON"
+  | "FILM_TV"
+  | "MUSIC_ARTIST"
+  | "MUSIC_ALBUM"
+  | "EVENT"
+  | "PLACE"
+  | "ABSTRACT";
+
+interface ImageCandidate {
+  url: string;
+  source:
+    | "rss"
+    | "og"
+    | "youtube"
+    | "tmdb"
+    | "spotify"
+    | "itunes"
+    | "wikipedia"
+    | "unsplash"
+    | "category_fallback";
+  width?: number;
+  height?: number;
+}
+
+// ── Diversity tracker ─────────────────────────────────────────────────────────
+// Tracks the last IMAGE_DIVERSITY_WINDOW selected image URLs so repeated images
+// receive a scoring penalty and get displaced by fresher ones.
+
+const _imageDiversityMap = new Map<string, number>(); // url → usage count
+const _imageDiversityQueue: string[] = [];            // insertion-ordered ring, max 100
+const IMAGE_DIVERSITY_WINDOW = 100;
+
+function trackImageUrl(url: string | null | undefined): void {
+  if (!url || url.startsWith("__NEEDS_OG__")) return;
+  _imageDiversityMap.set(url, (_imageDiversityMap.get(url) ?? 0) + 1);
+  _imageDiversityQueue.push(url);
+  if (_imageDiversityQueue.length > IMAGE_DIVERSITY_WINDOW) {
+    const evicted = _imageDiversityQueue.shift()!;
+    const prev = _imageDiversityMap.get(evicted) ?? 1;
+    if (prev <= 1) _imageDiversityMap.delete(evicted);
+    else _imageDiversityMap.set(evicted, prev - 1);
+  }
+}
+
+function getDiversityPenalty(url: string): number {
+  const count = _imageDiversityMap.get(url) ?? 0;
+  if (count <= 1) return 0;
+  return (count - 1) * 30; // -30 per additional occurrence
+}
+
+// ── Intent classifier ─────────────────────────────────────────────────────────
+// Rule-based: no LLM. Category is the strongest signal; title + summary break ties.
+
+function classifyImageIntent(
+  category: string,
+  title: string,
+  summary: string
+): ImageIntent {
+  const text = `${title} ${summary}`.toLowerCase();
+
+  if (category === "Film & TV") return "FILM_TV";
+
+  if (category === "Music") {
+    const albumSignals =
+      /\b(album|ep|drops?|drop(ped)?|releas(e|es|ed)|track(s)?|song(s)?|single|lp|debut record)\b/;
+    return albumSignals.test(text) ? "MUSIC_ALBUM" : "MUSIC_ARTIST";
+  }
+
+  // Person signals — apply across any category
+  const personVerbs =
+    /\b(dies?|dead|death|born|marr(y|ies|ied)|arrest(s|ed)?|sentenced|win(s|ning)?|names?|appointed|joins?|leaves?|quit(s|ting)?|fired|hired|retire(s|d)?|comeback|announces?\s+(tour|pregnancy|divorce|split|album))\b/;
+  const personTitles =
+    /\b(singer|rapper|actor|actress|director|musician|athlete|golfer|footballer|comedian|presenter|ceo|founder|author)\b/;
+  if (personVerbs.test(text) || personTitles.test(text)) return "PERSON";
+
+  // Event signals
+  const eventSignals =
+    /\b(award(s)?|grammy|oscar|bafta|emmy|vma|festival|concert|tour|premiere|launch|unveil(ed|s)?|ceremony|showcase|gala|summit|cannes|sundance|coachella)\b/;
+  if (eventSignals.test(text)) return "EVENT";
+
+  // Place signals
+  const placeSignals =
+    /\b(city|country|nation|region|museum|gallery|venue|stadium|arena|theater|theatre|landmark)\b/;
+  if (placeSignals.test(text)) return "PLACE";
+
+  // Abstract categories — these rarely have a useful human subject image
+  const abstractCategories = new Set(["AI", "Tech", "Internet", "Industry", "Science", "Books"]);
+  if (abstractCategories.has(category)) return "ABSTRACT";
+
+  // Fallback: if the headline starts with what looks like a proper noun, treat as PERSON
+  const hasProperNoun = /^[A-Z][a-z]+ [A-Z][a-z]+/.test(title);
+  return hasProperNoun ? "PERSON" : "ABSTRACT";
+}
+
+// ── Candidate scorer ──────────────────────────────────────────────────────────
+
+const SOURCE_BASE_SCORES: Record<ImageCandidate["source"], number> = {
+  tmdb:              25,
+  og:                20,
+  youtube:           18,
+  spotify:           15,
+  wikipedia:         12,
+  rss:               10,
+  unsplash:          10,
+  itunes:             8,
+  category_fallback: -20,
+};
+
+function scoreCandidate(
+  c: ImageCandidate,
+  intent: ImageIntent,
+  isAlbumIntent: boolean
+): number {
+  let score = SOURCE_BASE_SCORES[c.source];
+
+  const { width, height } = c;
+
+  // Resolution bonus / penalty
+  if (width !== undefined) {
+    if      (width >= 1200) score += 15;
+    else if (width >= 800)  score += 10;
+    else if (width >= 600)  score +=  5;
+    else if (width < 400)   score -= 20;
+  }
+
+  // Aspect ratio bonus / penalty
+  if (width !== undefined && height !== undefined && height > 0) {
+    const ratio = width / height;
+    if      (ratio >= 1.3 && ratio <= 2.0) score += 10;  // ideal editorial
+    else if (ratio < 0.5 || ratio > 2.5)   score -= 15;  // extreme strip / sliver
+
+    // Artifact penalty: square-ish image on non-album content (album covers, logos)
+    if (!isAlbumIntent && ratio >= 0.9 && ratio <= 1.1) score -= 15;
+  }
+
+  // Intent-alignment bonuses
+  if (intent === "FILM_TV"       && c.source === "tmdb")      score += 20;
+  if (intent === "MUSIC_ARTIST"  && c.source === "spotify")   score += 10;
+  if (intent === "MUSIC_ALBUM"   && c.source === "spotify")   score += 15;
+  if (intent === "MUSIC_ALBUM"   && c.source === "itunes")    score +=  5;
+  if (intent === "PERSON"        && c.source === "wikipedia") score += 10;
+  if (intent === "EVENT"         && c.source === "youtube")   score += 12;
+
+  // Diversity penalty
+  score -= getDiversityPenalty(c.url);
+
+  return Math.max(-50, Math.min(100, score));
+}
+
+// ── Source priority map ───────────────────────────────────────────────────────
+// Determines which sources are attempted for each intent, and acts as a
+// tiebreaker when two candidates have equal scores.
+
+const INTENT_SOURCE_ORDER: Record<ImageIntent, ImageCandidate["source"][]> = {
+  PERSON:       ["rss", "og", "wikipedia", "youtube", "spotify", "unsplash"],
+  FILM_TV:      ["rss", "og", "tmdb", "youtube", "wikipedia", "unsplash"],
+  MUSIC_ARTIST: ["rss", "og", "spotify", "youtube", "wikipedia", "unsplash"],
+  MUSIC_ALBUM:  ["rss", "og", "spotify", "itunes", "youtube", "wikipedia"],
+  EVENT:        ["rss", "og", "youtube", "wikipedia", "unsplash"],
+  PLACE:        ["rss", "og", "wikipedia", "unsplash"],
+  ABSTRACT:     ["rss", "og", "unsplash", "category_fallback"],
+};
+
+// ── Focal-point + safe-box detector ───────────────────────────────────────────
+// Uses Claude's vision API to return:
+//   - (x, y): focal point of the main subject
+//   - (safeW, safeH): the MINIMUM fraction of the image that must remain
+//     visible to preserve the story
+//
+// Returns null on failure, in which case callers should fall back to centre
+// with no safe-box hint (preserving legacy cover-crop behaviour).
+//
+// SAFETY: This function is additive. A null return always preserves the current
+// centre-crop behaviour — it never breaks images that already look fine.
+
+export async function detectImageFocalPoint(
+  imageUrl: string,
+  context?: { title?: string; summary?: string; category?: string }
+): Promise<{ x: number; y: number; safeW: number; safeH: number } | null> {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey || !imageUrl || imageUrl.startsWith("__NEEDS_OG__")) return null;
+
+  const contextLines: string[] = [];
+  if (context?.title)    contextLines.push(`Article title: "${context.title}"`);
+  if (context?.category) contextLines.push(`Category: ${context.category}`);
+  if (context?.summary)  contextLines.push(`Summary: ${context.summary.slice(0, 240)}`);
+  const contextBlock = contextLines.length > 0 ? contextLines.join("\n") + "\n\n" : "";
+
+  const body = JSON.stringify({
+    model: "claude-sonnet-4-6",
+    max_tokens: 200,
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "image",
+            source: { type: "url", url: imageUrl },
+          },
+          {
+            type: "text",
+            text:
+              contextBlock +
+              "This image is the hero background for the article above, shown full-bleed in a tall portrait mobile feed (~9:16 aspect). Return JSON with:\n\n" +
+              '{"x": 0.50, "y": 0.40, "safeW": 0.30, "safeH": 0.55}\n\n' +
+              "- x, y: focal point of the single most important element (0,0=top-left, 1,1=bottom-right).\n" +
+              "- safeW, safeH: the MINIMUM fraction of image width/height that must remain visible to preserve the article's story.\n\n" +
+              "HOW TO DECIDE THE SAFE BOX — look at the article context, then the image:\n\n" +
+              "1. IS THE STORY ABOUT A SINGLE PERSON? (one celebrity, one artist, one CEO)\n" +
+              "   → Use safeW 0.15–0.30, safeH 0.25–0.50. Only that person's face matters.\n" +
+              "   The stage, microphone, band behind them, audience, concert lighting, office backdrop — ALL disposable.\n" +
+              "   Example: 'Noah Kahan announces tour' with a concert photo → safeW 0.25 (just his face), offset focal to where he stands.\n\n" +
+              "2. IS THE STORY ABOUT TWO+ PEOPLE WHO ALL MATTER? (a duo meeting, a group photo, a band of 4+, 'X meets Y')\n" +
+              "   → Use safeW 0.70–0.95. Must span ALL faces horizontally.\n" +
+              "   Example: 'Fifty Fifty cover Pink Floyd' with a 4-member group photo → safeW 0.90.\n" +
+              "   Example: 'Tom DeLonge shows Trent Reznor an alien photo' with both men → safeW 0.85.\n\n" +
+              "3. IS THE STORY ABOUT A PRODUCT'S SHAPE OR DESIGN? (a shoe, a car, a poster, a book cover, a gadget)\n" +
+              "   → Use safeW 0.70–0.90, safeH 0.55–0.85. You need to see the whole object.\n" +
+              "   Example: 'Vans slip-on gets Chanel makeover' with a horizontal shoe shot → safeW 0.85 (need toe AND heel).\n" +
+              "   Example: 'New iPhone unveiled' with the device on a table → safeW 0.75.\n\n" +
+              "4. IS THE STORY ABOUT AN EVENT / SCENE / PLACE?\n" +
+              "   → Use safeW 0.50–0.70, safeH 0.50–0.70. Preserve composition but crop edges.\n\n" +
+              "5. ABSTRACT / ILLUSTRATION / LOGO?\n" +
+              "   → Use safeW 0.50, safeH 0.60.\n\n" +
+              "KEY RULES:\n" +
+              "- If ONLY ONE FACE is visible and the article is about that person, safeW must be ≤ 0.30. No exceptions — the face is all that matters.\n" +
+              "- If the article title mentions TWO OR MORE people by name, safeW must be ≥ 0.70.\n" +
+              "- Default to the SMALLEST safe box that still tells the story. The front-end has a 10% tolerance buffer for borderline cases.\n" +
+              "- Respond with ONLY the JSON object. No prose.",
+          },
+        ],
+      },
+    ],
+  });
+
+  try {
+    const raw = await new Promise<string>((resolve, reject) => {
+      const req = https.request(
+        {
+          hostname: "api.anthropic.com",
+          path: "/v1/messages",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+            "anthropic-version": "2023-06-01",
+            "Content-Length": Buffer.byteLength(body),
+          },
+        },
+        (res) => {
+          let data = "";
+          res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
+          res.on("end", () => {
+            if ((res.statusCode ?? 0) >= 400) {
+              reject(new Error(`focal ${res.statusCode}: ${data.slice(0, 200)}`));
+            } else {
+              try {
+                const json = JSON.parse(data);
+                const content = json?.content?.[0];
+                resolve(content?.type === "text" ? content.text : "");
+              } catch {
+                reject(new Error("parse"));
+              }
+            }
+          });
+        }
+      );
+      req.setTimeout(20_000, () => req.destroy(new Error("focal timeout")));
+      req.on("error", reject);
+      req.write(body);
+      req.end();
+    });
+
+    // Pull the first JSON object out of the response text. We allow it to be
+    // fairly loose — just look for {...} containing all four keys.
+    const match = raw.match(/\{[\s\S]*?\}/);
+    if (!match) return null;
+
+    const parsed = JSON.parse(match[0]) as {
+      x?: unknown;
+      y?: unknown;
+      safeW?: unknown;
+      safeH?: unknown;
+    };
+
+    const num = (v: unknown): number | null => {
+      if (typeof v !== "number") return null;
+      if (!Number.isFinite(v)) return null;
+      return v;
+    };
+
+    const x = num(parsed.x);
+    const y = num(parsed.y);
+    let safeW = num(parsed.safeW);
+    let safeH = num(parsed.safeH);
+    if (x === null || y === null) return null;
+
+    // safeW/safeH are optional — if missing, fall back to a "fits cover" default
+    // so legacy behaviour is preserved.
+    if (safeW === null) safeW = 0.3;
+    if (safeH === null) safeH = 0.5;
+
+    // Clamp into sane ranges. Floor safeW/safeH at 0.1 (no smaller than a dot)
+    // and cap at 1.0 (can't be bigger than the image).
+    const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+    const clampSafe = (v: number) => Math.min(1, Math.max(0.1, v));
+
+    return {
+      x:     clamp01(x),
+      y:     clamp01(y),
+      safeW: clampSafe(safeW),
+      safeH: clampSafe(safeH),
+    };
+  } catch (err) {
+    console.warn(`[focal] detection failed for ${imageUrl.slice(0, 60)}: ${(err as Error).message}`);
+    return null;
+  }
+}
+
+// ── selectBestImage ───────────────────────────────────────────────────────────
+// Collects ALL candidate images from applicable sources in parallel,
+// scores every candidate, and returns the highest-scoring image.
+
+async function selectBestImage(
+  article: EnrichedArticle,
+  articleUrl: string,
+  rssImageUrl: string | null,
+  fallbackIdx: number
+): Promise<{
+  url: string;
+  width?: number;
+  height?: number;
+  focalX?: number;
+  focalY?: number;
+  safeW?: number;
+  safeH?: number;
+}> {
+  const wikiQuery = article.wikiSearchQuery ?? "";
+  const intent = classifyImageIntent(
+    article.category,
+    article.title,
+    article.summary ?? ""
+  );
+  const isAlbumIntent = intent === "MUSIC_ALBUM";
+  const applicableSources = INTENT_SOURCE_ORDER[intent];
+
+  // ── Collect all candidates in parallel ──────────────────────────────────────
+  let resolvedOgUrl: string | undefined;
+
+  const fetchTasks: Promise<ImageCandidate | null>[] = [
+
+    // 1. RSS image (already validated before this call; passed in directly)
+    Promise.resolve(
+      rssImageUrl && applicableSources.includes("rss")
+        ? ({ url: rssImageUrl, source: "rss" } as ImageCandidate)
+        : null
+    ),
+
+    // 2. OG image — strict: quality + dims + isStrictOGValid
+    (async (): Promise<ImageCandidate | null> => {
+      if (!articleUrl || !applicableSources.includes("og")) return null;
+      try { resolvedOgUrl = await fetchOGImage(articleUrl); } catch { return null; }
+      if (!isGoodImageUrl(resolvedOgUrl)) return null;
+      const passesQuality = await isHighQualityImage(resolvedOgUrl!);
+      if (!passesQuality) return null;
+      const dims = await fetchImageDimensions(resolvedOgUrl!);
+      if (!isStrictOGValid(resolvedOgUrl!, dims)) return null;
+      if (dims && !isValidAspectRatio(dims.width, dims.height)) return null;
+      return { url: resolvedOgUrl!, source: "og", width: dims?.width, height: dims?.height };
+    })(),
+
+    // 3. YouTube embedded thumbnail
+    (async (): Promise<ImageCandidate | null> => {
+      if (!articleUrl || !applicableSources.includes("youtube")) return null;
+      try {
+        const htmlRes = await fetch(articleUrl, {
+          signal: AbortSignal.timeout(5000),
+          headers: { "User-Agent": "Mozilla/5.0" },
+        });
+        if (!htmlRes.ok) return null;
+        const videoId = extractYouTubeId(await htmlRes.text());
+        if (!videoId) return null;
+        const ytUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        if (!(await isHighQualityImage(ytUrl))) return null;
+        const dims = await fetchImageDimensions(ytUrl);
+        if (dims && dims.width < 640) return null;
+        return { url: ytUrl, source: "youtube", width: dims?.width, height: dims?.height };
+      } catch { return null; }
+    })(),
+
+    // 4. YouTube active search (FILM_TV, MUSIC, EVENT — requires YOUTUBE_API_KEY)
+    (async (): Promise<ImageCandidate | null> => {
+      const ytKey = process.env.YOUTUBE_API_KEY;
+      if (!ytKey || !wikiQuery || !applicableSources.includes("youtube")) return null;
+      const activeIntents = new Set<ImageIntent>(["FILM_TV", "MUSIC_ARTIST", "MUSIC_ALBUM", "EVENT"]);
+      if (!activeIntents.has(intent)) return null;
+      try {
+        const q = encodeURIComponent(`${wikiQuery} official trailer OR official video OR music video`);
+        const res = await fetch(
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${q}&type=video&maxResults=1&key=${ytKey}`,
+          { signal: AbortSignal.timeout(4000) }
+        );
+        if (!res.ok) return null;
+        const data = await res.json() as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+        const videoId: string | undefined = data?.items?.[0]?.id?.videoId;
+        if (!videoId) return null;
+        const ytUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        if (!(await isHighQualityImage(ytUrl))) return null;
+        const dims = await fetchImageDimensions(ytUrl);
+        if (dims && dims.width < 640) return null;
+        return { url: ytUrl, source: "youtube", width: dims?.width, height: dims?.height };
+      } catch { return null; }
+    })(),
+
+    // 5. TMDb — Film & TV posters / person profiles
+    (async (): Promise<ImageCandidate | null> => {
+      if (!wikiQuery || !applicableSources.includes("tmdb")) return null;
+      const url = await fetchTMDbImage(wikiQuery);
+      if (!isGoodImageUrl(url)) return null;
+      const dims = await fetchImageDimensions(url!);
+      return { url: url!, source: "tmdb", width: dims?.width, height: dims?.height };
+    })(),
+
+    // 6. Spotify — artist / album art
+    (async (): Promise<ImageCandidate | null> => {
+      if (!wikiQuery || !applicableSources.includes("spotify")) return null;
+      const url = await fetchSpotifyImage(wikiQuery);
+      if (!isGoodImageUrl(url)) return null;
+      const dims = await fetchImageDimensions(url!);
+      return { url: url!, source: "spotify", width: dims?.width, height: dims?.height };
+    })(),
+
+    // 7. iTunes — album / artist art
+    (async (): Promise<ImageCandidate | null> => {
+      if (!wikiQuery || !applicableSources.includes("itunes")) return null;
+      const url = await fetchItunesImage(wikiQuery);
+      if (!isGoodImageUrl(url)) return null;
+      const dims = await fetchImageDimensions(url!);
+      return { url: url!, source: "itunes", width: dims?.width, height: dims?.height };
+    })(),
+
+    // 8. Wikipedia — entity image (high trust for PERSON / FILM_TV / MUSIC)
+    (async (): Promise<ImageCandidate | null> => {
+      if (!wikiQuery || !applicableSources.includes("wikipedia")) return null;
+      const url = await fetchWikipediaImage(wikiQuery);
+      if (!isGoodImageUrl(url)) return null;
+      if (!(await isHighQualityImage(url!))) return null;
+      const dims = await fetchImageDimensions(url!);
+      return { url: url!, source: "wikipedia", width: dims?.width, height: dims?.height };
+    })(),
+
+    // 9. Unsplash — controlled editorial fallback (not last resort)
+    (async (): Promise<ImageCandidate | null> => {
+      if (!wikiQuery || !applicableSources.includes("unsplash")) return null;
+      const url = await fetchUnsplashImage(wikiQuery, article.category);
+      if (!isGoodImageUrl(url)) return null;
+      const dims = await fetchImageDimensions(url!);
+      return { url: url!, source: "unsplash", width: dims?.width, height: dims?.height };
+    })(),
+  ];
+
+  const settled = await Promise.allSettled(fetchTasks);
+
+  // Collect all non-null fulfilled results
+  const rawCandidates: ImageCandidate[] = settled
+    .filter((r): r is PromiseFulfilledResult<ImageCandidate | null> => r.status === "fulfilled")
+    .map((r) => r.value)
+    .filter((c): c is ImageCandidate => c !== null);
+
+  // OG fallback: if strict OG validation failed but we have a raw URL, add as low-score candidate
+  if (
+    resolvedOgUrl &&
+    isGoodImageUrl(resolvedOgUrl) &&
+    !rawCandidates.find((c) => c.url === resolvedOgUrl)
+  ) {
+    rawCandidates.push({ url: resolvedOgUrl, source: "og" });
+  }
+
+  // Category fallback is always available as absolute last resort
+  rawCandidates.push({
+    url: fallbackImage(article.category, fallbackIdx),
+    source: "category_fallback",
+  });
+
+  // ── Score every candidate ────────────────────────────────────────────────────
+  const scored = rawCandidates.map((c) => ({
+    ...c,
+    score: scoreCandidate(c, intent, isAlbumIntent),
+  }));
+
+  // Sort by score descending; use source priority order as a tiebreaker
+  scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    const ai = applicableSources.indexOf(a.source);
+    const bi = applicableSources.indexOf(b.source);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  const winner = scored[0];
+  const diversityPenaltyApplied = getDiversityPenalty(winner.url) > 0;
+
+  // Register winner in diversity tracker
+  trackImageUrl(winner.url);
+
+  // Debug log
+  const top3 = scored.slice(0, 3).map((c) => `${c.source}(${c.score})`).join(" > ");
+  console.log(
+    `[img] ${intent} | ${winner.source} score=${winner.score}${diversityPenaltyApplied ? " [diversity]" : ""} | ${top3} | ${article.title.slice(0, 40)}`
+  );
+
+  // ── Focal point + safe-box detection (best-effort, null-safe) ───────────────
+  // Skip category_fallback images — they are generic stock photos where centre
+  // is always correct. We only spend a vision call on "real" subject imagery.
+  let focalX: number | undefined;
+  let focalY: number | undefined;
+  let safeW: number | undefined;
+  let safeH: number | undefined;
+  if (winner.source !== "category_fallback") {
+    const focal = await detectImageFocalPoint(winner.url);
+    if (focal) {
+      focalX = focal.x;
+      focalY = focal.y;
+      safeW = focal.safeW;
+      safeH = focal.safeH;
+      console.log(
+        `[focal] (${focal.x.toFixed(2)},${focal.y.toFixed(2)}) safe=(${focal.safeW.toFixed(2)}×${focal.safeH.toFixed(2)}) | ${article.title.slice(0, 40)}`
+      );
+    }
+  }
+
+  return {
+    url: winner.url,
+    width: winner.width,
+    height: winner.height,
+    focalX,
+    focalY,
+    safeW,
+    safeH,
+  };
 }
 
 // ─── XML helpers ─────────────────────────────────────────────────────────────
@@ -356,11 +912,14 @@ function isStrictOGValid(url: string, dims: { width: number; height: number } | 
  * Supports PNG (IHDR), JPEG (SOF markers), and WebP (VP8 / VP8L / VP8X).
  * Returns null if dimensions cannot be determined (caller should pass the image).
  */
-async function fetchImageDimensions(url: string): Promise<{ width: number; height: number } | null> {
+export async function fetchImageDimensions(url: string): Promise<{ width: number; height: number } | null> {
   try {
+    // 64KB is enough to reach the SOF marker in almost every JPEG — even ones
+    // with large EXIF / ICC profiles. 2KB was too stingy and left many images
+    // (especially ones saved from Photoshop / CMS uploads) without dimensions.
     const res = await fetch(url, {
-      headers: { Range: "bytes=0-2047" },
-      signal: AbortSignal.timeout(3000),
+      headers: { Range: "bytes=0-65535" },
+      signal: AbortSignal.timeout(5000),
     });
     if (!res.ok && res.status !== 206) return null;
     const buf = Buffer.from(await res.arrayBuffer());
@@ -371,14 +930,18 @@ async function fetchImageDimensions(url: string): Promise<{ width: number; heigh
       return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
     }
 
-    // JPEG: starts FF D8 — scan for SOF0 (FF C0) or SOF2 (FF C2) marker
+    // JPEG: starts FF D8 — scan for any SOF marker (FF C0–FF CF, except
+    // FF C4 DHT / FF C8 reserved / FF CC DAC which are not SOF).
     if (buf[0] === 0xff && buf[1] === 0xd8) {
       let i = 2;
       while (i < buf.length - 8) {
         if (buf[i] !== 0xff) break;
         const marker = buf[i + 1];
         const segLen = buf.readUInt16BE(i + 2);
-        if (marker === 0xc0 || marker === 0xc2) {
+        const isSOF =
+          marker >= 0xc0 && marker <= 0xcf &&
+          marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc;
+        if (isSOF) {
           return { height: buf.readUInt16BE(i + 5), width: buf.readUInt16BE(i + 7) };
         }
         i += 2 + segLen;
@@ -909,12 +1472,16 @@ const DOMAIN_BY_SOURCE: Partial<Record<string, SignalDomain>> = {
   "The Verge":        "AI_TECH",
   "TechCrunch":       "AI_TECH",
   "Wired":            "AI_TECH",
+  "Futurism":         "AI_TECH",
   "ESPN":             "SPORTS",
+  "Sky Sports":       "SPORTS",
   "Know Your Meme":   "INTERNET",
   "Dexerto":          "INTERNET",
   "Semafor":          "CROSSDOMAIN",
   "The Atlantic":     "CROSSDOMAIN",
   "The New Yorker":   "CROSSDOMAIN",
+  "Business Insider": "CROSSDOMAIN",
+  "404 Media":        "CROSSDOMAIN",
   "Hypebeast":        "ECONOMIC",
   "Highsnobiety":     "ECONOMIC",
 };
@@ -982,6 +1549,18 @@ const JUNK_TITLE_PATTERNS = [
   // Hard-blocked content — explicit/bait titles that must never reach Claude
   /\bdrop\s+(an?\s+)?f.?bomb\b/i,
   /\bf.?bomb\b.{0,40}(movie|film|trailer|show|scene|episode|clip)/i,
+  // Gaming promo codes with month/year slug — "Doom by Fate codes (April 2026)"
+  /\bcodes?\s*\((?:january|february|march|april|may|june|july|august|september|october|november|december)\s*\d{4}\)/i,
+  /\bcodes?\s+\w{2,20}\s+\d{4}\b/i,   // "codes May 2026" etc.
+  // Defense / military technology — never culturally consequential for Popcorn
+  /\bhypersonic\s+(fighter|weapon|missile|combat|jet)\b/i,
+  /\b(military|defense).grade\b/i,
+  /\bautonomo\w+\s+hypersonic\b/i,
+  // Geopolitical energy & commodity markets — out of Popcorn scope
+  /\boil\b.{0,40}(approaches|climbs|deadline|nonlinear|pricing|barrel)\b/i,
+  /\bgreen\s+hydrogen\b/i,
+  /\bParis\s+Agreement\s+target\b/i,
+  /\bArtemis\s+II\b.{0,40}head(s|ing)\s+back\b/i,  // duplicate Artemis pattern
 ];
 
 const STOP_WORDS = new Set([
@@ -1271,145 +1850,74 @@ async function enrichWithClaude(
 
   const selectionPrompt = `You are the editorial voice for Popcorn — a cultural lens app. Today is ${today}.
 
-Popcorn is not a general news feed. It is not a tabloid. It is not an intellectual reading list.
-It is a high-signal, opinionated snapshot of what actually matters in culture right now.
+Popcorn is a high-signal, opinionated snapshot of what actually matters in culture right now — not a general news feed, not a tabloid, not an intellectual reading list.
 
-You are a cultural signal detector across all domains — not an entertainment aggregator.
-You must be selective, decisive, and willing to exclude "good" content that is not culturally consequential today.
+Your job is not to apply rules. It is to exercise taste. Every decision is an editorial judgment.
 
-━━━ CORE TEST ━━━
-Every story must answer yes to: "Is this culturally consequential right now?"
-A story qualifies only if it meets at least one:
+━━━ THE ONLY TEST ━━━
+"Does this meaningfully shape, reflect, or interrupt culture right now?"
+
+If the answer requires justification — it's a no.
+
+A story earns its place only if it meets at least one:
   • SCALE — widely discussed, trending, or dominating attention right now
   • INFLUENCE — actively shaping taste, behaviour, or public discourse
   • SIGNAL — indicates a real shift in culture, media, or society
 
-If none apply → exclude it, even if it involves a famous name or major franchise.
+A strong feed is balanced across entertainment, internet culture, economic power, fandom, and cross-domain collisions. Do not over-index on any one area.
 
-━━━ SIGNAL CATEGORIES — SCAN ALL OF THESE ━━━
-You must actively detect signals across every category below, not just entertainment headlines.
-A strong feed is balanced across domains. Do not over-index on any single category.
+━━━ THREE QUESTIONS FOR EVERY STORY ━━━
 
-1. ENTERTAINMENT MOMENTS (high bar required)
-   Include only: major releases with proven audience scale, breakout moments generating genuine discourse, significant industry power shifts
-   Exclude: appearances, premieres, red carpets, casting, trailers, production updates, gossip, commentary
+1. HAS SOMETHING ACTUALLY HAPPENED?
+   Reviews, announcements, nominations, interviews, think-pieces, and unconfirmed speculation fail this test by default. The bar is a discrete, observable moment — something a neutral third party could witness or verify. Real events leave evidence: an economic decision, an institutional action, a cancellation, a ban, a first-ever occurrence, a measurable reach or scale shift, a visible behaviour change at audience scale. If the story could have been written before anything occurred, nothing has happened yet. When a trigger and its downstream consequence are both in the pool, always take the consequence — the furthest downstream event carries the most cultural weight.
+   Valid events include: a significant expansion of scale or access (new market, new platform capability, massive audience upgrade), a bizarre or chaotic real-world incident with spread potential, and any first that a broad public would recognise as meaningful.
 
-2. AI AND INTERNET CULTURE SHIFTS
-   Include: AI systems behaving unexpectedly in ways that spread widely online, viral AI-generated content trends that become memes or public debates, major model updates that change how people actually use AI tools
-   These matter because they reshape internet behaviour — not because they are tech news
+   MOMENT VS COMMENTARY — Ask: does this story exist because something happened, or because a writer responded to something already happening? Interviews, think-pieces, reviews, and meta-analysis are content about culture. Popcorn selects for things happening within culture. If the story can exist without a triggering event, it is commentary. Commentary fails.
 
-3. ECONOMIC AND CULTURAL POWER SIGNALS
-   Include: major wealth shifts involving cultural figures or luxury brands (e.g. a significant public loss of wealth), extreme pricing changes for cultural access (e.g. concert or sports tickets hitting historic levels), record-breaking streaming, box office, or revenue moments that reflect global attention shifts
-   These signal changes in access, status, and consumption — they are cultural, not financial
+2. HAS IT BROKEN OUT?
+   Fan interest, trade coverage, or insider commentary is not culture yet. Something that forces a public reaction — not just a read — has broken out. Something that generates debate, contradiction, or surprise across communities with no shared stake has broken out. Something still contained within its originating audience has not. Ask: would people with no connection to this domain bring it up today?
+   Virality and shareability are legitimate forms of cultural weight. A bizarre, human, or chaotic incident that spreads because it is genuinely surprising counts — prestige and institutional importance are not required. Do not over-index on seriousness.
 
-4. GLOBAL FANDOM AND SCALE EVENTS
-   Include: massive coordinated fandom activity (e.g. streaming mobilisation at BTS scale), global chart dominance or record-breaking releases driven by fan ecosystems, online fan campaigns that dominate social platforms
-   These indicate cultural scale and collective behaviour — not just popularity
-
-5. CROSS-DOMAIN CULTURAL COLLISIONS
-   Include: artists entering sports, politics, or tech in ways that generate broad public debate, sports controversies that spill into meme culture or mainstream discourse, tech or platform decisions that directly affect entertainment consumption or creative industries
-   These are high value because they connect multiple cultural systems and generate wider conversation
+3. DOES IT BELONG HERE?
+   Remove the cultural figure from the story. What remains? If the answer is political, economic, geopolitical, retail, or trade news — it belongs on a different feed. Popcorn covers culture. Cultural adjacency is not cultural consequence.
 
 ━━━ SCORING (0–100) ━━━
 Assign each article a cultural relevance score from 0 to 100:
   • 90–100 → Dominant cultural moment → must include
   • 75–89  → Strong relevance, widely discussed → include
-  • 60–74  → Borderline → include only if clearly additive to the feed and not covered by a stronger story
+  • 60–74  → Borderline → include only if clearly additive and not covered by a stronger story
   • Below 60 → Exclude
 
-Mandatory score penalties — apply strictly, reduce score significantly if:
-  - Trailer, teaser, or promotional content
-  - Casting announcement or routine project news
-  - Celebrity gossip, commentary, or low-stakes personal drama
-  - Premiere, appearance, or red carpet coverage
-  - Industry-only news with no demonstrated public traction
-  - Not time-sensitive or already widely known
+Ask: would this story exist without a press release, a publicist, or a PR cycle? If not — score it low. The presence of a famous name does not compensate for the absence of genuine cultural consequence.
 
-━━━ CULTURAL EVENT THRESHOLD ━━━
-A story qualifies as a "cultural event" only if it has at least ONE of:
-  • Demonstrated widespread public discourse (people are actively talking about it, not just reading about it)
-  • Meme or viral propagation that has spread beyond the original domain
-  • Cross-platform visibility (the story has broken out of its originating community)
-  • A controversy, value conflict, or moral tension that generates opposing reactions
-  • A measurable audience-scale reaction (streaming numbers, social volume, ticket sales, fan mobilisation)
+━━━ EDITORIAL INSTINCTS ━━━
 
-"Interesting" alone is NOT sufficient. "Surprising" alone is NOT sufficient.
-Platform milestones (a website leaving beta, a UI change, a new default setting) are interesting system updates — they are not cultural events unless they generate public outrage or discourse at scale.
-Political appointments and cabinet reshuffles are politics news — they are not cultural events unless directly involving a cultural figure (musician, artist, athlete, entertainer).
+RIPPLE EFFECTS — Prioritise cultural events that create ripple effects, not just cultural updates. A cultural update tells you something happened. A ripple-effect story changes something: it shifts public perception, forces a response from institutions, opens a debate that didn't exist before, or makes the next story inevitable. Ask: what does this story unlock or change?
 
-━━━ KNOWN FAILURE PATTERNS — NEVER INCLUDE THESE ━━━
-These story types have been incorrectly included before. Reject them on sight:
-  - Celebrity premiere or red carpet appearances (e.g. two stars attending a screening together)
-  - Legal dispute framing without a significant new ruling or cultural turning point (e.g. a lawsuit being "whittled down")
-  - Celebrity making remarks or commentary about another celebrity
-  - Personal milestones with no wider cultural reaction (e.g. returning to a role after illness)
-  - SNL appearances or celebrity pairings unless they generate sustained discourse beyond the initial moment
-  - Routine casting reveals for existing franchises
-  - Speculative delays, rumours, or "may happen" reporting
-  - Production changes with no public reaction (e.g. an actor quietly exiting a project)
-  - Prestige project announcements years away from release
-  - Platform or product "coming of age" milestones (e.g. a website finally leaving beta after years, an app changing a default setting, a feed being retired) — these are interesting system changes, not cultural events
-  - Political cabinet reshuffles, appointments, or personnel changes with no direct connection to a cultural figure or event
-  - Articles where the source description lacks specific named details — real people, specific titles, verifiable facts. If you cannot confidently name who this is about and what specifically happened, reject it. Vague community or niche stories without publicly verifiable specifics are not Popcorn material.
+REPLACEABILITY — "If this story was removed, would the feed feel weaker?" If no → cut it.
 
-━━━ STORY CHAIN RULE ━━━
-When multiple articles in the candidate pool cover the SAME story at different stages (a trigger event followed by a downstream consequence), select ONLY the most consequential article — not both.
-Examples of trigger → consequence chains:
-  - "Person X says Y" → "Brand Z drops Person X because of Y" → select the BRAND DROP only
-  - "Artist makes controversial statement" → "Sponsor withdraws" → select the SPONSOR WITHDRAWAL only
-  - "Event causes outrage" → "Platform bans content" → select the PLATFORM BAN only
-The downstream consequence (economic action, cancellation, brand response, ban) is always more culturally significant than the initial trigger statement alone. Selecting both dilutes the feed and buries the more impactful story. If you see a chain, pick the furthest downstream consequence and reject everything earlier in the chain.
+CONVERSATION STRENGTH — Prioritise stories with tension, controversy, a clear debate hook, an unexpected crossover, or a genuinely surprising and extreme angle. Passive, informational, or "nice to know" stories have no place here.
 
-━━━ EDITORIAL FILTERS ━━━
+BAR TEST — "Would two culturally aware people with different interests bring this up today?" If no → exclude.
 
-REPLACEABILITY TEST — "If this story was removed, would the feed feel weaker?" If no → remove it.
+PROMOTIONAL PENALTY — Trailers, teasers, and promotional cycles are not culture. Deprioritise aggressively unless there is clear, demonstrated traction well beyond the target fanbase.
 
-CONVERSATION STRENGTH — Prioritise stories with debate, tension, controversy, a clear discussion hook, an unexpected crossover, or a surprising and extreme angle. Avoid passive, informational, or "nice to know" stories.
+DEFAULT FAILURES — The following story types fail Question 1 by default and require exceptional evidence to override: music or film reviews (discovery, not events); rumours and unconfirmed leaks (build-up, not consequence); interviews and meta-commentary (responses to culture, not culture itself); award nominations and festival lineups that are purely administrative. The only override is when the story's mere existence has already triggered a large-scale public reaction.
 
-BAR TEST — "Would two culturally aware people across different interests bring this up today?" If no → exclude.
+SPECIFICITY — If you cannot name the person, the event, and the verifiable fact from the article alone, reject it. Stories that require insider knowledge to evaluate are not Popcorn material.
 
-CONTENT-ABOUT-CONTENT PENALTY — Deprioritise trailers, teasers, and promotional cycles unless they have clear, demonstrated cultural traction beyond the fanbase.
+━━━ SPORTS ━━━
+Only qualifies when crossing into mainstream cultural conversation: historic firsts that non-fans would celebrate, major controversies spilling into broader discourse, record-breaking economic moments. Never: match results, standings, transfers, injuries, or routine playoff coverage.
 
-━━━ INTELLECTUAL CONTENT RULE ━━━
-Include only if actively part of a current cultural conversation, directly connected to a major trend (AI, loneliness, internet behaviour), or unusually surprising and broadly relatable. Rare — 0 to 2 stories maximum.
-
-━━━ STRICT EXCLUSIONS ━━━
-Reject without hesitation:
-  - Any celebrity appearance, sighting, or red carpet coverage
-  - Fashion or aesthetic coverage without cultural impact or discourse
-  - Routine industry updates of any kind
-  - Niche fandom content that has not broken into mainstream conversation
-  - Speculative or rumour-based reporting
-  - Duplicate coverage — pick the single strongest version only
-  - Filler of any kind — do not include to hit a number
-  - Pure politics: cabinet reshuffles, appointments, policy changes — unless directly involving a cultural figure
-  - Platform/product changes (UI updates, beta exits, default setting changes, app updates) without demonstrated public outrage or cultural reaction at scale
-  - Privacy setting defaults or tech company policy changes that affect individual behaviour but have not generated widespread public discourse
-
-━━━ SPORTS RULE ━━━
-Only when crossing into mainstream cultural conversation: major championship wins with broad societal resonance (e.g. first-ever title for an underdog, historic firsts that non-fans would celebrate), major controversies, record-breaking moments non-fans would react to, economic shock (historic ticket prices, jaw-dropping contracts). Never: match results, standings, transfers, injury reports, or routine playoff coverage.
-Example of what qualifies: UCLA winning the first women's NCAA title — a historic first with cultural resonance beyond the sport.
-
-━━━ CURIOSITY & VIRAL ODDITY RULE ━━━
-Include genuinely weird, surprising, or high-curiosity stories with strong shareability — even if they do not fit a traditional cultural category. These often become the most-forwarded stories in the feed.
-Qualifiers: Unusual science-culture crossover (e.g. scientists creating dinosaur leather luxury goods), absurd but real new technology or services (e.g. a dedicated pet streaming platform), stories where the premise itself is the hook. The test: would someone immediately screenshot this and send it to a group chat?
-
-━━━ NOSTALGIA FRANCHISE RULE ━━━
-Include when a well-known franchise from a previous generation resurfaces with a meaningful development — especially when a key person publicly refuses to participate, challenges the revival, or an unexpected casting decision generates discourse.
-Example of what qualifies: A beloved childhood show's revival being rejected by a main cast member who turned down significant money — this signals both public appetite for the franchise and internal resistance worth discussing.
-Do NOT include: Routine revival announcements, casting news without tension, or sequels with no attached controversy or surprise.
-
-━━━ ART & CULTURAL HERITAGE RULE ━━━
-Include when recognisable cultural masterworks, iconic artists, or globally known cultural institutions are at the centre of a dispute, controversy, or power struggle — especially when national identity, access, or ownership is at stake.
-Example of what qualifies: The Mexican art world protesting plans to send Frida Kahlo masterpieces abroad — a recognisable name, a clear controversy, and a cultural sovereignty angle.
-Do NOT include: Routine exhibition announcements, artist retrospectives, or gallery openings without conflict.
+━━━ CURIOSITY AND SHAREABILITY ━━━
+Include genuinely strange, absurd, or surprising stories with strong shareability — even when they fall outside traditional cultural categories. The test: would someone immediately screenshot this and send it to a group chat?
 
 ━━━ LOW-WEIGHT SOURCES ━━━
 Daily Mail and Page Six are signal detectors only. They do not justify inclusion independently — the story must pass the core test on its own merits.
 
 ━━━ RUN CONTEXT ━━━
 ${alreadyPublished.length === 0
-  ? `This is a full reset run with no existing feed. Apply the full editorial bar across all signal categories. Do not pad with borderline entertainment content — if the strong stories only cover 3 domains, that is fine.`
+  ? `This is a full reset run with no existing feed. Apply the full editorial bar across all domains. Do not pad with borderline entertainment content — if the strong stories only cover 3 domains, that is fine.`
   : `This is an incremental update. ${alreadyPublished.length} stories are already in today's feed (including cross-day historical dedup from all previously published editions). Only add stories clearly stronger than the weakest already published. Prefer 2 excellent new stories over 8 mediocre ones.`
 }
 
@@ -1483,7 +1991,8 @@ Respond with ONLY the JSON array — no markdown, no code fences, no rejected en
 Write full articles for each of the ${count} stories below.
 
 WRITING RULES:
-- ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show or game.
+- ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show, app, platform or company — never "the app", "the platform", "the company", "the service", "the brand", "the artist" or any other generic substitute. If a product or brand is central to the story, name it every time it is referenced, not just on first mention.
+- PRESERVE KEY SPECIFICS. If the source names a specific model, product, feature, track, award, or proper noun (e.g. a model name like "Muse Spark", a song title, an award name), you MUST include it in the article. Never replace a specific name with a vague description like "a new model" or "a new feature".
 - Write like you are talking to a friend. Short sentences. Simple words. No jargon.
 - No dashes or hyphens used as pauses in sentences. Use plain punctuation.
 - No bullet points inside the story content.
@@ -1504,7 +2013,7 @@ For each article output a JSON object:
   "keyPoints": ["3 to 5 short plain-English takeaways (no dashes, no jargon)"],
   "signalScore": 0-100 (cultural significance / buzz level),
   "tag": "ONE of: BREAKING | HOT TAKE | REVIEW | INTERVIEW | FEATURE | RELEASE | TREND",
-  "category": "ONE of: Film & TV | Music | Gaming | Fashion | Internet | Tech | AI | Culture | World | Industry | Books | Science | Sports — Film & TV: movies, shows, streaming, franchises; Music: albums, artists, tours, labels, festivals; Gaming: video games, esports, gaming culture; Fashion: fashion, style, brands, streetwear, beauty; Internet: viral moments, memes, social media, creator economy, platform news; Tech: consumer tech, gadgets, hardware, software, apps; AI: artificial intelligence tools, models, research, AI industry moves; Culture: art, design, museums, architecture, broader cultural movements and moments; World: international stories with genuine cultural crossover beyond politics; Industry: entertainment business — deals, box office, streaming numbers, label moves, M&A; Books: books, publishing, authors, literary prizes, reading culture; Science: space, research, discoveries with cultural relevance; Sports: athletes/sporting events with genuine cultural crossover only",
+  "category": "ONE of: Film & TV | Music | Gaming | Fashion | Internet | Tech | AI | Culture | World | Industry | Books | Science | Sports. Assign based on what the story REPRESENTS culturally, not the company or platform it involves. AI: any story about AI tools, models, AI-generated content, or AI's impact on creative or social behaviour — regardless of which company built it (Google, Meta, OpenAI, etc.). Tech: consumer hardware, gadgets, software products, or platform business news that is NOT about AI. Internet: viral incidents, memes, TikTok or social media moments, creator economy. Fashion: style, brands, streetwear, beauty, designer collaborations. A story about an AI deepfake feature is AI, not Tech. A story about a K-pop star becoming a brand ambassador is Fashion, not Music.",
   "source": "Original source name",
   "imageUrl": "The IMAGE URL from the source article if one was provided, otherwise null",
   "wikiSearchQuery": "Search query for the article's main SUBJECT — prioritise the specific title over the person. Wikipedia pages for films, albums, and shows use poster/cover art as their main image, making far better hero images than headshots. Rules: (1) Film/TV → use the title + year: 'Challengers 2024 film', 'The White Lotus season 3', 'Black Mirror TV series'. (2) Music → use artist + album if known: 'Taylor Swift Tortured Poets Department album', 'BTS Map of the Soul Persona', else just the artist 'John Summit DJ'. (3) Gaming → game title: 'The Last of Us Part II game'. (4) If the story is purely about a person (death, scandal, tour announcement with no specific release), use name + role: 'Celine Dion singer', 'Tiger Woods golfer'.",
@@ -1542,11 +2051,18 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
   console.log(`[rss] Call 2 complete — ${selectedItems.length} articles written`);
 
   // First pass — build articles, mark ones that still need an OG image fetch
-  const articles: EnrichedArticle[] = selectedItems.map((item: any, i: number) => {
+  const articles: EnrichedArticle[] = await Promise.all(selectedItems.map(async (item: any, i: number) => {
     const cat = item.category in CATEGORY_GRADIENTS ? item.category : "Internet";
     const [gradientStart, gradientEnd] = CATEGORY_GRADIENTS[cat];
     const rssImageUrl = typeof item.imageUrl === "string" ? item.imageUrl : null;
-    const imageUrl = isGoodImageUrl(rssImageUrl) ? rssImageUrl! : null;
+    let imageUrl: string | null = null;
+    if (isGoodImageUrl(rssImageUrl)) {
+      const rssDims = await fetchImageDimensions(rssImageUrl!);
+      if (!rssDims || rssDims.width >= 400) {
+        imageUrl = rssImageUrl!;
+        trackImageUrl(imageUrl);
+      }
+    }
 
     // sourceIndex from Call 2 is 1-based within selectedRawItems; _originalSourceIndex maps back to rawItems
     const originalRawItem = rawItems[(item._originalSourceIndex ?? item.sourceIndex) - 1];
@@ -1580,129 +2096,49 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
       keyPoints: Array.isArray(item.keyPoints) ? item.keyPoints : [],
       signalScore: typeof item.signalScore === "number" ? item.signalScore : null,
     } satisfies EnrichedArticle;
-  });
+  }));
 
-  // Second pass — fetch real images for articles that couldn't get one from RSS.
-  // Priority: YouTube (embedded only) → OG (quality-checked) → TMDb (Film & TV) →
-  //           Spotify (Music) → Unsplash (portrait) → iTunes (Music) → Wikipedia → OG fallback → category
+  // Second pass — intent-aware multi-candidate scoring engine.
+  // All sources are collected in parallel per article; selectBestImage() scores
+  // every candidate and picks the highest-scoring image.
   const ogNeeded = articles.filter((a) => a.imageUrl?.startsWith("__NEEDS_OG__"));
   if (ogNeeded.length > 0) {
-    console.log(`[rss] Fetching images for ${ogNeeded.length} articles…`);
+    console.log(`[rss] Selecting images for ${ogNeeded.length} articles…`);
     await Promise.all(
       ogNeeded.map(async (article, idx) => {
         const articleUrl = (article.imageUrl as string).replace("__NEEDS_OG__", "");
-        const wikiQuery = (article as any).wikiSearchQuery as string | undefined;
-
-        // 1. YouTube thumbnail — ONLY if the article page embeds a YouTube video
-        if (articleUrl) {
-          try {
-            const htmlRes = await fetch(articleUrl, { signal: AbortSignal.timeout(5000), headers: { "User-Agent": "Mozilla/5.0" } });
-            if (htmlRes.ok) {
-              const html = await htmlRes.text();
-              const videoId = extractYouTubeId(html);
-              if (videoId) {
-                const ytUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-                if (await isHighQualityImage(ytUrl)) {
-                  article.imageUrl = ytUrl;
-                  console.log(`[rss]   YouTube ✓ ${article.title.slice(0, 40)}`);
-                  return;
-                }
-              }
-            }
-          } catch { /* ignore */ }
-        }
-
-        // 2. OG image — strict validation: quality + aspect ratio + no logos/icons/banners
-        const ogUrl = articleUrl ? await fetchOGImage(articleUrl) : undefined;
-        if (isGoodImageUrl(ogUrl) && await isHighQualityImage(ogUrl!)) {
-          const dims = await fetchImageDimensions(ogUrl!);
-          if (isStrictOGValid(ogUrl!, dims) && (!dims || isValidAspectRatio(dims.width, dims.height))) {
-            article.imageUrl = ogUrl!;
-            return;
-          }
-        }
-
-        // 3. TMDb — Film & TV posters (requires TMDB_API_KEY)
-        if (article.category === "Film & TV" && wikiQuery) {
-          const tmdbUrl = await fetchTMDbImage(wikiQuery);
-          if (isGoodImageUrl(tmdbUrl)) {
-            console.log(`[rss]   TMDb ✓ ${article.title.slice(0, 40)}`);
-            article.imageUrl = tmdbUrl!;
-            return;
-          }
-        }
-
-        // 5. Spotify — album/artist art (Music only, requires Spotify credentials)
-        if (article.category === "Music" && wikiQuery) {
-          const spotifyUrl = await fetchSpotifyImage(wikiQuery);
-          if (isGoodImageUrl(spotifyUrl)) {
-            console.log(`[rss]   Spotify ✓ ${article.title.slice(0, 40)}`);
-            article.imageUrl = spotifyUrl!;
-            return;
-          }
-        }
-
-        // 6. Unsplash — portrait, strict content filter, 3 keywords max
-        if (wikiQuery) {
-          const unsplashUrl = await fetchUnsplashImage(wikiQuery, article.category);
-          if (isGoodImageUrl(unsplashUrl)) {
-            console.log(`[rss]   Unsplash ✓ ${article.title.slice(0, 40)}`);
-            article.imageUrl = unsplashUrl!;
-            return;
-          }
-        }
-
-        // 7. iTunes album/artist art (Music only — free, no key)
-        if (article.category === "Music" && wikiQuery) {
-          const itunesUrl = await fetchItunesImage(wikiQuery);
-          if (isGoodImageUrl(itunesUrl)) {
-            console.log(`[rss]   iTunes ✓ ${article.title.slice(0, 40)}`);
-            article.imageUrl = itunesUrl!;
-            return;
-          }
-        }
-
-        // 8. Wikipedia — last resort before OG fallback
-        if (wikiQuery) {
-          const wikiUrl = await fetchWikipediaImage(wikiQuery);
-          if (isGoodImageUrl(wikiUrl) && await isHighQualityImage(wikiUrl!)) {
-            console.log(`[rss]   Wikipedia ✓ ${article.title.slice(0, 40)}`);
-            article.imageUrl = wikiUrl!;
-            return;
-          }
-        }
-
-        // 9. OG without quality check — better than category fallback
-        if (isGoodImageUrl(ogUrl)) {
-          article.imageUrl = ogUrl!;
-          return;
-        }
-
-        // 10. Category-matched Unsplash fallback
-        article.imageUrl = fallbackImage(article.category, idx);
+        const result = await selectBestImage(article, articleUrl, null, idx);
+        article.imageUrl  = result.url;
+        if (result.width)  article.imageWidth  = result.width;
+        if (result.height) article.imageHeight = result.height;
+        if (result.focalX !== undefined) article.imageFocalX = result.focalX;
+        if (result.focalY !== undefined) article.imageFocalY = result.focalY;
+        if (result.safeW !== undefined) article.imageSafeW = result.safeW;
+        if (result.safeH !== undefined) article.imageSafeH = result.safeH;
       })
     );
-
-    const ogCount      = ogNeeded.filter((a) => !["unsplash","wikimedia","mzstatic","spotify","youtube","tmdb"].some(d => a.imageUrl?.includes(d))).length;
-    const itunesCount  = ogNeeded.filter((a) => a.imageUrl?.includes("mzstatic")).length;
-    const wikiCount    = ogNeeded.filter((a) => a.imageUrl?.includes("wikimedia")).length;
-    const unsplashCount = ogNeeded.filter((a) => a.imageUrl?.includes("unsplash")).length;
-    const spotifyCount = ogNeeded.filter((a) => a.imageUrl?.includes("spotify")).length;
-    const ytCount      = ogNeeded.filter((a) => a.imageUrl?.includes("youtube")).length;
-    const tmdbCount    = ogNeeded.filter((a) => a.imageUrl?.includes("tmdb")).length;
-    console.log(`[rss] Image results: ${ogCount} OG | ${ytCount} YouTube | ${tmdbCount} TMDb | ${spotifyCount} Spotify | ${unsplashCount} Unsplash | ${itunesCount} iTunes | ${wikiCount} Wikipedia`);
   }
 
-  // Post-process: fetch pixel dimensions for all articles with a resolved image.
-  // Stored as imageWidth / imageHeight for frontend aspect-ratio rendering logic.
+  // Fetch pixel dimensions + focal points for first-pass RSS-winner articles.
+  // (selectBestImage already handles both for OG-needed articles.)
   await Promise.all(
     articles
-      .filter((a) => a.imageUrl && !a.imageUrl.startsWith("__NEEDS_OG__"))
+      .filter((a) => a.imageUrl && !a.imageUrl.startsWith("__NEEDS_OG__") && !a.imageWidth)
       .map(async (article) => {
         const dims = await fetchImageDimensions(article.imageUrl!);
-        if (dims) {
-          article.imageWidth = dims.width;
-          article.imageHeight = dims.height;
+        if (dims) { article.imageWidth = dims.width; article.imageHeight = dims.height; }
+      })
+  );
+  await Promise.all(
+    articles
+      .filter((a) => a.imageUrl && !a.imageUrl.startsWith("__NEEDS_OG__") && (a.imageFocalX == null || a.imageSafeW == null))
+      .map(async (article) => {
+        const focal = await detectImageFocalPoint(article.imageUrl!);
+        if (focal) {
+          article.imageFocalX = focal.x;
+          article.imageFocalY = focal.y;
+          article.imageSafeW  = focal.safeW;
+          article.imageSafeH  = focal.safeH;
         }
       })
   );
@@ -1949,12 +2385,17 @@ export async function loadLiveArticles(
     ["https://www.nme.com/feed",                                       "NME"],
     // Sports (cultural crossover only)
     ["https://www.espn.com/espn/rss/news",                             "ESPN"],
+    ["https://www.skysports.com/rss/12040",                            "Sky Sports"],
     // ── Supplementary sources ─────────────────────────────────────────────────
     // Internet & Emerging Culture — memes, trends, online discourse
     ["https://www.dexerto.com/feed/",                                  "Dexerto"],
     ["https://knowyourmeme.com/newsfeed.rss",                          "Know Your Meme"],
     // Power & Industry Insight — strategy, business of culture
     ["https://www.semafor.com/rss.xml",                                "Semafor"],
+    ["https://feeds2.feedburner.com/businessinsider",                   "Business Insider"],
+    // Science & emerging tech with cultural resonance
+    ["https://futurism.com/feed",                                      "Futurism"],
+    ["https://www.404media.co/rss/",                                   "404 Media"],
     // Modern Taste & Aesthetic Culture — youth culture, fashion signals
     ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
     // ── Low-weight signal sources (early detection only) ─────────────────────
@@ -2145,12 +2586,13 @@ function shortlistPath(): string {
  */
 export async function generateShortlist(
   alreadyPublished: { title: string; link: string }[] = [],
-  windowStart?: Date,  // defaults to 24h ago
-  windowEnd?: Date,    // defaults to now
+  windowStart?: Date,       // defaults to 24h ago
+  windowEnd?: Date,         // defaults to now
+  customFeeds?: [string, string][],  // if provided, replaces the default feed list
 ): Promise<ShortlistCandidate[]> {
   console.log("[shortlist] Fetching RSS feeds for shortlist generation…");
 
-  const feeds: [string, string][] = [
+  const defaultFeeds: [string, string][] = [
     ["https://www.rollingstone.com/feed/",                             "Rolling Stone"],
     ["https://www.billboard.com/feed/",                                "Billboard"],
     ["https://pitchfork.com/rss/news/",                                "Pitchfork"],
@@ -2176,10 +2618,19 @@ export async function generateShortlist(
     ["https://semafor.com/rss.xml",                                    "Semafor"],
     ["https://knowyourmeme.com/memes/all/rss",                         "Know Your Meme"],
     ["https://www.espn.com/espn/rss/news",                             "ESPN"],
+    ["https://www.skysports.com/rss/12040",                            "Sky Sports"],
+    ["https://feeds2.feedburner.com/businessinsider",                   "Business Insider"],
+    ["https://futurism.com/feed",                                      "Futurism"],
+    ["https://www.404media.co/rss/",                                   "404 Media"],
     ["https://pagesix.com/feed/",                                      "Page Six"],
     ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
     ["https://www.dailymail.co.uk/home/index.rss",                     "Daily Mail"],
   ];
+
+  const feeds = customFeeds ?? defaultFeeds;
+  if (customFeeds) {
+    console.log(`[shortlist] Using custom feed list: ${customFeeds.map(([, name]) => name).join(", ")}`);
+  }
 
   const BATCH = 5;
   const allItems: RawRSSItem[] = [];
@@ -2371,7 +2822,8 @@ export async function enrichSelectedItems(items: RawRSSItem[], publishToday = fa
 Write full articles for each of the ${count} stories below.
 
 WRITING RULES:
-- ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show or game.
+- ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show, app, platform or company — never "the app", "the platform", "the company", "the service", "the brand", "the artist" or any other generic substitute. If a product or brand is central to the story, name it every time it is referenced, not just on first mention.
+- PRESERVE KEY SPECIFICS. If the source names a specific model, product, feature, track, award, or proper noun (e.g. a model name like "Muse Spark", a song title, an award name), you MUST include it in the article. Never replace a specific name with a vague description like "a new model" or "a new feature".
 - Write like you are talking to a friend. Short sentences. Simple words. No jargon.
 - No dashes or hyphens used as pauses in sentences. Use plain punctuation.
 - No bullet points inside the story content.
@@ -2388,11 +2840,11 @@ For each article output a JSON object:
 {
   "title": "Short punchy headline, max 10 words — MUST include the real name",
   "summary": "2 sentences. First sentence names who/what and what happened. Second sentence says why it matters.",
-  "content": "3 short paragraphs separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation.",
+  "content": "3 short paragraphs separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people, products and things throughout — never use vague substitutes.",
   "keyPoints": ["3 to 5 short plain-English takeaways"],
   "signalScore": 0-100,
   "tag": "ONE of: BREAKING | HOT TAKE | REVIEW | INTERVIEW | FEATURE | RELEASE | TREND",
-  "category": "ONE of: Film & TV | Music | Gaming | Fashion | Internet | Tech | AI | Culture | World | Industry | Books | Science | Sports — Film & TV: movies, shows, streaming, franchises; Music: albums, artists, tours, labels, festivals; Gaming: video games, esports, gaming culture; Fashion: fashion, style, brands, streetwear, beauty; Internet: viral moments, memes, social media, creator economy, platform news; Tech: consumer tech, gadgets, hardware, software, apps; AI: artificial intelligence tools, models, research, AI industry moves; Culture: art, design, museums, architecture, broader cultural movements and moments; World: international stories with genuine cultural crossover beyond politics; Industry: entertainment business — deals, box office, streaming numbers, label moves, M&A; Books: books, publishing, authors, literary prizes, reading culture; Science: space, research, discoveries with cultural relevance; Sports: athletes/sporting events with genuine cultural crossover only",
+  "category": "ONE of: Film & TV | Music | Gaming | Fashion | Internet | Tech | AI | Culture | World | Industry | Books | Science | Sports. Assign based on what the story REPRESENTS culturally, not the company or platform it involves. AI: any story about AI tools, models, AI-generated content, or AI's impact on creative or social behaviour — regardless of which company built it (Google, Meta, OpenAI, etc.). Tech: consumer hardware, gadgets, software products, or platform business news that is NOT about AI. Internet: viral incidents, memes, TikTok or social media moments, creator economy. Fashion: style, brands, streetwear, beauty, designer collaborations. A story about an AI deepfake feature is AI, not Tech. A story about a K-pop star becoming a brand ambassador is Fashion, not Music.",
   "source": "Original source name",
   "imageUrl": "IMAGE URL from source if provided, otherwise null",
   "wikiSearchQuery": "Wikipedia search query for the article subject. Film/TV: title + year. Music: artist + album. Person only: name + role.",
@@ -2426,11 +2878,18 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
   }
 
   // Build EnrichedArticle[]
-  const articles: EnrichedArticle[] = enriched.map((item: any, i: number) => {
+  const articles: EnrichedArticle[] = await Promise.all(enriched.map(async (item: any, i: number) => {
     const cat = item.category in CATEGORY_GRADIENTS ? item.category : "Internet";
     const [gradientStart, gradientEnd] = CATEGORY_GRADIENTS[cat];
     const rssImageUrl = typeof item.imageUrl === "string" ? item.imageUrl : null;
-    const imageUrl = isGoodImageUrl(rssImageUrl) ? rssImageUrl! : null;
+    let imageUrl: string | null = null;
+    if (isGoodImageUrl(rssImageUrl)) {
+      const rssDims = await fetchImageDimensions(rssImageUrl!);
+      if (!rssDims || rssDims.width >= 400) {
+        imageUrl = rssImageUrl!;
+        trackImageUrl(imageUrl);
+      }
+    }
     const rawItem: RawRSSItem | undefined = item._rawItem;
 
     return {
@@ -2459,79 +2918,47 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
       keyPoints: Array.isArray(item.keyPoints) ? item.keyPoints : [],
       signalScore: typeof item.signalScore === "number" ? item.signalScore : null,
     } satisfies EnrichedArticle;
-  });
+  }));
 
-  // Image resolution — same priority chain as main pipeline
-  // YouTube (embedded) → OG (strict) → Google → TMDb → Spotify → Unsplash → iTunes → Wikipedia → OG fallback → category
+  // Image selection — intent-aware multi-candidate scoring engine (same as main pipeline).
   const ogNeeded = articles.filter((a) => a.imageUrl?.startsWith("__NEEDS_OG__"));
   if (ogNeeded.length > 0) {
-    console.log(`[shortlist] Fetching images for ${ogNeeded.length} articles…`);
+    console.log(`[shortlist] Selecting images for ${ogNeeded.length} articles…`);
     await Promise.all(
       ogNeeded.map(async (article, idx) => {
         const articleUrl = (article.imageUrl as string).replace("__NEEDS_OG__", "");
-        const wikiQuery = (article as any).wikiSearchQuery as string | undefined;
-
-        // 1. YouTube (embedded only)
-        if (articleUrl) {
-          try {
-            const htmlRes = await fetch(articleUrl, { signal: AbortSignal.timeout(5000), headers: { "User-Agent": "Mozilla/5.0" } });
-            if (htmlRes.ok) {
-              const videoId = extractYouTubeId(await htmlRes.text());
-              if (videoId) {
-                const ytUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-                if (await isHighQualityImage(ytUrl)) { article.imageUrl = ytUrl; return; }
-              }
-            }
-          } catch { /* ignore */ }
-        }
-        // 2. OG (strict: quality + aspect ratio + no logos/banners)
-        const ogUrl = articleUrl ? await fetchOGImage(articleUrl) : undefined;
-        if (isGoodImageUrl(ogUrl) && await isHighQualityImage(ogUrl!)) {
-          const dims = await fetchImageDimensions(ogUrl!);
-          if (isStrictOGValid(ogUrl!, dims) && (!dims || isValidAspectRatio(dims.width, dims.height))) {
-            article.imageUrl = ogUrl!; return;
-          }
-        }
-        // 3. TMDb (Film & TV)
-        if (article.category === "Film & TV" && wikiQuery) {
-          const tmdbUrl = await fetchTMDbImage(wikiQuery);
-          if (isGoodImageUrl(tmdbUrl)) { article.imageUrl = tmdbUrl!; return; }
-        }
-        // 5. Spotify (Music)
-        if (article.category === "Music" && wikiQuery) {
-          const spotifyUrl = await fetchSpotifyImage(wikiQuery);
-          if (isGoodImageUrl(spotifyUrl)) { article.imageUrl = spotifyUrl!; return; }
-        }
-        // 6. Unsplash (portrait, strict)
-        if (wikiQuery) {
-          const unsplashUrl = await fetchUnsplashImage(wikiQuery, article.category);
-          if (isGoodImageUrl(unsplashUrl)) { article.imageUrl = unsplashUrl!; return; }
-        }
-        // 7. iTunes (Music)
-        if (article.category === "Music" && wikiQuery) {
-          const itunesUrl = await fetchItunesImage(wikiQuery);
-          if (isGoodImageUrl(itunesUrl)) { article.imageUrl = itunesUrl!; return; }
-        }
-        // 8. Wikipedia
-        if (wikiQuery) {
-          const wikiUrl = await fetchWikipediaImage(wikiQuery);
-          if (isGoodImageUrl(wikiUrl) && await isHighQualityImage(wikiUrl!)) { article.imageUrl = wikiUrl!; return; }
-        }
-        // 9. OG without quality check
-        if (isGoodImageUrl(ogUrl)) { article.imageUrl = ogUrl!; return; }
-        // 10. Category fallback
-        article.imageUrl = fallbackImage(article.category, idx);
+        const result = await selectBestImage(article, articleUrl, null, idx);
+        article.imageUrl  = result.url;
+        if (result.width)  article.imageWidth  = result.width;
+        if (result.height) article.imageHeight = result.height;
+        if (result.focalX !== undefined) article.imageFocalX = result.focalX;
+        if (result.focalY !== undefined) article.imageFocalY = result.focalY;
+        if (result.safeW !== undefined) article.imageSafeW = result.safeW;
+        if (result.safeH !== undefined) article.imageSafeH = result.safeH;
       })
     );
   }
 
-  // Post-process: fetch image dimensions for aspect-ratio-aware rendering
+  // Fetch pixel dimensions + focal points for first-pass RSS-winner articles.
   await Promise.all(
     articles
-      .filter((a) => a.imageUrl && !a.imageUrl.startsWith("__NEEDS_OG__"))
+      .filter((a) => a.imageUrl && !a.imageUrl.startsWith("__NEEDS_OG__") && !a.imageWidth)
       .map(async (article) => {
         const dims = await fetchImageDimensions(article.imageUrl!);
         if (dims) { article.imageWidth = dims.width; article.imageHeight = dims.height; }
+      })
+  );
+  await Promise.all(
+    articles
+      .filter((a) => a.imageUrl && !a.imageUrl.startsWith("__NEEDS_OG__") && (a.imageFocalX == null || a.imageSafeW == null))
+      .map(async (article) => {
+        const focal = await detectImageFocalPoint(article.imageUrl!);
+        if (focal) {
+          article.imageFocalX = focal.x;
+          article.imageFocalY = focal.y;
+          article.imageSafeW  = focal.safeW;
+          article.imageSafeH  = focal.safeH;
+        }
       })
   );
 

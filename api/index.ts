@@ -1,3 +1,7 @@
-import app from "../artifacts/api-server/src/app.js";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-export default app;
+// This file exists only to satisfy Vercel's /api root.
+// All real routes live in /api/news/*, /api/categories, etc.
+export default function handler(_req: VercelRequest, res: VercelResponse) {
+  res.status(404).json({ error: "Not found" });
+}

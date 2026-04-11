@@ -17,8 +17,11 @@ export function BottomNav({ activeTab, onTabChange }: { activeTab: Tab; onTabCha
 
   return (
     <div
-      className="fixed bottom-0 inset-x-0 z-40 flex justify-center pointer-events-none"
-      style={{ paddingBottom: 'max(18px, calc(env(safe-area-inset-bottom) + 8px))' }}
+      className="pn-bottom-nav fixed bottom-0 inset-x-0 z-40 flex justify-center pointer-events-none"
+      style={{
+        paddingBottom: 'max(18px, calc(env(safe-area-inset-bottom) + 8px))',
+        transition: 'opacity 0.28s ease, transform 0.28s cubic-bezier(0.32,0.72,0,1)',
+      }}
     >
       <div
         className="relative flex items-center pointer-events-auto"

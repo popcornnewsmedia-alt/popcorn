@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { format, subDays, addDays, isSameDay, startOfDay } from "date-fns";
-import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
 
 interface TopBarProps {
   selectedDate: Date;
@@ -11,9 +11,11 @@ interface TopBarProps {
   minDate?: Date;
   pickerOpen?: boolean;
   onPickerOpenChange?: (open: boolean) => void;
+  /** Scroll the underlying feed to the top of the current day's section (the DateDivider) */
+  onScrollToDayTop?: () => void;
 }
 
-export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, minDate, pickerOpen: controlledPickerOpen, onPickerOpenChange }: TopBarProps) {
+export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, minDate, pickerOpen: controlledPickerOpen, onPickerOpenChange, onScrollToDayTop }: TopBarProps) {
   const [internalPickerOpen, setInternalPickerOpen] = useState(false);
   const isControlled = controlledPickerOpen !== undefined;
   const pickerOpen = isControlled ? controlledPickerOpen! : internalPickerOpen;
@@ -44,41 +46,72 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
           boxShadow: pickerOpen ? 'none' : '0 1px 0 rgba(26,68,48,0.08)',
         }}
       >
-        {/* Brand + date row */}
-        <div className="relative flex items-center justify-between px-5 py-3">
+        {/* Brand + date row.
+            Mobile: the whole row is a tap zone for onScrollToDayTop (matches
+              iOS "tap status bar to scroll to top" convention — no visible
+              affordance needed, discoverable via touch).
+            Web: we add an explicit ChevronUp icon button next to the date
+              picker (visible only on hover-capable pointers) so the action is
+              discoverable to mouse users who don't expect invisible tap zones. */}
+        <div
+          className="relative flex items-center justify-between px-5 py-3"
+          onClick={onScrollToDayTop}
+          style={{ cursor: onScrollToDayTop ? 'pointer' : 'default' }}
+        >
           <span
             style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '17px', color: '#fff1cd', letterSpacing: '0.03em', lineHeight: 1 }}
           >
             POPCORN
           </span>
 
-          {showDatePicker ? (
-            <button
-              onClick={() => setPickerOpen(!pickerOpen)}
-              className="flex items-center gap-1.5 transition-opacity hover:opacity-75"
-            >
+          <div className="flex items-center gap-2.5">
+            {/* Desktop-only visible scroll-to-day-top affordance */}
+            {onScrollToDayTop && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onScrollToDayTop(); }}
+                className="pn-day-top-btn hidden items-center justify-center transition-all duration-150 hover:opacity-100 active:scale-90"
+                style={{
+                  width: 26,
+                  height: 26,
+                  borderRadius: 999,
+                  background: 'rgba(255,241,205,0.09)',
+                  border: '1px solid rgba(255,241,205,0.14)',
+                  opacity: 0.75,
+                }}
+                aria-label="Scroll to top of day"
+              >
+                <ChevronUp style={{ width: 14, height: 14, color: '#fff1cd', strokeWidth: 2 }} />
+              </button>
+            )}
+
+            {showDatePicker ? (
+              <button
+                onClick={(e) => { e.stopPropagation(); setPickerOpen(!pickerOpen); }}
+                className="flex items-center gap-1.5 transition-opacity hover:opacity-75"
+              >
+                <span
+                  style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '11px', color: '#fff1cd', letterSpacing: '0.05em' }}
+                >
+                  {format(selectedDate, 'do MMMM').toUpperCase()}
+                </span>
+                <ChevronDown
+                  className="transition-transform duration-200"
+                  style={{
+                    width: '13px',
+                    height: '13px',
+                    color: 'rgba(255,241,205,0.6)',
+                    transform: pickerOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  }}
+                />
+              </button>
+            ) : (
               <span
-                style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '11px', color: '#fff1cd', letterSpacing: '0.05em' }}
+                style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '14px', color: 'rgba(255,241,205,0.6)', letterSpacing: '0.05em' }}
               >
                 {format(selectedDate, 'do MMMM').toUpperCase()}
               </span>
-              <ChevronDown
-                className="transition-transform duration-200"
-                style={{
-                  width: '13px',
-                  height: '13px',
-                  color: 'rgba(255,241,205,0.6)',
-                  transform: pickerOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                }}
-              />
-            </button>
-          ) : (
-            <span
-              style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '14px', color: 'rgba(255,241,205,0.6)', letterSpacing: '0.05em' }}
-            >
-              {format(selectedDate, 'do MMMM').toUpperCase()}
-            </span>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Progress bar — fill div controlled imperatively via fillRef for zero-lag scroll tracking */}

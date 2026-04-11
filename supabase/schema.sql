@@ -7,6 +7,7 @@
 CREATE TABLE IF NOT EXISTS articles (
   id              BIGSERIAL PRIMARY KEY,
   feed_date       DATE        NOT NULL,
+  stage           TEXT        NOT NULL DEFAULT 'dev',
   title           TEXT        NOT NULL,
   summary         TEXT,
   content         TEXT,

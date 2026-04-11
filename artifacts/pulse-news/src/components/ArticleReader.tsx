@@ -99,7 +99,13 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                   <img
                     src={article.imageUrl}
                     aria-hidden="true"
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '300px', objectFit: 'cover', objectPosition: 'center 20%' }}
+                    style={{
+                      position: 'absolute', top: 0, left: 0, width: '100%', height: '300px',
+                      objectFit: 'cover',
+                      objectPosition: typeof article.imageFocalX === 'number' && typeof article.imageFocalY === 'number'
+                        ? `${(article.imageFocalX * 100).toFixed(1)}% ${(article.imageFocalY * 100).toFixed(1)}%`
+                        : 'center 20%',
+                    }}
                   />
                   <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.28)' }} />
                 </>
@@ -149,7 +155,11 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                     src={article.imageUrl}
                     alt={article.title}
                     className="w-full h-full object-cover"
-                    style={{ objectPosition: 'center 30%' }}
+                    style={{
+                      objectPosition: typeof article.imageFocalX === 'number' && typeof article.imageFocalY === 'number'
+                        ? `${(article.imageFocalX * 100).toFixed(1)}% ${(article.imageFocalY * 100).toFixed(1)}%`
+                        : 'center 30%',
+                    }}
                     onError={() => setImgError(true)}
                   />
                 ) : (

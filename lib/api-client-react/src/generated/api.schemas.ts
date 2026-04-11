@@ -26,6 +26,10 @@ export interface NewsArticle {
   imageUrl?: string | null;
   imageWidth?: number | null;
   imageHeight?: number | null;
+  imageFocalX?: number | null;
+  imageFocalY?: number | null;
+  imageSafeW?: number | null;
+  imageSafeH?: number | null;
   keyPoints?: string[] | null;
   impact?: string | null;
   signalScore?: number | null;

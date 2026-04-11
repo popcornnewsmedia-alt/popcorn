@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { ChevronUp, CheckCircle2 } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { ActionButtons } from "./ActionButtons";
@@ -39,17 +40,19 @@ export function ArticleCard({
   const hasImage = !!article.imageUrl;
   const [commentsOpen, setCommentsOpen] = useState(false);
 
-  // If dimensions are missing, default to cover (safe assumption — no gaps)
-  const hasDimensions =
-    typeof article.imageWidth === 'number' &&
-    typeof article.imageHeight === 'number';
+  // Focal point support — when present, anchor the crop to the main subject.
+  // This is the ONLY thing that affects how the image is positioned. Every
+  // image renders full-bleed (object-fit: cover) — the earlier safe-box /
+  // contain-fallback experiment was reverted because letterboxing on a
+  // blurred backdrop looked worse than cover-cropping with a good focal
+  // point, even for wide / multi-subject images.
+  const hasFocal =
+    typeof article.imageFocalX === 'number' &&
+    typeof article.imageFocalY === 'number';
 
-  const aspectRatio = hasDimensions
-    ? (article.imageWidth as number) / (article.imageHeight as number)
-    : null;
-
-  // Default to cover when dimensions unknown; contain only for proven extreme ratios
-  const shouldCover = !aspectRatio || (aspectRatio > 0.6 && aspectRatio < 2.2);
+  const objectPosition = hasFocal
+    ? `${((article.imageFocalX as number) * 100).toFixed(1)}% ${((article.imageFocalY as number) * 100).toFixed(1)}%`
+    : 'center';
 
   // Out-of-window: same-height snap placeholder, zero memory / decode pressure.
   if (!renderContent) {
@@ -94,7 +97,7 @@ export function ArticleCard({
               zIndex: 1,
               backgroundImage: `url(${article.imageUrl})`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundPosition: objectPosition,
               filter: 'blur(40px)',
               transform: 'scale(1.2)',
               opacity: 0,
@@ -115,8 +118,8 @@ export function ArticleCard({
               left: 0,
               width: '100vw',
               height: '100%',
-              objectFit: shouldCover ? 'cover' : 'contain',
-              objectPosition: 'center',
+              objectFit: 'cover',
+              objectPosition,
               zIndex: 5,
               opacity: 0,
               animation: 'articleImageIn 0.3s ease forwards',
@@ -150,7 +153,13 @@ export function ArticleCard({
         <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} />
       </div>
 
-      <CommentSheet isOpen={commentsOpen} articleId={article.id} onClose={() => setCommentsOpen(false)} />
+      {/* Portal to document.body so the fixed backdrop/sheet escapes the
+          snap-scroll container's stacking context and properly overlays
+          the BottomNav and all other fixed UI on iOS and desktop. */}
+      {createPortal(
+        <CommentSheet isOpen={commentsOpen} articleId={article.id} onClose={() => setCommentsOpen(false)} />,
+        document.body,
+      )}
 
       {/* Spacer */}
       <div className="flex-1 relative z-20" />

@@ -11,7 +11,9 @@ import {
   publishSelected,
   publishRawItems,
   deleteArticles,
+  updateArticleImageById,
 } from "../lib/article-store.js";
+import { backfillFocalPointsForToday } from "../lib/curated-store.js";
 
 const router: IRouter = Router();
 
@@ -101,12 +103,16 @@ router.post("/refresh", (req, res) => {
 });
 
 // POST /api/shortlist — fetch + rank today's candidates, return numbered list (no Claude)
-// Optional body: { "windowStart": "ISO string", "windowEnd": "ISO string" }
+// Optional body: { "windowStart": "ISO string", "windowEnd": "ISO string", "feeds": [[url, name], ...] }
 router.post("/shortlist", (req, res) => {
-  const { windowStart, windowEnd } = req.body as { windowStart?: string; windowEnd?: string };
+  const { windowStart, windowEnd, feeds } = req.body as {
+    windowStart?: string;
+    windowEnd?: string;
+    feeds?: [string, string][];
+  };
   const wsDate = windowStart ? new Date(windowStart) : undefined;
   const weDate = windowEnd   ? new Date(windowEnd)   : undefined;
-  triggerShortlist(wsDate, weDate)
+  triggerShortlist(wsDate, weDate, Array.isArray(feeds) ? feeds : undefined)
     .then((candidates) => res.json({ ok: true, count: candidates.length, candidates }))
     .catch((err: Error) => res.status(500).json({ ok: false, error: err.message }));
 });
@@ -177,6 +183,45 @@ router.post("/publish-raw", (req, res) => {
   publishRawItems(items, reset === true, publishToday === true)
     .then((added) => res.json({ ok: true, added, message: `${added} articles published to the feed` }))
     .catch((err: Error) => res.status(500).json({ ok: false, error: err.message }));
+});
+
+// PATCH /api/news/:id/image — editorial image override
+// Body: { "imageUrl": "https://..." }
+router.patch("/news/:id/image", async (req, res) => {
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) {
+    res.status(400).json({ ok: false, error: "Invalid article id" });
+    return;
+  }
+  const { imageUrl } = req.body as { imageUrl?: string };
+  if (!imageUrl || !imageUrl.startsWith("http")) {
+    res.status(400).json({ ok: false, error: "Provide a valid 'imageUrl' string starting with http" });
+    return;
+  }
+  try {
+    const updated = await updateArticleImageById(id, imageUrl);
+    if (!updated) {
+      res.status(404).json({ ok: false, error: `Article ${id} not found` });
+      return;
+    }
+    res.json({ ok: true, id: updated.id, imageUrl: updated.imageUrl, imageWidth: updated.imageWidth, imageHeight: updated.imageHeight });
+  } catch (err: unknown) {
+    res.status(500).json({ ok: false, error: (err as Error).message });
+  }
+});
+
+// POST /api/news/backfill-focal-points — detect focal points + safe boxes for
+// any article in TODAY's feed that doesn't already have them. Safe to call
+// repeatedly. Pass ?force=1 to re-detect even articles that already have
+// values (useful after a prompt change).
+router.post("/news/backfill-focal-points", async (req, res) => {
+  try {
+    const force = req.query.force === "1" || req.query.force === "true";
+    const result = await backfillFocalPointsForToday({ force });
+    res.json({ ok: true, force, ...result });
+  } catch (err: unknown) {
+    res.status(500).json({ ok: false, error: (err as Error).message });
+  }
 });
 
 export default router;

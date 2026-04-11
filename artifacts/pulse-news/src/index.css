@@ -10,6 +10,20 @@
   to   { opacity: 0; }
 }
 
+/* Platform-aware scroll-to-day-top affordance.
+   Mobile (no hover, coarse pointer): the whole TopBar row is already a tap
+     zone, so we hide the explicit button to keep the chrome minimal.
+   Desktop (hover-capable, fine pointer): show the button so mouse users have
+     a visible affordance they can aim at. */
+.pn-day-top-btn {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .pn-day-top-btn {
+    display: inline-flex;
+  }
+}
+
 @font-face {
   font-family: 'Macabro';
   src: url('/fonts/MACABRO.woff2') format('woff2'),

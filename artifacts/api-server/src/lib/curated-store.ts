@@ -57,6 +57,7 @@ function cleanImageUrl(url: string | null | undefined): string | null | undefine
 function articleToRow(a: EnrichedArticle, feedDate: string): Record<string, unknown> {
   return {
     feed_date:          feedDate,
+    stage:              'dev',
     title:              a.title,
     summary:            a.summary,
     content:            a.content,
@@ -71,6 +72,10 @@ function articleToRow(a: EnrichedArticle, feedDate: string): Record<string, unkn
     image_url:          a.imageUrl ?? null,
     image_width:        a.imageWidth ?? null,
     image_height:       a.imageHeight ?? null,
+    image_focal_x:      a.imageFocalX ?? null,
+    image_focal_y:      a.imageFocalY ?? null,
+    image_safe_w:       a.imageSafeW ?? null,
+    image_safe_h:       a.imageSafeH ?? null,
     key_points:         a.keyPoints ?? [],
     signal_score:       a.signalScore ?? null,
     wiki_search_query:  a.wikiSearchQuery ?? null,
@@ -95,6 +100,10 @@ function rowToArticle(row: Record<string, unknown>, id: number): EnrichedArticle
     imageUrl:         row.image_url ? String(row.image_url) : null,
     imageWidth:       row.image_width ? Number(row.image_width) : undefined,
     imageHeight:      row.image_height ? Number(row.image_height) : undefined,
+    imageFocalX:      row.image_focal_x != null ? Number(row.image_focal_x) : undefined,
+    imageFocalY:      row.image_focal_y != null ? Number(row.image_focal_y) : undefined,
+    imageSafeW:       row.image_safe_w  != null ? Number(row.image_safe_w)  : undefined,
+    imageSafeH:       row.image_safe_h  != null ? Number(row.image_safe_h)  : undefined,
     keyPoints:        Array.isArray(row.key_points) ? row.key_points as string[] : [],
     signalScore:      row.signal_score != null ? Number(row.signal_score) : null,
     wikiSearchQuery:  row.wiki_search_query ? String(row.wiki_search_query) : undefined,
@@ -141,6 +150,23 @@ function saveToLocalFiles(bucket: DailyFeed): void {
 
 // ─── Supabase persistence (async, fire-and-forget) ────────────────────────────
 
+// Drop optional columns that the Supabase schema may not yet have. Lets us
+// ship new fields (e.g. image_focal_x/y, image_safe_w/h) without breaking
+// environments that haven't run the ALTER TABLE migration yet.
+function stripUnknownColumns(row: Record<string, unknown>): Record<string, unknown> {
+  const {
+    image_focal_x, image_focal_y, // eslint-disable-line @typescript-eslint/no-unused-vars
+    image_safe_w,  image_safe_h,  // eslint-disable-line @typescript-eslint/no-unused-vars
+    ...rest
+  } = row;
+  return rest;
+}
+
+function isMissingColumnError(msg: string | undefined): boolean {
+  if (!msg) return false;
+  return /image_focal|image_safe|column.*does not exist|schema cache/i.test(msg);
+}
+
 async function upsertFeedToSupabase(articles: EnrichedArticle[], feedDate: string): Promise<void> {
   if (!process.env.SUPABASE_URL) return;
   // Delete the day's existing rows, then re-insert fresh
@@ -149,7 +175,23 @@ async function upsertFeedToSupabase(articles: EnrichedArticle[], feedDate: strin
   if (articles.length === 0) return;
   const rows = articles.map((a) => articleToRow(a, feedDate));
   const { error: insErr } = await supabase.from("articles").insert(rows);
-  if (insErr) console.warn("[supabase] insert error:", insErr.message);
+  if (insErr) {
+    if (isMissingColumnError(insErr.message)) {
+      console.warn(
+        "[supabase] focal/safe-box columns missing — retrying without them. " +
+        "To enable full image-awareness persistence, run: " +
+        "ALTER TABLE articles ADD COLUMN IF NOT EXISTS image_focal_x float8, " +
+        "ADD COLUMN IF NOT EXISTS image_focal_y float8, " +
+        "ADD COLUMN IF NOT EXISTS image_safe_w float8, " +
+        "ADD COLUMN IF NOT EXISTS image_safe_h float8;"
+      );
+      const safeRows = rows.map(stripUnknownColumns);
+      const { error: retryErr } = await supabase.from("articles").insert(safeRows);
+      if (retryErr) console.warn("[supabase] retry insert error:", retryErr.message);
+    } else {
+      console.warn("[supabase] insert error:", insErr.message);
+    }
+  }
 }
 
 async function deleteFromSupabase(titles: string[]): Promise<void> {
@@ -263,6 +305,32 @@ export function resetIfNewDay(): void {
   }
 }
 
+/**
+ * Interleaves articles by category so no two consecutive articles share the same genre.
+ * Preserves signal score ordering within each category group.
+ * Algorithm: greedy — at each position, pick the highest-signal article whose category
+ * was not used in the immediately preceding slot.
+ */
+function interleaveByCategory(articles: EnrichedArticle[]): EnrichedArticle[] {
+  // Sort by signalScore descending as base order
+  const sorted = [...articles].sort((a, b) => (b.signalScore ?? 0) - (a.signalScore ?? 0));
+  const result: EnrichedArticle[] = [];
+  const remaining = [...sorted];
+
+  while (remaining.length > 0) {
+    const lastCategory = result.length > 0 ? result[result.length - 1].category : null;
+    // Find highest-signal article with a different category
+    const idx = remaining.findIndex((a) => a.category !== lastCategory);
+    if (idx === -1) {
+      // All remaining share the same category — just append in order
+      result.push(...remaining.splice(0));
+    } else {
+      result.push(...remaining.splice(idx, 1));
+    }
+  }
+  return result;
+}
+
 export function mergeFeed(newArticles: EnrichedArticle[]): number {
   resetIfNewDay();
   const today = dateStr(0);
@@ -279,9 +347,8 @@ export function mergeFeed(newArticles: EnrichedArticle[]): number {
     return 0;
   }
   const bucket = _feeds.get(today)!;
-  bucket.articles = [...bucket.articles, ...toAdd]
-    .sort((a, b) => (b.signalScore ?? 0) - (a.signalScore ?? 0))
-    .map((a, i) => ({ ...a, id: i + 1 }));
+  const combined = [...bucket.articles, ...toAdd];
+  bucket.articles = interleaveByCategory(combined).map((a, i) => ({ ...a, id: i + 1 }));
   // Update all-time title set
   for (const a of toAdd) _allPublishedTitles.add(a.title);
   console.log(`[curated] Added ${toAdd.length} articles → today has ${bucket.articles.length} stories.`);
@@ -344,6 +411,212 @@ export function getAllPublishedRefs(): { title: string; link: string }[] {
   return [..._allPublishedTitles].map((title) => ({ title, link: "" }));
 }
 
+/**
+ * Update the imageUrl (and optionally dimensions) for a single article identified
+ * by its global feed ID. Mutates in-memory cache, saves to local file, and
+ * fire-and-forgets a Supabase update (matched by title).
+ * Returns the updated article or null if not found.
+ */
+export async function updateArticleImage(
+  id: number,
+  imageUrl: string,
+  imageWidth?: number,
+  imageHeight?: number,
+): Promise<EnrichedArticle | null> {
+  // Resolve global ID → title via the sorted global feed
+  const globalFeed = getPublishedFeed();
+  const target = globalFeed.find((a) => a.id === id);
+  if (!target) return null;
+
+  // Find the underlying mutable bucket article by title
+  let foundArticle: EnrichedArticle | null = null;
+  let foundBucket: { date: string; articles: EnrichedArticle[] } | null = null;
+  for (const [, bucket] of _feeds.entries()) {
+    const article = bucket.articles.find((a) => a.title === target.title);
+    if (article) { foundArticle = article; foundBucket = bucket; break; }
+  }
+  if (!foundArticle || !foundBucket) return null;
+
+  // Mutate in memory
+  foundArticle.imageUrl    = imageUrl;
+  if (imageWidth  !== undefined) foundArticle.imageWidth  = imageWidth;
+  if (imageHeight !== undefined) foundArticle.imageHeight = imageHeight;
+
+  // Persist to local backup file
+  saveToLocalFiles(foundBucket);
+
+  // Persist to Supabase (fire-and-forget, matched by title)
+  if (process.env.SUPABASE_URL) {
+    void (async () => {
+      const { error } = await supabase
+        .from("articles")
+        .update({ image_url: imageUrl, image_width: imageWidth ?? null, image_height: imageHeight ?? null })
+        .eq("title", foundArticle.title);
+      if (error) console.warn("[curated] updateArticleImage Supabase error:", error.message);
+    })();
+  }
+
+  console.log(`[curated] ✓ Image updated for article id=${id}: ${imageUrl.slice(0, 60)}`);
+  return foundArticle;
+}
+
+/**
+ * Detect focal points for every article in TODAY's feed whose image currently
+ * has no focal point, using Claude's vision API. Existing focal points are left
+ * alone; articles in other days are not touched. Safe to call repeatedly.
+ *
+ * Returns the number of articles that received a newly-detected focal point.
+ */
+export async function backfillFocalPointsForToday(
+  options: { force?: boolean } = {}
+): Promise<{
+  scanned: number;
+  updated: number;
+  skipped: number;
+}> {
+  const today = dateStr(0);
+  const bucket = _feeds.get(today);
+  if (!bucket) return { scanned: 0, updated: 0, skipped: 0 };
+
+  // Lazy-import to avoid circular deps with rss-enricher
+  const { detectImageFocalPoint, fetchImageDimensions } = await import("./rss-enricher.js");
+
+  // Pick up anything that's missing focal point OR safe box OR width/height.
+  // The safe-box math on the front-end needs dims, so an article with a safe
+  // box but no dims still can't make the cover/contain decision.
+  // In force mode, re-detect every article that has an image (used after a
+  // prompt change to invalidate stale vision results).
+  const targets = bucket.articles.filter((a) => {
+    if (!a.imageUrl || a.imageUrl.startsWith("__NEEDS_OG__")) return false;
+    if (options.force) return true;
+    return a.imageFocalX == null || a.imageSafeW == null || !a.imageWidth || !a.imageHeight;
+  });
+  let updated = 0;
+  let skipped = 0;
+
+  console.log(`[focal-backfill] scanning ${targets.length} of ${bucket.articles.length} articles for today (${today})`);
+
+  // Process in small batches. The vision API has a 30k input-tokens-per-minute
+  // limit, and each call consumes ~1.5–3k tokens (the image). 3 concurrent is
+  // comfortably under the limit while still taking advantage of parallelism.
+  const BATCH_SIZE = 3;
+  for (let i = 0; i < targets.length; i += BATCH_SIZE) {
+    const batch = targets.slice(i, i + BATCH_SIZE);
+    await Promise.all(
+      batch.map(async (article) => {
+        // Fetch dims in parallel with vision call (both only touch the image URL).
+        const needsDims  = !article.imageWidth || !article.imageHeight;
+        const needsFocal = options.force || article.imageFocalX == null || article.imageSafeW == null;
+        const [focal, dims] = await Promise.all([
+          needsFocal
+            ? detectImageFocalPoint(article.imageUrl!, {
+                title: article.title,
+                summary: article.summary,
+                category: article.category,
+              })
+            : Promise.resolve(null),
+          needsDims ? fetchImageDimensions(article.imageUrl!) : Promise.resolve(null),
+        ]);
+        let touched = false;
+        if (focal) {
+          article.imageFocalX = focal.x;
+          article.imageFocalY = focal.y;
+          article.imageSafeW  = focal.safeW;
+          article.imageSafeH  = focal.safeH;
+          touched = true;
+        }
+        if (dims && dims.width > 0 && dims.height > 0) {
+          article.imageWidth  = dims.width;
+          article.imageHeight = dims.height;
+          touched = true;
+        }
+        if (touched) updated++;
+        else skipped++;
+      })
+    );
+    // Small pacing delay between batches keeps us under the per-minute token
+    // limit even if earlier calls were large.
+    if (i + BATCH_SIZE < targets.length) {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    }
+  }
+
+  if (updated > 0) {
+    saveToLocalFiles(bucket);
+
+    if (process.env.SUPABASE_URL) {
+      // Fire-and-forget — update each changed article by title
+      void (async () => {
+        let warnedMissingColumns = false;
+        let stripSafeBox = false;
+        for (const article of targets) {
+          // Nothing worth persisting if neither focal nor dims changed
+          if (article.imageFocalX == null && !article.imageWidth) continue;
+          const fullPayload: Record<string, unknown> = {
+            image_focal_x: article.imageFocalX ?? null,
+            image_focal_y: article.imageFocalY ?? null,
+            image_safe_w:  article.imageSafeW ?? null,
+            image_safe_h:  article.imageSafeH ?? null,
+            image_width:   article.imageWidth ?? null,
+            image_height:  article.imageHeight ?? null,
+          };
+          const payload = stripSafeBox
+            ? {
+                image_focal_x: fullPayload.image_focal_x,
+                image_focal_y: fullPayload.image_focal_y,
+                image_width:   fullPayload.image_width,
+                image_height:  fullPayload.image_height,
+              }
+            : fullPayload;
+          const { error } = await supabase
+            .from("articles")
+            .update(payload)
+            .eq("title", article.title)
+            .eq("feed_date", today);
+          if (error) {
+            if (isMissingColumnError(error.message)) {
+              if (!warnedMissingColumns) {
+                console.warn(
+                  "[focal-backfill] focal/safe-box columns missing in Supabase — local-only persistence. " +
+                  "Run: ALTER TABLE articles ADD COLUMN IF NOT EXISTS image_focal_x float8, " +
+                  "ADD COLUMN IF NOT EXISTS image_focal_y float8, " +
+                  "ADD COLUMN IF NOT EXISTS image_safe_w float8, " +
+                  "ADD COLUMN IF NOT EXISTS image_safe_h float8;"
+                );
+                warnedMissingColumns = true;
+              }
+              // If safe-box specifically is missing, retry without those fields
+              if (/image_safe/i.test(error.message) && !stripSafeBox) {
+                stripSafeBox = true;
+                const { error: retry } = await supabase
+                  .from("articles")
+                  .update({
+                    image_focal_x: article.imageFocalX ?? null,
+                    image_focal_y: article.imageFocalY ?? null,
+                    image_width:   article.imageWidth  ?? null,
+                    image_height:  article.imageHeight ?? null,
+                  })
+                  .eq("title", article.title)
+                  .eq("feed_date", today);
+                if (retry && !isMissingColumnError(retry.message)) {
+                  console.warn("[focal-backfill] retry supabase error:", retry.message);
+                }
+                continue;
+              }
+              // Focal columns also missing — bail out of the whole loop
+              break;
+            }
+            console.warn("[focal-backfill] supabase error:", error.message);
+          }
+        }
+      })();
+    }
+  }
+
+  console.log(`[focal-backfill] ✓ updated=${updated} skipped=${skipped} scanned=${targets.length}`);
+  return { scanned: targets.length, updated, skipped };
+}
+
 export function resetTodayFeed(): void {
   const today = dateStr(0);
   _feeds.delete(today);
@@ -351,9 +624,10 @@ export function resetTodayFeed(): void {
   _feeds.set(today, { date: today, articles: [] });
   // Wipe today from Supabase too (fire-and-forget)
   if (process.env.SUPABASE_URL) {
-    supabase.from("articles").delete().eq("feed_date", today)
-      .then(({ error }) => { if (error) console.warn("[supabase] reset delete error:", error.message); })
-      .catch(() => {});
+    void (async () => {
+      const { error } = await supabase.from("articles").delete().eq("feed_date", today);
+      if (error) console.warn("[supabase] reset delete error:", error.message);
+    })();
   }
   console.log("[curated] ✓ Today's feed reset.");
 }
