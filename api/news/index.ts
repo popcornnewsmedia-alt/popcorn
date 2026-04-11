@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { supabase, mapRow, isProd, sevenDaysAgo } from "../_lib/supabase";
+import { supabase, mapRow, sevenDaysAgo } from "../_lib/supabase";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") return res.status(405).end();
@@ -19,7 +19,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     .order("signal_score",  { ascending: false })
     .range((page - 1) * limit, page * limit - 1);
 
-  if (isProd()) query = query.eq("stage", "prod");
+  // Always gate on stage='prod' — articles must be manually promoted before appearing
+  query = query.eq("stage", "prod");
   if (category) query = query.eq("category", category);
 
   const { data, count, error } = await query;
