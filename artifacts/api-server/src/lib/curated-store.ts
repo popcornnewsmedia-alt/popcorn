@@ -169,12 +169,37 @@ function isMissingColumnError(msg: string | undefined): boolean {
 
 async function upsertFeedToSupabase(articles: EnrichedArticle[], feedDate: string): Promise<void> {
   if (!process.env.SUPABASE_URL) return;
-  // Delete the day's existing rows, then re-insert fresh
-  const { error: delErr } = await supabase.from("articles").delete().eq("feed_date", feedDate);
+
+  // SAFETY: Never touch stage='prod' rows. Only clear the dev-staged articles
+  // for this date so that a re-run of curation cannot demote manually promoted articles.
+  const { error: delErr } = await supabase
+    .from("articles")
+    .delete()
+    .eq("feed_date", feedDate)
+    .eq("stage", "dev");
   if (delErr) { console.warn("[supabase] delete error:", delErr.message); return; }
+
   if (articles.length === 0) return;
-  const rows = articles.map((a) => articleToRow(a, feedDate));
-  const { error: insErr } = await supabase.from("articles").insert(rows);
+
+  // Skip any articles whose title already exists as stage='prod' for this date
+  // (i.e. a previously promoted article with the same story — don't re-add it as dev).
+  const { data: prodRows } = await supabase
+    .from("articles")
+    .select("title")
+    .eq("feed_date", feedDate)
+    .eq("stage", "prod");
+  const prodTitles = new Set((prodRows ?? []).map((r: { title: string }) => r.title));
+
+  const newRows = articles
+    .filter((a) => !prodTitles.has(a.title))
+    .map((a) => articleToRow(a, feedDate));
+
+  if (newRows.length === 0) {
+    console.log("[supabase] All articles for", feedDate, "already exist as prod — nothing to insert.");
+    return;
+  }
+
+  const { error: insErr } = await supabase.from("articles").insert(newRows);
   if (insErr) {
     if (isMissingColumnError(insErr.message)) {
       console.warn(
@@ -185,7 +210,7 @@ async function upsertFeedToSupabase(articles: EnrichedArticle[], feedDate: strin
         "ADD COLUMN IF NOT EXISTS image_safe_w float8, " +
         "ADD COLUMN IF NOT EXISTS image_safe_h float8;"
       );
-      const safeRows = rows.map(stripUnknownColumns);
+      const safeRows = newRows.map(stripUnknownColumns);
       const { error: retryErr } = await supabase.from("articles").insert(safeRows);
       if (retryErr) console.warn("[supabase] retry insert error:", retryErr.message);
     } else {
