@@ -22,11 +22,25 @@ CREATE TABLE IF NOT EXISTS articles (
   image_url       TEXT,
   image_width     INT,
   image_height    INT,
+  image_focal_x   float8,
+  image_focal_y   float8,
+  image_safe_w    float8,
+  image_safe_h    float8,
   key_points      JSONB       DEFAULT '[]',
   signal_score    FLOAT,
+  impact          TEXT,
   wiki_search_query TEXT,
   created_at      TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- ── Migration: add focal point + impact columns if upgrading an existing DB ───
+-- Run these if the table already exists without these columns:
+--   ALTER TABLE articles
+--     ADD COLUMN IF NOT EXISTS image_focal_x   float8,
+--     ADD COLUMN IF NOT EXISTS image_focal_y   float8,
+--     ADD COLUMN IF NOT EXISTS image_safe_w    float8,
+--     ADD COLUMN IF NOT EXISTS image_safe_h    float8,
+--     ADD COLUMN IF NOT EXISTS impact          TEXT;
 
 CREATE INDEX IF NOT EXISTS articles_feed_date_idx    ON articles (feed_date DESC);
 CREATE INDEX IF NOT EXISTS articles_published_at_idx ON articles (published_at DESC);
