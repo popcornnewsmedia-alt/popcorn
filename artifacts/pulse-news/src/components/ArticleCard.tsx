@@ -60,8 +60,20 @@ export function ArticleCard({
     }
     const onLoad = () => setImgReady(true);
     img.addEventListener('load', onLoad);
+    // Re-check after adding listener — handles the race where the image
+    // finishes loading between the `complete` check above and the
+    // addEventListener call (load event already fired, won't fire again).
+    if (img.complete && img.naturalWidth > 0) {
+      setImgReady(true);
+    }
     return () => img.removeEventListener('load', onLoad);
-  }, [article.imageUrl]);
+    // `renderContent` is critical here: when the card first mounts outside the
+    // ±3 render window, renderContent is false and no <img> exists (imgRef is
+    // null). The effect runs on mount, finds null, and returns early. When the
+    // user scrolls and the card enters the window, renderContent becomes true
+    // and the <img> appears — but without renderContent in the deps the effect
+    // won't re-run, leaving imgReady stuck at false (image invisible).
+  }, [article.imageUrl, renderContent]);
 
   // Focal point support — when present, anchor the crop to the main subject.
   // This is the ONLY thing that affects how the image is positioned. Every
