@@ -287,9 +287,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
       style={{
         width: size, height: size,
         borderRadius: "50%",
-        background: "rgba(5,57,128,0.07)",
-        border: "1.5px solid rgba(5,57,128,0.15)",
-        boxShadow: "0 0 0 3px rgba(5,57,128,0.04)",
+        background: avatarColor(name),
         display: "flex", alignItems: "center", justifyContent: "center",
         flexShrink: 0,
       }}
@@ -298,7 +296,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
         fontFamily: "'Macabro', 'Anton', sans-serif",
         fontWeight: 700,
         fontSize: size <= 28 ? 10 : 13,
-        color: BRAND,
+        color: CREAM,
         letterSpacing: "0.02em",
         lineHeight: 1,
       }}>

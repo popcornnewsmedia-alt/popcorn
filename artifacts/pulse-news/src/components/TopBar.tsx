@@ -130,6 +130,7 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
                 transform: 'scaleX(0)', // updated via ref.style.transform = scaleX(n)
                 transformOrigin: 'left center',
                 willChange: 'transform', // hints compositor to promote to own layer
+                transition: 'transform 0.12s linear', // smooths micro-jumps between rAF ticks
               }}
             />
           </div>
