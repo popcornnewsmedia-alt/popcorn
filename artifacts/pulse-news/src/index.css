@@ -18,14 +18,14 @@ select:focus-visible {
   box-shadow: none !important;
 }
 
-/* Progress bar glow — ebbing pulse on fill elements */
+/* Progress bar glow — opacity-only pulse (no box-shadow for mobile perf) */
 @keyframes progress-ebb-cream {
-  0%, 100% { opacity: 0.72; box-shadow: 0 0 2px rgba(255,241,205,0.25); }
-  50%       { opacity: 1;    box-shadow: 0 0 7px rgba(255,241,205,0.75); }
+  0%, 100% { opacity: 0.72; }
+  50%       { opacity: 1; }
 }
 @keyframes progress-ebb-navy {
-  0%, 100% { opacity: 0.7; box-shadow: 0 0 2px rgba(5,57,128,0.2); }
-  50%       { opacity: 1;   box-shadow: 0 0 6px rgba(5,57,128,0.6); }
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1; }
 }
 .progress-fill-feed    { animation: progress-ebb-cream 2.5s ease-in-out infinite; }
 .progress-fill-article { animation: progress-ebb-navy  2.5s ease-in-out infinite; }

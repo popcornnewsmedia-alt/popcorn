@@ -72,7 +72,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
     setImgError(false);
     setLocalLiked(false);
     setCommentsOpen(false);
-    if (fillRef.current) fillRef.current.style.right = '100%';
+    if (fillRef.current) fillRef.current.style.transform = 'scaleX(0)';
   }, [article?.id]);
 
   const handleScroll = () => {
@@ -82,7 +82,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
     const { scrollTop, scrollHeight, clientHeight } = el;
     const max = scrollHeight - clientHeight;
     const pct = max > 0 ? scrollTop / max : 0;
-    fill.style.right = `${(1 - pct) * 100}%`;
+    fill.style.transform = `scaleX(${pct})`;
   };
 
   const onHandleTouchStart = (e: React.TouchEvent) => {
@@ -164,7 +164,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
               <div
                 ref={fillRef}
                 className="progress-fill-article"
-                style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: '100%', background: '#053980' }}
+                style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, background: '#053980', transform: 'scaleX(0)', transformOrigin: 'left center', willChange: 'transform' }}
               />
             </div>
 

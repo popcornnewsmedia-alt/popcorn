@@ -422,7 +422,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                 className="font-['Inter']"
                 style={{ marginTop: '12px', textAlign: 'center', fontSize: '10.5px', lineHeight: 1.55, color: 'rgba(255,241,205,0.42)' }}
               >
-                By creating an account you agree to our{" "}
+                By signing up you agree to our{" "}
                 <button
                   onClick={(e) => { e.stopPropagation(); onOpenLegal("terms"); }}
                   className="inline"

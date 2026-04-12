@@ -284,7 +284,7 @@ export function SplashScreen({
       {/* Centre — wordmark, tagline, popcorn animation */}
       <div
         className="relative z-10 flex-1 flex flex-col items-center justify-center"
-        style={{ gap: '14px', paddingBottom: '80px' }}
+        style={{ gap: '14px', paddingBottom: '80px', transform: 'translateY(-30px)' }}
       >
         <span
           style={{
@@ -335,21 +335,19 @@ export function SplashScreen({
       {/* Bottom — sign-up CTAs, revealed only when signed-out and after the
           popcorn has started popping. Stays out of the way for returning users. */}
       <div
-        className="relative z-10 px-6 flex-shrink-0 flex justify-center"
+        className="relative z-10 px-6 flex-shrink-0 flex flex-col items-center"
         style={{
           marginTop: '-190px',
           paddingBottom: 'max(22px, calc(env(safe-area-inset-bottom) + 14px))',
           pointerEvents: showCTAs ? 'auto' : 'none',
+          opacity: showCTAs ? 1 : 0,
+          transform: showCTAs ? 'translateY(-30px)' : 'translateY(-12px)',
+          transition: 'opacity 3s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 3s cubic-bezier(0.22,1,0.36,1) 0.3s',
         }}
       >
         <div
           className="flex flex-col gap-2.5 w-full"
-          style={{
-            maxWidth: '300px',
-            opacity: showCTAs ? 1 : 0,
-            transform: showCTAs ? 'translateY(0)' : 'translateY(18px)',
-            transition: 'opacity 3s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 3s cubic-bezier(0.22,1,0.36,1) 0.3s',
-          }}
+          style={{ maxWidth: '300px' }}
         >
           <button
             onClick={onSignIn}
@@ -383,60 +381,55 @@ export function SplashScreen({
           >
             CREATE YOUR ACCOUNT
           </button>
+        </div>
 
-          {/* Legal footnote — tiny link line to Terms / Privacy */}
-          <p
-            className="font-['Inter']"
+        {/* Legal footnote — outside 300px button container so it fits on one line */}
+        <p
+          className="font-['Inter']"
+          style={{
+            marginTop: '14px',
+            textAlign: 'center',
+            fontSize: '10.5px',
+            lineHeight: 1.55,
+            color: 'rgba(255,241,205,0.35)',
+          }}
+        >
+          By continuing you agree to our{" "}
+          <button
+            onClick={() => onOpenLegal("terms")}
+            className="inline"
             style={{
-              marginTop: '6px',
-              textAlign: 'center',
-              fontSize: '10.5px',
-              lineHeight: 1.55,
-              color: 'rgba(255,241,205,0.42)',
-              letterSpacing: '0.01em',
+              color: 'rgba(255,241,205,0.72)',
+              borderBottom: '1px solid rgba(255,241,205,0.28)',
+              fontWeight: 600,
             }}
           >
-            By continuing you agree to our{" "}
-            <button
-              onClick={() => onOpenLegal("terms")}
-              className="inline"
-              style={{
-                color: '#fff1cd',
-                borderBottom: '1px solid rgba(255,241,205,0.45)',
-                paddingBottom: '1px',
-                fontWeight: 600,
-              }}
-            >
-              Terms
-            </button>
-            {" "}&{" "}
-            <button
-              onClick={() => onOpenLegal("privacy")}
-              className="inline"
-              style={{
-                color: '#fff1cd',
-                borderBottom: '1px solid rgba(255,241,205,0.45)',
-                paddingBottom: '1px',
-                fontWeight: 600,
-              }}
-            >
-              Privacy
-            </button>
-            .{" · "}
-            <button
-              onClick={() => onOpenLegal("about")}
-              className="inline"
-              style={{
-                color: '#fff1cd',
-                borderBottom: '1px solid rgba(255,241,205,0.45)',
-                paddingBottom: '1px',
-                fontWeight: 600,
-              }}
-            >
-              About Popcorn
-            </button>
-          </p>
-        </div>
+            Terms
+          </button>{" "}
+          &{" "}
+          <button
+            onClick={() => onOpenLegal("privacy")}
+            className="inline"
+            style={{
+              color: 'rgba(255,241,205,0.72)',
+              borderBottom: '1px solid rgba(255,241,205,0.28)',
+              fontWeight: 600,
+            }}
+          >
+            Privacy
+          </button>.{" · "}
+          <button
+            onClick={() => onOpenLegal("about")}
+            className="inline"
+            style={{
+              color: 'rgba(255,241,205,0.72)',
+              borderBottom: '1px solid rgba(255,241,205,0.28)',
+              fontWeight: 600,
+            }}
+          >
+            About Popcorn
+          </button>
+        </p>
       </div>
     </div>
   );
