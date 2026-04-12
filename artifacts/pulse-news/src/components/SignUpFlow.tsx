@@ -27,6 +27,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
   const [dobYear, setDobYear] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [topics, setTopics] = useState<Set<string>>(new Set());
   const [notifs, setNotifs] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
@@ -38,7 +39,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
 
   const reset = () => {
     setStep(0); setDone(false); setEmailSent(false);
-    setName(""); setDobDay(""); setDobMonth(""); setDobYear(""); setEmail(""); setPassword("");
+    setName(""); setDobDay(""); setDobMonth(""); setDobYear(""); setEmail(""); setPassword(""); setConfirmPassword("");
     setTopics(new Set()); setNotifs(new Set());
     setError(null); setLoading(false);
   };
@@ -110,8 +111,9 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
     setTopics(prev => { const n = new Set(prev); n.has(t) ? n.delete(t) : n.add(t); return n; });
   };
 
+  const passwordsMatch = password === confirmPassword;
   const canNext =
-    step === 0 ? name.trim().length > 0 && !!dobDay && !!dobMonth && !!dobYear && email.includes("@") && password.length >= 8
+    step === 0 ? name.trim().length > 0 && !!dobDay && !!dobMonth && !!dobYear && email.includes("@") && password.length >= 8 && confirmPassword.length > 0 && passwordsMatch
     : step === 1 ? topics.size >= 1
     : true;
 
@@ -152,22 +154,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
           <X className="w-4 h-4" style={{ color: 'rgba(255,241,205,0.65)' }} />
         </button>
 
-        {/* Step progress */}
-        {!done && !emailSent && (
-          <div className="relative z-10 flex items-center justify-center gap-3 pt-3 pb-1 flex-shrink-0">
-            {[0, 1, 2].map(i => (
-              <div
-                key={i}
-                className="rounded-full transition-all duration-300"
-                style={{
-                  width: i === step ? '22px' : '6px',
-                  height: '6px',
-                  background: i === step ? '#fff1cd' : i < step ? 'rgba(255,241,205,0.45)' : 'rgba(255,241,205,0.18)',
-                }}
-              />
-            ))}
-          </div>
-        )}
+        {/* Spacer below handle when no step dots */}
 
         {/* Content */}
         <div className="relative z-10 flex-1 flex flex-col overflow-hidden">
@@ -222,9 +209,6 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
           ) : step === 0 ? (
             <div className="flex-1 flex flex-col px-6 pt-7 pb-5 gap-6 overflow-y-auto" style={{ animation: 'step-in 0.35s ease both' }}>
               <div>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,241,205,0.38)', marginBottom: '8px' }}>
-                  {stepLabels[0]} · 1 of 3
-                </p>
                 <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '15px', color: '#fff1cd', lineHeight: 1, letterSpacing: '0.02em' }}>
                   CREATE YOUR ACCOUNT.
                 </h2>
@@ -236,6 +220,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                   { label: "Full Name", type: "text", value: name, set: setName, placeholder: "Your full name" },
                   { label: "Email", type: "email", value: email, set: setEmail, placeholder: "you@example.com" },
                   { label: "Password", type: "password", value: password, set: setPassword, placeholder: "Min. 8 characters" },
+                  { label: "Confirm Password", type: "password", value: confirmPassword, set: setConfirmPassword, placeholder: "Re-enter password" },
                 ].map(({ label, type, value, set, placeholder }, i) => (
                   <>
                     <div key={label} className="flex flex-col gap-1.5">
@@ -284,6 +269,16 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                     )}
                   </>
                 ))}
+
+                {confirmPassword.length > 0 && (
+                  <p className="font-['Inter'] flex items-center gap-1.5" style={{ fontSize: '12px', marginTop: '-4px', color: passwordsMatch ? 'rgba(130,220,160,0.85)' : 'rgba(255,150,130,0.80)' }}>
+                    {passwordsMatch ? (
+                      <><Check className="w-3 h-3 inline" strokeWidth={3} /> Passwords match.</>
+                    ) : (
+                      <><X className="w-3 h-3 inline" strokeWidth={3} /> Passwords don't match.</>
+                    )}
+                  </p>
+                )}
 
                 {error === "__exists__" ? (
                   <p className="font-['Inter']" style={{ fontSize: '13px', color: '#ff8a80', lineHeight: 1.5 }}>
@@ -474,37 +469,38 @@ function BrandedSelect({ value, onChange, options, placeholder }: {
 
       {open && (
         <div
-          className="fixed inset-0 z-[300] flex flex-col justify-end"
-          style={{ background: 'rgba(0,0,0,0.6)' }}
+          className="fixed inset-0 z-[300] flex items-end justify-center"
+          style={{ background: 'rgba(0,0,0,0.55)' }}
           onClick={(e) => { e.stopPropagation(); setOpen(false); }}
         >
           <div
-            className="rounded-t-2xl overflow-hidden flex flex-col"
-            style={{ background: '#053980', maxHeight: '55vh' }}
+            className="rounded-2xl overflow-hidden flex flex-col mx-4 mb-6 w-full relative"
+            style={{ background: '#053980', maxHeight: '45vh', maxWidth: '320px', border: '1px solid rgba(255,241,205,0.10)' }}
             onClick={(e) => e.stopPropagation()}
           >
+            <GrainBackground />
             {/* Handle */}
-            <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
-              <div className="w-8 h-1 rounded-full" style={{ background: 'rgba(255,241,205,0.25)' }} />
+            <div className="relative z-10 flex justify-center pt-2.5 pb-1 flex-shrink-0">
+              <div className="w-7 h-[3px] rounded-full" style={{ background: 'rgba(255,241,205,0.20)' }} />
             </div>
             {/* Options */}
-            <div className="overflow-y-auto pb-8">
+            <div className="relative z-10 overflow-y-auto pb-4">
               {options.map((opt, idx) => (
                 <div
                   key={opt.value}
                   onClick={(e) => { e.stopPropagation(); onChange(opt.value); setOpen(false); }}
-                  className="flex items-center justify-between px-6 py-3.5 active:opacity-60 cursor-pointer"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 active:opacity-60 cursor-pointer"
                   style={{
-                    borderTop: idx > 0 ? '1px solid rgba(255,241,205,0.07)' : undefined,
-                    background: opt.value === value ? 'rgba(255,241,205,0.09)' : 'transparent',
+                    borderTop: idx > 0 ? '1px solid rgba(255,241,205,0.06)' : undefined,
+                    background: opt.value === value ? 'rgba(255,241,205,0.10)' : 'transparent',
                     color: '#fff1cd',
                     fontFamily: "'Macabro', 'Anton', sans-serif",
-                    fontSize: '16px',
+                    fontSize: '15px',
                     letterSpacing: '0.04em',
                   }}
                 >
                   <span>{opt.label}</span>
-                  {opt.value === value && <Check className="w-4 h-4" style={{ color: '#fff1cd' }} strokeWidth={2.5} />}
+                  {opt.value === value && <Check className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#fff1cd' }} strokeWidth={2.5} />}
                 </div>
               ))}
             </div>

@@ -26,12 +26,12 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
   return (
     <>
       <div
-        className="fixed inset-0 z-[60] transition-opacity duration-300"
+        className="fixed inset-0 z-[230] transition-opacity duration-300"
         style={{ background: 'rgba(0,0,0,0.72)', opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'auto' : 'none' }}
         onClick={handleClose}
       />
       <div
-        className="fixed inset-x-0 bottom-0 z-[60] flex flex-col overflow-hidden"
+        className="fixed inset-x-0 bottom-0 z-[230] flex flex-col overflow-hidden"
         style={{
           height: '94dvh',
           background: '#053980',
@@ -76,8 +76,8 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
               </p>
               <h1 style={{
                 fontFamily: "'Macabro', 'Anton', sans-serif",
-                fontSize: 'clamp(30px, 9vw, 42px)',
-                lineHeight: 0.92,
+                fontSize: 'clamp(16px, 4.5vw, 21px)',
+                lineHeight: 0.94,
                 color: '#fff1cd',
                 letterSpacing: '0.015em',
                 textTransform: 'uppercase',
@@ -104,7 +104,7 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
                   <p
                     className="font-['Lora'] italic"
                     style={{
-                      fontSize: '15.5px',
+                      fontSize: '12px',
                       lineHeight: 1.7,
                       color: 'rgba(255,241,205,0.78)',
                       marginBottom: '28px',
@@ -124,7 +124,7 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
                         alignItems: 'baseline',
                         gap: '10px',
                         fontFamily: "'Macabro', 'Anton', sans-serif",
-                        fontSize: '14px',
+                        fontSize: '11px',
                         letterSpacing: '0.10em',
                         color: '#fff1cd',
                         textTransform: 'uppercase',
@@ -134,12 +134,12 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
                       <span
                         className="font-['Inter']"
                         style={{
-                          fontSize: '10px',
+                          fontSize: '8px',
                           fontWeight: 700,
                           letterSpacing: '0.04em',
                           color: 'rgba(255,241,205,0.38)',
                           fontFamily: "'Inter', sans-serif",
-                          width: '22px',
+                          width: '18px',
                         }}
                       >
                         {String(i + 1).padStart(2, '0')}
@@ -151,10 +151,10 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
                         key={j}
                         className="font-['Lora']"
                         style={{
-                          fontSize: '15px',
+                          fontSize: '12px',
                           lineHeight: 1.75,
                           color: 'rgba(255,241,205,0.78)',
-                          marginLeft: '32px',
+                          marginLeft: '28px',
                           marginBottom: j === s.paragraphs.length - 1 ? 0 : '12px',
                         }}
                       >
@@ -175,7 +175,7 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
                   <p
                     className="font-['Inter']"
                     style={{
-                      fontSize: '11px',
+                      fontSize: '10px',
                       color: 'rgba(255,241,205,0.38)',
                       letterSpacing: '0.04em',
                       lineHeight: 1.6,
