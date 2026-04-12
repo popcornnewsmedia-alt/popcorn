@@ -196,4 +196,36 @@ router.post(
   }
 );
 
+/**
+ * POST /api/auth/user-exists
+ * Check whether an email is registered (used to distinguish
+ * "account not found" from "wrong password" on the client).
+ */
+router.post(
+  "/user-exists",
+  async (req: Request<{}, {}, { email: string }>, res: Response) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({ error: "Missing email" });
+      }
+
+      const { data, error } = await supabase.auth.admin.listUsers({ perPage: 1000 });
+      if (error) {
+        console.error("user-exists lookup error:", error);
+        return res.status(500).json({ error: "Lookup failed" });
+      }
+
+      const exists = (data?.users ?? []).some(
+        (u) => u.email?.toLowerCase() === email.toLowerCase()
+      );
+
+      return res.json({ exists });
+    } catch (error) {
+      console.error("user-exists error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
 export default router;

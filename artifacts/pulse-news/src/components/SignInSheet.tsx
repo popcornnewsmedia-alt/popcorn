@@ -72,7 +72,25 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
     } catch (err: any) {
       const msg = (err.message ?? "").toLowerCase();
       if (msg.includes("invalid login credentials") || msg.includes("invalid_credentials")) {
-        setError("Incorrect email or password. Please try again.");
+        // Supabase returns the same error for "no account" and "wrong password".
+        // Check if the email is registered so we can show a more helpful message.
+        try {
+          const apiUrl = import.meta.env.VITE_API_URL ?? "";
+          const resp = await fetch(`${apiUrl}/api/auth/user-exists`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          });
+          const data = await resp.json();
+          if (!data.exists) {
+            setError("No account found with this email. Please create an account first.");
+          } else {
+            setError("Incorrect password. Please try again.");
+          }
+        } catch {
+          // If the check fails, fall back to the generic message
+          setError("Incorrect email or password. Please try again.");
+        }
       } else if (msg.includes("email not confirmed")) {
         setError("Your email hasn't been verified yet. Check your inbox for a confirmation link.");
       } else if (msg.includes("too many requests") || msg.includes("rate limit")) {
