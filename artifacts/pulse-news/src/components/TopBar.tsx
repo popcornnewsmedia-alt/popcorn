@@ -128,6 +128,7 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
                 background: 'rgba(255,241,205,0.62)',
                 transform: 'scaleX(0)',
                 transformOrigin: 'left center',
+                transition: 'transform 100ms ease-out',
                 willChange: 'transform',
                 backfaceVisibility: 'hidden',
               }}

@@ -790,8 +790,8 @@ export function FeedPage() {
       container.style.opacity = '1';
       setTimeout(() => {
         container.style.transition = '';
-        // Remove transition so rAF loop drives the bar with zero lag
-        if (fill) fill.style.transition = 'none';
+        // Restore default transition for smooth per-card steps
+        if (fill) fill.style.transition = 'transform 100ms ease-out';
       }, 260);
     }, 150);
   }, [viewportHeight]);
