@@ -53,17 +53,16 @@ function App() {
       if (localStorage.getItem(sentKey)) return;
       localStorage.setItem(sentKey, "1");
 
-      // Send the welcome email
-      const name = user.user_metadata?.full_name || user.user_metadata?.name || "Reader";
-      const email = user.email;
-      if (!email) return;
-
-      const apiUrl = import.meta.env.VITE_API_URL ?? "";
-      fetch(`${apiUrl}/api/auth/send-welcome`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.id, email, name }),
-      }).catch(() => { /* Non-fatal */ });
+      // TODO: Re-enable welcome email once Resend domain is verified (June 2026 domain transfer)
+      // const name = user.user_metadata?.full_name || user.user_metadata?.name || "Reader";
+      // const email = user.email;
+      // if (!email) return;
+      // const apiUrl = import.meta.env.VITE_API_URL ?? "";
+      // fetch(`${apiUrl}/api/auth/send-welcome`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ userId: user.id, email, name }),
+      // }).catch(() => { /* Non-fatal */ });
     });
 
     return () => subscription.unsubscribe();
@@ -112,19 +111,19 @@ function App() {
         history.replaceState(null, "", window.location.pathname);
       }
 
-      // Fire welcome email — only after user has verified their email
-      if (flagData.userId && flagData.email && flagData.name) {
-        const apiUrl = import.meta.env.VITE_API_URL ?? "";
-        fetch(`${apiUrl}/api/auth/send-welcome`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: flagData.userId,
-            email: flagData.email,
-            name: flagData.name,
-          }),
-        }).catch(() => { /* Non-fatal — welcome email failure shouldn't block the user */ });
-      }
+      // TODO: Re-enable welcome email once Resend domain is verified (June 2026 domain transfer)
+      // if (flagData.userId && flagData.email && flagData.name) {
+      //   const apiUrl = import.meta.env.VITE_API_URL ?? "";
+      //   fetch(`${apiUrl}/api/auth/send-welcome`, {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({
+      //       userId: flagData.userId,
+      //       email: flagData.email,
+      //       name: flagData.name,
+      //     }),
+      //   }).catch(() => { /* Non-fatal — welcome email failure shouldn't block the user */ });
+      // }
 
       setShowConfirmed(true);
     };
