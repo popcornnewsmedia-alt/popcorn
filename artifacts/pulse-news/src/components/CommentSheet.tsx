@@ -287,17 +287,20 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
       style={{
         width: size, height: size,
         borderRadius: "50%",
-        background: avatarColor(name),
+        background: "rgba(5,57,128,0.07)",
+        border: "1.5px solid rgba(5,57,128,0.15)",
+        boxShadow: "0 0 0 3px rgba(5,57,128,0.04)",
         display: "flex", alignItems: "center", justifyContent: "center",
         flexShrink: 0,
       }}
     >
       <span style={{
-        fontFamily: "'Manrope', sans-serif",
+        fontFamily: "'Macabro', 'Anton', sans-serif",
         fontWeight: 700,
-        fontSize: size <= 28 ? 10 : 12,
-        color: CREAM,
+        fontSize: size <= 28 ? 10 : 13,
+        color: BRAND,
         letterSpacing: "0.02em",
+        lineHeight: 1,
       }}>
         {initials}
       </span>

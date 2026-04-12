@@ -727,13 +727,46 @@ export function FeedPage() {
     return startOfDay(oldest);
   }, [allArticles]);
 
+  // ── Crossfade jump helper ────────────────────────────────────────────────
+  // Short hops (≤ 3 cards) use native smooth-scroll. Longer jumps crossfade
+  // the feed container to avoid the jarring stutter of scrolling through many
+  // snap points. The progress bar gets a brief CSS transition so it glides to
+  // its new position instead of snapping.
+  const crossfadeJump = useCallback((targetTop: number) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const distance = Math.abs(container.scrollTop - targetTop);
+
+    if (distance <= viewportHeight * 3) {
+      container.scrollTo({ top: targetTop, behavior: "smooth" });
+      return;
+    }
+
+    // Long jump — crossfade for a seamless feel
+    const fill = feedBarFillRef.current;
+    if (fill) fill.style.transition = 'transform 0.35s ease';
+
+    container.style.transition = 'opacity 0.14s ease-out';
+    container.style.opacity = '0';
+
+    setTimeout(() => {
+      container.scrollTo({ top: targetTop, behavior: "instant" as ScrollBehavior });
+      container.style.transition = 'opacity 0.22s ease-in';
+      container.style.opacity = '1';
+      setTimeout(() => {
+        container.style.transition = '';
+        if (fill) fill.style.transition = '';
+      }, 260);
+    }, 150);
+  }, [viewportHeight]);
+
   const handleDatePick = useCallback((date: Date) => {
     pickerNavLockRef.current = true;
     setTimeout(() => { pickerNavLockRef.current = false; }, 700);
     const d = startOfDay(date);
     setSelectedDate(d);
     if (isSameDay(d, startOfDay(new Date()))) {
-      scrollContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+      crossfadeJump(0);
       return;
     }
     // Index-based scrollTo — reliable in snap containers; scrollIntoView is not.
@@ -741,9 +774,9 @@ export function FeedPage() {
       (item) => item.kind === 'divider' && isSameDay(item.date, d)
     );
     if (dividerIdx !== -1) {
-      scrollContainerRef.current?.scrollTo({ top: dividerIdx * viewportHeight, behavior: "smooth" });
+      crossfadeJump(dividerIdx * viewportHeight);
     }
-  }, [feedItems, viewportHeight]);
+  }, [feedItems, viewportHeight, crossfadeJump]);
 
   // Tap-top handler — two behaviours based on where the user currently is:
   //
@@ -787,8 +820,8 @@ export function FeedPage() {
 
     const target = targetIdx * viewportHeight;
     if (Math.abs(container.scrollTop - target) < 8) return;
-    container.scrollTo({ top: target, behavior: "smooth" });
-  }, [viewportHeight]);
+    crossfadeJump(target);
+  }, [viewportHeight, crossfadeJump]);
 
   if (status === "pending") {
     return (

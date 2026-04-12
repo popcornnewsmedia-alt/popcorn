@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+/* Neutralise browser autofill styling (Chrome blue tinge) + focus ring */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px rgba(5,57,128,0.92) inset !important;
+  -webkit-text-fill-color: #fff1cd !important;
+  caret-color: #fff1cd;
+  transition: background-color 5000s ease-in-out 0s;
+}
+input:focus-visible,
+select:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* Progress bar glow — ebbing pulse on fill elements */
 @keyframes progress-ebb-cream {
   0%, 100% { opacity: 0.72; box-shadow: 0 0 2px rgba(255,241,205,0.25); }
