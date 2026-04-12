@@ -14,9 +14,10 @@ interface SignUpFlowProps {
   onClose: () => void;
   onComplete: (name: string) => void;
   onOpenLegal?: (kind: LegalKind) => void;
+  onSignInInstead?: (email: string) => void;
 }
 
-export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpFlowProps) {
+export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInInstead }: SignUpFlowProps) {
   const { signUp, signInWithGoogle, updateProfile } = useAuth();
 
   const [step, setStep] = useState(0);
@@ -56,13 +57,25 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpF
       setLoading(true);
       try {
         const data = await signUp(email, password, name);
+        // Supabase returns a fake user with empty identities when the email
+        // is already registered (email-enumeration protection).
+        if (data.user && data.user.identities && data.user.identities.length === 0) {
+          setError("__exists__");
+          return;
+        }
         if (!data.session) {
+          localStorage.setItem('popcorn_awaiting_confirm', Date.now().toString());
           setEmailSent(true);
         } else {
           setStep(1);
         }
       } catch (err: any) {
-        setError(err.message ?? "Sign up failed. Please try again.");
+        const msg = (err.message ?? "").toLowerCase();
+        if (msg.includes("already registered") || msg.includes("already been registered") || msg.includes("user_already_exists")) {
+          setError("__exists__");
+        } else {
+          setError(err.message ?? "Sign up failed. Please try again.");
+        }
       } finally {
         setLoading(false);
       }
@@ -193,6 +206,9 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpF
                   <span style={{ color: '#fff1cd', fontWeight: 600 }}>{email}</span>.
                   Click it to activate your account.
                 </p>
+                <p className="font-['Inter']" style={{ fontSize: '12px', color: 'rgba(255,241,205,0.32)', lineHeight: 1.5, marginTop: '10px' }}>
+                  Don't see it? Check your junk or spam folder.
+                </p>
               </div>
               <button
                 onClick={handleClose}
@@ -269,9 +285,24 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpF
                   </>
                 ))}
 
-                {error && (
+                {error === "__exists__" ? (
+                  <p className="font-['Inter']" style={{ fontSize: '13px', color: '#ff8a80', lineHeight: 1.5 }}>
+                    An account with this email already exists.{" "}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const savedEmail = email;
+                        onClose();
+                        setTimeout(() => { reset(); onSignInInstead?.(savedEmail); }, 350);
+                      }}
+                      style={{ color: '#fff1cd', fontWeight: 600, borderBottom: '1px solid rgba(255,241,205,0.45)' }}
+                    >
+                      Sign in instead
+                    </button>
+                  </p>
+                ) : error ? (
                   <p className="font-['Inter']" style={{ fontSize: '13px', color: '#ff8a80' }}>{error}</p>
-                )}
+                ) : null}
 
                 <div className="flex items-center gap-3 my-0.5">
                   <div className="flex-1 h-px" style={{ background: 'rgba(255,241,205,0.12)' }} />

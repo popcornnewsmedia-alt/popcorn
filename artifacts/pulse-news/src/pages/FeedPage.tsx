@@ -446,6 +446,7 @@ export function FeedPage() {
   const [readingArticle, setReadingArticle] = useState<NewsArticle | null>(null);
   const [signUpOpen, setSignUpOpen] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
+  const [signInEmail, setSignInEmail] = useState("");
   const [legalSheet, setLegalSheet] = useState<LegalKind | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(startOfDay(new Date()));
   const [readIds, setReadIds] = useState<Set<number>>(new Set());
@@ -976,12 +977,14 @@ export function FeedPage() {
         onClose={() => setSignUpOpen(false)}
         onComplete={() => setSignUpOpen(false)}
         onOpenLegal={setLegalSheet}
+        onSignInInstead={(email) => { setSignInEmail(email); setSignInOpen(true); }}
       />
       <SignInSheet
         isOpen={signInOpen}
-        onClose={() => setSignInOpen(false)}
-        onSignUpInstead={() => { setSignInOpen(false); setSignUpOpen(true); }}
+        onClose={() => { setSignInOpen(false); setSignInEmail(""); }}
+        onSignUpInstead={() => { setSignInOpen(false); setSignInEmail(""); setSignUpOpen(true); }}
         onOpenLegal={setLegalSheet}
+        initialEmail={signInEmail}
       />
 
       {/* Privacy / Terms sheet — reachable from the splash CTAs,

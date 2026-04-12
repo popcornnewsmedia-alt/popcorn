@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, ArrowRight } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
@@ -9,14 +9,20 @@ interface SignInSheetProps {
   onClose: () => void;
   onSignUpInstead: () => void;
   onOpenLegal?: (kind: LegalKind) => void;
+  initialEmail?: string;
 }
 
-export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal }: SignInSheetProps) {
-  const [email, setEmail] = useState("");
+export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, initialEmail }: SignInSheetProps) {
+  const [email, setEmail] = useState(initialEmail ?? "");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { signIn, signInWithGoogle } = useAuth();
+
+  // Pre-fill email when redirected from sign-up (existing account detected)
+  useEffect(() => {
+    if (initialEmail) setEmail(initialEmail);
+  }, [initialEmail]);
 
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
   const reset = () => { setEmail(""); setPassword(""); setError(null); setLoading(false); };

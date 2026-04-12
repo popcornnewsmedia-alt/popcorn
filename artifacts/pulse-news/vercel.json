@@ -1,4 +1,7 @@
 {
+  "rewrites": [
+    { "source": "/((?!assets|fonts|favicon|manifest).*)", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/fonts/(.*)",
