@@ -32,6 +32,12 @@ function App() {
   useEffect(() => {
     const flag = localStorage.getItem("popcorn_awaiting_confirm");
     if (!flag) return;
+    // Already shown in this browser tab — don't re-trigger on hot-reload or
+    // rapid refreshes before the flag was removed.
+    if (sessionStorage.getItem("popcorn_confirmed_shown")) {
+      localStorage.removeItem("popcorn_awaiting_confirm");
+      return;
+    }
 
     // Expire the flag after 1 hour to avoid stale triggers
     if (Date.now() - parseInt(flag) > 3_600_000) {
@@ -41,7 +47,13 @@ function App() {
 
     const activate = (session: unknown) => {
       if (!session) return;
+      // Re-check flag — getSession and onAuthStateChange can both call this;
+      // only the first call should show the screen. On page refresh after the
+      // flag has been removed, this guard prevents a stale trigger.
+      if (!localStorage.getItem("popcorn_awaiting_confirm")) return;
       localStorage.removeItem("popcorn_awaiting_confirm");
+      // Mark as shown so a fast refresh can never re-trigger
+      sessionStorage.setItem("popcorn_confirmed_shown", "1");
       // Clean hash/query fragments left by Supabase redirect
       if (
         window.location.hash.includes("access_token") ||

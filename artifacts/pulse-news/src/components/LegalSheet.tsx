@@ -183,7 +183,7 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
                     }}
                   >
                     Questions? Write to us at{" "}
-                    <span style={{ color: '#fff1cd' }}>hello@popcorn.app</span>
+                    <span style={{ color: '#fff1cd' }}>hello@popcornmedia.org</span>
                   </p>
                 </div>
               </div>
@@ -220,7 +220,6 @@ const PRIVACY: LegalDoc = {
   intro:
     "Popcorn is a culture-and-news reader. We collect the minimum amount of information required to run the service, and we never sell your data. This policy explains what we collect, why, and what you can do about it.",
   sections: [
-    ABOUT_POPCORN,
     {
       heading: "Information we collect",
       paragraphs: [
@@ -246,7 +245,7 @@ const PRIVACY: LegalDoc = {
       heading: "Your choices and rights",
       paragraphs: [
         "You can update your profile, change the topics that shape your feed, and manage notifications at any time from the Profile tab. You can delete your account by contacting us at the address below, and we will erase your personal information within 30 days (except where we are legally required to retain it).",
-        "If you are in the EEA, the UK, or California, you have additional rights under the GDPR, UK GDPR, and CCPA respectively — including the right to access, correct, port, and delete the data we hold about you, and the right to object to processing. To exercise these rights, email hello@popcorn.app.",
+        "If you are in the EEA, the UK, or California, you have additional rights under the GDPR, UK GDPR, and CCPA respectively — including the right to access, correct, port, and delete the data we hold about you, and the right to object to processing. To exercise these rights, email hello@popcornmedia.org.",
       ],
     },
     {
@@ -277,7 +276,7 @@ const PRIVACY: LegalDoc = {
     {
       heading: "Contact",
       paragraphs: [
-        "Questions, concerns, or requests? Email hello@popcorn.app and we will respond within a reasonable time.",
+        "Questions, concerns, or requests? Email hello@popcornmedia.org and we will respond within a reasonable time.",
       ],
     },
   ],
@@ -289,7 +288,6 @@ const TERMS: LegalDoc = {
   intro:
     "These terms form a legal agreement between you and Popcorn. By creating an account or using the service you agree to them. Please read them carefully — they are written to be as plain as possible.",
   sections: [
-    ABOUT_POPCORN,
     {
       heading: "The service",
       paragraphs: [
@@ -360,7 +358,7 @@ const TERMS: LegalDoc = {
     {
       heading: "Contact",
       paragraphs: [
-        "Reach out to hello@popcorn.app with any questions about these terms.",
+        "Reach out to hello@popcornmedia.org with any questions about these terms.",
       ],
     },
   ],

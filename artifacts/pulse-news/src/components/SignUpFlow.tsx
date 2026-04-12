@@ -406,6 +406,16 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
               {loading ? "WORKING…" : step === 2 ? "FINISH" : "CONTINUE"}
               {!loading && <ArrowRight className="w-4 h-4" strokeWidth={2.5} />}
             </button>
+            {step === 0 && (
+              <div style={{ marginTop: '14px', paddingTop: '14px', borderTop: '1px solid rgba(255,241,205,0.10)' }}>
+                <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,241,205,0.50)', marginBottom: '8px', textAlign: 'center' }}>
+                  About Popcorn
+                </p>
+                <p className="font-['Lora'] italic" style={{ fontSize: '11px', lineHeight: 1.65, color: 'rgba(255,241,205,0.45)', textAlign: 'center' }}>
+                  In an age of hyper-personalisation, most news feeds give you more of what you already follow. Popcorn takes the opposite approach — we hand-curate culture stories from around the globe. The surprising, the fascinating, the things you didn't know you wanted to know.
+                </p>
+              </div>
+            )}
             {step === 0 && onOpenLegal && (
               <p
                 className="font-['Inter']"

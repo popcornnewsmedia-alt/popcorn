@@ -354,7 +354,7 @@ function ProfileScreen({
               <div style={{ height: 1, background: "rgba(255,241,205,0.08)" }} />
               <LegalRow
                 label="Contact us"
-                onClick={() => { window.location.href = "mailto:hello@popcorn.app"; }}
+                onClick={() => { window.location.href = "mailto:hello@popcornmedia.org"; }}
               />
             </div>
           </div>
