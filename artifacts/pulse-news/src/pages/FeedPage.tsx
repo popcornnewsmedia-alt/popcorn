@@ -150,9 +150,9 @@ function SavedScreen({
   }
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden flex flex-col" style={{ background: "#053980" }}>
+    <div className="relative h-[100dvh] w-full overflow-hidden flex flex-col items-center" style={{ background: "#053980" }}>
       <GrainBackground />
-      <div className="relative z-10 flex flex-col h-full">
+      <div className="relative z-10 flex flex-col h-full w-full" style={{ maxWidth: '480px' }}>
         {/* Header */}
         <div className="px-5 pb-4" style={{ paddingTop: 'calc(72px + env(safe-area-inset-top))' }}>
           <h2
@@ -273,14 +273,14 @@ function ProfileScreen({
   const initial = (userName ?? userEmail ?? "?")[0].toUpperCase();
 
   return (
-    <div className="relative h-[100dvh] w-full flex flex-col overflow-hidden" style={{ background: "#053980" }}>
+    <div className="relative h-[100dvh] w-full flex flex-col items-center overflow-hidden" style={{ background: "#053980" }}>
       <GrainBackground />
 
       {isLoggedIn ? (
         /* ── Signed-in view ── */
         <div
-          className="relative z-10 flex flex-col h-full overflow-y-auto scrollbar-hide pb-28"
-          style={{ paddingTop: 'calc(72px + env(safe-area-inset-top))' }}
+          className="relative z-10 flex flex-col h-full overflow-y-auto scrollbar-hide pb-28 mx-auto w-full"
+          style={{ paddingTop: 'calc(72px + env(safe-area-inset-top))', maxWidth: '480px' }}
         >
 
           {/* Avatar + identity */}
@@ -336,6 +336,20 @@ function ProfileScreen({
             </div>
           )}
 
+          {/* About Popcorn */}
+          <div className="px-5 mb-6">
+            <div style={{ height: "1px", background: "rgba(255,241,205,0.08)", marginBottom: 16 }} />
+            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "10px", color: "rgba(255,241,205,0.38)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>
+              About Popcorn
+            </p>
+            <p
+              className="font-['Lora'] italic"
+              style={{ fontSize: "13px", color: "rgba(255,241,205,0.55)", lineHeight: 1.65 }}
+            >
+              In an age of hyper-personalisation, most news feeds give you more of what you already follow. Popcorn takes the opposite approach — we hand-curate culture stories from around the globe. The surprising, the fascinating, the things you didn't know you wanted to know.
+            </p>
+          </div>
+
           {/* Legal — stacked rows with chevrons */}
           <div className="px-5 mb-6">
             <div style={{ height: "1px", background: "rgba(255,241,205,0.08)", marginBottom: 16 }} />
@@ -361,18 +375,9 @@ function ProfileScreen({
             </div>
           </div>
 
-          {/* About */}
+          {/* Version */}
           <div className="px-5 mb-6">
-            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "10px", color: "rgba(255,241,205,0.38)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>
-              About
-            </p>
-            <p
-              className="font-['Lora'] italic"
-              style={{ fontSize: "13px", color: "rgba(255,241,205,0.55)", lineHeight: 1.65 }}
-            >
-              Popcorn is a hand-curated pop-culture reader. Five-minute stories on the things shaping music, film, gaming, and the internet — delivered fresh every morning.
-            </p>
-            <p className="font-['Inter']" style={{ marginTop: 10, fontSize: "11px", color: "rgba(255,241,205,0.32)", letterSpacing: "0.04em" }}>
+            <p className="font-['Inter']" style={{ fontSize: "11px", color: "rgba(255,241,205,0.32)", letterSpacing: "0.04em" }}>
               Version {APP_VERSION}
             </p>
           </div>
@@ -837,7 +842,7 @@ export function FeedPage() {
       <ProfileScreen
         onSignIn={() => setSignInOpen(true)}
         onCreateAccount={() => setSignUpOpen(true)}
-        onSignOut={() => signOut()}
+        onSignOut={() => { signOut(); setActiveTab("feed"); setShowSplash(true); }}
         onOpenLegal={setLegalSheet}
         userName={userName}
         userEmail={userEmail}

@@ -128,9 +128,10 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
       />
 
       <div
-        className="fixed inset-x-0 bottom-0 z-[220] flex flex-col overflow-hidden"
+        className="fixed inset-x-0 bottom-0 z-[220] flex flex-col overflow-hidden mx-auto"
         style={{
           height: '90dvh',
+          maxWidth: '480px',
           background: '#053980',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
