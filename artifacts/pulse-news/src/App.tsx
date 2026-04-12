@@ -32,6 +32,44 @@ function Router() {
 function App() {
   const [showConfirmed, setShowConfirmed] = useState(false);
 
+  /* ── Welcome email for Google OAuth new users ──────────────────────── */
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event !== "SIGNED_IN" || !session?.user) return;
+
+      const user = session.user;
+      const provider = user.app_metadata?.provider;
+
+      // Only handle Google OAuth sign-ins (manual signups use the popcorn_awaiting_confirm flow)
+      if (provider !== "google") return;
+
+      // Detect new user: created_at is within the last 2 minutes
+      const createdAt = new Date(user.created_at).getTime();
+      const isNewUser = Date.now() - createdAt < 120_000;
+      if (!isNewUser) return;
+
+      // Prevent duplicate welcome emails
+      const sentKey = `popcorn_welcome_sent_${user.id}`;
+      if (localStorage.getItem(sentKey)) return;
+      localStorage.setItem(sentKey, "1");
+
+      // Send the welcome email
+      const name = user.user_metadata?.full_name || user.user_metadata?.name || "Reader";
+      const email = user.email;
+      if (!email) return;
+
+      const apiUrl = import.meta.env.VITE_API_URL ?? "";
+      fetch(`${apiUrl}/api/auth/send-welcome`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id, email, name }),
+      }).catch(() => { /* Non-fatal */ });
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  /* ── Email-verified confirmation (manual email/password signups) ──── */
   useEffect(() => {
     const rawFlag = localStorage.getItem("popcorn_awaiting_confirm");
     if (!rawFlag) return;
