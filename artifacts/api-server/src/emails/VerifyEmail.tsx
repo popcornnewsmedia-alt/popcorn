@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Body,
   Button,
   Container,
   Head,
@@ -21,10 +22,10 @@ export const VerifyEmail = ({ name = "Reader", confirmLink }: VerifyEmailProps) 
     <Head>
       <Preview>Confirm your Popcorn account</Preview>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Lora:ital@0;1&family=Manrope:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Anton:wght@400;700&family=Lora:ital@0;1&display=swap');
         body {
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-          background: #f5f5f5;
+          background: #053980;
         }
       `}</style>
     </Head>
@@ -81,7 +82,7 @@ export const VerifyEmail = ({ name = "Reader", confirmLink }: VerifyEmailProps) 
 );
 
 const bodyStyle = {
-  backgroundColor: "#f5f5f5",
+  backgroundColor: "#053980",
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
   padding: "20px 0",
@@ -90,10 +91,11 @@ const bodyStyle = {
 const containerStyle = {
   maxWidth: "480px",
   margin: "0 auto",
-  backgroundColor: "#ffffff",
-  borderRadius: "12px",
+  backgroundColor: "#053980",
+  backgroundImage:
+    "radial-gradient(circle at 10% 20%, rgba(255,241,205,0.05) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(255,241,205,0.05) 0%, transparent 40%)",
+  borderRadius: "0",
   overflow: "hidden" as const,
-  boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
 };
 
 const headerStyle = {
@@ -111,7 +113,7 @@ const logoStyle = {
   letterSpacing: "0.12em",
   margin: "0 0 24px 0",
   textTransform: "uppercase" as const,
-  fontFamily: "'Manrope', sans-serif",
+  fontFamily: "'Anton', sans-serif",
 };
 
 const headingStyle = {
@@ -121,16 +123,16 @@ const headingStyle = {
   letterSpacing: "0.02em",
   margin: "0 0 16px 0",
   lineHeight: "1.2",
-  fontFamily: "'Macabro', 'Anton', sans-serif",
+  fontFamily: "'Anton', sans-serif",
   textTransform: "uppercase" as const,
 };
 
 const subtitleStyle = {
   fontSize: "16px",
-  color: "rgba(255,241,205,0.75)",
+  color: "rgba(255,241,205,0.85)",
   margin: "0 0 32px 0",
   lineHeight: "1.6",
-  fontFamily: "'Manrope', sans-serif",
+  fontFamily: "'Lora', serif",
 };
 
 const buttonStyle = {
@@ -144,34 +146,34 @@ const buttonStyle = {
   display: "inline-block",
   marginBottom: "24px",
   letterSpacing: "0.08em",
-  fontFamily: "'Macabro', 'Anton', sans-serif",
+  fontFamily: "'Anton', sans-serif",
   textTransform: "uppercase" as const,
 };
 
 const altLinkStyle = {
   fontSize: "12px",
-  color: "rgba(255,241,205,0.55)",
+  color: "rgba(255,241,205,0.65)",
   margin: "16px 0 0 0",
   lineHeight: "1.6",
 };
 
 const footerStyle = {
-  backgroundColor: "#f9f9f9",
+  backgroundColor: "#053980",
   padding: "28px 32px",
   textAlign: "center" as const,
-  borderTop: "1px solid #e8e8e8",
+  borderTop: "1px solid rgba(255,241,205,0.10)",
 };
 
 const footerTextStyle = {
   fontSize: "13px",
-  color: "#333333",
+  color: "rgba(255,241,205,0.70)",
   margin: "0 0 12px 0",
   lineHeight: "1.6",
 };
 
 const footerSmallStyle = {
   fontSize: "11px",
-  color: "#999999",
+  color: "rgba(255,241,205,0.50)",
   margin: "0",
   lineHeight: "1.6",
 };

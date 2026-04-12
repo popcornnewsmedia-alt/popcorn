@@ -18,7 +18,7 @@ interface SignUpFlowProps {
 }
 
 export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInInstead }: SignUpFlowProps) {
-  const { signUp, signInWithGoogle, updateProfile } = useAuth();
+  const { signInWithGoogle, updateProfile } = useAuth();
 
   const [step, setStep] = useState(0);
   const [name, setName] = useState("");
@@ -57,26 +57,38 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
     if (step === 0) {
       setLoading(true);
       try {
-        const data = await signUp(email, password, name);
-        // Supabase returns a fake user with empty identities when the email
-        // is already registered (email-enumeration protection).
-        if (data.user && data.user.identities && data.user.identities.length === 0) {
-          setError("__exists__");
+        const apiUrl = import.meta.env.VITE_API_URL ?? "";
+        const res = await fetch(`${apiUrl}/api/auth/signup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, name }),
+        });
+        const data = await res.json();
+
+        if (res.status === 400) {
+          const msg = (data.error ?? "").toLowerCase();
+          if (msg.includes("already") || msg.includes("exists")) {
+            setError("__exists__");
+          } else {
+            setError(data.error ?? "Sign up failed. Please try again.");
+          }
           return;
         }
-        if (!data.session) {
-          localStorage.setItem('popcorn_awaiting_confirm', Date.now().toString());
-          setEmailSent(true);
-        } else {
-          setStep(1);
+        if (!res.ok) {
+          setError(data.error ?? "Sign up failed. Please try again.");
+          return;
         }
+
+        // Store userId + name so App.tsx can send the welcome email after verification
+        localStorage.setItem("popcorn_awaiting_confirm", JSON.stringify({
+          ts: Date.now(),
+          userId: data.userId,
+          email: data.email,
+          name,
+        }));
+        setEmailSent(true);
       } catch (err: any) {
-        const msg = (err.message ?? "").toLowerCase();
-        if (msg.includes("already registered") || msg.includes("already been registered") || msg.includes("user_already_exists")) {
-          setError("__exists__");
-        } else {
-          setError(err.message ?? "Sign up failed. Please try again.");
-        }
+        setError(err.message ?? "Sign up failed. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -406,44 +418,37 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
               {loading ? "WORKING…" : step === 2 ? "FINISH" : "CONTINUE"}
               {!loading && <ArrowRight className="w-4 h-4" strokeWidth={2.5} />}
             </button>
-            {step === 0 && (
-              <div style={{ marginTop: '14px', paddingTop: '14px', borderTop: '1px solid rgba(255,241,205,0.10)' }}>
-                <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,241,205,0.50)', marginBottom: '8px', textAlign: 'center' }}>
-                  About Popcorn
-                </p>
-                <p className="font-['Lora'] italic" style={{ fontSize: '11px', lineHeight: 1.65, color: 'rgba(255,241,205,0.45)', textAlign: 'center' }}>
-                  In an age of hyper-personalisation, most news feeds give you more of what you already follow. Popcorn takes the opposite approach — we hand-curate culture stories from around the globe. The surprising, the fascinating, the things you didn't know you wanted to know.
-                </p>
-              </div>
-            )}
             {step === 0 && onOpenLegal && (
-              <p
-                className="font-['Inter']"
-                style={{
-                  marginTop: '12px',
-                  textAlign: 'center',
-                  fontSize: '10.5px',
-                  lineHeight: 1.55,
-                  color: 'rgba(255,241,205,0.42)',
-                }}
-              >
-                By creating an account you agree to our{" "}
-                <button
-                  onClick={(e) => { e.stopPropagation(); onOpenLegal("terms"); }}
-                  className="inline"
-                  style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
+              <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'center' }}>
+                <p
+                  className="font-['Inter']"
+                  style={{ textAlign: 'center', fontSize: '10.5px', lineHeight: 1.55, color: 'rgba(255,241,205,0.42)' }}
                 >
-                  Terms
-                </button>{" "}
-                and{" "}
+                  By creating an account you agree to our{" "}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onOpenLegal("terms"); }}
+                    className="inline"
+                    style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
+                  >
+                    Terms
+                  </button>{" "}
+                  and{" "}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onOpenLegal("privacy"); }}
+                    className="inline"
+                    style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
+                  >
+                    Privacy Policy
+                  </button>.
+                </p>
                 <button
-                  onClick={(e) => { e.stopPropagation(); onOpenLegal("privacy"); }}
-                  className="inline"
-                  style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
+                  onClick={(e) => { e.stopPropagation(); onOpenLegal("about"); }}
+                  className="font-['Inter']"
+                  style={{ fontSize: '10.5px', color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
                 >
-                  Privacy Policy
-                </button>.
-              </p>
+                  About Popcorn
+                </button>
+              </div>
             )}
           </div>
         )}

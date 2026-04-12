@@ -34,7 +34,7 @@ export function EmailConfirmedScreen({ onContinue }: EmailConfirmedScreenProps) 
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center gap-7 px-8 text-center">
         {/* Animated check circle */}
         <div
-          className="w-24 h-24 rounded-full flex items-center justify-center"
+          className="w-16 h-16 rounded-full flex items-center justify-center"
           style={{
             background: "#fff1cd",
             animation: visible
@@ -43,7 +43,7 @@ export function EmailConfirmedScreen({ onContinue }: EmailConfirmedScreenProps) 
           }}
         >
           <Check
-            className="w-11 h-11"
+            className="w-7 h-7"
             style={{ color: "#053980" }}
             strokeWidth={2.5}
           />
@@ -60,7 +60,7 @@ export function EmailConfirmedScreen({ onContinue }: EmailConfirmedScreenProps) 
           <h1
             style={{
               fontFamily: "'Macabro', 'Anton', sans-serif",
-              fontSize: "36px",
+              fontSize: "clamp(22px, 5vw, 28px)",
               color: "#fff1cd",
               lineHeight: 1.05,
               letterSpacing: "0.02em",
@@ -88,7 +88,7 @@ export function EmailConfirmedScreen({ onContinue }: EmailConfirmedScreenProps) 
 
       {/* CTA */}
       <div
-        className="relative z-10 px-6 pb-12"
+        className="relative z-10 flex justify-center px-6 pb-12"
         style={{
           animation: visible ? "tagline-reveal 0.5s ease 0.7s both" : "none",
         }}
@@ -97,6 +97,7 @@ export function EmailConfirmedScreen({ onContinue }: EmailConfirmedScreenProps) 
           onClick={handleContinue}
           className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl transition-all duration-150 active:scale-[0.98]"
           style={{
+            maxWidth: "360px",
             fontFamily: "'Macabro', 'Anton', sans-serif",
             fontSize: "14px",
             letterSpacing: "0.08em",

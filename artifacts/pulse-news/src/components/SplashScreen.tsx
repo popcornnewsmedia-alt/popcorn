@@ -422,7 +422,19 @@ export function SplashScreen({
             >
               Privacy Policy
             </button>
-            .
+            .{" · "}
+            <button
+              onClick={() => onOpenLegal("about")}
+              className="inline"
+              style={{
+                color: '#fff1cd',
+                borderBottom: '1px solid rgba(255,241,205,0.45)',
+                paddingBottom: '1px',
+                fontWeight: 600,
+              }}
+            >
+              About Popcorn
+            </button>
           </p>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { GrainBackground } from "@/components/GrainBackground";
 
-export type LegalKind = "privacy" | "terms";
+export type LegalKind = "privacy" | "terms" | "about";
 
 interface LegalSheetProps {
   kind: LegalKind | null;
@@ -18,7 +18,8 @@ interface LegalSheetProps {
  */
 export function LegalSheet({ kind, onClose }: LegalSheetProps) {
   const isOpen = kind !== null;
-  const doc = kind === "terms" ? TERMS : kind === "privacy" ? PRIVACY : null;
+  const doc = kind === "terms" ? TERMS : kind === "privacy" ? PRIVACY : kind === "about" ? ABOUT : null;
+  const docLabel = kind === "about" ? "Popcorn · About" : "Popcorn · Legal";
 
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
   const handleClose = (e: React.MouseEvent) => { e.stopPropagation(); onClose(); };
@@ -73,7 +74,7 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
                 color: 'rgba(255,241,205,0.38)',
                 marginBottom: '10px',
               }}>
-                Popcorn · Legal
+                {docLabel}
               </p>
               <h1 style={{
                 fontFamily: "'Macabro', 'Anton', sans-serif",
@@ -206,11 +207,32 @@ interface LegalDoc {
 
 const LAST_UPDATED = "April 12, 2026";
 
-const ABOUT_POPCORN = {
-  heading: "About Popcorn",
-  paragraphs: [
-    "In an age of hyper-personalisation, most news feeds give you more of what you already follow — select politics and you're buried in political news, much of it noise you never asked for. Popcorn takes the opposite approach.",
-    "We hand-curate culture stories from around the globe — the surprising, the fascinating, the things you didn't know you wanted to know. Music, film, gaming, fashion, tech, internet culture, and everything in between. No algorithmic rabbit holes, no outrage bait. Just the good stuff, delivered fresh every morning.",
+const ABOUT: LegalDoc = {
+  title: "About\nPopcorn",
+  lastUpdated: LAST_UPDATED,
+  intro: "We built Popcorn because we were tired of doomscrolling feeds that only gave us more of what we already knew about. Here's what makes us different.",
+  sections: [
+    {
+      heading: "What we are",
+      paragraphs: [
+        "In an age of hyper-personalisation, most news feeds give you more of what you already follow — select politics and you're buried in political news, much of it noise you never asked for. Popcorn takes the opposite approach.",
+        "We hand-curate culture stories from around the globe — the surprising, the fascinating, the things you didn't know you wanted to know. Music, film, gaming, fashion, tech, internet culture, and everything in between.",
+      ],
+    },
+    {
+      heading: "Our editorial philosophy",
+      paragraphs: [
+        "No algorithmic rabbit holes. No outrage bait. No headlines engineered to make you anxious. Just the good stuff, delivered fresh every morning.",
+        "Every story in your feed has been reviewed by a human editor before it reaches you. We care more about quality and breadth than volume.",
+      ],
+    },
+    {
+      heading: "Who we are",
+      paragraphs: [
+        "Popcorn is an independent product. We're a small team who care deeply about media, culture, and building things that don't make people feel worse after using them.",
+        "Questions or thoughts? We'd love to hear from you at hello@popcornmedia.org.",
+      ],
+    },
   ],
 };
 

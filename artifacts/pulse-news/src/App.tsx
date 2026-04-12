@@ -21,6 +21,9 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={FeedPage} />
+      {/* Supabase redirects here after email verification — just render the feed.
+          App.tsx's onAuthStateChange will detect the session and show EmailConfirmedScreen. */}
+      <Route path="/auth/callback" component={FeedPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -30,8 +33,9 @@ function App() {
   const [showConfirmed, setShowConfirmed] = useState(false);
 
   useEffect(() => {
-    const flag = localStorage.getItem("popcorn_awaiting_confirm");
-    if (!flag) return;
+    const rawFlag = localStorage.getItem("popcorn_awaiting_confirm");
+    if (!rawFlag) return;
+
     // Already shown in this browser tab — don't re-trigger on hot-reload or
     // rapid refreshes before the flag was removed.
     if (sessionStorage.getItem("popcorn_confirmed_shown")) {
@@ -39,8 +43,17 @@ function App() {
       return;
     }
 
+    // Parse the flag — supports both legacy string (timestamp) and new JSON format
+    let flagData: { ts: number; userId?: string; email?: string; name?: string } = { ts: 0 };
+    try {
+      flagData = JSON.parse(rawFlag);
+    } catch {
+      // Legacy: plain timestamp string
+      flagData = { ts: parseInt(rawFlag) || 0 };
+    }
+
     // Expire the flag after 1 hour to avoid stale triggers
-    if (Date.now() - parseInt(flag) > 3_600_000) {
+    if (Date.now() - flagData.ts > 3_600_000) {
       localStorage.removeItem("popcorn_awaiting_confirm");
       return;
     }
@@ -48,8 +61,7 @@ function App() {
     const activate = (session: unknown) => {
       if (!session) return;
       // Re-check flag — getSession and onAuthStateChange can both call this;
-      // only the first call should show the screen. On page refresh after the
-      // flag has been removed, this guard prevents a stale trigger.
+      // only the first call should show the screen.
       if (!localStorage.getItem("popcorn_awaiting_confirm")) return;
       localStorage.removeItem("popcorn_awaiting_confirm");
       // Mark as shown so a fast refresh can never re-trigger
@@ -61,6 +73,21 @@ function App() {
       ) {
         history.replaceState(null, "", window.location.pathname);
       }
+
+      // Fire welcome email — only after user has verified their email
+      if (flagData.userId && flagData.email && flagData.name) {
+        const apiUrl = import.meta.env.VITE_API_URL ?? "";
+        fetch(`${apiUrl}/api/auth/send-welcome`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: flagData.userId,
+            email: flagData.email,
+            name: flagData.name,
+          }),
+        }).catch(() => { /* Non-fatal — welcome email failure shouldn't block the user */ });
+      }
+
       setShowConfirmed(true);
     };
 

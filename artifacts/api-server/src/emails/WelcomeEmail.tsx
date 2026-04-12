@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Body,
   Button,
   Container,
   Head,
@@ -22,10 +23,10 @@ export const WelcomeEmail = ({
     <Head>
       <Preview>Welcome to Popcorn — Culture news curated for you</Preview>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Lora:ital@0;1&family=Manrope:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Anton:wght@400;700&family=Lora:ital@0;1&display=swap');
         body {
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-          background: #f5f5f5;
+          background: #053980;
         }
       `}</style>
     </Head>
@@ -41,7 +42,7 @@ export const WelcomeEmail = ({
           </Text>
 
           <Text style={taglineStyle}>
-            Your curated culture feed is ready.
+            Your culture feed is ready.
           </Text>
         </Section>
 
@@ -50,44 +51,65 @@ export const WelcomeEmail = ({
           <Text style={sectionTitleStyle}>THE POPCORN DIFFERENCE</Text>
 
           <Text style={missionTextStyle}>
-            In an age of hyper-personalisation, most news feeds trap you in a loop. Select politics? You're buried in political news—much of it noise you never asked for.
+            Most feeds today promise personalization. What they actually deliver is repetition. You click one thing, and suddenly you are drowning in more of the same. More noise. More filler. Less signal.
           </Text>
 
           <Text style={missionTextStyle}>
-            <span style={{ fontWeight: "bold", color: "#053980" }}>Popcorn takes the opposite approach.</span> We hand-curate the culture stories that matter: music, film, gaming, fashion, tech, internet culture. The surprising. The fascinating. The things you didn't know you wanted to know.
+            Because here is the truth. <span style={{ fontWeight: "bold" }}>You do not know what you do not know.</span> And that is exactly what makes culture interesting.
+          </Text>
+
+          <Text style={missionTextStyle}>
+            <span style={{ fontWeight: "bold" }}>Popcorn takes a different approach. We do the work for you.</span>
+          </Text>
+
+          <Text style={missionTextStyle}>
+            Every day, we hand pick the stories that are actually worth your attention. Across music, film, gaming, fashion, tech, and internet culture. The unexpected. The interesting. The ones that cut through.
           </Text>
 
           <Text style={benefitStyle}>
-            ✨ No algorithmic rabbit holes<br />
-            ✨ No outrage bait<br />
-            ✨ Just the good stuff, delivered fresh
+            🎬 No endless loops<br />
+            🎬 No noise dressed as news<br />
+            🎬 No endless scrolling. See the headlines for the day, dive into what interests you, and you are done
           </Text>
         </Section>
 
         {/* What's Next Section */}
         <Section style={nextSectionStyle}>
-          <Text style={nextTitleStyle}>What's Waiting For You</Text>
+          <Text style={nextTitleStyle}>WHAT IS WAITING FOR YOU</Text>
 
           <Section style={featureBoxStyle}>
-            <Text style={featureHeading}>📰 YOUR PERSONALIZED FEED</Text>
+            <Text style={featureHeading}>📰 A CURATED FEED</Text>
             <Text style={featureText}>
-              Articles curated around the topics you love, from sources we trust.
+              A tight selection of stories that matter. No clutter. No filler.
             </Text>
           </Section>
 
           <Section style={featureBoxStyle}>
-            <Text style={featureHeading}>💬 ENGAGE & DISCUSS</Text>
+            <Text style={featureHeading}>💬 JOIN THE CONVERSATION</Text>
             <Text style={featureText}>
-              Jump into comments, share your thoughts, connect with other culture enthusiasts.
+              React, comment, and see what others are saying.
             </Text>
           </Section>
 
           <Section style={featureBoxStyle}>
-            <Text style={featureHeading}>📚 SAVE & COME BACK</Text>
+            <Text style={featureHeading}>📚 SAVE WHAT STICKS</Text>
             <Text style={featureText}>
-              Bookmark stories you love. Your reading list syncs across all your devices.
+              Bookmark anything worth coming back to.
             </Text>
           </Section>
+        </Section>
+
+        {/* Closing Section */}
+        <Section style={closingSectionStyle}>
+          <Text style={closingTextStyle}>
+            That is it.
+          </Text>
+          <Text style={closingTextStyle}>
+            Simple. Sharp. Worth your time.
+          </Text>
+          <Text style={welcomeTextStyle}>
+            Welcome to Popcorn.
+          </Text>
         </Section>
 
         {/* CTA Section */}
@@ -95,24 +117,18 @@ export const WelcomeEmail = ({
           <Button href={appLink} style={ctaButtonStyle}>
             START READING
           </Button>
-
-          <Text style={ctaSubtextStyle}>
-            Your personalized feed is waiting. Explore culture news on your terms.
-          </Text>
         </Section>
 
         {/* Footer */}
         <Section style={footerStyle}>
-          <Text style={footerHeadingStyle}>Questions or feedback?</Text>
           <Text style={footerTextStyle}>
-            We'd love to hear from you at{" "}
-            <span style={{ color: "#053980", fontWeight: "bold" }}>
+            Questions or feedback? Reach out at{" "}
+            <span style={{ color: "#fff1cd", fontWeight: "bold" }}>
               hello@popcornmedia.org
             </span>
           </Text>
           <Text style={copyrightStyle}>
-            © 2026 Popcorn Media. All rights reserved.<br />
-            Enjoy the good stuff.
+            © 2026 Popcorn Media. All rights reserved.
           </Text>
         </Section>
       </Container>
@@ -121,7 +137,7 @@ export const WelcomeEmail = ({
 );
 
 const bodyStyle = {
-  backgroundColor: "#f5f5f5",
+  backgroundColor: "#053980",
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
   padding: "20px 0",
@@ -130,10 +146,11 @@ const bodyStyle = {
 const containerStyle = {
   maxWidth: "520px",
   margin: "0 auto",
-  backgroundColor: "#ffffff",
-  borderRadius: "12px",
+  backgroundColor: "#053980",
+  backgroundImage:
+    "radial-gradient(circle at 10% 20%, rgba(255,241,205,0.05) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(255,241,205,0.05) 0%, transparent 40%)",
+  borderRadius: "0",
   overflow: "hidden" as const,
-  boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
 };
 
 const headerStyle = {
@@ -151,7 +168,7 @@ const logoStyle = {
   letterSpacing: "0.12em",
   margin: "0 0 20px 0",
   textTransform: "uppercase" as const,
-  fontFamily: "'Manrope', sans-serif",
+  fontFamily: "'Anton', sans-serif",
 };
 
 const mainHeadingStyle = {
@@ -161,13 +178,13 @@ const mainHeadingStyle = {
   letterSpacing: "0.02em",
   margin: "0 0 12px 0",
   lineHeight: "1.15",
-  fontFamily: "'Macabro', 'Anton', sans-serif",
+  fontFamily: "'Anton', sans-serif",
   textTransform: "uppercase" as const,
 };
 
 const taglineStyle = {
   fontSize: "16px",
-  color: "rgba(255,241,205,0.70)",
+  color: "rgba(255,241,205,0.80)",
   margin: "0",
   fontStyle: "italic",
   fontFamily: "'Lora', serif",
@@ -175,23 +192,23 @@ const taglineStyle = {
 
 const missionSectionStyle = {
   padding: "40px 32px",
-  backgroundColor: "#ffffff",
-  borderBottom: "1px solid #f0f0f0",
+  backgroundColor: "#053980",
+  borderBottom: "1px solid rgba(255,241,205,0.10)",
 };
 
 const sectionTitleStyle = {
   fontSize: "12px",
   fontWeight: "bold" as const,
-  color: "#053980",
+  color: "#fff1cd",
   letterSpacing: "0.12em",
   textTransform: "uppercase" as const,
-  margin: "0 0 16px 0",
-  fontFamily: "'Macabro', 'Anton', sans-serif",
+  margin: "0 0 20px 0",
+  fontFamily: "'Anton', sans-serif",
 };
 
 const missionTextStyle = {
   fontSize: "15px",
-  color: "#333333",
+  color: "rgba(255,241,205,0.90)",
   lineHeight: "1.7",
   margin: "0 0 14px 0",
   fontFamily: "'Lora', serif",
@@ -199,7 +216,7 @@ const missionTextStyle = {
 
 const benefitStyle = {
   fontSize: "14px",
-  color: "#053980",
+  color: "#fff1cd",
   lineHeight: "1.8",
   margin: "24px 0 0 0",
   fontWeight: "500" as const,
@@ -207,22 +224,22 @@ const benefitStyle = {
 
 const nextSectionStyle = {
   padding: "40px 32px",
-  backgroundColor: "#ffffff",
+  backgroundColor: "#053980",
 };
 
 const nextTitleStyle = {
   fontSize: "12px",
   fontWeight: "bold" as const,
-  color: "#053980",
+  color: "#fff1cd",
   letterSpacing: "0.12em",
   textTransform: "uppercase" as const,
   margin: "0 0 20px 0",
-  fontFamily: "'Macabro', 'Anton', sans-serif",
+  fontFamily: "'Anton', sans-serif",
 };
 
 const featureBoxStyle = {
-  backgroundColor: "#f9f9f9",
-  border: "1px solid #e8e8e8",
+  backgroundColor: "rgba(255,241,205,0.08)",
+  border: "1px solid rgba(255,241,205,0.15)",
   borderRadius: "8px",
   padding: "16px",
   marginBottom: "12px",
@@ -231,27 +248,51 @@ const featureBoxStyle = {
 const featureHeading = {
   fontSize: "13px",
   fontWeight: "bold" as const,
-  color: "#053980",
+  color: "#fff1cd",
   margin: "0 0 8px 0",
-  fontFamily: "'Manrope', sans-serif",
+  fontFamily: "'Anton', sans-serif",
 };
 
 const featureText = {
   fontSize: "13px",
-  color: "#666666",
+  color: "rgba(255,241,205,0.80)",
   margin: "0",
   lineHeight: "1.6",
 };
 
+const closingSectionStyle = {
+  padding: "40px 32px",
+  backgroundColor: "#053980",
+  textAlign: "center" as const,
+  borderTop: "1px solid rgba(255,241,205,0.10)",
+};
+
+const closingTextStyle = {
+  fontSize: "15px",
+  color: "rgba(255,241,205,0.90)",
+  margin: "0 0 12px 0",
+  lineHeight: "1.6",
+  fontFamily: "'Lora', serif",
+};
+
+const welcomeTextStyle = {
+  fontSize: "20px",
+  fontWeight: "bold" as const,
+  color: "#fff1cd",
+  margin: "16px 0 0 0",
+  lineHeight: "1.4",
+  fontFamily: "'Anton', sans-serif",
+};
+
 const ctaSectionStyle = {
   padding: "40px 32px",
-  backgroundColor: "rgba(5,57,128,0.04)",
+  backgroundColor: "#053980",
   textAlign: "center" as const,
 };
 
 const ctaButtonStyle = {
-  backgroundColor: "#053980",
-  color: "#fff1cd",
+  backgroundColor: "#fff1cd",
+  color: "#053980",
   padding: "16px 48px",
   borderRadius: "12px",
   fontSize: "13px",
@@ -260,44 +301,27 @@ const ctaButtonStyle = {
   display: "inline-block",
   marginBottom: "16px",
   letterSpacing: "0.08em",
-  fontFamily: "'Macabro', 'Anton', sans-serif",
+  fontFamily: "'Anton', sans-serif",
   textTransform: "uppercase" as const,
-};
-
-const ctaSubtextStyle = {
-  fontSize: "13px",
-  color: "#666666",
-  margin: "0",
-  lineHeight: "1.6",
 };
 
 const footerStyle = {
-  backgroundColor: "#f5f5f5",
+  backgroundColor: "#053980",
   padding: "32px",
   textAlign: "center" as const,
-  borderTop: "1px solid #e8e8e8",
-};
-
-const footerHeadingStyle = {
-  fontSize: "12px",
-  fontWeight: "bold" as const,
-  color: "#053980",
-  letterSpacing: "0.08em",
-  textTransform: "uppercase" as const,
-  margin: "0 0 8px 0",
-  fontFamily: "'Macabro', 'Anton', sans-serif",
+  borderTop: "1px solid rgba(255,241,205,0.10)",
 };
 
 const footerTextStyle = {
   fontSize: "13px",
-  color: "#333333",
-  margin: "0 0 16px 0",
+  color: "rgba(255,241,205,0.70)",
+  margin: "0 0 12px 0",
   lineHeight: "1.6",
 };
 
 const copyrightStyle = {
   fontSize: "11px",
-  color: "#999999",
+  color: "rgba(255,241,205,0.50)",
   margin: "0",
   lineHeight: "1.6",
 };

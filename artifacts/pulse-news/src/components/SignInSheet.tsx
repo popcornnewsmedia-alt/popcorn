@@ -205,7 +205,14 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
                 style={{ color: 'rgba(255,241,205,0.72)', borderBottom: '1px solid rgba(255,241,205,0.28)', fontWeight: 600 }}
               >
                 Privacy
-              </button>.
+              </button>.{" · "}
+              <button
+                onClick={(e) => { e.stopPropagation(); onOpenLegal("about"); }}
+                className="inline"
+                style={{ color: 'rgba(255,241,205,0.72)', borderBottom: '1px solid rgba(255,241,205,0.28)', fontWeight: 600 }}
+              >
+                About Popcorn
+              </button>
             </p>
           )}
         </div>
