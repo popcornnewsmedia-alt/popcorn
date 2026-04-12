@@ -790,8 +790,8 @@ export function FeedPage() {
       container.style.opacity = '1';
       setTimeout(() => {
         container.style.transition = '';
-        // Restore default transition for smooth per-card steps
-        if (fill) fill.style.transition = 'transform 100ms ease-out';
+        // Remove transition so scroll/rAF drives the bar directly
+        if (fill) fill.style.transition = 'none';
       }, 260);
     }, 150);
   }, [viewportHeight]);
