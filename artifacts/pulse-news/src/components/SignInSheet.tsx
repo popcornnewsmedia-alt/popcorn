@@ -70,7 +70,16 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
       reset();
       onClose();
     } catch (err: any) {
-      setError(err.message ?? "Sign in failed. Check your credentials.");
+      const msg = (err.message ?? "").toLowerCase();
+      if (msg.includes("invalid login credentials") || msg.includes("invalid_credentials")) {
+        setError("Incorrect email or password. Please try again.");
+      } else if (msg.includes("email not confirmed")) {
+        setError("Your email hasn't been verified yet. Check your inbox for a confirmation link.");
+      } else if (msg.includes("too many requests") || msg.includes("rate limit")) {
+        setError("Too many attempts. Please wait a moment and try again.");
+      } else {
+        setError(err.message ?? "Sign in failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

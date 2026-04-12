@@ -409,7 +409,7 @@ export function SplashScreen({
             >
               Terms
             </button>
-            {" "}and{" "}
+            {" "}&{" "}
             <button
               onClick={() => onOpenLegal("privacy")}
               className="inline"
@@ -420,7 +420,7 @@ export function SplashScreen({
                 fontWeight: 600,
               }}
             >
-              Privacy Policy
+              Privacy
             </button>
             .{" · "}
             <button

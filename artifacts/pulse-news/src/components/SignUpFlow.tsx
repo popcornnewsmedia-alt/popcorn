@@ -18,7 +18,7 @@ interface SignUpFlowProps {
 }
 
 export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInInstead }: SignUpFlowProps) {
-  const { updateProfile } = useAuth();
+  const { signUp, updateProfile } = useAuth();
 
   const [step, setStep] = useState(0);
   const [name, setName] = useState("");
@@ -90,38 +90,30 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
     if (step === 0) {
       setLoading(true);
       try {
-        const apiUrl = import.meta.env.VITE_API_URL ?? "";
-        const res = await fetch(`${apiUrl}/api/auth/signup`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, name }),
-        });
-        const data = await res.json();
+        const data = await signUp(email, password, name);
 
-        if (res.status === 400) {
-          const msg = (data.error ?? "").toLowerCase();
-          if (msg.includes("already") || msg.includes("exists")) {
-            setError("__exists__");
-          } else {
-            setError(data.error ?? "Sign up failed. Please try again.");
-          }
-          return;
-        }
-        if (!res.ok) {
-          setError(data.error ?? "Sign up failed. Please try again.");
+        // Check if the user already exists (Supabase returns a fake user with identities=[])
+        const identities = data.user?.identities ?? [];
+        if (identities.length === 0) {
+          setError("__exists__");
           return;
         }
 
         // Store userId + name so App.tsx can send the welcome email after verification
         localStorage.setItem("popcorn_awaiting_confirm", JSON.stringify({
           ts: Date.now(),
-          userId: data.userId,
-          email: data.email,
+          userId: data.user?.id,
+          email: data.user?.email ?? email,
           name,
         }));
         setEmailSent(true);
       } catch (err: any) {
-        setError(err.message ?? "Sign up failed. Please try again.");
+        const msg = (err.message ?? "").toLowerCase();
+        if (msg.includes("already") || msg.includes("exists") || msg.includes("registered")) {
+          setError("__exists__");
+        } else {
+          setError(err.message ?? "Sign up failed. Please try again.");
+        }
       } finally {
         setLoading(false);
       }
@@ -438,15 +430,15 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                 >
                   Terms
                 </button>{" "}
-                and{" "}
+                &{" "}
                 <button
                   onClick={(e) => { e.stopPropagation(); onOpenLegal("privacy"); }}
                   className="inline"
                   style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
                 >
-                  Privacy Policy
+                  Privacy
                 </button>
-                {". · "}
+                .{" · "}
                 <button
                   onClick={(e) => { e.stopPropagation(); onOpenLegal("about"); }}
                   className="inline"

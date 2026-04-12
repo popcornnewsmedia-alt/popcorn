@@ -1,3 +1,4 @@
+import { useState, useRef, useCallback } from "react";
 import { X } from "lucide-react";
 import { GrainBackground } from "@/components/GrainBackground";
 
@@ -24,6 +25,40 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
   const handleClose = (e: React.MouseEvent) => { e.stopPropagation(); onClose(); };
 
+  // ── Drag-down-to-close (scroll-aware) ───────────────────────────────────
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const dragStartY = useRef<number | null>(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const isDragging = useRef(false);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    dragStartY.current = e.touches[0].clientY;
+    isDragging.current = false;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (dragStartY.current === null) return;
+    const delta = e.touches[0].clientY - dragStartY.current;
+    // Only start drag if scrolled to top
+    const scrollTop = scrollRef.current?.scrollTop ?? 0;
+    if (delta <= 0 || scrollTop > 2) { setDragOffset(0); return; }
+    if (!isDragging.current && delta < 10) return;
+    isDragging.current = true;
+    setDragOffset(delta);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    if (dragStartY.current === null) return;
+    dragStartY.current = null;
+    if (dragOffset > 80) {
+      setDragOffset(0);
+      onClose();
+    } else {
+      setDragOffset(0);
+    }
+    isDragging.current = false;
+  }, [dragOffset, onClose]);
+
   return (
     <>
       <div
@@ -38,11 +73,14 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
           maxWidth: '480px',
           background: '#053980',
           borderRadius: '20px 20px 0 0',
-          transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
-          transition: 'transform 0.38s cubic-bezier(0.32,0.72,0,1)',
+          transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
+          transition: dragOffset > 0 ? 'none' : 'transform 0.38s cubic-bezier(0.32,0.72,0,1)',
           boxShadow: '0 -24px 64px rgba(0,0,0,0.45)',
         }}
         onClick={stopProp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <GrainBackground />
 
@@ -100,7 +138,7 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
             <div className="relative z-10 mx-6" style={{ height: '1px', background: 'rgba(255,241,205,0.14)' }} />
 
             {/* Scrollable body */}
-            <div className="relative z-10 flex-1 overflow-y-auto overscroll-contain scrollbar-hide">
+            <div ref={scrollRef} className="relative z-10 flex-1 overflow-y-auto overscroll-contain scrollbar-hide">
               <div className="px-6 py-7 pb-20 max-w-2xl mx-auto">
                 {doc.intro && (
                   <p
