@@ -769,8 +769,8 @@ export function FeedPage() {
       container.style.opacity = '1';
       setTimeout(() => {
         container.style.transition = '';
-        // Restore the default micro-smoothing transition (set in TopBar)
-        if (fill) fill.style.transition = 'transform 0.12s linear';
+        // Remove transition so rAF loop drives the bar with zero lag
+        if (fill) fill.style.transition = 'none';
       }, 260);
     }, 150);
   }, [viewportHeight]);
