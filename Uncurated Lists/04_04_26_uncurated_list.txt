@@ -1,0 +1,471 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  POPCORN CANDIDATES — 2026-04-04   (MAIN RUN (last 24h))
+  Apr 03 05:00 → Apr 04 07:00 UTC   449 articles fetched
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+── FIRST PASS — my picks (score ≥ 65) ──────────────────────────────────────────────────
+  #1    68    The Atlantic                 An Astonishing Concept Album Made Even Better
+  #2    68    Nautilus                     AI Art Is Human Art
+  #3    67    Consequence                  The Industry Is Once Again Giving Kanye West a Pass
+  #4    67    Vulture                      Blake Lively Speaks About ‘Unfathomably Painful’ Lawsuit
+  #5    66    The Atlantic                 Silicon Valley Is in a Frenzy Over Bots That Build Themselves
+  #6    66    Know Your Meme               Where Is The 'Red Dog Middle Finger' GIF From? The Viral 'Chicky The Dog' AI Reaction Meme Explained
+  #7    66    Page Six                     Blake Lively addresses ‘unfathomably painful’ Justin Baldoni case after judge torpedoes lawsuit
+  #8    65    Dexerto                      Linus Tech Tips buys $5 million luxury private jet with gold sinks
+  #9    65    Dexerto                      Every box office record broken by The Super Mario Galaxy Movie
+
+── ALL CANDIDATES (sorted by score) ─────────────────────────────────────────────────────────
+ ✓ #1    68    The Atlantic                 An Astonishing Concept Album Made Even Better
+ ✓ #2    68    Nautilus                     AI Art Is Human Art
+ ✓ #3    67    Consequence                  The Industry Is Once Again Giving Kanye West a Pass
+ ✓ #4    67    Vulture                      Blake Lively Speaks About ‘Unfathomably Painful’ Lawsuit
+ ✓ #5    66    The Atlantic                 Silicon Valley Is in a Frenzy Over Bots That Build Themselves
+ ✓ #6    66    Know Your Meme               Where Is The 'Red Dog Middle Finger' GIF From? The Viral 'Chicky The Dog' AI Reaction Meme Explained
+ ✓ #7    66    Page Six                     Blake Lively addresses ‘unfathomably painful’ Justin Baldoni case after judge torpedoes lawsuit
+ ✓ #8    65    Dexerto                      Linus Tech Tips buys $5 million luxury private jet with gold sinks
+ ✓ #9    65    Dexerto                      Every box office record broken by The Super Mario Galaxy Movie
+   #10   64    Vulture                      Former Turnstile Guitarist Arrested for Attempted Murder of Lead Singer’s Father
+   #11   64    Dazed                        K-pop has an AI problem
+   #12   63    Variety                      ‘Spaceballs’ Sequel Set for April 2027 Release Date
+   #13   63    The Hollywood Reporter       ‘Spaceballs’ Sequel Sets Spring 2027 Release
+   #14   63    Dexerto                      Star Trek actor William Shatner slams “horrible fake” AI posts claiming he has terminal cancer
+   #15   62    Hypebeast                    Earl and MIKE Drop, Ye Returns to the Stage: Everything We Loved in Music This Week
+   #16   61    The Atlantic                 The Worst Possible Moment to Rethink Your Relationship
+   #17   61    Wired                        Edward ‘Big Balls’ Coristine Is Helping Out on Viral Fraud Videos Now
+   #18   61    Nautilus                     I Asked Claude Why It Won’t Stop Flattering Me
+   #19   60    Dexerto                      Project Hail Mary lifts US box office to highest level since the pandemic
+   #20   60    Dexerto                      NASA pays unexpected tribute to Sailor Moon on Artemis II moon mission
+   #21   60    Semafor                      Joanna Stern on how AI told her to quit The Wall Street Journal
+   #22   60    Tubefilter                   HarperCollins is turning authors’ books into AI YouTube Shorts
+   #23   60    Page Six                     ‘Harry Potter’ actor John Lithgow says JK Rowling’s trans views have been ‘twisted and misrepresented’
+   #24   59    Stereogum                    Paul Simon Sings “Something So Right” For The First Time In 33 Years On Colbert
+   #25   59    The Hollywood Reporter       WME Goes Public to Back Blake Lively, Says She’s Exposing “Covert Digital Takedown Campaigns”
+   #26   59    Vulture                      The Drama Is Too Cowardly to Commit to Its Provocative Premise
+   #27   59    Hypebeast                    LEGO and Nike Construct the Playful Air Max 95 "Brick Pixel"
+   #28   59    Wired                        Trump’s Economy Has Come for Sugar Babies
+   #29   59    NYT Arts                     ‘The Super Mario Galaxy Movie’ Review: It’s-a Meh
+   #30   59    Know Your Meme               'Summer House' Relationship Scandal Gives The Phrase 'Carl's A Mess' A Meme Life Of Its Own
+   #31   59    Aeon                         When trauma becomes trope
+   #32   58    Rolling Stone                Blake Lively Unfazed After Lawsuit Setback, Vows to Keep ‘Fighting’
+   #33   58    Rolling Stone                Zach Bryan Cancels Tulsa Performance Due to ‘Dangerous Weather’: ‘I’ve Never Canceled a Show in My Life’
+   #34   58    Billboard                    Brian McKnight Defamation Lawsuit: Radio Network Says Case Over Ex-Wife’s Interview Is Legally Baseless
+   #35   58    Billboard                    Zach Bryan Cancels Tulsa Concert Due to Extreme Weather: ‘I’ve Never Canceled a Show in My Life’
+   #36   58    Pitchfork                    James Gadson, Prolific Funk and Disco Drummer, Dies at 86
+   #37   58    Pitchfork                    Bo Lueders, Harm’s Way Guitarist and HardLore Podcast Host, Dies at 38
+   #38   58    Stereogum                    Legendary Session Drummer James Gadson Dead At 86
+   #39   58    IGN                          Dead by Daylight Devs Celebrate 10 Years of Eldritch Evil and Hope for Many, Many More
+   #40   58    IGN                          Dead by Daylight Devs Talk Spinoff Hopes and Dreams: 'I Want Elden Ring in the World of Dead by Daylight'
+   #41   58    IGN                          Dead by Daylight Devs Say Matchmaking Rework Is a 'Re-Imagination of How the Game Is Played'
+   #42   58    IGN                          Jack Black Doubts Rockstar Will Ever Greenlight a Red Dead Redemption Movie, So He Has an Idea for the Perfect Character He'd Play in Red Dead Redemption 3
+   #43   58    Dexerto                      Take-Two lays off AI boss just months after backing generative tech
+   #44   58    Know Your Meme               Strange 'Hello Alex' AI Trend Is Taking Over TikTok Feeds
+   #45   57    Stereogum                    Jack White – “G.O.D. And The Broken Ribs” & “Derecho Demonico”
+   #46   57    NME                          Donald Glover gives promising ‘Community’ movie update: “Something is going to happen soon”
+   #47   57    IndieWire                    Why A24’s ‘The Drama’ Sparked Criticism from Anti-Gun Violence Organization Over ‘Misaligned’ Marketing
+   #48   57    Hypebeast                    The Crossover: Where Golf Shows Up Beyond the Fairway
+   #49   57    Semafor                      OpenAI's talk show acquisition points to the industry's image problem
+   #50   57    Soompi                       Breaking: Mark Leaves NCT And SM Entertainment + Writes Letter To Fans
+   #51   56    Stereogum                    Ravyn Lenae – “Reputation” (Feat. Dominic Fike) & “Bobby”
+   #52   56    The Hollywood Reporter       Johnny Depp Makes Rare Red Carpet Appearance in L.A. to Launch Rum Brand at Rock Star-Filled Party
+   #53   56    Dexerto                      Andy Serkis confirms Lord of the Rings: The Hunt for Gollum is recasting Aragorn
+   #54   56    Dexerto                      McDonald’s launches “Pro Gamer Menu” with gadget to stop you going AFK in-game
+   #55   56    The Atlantic                 Is AI Going to Turn Us All Into Middle Managers?
+   #56   56    The Guardian Culture         Two lost 1965 Doctor Who episodes released after being found in private collection
+   #57   56    NYT Arts                     What to Know About ‘The Testaments,’ a Sequel to Margaret Atwood’s ‘The Handmaid’s Tale’
+   #58   56    The New Yorker               Is It Wrong to Write a Book with A.I.?
+   #59   56    Know Your Meme               Who Is Incidental 49A? The Rise of SpongeBob’s “Real Estate Fish” Stan Edits Explained
+   #60   55    Rolling Stone                BTS ARMY Demands Release of Hidden ‘Arirang’ Song on Streaming Platforms
+   #61   55    Rolling Stone                Rhinestone Cowboy: Here’s What to Wear to Stagecoach 2026, According to a Style Editor
+   #62   55    Rolling Stone                New PUMA Collab Puts Pokémon Front and Center of Fashion World: See the Best Pieces Here
+   #63   55    Rolling Stone                Soccer Giants Lionel Messi and Cristiano Ronaldo Get Miniaturized for Lego Campaign
+   #64   55    Rolling Stone                Zara Larsson Blasts Sexist Chappell Roan Critics: ‘You Guys Just Hate Women’
+   #65   55    Billboard                    Live Nation Trial Week 4 Recap: Defense Witnesses Back Ticketmaster & Judge Weighs ‘Intimidation’
+   #66   55    Billboard                    YouTube’s Tuma Basa to Exit as Director of Black Music & Culture
+   #67   55    Billboard                    ‘Time’s Ticking,’ Indeed: Every Song That’s Taken More Than a Year to Reach No. 1 on Billboard’s Country Airplay Chart
+   #68   55    Billboard                    Watch A$AP Rocky Perform ‘Don’t Be Dumb’ Tracks for Amazon Music’s ‘Songline’ Series: ‘Live From New York’
+   #69   55    Billboard                    2026 NCAA March Madness: Where to Watch Each Final Four Game Online for Free
+   #70   55    Billboard                    Morgan Wallen Says He’ll Start Sharing ‘Sneak Peeks’ of New Music Soon: ‘I’m Still in the Early Stages’
+   #71   55    Pitchfork                    Watch Paul Simon Perform “Something So Right” on Colbert
+   #72   55    Pitchfork                    Listen to Ravyn Lenae’s New Songs “Bobby” and “Reputation”
+   #73   55    Pitchfork                    Jack White Returns With Two New Songs
+   #74   55    Pitchfork                    11 New Albums You Should Listen to Now: MIKE and Earl Sweatshirt, Sunn 0))), Los Thuthanaka, and More
+   #75   55    Stereogum                    Alas – “Hän pukeutui aurinkoon”
+   #76   55    Stereogum                    The 5 Best Songs Of The Week
+   #77   55    Stereogum                    Silver Gore – “Black Cherry Liqueur”
+   #78   55    Stereogum                    Hear New Bruce Hornsby Songs With Ezra Koenig, Blake Mills, The Late Bob Weir
+   #79   55    Vulture                      Beef Season Two Needs a Divorce
+   #80   55    Polygon                      Rogue One's most ruthless rebel gets his own Star Wars comic
+   #81   55    Polygon                      The Animorphs getting new TV show for Disney Plus from Ryan Coogler
+   #82   55    Polygon                      Reincarnated as a Slime's season 4 premiere promises more cozy isekai and fantasy policymaking
+   #83   55    Polygon                      Slay the Spire 2 dev coyly teases a bunch of cool new features
+   #84   55    Polygon                      Avatar: Fire and Ash, 28 Years Later: The Bone Temple, and every new movie on streaming this weekend
+   #85   55    IGN                          ‘She’s a Killer’ - Daredevil: Born Again’s Vincent D’Onofrio on Karen Page’s Dark Side
+   #86   55    IGN                          McDonald's Introduces a 'Pro Gamer Menu' With an Arch-Shaped Device That Will Keep You From Going AFK While You Eat, But It's Only Available in Türkiye
+   #87   55    IGN                          Genius RollerCoaster Tycoon 2 Player Makes Longest Rollercoaster Ever Built, Manipulates Guests Into Staying Just Happy Enough to Ride It for 1.947 x 10²²⁷ Years
+   #88   55    IGN                          Add a Cordless Electric Air Duster to Your PC or Car Maintenance Kit for Just $24 (or Less)
+   #89   55    IGN                          The FlashForge AD5X Is One of the Best Multi-Color 3D Printers Under $300
+   #90   55    IGN                          Get the LADPED Adult Electric Scooter With 19mph Top Speed Starting at Just $109
+   #91   55    IGN                          WW1 Gallipoli Thrust Me Into One of the World’s Most Violent Conflicts | IGN Preview
+   #92   55    IGN                          Naughty Dog Creative Director Is in Trinidad for 'Research' and a Lot of Fans Think It's for Uncharted 5
+   #93   55    IGN                          What's Your Pick for Nintendo Game of the Year so far?
+   #94   55    IGN                          Today’s Top Deals: Back to the Future 4K Trilogy, Alienware Gaming Monitor, Resident Evil 3 for $3.59
+   #95   55    IGN                          AliExpress Has a 750W Peak 36V Adult Electric Bike for Just $277 With Free Delivery
+   #96   55    IGN                          Get a 16" 1080p Portable USB Monitor for Your Laptop or Handheld Gaming PC for Just $44 (or Less)
+   #97   55    IGN                          The 30 Best Comedy Movies of All Time
+   #98   55    IGN                          The Best Streaming Bundles to Combine Services in 2026
+   #99   55    IGN                          Every Mario Game on Nintendo Switch and Switch 2 in 2026
+   #100  55    IGN                          Animorphs TV Show in the Works for Disney+ from Ryan Coogler's Proximity Media
+   #101  55    Semafor                      Sycophantic AI might make us meaner, research suggests
+   #102  54    Consequence                  Here’s the Wild Twist of The Drama, and Why It Doesn’t Work
+   #103  54    Dexerto                      Ghost of Tsushima island’s rare wildcat is finally making a real life comeback
+   #104  54    Hypebeast                    Earl Sweatshirt, MIKE, and SURF GANG's 'POMPEII//UTILITY' Revels in "Unspoken Creative Synergy"
+   #105  54    Wired                        Meta Pauses Work With Mercor After Data Breach Puts AI Industry Secrets at Risk
+   #106  54    The Guardian Culture         Supergirl: the new trailer suggests that the DC Universe has an intriguing trick up its sleeve
+   #107  54    NYT Arts                     Megan Thee Stallion Makes Her Return to “Moulin Rouge”
+   #108  53    Stereogum                    Ski Mask The Slump God Samples Smashing Pumpkins On New Track “BreakTheRules!”
+   #109  53    Variety                      Blake Lively Vows to Fight ‘Digital Violence’ at Trial After Most Claims Dismissed
+   #110  53    Vulture                      Hannah Einbinder Says AI Creators Are ‘Losers’
+   #111  53    Dexerto                      Brazilian influencer known for sharing health struggles dead at 31 years old
+   #112  53    Dexerto                      This website lets you message friends with the iconic Xbox 360 messenger
+   #113  53    Hypebeast                    Artist Ariana Papademetropoulos Installs a 14-Foot Aquarium in Paris
+   #114  53    Dazed                        Gianni Versace is getting a major retrospective exhibition
+   #115  53    TechCrunch                   AI companies are building huge natural gas plants to power data centers. What could go wrong?
+   #116  53    TechCrunch                   The Facebook insider building content moderation for the AI era
+   #117  53    Semafor                      Pentagon taps humanoid robot startups
+   #118  53    Tubefilter                   YouTube’s new TV features are the antithesis of Netflix’s second screen problem
+   #119  53    Page Six                     ‘Jury Duty’ producers break down how they pulled off that Season 2 ending: ‘Stress and joy’
+   #120  52    The Guardian Culture         ‘Taking my clothes off is my whole life!’ Bryan Cranston on the glorious gross-out return of Malcolm in the Middle
+   #121  52    NYT Arts                     Nadav Lapid’s Film ‘Yes’ Is Intended to Anger Both Israel’s Right and Left
+   #122  52    Nautilus                     Cosmic Mysteries Swirl Around “Forbidden Planet”
+   #123  51    Dexerto                      Fans are convinced Brendan Fraser is in Lee Cronin’s The Mummy after bizarre Blumhouse denial
+   #124  51    Dexerto                      World Cup 2026 sticker album could cost over $2,000 to complete
+   #125  51    Page Six                     Werk Room Weekly: Top 3 revealed, Jane Don’t fallout, Teyana Taylor stuns as guest judge | ‘Drag Race’ S18 E14 Recap
+   #126  50    Rolling Stone                How to Snag Tickets to Bruce Springsteen’s ‘Land of Hope and Dreams’ Tour
+   #127  50    Rolling Stone                ‘Dolly: Live in Las Vegas’ at Caesars Palace: How to Get Tickets
+   #128  50    Rolling Stone                Derek Chisora vs. Deontay Wilder Livestream: How to Watch the Boxing Event Live Online
+   #129  50    Billboard                    How to Watch the 2026 Final Four: NCAA March Madness on TBS Without Cable for Free
+   #130  50    Stereogum                    Cardi B & Zohran Mamdani Would Like To Tell You About Free NYC Childcare
+   #131  50    IndieWire                    Video Game Movies Were Way More Fun When They Were as Weird as 1993’s ‘Super Mario Bros.’
+   #132  50    Vulture                      Let Robert Pattinson Cook (Lie)
+   #133  50    Vulture                      The Twist in The Drama Is Not the Problem
+   #134  50    Dexerto                      One Piece x Popeye’s collab teased as employees spill details early
+   #135  50    Dexerto                      Netflix’s price rise ruled “unlawful” and customers want refunds
+   #136  50    Dexerto                      Clavicular convulses on stream after chokehold stunt goes wrong
+   #137  50    Dexerto                      Teen who disappeared in 1994 found alive after 32 years with new identity
+   #138  50    Hypebeast                    SKYLRK Unveils Drop 11 Ahead of Justin Bieber's Coachella Headliner
+   #139  50    The Atlantic                 Everyone Thinks They Need a NeeDoh
+   #140  50    The Guardian Culture         Megamurals, Guerrilla Girls and something rotten in the Oval Office – the week in art
+   #141  50    NYT Arts                     With Polka Dots and Microtones, Angine de Poitrine Has Gone Viral
+   #142  50    The New Yorker               “The Christophers”: A Review of Steven Soderbergh’s New Drama
+   #143  50    TechCrunch                   The anonymous social app that thinks it can work in Saudi Arabia
+   #144  50    TechCrunch                   The final days of the Tesla Model X and S are here. All bets are on the Cybercab.
+   #145  50    Semafor                      The next generation of Silicon Valley garage startups is here
+   #146  50    Soompi                       Zhang Hao, Ricky, Kim Gyu Vin, And Han Yu Jin Confirmed To Debut In 5-Member Group AND2BLE With Yoo Seung Eon
+   #147  50    Tubefilter                   BTS agency HYBE appoints Disney, TikTok vet Kevin Mayer to advise westward push
+   #148  49    Consequence                  Cardi B and Mayor Zohran Mamdani Team Up to Promote Free Childcare Initiative
+   #149  49    Dexerto                      Game studio’s $340k crowdfunding halved after CEO wires money to wrong person
+   #150  49    NYT Arts                     Late Night Says Goodbye to Pam Bondi
+   #151  49    Know Your Meme               Anime Fans Are Celebrating 'Classroom Of The Elite's Return With A 'Ayankoji PFP Takeover'
+   #152  48    Polygon                      Every Peanuts strip ever is now available for $25
+   #153  48    Hypebeast                    Gucci Announces Demna's First Milan Design Week Exhibition "Memoria"
+   #154  48    The Guardian Culture         Ex-Turnstile guitarist charged with attempted second-degree murder of frontman’s father
+   #155  48    TechCrunch                   Tesla’s Texas factory workforce reportedly shrunk 22% in 2025
+   #156  48    Soompi                       Watch: BTS Takes 7th Win For “SWIM” On “Music Bank”; Performances By N.Flying, Kep1er, And More
+   #157  48    Tubefilter                   Have you heard? Khaby Lame’s Olympic gig, ZHC’s sour candy, and a never-ending roller coaster.
+   #158  47    Consequence                  Bleachers Reminisce About Packing “the van” on New Song: Stream
+   #159  47    NME                          Melissa Auf der Maur on a potential Hole reunion: “You can’t force, organise, or plan these things”
+   #160  47    Vulture                      Please Call Their SNL Episode ‘Jack Silver’
+   #161  47    Dexerto                      Fortnite’s Ballerina Cappuccina is the lowest-rated skin of all time
+   #162  46    NME                          Watch Paul Simon play ‘Something So Right’ for the first time in 33 years on ‘Colbert’
+   #163  46    Vulture                      Dakota Mortensen Edited Out of Vanderpump Villa
+   #164  46    Dexerto                      Deadlock modder is already selling $20 skins before Valve has made a cent from it
+   #165  46    Dexerto                      Hans Niemann calls out GM Hikaru for criticizing chess tournament’s strict anti-cheating measures
+   #166  46    Dexerto                      Baseball team unveils two-foot-long hot dog called The Glizzilla
+   #167  46    Hypebeast                    Pharrell's Louis Vuitton Men's Introduces the 1990s-Inspired LV Tatic Runner Sneaker
+   #168  46    The Verge                    Lenovo Legion Go 2 suddenly costs $650 more as RAMageddon lays waste to gaming hardware
+   #169  46    TechCrunch                   Anthropic ramps up its political activities with a new PAC
+   #170  46    Soompi                       CORTIS Smashes Own Record With Over 1.2 Million Stock Pre-Orders For “GREENGREEN”
+   #171  45    Consequence                  Christina Hendricks Spun a “Shoe Pop Dream Gaze” DJ Set at a San Diego Bar on April Fool’s Day
+   #172  45    Dexerto                      GTA 6 could bring back major Red Dead Redemption 2 features according to dev
+   #173  45    Hypebeast                    What's in Lebron, Future & Jackson Wang's Bags? Louis Vuitton Will Show You.
+   #174  45    Dazed                        Coals are kickstarting Poland’s dream pop scene
+   #175  45    Wired                        OpenAI’s Fidji Simo Is Taking Medical Leave Amid an Executive Shake-Up
+   #176  45    The Guardian Culture         Add to playlist: the endlessly inventive, radiant indie rock of Friko and the week’s best new tracks
+   #177  45    NYT Arts                     Chekhov Plays for an Un-Chekhov Time
+   #178  45    NYT Arts                     ‘The Drama’ and the Secrets That Can Unravel a Relationship
+   #179  45    NYT Arts                     Ben Lerner’s ‘Transcription’ Shows Us Why the Novel Will Never Die
+   #180  45    Nautilus                     A Poet of Science Who Shook Faith in God
+   #181  45    MIT Technology Review        Four things we’d need to put data centers in space
+   #182  45    Quanta Magazine              New Advances Bring the Era of Quantum Computers Closer Than Ever
+   #183  43    Consequence                  Afroman Announces New Album Freedom of Speech, Expands 2026 Tour
+   #184  43    The Hollywood Reporter       Jonathan Majors Falls Through Window of Daily Wire Movie Set
+   #185  43    Vulture                      RuPaul’s Drag Race Recap: The Endgame
+   #186  43    Vulture                      Who’s That Diva at the End of The Super Mario Galaxy Movie?
+   #187  43    Dexerto                      Jonathan the tortoise’s carers mock viral death hoax as he’s back meeting tourists
+   #188  43    Dexerto                      Modern Warfare 4 leak claims CoD’s most controversial weapon could return
+   #189  43    Hypebeast                    Nike Air Max 90 "Hypervenom" Channels Neymar's Iconic 2013 Football Boots
+   #190  43    Hypebeast                    BEAMS Goes Off-Grid in Portland With Its EXPEDITION CLUB Archive Drop
+   #191  43    GQ                           Robert Pattinson’s No-Drama Style Is Exactly What Red Carpets Need
+   #192  43    The Guardian Culture         Justin Baldoni’s lawyer says defendants are ‘very good people’ as Blake Lively lawsuit narrows
+   #193  43    The Verge                    OpenAI’s AGI boss is taking a leave of absence
+   #194  43    TechCrunch                   People would rather have an Amazon warehouse in their backyard than a data center
+   #195  43    Semafor                      Record 10 African nations qualify for World Cup
+   #196  43    Soompi                       “In Your Radiant Season” Ends On Ratings Rise + “Still Shining” Holds Steady For Finale
+   #197  42    Consequence                  Scarlett Johansson Reveals First Concert Was Cypress Hill: “Still Buzzing”
+   #198  42    Vulture                      It’s Nice to See Donald Glover Be Silly Again
+   #199  42    Dexerto                      Hell Let Loose Vietnam aims to redefine war shooters with “authentic” gameplay
+   #200  42    Dexerto                      Shiba Inu reappointed as “inspector” dog by Japanese police
+   #201  42    Wired                        John Perry Barlow, JFK Jr., and a Night of Grief I Can’t Forget
+   #202  42    NYT Arts                     After 11 Years in Court, Heir Reclaims a Modigliani Looted by the Nazis
+   #203  42    NYT Arts                     On ‘Company Retreat,’ Anthony Norman Finished the Job
+   #204  42    Soompi                       Woo Do Hwan, Lee Sang Yi, And Rain Talk Brotherhood, Growth, And High-Impact Action In “Bloodhounds 2”
+   #205  41    Consequence                  BTS’ ARIRANG Review, Part 2: Stanning BTS Podcast
+   #206  41    NME                          James Gadson, drummer for Diana Ross, Marvin Gaye and Bill Withers, dies aged 86
+   #207  41    Variety                      Zach Bryan Cancels Tulsa Concert Due to ‘Extreme and Dangerous Weather’: ‘If I Had Any Say in This, Things Would Be Different’
+   #208  41    IndieWire                    What Everyone Gets Wrong About Intimacy Coordinators
+   #209  41    Polygon                      2001: A Space Odyssey originally had a 20-foot-tall green alien and a 'crap' script
+   #210  41    Hypebeast                    Nike Kobe 11 EM Protro "Mamba Out" Has an Official Release Date
+   #211  41    Dazed                        These atmospheric photos spotlight Finland’s cruising scene
+   #212  41    The Verge                    Anthropic essentially bans OpenClaw from Claude by making subscribers pay extra
+   #213  41    TechCrunch                   Anthropic buys biotech startup Coefficient Bio in $400M deal: Reports
+   #214  41    Semafor                      Anthropic eyes its own version of OpenClaw
+   #215  41    Soompi                       Han Ji Min Starts Living With Park Sung Hoon After Fighting With Her Mom In “The Practical Guide To Love”
+   #216  41    ESPN                         'Let her play': Chiefs launch petition for high school girls' flag football in Kansas
+   #217  40    Consequence                  Wolfgang Van Halen Rick Rolls Audience After Teasing a Van Halen Song: Watch
+   #218  40    Consequence                  Gaten Matarazzo, Sean Giambrone & Lulu Wilson on Pizza Movie, Body Swaps, and Building a Cult Classic: Podcast
+   #219  40    The Hollywood Reporter       Parkland Survivor Jackie Corin on ‘The Drama’ and Her Concerns About Casting Zendaya and Robert Pattinson
+   #220  40    Vulture                      Roastmaster General Brian Cox Cooks Johnny Depp and Kevin Spacey
+   #221  40    Dexerto                      Man randomly sets fire to Shibuya Crossing in Tokyo
+   #222  40    Dexerto                      Black Ops 7 streak is still “too OP” after being ignored for nerf
+   #223  40    The Guardian Culture         The High Life: The Musical, Still Living It! review – Alan Cumming’s creation flies into deliriously silly panto territory
+   #224  40    NYT Arts                     ‘Jimmy & the Demons’ Review
+   #225  40    NYT Arts                     Ancient Artifacts Stolen in Dutch Museum Heist Are Recovered
+   #226  40    The New Yorker               Pam Bondi’s Legacy of Flattery and Destruction
+   #227  40    Soompi                       Esom Begins New Chapter After Resignation As She Reunites With Yoo Yeon Seok In “Phantom Lawyer”
+   #228  40    Nautilus                     The Best Photos of the Artemis II Mission (So Far)
+   #229  40    Psyche                       I tested whether cannabis really can boost the runner’s high
+   #230  40    Page Six                     Shiloh Jolie, 19, looks strikingly like mom Angelina in sultry music video debut
+   #231  39    Consequence                  Stream On This Week: A Brain-Melting College Comedy and the Most Metal Movie of the Year (So Far)
+   #232  39    Variety                      Netflix’s ‘Love on the Spectrum’ Renewed for Season 5, Fan Favorite Cast Member Connor Tomlinson Exits: ‘I’ve Chosen to Pass the Torch’ (EXCLUSIVE)
+   #233  39    The Hollywood Reporter       ‘Pizza Movie’ Filmmakers BriTANick Took a Page Out of the ‘Marty Supreme’ Playbook to Promote Their Hulu Release
+   #234  39    Vulture                      Hannah Berner Says Summer House Love Triangle Is Why She Left Reality TV
+   #235  39    Hypebeast                    PLEASURES x Altra Launch the Experience Flow 3 “Satellite” Running Shoe
+   #236  39    TechCrunch                   Anthropic is having a moment in the private markets; SpaceX could spoil the party
+   #237  39    Soompi                       Lee Sung Kyung Learns The Truth From Lee Joo Yeon In “In Your Radiant Season” Finale
+   #238  38    Consequence                  Jack Black “Not Crazy” About “Jack Gray” Nickname, Suggests “Jack Zebra” Instead
+   #239  38    IndieWire                    ‘Company Retreat’ Is a Masterclass in How to Hide a Camera
+   #240  38    The Atlantic                 Unconventional Novels About Conventional People
+   #241  38    Wired                        CBP Facility Codes Sure Seem to Have Leaked Via Online Flashcards
+   #242  38    The Guardian Culture         ‘He’s the Pauline Kael of art criticism’: artists pay tribute to the Guardian’s Adrian Searle
+   #243  38    The Guardian Culture         TV tonight: Bill Bailey outdoes himself in a new standup special
+   #244  38    NYT Arts                     In ‘Burnout Paradise,’ Running on Treadmills Is Only the Half of It
+   #245  38    NYT Arts                     Dolores Keane, Singer Known as the ‘Soul of Ireland,’ Dies at 72
+   #246  38    Financial Times              OpenAI chief operating officer takes on new role in shake-up
+   #247  38    Semafor                      China contains ‘Sea of Death’ desert with forestation
+   #248  38    Soompi                       Park Jinyoung And Kim Min Ju’s Emotional Reunion Takes A Turn With Park Se Hyun’s Arrival In “Still Shining” Finale
+   #249  38    Soompi                       Go Youn Jung Opens Up About Her Character’s Depth And Being Inspired By Koo Kyo Hwan’s Acting In “We Are All Trying Here”
+   #250  38    Nautilus                     The Crowd-Sourced Science to Save Endangered Succulents
+   #251  37    Consequence                  Heavy Song of the Week: Monolord Doom Us All With “You Bastard”
+   #252  37    Dexerto                      Did Rachel escape the Something Very Bad is Going to Happen curse? Hidden loophole explained
+   #253  37    Page Six                     ‘MAGA’ backlash is taking its toll on TLC’s Chilli : ‘It’s not what she wants her legacy to be,’ source
+   #254  36    Consequence                  Staff Picks: Best Songs of the Week March 28th – April 3rd
+   #255  36    Consequence                  Woman Charged with Harassment for Stalking Ghost Frontman Tobias Forge
+   #256  36    Variety                      James Marsden Breaks Down ‘Your Friends & Neighbors’ Season 2 Premiere and Reveals the Secret to Playing a Charming Douchebag
+   #257  36    IndieWire                    ‘The Blue Trail’ Review: A 77-Year-Old Woman Finds Freedom in the Amazon in Brazil’s Brilliant Dystopian Road Movie
+   #258  36    Hypebeast                    Netflix Reveals First Look Image at the Upcoming 'Peaky Blinders' Sequel Series
+   #259  36    Hypebeast                    Maison Margiela Enters Haute Parfumerie With the Scentsorium Collection
+   #260  36    The Guardian Culture         The Authenticator review – echoes of Sherlock Holmes as thriller takes on toxic legacies with lightness of touch
+   #261  36    NYT Arts                     Pedro Friedeberg, Whose Hand Chair Drew Outsize Attention, Dies at 90
+   #262  36    The Verge                    I saved a doomed Windows laptop by embracing Linux
+   #263  36    TechCrunch                   OpenAI executive shuffle includes new role for COO Brad Lightcap to lead ‘special projects’
+   #264  36    Soompi                       4 Times Episodes 9-10 Of “The Practical Guide To Love” Made Us Go “Aww”
+   #265  36    Tubefilter                   The “future of the creator economy is now,” and you can learn about it at the Scalable Summit
+   #266  36    ESPN                         UConn on brink of dual title appearance brings 2014 to mind
+   #267  36    Nautilus                     Your Biological Clock Can be Measured With a Hair Sample
+   #268  36    Psyche                       We should invent new names for feelings
+   #269  35    Vulture                      Camus’s The Stranger, It Turns Out, Is Still Relevant
+   #270  35    Dexerto                      Where is Kaitlin Armstrong now? Update on Netflix’s Moriah Wilson documentary
+   #271  35    Semafor                      Artemis II crew zooms closer to moon
+   #272  35    Soompi                       Park Bo Young And Lee Kwang Soo To Guest On “Whenever Possible”
+   #273  35    Soompi                       Kwak Sun Young Transforms Into A Reporter Who Teams Up With Park Hae Soo In New Drama “The Scarecrow”
+   #274  35    Page Six                     NYC composer accused of massive scam speaks: ‘Russian bad guys can go to hell!’
+   #275  34    Stereogum                    she’s green Announce New EP Swallowtail: Hear “Paper Thin”
+   #276  34    Variety                      ‘Fantasy Life’s’ Matthew Shear on His Directorial Debut and Drawing on His Experience as a New York City Manny
+   #277  34    Vulture                      Personal Chekhov: Seagull: True Story and Uncle Vanya, Scenes From Country Life
+   #278  34    Vulture                      For All Mankind Recap: Operation Dumpling Freedom
+   #279  34    Hypebeast                    Dozie Kanu Pays Homage to the Architecture of Memory in 'The Second Shadow'
+   #280  34    NYT Arts                     Carol Mullins, Who Illuminated Dance for Decades, Dies at 86
+   #281  34    The Verge                    Mercedes adds steer-by-wire — and a dang steering yoke — to the EQS
+   #282  33    Stereogum                    Yambag Release Fast, Nasty New Eight-Song, Eight-Minute EP The Psycho
+   #283  33    Stereogum                    flowerovlove – “American Wedding”
+   #284  33    Stereogum                    The Callous Daoboys – “Gigantic Parasite Tongue”
+   #285  33    Variety                      ‘Company Retreat’ Bosses Explain the Finale Reveal, Landing Sia for the Talent Show and How a Loose Script Nearly Ruined Everything
+   #286  33    IndieWire                    The East Village Was ‘No Picnic’ in the 1980s: A 4K-Restored Cult Movie from the Founder of Two Boots Pizza Returns to Film Forum
+   #287  33    Vulture                      Ryan Gosling Can’t Star in the Daniels’ Upcoming Project
+   #288  33    Dexerto                      Is Steven Yeun in Netflix’s Beef Season 2? New characters explained
+   #289  33    The Atlantic                 The Epstein Spectrum
+   #290  33    The Guardian Culture         Wilhelm Sasnal review – his wild juxtapositions are almost obscene
+   #291  33    NYT Arts                     Seats Left Empty on Smithsonian Board as Strain With White House Persists
+   #292  33    NYT Arts                     ‘The Pitt’ Season 2 Episode 13 Recap: Should He Stay or Should He Go?
+   #293  33    The New Yorker               New Directors, New Films
+   #294  33    Semafor                      Africa 'needs capital' to reap AI boom
+   #295  33    Rest of World                Amazon is betting on speed in a market that may not need it
+   #296  32    Stereogum                    Nerves – “N26”
+   #297  32    Stereogum                    You Need Division Of Mind’s New Album Exoterror In Your Life
+   #298  32    Stereogum                    Leyla Ebrahimi – “I’m Sorry Maria”
+   #299  32    Variety                      23 Best New Movies Streaming in April: ‘Marty Supreme,’ ‘Sirāt,’ ‘No Other Choice,’ ‘Crime 101’ and More
+   #300  32    The Hollywood Reporter       Dee Freeman, ‘Sistas’ and ‘Young and the Restless’ Actress, Dies at 66
+   #301  32    IndieWire                    5 Anime Series to Check Out This Spring
+   #302  32    Hypebeast                    LVMH Q1 Shares See a Record Decline & Courrèges Enlists Drew Henry in This Week's Top Fashion News
+   #303  32    The Guardian Culture         Eric Overmyer obituary
+   #304  32    The Guardian Culture         Shostakovich: Symphonies No 2 and 5 album review – early experiment meets mature power
+   #305  32    NYT Arts                     Danish Shows to Watch While We’re Still at Peace
+   #306  32    TechCrunch                   Lucid blames dip in Q1 sales on seat supplier issue
+   #307  32    404 Media                    Behind the Blog: Systems As Designed
+   #308  32    Semafor                      Microsoft doesn't mind following the leader on AI
+   #309  32    Soompi                       Kim Da Mi In Talks To Star As Former Housewife Turned Assassin In New Drama
+   #310  32    ESPN                         Betting buzz: Men's Final Four features tightest spreads on record
+   #311  32    Page Six                     Paige DeSorbo and Hannah Berner declare support for Ciara Miller after ‘Summer House’ betrayal
+   #312  31    Stereogum                    Delve Into Los Thuthanaka’s Wonderful Wak’a EP
+   #313  31    Stereogum                    Frog – “Dark Out”
+   #314  31    Vulture                      The 13 Best Movies and TV Shows to Watch This Weekend
+   #315  31    Dexerto                      How to listen to the Project Hail Mary directors’ commentary in theaters
+   #316  31    Wired                        Scientists Have Made a French Fry Breakthrough
+   #317  31    The Guardian Culture         ‘Vegas hotel meets aerospace bling’: Trump’s presidential library plan is a gaudy, self-glorifying monstrosity
+   #318  31    The Guardian Culture         The best recent poetry – review roundup
+   #319  31    The Guardian Culture         Messiah album review – Whelan takes Handel’s oratorio back to its beginnings
+   #320  31    NYT Arts                     8 New Movies Our Critics Are Talking About This Week
+   #321  31    NYT Arts                     Bettina Köster, a Leading Voice in Berlin’s 1980s Avant-Garde, Dies at 66
+   #322  31    The New Yorker               Pick Three: Spring Sports News
+   #323  31    Financial Times              Trump’s tales are still muddling markets
+   #324  30    Stereogum                    Weird Nightmare – “Where I Belong”
+   #325  30    Stereogum                    The Story Behind Every Song On Robber Robber’s New Album Two Wheels Move The Soul
+   #326  30    Dexerto                      Deli spends thousands to stop people from pooping on patio overnight
+   #327  30    Semafor                      New research undermines idea of ‘healthy obesity’
+   #328  30    ESPN                         Alvarez a top-10 bat? Ohtani wins Cy Young? Perdomo for real? Don't be surprised
+   #329  30    ESPN                         Keepers, sleepers and more: Top 10 notes for next season
+   #330  30    Page Six                     ‘Summer House’ exes Amanda Batula and Kyle Cooke reunite after West Wilson romance bombshell shook cast
+   #331  29    Variety                      Leonard Cohen’s Manager Cleared of Financial Wrongdoing After 10-Day Trial
+   #332  29    The Hollywood Reporter       Prime Video Cancels ‘The Runarounds’
+   #333  29    Vulture                      Every TV Show Canceled in 2026 So Far
+   #334  29    Hypebeast                    Marcus Allen Breaks Down His Career Journey Through Timepieces with Watches of Switzerland
+   #335  29    GQ                           Inside the ‘Super Bowl of the Watch World’
+   #336  29    The Verge                    Anker’s Nebula P1 projector is the portable sound king
+   #337  29    TechCrunch                   Europe’s cyber agency blames hacking gangs for massive data breach and leak
+   #338  29    Semafor                      The three questions a CEO should ask about their AI agents
+   #339  29    ESPN                         Mavs' Flagg, 19, is youngest to have 50-pt game
+   #340  29    ESPN                         Men's turnament picks: How to bet Saturday's national semifinal games
+   #341  28    Polygon                      Crimson Desert interactive maps
+   #342  28    Wired                        A Year After DOGE Cuts, GSA Now Plans to Hire Hundreds of Employees
+   #343  28    The Guardian Culture         Post your questions for DJ Shadow
+   #344  28    NYT Arts                     Five International Movies to Stream Now
+   #345  28    The New Yorker               The Art of No Deal: Trump’s Approach to the Iran War
+   #346  28    The New Yorker               Donald Trump and Pete Hegseth’s Warped Vision of the Iran War
+   #347  28    Financial Times              US fighter jet shot down over Iran
+   #348  28    Financial Times              Japan cracks down on its wayward cyclists
+   #349  28    Semafor                      White House asks Congress to spend big on defense
+   #350  28    Semafor                      Flutterwave granted Nigerian banking license
+   #351  28    Semafor                      US hiring drops in sign of labor market chill
+   #352  28    Semafor                      Why JLL is betting its biggest clients will drive growth in ‘crazy’ times
+   #353  28    ESPN                         The incredibly rare thing you probably missed during the Cubs' 2016 curse-breaking World Series win
+   #354  28    Page Six                     Tiger Woods looks somber in newly released mugshot after DUI arrest
+   #355  27    Hypebeast                    Hyundai Unveils Rugged Boulder Concept, Previewing Its First Body-On-Frame Pickup
+   #356  27    GQ                           The 17 Best New Menswear Items to Buy This Week
+   #357  27    GQ                           Uniqlo’s New $60 Jeans Are the Best Entry-Level Selvedge I’ve Tried
+   #358  27    ESPN                         Fire make Carleton top WNBA expansion draft pick
+   #359  27    ESPN                         Tracking fifth-year options for 2023 first-rounders: Who will return in 2027?
+   #360  26    Variety                      Savannah Guthrie Sets ‘Today’ Return: Here’s How to Stream the Morning Show Online for Free
+   #361  26    Polygon                      Best Xbox Game Pass games to play this weekend (April 3-5 2026)
+   #362  26    GQ                           11 Best Aftershaves to Heal the Burn in 2025
+   #363  26    The Atlantic                 Trump’s Stone Age Threat Will Lead to Tragedy
+   #364  26    NYT Arts                     Art Gallery Shows to See in April
+   #365  26    The New Yorker               The Strange (Partial) End to the (Partial) Government Shutdown
+   #366  26    Financial Times              The shadowy group claiming attacks around Europe
+   #367  26    Financial Times              Germany’s far-right AfD distances itself from Trump over Iran war
+   #368  26    Semafor                      Startup investor Novastar launches $147M climate fund
+   #369  26    Semafor                      Venezuela’s March oil exports boom
+   #370  26    Semafor                      Swalwell-FBI flap could backfire on Trump administration
+   #371  26    ESPN                         Sources: NBA investigating Bucks, Giannis' health
+   #372  26    ESPN                         Final NBA MVP (and ROY) straw poll: Here's who voters are picking to win
+   #373  26    ESPN                         'We want to pinch ourselves': Dusty May's full-circle return to the Final Four
+   #374  25    The Hollywood Reporter       Starz CEO Sees Pay Total $6.7 Million
+   #375  25    Hypebeast                    Saks Global Secures $500 Million USD To Exit Bankruptcy This Summer
+   #376  25    Dazed                        Product of the week: Starface’s ‘magical, squeaky clean’ lip balm
+   #377  25    The New Yorker               Who’s In, Who’s Out at the Department of War
+   #378  25    The New Yorker               Searching for Iran’s Disappeared Prisoners
+   #379  25    The Verge                    NASA did eventually solve Artemis II’s Outlook glitch
+   #380  25    Financial Times              Former CIA operative: regime change in Iran is much harder than the US thinks
+   #381  25    Semafor                      South Africa’s water systems are 'failing'
+   #382  25    Semafor                      War-weary Europe distances from Trump
+   #383  25    ESPN                         'Frustrated' Geno, Staley have fiery sideline dustup
+   #384  25    ESPN                         Doncic set to miss at least rest of regular season
+   #385  25    ESPN                         Safety 'savant' Caleb Downs to test NFL's thirst for his position
+   #386  24    The Hollywood Reporter       NCAA Women’s Final Four Livestream: Where to Watch 2026 College Basketball Games Online
+   #387  24    GQ                           How to Dress for Jury Duty, According to Legal Experts
+   #388  24    The Atlantic                 What Trump Wants From Cuba
+   #389  24    The Atlantic                 Photos of the Week: Holy Week, ‘No Kings,’ Guitar Farm
+   #390  24    Wired                        New Garmin Training Features (2026): Nutrition Tracking, Lifestyle Logging, and More
+   #391  24    The New Yorker               How Donald Trump’s War on Iran Helps Vladimir Putin’s War on Ukraine
+   #392  24    TechCrunch                   Best iPad apps to boost productivity and make your life easier
+   #393  24    Financial Times              French-owned container ship and 3 Omani tankers pass through Strait of Hormuz
+   #394  24    Financial Times              US judge upholds block of subpoenas in criminal investigation of Jay Powell
+   #395  24    Semafor                      Trump pick set to be installed as top Africa official
+   #396  24    Semafor                      World views China better than US, poll finds
+   #397  24    ESPN                         UCLA grinds out sloppy win, reaches 1st title game
+   #398  24    ESPN                         'Difference-maker': Griffin dazzles in Pirates debut
+   #399  24    ESPN                         👀 Latest NBA buzz after Luka's injury
+   #400  24    ESPN                         Draft prospects with true Round 1 grade: The 12 clear first-rounders
+   #401  24    ESPN                         Your men's Final Four guide: Illinois-UConn, Arizona-Michigan (with predictions!)
+   #402  24    ESPN                         117 wins? 40 different pitchers? Four themes that will dominate the Dodgers' regular season
+   #403  24    ESPN                         Who are the 39 best men's U21 players in the world?
+   #404  24    ESPN                         The best 21 women's players, aged 21 or under
+   #405  24    ESPN                         Final Four has a Carolina blue backdrop
+   #406  24    ESPN                         Scouts debate the top of the NBA draft class: Peterson or Dybantsa at No. 1?
+   #407  23    Semafor                      South Africa collects record $117B tax haul
+   #408  23    ESPN                         Latest NFL draft buzz: What we're hearing on Jermod McCoy's pro day, the QB3 debate
+   #409  23    ESPN                         Power Rankings: Who are the top teams one week into the season?
+   #410  23    ESPN                         NHL playoff watch: The Flyers' path to the postseason
+   #411  23    ESPN                         Premier League without set-piece goals: Arsenal still first?
+   #412  22    NME                          Today’s Wordle answer and hints for #1750 on April 04
+   #413  22    NME                          ‘Connections’ answers and hints for today, April 04
+   #414  22    NME                          Globle answer today – here’s the answer and hints for April 04
+   #415  22    NME                          Framed answer today – here’s the solution for April 04
+   #416  22    The Atlantic                 Today’s Atlantic Trivia: The Sea
+   #417  22    Wired                        Best Game Controllers for PC, Switch, PS5, and Xbox
+   #418  22    Wired                        Samsung Frame Pro and OLED TV News: What You Need To Know in 2026
+   #419  22    The New Yorker               Daily Cartoon: Friday, April 3rd
+   #420  22    The Verge                    The best iPad deals you can get right now
+   #421  22    Semafor                      Russia's battlefield progress stalls entirely
+   #422  22    ESPN                         2 HCs push back after LeBron's Memphis remark
+   #423  22    ESPN                         NHL Power Rankings: New 1-32 poll, most important remaining games
+   #424  22    ESPN                         Weekend predictions: Man City or Liverpool in FA Cup? Can Atlético play spoiler vs. Barça?
+   #425  21    Dexerto                      Hot’s RNG codes (April 2026)
+   #426  21    Dexerto                      Reminiscence Zombies codes (April 2026)
+   #427  21    Dexerto                      Anime Overload codes (April 2026)
+   #428  21    Wired                        The Best Samsung Galaxy S26 Cases (2026): S26, S26+, and S26 Ultra
+   #429  21    Semafor                      Debatable: Paying TSA workers
+   #430  21    Semafor                      Trump to propose 2027 budget
+   #431  20    Wired                        Maytag Promo Codes and Deals: Appliances Under $300
+   #432  20    Wired                        The Best iPad to Buy (and Some to Avoid) in 2026: Compare the Air, Pro, Mini
+   #433  20    Wired                        The 3 Best Portable Jump Starters in 2026: Get Charged Up
+   #434  20    The Verge                    Anker’s small, five-port travel adapter is down to its best price yet
+   #435  20    Semafor                      Iran wants long-term control of Hormuz
+   #436  19    Wired                        Our Favorite iPad Is $50 Off
+   #437  18    Wired                        50% Off DoorDash Promo Code | April 2026
+   #438  18    Wired                        HelloFresh Coupon Codes: 55% Off + Free Meals
+   #439  18    Wired                        Booking.com Promo Codes and Deals: Up to 20% Off
+   #440  18    Wired                        $20 Chewy Promo Code | April 2026
+   #441  18    Wired                        50% Off Home Depot Promo Codes | April 2026
+   #442  18    Wired                        Castlery Promo Code: Save Up to 15% in April 2026
+   #443  18    Wired                        30% Off Skullcandy Coupon Codes | April 2026
+   #444  18    Wired                        30% Off Samsung Promo Code | April 2026
+   #445  18    Wired                        25% Off Dyson Promo Code | April 2026
+   #446  18    Puck                         The Hasan Piker Paradox
+   #447  18    Puck                         Cantino’s Dolce Era & Everlane’s Eviction Notice
+   #448  18    Puck                         There’s Always Money in the Banana Stand
+   #449  18    Puck                         Last Lichtensteins
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Reply with the sequence numbers (#N) you want published.
+  ✓ = already in my first pass.  Add or remove as you see fit.
+════════════════════════════════════════════════════════════════════════════════════════════════════

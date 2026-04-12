@@ -1,0 +1,77 @@
+POPCORN CURATION REPORT — 2026-04-09
+Window: 2026-04-08 19:00 BKK → 2026-04-09 19:00 BKK
+============================================================
+
+SELECTED (6 articles)
+------------------------------------------------------------
+# 1 | Stereogum              | score=16.4
+     TV Star    The Package
+     → Music: Song review — TV Star's debut single 'The Package' is generating strong indie music traction.
+
+# 2 | Billboard              | score=8
+     Once Bitten, Twice Why? Taylor Momsen Bitten By Venomous Spider on AC/DC Tour After Previous Bat Bite
+     → Music: Taylor Momsen (Gossip Girl's Jenny Humphrey turned rock star) bitten by a venomous spider during AC/DC's world tour — reportedly the second time.
+
+# 5 | The Hollywood Reporter | score=7.9
+     Cannes: Ira Sachs, Pedro Almodóvar, Asghar Farhadi, Hirokazu Kore-eda Lead Arthouse-Heavy Lineup
+     → Film & TV: Cannes 2026 Competition lineup announced — Pedro Almodóvar, Hirokazu Kore-eda, Asghar Farhadi, Ira Sachs. World cinema's biggest moment of the year.
+
+#15 | NME                    | score=5
+     Grand Theft Auto 6  will feature rapper Freddie Gibbs, according to a new report
+     → Gaming/Music: GTA 6 reportedly features a dedicated mission for rapper Freddie Gibbs — the latest music/gaming culture collision for the most anticipated game in a decade.
+
+#31 | The Verge              | score=4.9
+     Google makes it easy to deepfake yourself
+     → Tech/Culture: YouTube Shorts (Google) launches easy self-deepfake tool, raising fresh questions about identity and authenticity in the age of short-form video.
+
+#37 | Wired                  | score=4.9
+     I Asked Netflix’s Reality TV Boss Why So Many Men On Dating Shows Are Terrible
+     → Film & TV: Netflix's reality TV boss Brandon Riegg addresses why men on dating shows all look the same — a meta critique of casting, beauty standards, and the reality TV machine.
+
+
+REJECTED (44 articles)
+------------------------------------------------------------
+# 3 | Wired                  | score=7.9 | TCL NXTVISION Art TV Review: Just Fine
+# 4 | NME                    | score=7.9 | Coachella 2026 livestream will feature all seven stages and 4K resolut
+# 6 | Pitchfork              | score=7.4 | Tears for Fears’ Roland Orzabal Is Writing an “Astrological Memoir”
+# 7 | Variety                | score=5 | OpenAP Names Warner Sales President Ryan Gould Chairman
+# 8 | The Hollywood Reporter | score=5 | Hugh Jackman, Rachel Brosnahan, Common, Adam Lambert and Ayra Starr Se
+# 9 | The Hollywood Reporter | score=5 | Jennie Joins Ray-Ban as Global Ambassador
+#10 | The Atlantic           | score=5 | The Art of the (New) Deal
+#11 | TechCrunch             | score=5 | Ex-Tesla engineer’s startup taps Pronto to help automate a copper mine
+#12 | Semafor                | score=5 | Gulf sovereigns quadruple private credit portfolios
+#13 | Dexerto                | score=5 | Will there be a Shrinking Season 4? Showrunner gives update after Seas
+#14 | The Hollywood Reporter | score=5 | Korean Auteur Na Hong-jin s Long-Gestating Thriller  Hope,  Starring M
+#16 | Semafor                | score=5 | Panama pushes back against China in canal row
+#17 | Dexerto                | score=5 | Is Black Noir 2 dead? The Boys Season 5 change sparks clone theory
+#18 | Dexerto                | score=5 | Burger King unveils ‘King Size Sliders’ but they won’t be around long
+#19 | Semafor                | score=5 | China’s yuan set to strengthen due to Middle East war
+#20 | Variety                | score=5 | Anubhav Mohanty Boards  Bindusagar  as Presenter Ahead of India Releas
+#21 | Semafor                | score=5 | Meta races to catch up to AI giants with new model
+#22 | NME                    | score=5 | Gorillaz announce first ever India shows
+#23 | Variety                | score=5 | The Cheapest Way to Stream ESPN? Dish s Sling TV Debuts $20 Monthly Pa
+#24 | The Atlantic           | score=5 | ‘This City Will Always Pursue You’
+#25 | Hypebeast              | score=5 | From Aero-FIT to Toma, Nike’s Vision for Football Is Already in Motion
+#26 | Variety                | score=4.9 | Simu Liu, Tramell Tillman and More to Perform in Symphony Space and Wa
+#27 | Dexerto                | score=4.9 | Patrick Ball cries while revealing how The Pitt saved him from crippli
+#28 | Wired                  | score=4.9 | Fi Mini for Cats Review: Track Your Pets and Monitor Their Activity
+#29 | Wired                  | score=4.9 | Meta Cafeteria Workers Did What Execs Won’t: Took on ICE and Won
+#30 | The Verge              | score=4.9 | I tested three Windows laptops in the MacBook Neo’s price range — ther
+#32 | Dexerto                | score=4.9 | Who is the mole in Invincible S4E6? How plot twist is revealed in the 
+#33 | Highsnobiety           | score=4.9 | Shoes to Hit the Ground Running In. Literally
+#34 | Dexerto                | score=4.9 | “Super grandma” goes viral climbing building after locking herself in 
+#35 | Highsnobiety           | score=4.9 | Onitsuka Tiger Made Japanese Denim Aprons for Tokyo's Hottest New Hang
+#36 | The Verge              | score=4.9 | Spotify now lets you turn off all its videos
+#38 | Hypebeast              | score=4.9 | Who Deserves Our Grace? Lucas Iverson on 'The Pitt’s' Most Polarizing 
+#39 | The Hollywood Reporter | score=4.9 | Fremantle Unveils First Native AI Project:  Art Awakens  (Exclusive)
+#40 | Wired                  | score=4.9 | Politicians Are Spending More Money on Security as They Increasingly B
+#41 | Highsnobiety           | score=4.9 | What a 13th-Century Temple Reveals About Where Shinzo is Heading
+#42 | Hypebeast              | score=4.9 | Grateful Dead and thisisneverthat Reunite for 2026 Spring/Summer Colle
+#43 | Hypebeast              | score=4.9 | Nike Delivers the Air Force 1 Low "Cow Print" in "Field Brown"
+#44 | Highsnobiety           | score=4.9 | Nike's Flagship Dad Sneaker Is Seeing Red
+#45 | ESPN                   | score=4.7 | OKC locks up No. 1 seed, joins elite company
+#46 | ESPN                   | score=4.7 | Bryson bringing 3D-printed 5-iron to Masters
+#47 | ESPN                   | score=4.7 | Cousins: I shouldn't play if not Raiders' best QB
+#48 | ESPN                   | score=4.7 | Full of thanks, UCLA celebrates title at Pauley
+#49 | ESPN                   | score=4.7 | Reports: NCAA to discuss 5-year eligibility model
+#50 | ESPN                   | score=4.7 | Prosecutors seek Tiger's prescription drug records

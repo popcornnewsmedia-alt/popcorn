@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { X, ChevronUp, ChevronDown, ArrowUp } from "lucide-react";
 import { GrainBackground } from "./GrainBackground";
 
@@ -160,6 +160,45 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
+
+  // ── Drag-down-to-close ────────────────────────────────────────────────────
+  const dragStartY = useRef<number | null>(null);
+  const dragStartScrollTop = useRef<number>(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const isDragging = useRef(false);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    // Only start drag tracking if list is scrolled to top (or not scrollable)
+    const listEl = listRef.current;
+    if (listEl && listEl.scrollTop > 4) return;
+    dragStartY.current = e.touches[0].clientY;
+    dragStartScrollTop.current = listEl?.scrollTop ?? 0;
+    isDragging.current = false;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (dragStartY.current === null) return;
+    const delta = e.touches[0].clientY - dragStartY.current;
+    if (delta <= 0) { setDragOffset(0); return; }
+    // Only begin drag mode once pulled down enough to distinguish from scroll
+    if (!isDragging.current && delta < 10) return;
+    isDragging.current = true;
+    // Dampen the drag with square-root resistance for natural feel
+    const dampened = Math.sqrt(delta) * Math.sqrt(delta < 80 ? delta : 80);
+    setDragOffset(Math.min(delta, dampened + delta * 0.18));
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    if (dragStartY.current === null) return;
+    dragStartY.current = null;
+    if (dragOffset > 80) {
+      setDragOffset(0);
+      onClose();
+    } else {
+      setDragOffset(0);
+    }
+    isDragging.current = false;
+  }, [dragOffset, onClose]);
 
   useEffect(() => {
     const fresh = SEED_POOLS[articleId % SEED_POOLS.length];
@@ -385,16 +424,19 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
         className="fixed inset-x-0 bottom-0 z-[60] flex flex-col"
         style={{
           height: "82dvh",
-          background: "rgba(253,247,229,0.68)",
+          background: "rgba(253,247,229,0.73)",
           backdropFilter: "blur(26px) saturate(1.3)",
           WebkitBackdropFilter: "blur(26px) saturate(1.3)",
           borderRadius: "22px 22px 0 0",
           overflow: "hidden",
-          transform: isOpen ? "translateY(0)" : "translateY(100%)",
-          transition: "transform 0.34s cubic-bezier(0.32,0.72,0,1)",
+          transform: isOpen ? `translateY(${dragOffset}px)` : "translateY(100%)",
+          transition: dragOffset > 0 ? "none" : "transform 0.34s cubic-bezier(0.32,0.72,0,1)",
           boxShadow: "0 -8px 40px rgba(5,27,58,0.22)",
         }}
         onClick={stopProp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Grain at reduced opacity so the backdrop-filter translucency shows through */}
         <div style={{ position: 'absolute', inset: 0, opacity: 0.22, pointerEvents: 'none' }}>

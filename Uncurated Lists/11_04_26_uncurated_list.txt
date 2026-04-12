@@ -1,0 +1,331 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  POPCORN CANDIDATES — 2026-04-11   (MAIN RUN)
+  209 articles fetched   208 unique stories   111 selected by Claude
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+── FIRST PASS — Claude's picks (111 selected) ────────────────────────────────────────────────────────────
+  #1    5     NME                           Coachella’s Do LaB stage reportedly closed after a speaker fell and injured festivalgoer
+  #2    5     Page Six                      Susan Sarandon cameos with Sabrina Carpenter at Coachella after saying she was blacklisted in Hollywood
+  #3    5     Consequence                   Recording from Brendan Yates’ Father Opens Turnstile’s Coachella Set
+  #4    4     Rolling Stone                 Julieta Venegas and Yahritza y Su Esencia Detail Pain of Deportation, Family Separation on ‘La Línea’
+  #5    4     The Hollywood Reporter        Paramount Lands Mark Wahlberg, Yahya Abdul-Mateen II Crime Thriller ‘By Any Means’
+  #6    4     Vulture                       Offset Makes First Public Statement After Being Shot
+  #7    4     Consequence                   Staff Picks: Best Songs of the Week April 4th – April 10th
+  #8    4     Vulture                       What’s Olivia Rodrigo-ing On?
+  #9    4     IGN                           The Colorado Rockies Have Introduced a Hot Dog Monstrosity and I Want to Eat It Lady and the Tramp-Style
+  #10   4     The Hollywood Reporter        Ice Cube, Kevin Hart in Talks to Return for ‘Ride Along 3’
+  #11   4     The Atlantic                  Steven Soderbergh’s Strange, Surprising Heist Movie
+  #12   4     Rolling Stone                 Where to Buy Tickets to the 2026 ACM Awards
+  #13   4     The Hollywood Reporter        Natasha Lyonne Says “ICE Had Other Plans” After Being Escorted Off Plane Following ‘Euphoria’ Premiere
+  #14   4     The Verge                     Now the FAA says gamers are the answer to its air traffic controller shortage
+  #15   4     Polygon                       The best new movies on streaming and Netflix this weekend (April 10-12)
+  #16   4     Stereogum                     Belle And Sebastian Debut New Scottish Football Anthem “It Only Takes One Lion”
+  #17   4     Semafor                       Hospitals consider replacing some radiologists with AI
+  #18   4     Semafor                       Amazon takes a jab at Nvidia over chips shift
+  #19   4     IGN                           How to Activate the Hulu + Live TV Free Trial in 2026
+  #20   4     Semafor                       VCs step in to fund university upstarts
+  #21   4     IndieWire                     Inside the New Film Stock Kodak Created for ‘Euphoria’ Season 3
+  #22   4     Semafor                       Anthropic is gaining on OpenAI’s revenue, but hasn't yet eclipsed it
+  #23   4     Semafor                       AI powerhouses threaten data processing firms
+  #24   4     Vulture                       Every Detail of the Summer House Love-Triangle Drama in Chronological Order
+  #25   4     The Verge                     How to watch the Artemis II astronauts return to Earth
+  #26   4     IndieWire                     ‘James and the Giant Peach’ Is the Most Underrated Animated Classic of the ’90s
+  #27   4     IGN                           Get a Cordless Electric Air Duster For Your Car or PC Maintenance Kit for Just $19.99
+  #28   4     Consequence                   Kacey Musgraves Shares Video of “Craziest UFO Orb Experience”
+  #29   4     Polygon                       Critical Role's new D&D campaign makes me want to roll a dwarf character so bad
+  #30   4     The Atlantic                  Iran Out-Trolled the Troller in Chief
+  #31   4     Polygon                       Best Xbox Game Pass games to play this weekend (April 10-12 2026)
+  #32   4     IndieWire                     ‘Behind the Mask II’: Leslie Vernon Will Finally Return — and He’s Using the ‘Shelby Oaks’ Strategy
+  #33   4     Consequence                   Rocker Is Selling Tour Bus Once Purchased by Charlie Sheen on a “12-Day Bender”
+  #34   4     IndieWire                     ‘The Travel Companion’ Review: One of the Better Indie Films About Indie Films in Recent Memory
+  #35   4     Polygon                       Gundam’s new trailer has me dreaming for an Armored Core anime
+  #36   4     Vulture                       Joel Kinnaman Loved Getting Old for For All Mankind
+  #37   4     Vulture                       Are Netflix and Apple TV Fighting?
+  #38   4     Vulture                       Outlander Recap: Big Wife Guys
+  #39   4     Polygon                       Scarlet Hollow raises the standard for what RPGs where choices matter should aim to achieve
+  #40   4     Consequence                   A Day to Remember Announce “Big Ole Boat” Cruise with Knocked Loose and More
+  #41   4     Consequence                   Saturday Night Live Sketch Count: The Show’s Biggest Star Isn’t Part of the Main Cast
+  #42   4     Polygon                       Book of Mormon's Elder Price is running an incredible D&D campaign
+  #43   4     Wired                         Motorola’s Souped-Up Folding Phone Is Almost Half Off
+  #44   4     Wired                         Anthropic’s Mythos Will Force a Cybersecurity Reckoning—Just Not the One You Think
+  #45   4     Stereogum                     Purity Ring – “lemonlime”
+  #46   4     Wired                         The Future of the Artemis Program Is Riding on Reentry
+  #47   4     IndieWire                     ‘The Audacity’ Review: AMC’s Clever, Pitch-Black Comedy Gets Trapped in a Tech Bubble
+  #48   4     The New Yorker                Sam Altman’s Trust Issues at OpenAI
+  #49   4     The Verge                     Microsoft finally lets Windows 11 testers unlock experimental features without ViVeTool
+  #50   4     The Verge                     My go-to electric screwdriver is on sale for over 50 percent off today
+  #51   4     Consequence                   Bruce Springsteen Releases “Purple Rain” Performance Video from Minneapolis Tour Opener: Watch
+  #52   4     Consequence                   Dogstar Share “Moody, Creepy” New Single “Joy”: Stream
+  #53   4     Stereogum                     Kehlani – “Back And Forth” (Feat. Missy Elliott)
+  #54   4     The Verge                     Amazon Luna axes third-party game purchases
+  #55   4     The Verge                     The Iranian Lego AI video creators credit their virality to ‘heart’
+  #56   4     The Atlantic                  The Writers Who Can’t Let Go of the South
+  #57   4     NYT Arts                      The Teens of ‘The Testaments’ Follow Up on ‘The Handmaid’s Tale’
+  #58   4     Pitchfork                     Watch Bruce Springsteen Cover “Purple Rain” in High-Def
+  #59   4     Futurism                      New York Times Makes Substantial Changes to Article That Glazed a Sleazy AI Startup: “Our Piece Should Have Included That Information”
+  #60   4     Consequence                   Stream On This Week: An Addictive British Comedy Favorite Returns, and Two Major Final Seasons Begin
+  #61   4     The Atlantic                  How Fake People Became Real Influencers
+  #62   4     Pitchfork                     Gucci Mane Unleashes Diss Track After Alleged Kidnapping by Pooh Shiesty
+  #63   4     TechCrunch                    TechCrunch is heading to Tokyo — and bringing the Startup Battlefield with it
+  #64   4     IndieWire                     The Absolute Hell of Watching a Movie at the Alamo Drafthouse in 2026
+  #65   4     The Atlantic                  Viktor Orbán Could Actually Lose
+  #66   4     Pitchfork                     Listen to Alabama Shakes’ New Protest Song “American Dream”
+  #67   4     404 Media                     Behind the Blog: Smoking the Whole Carton
+  #68   4     Futurism                      Space Scientists Wince as Astronauts’ Lives Depend on Artemis 2’s Controversial Heat Shield During Plunge Back to Earth
+  #69   4     IndieWire                     ‘The Christophers’ Review: Ian McKellen’s Best Screen Performance Since Gandalf Brings Some Much-Needed Life Back to Soderbergh’s Late Style
+  #70   4     Stereogum                     The Rolling Stones Signal Summer Album With New Single “Rough And Twisted”
+  #71   4     The Verge                     Congress can finally close a mass surveillance loophole — but will they?
+  #72   4     Dazed                         PUMA and Jil Sander keep it simple with the K-Street
+  #73   4     Stereogum                     Isaiah Rashad – “Same Sh!t”
+  #74   4     The Atlantic                  How Did Samuel Alito Become This Angry?
+  #75   4     Stereogum                     Ava Mendoza Announces New Album Alive Alone, Alive Together: Hear “Dust From The Mines”
+  #76   4     Dazed                         Exit8: A must-see Japanese horror about an endless commute
+  #77   4     Futurism                      The Moon Astronauts Have Been Working Out With a NASA Rowing Machine in Space
+  #78   4     Stereogum                     Lily Allen Is Back On Cameo, Will Do Any “Dumb Shit” You Ask For
+  #79   4     IndieWire                     What Should ‘Jury Duty’ Present After ‘Company Retreat’? We Have a Few Ideas
+  #80   4     Semafor                       A South African artist is changing the way viewers understand Picasso’s Guernica
+  #81   4     Dazed                         Queer nightlife is thriving in Bucharest’s abandoned backrooms
+  #82   4     Pitchfork                     Pitchfork and GQ Senior Designer Chris Panicker Wins 2026 ASME Next Award
+  #83   4     Semafor                       Airbnb faces familiar battle in Cape Town
+  #84   4     Stereogum                     Willow Avalon Announces New Album Pink Pocket Pistol: Hear “Cardinal Sin” (Feat. Jason Isbell)
+  #85   4     Semafor                       First look at war-related inflation sparks political jostling
+  #86   4     TechCrunch                    France to ditch Windows for Linux to reduce reliance on US tech
+  #87   4     TechCrunch                    YouTube Premium and YouTube Music are getting more expensive
+  #88   4     The Atlantic                  A Different Moon From the One We’ve Known
+  #89   4     Dazed                         Labubu obituary: Rot in hell you ugly little freaks
+  #90   4     Pitchfork                     The Rolling Stones Prepping New Album
+  #91   4     Dazed                         Inside looksmaxxing’s black-market beauty economy
+  #92   4     Stereogum                     Charli XCX Watches Snuff Film, Speaks In American Accent In Faces Of Death Clip
+  #93   4     The Atlantic                  The Iran War Showed a New Side of Pope Leo
+  #94   4     Dazed                         ‘It’s just the aesthetic’: The Drama and the allure of violent subcultures
+  #95   4     Futurism                      First AI Model From Zuckerberg’s Wildly Expensive Superintelligence Lab Flops Compared to Virtually All Rivals
+  #96   4     Semafor                       China's state businesses are reshaping markets in Africa
+  #97   4     TechCrunch                    Every fusion startup that has raised over $100M
+  #98   4     IndieWire                     ‘Malcolm in the Middle: Life’s Still Unfair’ Is the Rare Revival That Provides Something New
+  #99   4     TechCrunch                    Last 24 hours: Save up to $500 on your TechCrunch Disrupt 2026 pass
+  #100  4     The New Yorker                Daily Cartoon: Friday, April 10th
+  #101  4     TechCrunch                    PSA: If you use the Meta AI app, your friends will find out and it will be embarrassing
+  #102  4     Pitchfork                     10 New Albums You Should Listen to Now: My New Band Believe, Mei Semones, Lone, and More
+  #103  4     Semafor                       US issues Nigeria travel warning over terrorism, kidnapping
+  #104  4     Semafor                       FirstRand exits UK business after regulatory hit
+  #105  4     Futurism                      Economists Starting to Admit They May Have Been Wrong About AI Never Replacing Human Jobs
+  #106  4     IndieWire                     The WGA’s Tentative Deal Gets Writers a Big Boost with Healthcare — and Sets the Tone for the Other Guilds
+  #107  4     The Atlantic                  Photos of the Week: Solar Eclipse, Amazon Monument, Titanic Bonfire
+  #108  4     Dazed                         The rise of Rico Ace in 5 tracks
+  #109  4     The Guardian Culture          Bafta apologises for events surrounding John Davidson’s Tourette’s outburst
+  #110  4     TechCrunch                    Snap gets closer to releasing new AI glasses after years-long hiatus
+  #111  4     Pitchfork                     Coachella 2026 YouTube Live Stream Schedule & Details
+
+── ALL CANDIDATES (sorted by score) ─────────────────────────────────────────────────────────────────
+   #1    7     Polygon                       Fortnite maker Epic Games working on a Disney extraction shooter
+   #2    5     ESPN                          NBA playoff intel: Early buzz on the Lakers, Celtics, Cavs, Pistons Spurs and Warriors
+   #3    5     ESPN                          The NBA's most valuable players in 15 categories, from floaters to defense
+   #4    5     ESPN                          McIlroy is all alone through 36 holes; can anyone catch him?
+   #5    5     Daily Mail                    Arsenal vs Bournemouth - Premier League LIVE: Latest score and updates as Eli Junior Kroupi hands Gunners a NIGHTMARE start at The Emirates
+   #6    5     Daily Mail                    Your entire browsing history, private messages and financial details could be released for ANYONE to read: TOM LEONARD reveals crisis talks over Armageddon new program - and the devastating consequences
+   #7    5     Daily Mail                    Eamonn Holmes, 66, is rushed to hospital after suffering a stroke in latest health battle
+   #8    5     Daily Mail                    How I REVERSED bone-thinning disease osteopenia with simple exercises and a cheap supplement you can buy in the supermarket
+   #9    5     Consequence                   Here’s the Setlist for Bruno Mars’ “The Romantic Tour” Kick-Off
+   #10   5     Billboard                     Sabrina Carpenter, KATSEYE, Turnstile, John Summit & More: Best Moments From Coachella 2026 Day 1
+   #11   5     Business Insider              I lost over 60 pounds last year on a tight budget. These 7 Costco products helped me do it.
+   #12   5     The Atlantic                  A Shot to Lose Weight, Then a Pill to Keep It Off
+   #13   5     Wired                         MacBook Neo vs. MacBook Air: Which One Should You Buy?
+   #14   5     Futurism                      AI Is Causing Healthcare Costs to Surge
+   #15   5     Polygon                       Best gift ideas for Stardew Valley fans and cozy gamers
+   #16   5     Dexerto                       Hackers threaten to leak GTA 6 plans as deadline set for Rockstar
+   #17   5     Daily Mail                    Racegoers show some Grand style as they get dressed up ahead of the National at Aintree in horse racing's biggest event of the year
+   #18   5     Daily Mail                    Grand National ULTIMATE guide: Daily Mail Sport's expert tips and cheat sheet ahead of Aintree race - as Willie Mullins' plot to secure another landmark win
+   #19   5     Daily Mail                    Truth behind Peter Phillips's blended family: His NHS nurse fiancee's ex-father-in-law reveals the bitter rift that led to her first marriage breakdown
+   #20   5     Daily Mail                    Abandoned malls, whispers of nuclear war and young foreigners detained. This is what's REALLY going on in Dubai... and the chilling warning one taxi driver gave to the Mail's IAN BIRRELL
+   #21   5     Variety                       Ralph Fiennes Says the ‘Ship Has Sailed’ for Him to Reprise Voldemort Role in HBO’s ‘Harry Potter’ Series, but Tilda Swinton ‘Would Be Amazing’
+   #22   5     Daily Mail                    Humiliated and full of regret: Ollie Locke reveals how trying to keep up his Made In Chelsea lifestyle left him broke, on the verge of a breakdown and his reputation in tatters
+   #23   5     Daily Mail                    Sudanese 'taxi boat pilot' is charged over deaths of four migrants drowned trying to cross the Channel
+   #24   5     Daily Mail                    Trump's fragile 'peace' gives investors a rare chance. Here's what you must do NOW
+ ✓ #25   5     NME                           Coachella’s Do LaB stage reportedly closed after a speaker fell and injured festivalgoer
+   #26   5     Business Insider              I've applied to 1,000 jobs since earning my master's and am still unemployed. I'm frustrated because I thought I did everything right.
+   #27   5     Polygon                       Faces of Death ending explained: Director and cast break down the movie's gory finale
+   #28   5     The Atlantic                  Iran Could Be America’s Next Vietnam
+   #29   5     Wired                         Best Electric Cargo Bikes (2026): Urban Arrow, Lectric, Tern, and More
+   #30   5     The Verge                     Is the ‘Holy Grail of batteries’ finally ready to bless us with its presence?
+   #31   5     Futurism                      There’s a Mass Rebellion Against AI in the Workplace
+   #32   5     Business Insider              The Masters is back — and so is the merch
+   #33   5     NME                           Anyma’s Coachella set cancelled due to “strong wind conditions”
+   #34   5     Business Insider              'Big Short' investor Michael Burry lays out why he thinks high-flying tech stocks are even pricier than you think
+   #35   5     Wired                         Your Push Notifications Aren’t Safe From the FBI
+   #36   5     NME                           Watch Ninajirachi and Porter Robinson debut new song at Coachella 2026
+   #37   5     Billboard                     Anyma’s Coachella 2026 Performance Cancelled Due to Strong Winds: ‘We’ve Done Everything In Our Control’
+   #38   5     Business Insider              A millennial made $280K working 3 remote jobs — until the job market turned against him: 'It was great until it wasn't'
+   #39   5     Polygon                       Witch Hat Atelier's premiere sets the stage for Coco's biggest trial yet
+   #40   5     Wired                         Flight Path Data Shows How Mosquitoes Target Humans
+   #41   5     The New Yorker                Mad About the Mandolin
+   #42   5     Futurism                      People Who Lose Their Job to AI Are in for a World of Pain, Goldman Sachs Report Finds
+   #43   5     Business Insider              'Strong is the new skinny': Women leaders are strength training to thrive at work
+   #44   5     Highsnobiety                  These Ultra Low-Profile adidas Are Sitting Pretty in the Gray Area
+   #45   5     Dexerto                       Skyrim’s massive RP server that replaces NPCs with players just broke a new record
+   #46   5     Business Insider              Uber and DoorDash have an identity theft problem, and it's costing people on tax day
+   #47   5     Business Insider              Goldman says 2 forces will drive stock volatility higher for longer, and the Iran war isn't one of them
+   #48   5     IGN                           The Crew of Nasa's Artemis II Mission Return to Earth Safely, and Now Thoughts Turn to Artemis III and a Permanent Base on the Moon
+ ✓ #49   5     Page Six                      Susan Sarandon cameos with Sabrina Carpenter at Coachella after saying she was blacklisted in Hollywood
+   #50   5     Business Insider              I'm a 64-year-old retiree who bought a tiny home after my divorce. It gave me a fresh start I could afford.
+   #51   5     Business Insider              The GLP-1 gold rush is creating winners far beyond pharma
+   #52   5     Business Insider              5 experienced side hustlers share their breakthrough advice for finding success
+   #53   5     Business Insider              Tom Marchitelli traded a finance job for fashion. Now he dresses elite athletes in $5,000 suits.
+   #54   5     Wired                         How the Internet Broke Everyone’s Bullshit Detectors
+   #55   5     NME                           NASA wake up Artemis II crew on final day of mission with Zac Brown Band’s ‘Free’ and message from singer
+   #56   5     Wired                         The All-Clad Factory Seconds Sale Is Back—for Now (2026)
+   #57   5     Billboard                     KID PHENOMENON on the Evolution of Expression After SXSW 2026 & Presenting ‘TOKYO NEO POP’ to the World
+   #58   5     Vulture                       Cinematrix No. 746: April 11, 2026
+   #59   5     IGN                           New Crimson Desert Patch Just Dropped With Many of the Improvements Pearl Abyss Said Were Due in the Coming Months, and Some It Hadn't Mentioned at All
+   #60   5     The Guardian Culture          From Peepo! to Middlemarch: 25 books to read before you turn 25
+   #61   5     NME                           Sabrina Carpenter revives spirit of Old Hollywood with Coachella set featuring Susan Saradon, Will Ferrell, and men dressed as dogs
+   #62   5     ESPN                          Wembanyama checks another 'box,' hits 65 games
+   #63   5     ESPN                          Sources: Griner finalizing 7-figure deal to join Sun
+   #64   5     ESPN                          Redick: 'Everybody' wants to face hobbled Lakers
+   #65   5     ESPN                          Sources: NYT investigating reporter's Vrabel ties
+   #66   5     ESPN                          🏈 NFL draft rankings: Miller's top 482 players
+   #67   5     ESPN                          SGA, Jokic among at least 168 out NBA-wide Fri.
+   #68   5     ESPN                          Dodgers' Muncy caps 3-HR night with walk-off shot
+   #69   5     ESPN                          Celtics tie NBA record with 29 3s, clinch 2-seed
+   #70   5     The Guardian Culture          Margo’s Got Money Troubles: Elle Fanning and Michelle Pfeiffer ace this taboo OnlyFans comedy
+   #71   5     The Guardian Culture          I swapped England for Seoul after watching a Korean teen drama – and found myself cast in a K-pop video
+   #72   5     The Guardian Culture          TV tonight: Paul McCartney reopens a great Beatles mystery
+   #73   5     The Guardian Culture          Secret Garden to Outcome: the week in rave reviews
+   #74   5     The Guardian Culture          ‘I got everything I dreamed of – when I had no ability to handle it’: Lena Dunham on toxic fame, broken friendships and her ‘lost decade’
+   #75   5     The Guardian Culture          From You, Me & Tuscany to Euphoria: your complete entertainment guide to the week ahead
+   #76   5     Variety                       ‘Thrash’ Review: It’s Netflix and Chomp, as Phoebe Dynevor Stars in a Familiar but Gruesomely Competent Shark Thriller
+   #77   5     Billboard                     BINI Talks About Being the First Filipino Girl Group To Perform At Coachella | Billboard News
+   #78   5     Pitchfork                     Watch Brendan Yates’ Dad Introduce Turnstile at Coachella 2026
+   #79   5     Consequence                   Coachella Saturday Livestream: Justin Bieber, The Strokes, Nine Inch Noize & More
+   #80   5     Pitchfork                     Watch Sabrina Carpenter Headline the First Night of Coachella 2026
+   #81   5     IndieWire                     Sam Levinson’s Forgotten Film Debut from 2011 Explains What Really Went Wrong for ‘Euphoria’
+   #82   5     The New Yorker                Will J. D. Vance Inherit MAGA?
+ ✓ #83   5     Consequence                   Recording from Brendan Yates’ Father Opens Turnstile’s Coachella Set
+   #84   5     The Guardian Culture          Heathers the Musical review – dark teen comedy is hammy fun, if thoroughly defanged
+   #85   5     Page Six                      Scenes from Coachella 2026: Charli D’Amelio, Madelyn Cline, Alix Earle and more
+   #86   5     Rolling Stone                 David Lee Roth, Joe Jonas, Vanessa Carlton Join Teddy Swims at Coachella 2026
+   #87   5     The Hollywood Reporter        Coachella Chaos? As Demand Surges, So Do Prices, Rental Cancellation Rumors and Influencer Gossip
+   #88   5     The Hollywood Reporter        ‘Baywatch’ Reboot to Remain at Venice Beach After Filming Issues, Karen Bass Says
+   #89   5     IGN                           For All Mankind Creators and Star on Saying Goodbye to a Beloved Character
+   #90   4     The Hollywood Reporter        ‘Love Story’: Sarah Pidgeon Says Carolyn Bessette Kennedy Wardrobe Led to “Psoriasis All Over”
+   #91   4     The New Yorker                “Exit 8” Is a Video-Game Adaptation That Ingeniously Subverts Its Source
+ ✓ #92   4     Vulture                       Offset Makes First Public Statement After Being Shot
+ ✓ #93   4     The Hollywood Reporter        Paramount Lands Mark Wahlberg, Yahya Abdul-Mateen II Crime Thriller ‘By Any Means’
+ ✓ #94   4     Rolling Stone                 Julieta Venegas and Yahritza y Su Esencia Detail Pain of Deportation, Family Separation on ‘La Línea’
+ ✓ #95   4     The Hollywood Reporter        Ice Cube, Kevin Hart in Talks to Return for ‘Ride Along 3’
+ ✓ #96   4     IGN                           The Colorado Rockies Have Introduced a Hot Dog Monstrosity and I Want to Eat It Lady and the Tramp-Style
+ ✓ #97   4     Vulture                       What’s Olivia Rodrigo-ing On?
+ ✓ #98   4     Consequence                   Staff Picks: Best Songs of the Week April 4th – April 10th
+ ✓ #99   4     Rolling Stone                 Where to Buy Tickets to the 2026 ACM Awards
+ ✓ #100  4     The Atlantic                  Steven Soderbergh’s Strange, Surprising Heist Movie
+ ✓ #101  4     The Verge                     Now the FAA says gamers are the answer to its air traffic controller shortage
+ ✓ #102  4     The Hollywood Reporter        Natasha Lyonne Says “ICE Had Other Plans” After Being Escorted Off Plane Following ‘Euphoria’ Premiere
+ ✓ #103  4     Semafor                       VCs step in to fund university upstarts
+ ✓ #104  4     IGN                           How to Activate the Hulu + Live TV Free Trial in 2026
+ ✓ #105  4     Semafor                       Amazon takes a jab at Nvidia over chips shift
+ ✓ #106  4     Semafor                       Hospitals consider replacing some radiologists with AI
+ ✓ #107  4     Stereogum                     Belle And Sebastian Debut New Scottish Football Anthem “It Only Takes One Lion”
+ ✓ #108  4     Polygon                       The best new movies on streaming and Netflix this weekend (April 10-12)
+ ✓ #109  4     Vulture                       Every Detail of the Summer House Love-Triangle Drama in Chronological Order
+ ✓ #110  4     Semafor                       AI powerhouses threaten data processing firms
+ ✓ #111  4     Semafor                       Anthropic is gaining on OpenAI’s revenue, but hasn't yet eclipsed it
+ ✓ #112  4     IndieWire                     Inside the New Film Stock Kodak Created for ‘Euphoria’ Season 3
+ ✓ #113  4     The Verge                     How to watch the Artemis II astronauts return to Earth
+ ✓ #114  4     The Atlantic                  Iran Out-Trolled the Troller in Chief
+ ✓ #115  4     Polygon                       Critical Role's new D&D campaign makes me want to roll a dwarf character so bad
+ ✓ #116  4     Consequence                   Kacey Musgraves Shares Video of “Craziest UFO Orb Experience”
+ ✓ #117  4     IGN                           Get a Cordless Electric Air Duster For Your Car or PC Maintenance Kit for Just $19.99
+ ✓ #118  4     IndieWire                     ‘James and the Giant Peach’ Is the Most Underrated Animated Classic of the ’90s
+ ✓ #119  4     Consequence                   Rocker Is Selling Tour Bus Once Purchased by Charlie Sheen on a “12-Day Bender”
+ ✓ #120  4     IndieWire                     ‘Behind the Mask II’: Leslie Vernon Will Finally Return — and He’s Using the ‘Shelby Oaks’ Strategy
+ ✓ #121  4     Polygon                       Best Xbox Game Pass games to play this weekend (April 10-12 2026)
+ ✓ #122  4     Vulture                       Joel Kinnaman Loved Getting Old for For All Mankind
+ ✓ #123  4     Polygon                       Gundam’s new trailer has me dreaming for an Armored Core anime
+ ✓ #124  4     IndieWire                     ‘The Travel Companion’ Review: One of the Better Indie Films About Indie Films in Recent Memory
+ ✓ #125  4     Vulture                       Outlander Recap: Big Wife Guys
+ ✓ #126  4     Vulture                       Are Netflix and Apple TV Fighting?
+ ✓ #127  4     Consequence                   A Day to Remember Announce “Big Ole Boat” Cruise with Knocked Loose and More
+ ✓ #128  4     Polygon                       Scarlet Hollow raises the standard for what RPGs where choices matter should aim to achieve
+ ✓ #129  4     Wired                         The Future of the Artemis Program Is Riding on Reentry
+ ✓ #130  4     Stereogum                     Purity Ring – “lemonlime”
+ ✓ #131  4     Wired                         Anthropic’s Mythos Will Force a Cybersecurity Reckoning—Just Not the One You Think
+ ✓ #132  4     Wired                         Motorola’s Souped-Up Folding Phone Is Almost Half Off
+ ✓ #133  4     Polygon                       Book of Mormon's Elder Price is running an incredible D&D campaign
+ ✓ #134  4     Consequence                   Saturday Night Live Sketch Count: The Show’s Biggest Star Isn’t Part of the Main Cast
+ ✓ #135  4     The Verge                     Microsoft finally lets Windows 11 testers unlock experimental features without ViVeTool
+ ✓ #136  4     The New Yorker                Sam Altman’s Trust Issues at OpenAI
+ ✓ #137  4     IndieWire                     ‘The Audacity’ Review: AMC’s Clever, Pitch-Black Comedy Gets Trapped in a Tech Bubble
+ ✓ #138  4     The Verge                     My go-to electric screwdriver is on sale for over 50 percent off today
+   #139  4     Know Your Meme                'Rick And Morty' Dancing To A Remix Of 'Heaven Knows I'm Miserable Now' Is Now A Meme
+ ✓ #140  4     The Atlantic                  The Writers Who Can’t Let Go of the South
+ ✓ #141  4     The Verge                     The Iranian Lego AI video creators credit their virality to ‘heart’
+ ✓ #142  4     The Verge                     Amazon Luna axes third-party game purchases
+ ✓ #143  4     Stereogum                     Kehlani – “Back And Forth” (Feat. Missy Elliott)
+ ✓ #144  4     Consequence                   Dogstar Share “Moody, Creepy” New Single “Joy”: Stream
+ ✓ #145  4     Consequence                   Bruce Springsteen Releases “Purple Rain” Performance Video from Minneapolis Tour Opener: Watch
+ ✓ #146  4     NYT Arts                      The Teens of ‘The Testaments’ Follow Up on ‘The Handmaid’s Tale’
+ ✓ #147  4     The Atlantic                  How Fake People Became Real Influencers
+ ✓ #148  4     Consequence                   Stream On This Week: An Addictive British Comedy Favorite Returns, and Two Major Final Seasons Begin
+ ✓ #149  4     Futurism                      New York Times Makes Substantial Changes to Article That Glazed a Sleazy AI Startup: “Our Piece Should Have Included That Information”
+ ✓ #150  4     Pitchfork                     Watch Bruce Springsteen Cover “Purple Rain” in High-Def
+ ✓ #151  4     Pitchfork                     Gucci Mane Unleashes Diss Track After Alleged Kidnapping by Pooh Shiesty
+ ✓ #152  4     IndieWire                     The Absolute Hell of Watching a Movie at the Alamo Drafthouse in 2026
+ ✓ #153  4     TechCrunch                    TechCrunch is heading to Tokyo — and bringing the Startup Battlefield with it
+ ✓ #154  4     The Atlantic                  Viktor Orbán Could Actually Lose
+   #155  4     Highsnobiety                  Why Usyk Wearing Stone Island Is Bigger Than Usyk
+   #156  4     Highsnobiety                  You Ought to Stop & Smell These Spring Chucks
+ ✓ #157  4     IndieWire                     ‘The Christophers’ Review: Ian McKellen’s Best Screen Performance Since Gandalf Brings Some Much-Needed Life Back to Soderbergh’s Late Style
+ ✓ #158  4     Futurism                      Space Scientists Wince as Astronauts’ Lives Depend on Artemis 2’s Controversial Heat Shield During Plunge Back to Earth
+ ✓ #159  4     404 Media                     Behind the Blog: Smoking the Whole Carton
+ ✓ #160  4     Pitchfork                     Listen to Alabama Shakes’ New Protest Song “American Dream”
+   #161  4     Dexerto                       The Boys fans are only just realizing there are two Ryans
+   #162  4     Dexerto                       Barbie Ferreira reveals why she’s not in Euphoria Season 3
+ ✓ #163  4     The Verge                     Congress can finally close a mass surveillance loophole — but will they?
+ ✓ #164  4     Stereogum                     The Rolling Stones Signal Summer Album With New Single “Rough And Twisted”
+   #165  4     Hypebeast                     XLIM Puts Its Stamp on the HOKA Mafate Speed 2
+   #166  4     Highsnobiety                  adidas' Most Underrated Mash-Up Is Making a Shiny Comeback
+ ✓ #167  4     The Atlantic                  How Did Samuel Alito Become This Angry?
+ ✓ #168  4     Stereogum                     Isaiah Rashad – “Same Sh!t”
+ ✓ #169  4     Dazed                         PUMA and Jil Sander keep it simple with the K-Street
+ ✓ #170  4     Stereogum                     Ava Mendoza Announces New Album Alive Alone, Alive Together: Hear “Dust From The Mines”
+ ✓ #171  4     Semafor                       A South African artist is changing the way viewers understand Picasso’s Guernica
+ ✓ #172  4     IndieWire                     What Should ‘Jury Duty’ Present After ‘Company Retreat’? We Have a Few Ideas
+ ✓ #173  4     Stereogum                     Lily Allen Is Back On Cameo, Will Do Any “Dumb Shit” You Ask For
+ ✓ #174  4     Futurism                      The Moon Astronauts Have Been Working Out With a NASA Rowing Machine in Space
+ ✓ #175  4     Dazed                         Exit8: A must-see Japanese horror about an endless commute
+ ✓ #176  4     Semafor                       First look at war-related inflation sparks political jostling
+ ✓ #177  4     Stereogum                     Willow Avalon Announces New Album Pink Pocket Pistol: Hear “Cardinal Sin” (Feat. Jason Isbell)
+ ✓ #178  4     Semafor                       Airbnb faces familiar battle in Cape Town
+ ✓ #179  4     Pitchfork                     Pitchfork and GQ Senior Designer Chris Panicker Wins 2026 ASME Next Award
+ ✓ #180  4     Dazed                         Queer nightlife is thriving in Bucharest’s abandoned backrooms
+ ✓ #181  4     Pitchfork                     The Rolling Stones Prepping New Album
+ ✓ #182  4     Dazed                         Labubu obituary: Rot in hell you ugly little freaks
+ ✓ #183  4     The Atlantic                  A Different Moon From the One We’ve Known
+ ✓ #184  4     TechCrunch                    YouTube Premium and YouTube Music are getting more expensive
+ ✓ #185  4     TechCrunch                    France to ditch Windows for Linux to reduce reliance on US tech
+ ✓ #186  4     Dazed                         ‘It’s just the aesthetic’: The Drama and the allure of violent subcultures
+ ✓ #187  4     The Atlantic                  The Iran War Showed a New Side of Pope Leo
+ ✓ #188  4     Stereogum                     Charli XCX Watches Snuff Film, Speaks In American Accent In Faces Of Death Clip
+ ✓ #189  4     Dazed                         Inside looksmaxxing’s black-market beauty economy
+   #190  4     Know Your Meme                How 'LARP' Went From Foam Swords To The Internet's Favorite Insult
+ ✓ #191  4     TechCrunch                    Every fusion startup that has raised over $100M
+ ✓ #192  4     Semafor                       China's state businesses are reshaping markets in Africa
+ ✓ #193  4     Futurism                      First AI Model From Zuckerberg’s Wildly Expensive Superintelligence Lab Flops Compared to Virtually All Rivals
+ ✓ #194  4     TechCrunch                    PSA: If you use the Meta AI app, your friends will find out and it will be embarrassing
+ ✓ #195  4     The New Yorker                Daily Cartoon: Friday, April 10th
+ ✓ #196  4     TechCrunch                    Last 24 hours: Save up to $500 on your TechCrunch Disrupt 2026 pass
+ ✓ #197  4     IndieWire                     ‘Malcolm in the Middle: Life’s Still Unfair’ Is the Rare Revival That Provides Something New
+ ✓ #198  4     Pitchfork                     10 New Albums You Should Listen to Now: My New Band Believe, Mei Semones, Lone, and More
+ ✓ #199  4     Futurism                      Economists Starting to Admit They May Have Been Wrong About AI Never Replacing Human Jobs
+ ✓ #200  4     Semafor                       FirstRand exits UK business after regulatory hit
+ ✓ #201  4     Semafor                       US issues Nigeria travel warning over terrorism, kidnapping
+   #202  4     Hypebeast                     Haider Ackermann and Canada Goose Shed the World's Weight With a Featherlight SS26 Capsule
+ ✓ #203  4     The Atlantic                  Photos of the Week: Solar Eclipse, Amazon Monument, Titanic Bonfire
+ ✓ #204  4     IndieWire                     The WGA’s Tentative Deal Gets Writers a Big Boost with Healthcare — and Sets the Tone for the Other Guilds
+ ✓ #205  4     Dazed                         The rise of Rico Ace in 5 tracks
+ ✓ #206  4     Pitchfork                     Coachella 2026 YouTube Live Stream Schedule & Details
+ ✓ #207  4     TechCrunch                    Snap gets closer to releasing new AI glasses after years-long hiatus
+ ✓ #208  4     The Guardian Culture          Bafta apologises for events surrounding John Davidson’s Tourette’s outburst
+
+── GROUPED DUPLICATES (excluded from candidate pool) ──────────────────────────────────────────────────
+   Dexerto                       Epic Games is releasing a Disney extraction shooter: Report
+                                ↳ Grouped as duplicate of "Fortnite maker Epic Games working on a Disney extraction sho

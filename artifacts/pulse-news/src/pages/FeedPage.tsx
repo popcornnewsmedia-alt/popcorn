@@ -324,15 +324,27 @@ function ProfileScreen({
           {/* About Popcorn */}
           <div className="px-5 mb-6">
             <div style={{ height: "1px", background: "rgba(255,241,205,0.08)", marginBottom: 16 }} />
-            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "12px", color: "#fff1cd", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>
-              About Popcorn
-            </p>
-            <p
-              className="font-['Lora'] italic"
-              style={{ fontSize: "13px", color: "#fff1cd", lineHeight: 1.65 }}
+            <button
+              onClick={() => onOpenLegal("about")}
+              className="flex items-center gap-2 transition-opacity active:opacity-60 hover:opacity-80"
+              style={{
+                fontFamily: "'Macabro', 'Anton', sans-serif",
+                fontSize: "12px",
+                color: "#fff1cd",
+                letterSpacing: "0.10em",
+                textTransform: "uppercase",
+                background: "rgba(255,241,205,0.08)",
+                border: "1px solid rgba(255,241,205,0.16)",
+                borderRadius: 999,
+                paddingLeft: 14,
+                paddingRight: 14,
+                paddingTop: 8,
+                paddingBottom: 8,
+              }}
             >
-              In an age of hyper-personalisation, most news feeds give you more of what you already follow. Popcorn takes the opposite approach — we hand-curate culture stories from around the globe. The surprising, the fascinating, the things you didn't know you wanted to know.
-            </p>
+              About Popcorn
+              <ChevronRight className="w-3.5 h-3.5" style={{ color: "rgba(255,241,205,0.50)" }} strokeWidth={2} />
+            </button>
           </div>
 
           {/* Legal — stacked rows with chevrons */}

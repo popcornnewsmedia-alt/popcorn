@@ -1,0 +1,102 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  POPCORN CANDIDATES — 2026-04-06   (MAIN RUN — custom window)
+  Apr 05 12:00 BKK → Apr 06 13:00 BKK   87 articles fetched   84 unique stories
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+── FIRST PASS — Claude's picks (2 selected) ────────────────────────────────────────────────────────────
+  #1    5     Semafor                       AI flattery makes you meaner, study finds
+  #2    5     Variety                       Kanye West’s ‘Bully’ Debuts at No. 2 on Albums Chart as BTS Holds Top Spot With ‘Arirang’
+
+── ALL CANDIDATES (sorted by score) ─────────────────────────────────────────────────────────────────
+   #1    13    Semafor                       Watch: Semafor World Economy Day 4
+   #2    5     Daily Mail                    Iran threatens Trump with 'devastating, widespread' retaliations following his expletive-filled vow to hit the country's power plants
+   #3    5     Daily Mail                    What President Trump said as he launched the most daring US rescue mission in history.. and why the Pentagon feared they were flying into a TRAP
+   #4    5     ESPN                          Anthony calls Red Sox's 2-7 start 'unacceptable'
+   #5    5     ESPN                          📈 Masters tiers: Ranking favorites, contenders
+   #6    5     ESPN                          Luka to seek care in Europe, aims for playoffs
+   #7    5     ESPN                          'We did it!': UCLA wins first women's NCAA title
+   #8    5     ESPN                          Staley praises Close: Happy for 'quality people'
+   #9    5     ESPN                          Flagg flips ROY odds after latest 'statement' game
+   #10   5     ESPN                          Sources: Michigan's May not pursuing other jobs
+   #11   5     ESPN                          Vitello ejected, 'frustration' mounts for 3-7 Giants
+   #12   5     ESPN                          Scheffler, 9-day-old son Remy arrive at Masters
+   #13   5     Daily Mail                    Kim and Khloe Kardashian share how their family celebrated Easter including saucy photoshoot from Kylie Jenner
+   #14   5     Daily Mail                    ANDREW PIERCE: Do Labour know what a child is?
+   #15   5     Daily Mail                    RICHARD TICE: For too long, ideology has trumped common sense. It's our patriotic duty to tap ALL our oil and gas reserves
+   #16   5     Daily Mail                    How the US unleashed overwhelming firepower to save stranded airman under enemy fire in Iran... then obliterated every weapon left behind
+   #17   5     Daily Mail                    Trump says Iranian civilians want America to unleash military power as he threatens to wipe out 'every power plant' and leave no bridges standing
+   #18   5     ESPN                          'The best decision I ever made': How UCLA's roster converged to become NCAA champs
+   #19   5     ESPN                          How Michigan, UConn won Saturday's Final Four -- and keys to Monday's title game
+   #20   5     ESPN                          F-bombs, herky jerks and the Final Straw: Every Dan Hurley reaction from the Final Four
+   #21   5     NME                           ‘Forza Horizon 6’ PS5 release date window, everything we know
+   #22   5     NME                           Framed answer today – here’s the solution for April 06
+ ✓ #23   5     Semafor                       AI flattery makes you meaner, study finds
+   #24   5     The Hollywood Reporter        Dan Levy Says He Considered a ‘Schitt’s Creek’ Sequel Series Before Catherine O’Hara’s Death
+   #25   5     Rolling Stone                 Despite Controversy, Ye’s ‘Bully’ Debuts at Number Two on the Billboard 200
+   #26   5     Page Six                      How to watch ‘Real Housewives of Atlanta’ Season 17 premiere for free
+   #27   5     Variety                       Savannah Guthrie Shares Emotional Easter Message Amid Her Mom’s Disappearance: ‘I Have Questioned Whether Jesus Really Ever Experienced This Particular Wound That I Feel’
+ ✓ #28   5     Variety                       Kanye West’s ‘Bully’ Debuts at No. 2 on Albums Chart as BTS Holds Top Spot With ‘Arirang’
+   #29   4     Vulture                       Saturday Night Live Recap: Jack Black Brings The Energy
+   #30   4     Polygon                       Triplets of Belleville’s director just invented the cozy ghost biopic
+   #31   4     The Atlantic                  A Social Experiment Within an Airbnb
+   #32   4     Rolling Stone                 Trump Warns Iran on Easter: ‘Open the F-ckin’ Strait, You Crazy Bastards’
+   #33   4     Variety                       ‘Friends’ Star Lisa Kudrow Says New Sitcoms are ‘Too Afraid’ to Make Jokes That Make People ‘Uncomfortable’: ‘I’m Not Buying It’
+   #34   4     Vulture                       Jack White Puts Domingo Out of His Misery
+   #35   4     Variety                       ‘Malcolm In The Middle’ Star Erik Per Sullivan Turned Down ‘Buckets Of Money’ to Return as Dewey in Series Revival, Says Jane Kaczmarek
+   #36   4     Polygon                       There's one essential Star Wars comic you need to read before Maul: Shadow Lord
+   #37   4     The Hollywood Reporter        UCLA vs. South Carolina Livestream: Watch the NCAA Women’s Basketball Championship Game Online Free
+   #38   4     Polygon                       Best Mario games to play if you loved The Super Mario Galaxy Movie
+   #39   4     The Atlantic                  Dreams in April
+   #40   4     Polygon                       Super Mario Galaxy Movie doesn't need defenders for bad reviews
+   #41   4     Dexerto                       Pets in China now have their own dedicated streaming service
+   #42   4     Polygon                       One Piece finally reveals the look and powers of Imu, its ultimate villain
+   #43   4     Dexerto                       Influencer banned from major airline after chemical fart prank causes midair chaos
+   #44   4     Polygon                       30 years ago, Primal Fear perfected the art of the twist ending
+   #45   4     Rolling Stone                 A History of Mario, Nintendo’s Golden Boy
+   #46   4     Polygon                       Star Fox for Nintendo Switch 2 should not be a retread of what has come before
+   #47   4     The Hollywood Reporter        Small State, Big Attitude: How Bravo Brought Its Splashy New ‘Real Housewives’ Entry to Rhode Island
+   #48   4     Dexerto                       Police carry out major sting operation to catch serial Pokemon card robber
+   #49   4     Dexerto                       90-year-old woman breaks world record for dead hang
+   #50   4     Rolling Stone                 American Greatness, American Barbarism
+   #51   4     The Atlantic                  The Man Holding MAHA Together
+   #52   4     The Guardian Culture          James review – special band still filling arenas with anthems of warmth and humanity
+   #53   4     The Verge                     How the Amazon Echo learned to talk — and listen
+   #54   4     Dexerto                       Scientists create world’s first ‘T-Rex leather’ handbag with $600k starting price
+   #55   4     Wired                         Best Apple Watch Bands of 2026: Nike, Hermés, and More
+   #56   4     The Verge                     Grammarly’s sloppelganger saga
+   #57   4     The Guardian Culture          Victoria: A Queen Unbound review – darkness lurks beneath the myth of a model royal marriage
+   #58   4     Wired                         Heatbit Maxi Pro Review: a Space Heater That Also Mines Bitcoin
+   #59   4     The Guardian Culture          How to use procrastination to your advantage
+   #60   4     The Guardian Culture          Life of Pi author Yann Martel: ‘I thought the Iliad was a book for old farts… then I started getting ideas’
+   #61   4     The Atlantic                  The Real Intelligence Failure in Iran
+   #62   4     IGN                           Artemis II Crew Watched Project Hail Mary While in Quarantine Before Takeoff, Astronaut Gives Ryan Gosling the Thumbs Up More Than Halfway to the Moon
+   #63   4     Hypebeast                     Stone Island Drops North America-Exclusive All-White "Ghost" Capsule
+   #64   4     Dexerto                       Sperm Racing World Cup opens applications with $100,000 grand prize
+   #65   4     The Atlantic                  Why Trump Thinks He Can Walk Away From the Strait of Hormuz
+   #66   4     The New Yorker                Ben Lerner and the Impossible Interview
+   #67   4     The New Yorker                Catherine Lacey’s Escape from the Self
+   #68   4     The New Yorker                Trump’s Offshore-Drilling Dream Is a Recipe for Poisoning the Oceans
+   #69   4     The New Yorker                “Rate Your Happiness,” by Catherine Lacey
+   #70   4     The New Yorker                Restaurant Review: Kelang
+   #71   4     Hypebeast                     Hasbro Unveils 'The Super Mario Galaxy Movie' Monopoly Edition
+   #72   4     Wired                         Sony’s PS5 Price Hikes Prove This Console Generation Is Far From Over. Good.
+   #73   4     Wired                         With One Million Displaced, Lebanon Turns to Digital Wallets for Aid
+   #74   4     The Guardian Culture          Mexican art world protests over plan to send Frida Kahlo masterpieces to Spain
+   #75   4     Vulture                       Cinematrix No. 740: April 5, 2026
+   #76   4     Wired                         The Hack That Exposed Syria’s Sweeping Security Failures
+   #77   4     The Guardian Culture          ‘I was getting down with a guy and he decided to put on One Love. It was creepy’: Duncan James from Blue’s honest playlist
+   #78   4     Hypebeast                     thisisneverthat’s “Mowgli” Collection Channels Urban Cool for Summer 2026
+   #79   4     Rolling Stone                 ‘SNL’: Watch Jack White Perform ‘Derecho Demonico,’ ‘G.O.D. And The Broken Ribs’
+   #80   4     Hypebeast                     Crunchyroll Streams ‘Daemons of the Shadow Realm’ Anime With Same-Day English Dub
+   #81   4     Consequence                   Jack White Lets It Rip on SNL: Watch
+   #82   4     Rolling Stone                 ‘SNL’ Weekend Update Roasts Pam Bondi, JD Vance’s Adult Catholic Conversion
+   #83   4     Stereogum                     SNL: Jack Black Rocks Out With Jack White, Stars In “Carry On Wayward Son” Sketch
+   #84   4     The Guardian Culture          ‘Nobody would forgive me if I told the truth’: new film about pacifist turned Nazi collaborator divides France
+
+── GROUPED DUPLICATES (excluded from candidate pool) ──────────────────────────────────────────────────
+   Semafor                       Watch: Semafor World Economy Day 3
+                                ↳ Grouped as duplicate of "Watch: Semafor World Economy Day 4" (Semafor)
+   Semafor                       Watch: Semafor World Economy Day 2
+                                ↳ Grouped as duplicate of "Watch: Semafor World Economy Day 4" (Semafor)
+   Semafor                       Watch: Semafor World Economy Day 1
+                                ↳ Grouped as duplicate of "Watch: Semafor World Economy Day 4" (Semafor)

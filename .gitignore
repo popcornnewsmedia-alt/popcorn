@@ -55,3 +55,4 @@ Thumbs.db
 
 # Claude Code project files
 .claude/
+artifacts/pulse-news/.env.local.save

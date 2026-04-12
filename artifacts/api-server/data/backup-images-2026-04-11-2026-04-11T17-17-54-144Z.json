@@ -1,0 +1,123 @@
+[
+  {
+    "id": 392,
+    "title": "Sabrina Carpenter Turns Coachella Into Sabrinawood",
+    "image_url": "https://www.nme.com/wp-content/uploads/2026/04/live-sabrina-carpenter.jpg",
+    "image_width": 2000,
+    "image_height": 1270,
+    "image_focal_x": 0.72,
+    "image_focal_y": 0.3,
+    "image_safe_w": 0.28,
+    "image_safe_h": 0.45
+  },
+  {
+    "id": 393,
+    "title": "Rory McIlroy Breaks Masters Record With Six-Shot Lead",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/02/Rory_McIlroy_Ryder_Cup_2025-195_%28cropped%29.jpg",
+    "image_width": 2292,
+    "image_height": 3055,
+    "image_focal_x": 0.5,
+    "image_focal_y": 0.35,
+    "image_safe_w": 0.28,
+    "image_safe_h": 0.45
+  },
+  {
+    "id": 394,
+    "title": "Katseye and Huntr/x Perform Golden Together at Coachella",
+    "image_url": "https://variety.com/wp-content/uploads/2026/04/Screenshot-2026-04-10-at-11.19.21-PM-e1775877669962.png",
+    "image_width": 2940,
+    "image_height": 1485,
+    "image_focal_x": 0.5,
+    "image_focal_y": 0.45,
+    "image_safe_w": 0.9,
+    "image_safe_h": 0.65
+  },
+  {
+    "id": 395,
+    "title": "Sam Altman Confirms Molotov Cocktail Story in Blog Post",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Sam_Altman_TechCrunch_SF_2019_Day_2_Oct_3_%28cropped_3%29.jpg",
+    "image_width": 1648,
+    "image_height": 2181,
+    "image_focal_x": 0.5,
+    "image_focal_y": 0.35,
+    "image_safe_w": 0.28,
+    "image_safe_h": 0.45
+  },
+  {
+    "id": 396,
+    "title": "Bini Make History as First Filipino Group at Coachella",
+    "image_url": "https://img.youtube.com/vi/-YDGXZT9uGw/maxresdefault.jpg",
+    "image_width": 1280,
+    "image_height": 720,
+    "image_focal_x": 0.35,
+    "image_focal_y": 0.45,
+    "image_safe_w": 0.85,
+    "image_safe_h": 0.9
+  },
+  {
+    "id": 397,
+    "title": "Susan Sarandon Surprises Coachella With Sabrina Carpenter",
+    "image_url": "https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F04%2FSusan-Sarandon-Coachella-2.png?w%3D1024",
+    "image_width": 1745,
+    "image_height": 986,
+    "image_focal_x": 0.5,
+    "image_focal_y": 0.38,
+    "image_safe_w": 0.28,
+    "image_safe_h": 0.48
+  },
+  {
+    "id": 399,
+    "title": "Natasha Lyonne Says ICE Detained Her at Airport",
+    "image_url": "https://variety.com/wp-content/uploads/2026/04/Natasha-Lyonne.jpg",
+    "image_width": 1000,
+    "image_height": 667,
+    "image_focal_x": 0.5,
+    "image_focal_y": 0.35,
+    "image_safe_w": 0.28,
+    "image_safe_h": 0.45
+  },
+  {
+    "id": 400,
+    "title": "Turnstile's Coachella Set Opens With Message From Brendan Yates' Father",
+    "image_url": "https://consequence.net/wp-content/uploads/2026/04/Turnstile.jpeg?quality=80",
+    "image_width": 1280,
+    "image_height": 721,
+    "image_focal_x": 0.5,
+    "image_focal_y": 0.35,
+    "image_safe_w": 0.55,
+    "image_safe_h": 0.75
+  },
+  {
+    "id": 402,
+    "title": "Anyma's Coachella Midnight Set Canceled by Strong Winds",
+    "image_url": "https://variety.com/wp-content/uploads/2026/04/2148675455.jpg",
+    "image_width": 4000,
+    "image_height": 2667,
+    "image_focal_x": 0.5,
+    "image_focal_y": 0.38,
+    "image_safe_w": 0.28,
+    "image_safe_h": 0.48
+  },
+  {
+    "id": 403,
+    "title": "FAA Wants Gamers to Solve Its Controller Crisis",
+    "image_url": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/gettyimages-2265481258.jpg?quality=90&strip=all&crop=0,0,100,100",
+    "image_width": 4802,
+    "image_height": 3201,
+    "image_focal_x": 0.42,
+    "image_focal_y": 0.38,
+    "image_safe_w": 0.65,
+    "image_safe_h": 0.6
+  },
+  {
+    "id": 404,
+    "title": "Coachella's Do LaB Stage Shut Down After Speaker Injures Attendee",
+    "image_url": "https://www.nme.com/wp-content/uploads/2026/04/live-coachella-do-lab.jpg",
+    "image_width": 2000,
+    "image_height": 1270,
+    "image_focal_x": 0.5,
+    "image_focal_y": 0.45,
+    "image_safe_w": 0.6,
+    "image_safe_h": 0.65
+  }
+]
