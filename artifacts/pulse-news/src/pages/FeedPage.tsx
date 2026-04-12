@@ -7,6 +7,7 @@ import { ArticleReader } from "@/components/ArticleReader";
 import { SplashScreen } from "@/components/SplashScreen";
 import { SignUpFlow } from "@/components/SignUpFlow";
 import { SignInSheet } from "@/components/SignInSheet";
+import { AccountChoiceSheet } from "@/components/AccountChoiceSheet";
 import { LegalSheet, type LegalKind } from "@/components/LegalSheet";
 import { DateDividerCard } from "@/components/DateDividerCard";
 import { GrainBackground } from "@/components/GrainBackground";
@@ -433,6 +434,7 @@ export function FeedPage() {
   const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState<Tab>("feed");
   const [readingArticle, setReadingArticle] = useState<NewsArticle | null>(null);
+  const [choiceOpen, setChoiceOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
   const [signInEmail, setSignInEmail] = useState("");
@@ -859,7 +861,7 @@ export function FeedPage() {
     if (activeTab === "profile") return (
       <ProfileScreen
         onSignIn={() => setSignInOpen(true)}
-        onCreateAccount={() => setSignUpOpen(true)}
+        onCreateAccount={() => setChoiceOpen(true)}
         onSignOut={() => { signOut(); setActiveTab("feed"); setShowSplash(true); }}
         onOpenLegal={setLegalSheet}
         userName={userName}
@@ -878,7 +880,7 @@ export function FeedPage() {
           onDone={handleSplashDone}
           authLoading={authLoading}
           isAuthed={!!user}
-          onCreateAccount={() => setSignUpOpen(true)}
+          onCreateAccount={() => setChoiceOpen(true)}
           onSignIn={() => setSignInOpen(true)}
           onOpenLegal={setLegalSheet}
         />
@@ -994,6 +996,11 @@ export function FeedPage() {
           next.has(liveReadingArticle.id) ? next.delete(liveReadingArticle.id) : next.add(liveReadingArticle.id);
           return next;
         })}
+      />
+      <AccountChoiceSheet
+        isOpen={choiceOpen}
+        onClose={() => setChoiceOpen(false)}
+        onCreateManually={() => setSignUpOpen(true)}
       />
       <SignUpFlow
         isOpen={signUpOpen}

@@ -419,36 +419,35 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
               {!loading && <ArrowRight className="w-4 h-4" strokeWidth={2.5} />}
             </button>
             {step === 0 && onOpenLegal && (
-              <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'center' }}>
-                <p
-                  className="font-['Inter']"
-                  style={{ textAlign: 'center', fontSize: '10.5px', lineHeight: 1.55, color: 'rgba(255,241,205,0.42)' }}
+              <p
+                className="font-['Inter']"
+                style={{ marginTop: '12px', textAlign: 'center', fontSize: '10.5px', lineHeight: 1.55, color: 'rgba(255,241,205,0.42)' }}
+              >
+                By creating an account you agree to our{" "}
+                <button
+                  onClick={(e) => { e.stopPropagation(); onOpenLegal("terms"); }}
+                  className="inline"
+                  style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
                 >
-                  By creating an account you agree to our{" "}
-                  <button
-                    onClick={(e) => { e.stopPropagation(); onOpenLegal("terms"); }}
-                    className="inline"
-                    style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
-                  >
-                    Terms
-                  </button>{" "}
-                  and{" "}
-                  <button
-                    onClick={(e) => { e.stopPropagation(); onOpenLegal("privacy"); }}
-                    className="inline"
-                    style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
-                  >
-                    Privacy Policy
-                  </button>.
-                </p>
+                  Terms
+                </button>{" "}
+                and{" "}
+                <button
+                  onClick={(e) => { e.stopPropagation(); onOpenLegal("privacy"); }}
+                  className="inline"
+                  style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
+                >
+                  Privacy Policy
+                </button>
+                {". · "}
                 <button
                   onClick={(e) => { e.stopPropagation(); onOpenLegal("about"); }}
-                  className="font-['Inter']"
-                  style={{ fontSize: '10.5px', color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
+                  className="inline"
+                  style={{ color: '#fff1cd', borderBottom: '1px solid rgba(255,241,205,0.45)', fontWeight: 600 }}
                 >
                   About Popcorn
                 </button>
-              </div>
+              </p>
             )}
           </div>
         )}
