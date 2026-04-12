@@ -612,54 +612,51 @@ export function FeedPage() {
     }
   }, []);
 
-  // ── Scroll-driven progress bar ──────────────────────────────────────────────
-  // Uses a passive scroll listener instead of rAF so updates fire on every
-  // compositor frame — even during CSS scroll-snap animations.  The old rAF
-  // approach skipped frames while the compositor drove a snap, producing a
-  // visible "two-step" jump.  Scroll events fire synchronously with the
-  // compositor's scroll offset updates, so the bar stays perfectly in sync.
+  // ── Shared progress-bar updater ─────────────────────────────────────────────
+  // Pure function that reads scrollTop and writes a scaleX transform to the
+  // fill div.  Called from TWO sites (both idempotent — same input → same DOM
+  // write, so running both never conflicts):
+  //   • A passive `scroll` listener — fires on every compositor frame,
+  //     including during CSS scroll-snap animations (where rAF can stall).
+  //   • The rAF loop — provides a baseline on initial load and for any
+  //     edge cases where a scroll event might not fire.
+  const updateProgressBar = useCallback(() => {
+    const container = scrollContainerRef.current;
+    const fill = feedBarFillRef.current;
+    if (!container || !fill) return;
+    const { scrollTop, clientHeight } = container;
+    const totalItems = feedItemsLengthRef.current;
+    if (clientHeight <= 0 || totalItems <= 0) return;
+
+    const fractionalIdx = scrollTop / clientHeight;
+    const dividers = dividerIndicesRef.current;
+    let sectionStart = 0;
+    let sectionEnd = totalItems;
+    for (let i = 0; i < dividers.length; i++) {
+      if (dividers[i] <= fractionalIdx) {
+        sectionStart = dividers[i];
+        sectionEnd = dividers[i + 1] ?? totalItems;
+      }
+    }
+    const sectionLength = sectionEnd - sectionStart;
+    const denom = sectionLength > 1 ? sectionLength - 1 : 1;
+    const rawProgress = (fractionalIdx - sectionStart) / denom;
+    const progress = Math.round(Math.max(0, Math.min(1, rawProgress)) * 1000) / 1000;
+    if (Math.abs(progress - lastProgressRef.current) > 0.0005) {
+      lastProgressRef.current = progress;
+      fill.style.transform = `scaleX(${progress})`;
+    }
+  }, []);
+
+  // ── Scroll listener — catches snap-animation frames that rAF misses ───────
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
+    container.addEventListener('scroll', updateProgressBar, { passive: true });
+    return () => container.removeEventListener('scroll', updateProgressBar);
+  }, [updateProgressBar]);
 
-    const updateProgress = () => {
-      const fill = feedBarFillRef.current;
-      if (!fill) return;
-      const { scrollTop, clientHeight } = container;
-      const totalItems = feedItemsLengthRef.current;
-      if (clientHeight <= 0 || totalItems <= 0) return;
-
-      const fractionalIdx = scrollTop / clientHeight;
-      const dividers = dividerIndicesRef.current;
-      let sectionStart = 0;
-      let sectionEnd = totalItems;
-      for (let i = 0; i < dividers.length; i++) {
-        if (dividers[i] <= fractionalIdx) {
-          sectionStart = dividers[i];
-          sectionEnd = dividers[i + 1] ?? totalItems;
-        }
-      }
-      const sectionLength = sectionEnd - sectionStart;
-      const denom = sectionLength > 1 ? sectionLength - 1 : 1;
-      const rawProgress = (fractionalIdx - sectionStart) / denom;
-      const progress = Math.round(Math.max(0, Math.min(1, rawProgress)) * 1000) / 1000;
-      if (Math.abs(progress - lastProgressRef.current) > 0.0005) {
-        lastProgressRef.current = progress;
-        fill.style.transform = `scaleX(${progress})`;
-      }
-    };
-
-    container.addEventListener('scroll', updateProgress, { passive: true });
-    return () => container.removeEventListener('scroll', updateProgress);
-  }, []);
-
-  // ── rAF loop: card tracking + image prefetch ──────────────────────────────
-  // Reads scrollTop each frame for two things:
-  //   1. When the rounded card index changes, flips React state so the ±2
-  //      render window follows the scroll WITHOUT the old 80ms debounce.
-  //   2. Prefetches the next 6 images beyond the render window, so the bytes
-  //      are already in the HTTP cache by the time their <img> tag mounts.
-  // Progress bar is handled separately by the scroll listener above.
+  // ── Unified rAF loop: progress bar + card tracking + image prefetch ────────
   useEffect(() => {
     let rafId: number;
     const loop = () => {
@@ -669,6 +666,10 @@ export function FeedPage() {
         const totalItems = feedItemsLengthRef.current;
 
         if (clientHeight > 0 && totalItems > 0) {
+          // Progress bar — baseline update (scroll listener also calls this
+          // during snap animations for zero-gap coverage).
+          updateProgressBar();
+
           const fractionalIdx = scrollTop / clientHeight;
           const roundedIdx = Math.min(
             Math.max(0, Math.round(fractionalIdx)),
@@ -710,7 +711,7 @@ export function FeedPage() {
     };
     rafId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(rafId);
-  }, [preloadImage]);
+  }, [preloadImage, updateProgressBar]);
 
   // ── Initial prefetch pass as soon as the first page of articles arrives ─────
   // The rAF loop will ALSO prefetch on its first tick, but that's one frame
