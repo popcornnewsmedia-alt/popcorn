@@ -339,12 +339,12 @@ function ProfileScreen({
           {/* About Popcorn */}
           <div className="px-5 mb-6">
             <div style={{ height: "1px", background: "rgba(255,241,205,0.08)", marginBottom: 16 }} />
-            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "10px", color: "rgba(255,241,205,0.38)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>
+            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "12px", color: "#fff1cd", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>
               About Popcorn
             </p>
             <p
               className="font-['Lora'] italic"
-              style={{ fontSize: "13px", color: "rgba(255,241,205,0.55)", lineHeight: 1.65 }}
+              style={{ fontSize: "13px", color: "#fff1cd", lineHeight: 1.65 }}
             >
               In an age of hyper-personalisation, most news feeds give you more of what you already follow. Popcorn takes the opposite approach — we hand-curate culture stories from around the globe. The surprising, the fascinating, the things you didn't know you wanted to know.
             </p>
@@ -353,7 +353,7 @@ function ProfileScreen({
           {/* Legal — stacked rows with chevrons */}
           <div className="px-5 mb-6">
             <div style={{ height: "1px", background: "rgba(255,241,205,0.08)", marginBottom: 16 }} />
-            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "10px", color: "rgba(255,241,205,0.38)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
+            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "12px", color: "#fff1cd", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
               Legal
             </p>
             <div
