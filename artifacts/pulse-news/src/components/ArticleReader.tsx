@@ -163,6 +163,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
             <div style={{ height: 2, width: '100%', position: 'relative', zIndex: 21, flexShrink: 0, background: 'rgba(5,57,128,0.10)' }}>
               <div
                 ref={fillRef}
+                className="progress-fill-article"
                 style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: '100%', background: '#053980' }}
               />
             </div>

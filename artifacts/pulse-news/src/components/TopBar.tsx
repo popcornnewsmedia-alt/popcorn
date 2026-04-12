@@ -119,6 +119,7 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
           <div className="relative progress-liquid" style={{ height: '3px', width: '100%', background: 'rgba(255,241,205,0.18)' }}>
             <div
               ref={fillRef}
+              className="progress-fill-feed"
               style={{
                 position: 'absolute',
                 top: 0,
