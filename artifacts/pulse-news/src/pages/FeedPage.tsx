@@ -612,58 +612,70 @@ export function FeedPage() {
     }
   }, []);
 
-  // ── Unified rAF loop: progress bar + card tracking + image prefetch ─────────
-  // Single rAF reads scrollTop each frame and does three things:
-  //   1. Updates the progress bar via compositor-only transform (zero layout).
-  //   2. When the rounded card index changes, flips React state so the ±2
+  // ── Scroll-driven progress bar ──────────────────────────────────────────────
+  // Uses a passive scroll listener instead of rAF so updates fire on every
+  // compositor frame — even during CSS scroll-snap animations.  The old rAF
+  // approach skipped frames while the compositor drove a snap, producing a
+  // visible "two-step" jump.  Scroll events fire synchronously with the
+  // compositor's scroll offset updates, so the bar stays perfectly in sync.
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const updateProgress = () => {
+      const fill = feedBarFillRef.current;
+      if (!fill) return;
+      const { scrollTop, clientHeight } = container;
+      const totalItems = feedItemsLengthRef.current;
+      if (clientHeight <= 0 || totalItems <= 0) return;
+
+      const fractionalIdx = scrollTop / clientHeight;
+      const dividers = dividerIndicesRef.current;
+      let sectionStart = 0;
+      let sectionEnd = totalItems;
+      for (let i = 0; i < dividers.length; i++) {
+        if (dividers[i] <= fractionalIdx) {
+          sectionStart = dividers[i];
+          sectionEnd = dividers[i + 1] ?? totalItems;
+        }
+      }
+      const sectionLength = sectionEnd - sectionStart;
+      const denom = sectionLength > 1 ? sectionLength - 1 : 1;
+      const rawProgress = (fractionalIdx - sectionStart) / denom;
+      const progress = Math.round(Math.max(0, Math.min(1, rawProgress)) * 1000) / 1000;
+      if (Math.abs(progress - lastProgressRef.current) > 0.0005) {
+        lastProgressRef.current = progress;
+        fill.style.transform = `scaleX(${progress})`;
+      }
+    };
+
+    container.addEventListener('scroll', updateProgress, { passive: true });
+    return () => container.removeEventListener('scroll', updateProgress);
+  }, []);
+
+  // ── rAF loop: card tracking + image prefetch ──────────────────────────────
+  // Reads scrollTop each frame for two things:
+  //   1. When the rounded card index changes, flips React state so the ±2
   //      render window follows the scroll WITHOUT the old 80ms debounce.
-  //   3. Prefetches the next 4 images beyond the render window, so the bytes
+  //   2. Prefetches the next 6 images beyond the render window, so the bytes
   //      are already in the HTTP cache by the time their <img> tag mounts.
-  // This replaces the old (rAF progress bar) + (80ms debounced scroll listener
-  // for setCurrentCardIndex) + (single-image link preload effect) combo, all
-  // of which together were the cause of lag on fast flicks and mobile.
+  // Progress bar is handled separately by the scroll listener above.
   useEffect(() => {
     let rafId: number;
     const loop = () => {
       const container = scrollContainerRef.current;
-      const fill = feedBarFillRef.current;
       if (container) {
         const { scrollTop, clientHeight } = container;
         const totalItems = feedItemsLengthRef.current;
 
         if (clientHeight > 0 && totalItems > 0) {
-          // Fractional index drives the progress bar (smooth); rounded index
-          // drives the render window and prefetch (discrete snap positions).
           const fractionalIdx = scrollTop / clientHeight;
           const roundedIdx = Math.min(
             Math.max(0, Math.round(fractionalIdx)),
             totalItems - 1,
           );
 
-          // 1. Progress bar — resets at each DateDivider.
-          if (fill) {
-            const dividers = dividerIndicesRef.current;
-            let sectionStart = 0;
-            let sectionEnd = totalItems;
-            for (let i = 0; i < dividers.length; i++) {
-              if (dividers[i] <= fractionalIdx) {
-                sectionStart = dividers[i];
-                sectionEnd = dividers[i + 1] ?? totalItems;
-              }
-            }
-            const sectionLength = sectionEnd - sectionStart;
-            const denom = sectionLength > 1 ? sectionLength - 1 : 1;
-            const rawProgress = (fractionalIdx - sectionStart) / denom;
-            // Clamp + round to 3 decimals — avoids sub-pixel jitter and skips
-            // DOM writes when the bar hasn't visibly moved (< 0.1% change).
-            const progress = Math.round(Math.max(0, Math.min(1, rawProgress)) * 1000) / 1000;
-            if (Math.abs(progress - lastProgressRef.current) > 0.0005) {
-              lastProgressRef.current = progress;
-              fill.style.transform = `scaleX(${progress})`;
-            }
-          }
-
-          // 2 + 3. Card transition — runs once per index change.
+          // Card transition — runs once per index change.
           if (roundedIdx !== scrollIndexRef.current) {
             scrollIndexRef.current = roundedIdx;
 
