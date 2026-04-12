@@ -47,26 +47,10 @@ const TARGET_IMAGE_WIDTH = 1080;
 function optimizeImageUrl(url: string | null | undefined): string | null | undefined {
   if (!url || typeof url !== 'string') return url;
 
-  // Wikipedia Commons bare file → 1080px thumbnail
-  //   https://upload.wikimedia.org/wikipedia/commons/a/ab/Foo.jpg
-  //   → https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Foo.jpg/1080px-Foo.jpg
-  const wikiBare = url.match(
-    /^(https?:\/\/upload\.wikimedia\.org\/wikipedia\/commons)\/([a-f0-9])\/([a-f0-9]{2})\/([^/?#]+\.(?:jpe?g|png))$/i,
-  );
-  if (wikiBare) {
-    const [, base, d1, d2, filename] = wikiBare;
-    return `${base}/thumb/${d1}/${d2}/${filename}/${TARGET_IMAGE_WIDTH}px-${filename}`;
-  }
-
-  // Wikipedia Commons thumb > 1080px → downsize
-  //   .../thumb/a/ab/Foo.jpg/2560px-Foo.jpg → .../1080px-Foo.jpg
-  const wikiThumb = url.match(
-    /^(https?:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/thumb\/[a-f0-9]\/[a-f0-9]{2}\/[^/]+\/)(\d+)px-(.+)$/i,
-  );
-  if (wikiThumb) {
-    const [, prefix, sizeStr, rest] = wikiThumb;
-    if (parseInt(sizeStr, 10) > TARGET_IMAGE_WIDTH) return `${prefix}${TARGET_IMAGE_WIDTH}px-${rest}`;
-  }
+  // Wikipedia Commons — skip optimization. Wikipedia's thumbnail service
+  // frequently returns 503 for programmatically constructed /thumb/ URLs,
+  // especially with URL-encoded filenames. The original full-res images
+  // load reliably and modern browsers handle decode efficiently.
 
   // WordPress wp-content/uploads JPG / PNG → ensure ?w=1080
   const isWpImg =
