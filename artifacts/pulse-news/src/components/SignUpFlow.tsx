@@ -18,7 +18,7 @@ interface SignUpFlowProps {
 }
 
 export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInInstead }: SignUpFlowProps) {
-  const { signUp, updateProfile } = useAuth();
+  const { updateProfile } = useAuth();
 
   const [step, setStep] = useState(0);
   const [name, setName] = useState("");
@@ -90,30 +90,37 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
     if (step === 0) {
       setLoading(true);
       try {
-        const data = await signUp(email, password, name);
+        // Use the API server endpoint which creates the user via admin API
+        // and sends the verification email via Resend (bypasses Supabase's
+        // built-in email service which is rate-limited on the free tier).
+        const apiUrl = import.meta.env.VITE_API_URL ?? "";
+        const resp = await fetch(`${apiUrl}/api/auth/signup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, name }),
+        });
+        const result = await resp.json();
 
-        // Check if the user already exists (Supabase returns a fake user with identities=[])
-        const identities = data.user?.identities ?? [];
-        if (identities.length === 0) {
-          setError("__exists__");
+        if (!resp.ok) {
+          const msg = (result.error ?? "").toLowerCase();
+          if (msg.includes("already") || msg.includes("exists") || msg.includes("registered") || msg.includes("duplicate")) {
+            setError("__exists__");
+          } else {
+            setError(result.error ?? "Sign up failed. Please try again.");
+          }
           return;
         }
 
         // Store userId + name so App.tsx can send the welcome email after verification
         localStorage.setItem("popcorn_awaiting_confirm", JSON.stringify({
           ts: Date.now(),
-          userId: data.user?.id,
-          email: data.user?.email ?? email,
+          userId: result.userId,
+          email: result.email ?? email,
           name,
         }));
         setEmailSent(true);
       } catch (err: any) {
-        const msg = (err.message ?? "").toLowerCase();
-        if (msg.includes("already") || msg.includes("exists") || msg.includes("registered")) {
-          setError("__exists__");
-        } else {
-          setError(err.message ?? "Sign up failed. Please try again.");
-        }
+        setError(err.message ?? "Sign up failed. Please try again.");
       } finally {
         setLoading(false);
       }
