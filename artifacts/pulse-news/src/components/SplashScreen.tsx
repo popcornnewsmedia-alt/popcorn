@@ -284,7 +284,7 @@ export function SplashScreen({
       {/* Centre — wordmark, tagline, popcorn animation */}
       <div
         className="relative z-10 flex-1 flex flex-col items-center justify-center"
-        style={{ gap: '14px' }}
+        style={{ gap: '14px', paddingBottom: '80px' }}
       >
         <span
           style={{
@@ -337,6 +337,7 @@ export function SplashScreen({
       <div
         className="relative z-10 px-6 flex-shrink-0 flex justify-center"
         style={{
+          marginTop: '-190px',
           paddingBottom: 'max(22px, calc(env(safe-area-inset-bottom) + 14px))',
           pointerEvents: showCTAs ? 'auto' : 'none',
         }}
