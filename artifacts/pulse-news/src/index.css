@@ -12,6 +12,7 @@
 .progress-fill-feed    { animation: progress-ebb-cream 2.5s ease-in-out infinite; }
 .progress-fill-article { animation: progress-ebb-navy  2.5s ease-in-out infinite; }
 
+
 /* Article card image animations — CSS-only, no JS onLoad dependency */
 @keyframes articleImageIn {
   from { opacity: 0; }

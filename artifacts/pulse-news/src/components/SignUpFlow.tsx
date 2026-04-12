@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, ArrowRight, Check, Mail } from "lucide-react";
+import { X, ArrowRight, Check, Mail, ChevronDown } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
 import type { LegalKind } from "@/components/LegalSheet";
@@ -21,6 +21,9 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpF
 
   const [step, setStep] = useState(0);
   const [name, setName] = useState("");
+  const [dobDay, setDobDay] = useState("");
+  const [dobMonth, setDobMonth] = useState("");
+  const [dobYear, setDobYear] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [topics, setTopics] = useState<Set<string>>(new Set());
@@ -34,7 +37,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpF
 
   const reset = () => {
     setStep(0); setDone(false); setEmailSent(false);
-    setName(""); setEmail(""); setPassword("");
+    setName(""); setDobDay(""); setDobMonth(""); setDobYear(""); setEmail(""); setPassword("");
     setTopics(new Set()); setNotifs(new Set());
     setError(null); setLoading(false);
   };
@@ -95,7 +98,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpF
   };
 
   const canNext =
-    step === 0 ? name.trim().length > 0 && email.includes("@") && password.length >= 8
+    step === 0 ? name.trim().length > 0 && !!dobDay && !!dobMonth && !!dobYear && email.includes("@") && password.length >= 8
     : step === 1 ? topics.size >= 1
     : true;
 
@@ -212,23 +215,58 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpF
               </div>
 
               <div className="flex flex-col gap-3.5">
+                {/* Full Name */}
                 {[
-                  { label: "Name", type: "text", value: name, set: setName, placeholder: "Your name" },
+                  { label: "Full Name", type: "text", value: name, set: setName, placeholder: "Your full name" },
                   { label: "Email", type: "email", value: email, set: setEmail, placeholder: "you@example.com" },
                   { label: "Password", type: "password", value: password, set: setPassword, placeholder: "Min. 8 characters" },
-                ].map(({ label, type, value, set, placeholder }) => (
-                  <div key={label} className="flex flex-col gap-1.5">
-                    <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>{label}</label>
-                    <input
-                      type={type}
-                      value={value}
-                      onChange={e => set(e.target.value)}
-                      onClick={stopProp}
-                      placeholder={placeholder}
-                      className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
-                      style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
-                    />
-                  </div>
+                ].map(({ label, type, value, set, placeholder }, i) => (
+                  <>
+                    <div key={label} className="flex flex-col gap-1.5">
+                      <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>{label}</label>
+                      <input
+                        type={type}
+                        value={value}
+                        onChange={e => set(e.target.value)}
+                        onClick={stopProp}
+                        placeholder={placeholder}
+                        className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
+                        style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
+                      />
+                    </div>
+                    {/* Date of Birth — inserted after Full Name */}
+                    {i === 0 && (
+                      <div key="dob" className="flex flex-col gap-1.5">
+                        <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>Date of Birth</label>
+                        <div className="flex gap-2">
+                          <div className="flex-1">
+                            <BrandedSelect
+                              value={dobDay}
+                              onChange={setDobDay}
+                              placeholder="DD"
+                              options={Array.from({ length: 31 }, (_, i) => { const v = String(i + 1).padStart(2, '0'); return { value: v, label: v }; })}
+                            />
+                          </div>
+                          <div className="flex-[1.4]">
+                            <BrandedSelect
+                              value={dobMonth}
+                              onChange={setDobMonth}
+                              placeholder="MM"
+                              options={['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map((m, idx) => ({ value: String(idx + 1).padStart(2, '0'), label: m }))}
+                            />
+                          </div>
+                          <div className="flex-[1.6]">
+                            <BrandedSelect
+                              value={dobYear}
+                              onChange={setDobYear}
+                              placeholder="YYYY"
+                              options={Array.from({ length: 100 }, (_, i) => { const y = String(new Date().getFullYear() - 13 - i); return { value: y, label: y }; })}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 ))}
 
                 {error && (
@@ -373,6 +411,75 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal }: SignUpF
           </div>
         )}
       </div>
+    </>
+  );
+}
+
+function BrandedSelect({ value, onChange, options, placeholder }: {
+  value: string;
+  onChange: (v: string) => void;
+  options: { value: string; label: string }[];
+  placeholder: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const selected = options.find(o => o.value === value);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); setOpen(true); }}
+        className="w-full rounded-xl px-3 py-3.5 font-['Inter'] flex items-center justify-between gap-1 outline-none"
+        style={{
+          background: 'rgba(255,241,205,0.07)',
+          fontSize: '15px',
+          color: value ? '#fff1cd' : 'rgba(255,241,205,0.35)',
+          border: '1px solid rgba(255,241,205,0.13)',
+        }}
+      >
+        <span className="truncate">{selected?.label ?? placeholder}</span>
+        <ChevronDown className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'rgba(255,241,205,0.40)' }} />
+      </button>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-[300] flex flex-col justify-end"
+          style={{ background: 'rgba(0,0,0,0.6)' }}
+          onClick={(e) => { e.stopPropagation(); setOpen(false); }}
+        >
+          <div
+            className="rounded-t-2xl overflow-hidden flex flex-col"
+            style={{ background: '#053980', maxHeight: '55vh' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Handle */}
+            <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
+              <div className="w-8 h-1 rounded-full" style={{ background: 'rgba(255,241,205,0.25)' }} />
+            </div>
+            {/* Options */}
+            <div className="overflow-y-auto pb-8">
+              {options.map((opt, idx) => (
+                <div
+                  key={opt.value}
+                  onClick={(e) => { e.stopPropagation(); onChange(opt.value); setOpen(false); }}
+                  className="flex items-center justify-between px-6 py-3.5 active:opacity-60 cursor-pointer"
+                  style={{
+                    borderTop: idx > 0 ? '1px solid rgba(255,241,205,0.07)' : undefined,
+                    background: opt.value === value ? 'rgba(255,241,205,0.09)' : 'transparent',
+                    color: '#fff1cd',
+                    fontFamily: "'Macabro', 'Anton', sans-serif",
+                    fontSize: '16px',
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  <span>{opt.label}</span>
+                  {opt.value === value && <Check className="w-4 h-4" style={{ color: '#fff1cd' }} strokeWidth={2.5} />}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
