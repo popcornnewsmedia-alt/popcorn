@@ -116,20 +116,20 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
 
         {/* Progress bar — fill div controlled imperatively via fillRef for zero-lag scroll tracking */}
         {showDatePicker && (
-          <div className="relative progress-liquid" style={{ height: '3px', width: '100%', background: 'rgba(255,241,205,0.18)' }}>
+          <div className="relative" style={{ height: '3px', width: '100%', background: 'rgba(255,241,205,0.18)', contain: 'strict' }}>
             <div
               ref={fillRef}
-              className="progress-fill-feed"
               style={{
                 position: 'absolute',
                 top: 0,
                 bottom: 0,
                 left: 0,
-                right: 0, // full-width; scaled via transform instead of right %
+                right: 0,
                 background: 'rgba(255,241,205,0.62)',
-                transform: 'scaleX(0)', // updated via ref.style.transform = scaleX(n)
+                transform: 'scaleX(0)',
                 transformOrigin: 'left center',
-                willChange: 'transform', // hints compositor to promote to own layer
+                willChange: 'transform',
+                backfaceVisibility: 'hidden',
               }}
             />
           </div>

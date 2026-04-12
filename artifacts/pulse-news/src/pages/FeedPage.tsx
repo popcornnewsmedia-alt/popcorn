@@ -539,6 +539,8 @@ export function FeedPage() {
 
   // Ref forwarded to TopBar's fill div — mutated directly by the rAF loop, never by React
   const feedBarFillRef = useRef<HTMLDivElement>(null);
+  // Last progress value written — skip DOM write when unchanged (< 0.001 delta)
+  const lastProgressRef = useRef(-1);
 
   // Prevents scroll-based date updates from overriding an explicit picker selection
   const pickerNavLockRef = useRef(false);
@@ -651,8 +653,14 @@ export function FeedPage() {
             }
             const sectionLength = sectionEnd - sectionStart;
             const denom = sectionLength > 1 ? sectionLength - 1 : 1;
-            const progress = Math.max(0, Math.min(1, (fractionalIdx - sectionStart) / denom));
-            fill.style.transform = `scaleX(${progress})`;
+            const rawProgress = (fractionalIdx - sectionStart) / denom;
+            // Clamp + round to 3 decimals — avoids sub-pixel jitter and skips
+            // DOM writes when the bar hasn't visibly moved (< 0.1% change).
+            const progress = Math.round(Math.max(0, Math.min(1, rawProgress)) * 1000) / 1000;
+            if (Math.abs(progress - lastProgressRef.current) > 0.0005) {
+              lastProgressRef.current = progress;
+              fill.style.transform = `scaleX(${progress})`;
+            }
           }
 
           // 2 + 3. Card transition — runs once per index change.
