@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
-    "@supabase/supabase-js": "^2.100.0"
+    "@supabase/supabase-js": "^2.100.0",
+    "resend": "^6.10.0"
   },
   "optionalDependencies": {
     "@rollup/rollup-darwin-arm64": "^4.60.0",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { X, ArrowRight, Check, Mail, ChevronDown } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
@@ -36,6 +36,39 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
   const [done, setDone] = useState(false);
 
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
+
+  // ── Drag-down-to-close ──────────────────────────────────────────────────
+  const dragStartY = useRef<number | null>(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const isDragging = useRef(false);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    dragStartY.current = e.touches[0].clientY;
+    isDragging.current = false;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (dragStartY.current === null) return;
+    const delta = e.touches[0].clientY - dragStartY.current;
+    if (delta <= 0) { setDragOffset(0); return; }
+    if (!isDragging.current && delta < 10) return;
+    isDragging.current = true;
+    setDragOffset(delta);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    if (dragStartY.current === null) return;
+    dragStartY.current = null;
+    if (dragOffset > 80) {
+      setDragOffset(0);
+      onClose();
+      setTimeout(reset, 400);
+    } else {
+      setDragOffset(0);
+    }
+    isDragging.current = false;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dragOffset, onClose]);
 
   const reset = () => {
     setStep(0); setDone(false); setEmailSent(false);
@@ -136,10 +169,13 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
           maxWidth: '480px',
           background: '#053980',
           borderRadius: '20px 20px 0 0',
-          transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
-          transition: 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
+          transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
+          transition: dragOffset > 0 ? 'none' : 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
         }}
         onClick={stopProp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <GrainBackground />
 

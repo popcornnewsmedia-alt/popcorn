@@ -467,7 +467,7 @@ export function FeedPage() {
 
   // Close auth modals when the user becomes authenticated (e.g. after Google OAuth redirect)
   useEffect(() => {
-    if (user) { setSignUpOpen(false); setSignInOpen(false); }
+    if (user) { setChoiceOpen(false); setSignUpOpen(false); setSignInOpen(false); }
   }, [user]);
 
   // Dynamic status bar (theme-color) based on active screen
