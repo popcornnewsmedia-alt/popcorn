@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import https from "node:https";
+import crypto from "node:crypto";
 import { Router, type IRouter } from "express";
 import {
   getArticles,
@@ -16,6 +17,7 @@ import {
 } from "../lib/article-store.js";
 import { backfillFocalPointsForToday } from "../lib/curated-store.js";
 import { selectBestImageForRerun, detectImageFocalPoint, fetchImageDimensions, type EnrichedArticle } from "../lib/rss-enricher.js";
+import { processAndUploadImage } from "../lib/image-processor.js";
 import { supabase } from "../lib/supabase-client.js";
 
 const router: IRouter = Router();
@@ -131,6 +133,27 @@ router.post("/publish", (req, res) => {
     return;
   }
   publishSelected(indices)
+    .then((added) => res.json({ ok: true, added, message: `${added} articles published to the feed` }))
+    .catch((err: Error) => res.status(500).json({ ok: false, error: err.message }));
+});
+
+// POST /api/publish-raw — enrich and publish raw article data directly
+// Body: { "articles": [{ "title": "...", "source": "...", "description": "...", "link": "...", "imageUrl": "..." }] }
+router.post("/publish-raw", (req, res) => {
+  const { articles } = req.body as { articles?: any[] };
+  if (!Array.isArray(articles) || articles.length === 0) {
+    res.status(400).json({ ok: false, error: "Provide a non-empty 'articles' array" });
+    return;
+  }
+  const rawItems = articles.map((a: any) => ({
+    title: a.title ?? "",
+    source: a.source ?? "",
+    description: a.description ?? "",
+    link: a.link ?? "",
+    pubDate: a.pubDate ?? new Date().toISOString(),
+    imageUrl: a.imageUrl ?? undefined,
+  }));
+  publishRawItems(rawItems, false, true)
     .then((added) => res.json({ ok: true, added, message: `${added} articles published to the feed` }))
     .catch((err: Error) => res.status(500).json({ ok: false, error: err.message }));
 });
@@ -289,22 +312,24 @@ router.post("/news/:id/detect-focal", async (req, res) => {
 
 // POST /api/reprocess — re-run image selection + content rewriting on existing
 // prod articles. Uses the latest scoring/quality/prompt logic without re-fetching RSS.
-// Body: { feedDate?: "2026-04-12", images?: boolean, content?: boolean }
+// Body: { feedDate?: "2026-04-12", images?: boolean, content?: boolean, stage?: "prod"|"dev", resizeOnly?: boolean }
 router.post("/reprocess", async (req, res) => {
   const {
     feedDate = new Date().toISOString().slice(0, 10),
     images = true,
     content = true,
-  } = req.body as { feedDate?: string; images?: boolean; content?: boolean };
+    stage = "prod",
+    resizeOnly = false,
+  } = req.body as { feedDate?: string; images?: boolean; content?: boolean; stage?: string; resizeOnly?: boolean };
 
-  console.log(`[reprocess] Starting reprocessing for ${feedDate} (images=${images}, content=${content})`);
+  console.log(`[reprocess] Starting reprocessing for ${feedDate} stage=${stage} (images=${images}, content=${content})`);
 
   // 1. Load articles from Supabase
   const { data: rows, error: selErr } = await supabase
     .from("articles")
     .select("*")
     .eq("feed_date", feedDate)
-    .eq("stage", "prod")
+    .eq("stage", stage)
     .order("id", { ascending: true });
 
   if (selErr || !rows?.length) {
@@ -398,18 +423,63 @@ router.post("/reprocess", async (req, res) => {
         };
 
         const img = await selectBestImageForRerun(article, articleUrl, row.image_url ?? null);
-        const changed = img.url !== row.image_url;
-        if (changed) {
-          updates.image_url = img.url;
-          updates.image_width = img.width ?? null;
-          updates.image_height = img.height ?? null;
-          updates.image_focal_x = img.focalX ?? null;
-          updates.image_focal_y = img.focalY ?? null;
-          updates.image_safe_w = img.safeW ?? null;
-          updates.image_safe_h = img.safeH ?? null;
-          console.log(`  [img] CHANGED: ${img.debug?.winnerSource} (${img.width}×${img.height}) [${img.debug?.intent}, ${img.debug?.top3}]`);
+
+        if (resizeOnly) {
+          // resizeOnly: re-process the SAME image at new resolution, skip if selection changed
+          const currentUrl = String(row.image_url ?? "");
+          const currentHash = currentUrl.match(/\/([a-f0-9]{16})\.jpg/)?.[1];
+          const selectedHash = crypto.createHash("sha1").update(img.url).digest("hex").slice(0, 16);
+
+          if (currentHash && currentHash === selectedHash) {
+            // Same source — re-download and process at new resolution
+            const processed = await processAndUploadImage(img.url, feedDate);
+            if (processed) {
+              updates.image_url = processed.url;
+              updates.image_width = processed.width;
+              updates.image_height = processed.height;
+              console.log(`  [img] resized: ${img.debug?.winnerSource} → ${processed.width}×${processed.height} (${(processed.bytes/1024).toFixed(0)}KB)`);
+            } else {
+              console.log(`  [img] resize failed, keeping current`);
+            }
+          } else if (!currentHash) {
+            // External URL (not Supabase) — process and upload
+            const processed = await processAndUploadImage(img.url, feedDate);
+            if (processed) {
+              updates.image_url = processed.url;
+              updates.image_width = processed.width;
+              updates.image_height = processed.height;
+              console.log(`  [img] processed external: → ${processed.width}×${processed.height} (${(processed.bytes/1024).toFixed(0)}KB)`);
+            }
+          } else {
+            console.log(`  [img] SKIPPED (selection changed: current=${currentHash}, selected=${selectedHash})`);
+          }
         } else {
-          console.log(`  [img] unchanged: ${img.debug?.winnerSource} (${img.debug?.top3})`);
+          // Full reprocess: re-select and re-process
+          const processed = await processAndUploadImage(img.url, feedDate);
+          if (processed) {
+            updates.image_url = processed.url;
+            updates.image_width = processed.width;
+            updates.image_height = processed.height;
+            updates.image_focal_x = img.focalX ?? null;
+            updates.image_focal_y = img.focalY ?? null;
+            updates.image_safe_w = img.safeW ?? null;
+            updates.image_safe_h = img.safeH ?? null;
+            console.log(`  [img] processed: ${img.debug?.winnerSource} → ${processed.width}×${processed.height} (${(processed.bytes/1024).toFixed(0)}KB) [${img.debug?.intent}]`);
+          } else {
+            const changed = img.url !== row.image_url;
+            if (changed) {
+              updates.image_url = img.url;
+              updates.image_width = img.width ?? null;
+              updates.image_height = img.height ?? null;
+              updates.image_focal_x = img.focalX ?? null;
+              updates.image_focal_y = img.focalY ?? null;
+              updates.image_safe_w = img.safeW ?? null;
+              updates.image_safe_h = img.safeH ?? null;
+              console.log(`  [img] CHANGED (raw): ${img.debug?.winnerSource} (${img.width}×${img.height}) [${img.debug?.intent}]`);
+            } else {
+              console.log(`  [img] unchanged: ${img.debug?.winnerSource}`);
+            }
+          }
         }
       } catch (e) {
         console.error(`  [img] error: ${(e as Error).message}`);

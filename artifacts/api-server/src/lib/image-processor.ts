@@ -29,8 +29,8 @@ import crypto from "node:crypto";
 import { supabase } from "./supabase-client.js";
 
 const BUCKET = "article-images";
-const TARGET_WIDTH = 1080;
-const JPEG_QUALITY = 85;
+const TARGET_WIDTH = 1440;
+const JPEG_QUALITY = 93;
 const FETCH_TIMEOUT_MS = 10_000;
 
 export interface ProcessedImage {

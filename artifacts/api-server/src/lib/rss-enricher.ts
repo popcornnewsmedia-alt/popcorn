@@ -553,10 +553,16 @@ export async function detectImageFocalPoint(
               "   → Use safeW 0.15–0.30, safeH 0.25–0.50. Only that person's face matters.\n" +
               "   The stage, microphone, band behind them, audience, concert lighting, office backdrop — ALL disposable.\n" +
               "   Example: 'Noah Kahan announces tour' with a concert photo → safeW 0.25 (just his face), offset focal to where he stands.\n\n" +
-              "2. IS THE STORY ABOUT TWO+ PEOPLE WHO ALL MATTER? (a duo meeting, a group photo, a band of 4+, 'X meets Y')\n" +
-              "   → Use safeW 0.70–0.95. Must span ALL faces horizontally.\n" +
-              "   Example: 'Fifty Fifty cover Pink Floyd' with a 4-member group photo → safeW 0.90.\n" +
-              "   Example: 'Tom DeLonge shows Trent Reznor an alien photo' with both men → safeW 0.85.\n\n" +
+              "2. IS THE STORY ABOUT TWO+ PEOPLE WHO ALL MATTER?\n" +
+              "   FIRST CHECK: are the subjects close together (within ~40% of image width) or far apart (opposite sides)?\n" +
+              "   → CLOSE TOGETHER (group photo, duo standing next to each other, band shot):\n" +
+              "     Use safeW 0.50–0.90 to span all faces. Example: '4-member group photo' → safeW 0.85.\n" +
+              "   → FAR APART (split composition, subjects on opposite sides, composite/collage image):\n" +
+              "     DO NOT try to capture both — it is impossible in a portrait crop. Instead, pick the PRIMARY subject\n" +
+              "     (the person the story is most about, or the more recognisable face) and treat it as a single-person\n" +
+              "     crop with safeW 0.15–0.30. The headline tells the reader who else is involved.\n" +
+              "     Example: 'Trump attacks Pope Leo' with Trump on left, Pope on right → focus on Trump's face, safeW 0.25.\n" +
+              "     Example: 'Ruby Rose accuses Katy Perry' with split image → focus on the more recognisable face, safeW 0.25.\n\n" +
               "3. IS THE STORY ABOUT A PRODUCT'S SHAPE OR DESIGN? (a shoe, a car, a poster, a book cover, a gadget)\n" +
               "   → Use safeW 0.70–0.90, safeH 0.55–0.85. You need to see the whole object.\n" +
               "   Example: 'Vans slip-on gets Chanel makeover' with a horizontal shoe shot → safeW 0.85 (need toe AND heel).\n" +
@@ -567,7 +573,7 @@ export async function detectImageFocalPoint(
               "   → Use safeW 0.50, safeH 0.60.\n\n" +
               "KEY RULES:\n" +
               "- If ONLY ONE FACE is visible and the article is about that person, safeW must be ≤ 0.30. No exceptions — the face is all that matters.\n" +
-              "- If the article title mentions TWO OR MORE people by name, safeW must be ≥ 0.70.\n" +
+              "- If the article title mentions TWO OR MORE people by name AND they are close together in the image, safeW must be ≥ 0.50. But if they are on OPPOSITE SIDES of a wide image, pick the primary subject and use safeW ≤ 0.30.\n" +
               "- Default to the SMALLEST safe box that still tells the story. The front-end has a 10% tolerance buffer for borderline cases.\n" +
               "- Respond with ONLY the JSON object. No prose.",
           },
@@ -2315,7 +2321,19 @@ NICHE FANBASE STORIES — Be cautious with stories whose primary significance is
 
 UPDATES ON PAST EVENTS — Updates and follow-ups about events from prior news cycles (subscriber loss numbers, earnings updates, status announcements) often feel like echo reporting rather than new developments. Include only if the update itself carries surprise or represents a genuine shift — not just numbers confirming expected decline.
 
-SHAREABILITY ≠ CULTURAL WEIGHT — A story can be genuinely bizarre or funny without having cultural substance. A self-driving car going the wrong way through a drive-thru is amusing but suggests nothing about how we live, what we value, or how society is changing. Ask: beyond the immediate "haha that's weird," does this story illuminate something real?
+SHAREABILITY ≠ CULTURAL WEIGHT — A story can be genuinely bizarre or funny without having cultural substance. A celebrity making a sarcastic comment that goes viral is amusing but suggests nothing about how we live, what we value, or how society is changing. Ask: beyond the immediate "haha that's weird," does this story illuminate something real? Pure viral fluff with no lasting cultural or platform signal should be filtered out.
+
+━━━ STRUCTURAL SHIFTS ━━━
+Prioritise stories about structural changes that shape how culture is created, distributed, or consumed — even when they lack celebrity names or viral buzz. Platform incentive changes (e.g. X cutting payments to clickbait), internet infrastructure threats (e.g. archiving tools at risk), major hardware direction shifts (e.g. Apple entering a new product category), and macro workforce changes (e.g. AI replacing significant portions of jobs) all qualify. These stories have outsized long-term cultural impact and are consistently under-selected.
+
+━━━ INSTITUTIONAL CULTURAL EVENTS ━━━
+Major awards ceremonies (Cannes, Olivier Awards, BAFTAs, Grammys), landmark festival lineups, and prestigious cultural milestones deserve consistent inclusion even when they are not sensational. These events actively shape cultural conversation for months afterward. Do not dismiss them as "administrative" if winners have been announced or if the event carries genuine global cultural weight. The test: does this event set the cultural agenda beyond its immediate audience?
+
+━━━ AI COVERAGE BALANCE ━━━
+AI stories should span multiple angles within a single feed: consumer-facing tools, macro workforce impact, real-world failures and accidents, cultural backlash, and creative applications. Do not cluster AI coverage around a single narrative (e.g. all "company X launches tool Y"). Prefer a mix of perspectives that together paint the full picture of AI's cultural moment.
+
+━━━ NOVELTY AND CURIOSITY ━━━
+Unexpected, curiosity-driven stories with strong shareability signals can elevate the feed, as long as they feel meaningful rather than empty noise. A story about a €100 raffle for a €1M Picasso, or a disqualified Pokemon Go champion fighting back, has genuine intrigue and mass appeal. Weight novelty more than prestige — a surprising underdog story can be more valuable than a predictable establishment one.
 
 ━━━ SPORTS ━━━
 Only qualifies when crossing into mainstream cultural conversation: historic firsts that non-fans would celebrate, major controversies spilling into broader discourse, record-breaking economic moments. Never: match results, standings, transfers, injuries, or routine playoff coverage.
@@ -2410,7 +2428,7 @@ WRITING RULES:
 - Keep it upbeat and engaging. Tell people why they should care.
 - Paragraphs MUST be separated by a blank line (\\n\\n). Never run paragraphs together.
 - If a story references something unfamiliar (an award, a franchise, a past incident), briefly explain it in plain English. Do not assume the reader already knows.
-- Depth depends on the story type. For BREAKING and RELEASE stories, keep it tight: 3 short paragraphs. For FEATURE, TREND, HOT TAKE, REVIEW, and INTERVIEW stories, go deeper: 4 to 5 short paragraphs. Add analysis, context, or perspective beyond the headline facts.
+- Depth depends on the story type. For BREAKING and RELEASE stories, keep it tight: 3 to 4 short paragraphs. For FEATURE, TREND, HOT TAKE, REVIEW, and INTERVIEW stories, go deeper: 5 to 6 short paragraphs. Add analysis, context, or perspective beyond the headline facts. Include specific numbers, dates, or quotes from the source to give readers the full picture.
 - For stories with past-event context (sequels, legal disputes, returning artists), include a brief 1–2 sentence backstory so new readers are not lost.
 
 ARTICLES:
@@ -2419,8 +2437,8 @@ ${articleList}
 For each article output a JSON object:
 {
   "title": "Short punchy headline, max 10 words — MUST include the real name",
-  "summary": "2 sentences. First sentence names who/what and what happened. Second sentence says why it matters.",
-  "content": "3 paragraphs for BREAKING/RELEASE, 4–5 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people and things throughout. Include brief backstory where needed.",
+  "summary": "2–3 sentences. First sentence names who/what and what happened. Second sentence says why it matters or gives key context. Optional third sentence for a striking detail, number, or quote that hooks the reader.",
+  "content": "3–4 paragraphs for BREAKING/RELEASE, 5–6 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people and things throughout. Include brief backstory where needed. Weave in specific numbers, dates, quotes, or details from the source — readers want the full picture, not just the headline.",
   "keyPoints": ["3 to 5 short plain-English takeaways (no dashes, no jargon)"],
   "signalScore": 0-100 (cultural significance / buzz level),
   "tag": "ONE of: BREAKING | HOT TAKE | REVIEW | INTERVIEW | FEATURE | RELEASE | TREND",
@@ -2446,7 +2464,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
       )
       .join("\n\n---\n\n");
 
-    const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 8000);
+    const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 10000);
     const batchMatch = batchText.match(/\[[\s\S]*\]/);
     if (!batchMatch) throw new Error(`Call 2 batch ${b + 1}: Claude did not return a JSON array`);
     selectedItems.push(...JSON.parse(sanitizeClaudeJson(batchMatch[0])));
@@ -3245,7 +3263,7 @@ WRITING RULES:
 - Keep it upbeat and engaging. Tell people why they should care.
 - Paragraphs MUST be separated by a blank line (\\n\\n). Never run paragraphs together.
 - If a story references something unfamiliar (an award, a franchise, a past incident), briefly explain it in plain English.
-- Depth depends on the story type. For BREAKING and RELEASE stories, keep it tight: 3 short paragraphs. For FEATURE, TREND, HOT TAKE, REVIEW, and INTERVIEW stories, go deeper: 4 to 5 short paragraphs. Add analysis, context, or perspective beyond the headline facts.
+- Depth depends on the story type. For BREAKING and RELEASE stories, keep it tight: 3 to 4 short paragraphs. For FEATURE, TREND, HOT TAKE, REVIEW, and INTERVIEW stories, go deeper: 5 to 6 short paragraphs. Add analysis, context, or perspective beyond the headline facts. Include specific numbers, dates, or quotes from the source to give readers the full picture.
 - For stories with past-event context (sequels, legal disputes, returning artists), include a brief 1–2 sentence backstory.
 
 ARTICLES:
@@ -3254,8 +3272,8 @@ ${articleList}
 For each article output a JSON object:
 {
   "title": "Short punchy headline, max 10 words — MUST include the real name",
-  "summary": "2 sentences. First sentence names who/what and what happened. Second sentence says why it matters.",
-  "content": "3 paragraphs for BREAKING/RELEASE, 4–5 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people, products and things throughout — never use vague substitutes.",
+  "summary": "2–3 sentences. First sentence names who/what and what happened. Second sentence says why it matters or gives key context. Optional third sentence for a striking detail, number, or quote that hooks the reader.",
+  "content": "3–4 paragraphs for BREAKING/RELEASE, 5–6 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people, products and things throughout — never use vague substitutes. Weave in specific numbers, dates, quotes, or details from the source.",
   "keyPoints": ["3 to 5 short plain-English takeaways"],
   "signalScore": 0-100,
   "tag": "ONE of: BREAKING | HOT TAKE | REVIEW | INTERVIEW | FEATURE | RELEASE | TREND",
@@ -3281,7 +3299,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
       )
       .join("\n\n---\n\n");
 
-    const raw = await callClaude(makePrompt(articleList, batchItems.length), 8000);
+    const raw = await callClaude(makePrompt(articleList, batchItems.length), 10000);
     const match = raw.match(/\[[\s\S]*\]/);
     if (!match) throw new Error(`Enrichment batch ${b + 1}: no JSON array in response`);
     const parsed = JSON.parse(sanitizeClaudeJson(match[0]));

@@ -167,7 +167,7 @@ async function main() {
     // ── Content rewriting ───────────────────────────────────────────────────
     if (doContent) {
       const depthTag = ["BREAKING", "RELEASE"].includes(tag) ? "short" : "deep";
-      const paraCount = depthTag === "short" ? "3 short paragraphs" : "4 to 5 short paragraphs with analysis and context";
+      const paraCount = depthTag === "short" ? "3 to 4 short paragraphs" : "5 to 6 short paragraphs with analysis and context";
       console.log(`  📝 Re-writing content (${depthTag}: ${paraCount})...`);
 
       const rewritePrompt = `You are the editorial voice for Popcorn — a cultural lens app that surfaces what actually matters in culture right now.
@@ -180,7 +180,7 @@ Rewrite the following article with these rules:
 - Keep it upbeat and engaging. Tell people why they should care.
 - Paragraphs MUST be separated by a blank line (\\n\\n). Never run paragraphs together.
 - If a story references something unfamiliar, briefly explain it in plain English.
-- This is a ${tag} article. Write ${paraCount}.
+- This is a ${tag} article. Write ${paraCount}. Weave in specific numbers, dates, quotes, or details from the source — readers want the full picture, not just the headline.
 - For stories with past-event context, include a brief 1–2 sentence backstory.
 
 EXISTING ARTICLE:
