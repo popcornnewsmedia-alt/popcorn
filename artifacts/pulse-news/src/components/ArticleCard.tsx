@@ -133,16 +133,32 @@ export function ArticleCard({
   const containerW = window.innerWidth;
   const containerH = viewportHeight ?? window.innerHeight;
 
-  const objectPosition = hasFocal
-    ? focalToObjectPosition(
-        article.imageFocalX as number,
-        article.imageFocalY as number,
-        article.imageWidth,
-        article.imageHeight,
-        containerW,
-        containerH,
-      )
-    : 'center';
+  // When focal data exists, use the precise math. When it doesn't, use a
+  // smart default that accounts for the web's landscape viewport: portrait
+  // images (the majority of our feed) get heavily cropped top/bottom on wide
+  // screens, cutting off faces. Biasing toward 25% vertical keeps heads in
+  // frame. On mobile (portrait viewport) the image fills naturally so plain
+  // 'center' is fine.
+  let objectPosition: string;
+  if (hasFocal) {
+    objectPosition = focalToObjectPosition(
+      article.imageFocalX as number,
+      article.imageFocalY as number,
+      article.imageWidth,
+      article.imageHeight,
+      containerW,
+      containerH,
+    );
+  } else if (
+    containerW > containerH &&
+    article.imageWidth && article.imageHeight &&
+    article.imageHeight > article.imageWidth
+  ) {
+    // Landscape viewport + portrait image → faces are usually in top third
+    objectPosition = 'center 25%';
+  } else {
+    objectPosition = 'center';
+  }
 
   // Out-of-window: same-height snap placeholder, zero memory / decode pressure.
   if (!renderContent) {
