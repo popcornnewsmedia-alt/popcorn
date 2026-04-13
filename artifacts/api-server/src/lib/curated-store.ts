@@ -334,9 +334,8 @@ export async function loadFromSupabase(): Promise<void> {
 
     let totalLoaded = 0;
     for (const [date, bucket] of _feeds.entries()) {
-      // Sort within bucket and re-index
-      bucket.articles.sort((a, b) => (b.signalScore ?? 0) - (a.signalScore ?? 0));
-      bucket.articles = bucket.articles.map((a, i) => ({ ...a, id: i + 1 }));
+      // Sort by score then interleave to avoid category clustering (same as mergeFeed)
+      bucket.articles = interleaveByCategory(bucket.articles).map((a, i) => ({ ...a, id: i + 1 }));
       totalLoaded += bucket.articles.length;
       console.log(`[curated] ✓ Loaded ${bucket.articles.length} articles from Supabase (${date})`);
     }
@@ -457,15 +456,14 @@ export function mergeFeed(newArticles: EnrichedArticle[]): number {
 
 export function getPublishedFeed(): EnrichedArticle[] {
   resetIfNewDay();
-  return [..._feeds.values()]
-    .flatMap((f) => f.articles)
-    .sort((a, b) => {
-      const dayA = new Date(a.publishedAt).setHours(0, 0, 0, 0);
-      const dayB = new Date(b.publishedAt).setHours(0, 0, 0, 0);
-      if (dayB !== dayA) return dayB - dayA;
-      return (b.signalScore ?? 0) - (a.signalScore ?? 0);
-    })
-    .map((a, i) => ({ ...a, id: i + 1, imageUrl: cleanImageUrl(a.imageUrl) ?? a.imageUrl }));
+  // Get day buckets sorted newest-first, interleave within each day
+  const dayBuckets = [..._feeds.entries()]
+    .sort(([a], [b]) => b.localeCompare(a)); // newest date first
+  const ordered: EnrichedArticle[] = [];
+  for (const [, bucket] of dayBuckets) {
+    ordered.push(...interleaveByCategory(bucket.articles));
+  }
+  return ordered.map((a, i) => ({ ...a, id: i + 1, imageUrl: cleanImageUrl(a.imageUrl) ?? a.imageUrl }));
 }
 
 export function removeArticles(ids: number[]): number {
