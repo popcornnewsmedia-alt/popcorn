@@ -150,6 +150,10 @@ export function getIsLive(): boolean {
   return _isLive;
 }
 
+export function markLive(): void {
+  _isLive = true;
+}
+
 export function updateLike(id: number): EnrichedArticle | null {
   const articles = getArticles();
   const article = articles.find((a) => a.id === id);

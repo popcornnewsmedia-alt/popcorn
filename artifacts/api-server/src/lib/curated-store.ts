@@ -495,6 +495,123 @@ export function removeArticles(ids: number[]): number {
   return removed;
 }
 
+/**
+ * Remove articles by their stable Supabase IDs.
+ * Queries Supabase for titles, then removes from in-memory feeds + Supabase.
+ * No server restart needed.
+ */
+export async function removeArticlesBySupabaseId(
+  supabaseIds: number[]
+): Promise<{ removed: number; articles: { id: number; title: string; feedDate: string }[] }> {
+  if (supabaseIds.length === 0) return { removed: 0, articles: [] };
+
+  // 1. Look up titles + feed_date from Supabase
+  const { data: rows, error } = await supabase
+    .from("articles")
+    .select("id, title, feed_date")
+    .in("id", supabaseIds);
+  if (error || !rows?.length) return { removed: 0, articles: [] };
+
+  const titlesToRemove = new Set(rows.map((r: any) => String(r.title)));
+  const result = rows.map((r: any) => ({
+    id: Number(r.id),
+    title: String(r.title),
+    feedDate: String(r.feed_date),
+  }));
+
+  // 2. Remove from in-memory feeds by title
+  let removed = 0;
+  for (const [, bucket] of _feeds.entries()) {
+    const before = bucket.articles.length;
+    bucket.articles = bucket.articles
+      .filter((a) => !titlesToRemove.has(a.title))
+      .map((a, i) => ({ ...a, id: i + 1 }));
+    removed += before - bucket.articles.length;
+    saveToLocalFiles(bucket);
+  }
+
+  // 3. Remove from all-time titles set
+  for (const t of titlesToRemove) _allPublishedTitles.delete(t);
+
+  // 4. Delete from Supabase by ID (stable, no cross-date collisions)
+  const { error: delErr } = await supabase
+    .from("articles")
+    .delete()
+    .in("id", supabaseIds);
+  if (delErr) console.warn("[curated] Supabase delete by ID failed:", delErr.message);
+
+  console.log(`[curated] ✓ Removed ${removed} articles by Supabase ID.`);
+  return { removed, articles: result };
+}
+
+/**
+ * Update an article's image fields in-memory (by title match across all date buckets).
+ * Also saves to local files and updates Supabase.
+ */
+export async function updateArticleImageInMemory(
+  supabaseId: number,
+  updates: {
+    imageUrl: string;
+    imageWidth: number;
+    imageHeight: number;
+    imageCredit?: string;
+    imageFocalX?: number | null;
+    imageFocalY?: number | null;
+    imageSafeW?: number | null;
+    imageSafeH?: number | null;
+  }
+): Promise<void> {
+  // 1. Find title from Supabase
+  const { data: row } = await supabase
+    .from("articles")
+    .select("title, feed_date")
+    .eq("id", supabaseId)
+    .single();
+  if (!row) return;
+
+  const title = String(row.title);
+
+  // 2. Update in-memory
+  for (const [, bucket] of _feeds.entries()) {
+    for (const article of bucket.articles) {
+      if (article.title === title) {
+        article.imageUrl = updates.imageUrl;
+        article.imageWidth = updates.imageWidth;
+        article.imageHeight = updates.imageHeight;
+        if (updates.imageCredit != null) article.imageCredit = updates.imageCredit;
+        if (updates.imageFocalX != null) article.imageFocalX = updates.imageFocalX;
+        if (updates.imageFocalY != null) article.imageFocalY = updates.imageFocalY;
+        if (updates.imageSafeW != null) article.imageSafeW = updates.imageSafeW;
+        if (updates.imageSafeH != null) article.imageSafeH = updates.imageSafeH;
+      }
+    }
+    saveToLocalFiles(bucket);
+  }
+
+  // 3. Update Supabase
+  const dbUpdates: Record<string, unknown> = {
+    image_url: updates.imageUrl,
+    image_width: updates.imageWidth,
+    image_height: updates.imageHeight,
+  };
+  if (updates.imageFocalX != null) dbUpdates.image_focal_x = updates.imageFocalX;
+  if (updates.imageFocalY != null) dbUpdates.image_focal_y = updates.imageFocalY;
+  if (updates.imageSafeW != null) dbUpdates.image_safe_w = updates.imageSafeW;
+  if (updates.imageSafeH != null) dbUpdates.image_safe_h = updates.imageSafeH;
+
+  const { error } = await supabase.from("articles").update(dbUpdates).eq("id", supabaseId);
+  if (error) {
+    // Retry without focal columns if schema doesn't have them
+    if (error.message.includes("column")) {
+      delete dbUpdates.image_focal_x;
+      delete dbUpdates.image_focal_y;
+      delete dbUpdates.image_safe_w;
+      delete dbUpdates.image_safe_h;
+      await supabase.from("articles").update(dbUpdates).eq("id", supabaseId);
+    }
+  }
+}
+
 /** Dedup refs for the current 7-day window (used in shortlist workflow). */
 export function getPublishedRefs(): { title: string; link: string }[] {
   resetIfNewDay();
