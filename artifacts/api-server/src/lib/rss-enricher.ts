@@ -278,7 +278,7 @@ function classifyImageIntent(
 
   // Person signals — apply across any category
   const personVerbs =
-    /\b(dies?|dead|death|born|marr(y|ies|ied)|arrest(s|ed)?|sentenced|win(s|ning)?|names?|appointed|joins?|leaves?|quit(s|ting)?|fired|hired|retire(s|d)?|comeback|announces?\s+(tour|pregnancy|divorce|split|album))\b/;
+    /\b(dies?|dead|death|born|marr(y|ies|ied)|arrest(s|ed)?|sentenced|win(s|ning)?|names?|appointed|joins?|leaves?|quit(s|ting)?|fired|hired|retire(s|d)?|comeback|announces?\s+(tour|pregnancy|divorce|split|album)|draw(s|ing)?|headline(s|d)?|perform(s|ed|ing)?|star(s|red|ring)?|appear(s|ed|ing)?|attend(s|ed|ing)?|feature(s|d)?|host(s|ed|ing)?|open(s|ed|ing)?\s+(for|at))\b/;
   const personTitles =
     /\b(singer|rapper|actor|actress|director|musician|athlete|golfer|footballer|comedian|presenter|ceo|founder|author)\b/;
   if (personVerbs.test(text) || personTitles.test(text)) return "PERSON";
@@ -311,7 +311,7 @@ const SOURCE_BASE_SCORES: Record<ImageCandidate["source"], number> = {
   spotify:           15,
   wikipedia:         12,
   rss:               10,
-  unsplash:          10,
+  unsplash:          14,
   itunes:             8,
   category_fallback: -20,
 };
@@ -451,8 +451,8 @@ function scoreCandidate(
   if (intent === "MUSIC_ARTIST"  && c.source === "tmdb")      score +=  8;
   if (intent === "MUSIC_ALBUM"   && c.source === "spotify")   score += 15;
   if (intent === "MUSIC_ALBUM"   && c.source === "itunes")    score +=  5;
-  if (intent === "PERSON"        && c.source === "tmdb")      score += 18;  // Option 3
-  if (intent === "PERSON"        && c.source === "spotify")   score += 12;  // Option 3
+  if (intent === "PERSON"        && c.source === "tmdb")      score += 24;  // boosted — curated API portraits beat blurry OG
+  if (intent === "PERSON"        && c.source === "spotify")   score += 16;  // boosted
   if (intent === "PERSON"        && c.source === "wikipedia") score +=  6;  // demoted — Wikipedia is often stale
   // EVENT + youtube: bumped from +12 to +18. For event articles the only
   // source of actual event footage is usually a news clip on YouTube —
@@ -460,21 +460,26 @@ function scoreCandidate(
   // a photo of the event itself.
   if (intent === "EVENT"         && c.source === "youtube")   score += 18;
 
-  // PERSON + unsplash non-scene boost: for general celebrity news with no
-  // incident / movie scene to illustrate, a crisp generic Unsplash portrait
-  // looks better in the feed than a low-res Wikipedia file photo or a
-  // grainy YouTube news thumbnail. Only apply when the subject isn't
-  // scene-specific (i.e. we just want a flattering portrait, not a photo
-  // of *the* event). Capped at +10 so a legitimately good RSS / OG image
-  // (e.g. a Highsnobiety product shot when the classifier mislabels
-  // a product story as PERSON) still wins on its own merits.
-  if (intent === "PERSON" && !sceneSpecific && c.source === "unsplash") score += 10;
+  // PERSON + unsplash: Unsplash returns consistently high-quality curated
+  // portraits. For celebrity/person articles a crisp Unsplash portrait is
+  // far better than a blurry OG press photo or low-res RSS thumbnail.
+  // Boosted to +18 so it reliably beats non-editorial OG (18-8=10) and
+  // competes with TMDb (15+24=39) and Spotify (15+16=31).
+  if (intent === "PERSON" && !sceneSpecific && c.source === "unsplash") score += 18;
+  // MUSIC_ARTIST + unsplash: for musicians not in Spotify DB, Unsplash
+  // concert/portrait shots are the best fallback.
+  if (intent === "MUSIC_ARTIST" && c.source === "unsplash") score += 12;
 
   // Editorial URL boost (Option 6) — applies to ANY source whose final URL
   // resolves to a top-tier editorial CDN. Stacks with source base scores so
   // an RSS image from variety.com scores higher than an RSS image from a
   // no-name publisher.
   if (isEditorialUrl(c.url)) score += 20;
+
+  // Non-editorial OG penalty for PERSON/MUSIC_ARTIST — generic OG images are
+  // often blurry headshots or social media crops. Editorial OG is still rewarded
+  // via the bonus above, so this only hits low-quality OG sources.
+  if ((intent === "PERSON" || intent === "MUSIC_ARTIST") && c.source === "og" && !isEditorialUrl(c.url)) score -= 8;
 
   // Diversity penalty
   score -= getDiversityPenalty(c.url);
@@ -692,6 +697,15 @@ async function selectBestImage(
     ? { minShortEdge: 600, minBytesPerMP: 18_000 }
     : { minShortEdge: 1000, minBytesPerMP: 40_000 };
 
+  // Person-aware quality gate for OG/RSS — even if the article is classified as
+  // EVENT (person at a festival), we still want to reject blurry portrait OG
+  // images. If the title leads with a person name or intent is PERSON/MUSIC_ARTIST,
+  // enforce the strict portrait gate on OG images.
+  const titleHasPerson = /^[A-Z][a-z]+ [A-Z][a-z]+/.test(article.title);
+  const personQualityOpts = (titleHasPerson || intent === "PERSON" || intent === "MUSIC_ARTIST")
+    ? { minShortEdge: 1000, minBytesPerMP: 40_000 }
+    : qualityOpts;
+
   // ── Collect all candidates in parallel ──────────────────────────────────────
   let resolvedOgUrl: string | undefined;
 
@@ -718,7 +732,8 @@ async function selectBestImage(
       try { resolvedOgUrl = await fetchOGImage(articleUrl); } catch { return null; }
       if (!isGoodImageUrl(resolvedOgUrl)) return null;
       // Pixel-quality gate: rejects low-res and heavily-compressed images.
-      const q = await isPixelQualityImage(resolvedOgUrl!, qualityOpts);
+      // Uses personQualityOpts for person articles to block blurry portrait OG.
+      const q = await isPixelQualityImage(resolvedOgUrl!, personQualityOpts);
       if (!q.pass) return null;
       if (!isStrictOGValid(resolvedOgUrl!, q.width && q.height ? { width: q.width, height: q.height } : null)) return null;
       return { url: resolvedOgUrl!, source: "og", width: q.width, height: q.height };
@@ -829,7 +844,7 @@ async function selectBestImage(
     // 9. Unsplash — controlled editorial fallback (not last resort)
     (async (): Promise<ImageCandidate | null> => {
       if (!wikiQuery || !applicableSources.includes("unsplash")) return null;
-      const url = await fetchUnsplashImage(wikiQuery, article.category);
+      const url = await fetchUnsplashImage(wikiQuery, article.category, intent);
       if (!isGoodImageUrl(url)) return null;
       const dims = await fetchImageDimensions(url!);
       return { url: url!, source: "unsplash", width: dims?.width, height: dims?.height };
@@ -873,7 +888,30 @@ async function selectBestImage(
     return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
   });
 
-  const winner = scored[0];
+  let winner = scored[0];
+
+  // Portrait safety net: if the winner for a PERSON/MUSIC_ARTIST article is a
+  // low-res non-editorial OG or RSS image, swap in the best TMDb/Spotify/Unsplash
+  // or editorial runner-up. This catches edge cases where scoring alone doesn't
+  // prevent a blurry portrait from winning (e.g. when no other candidates scored
+  // high enough but a decent Unsplash/TMDb alternative exists).
+  if ((intent === "PERSON" || intent === "MUSIC_ARTIST") && !sceneSpecific && winner.source !== "category_fallback") {
+    const isLowQualityPortrait =
+      (winner.source === "og" || winner.source === "rss") &&
+      !isEditorialUrl(winner.url) &&
+      (winner.width === undefined || winner.width < 1000);
+    if (isLowQualityPortrait) {
+      const betterAlt = scored.slice(1).find(c =>
+        (c.source === "tmdb" || c.source === "spotify" || c.source === "unsplash" || isEditorialUrl(c.url)) &&
+        c.width !== undefined && c.width >= 800
+      );
+      if (betterAlt) {
+        console.log(`[img] Portrait safety net: ${winner.source}(${winner.score}) → ${betterAlt.source}(${betterAlt.score}) | ${article.title.slice(0, 40)}`);
+        winner = betterAlt;
+      }
+    }
+  }
+
   const diversityPenaltyApplied = getDiversityPenalty(winner.url) > 0;
 
   // Register winner in diversity tracker
@@ -1434,7 +1472,9 @@ const UNSPLASH_CATEGORY_HINT: Record<string, string> = {
 
 // Search Unsplash for a keyword-relevant editorial photo.
 // Combines 2–3 topic keywords with category-specific visual context words.
-async function fetchUnsplashImage(query: string, category?: string): Promise<string | undefined> {
+// When intent is PERSON or MUSIC_ARTIST, focuses on portrait-style results
+// by appending "portrait" and dropping the category scenic hint.
+async function fetchUnsplashImage(query: string, category?: string, intent?: ImageIntent): Promise<string | undefined> {
   const key = process.env.UNSPLASH_ACCESS_KEY;
   if (!key || !query?.trim()) return undefined;
   try {
@@ -1448,9 +1488,13 @@ async function fetchUnsplashImage(query: string, category?: string): Promise<str
       .slice(0, 3)
       .join(" ");
 
-    // Append category visual hint so Unsplash returns contextually relevant images
-    // even when the topic keywords alone are too abstract or person-specific
-    const hint = category ? (UNSPLASH_CATEGORY_HINT[category] ?? "") : "";
+    // For PERSON/MUSIC_ARTIST intent: append "portrait" and skip the category
+    // scenic hint to focus on headshots and editorial portraits rather than
+    // generic concert crowds or scenic shots.
+    const isPersonSearch = intent === "PERSON" || intent === "MUSIC_ARTIST";
+    const hint = isPersonSearch
+      ? "portrait"
+      : (category ? (UNSPLASH_CATEGORY_HINT[category] ?? "") : "");
     const keywords = [topicWords, hint].filter(Boolean).join(" ").trim();
     if (!keywords) return undefined;
 
@@ -2366,7 +2410,7 @@ WRITING RULES:
 - Keep it upbeat and engaging. Tell people why they should care.
 - Paragraphs MUST be separated by a blank line (\\n\\n). Never run paragraphs together.
 - If a story references something unfamiliar (an award, a franchise, a past incident), briefly explain it in plain English. Do not assume the reader already knows.
-- Keep articles concise. Aim for 3 short paragraphs. Add context without padding.
+- Depth depends on the story type. For BREAKING and RELEASE stories, keep it tight: 3 short paragraphs. For FEATURE, TREND, HOT TAKE, REVIEW, and INTERVIEW stories, go deeper: 4 to 5 short paragraphs. Add analysis, context, or perspective beyond the headline facts.
 - For stories with past-event context (sequels, legal disputes, returning artists), include a brief 1–2 sentence backstory so new readers are not lost.
 
 ARTICLES:
@@ -2376,7 +2420,7 @@ For each article output a JSON object:
 {
   "title": "Short punchy headline, max 10 words — MUST include the real name",
   "summary": "2 sentences. First sentence names who/what and what happened. Second sentence says why it matters.",
-  "content": "3 short paragraphs separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people and things throughout. Include brief backstory where needed.",
+  "content": "3 paragraphs for BREAKING/RELEASE, 4–5 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people and things throughout. Include brief backstory where needed.",
   "keyPoints": ["3 to 5 short plain-English takeaways (no dashes, no jargon)"],
   "signalScore": 0-100 (cultural significance / buzz level),
   "tag": "ONE of: BREAKING | HOT TAKE | REVIEW | INTERVIEW | FEATURE | RELEASE | TREND",
@@ -2402,7 +2446,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
       )
       .join("\n\n---\n\n");
 
-    const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 6000);
+    const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 8000);
     const batchMatch = batchText.match(/\[[\s\S]*\]/);
     if (!batchMatch) throw new Error(`Call 2 batch ${b + 1}: Claude did not return a JSON array`);
     selectedItems.push(...JSON.parse(sanitizeClaudeJson(batchMatch[0])));
@@ -2705,7 +2749,8 @@ let _pendingDedupAudit: DedupeAuditEntry[] | null = null;
 export async function loadLiveArticles(
   alreadyPublished: { title: string; link: string }[] = [],
   windowStart?: Date,
-  publishToday = false
+  publishToday = false,
+  windowEnd?: Date,
 ): Promise<EnrichedArticle[]> {
   // If a previous attempt already fetched + deduped the RSS items, skip straight
   // to Claude — re-fetching would re-saturate undici's connection pool.
@@ -2799,13 +2844,16 @@ export async function loadLiveArticles(
   // Time window: use explicit windowStart if provided, otherwise default to last 25 hours.
   // 25h (vs 24h) ensures we always reach back to at least noon the previous day in any timezone.
   const cutoff = windowStart ? windowStart.getTime() : Date.now() - 25 * 60 * 60 * 1000;
+  const endMs = windowEnd ? windowEnd.getTime() : Infinity;
   const recentItems = allItems.filter((item) => {
     const t = new Date(item.pubDate).getTime();
-    return !isNaN(t) && t >= cutoff;
+    return !isNaN(t) && t >= cutoff && t <= endMs;
   });
 
   const windowDesc = windowStart
-    ? `since ${windowStart.toISOString()}`
+    ? windowEnd
+      ? `${windowStart.toISOString()} → ${windowEnd.toISOString()}`
+      : `since ${windowStart.toISOString()}`
     : "last 25h";
   console.log(`[rss] Total raw items: ${allItems.length} (${recentItems.length} ${windowDesc})`);
 
@@ -3197,7 +3245,7 @@ WRITING RULES:
 - Keep it upbeat and engaging. Tell people why they should care.
 - Paragraphs MUST be separated by a blank line (\\n\\n). Never run paragraphs together.
 - If a story references something unfamiliar (an award, a franchise, a past incident), briefly explain it in plain English.
-- Keep articles concise. Aim for 3 short paragraphs. Add context without padding.
+- Depth depends on the story type. For BREAKING and RELEASE stories, keep it tight: 3 short paragraphs. For FEATURE, TREND, HOT TAKE, REVIEW, and INTERVIEW stories, go deeper: 4 to 5 short paragraphs. Add analysis, context, or perspective beyond the headline facts.
 - For stories with past-event context (sequels, legal disputes, returning artists), include a brief 1–2 sentence backstory.
 
 ARTICLES:
@@ -3207,7 +3255,7 @@ For each article output a JSON object:
 {
   "title": "Short punchy headline, max 10 words — MUST include the real name",
   "summary": "2 sentences. First sentence names who/what and what happened. Second sentence says why it matters.",
-  "content": "3 short paragraphs separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people, products and things throughout — never use vague substitutes.",
+  "content": "3 paragraphs for BREAKING/RELEASE, 4–5 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people, products and things throughout — never use vague substitutes.",
   "keyPoints": ["3 to 5 short plain-English takeaways"],
   "signalScore": 0-100,
   "tag": "ONE of: BREAKING | HOT TAKE | REVIEW | INTERVIEW | FEATURE | RELEASE | TREND",
@@ -3233,7 +3281,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
       )
       .join("\n\n---\n\n");
 
-    const raw = await callClaude(makePrompt(articleList, batchItems.length), 6000);
+    const raw = await callClaude(makePrompt(articleList, batchItems.length), 8000);
     const match = raw.match(/\[[\s\S]*\]/);
     if (!match) throw new Error(`Enrichment batch ${b + 1}: no JSON array in response`);
     const parsed = JSON.parse(sanitizeClaudeJson(match[0]));

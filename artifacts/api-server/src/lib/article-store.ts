@@ -207,14 +207,14 @@ function scheduleNextRefresh(): void {
   }, REFRESH_INTERVAL_MS);
 }
 
-function runCurationCycle(attempt: number, windowStart?: Date, publishToday = false): void {
+function runCurationCycle(attempt: number, windowStart?: Date, publishToday = false, windowEnd?: Date): void {
   // Use full historical refs so stories already covered on previous days are excluded
   const alreadyPublished = getAllPublishedRefs();
   console.log(
     `[api] Curation run (attempt ${attempt}) — ${alreadyPublished.length} stories already in today's feed.`
   );
 
-  loadLiveArticles(alreadyPublished, windowStart, publishToday)
+  loadLiveArticles(alreadyPublished, windowStart, publishToday, windowEnd)
     .then((enriched) => {
       const added = mergeFeed(enriched);
       saveCommittedFeed();
@@ -232,7 +232,7 @@ function runCurationCycle(attempt: number, windowStart?: Date, publishToday = fa
       if (attempt < 3) {
         const delay = attempt * 8_000;
         console.log(`[api] Retrying in ${delay / 1000}s…`);
-        setTimeout(() => runCurationCycle(attempt + 1, windowStart, publishToday), delay);
+        setTimeout(() => runCurationCycle(attempt + 1, windowStart, publishToday, windowEnd), delay);
       } else {
         console.error("[api] All retries exhausted — keeping current feed. Will retry at next 3h window.");
         scheduleNextRefresh();
@@ -251,13 +251,13 @@ function runCurationCycle(attempt: number, windowStart?: Date, publishToday = fa
  *                     Use when pulling a wider window so yesterday's articles
  *                     still appear in today's section of the feed.
  */
-export function triggerRefresh(windowStart?: Date, publishToday = false): void {
+export function triggerRefresh(windowStart?: Date, publishToday = false, windowEnd?: Date): void {
   console.log("[api] Manual refresh triggered.");
   if (_refreshTimer) {
     clearTimeout(_refreshTimer);
     _refreshTimer = null;
   }
-  runCurationCycle(1, windowStart, publishToday);
+  runCurationCycle(1, windowStart, publishToday, windowEnd);
 }
 
 // ─── New shortlist + publish workflow ─────────────────────────────────────────
