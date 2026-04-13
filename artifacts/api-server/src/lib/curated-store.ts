@@ -460,8 +460,13 @@ export function getPublishedFeed(): EnrichedArticle[] {
   const dayBuckets = [..._feeds.entries()]
     .sort(([a], [b]) => b.localeCompare(a)); // newest date first
   const ordered: EnrichedArticle[] = [];
-  for (const [, bucket] of dayBuckets) {
-    ordered.push(...interleaveByCategory(bucket.articles));
+  for (const [dateKey, bucket] of dayBuckets) {
+    const interleaved = interleaveByCategory(bucket.articles);
+    // Tag each article with its feed date so the frontend can group by curation date
+    for (const a of interleaved) {
+      (a as any).feedDate = dateKey;
+    }
+    ordered.push(...interleaved);
   }
   return ordered.map((a, i) => ({ ...a, id: i + 1, imageUrl: cleanImageUrl(a.imageUrl) ?? a.imageUrl }));
 }

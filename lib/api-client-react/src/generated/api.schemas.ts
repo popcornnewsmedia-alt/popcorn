@@ -34,6 +34,7 @@ export interface NewsArticle {
   keyPoints?: string[] | null;
   impact?: string | null;
   signalScore?: number | null;
+  feedDate?: string | null;
 }
 
 export interface NewsArticleList {

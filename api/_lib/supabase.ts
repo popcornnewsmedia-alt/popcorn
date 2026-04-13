@@ -42,4 +42,5 @@ export const mapRow = (row: Record<string, unknown>) => ({
   keyPoints:       row.key_points    ?? null,
   signalScore:     row.signal_score  ?? null,
   impact:          row.impact        ?? null,
+  feedDate:        row.feed_date     ?? null,
 });

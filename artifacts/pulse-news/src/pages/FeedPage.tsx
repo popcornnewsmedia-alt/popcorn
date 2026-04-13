@@ -526,9 +526,11 @@ export function FeedPage() {
     const items: FeedItem[] = [];
     let lastDayKey: string | null = null;
     for (const article of allArticles) {
-      const dayKey = startOfDay(new Date(article.publishedAt)).toISOString();
+      // Use feedDate (curation date) for dividers; fall back to publishedAt
+      const dateStr = (article as any).feedDate ?? article.publishedAt;
+      const dayKey = startOfDay(new Date(dateStr)).toISOString();
       if (lastDayKey !== dayKey) {
-        const divDate = startOfDay(new Date(article.publishedAt));
+        const divDate = startOfDay(new Date(dateStr));
         items.push({ kind: "divider", date: divDate, id: dividerIdForDate(divDate) });
       }
       lastDayKey = dayKey;
@@ -736,7 +738,7 @@ export function FeedPage() {
     if (pickerNavLockRef.current) return;
     const item = feedItems[currentCardIndex];
     let newDate: Date | null = null;
-    if (item?.kind === 'article') newDate = startOfDay(new Date(item.article.publishedAt));
+    if (item?.kind === 'article') newDate = startOfDay(new Date((item.article as any).feedDate ?? item.article.publishedAt));
     else if (item?.kind === 'divider') newDate = item.date;
     if (newDate) setSelectedDate(prev => isSameDay(prev, newDate!) ? prev : newDate!);
   }, [currentCardIndex, feedItems]);
@@ -756,9 +758,9 @@ export function FeedPage() {
   const minDate = useMemo(() => {
     if (allArticles.length === 0) return startOfDay(subDays(new Date(), 1));
     const oldest = allArticles.reduce((min, a) => {
-      const d = new Date(a.publishedAt);
+      const d = new Date((a as any).feedDate ?? a.publishedAt);
       return d < min ? d : min;
-    }, new Date(allArticles[0].publishedAt));
+    }, new Date((allArticles[0] as any).feedDate ?? allArticles[0].publishedAt));
     return startOfDay(oldest);
   }, [allArticles]);
 
