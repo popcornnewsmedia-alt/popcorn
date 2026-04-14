@@ -65,6 +65,58 @@ function optimizeImageUrl(url: string | null | undefined): string | null | undef
   return url;
 }
 
+// ── Pull-to-refresh popcorn animation (compact version of SplashScreen SVG) ──
+function PopcornRefreshAnim({ active }: { active: boolean }) {
+  return (
+    <svg viewBox="0 0 100 100" width="44" height="44" aria-hidden="true" style={{ overflow: 'visible' }}>
+      {active && (
+        <style>{`
+          @keyframes ptr-a{0%,100%{transform:translateY(0) scaleY(1) scaleX(1)}20%{transform:translateY(1px) scaleY(.88) scaleX(1.1)}50%{transform:translateY(-8px) scaleY(1.12) scaleX(.91)}75%{transform:translateY(-5px) scaleY(1.06) scaleX(.96)}}
+          @keyframes ptr-b{0%,100%{transform:translateY(0) scaleY(1) scaleX(1)}20%{transform:translateY(1px) scaleY(.85) scaleX(1.12)}50%{transform:translateY(-10px) scaleY(1.14) scaleX(.89)}75%{transform:translateY(-7px) scaleY(1.07) scaleX(.95)}}
+          @keyframes ptr-c{0%,100%{transform:translateY(0) scaleY(1) scaleX(1)}20%{transform:translateY(1px) scaleY(.9) scaleX(1.08)}50%{transform:translateY(-7px) scaleY(1.1) scaleX(.92)}75%{transform:translateY(-4px) scaleY(1.05) scaleX(.97)}}
+          .ptr-pa{animation:ptr-a 1.1s cubic-bezier(.34,1.5,.64,1) infinite;transform-box:fill-box;transform-origin:center 90%}
+          .ptr-pb{animation:ptr-b 1.1s cubic-bezier(.34,1.5,.64,1) infinite .18s;transform-box:fill-box;transform-origin:center 90%}
+          .ptr-pc{animation:ptr-c 1.1s cubic-bezier(.34,1.5,.64,1) infinite .36s;transform-box:fill-box;transform-origin:center 90%}
+          @keyframes ptr-rumble{0%,100%{transform:none}20%{transform:translateX(-1px) rotate(-.3deg)}50%{transform:translateX(1px) rotate(.3deg)}80%{transform:translateX(-.5px)}}
+          .ptr-bucket{animation:ptr-rumble .35s ease-in-out infinite;transform-box:fill-box;transform-origin:center 50%}
+          @keyframes ptr-heat{0%,100%{opacity:.1}50%{opacity:.24}}
+          .ptr-heat{animation:ptr-heat .9s ease-in-out infinite}
+          @keyframes ptr-k1{0%{transform:translate(0,0) scale(0);opacity:0}7%{transform:translate(-2px,-5px) scale(1);opacity:1}55%{transform:translate(-18px,-28px) scale(.9);opacity:1}100%{transform:translate(-22px,-10px) scale(0);opacity:0}}
+          @keyframes ptr-k2{0%{transform:translate(0,0) scale(0);opacity:0}7%{transform:translate(2px,-5px) scale(1);opacity:1}55%{transform:translate(16px,-30px) scale(.9);opacity:1}100%{transform:translate(19px,-12px) scale(0);opacity:0}}
+          @keyframes ptr-k3{0%{transform:translate(0,0) scale(0);opacity:0}7%{transform:translate(0,-6px) scale(1);opacity:1}55%{transform:translate(-4px,-35px) scale(.9);opacity:1}100%{transform:translate(-5px,-18px) scale(0);opacity:0}}
+          .ptr-k1{animation:ptr-k1 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+          .ptr-k2{animation:ptr-k2 1.5s ease-in-out infinite .3s;transform-box:fill-box;transform-origin:center}
+          .ptr-k3{animation:ptr-k3 1.4s ease-in-out infinite .6s;transform-box:fill-box;transform-origin:center}
+        `}</style>
+      )}
+      {/* Heat glow */}
+      <ellipse className={active ? "ptr-heat" : ""} cx="50" cy="61" rx="16" ry="8" fill="#fff1cd" opacity={active ? undefined : 0.15}/>
+      {/* Bucket */}
+      <g className={active ? "ptr-bucket" : ""}>
+        <rect x="30" y="58" width="40" height="6" rx="2" fill="#fff1cd"/>
+        <path d="M32 64 L36 90 L64 90 L68 64Z" fill="transparent" stroke="#fff1cd" strokeWidth="1.6" strokeLinejoin="round"/>
+      </g>
+      {/* Flying kernels (only when active) */}
+      {active && (
+        <>
+          <g className="ptr-k1"><circle cx="50" cy="60" r="3" fill="#fff1cd"/><circle cx="47.5" cy="58" r="2" fill="#fff1cd"/></g>
+          <g className="ptr-k2"><circle cx="50" cy="60" r="2.8" fill="#fff1cd"/><circle cx="52.5" cy="58" r="2" fill="#fff1cd"/></g>
+          <g className="ptr-k3"><circle cx="50" cy="60" r="2.6" fill="#fff1cd"/><circle cx="48" cy="57.5" r="1.8" fill="#fff1cd"/></g>
+        </>
+      )}
+      {/* Puffs */}
+      <g className={active ? "ptr-pa" : ""}>
+        <circle cx="36" cy="51" r="5" fill="#fff1cd"/><circle cx="31" cy="47" r="3.5" fill="#fff1cd"/><circle cx="36" cy="43" r="4" fill="#fff1cd"/><circle cx="41" cy="47" r="3.5" fill="#fff1cd"/>
+      </g>
+      <g className={active ? "ptr-pb" : ""}>
+        <circle cx="50" cy="47" r="6" fill="#fff1cd"/><circle cx="44" cy="42" r="4" fill="#fff1cd"/><circle cx="50" cy="37" r="5" fill="#fff1cd"/><circle cx="56" cy="42" r="4" fill="#fff1cd"/>
+      </g>
+      <g className={active ? "ptr-pc" : ""}>
+        <circle cx="64" cy="51" r="5" fill="#fff1cd"/><circle cx="59" cy="47" r="3.5" fill="#fff1cd"/><circle cx="64" cy="43" r="4" fill="#fff1cd"/><circle cx="69" cy="47" r="3.5" fill="#fff1cd"/>
+      </g>
+    </svg>
+  );
+}
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Music':        '#e879f9',
@@ -550,7 +602,9 @@ export function FeedPage() {
     if (pullOffset > 60 && !isRefreshing) {
       setIsRefreshing(true);
       setPullOffset(50); // hold at indicator position while refreshing
-      refetch().finally(() => {
+      // Always show the popcorn animation for at least 1s — feels intentional
+      const minDelay = new Promise(r => setTimeout(r, 1000));
+      Promise.all([refetch(), minDelay]).finally(() => {
         setIsRefreshing(false);
         setPullOffset(0);
       });
@@ -1026,15 +1080,15 @@ export function FeedPage() {
         />
       )}
 
-      {/* Pull-to-refresh indicator — shows above the feed when pulling down */}
-      {activeTab === 'feed' && pullOffset > 0 && (
+      {/* Pull-to-refresh indicator — popcorn SVG pops above the feed */}
+      {activeTab === 'feed' && (pullOffset > 0 || isRefreshing) && (
         <div
           style={{
             position: 'fixed',
             top: 0,
             left: 0,
             right: 0,
-            height: pullOffset,
+            height: isRefreshing ? 50 : pullOffset,
             zIndex: 42,
             display: 'flex',
             alignItems: 'center',
@@ -1044,15 +1098,13 @@ export function FeedPage() {
             pointerEvents: 'none',
           }}
         >
-          <RefreshCw
-            className="w-5 h-5"
-            style={{
-              color: '#fff1cd',
-              opacity: Math.min(1, pullOffset / 50),
-              transform: `rotate(${pullOffset * 4}deg)`,
-              animation: isRefreshing ? 'spin 0.8s linear infinite' : 'none',
-            }}
-          />
+          <div style={{
+            opacity: Math.min(1, (isRefreshing ? 50 : pullOffset) / 40),
+            transform: `scale(${Math.min(1, (isRefreshing ? 50 : pullOffset) / 50)})`,
+            transition: isRefreshing ? 'none' : 'transform 0.1s',
+          }}>
+            <PopcornRefreshAnim active={isRefreshing || pullOffset > 40} />
+          </div>
         </div>
       )}
 
