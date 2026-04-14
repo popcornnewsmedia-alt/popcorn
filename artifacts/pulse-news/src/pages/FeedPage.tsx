@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { isSameDay, startOfDay, subDays } from "date-fns";
 import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
@@ -457,25 +457,29 @@ export function FeedPage() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Single source of truth for viewport height — avoids dvh/svh/100% inheritance
-  // ambiguity on mobile browsers where chrome show/hide changes the visual viewport.
+  // Measure the true full-viewport height in pixels by reading CSS 100dvh.
   //
-  // In standalone PWA mode, window.innerHeight may not include the bottom safe
-  // area (home indicator). The scroll container (position:fixed; inset:0) covers
-  // the true full viewport, so we measure its clientHeight after mount and use
-  // that for card sizing — ensuring images bleed to the very bottom.
-  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
-  useLayoutEffect(() => {
-    const el = scrollContainerRef.current;
-    if (el) {
-      const h = el.clientHeight;
-      if (h > 0 && h !== viewportHeight) setViewportHeight(h);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // On iOS standalone PWA, window.innerHeight and el.clientHeight can be
+  // SHORTER than the actual visual viewport (they exclude the home indicator
+  // safe area even with viewport-fit=cover). But CSS 100dvh always resolves
+  // to the full screen height. We measure it via a hidden element, then use
+  // that pixel value for card sizing so images bleed edge-to-edge.
+  const [viewportHeight, setViewportHeight] = useState(() => {
+    const d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;height:100dvh;pointer-events:none;visibility:hidden';
+    document.body.appendChild(d);
+    const h = d.offsetHeight;
+    d.remove();
+    return h > 0 ? h : window.innerHeight;
+  });
   useEffect(() => {
     const measure = () => {
-      const el = scrollContainerRef.current;
-      setViewportHeight(el?.clientHeight || window.innerHeight);
+      const d = document.createElement('div');
+      d.style.cssText = 'position:fixed;top:0;height:100dvh;pointer-events:none;visibility:hidden';
+      document.body.appendChild(d);
+      const h = d.offsetHeight;
+      d.remove();
+      setViewportHeight(h > 0 ? h : window.innerHeight);
     };
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
@@ -987,6 +991,7 @@ export function FeedPage() {
           overscrollBehavior: 'none',
           WebkitOverflowScrolling: 'touch',
           display: activeTab === 'feed' ? 'block' : 'none',
+          background: '#000',
         }}
       >
         {feedItems.length === 0 ? (
