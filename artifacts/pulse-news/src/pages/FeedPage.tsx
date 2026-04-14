@@ -15,6 +15,7 @@ import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useAuth } from "@/hooks/use-auth";
 import { AlertCircle, RefreshCw, Bookmark, User, LogOut, ChevronRight } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
+import { isStandalone } from "@/lib/utils";
 
 type Tab = "feed" | "saved" | "profile";
 
@@ -68,7 +69,7 @@ function optimizeImageUrl(url: string | null | undefined): string | null | undef
 // ── Pull-to-refresh popcorn animation (compact version of SplashScreen SVG) ──
 function PopcornRefreshAnim({ active }: { active: boolean }) {
   return (
-    <svg viewBox="0 0 100 100" width="44" height="44" aria-hidden="true" style={{ overflow: 'visible' }}>
+    <svg viewBox="0 0 100 100" width="54" height="54" aria-hidden="true" style={{ overflow: 'visible' }}>
       {active && (
         <style>{`
           @keyframes ptr-a{0%,100%{transform:translateY(0) scaleY(1) scaleX(1)}20%{transform:translateY(1px) scaleY(.88) scaleX(1.1)}50%{transform:translateY(-8px) scaleY(1.12) scaleX(.91)}75%{transform:translateY(-5px) scaleY(1.06) scaleX(.96)}}
@@ -1080,7 +1081,9 @@ export function FeedPage() {
         />
       )}
 
-      {/* Pull-to-refresh indicator — popcorn SVG pops above the feed */}
+      {/* Pull-to-refresh indicator — popcorn SVG pops above the feed.
+           In standalone PWA, pad below the notch/Dynamic Island so the
+           animation isn't obscured by the front camera. */}
       {activeTab === 'feed' && (pullOffset > 0 || isRefreshing) && (
         <div
           style={{
@@ -1089,6 +1092,7 @@ export function FeedPage() {
             left: 0,
             right: 0,
             height: pullOffset,
+            paddingTop: isStandalone ? 'env(safe-area-inset-top)' : undefined,
             zIndex: 42,
             display: 'flex',
             alignItems: 'center',
