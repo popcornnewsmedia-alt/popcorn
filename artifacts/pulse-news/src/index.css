@@ -129,32 +129,36 @@ select:focus-visible {
   }
 
   /* Height chain: html → body → #root fills the entire viewport.
-     In standalone PWA, -webkit-fill-available ensures we cover the
-     full screen including the home indicator safe area. */
+     overflow:hidden prevents bounce-scroll on the page itself. */
   html {
     height: 100%;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
     background: #000;
     overflow: hidden;
   }
 
   body {
     height: 100%;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    @apply text-foreground font-sans antialiased;
+    @apply text-foreground font-sans antialiased overflow-hidden;
     background: transparent;
-    overflow: hidden;
     overscroll-behavior-y: none;
     -webkit-overflow-scrolling: touch;
   }
 
   #root {
     height: 100%;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
     overflow: hidden;
+  }
+
+  /* Standalone PWA: remove overflow:hidden from the height chain so
+     position:fixed content can paint in the home indicator safe area.
+     Without this, iOS WebKit clips rendering at the safe-area boundary. */
+  @media (display-mode: standalone) {
+    html, body, #root {
+      overflow: visible;
+      height: auto;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+    }
   }
 
   /* Only constrain width — do NOT set height:auto.
