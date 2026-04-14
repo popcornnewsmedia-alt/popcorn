@@ -2,6 +2,12 @@ import { useState } from "react";
 import { format, subDays, addDays, isSameDay, startOfDay } from "date-fns";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
 
+/** Detect iOS/Android home-screen (standalone) mode — true only for Add-to-Home-Screen apps */
+const isStandalone =
+  typeof window !== 'undefined' &&
+  (window.matchMedia('(display-mode: standalone)').matches ||
+   (window.navigator as any).standalone === true);
+
 interface TopBarProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
@@ -32,14 +38,17 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
 
   return (
     <>
-      {/* Safe-area zone — transparent, no blur → raw grain / page image shows behind the iOS status bar */}
-      <div className="fixed top-0 inset-x-0" style={{ zIndex: 40, height: 'env(safe-area-inset-top)' }} />
+      {/* In standalone PWA the blur covers the status bar area too (top:0 + padding).
+          In browser mode we keep the transparent spacer so raw images show behind the status bar. */}
+      {!isStandalone && (
+        <div className="fixed top-0 inset-x-0" style={{ zIndex: 40, height: 'env(safe-area-inset-top)' }} />
+      )}
 
-      {/* TopBar content — starts below status bar, carries the frosted blur */}
       <div
         className="fixed inset-x-0 z-40 flex flex-col"
         style={{
-          top: 'env(safe-area-inset-top)',
+          top: isStandalone ? 0 : 'env(safe-area-inset-top)',
+          paddingTop: isStandalone ? 'env(safe-area-inset-top)' : undefined,
           background: 'rgba(0,0,0,0)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
