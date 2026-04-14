@@ -490,17 +490,17 @@ export function FeedPage() {
     if (user) { setChoiceOpen(false); setSignUpOpen(false); setSignInOpen(false); }
   }, [user]);
 
-  // Dynamic status bar (theme-color) based on active screen
+  // Dynamic theme-color + html background based on active screen.
+  // On iOS standalone PWA, position:fixed bottom:0 stops at the safe-area
+  // boundary — the ~34px home indicator strip can only show the html
+  // element's background. We match it to the screen content so the
+  // strip is invisible.
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
-    if (!meta) return;
-    if (readingArticle) {
-      meta.content = '#000000';
-    } else if (activeTab === 'feed' && !showSplash) {
-      meta.content = '#000000';
-    } else {
-      meta.content = '#000000';
-    }
+    const isDark = readingArticle || (activeTab === 'feed' && !showSplash);
+    const color = isDark ? '#000000' : '#053980';
+    if (meta) meta.content = color;
+    document.documentElement.style.background = color;
   }, [readingArticle, activeTab, showSplash]);
 
   const handleSplashDone = useCallback(() => setShowSplash(false), []);
