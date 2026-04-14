@@ -149,24 +149,19 @@ select:focus-visible {
     overflow: hidden;
   }
 
-  /* Standalone PWA: remove overflow:hidden from the height chain so
-     position:fixed content can paint in the home indicator safe area.
-     Without this, iOS WebKit clips rendering at the safe-area boundary. */
-  /* DIAGNOSTIC — standalone bottom strip test.
-     RED = web view paints there (fixable), BLACK = iOS system paints there (must color-match). */
+  /* Standalone PWA: on iOS, position:fixed bottom:0 resolves to the
+     safe-area boundary, not the physical screen edge. Push screen
+     containers past it so content bleeds to the very bottom.
+     overflow:visible lets fixed children paint in that extended area. */
   @media (display-mode: standalone) {
-    html {
-      background: #ff0000 !important;
+    html, body, #root {
       overflow: visible;
       height: auto;
       min-height: 100vh;
       min-height: -webkit-fill-available;
     }
-    body, #root {
-      overflow: visible;
-      height: auto;
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
+    .pn-fullscreen {
+      bottom: calc(0px - env(safe-area-inset-bottom)) !important;
     }
   }
 

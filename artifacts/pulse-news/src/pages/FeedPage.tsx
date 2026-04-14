@@ -94,7 +94,7 @@ function SavedScreen({
 }) {
   if (articles.length === 0) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center px-8 text-center overflow-hidden" style={{ background: "#053980", zIndex: 1 }}>
+      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center px-8 text-center overflow-hidden" style={{ background: "#053980", zIndex: 1 }}>
         <GrainBackground />
         <div className="relative z-10 flex flex-col items-center gap-5 max-w-xs">
           <div
@@ -135,7 +135,7 @@ function SavedScreen({
   }
 
   return (
-    <div className="fixed inset-0 overflow-hidden flex flex-col items-center" style={{ background: "#053980", zIndex: 1 }}>
+    <div className="pn-fullscreen fixed inset-0 overflow-hidden flex flex-col items-center" style={{ background: "#053980", zIndex: 1 }}>
       <GrainBackground />
       <div className="relative z-10 flex flex-col h-full w-full" style={{ maxWidth: '480px' }}>
         {/* Header */}
@@ -258,7 +258,7 @@ function ProfileScreen({
   const initial = (userName ?? userEmail ?? "?")[0].toUpperCase();
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center overflow-hidden" style={{ background: "#053980", zIndex: 1 }}>
+    <div className="pn-fullscreen fixed inset-0 flex flex-col items-center overflow-hidden" style={{ background: "#053980", zIndex: 1 }}>
       <GrainBackground />
 
       {isLoggedIn ? (
@@ -882,7 +882,7 @@ export function FeedPage() {
 
   if (status === "pending") {
     return (
-      <div className="fixed inset-0 overflow-hidden" style={{ background: '#053980' }}>
+      <div className="pn-fullscreen fixed inset-0 overflow-hidden" style={{ background: '#053980' }}>
         <GrainBackground />
       </div>
     );
@@ -890,7 +890,7 @@ export function FeedPage() {
 
   if (status === "error") {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center p-8 text-center overflow-hidden" style={{ background: '#053980' }}>
+      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center p-8 text-center overflow-hidden" style={{ background: '#053980' }}>
         <GrainBackground />
         <AlertCircle className="w-10 h-10 text-red-400 mb-6" />
         <h2 className="font-['Manrope'] font-bold text-2xl mb-3" style={{ color: "#fff1cd" }}>Connection lost</h2>
@@ -928,7 +928,7 @@ export function FeedPage() {
   };
 
   return (
-    <div className="fixed inset-0" style={{ background: '#053980' }}>
+    <div className="pn-fullscreen fixed inset-0" style={{ background: '#053980' }}>
       {/* Persistent grain behind all fixed content — covers full viewport including
           bottom safe area so the home indicator region shows grain, not flat blue */}
       <GrainBackground />
@@ -980,7 +980,7 @@ export function FeedPage() {
            Always mounted so scroll position is preserved when switching tabs. */}
       <div
         ref={scrollContainerRef}
-        className="snap-y snap-mandatory scrollbar-hide"
+        className="pn-fullscreen snap-y snap-mandatory scrollbar-hide"
         style={{
           position: 'fixed',
           top: 0,
