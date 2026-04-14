@@ -4,6 +4,7 @@ import { ChevronUp, CheckCircle2 } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { ActionButtons } from "./ActionButtons";
 import { CommentSheet } from "./CommentSheet";
+import { isStandalone } from "@/lib/utils";
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Music':        '#e879f9',  // fuchsia
@@ -221,6 +222,11 @@ export function ArticleCard({
               zIndex: 5,
               opacity: imgReady ? 1 : 0,
               transition: imgReady ? 'none' : 'opacity 0.18s ease',
+              // In standalone PWA, nudge image down so faces aren't hidden
+              // behind the blurred status-bar area. The card's overflow:hidden
+              // clips the bottom; the top gap shows the skeleton gradient
+              // which blurs away under the TopBar.
+              ...(isStandalone ? { transform: 'translateY(24px)' } : {}),
             }}
           />
           {/* Subtle dark tint — z-10 */}

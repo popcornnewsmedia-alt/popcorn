@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { format, subDays, addDays, isSameDay, startOfDay } from "date-fns";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
-
-/** Detect iOS/Android home-screen (standalone) mode — true only for Add-to-Home-Screen apps */
-const isStandalone =
-  typeof window !== 'undefined' &&
-  (window.matchMedia('(display-mode: standalone)').matches ||
-   (window.navigator as any).standalone === true);
+import { isStandalone } from "@/lib/utils";
 
 interface TopBarProps {
   selectedDate: Date;

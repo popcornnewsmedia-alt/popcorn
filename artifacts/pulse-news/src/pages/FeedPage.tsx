@@ -909,7 +909,11 @@ export function FeedPage() {
   };
 
   return (
-    <div className="h-[100dvh] w-full relative">
+    <div className="h-[100dvh] w-full relative" style={{ background: '#053980' }}>
+      {/* Persistent grain behind all fixed content — covers full viewport including
+          bottom safe area so the home indicator region shows grain, not flat blue */}
+      <GrainBackground />
+
       {showSplash && (
         <SplashScreen
           onDone={handleSplashDone}
