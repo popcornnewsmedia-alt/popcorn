@@ -128,26 +128,32 @@ select:focus-visible {
     @apply border-border;
   }
 
-  /* Lock height chain: html → body → #root → FeedPage.
-     Each level is exactly the viewport. The feed scroll container
-     (position:fixed inset:0) and its children (height:100%) both
-     resolve to the same pixel value — no dvh/svh/lvh ambiguity. */
+  /* Height chain: html → body → #root fills the entire viewport.
+     In standalone PWA, -webkit-fill-available ensures we cover the
+     full screen including the home indicator safe area. */
   html {
     height: 100%;
-    background: #053980;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    background: #000;
     overflow: hidden;
   }
 
   body {
     height: 100%;
-    @apply text-foreground font-sans antialiased overflow-hidden;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    @apply text-foreground font-sans antialiased;
     background: transparent;
+    overflow: hidden;
     overscroll-behavior-y: none;
     -webkit-overflow-scrolling: touch;
   }
 
   #root {
     height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     overflow: hidden;
   }
 

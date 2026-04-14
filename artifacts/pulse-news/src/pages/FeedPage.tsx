@@ -499,7 +499,7 @@ export function FeedPage() {
     } else if (activeTab === 'feed' && !showSplash) {
       meta.content = '#000000';
     } else {
-      meta.content = '#053980';
+      meta.content = '#000000';
     }
   }, [readingArticle, activeTab, showSplash]);
 
