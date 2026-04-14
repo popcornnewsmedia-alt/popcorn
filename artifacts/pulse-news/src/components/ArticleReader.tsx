@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, Check, Bookmark, Heart, MessageCircle, Share2 } from "lucide-react";
 import { format } from "date-fns";
@@ -51,6 +51,10 @@ const CATEGORY_COLORS: Record<string, string> = {
   'World':        '#6ee7b7',
 };
 
+// Height of the hero image area (px). Content starts below this and scrolls
+// up over the fixed image.
+const HERO_HEIGHT = 340;
+
 interface ArticleReaderProps {
   article: NewsArticle | null;
   onClose: () => void;
@@ -66,34 +70,77 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
   const [localLiked, setLocalLiked] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
+
+  // ── Drag-to-close (CommentSheet-style) ────────────────────────────────────
   const dragStartY = useRef<number | null>(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const isDragging = useRef(false);
+
+  // How far the content has been scrolled — drives parallax + status bar fade
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     setImgError(false);
     setLocalLiked(false);
     setCommentsOpen(false);
+    setScrollY(0);
+    setDragOffset(0);
     if (fillRef.current) fillRef.current.style.transform = 'scaleX(0)';
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
   }, [article?.id]);
 
-  const handleScroll = () => {
+  // ── Scroll handler: progress bar + parallax scroll tracking ───────────────
+  const handleScroll = useCallback(() => {
     const el = scrollRef.current;
     const fill = fillRef.current;
-    if (!el || !fill) return;
+    if (!el) return;
     const { scrollTop, scrollHeight, clientHeight } = el;
-    const max = scrollHeight - clientHeight;
-    const pct = max > 0 ? scrollTop / max : 0;
-    fill.style.transform = `scaleX(${pct})`;
-  };
+    setScrollY(scrollTop);
+    if (fill) {
+      const max = scrollHeight - clientHeight;
+      const pct = max > 0 ? scrollTop / max : 0;
+      fill.style.transform = `scaleX(${pct})`;
+    }
+  }, []);
 
-  const onHandleTouchStart = (e: React.TouchEvent) => {
+  // ── Drag-to-close touch handlers ──────────────────────────────────────────
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    const el = scrollRef.current;
+    if (el && el.scrollTop > 4) return;
     dragStartY.current = e.touches[0].clientY;
-  };
-  const onHandleTouchEnd = (e: React.TouchEvent) => {
+    isDragging.current = false;
+  }, []);
+
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
     if (dragStartY.current === null) return;
-    const dy = e.changedTouches[0].clientY - dragStartY.current;
-    if (dy > 80) onClose();
+    const delta = e.touches[0].clientY - dragStartY.current;
+    if (delta <= 0) { setDragOffset(0); return; }
+    // 10px hysteresis to distinguish drag from scroll
+    if (!isDragging.current && delta < 10) return;
+    isDragging.current = true;
+    // Sqrt-based damping for natural resistance
+    const dampened = Math.sqrt(delta) * Math.sqrt(delta < 80 ? delta : 80);
+    setDragOffset(Math.min(delta, dampened + delta * 0.18));
+  }, []);
+
+  const onTouchEnd = useCallback(() => {
+    if (dragStartY.current === null) return;
     dragStartY.current = null;
-  };
+    if (dragOffset > 80) {
+      setDragOffset(0);
+      onClose();
+    } else {
+      setDragOffset(0);
+    }
+    isDragging.current = false;
+  }, [dragOffset, onClose]);
+
+  // Parallax: image moves at 40% of scroll speed
+  const imageTranslateY = Math.min(scrollY * 0.4, HERO_HEIGHT * 0.5);
+  // Status bar overlay fades in as content scrolls past the hero
+  const statusBarOpacity = Math.min(1, Math.max(0, (scrollY - 40) / (HERO_HEIGHT * 0.5)));
+
+  const hasImage = article?.imageUrl && !imgError;
 
   return (
     <>
@@ -105,25 +152,81 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
             exit={{ y: "100%", opacity: 0.5 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed inset-0 z-50 flex flex-col overflow-hidden"
-            style={{ background: '#ffffff' }}
+            style={{
+              background: '#ffffff',
+              transform: dragOffset > 0 ? `translateY(${dragOffset}px)` : undefined,
+              transition: dragOffset > 0 ? 'none' : 'transform 0.34s cubic-bezier(0.32,0.72,0,1)',
+            }}
           >
+            {/* Grain sits behind everything — rendered first so hero paints over it */}
             <GrainBackground variant="white" />
 
-            {/* Status-bar image bleed — fills env(safe-area-inset-top) with the hero image so the iOS
-                status bar shows the article photo rather than the plain cream background */}
+            {/* ── Fixed hero image (behind scrollable content, above grain) ──── */}
+            {hasImage && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: HERO_HEIGHT,
+                  overflow: 'hidden',
+                  zIndex: 2,
+                  transform: `translateY(${-imageTranslateY}px)`,
+                  willChange: 'transform',
+                }}
+              >
+                <img
+                  src={article.imageUrl!}
+                  alt={article.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: typeof article.imageFocalX === 'number' && typeof article.imageFocalY === 'number'
+                      ? focalToObjectPosition(article.imageFocalX, article.imageFocalY, article.imageWidth, article.imageHeight, window.innerWidth, HERO_HEIGHT)
+                      : 'center 30%',
+                  }}
+                  onError={() => setImgError(true)}
+                />
+                {/* Bottom gradient fade to white */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0) 30%, rgba(255,255,255,0) 55%, rgba(255,255,255,1) 100%)',
+                  }}
+                />
+              </div>
+            )}
+
+            {/* ── Fallback: no-image bg ──────────────────────────────────────── */}
+            {!hasImage && (
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: HERO_HEIGHT, zIndex: 2 }}>
+                <div style={{ position: 'absolute', inset: 0, background: '#ecf3ef' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(15,46,30,0.32)', mixBlendMode: 'multiply' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, #ffffff 100%)' }} />
+              </div>
+            )}
+
+            {/* ── Status bar area — fades from image to white as user scrolls ── */}
             <div
               style={{
-                position: 'absolute', top: 0, left: 0, right: 0,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
                 height: 'env(safe-area-inset-top)',
-                overflow: 'hidden',
-                zIndex: 2,
+                zIndex: 30,
                 pointerEvents: 'none',
+                overflow: 'hidden',
               }}
             >
-              {article.imageUrl && !imgError ? (
+              {/* Image showing through status bar */}
+              {hasImage && (
                 <>
                   <img
-                    src={article.imageUrl}
+                    src={article.imageUrl!}
                     aria-hidden="true"
                     style={{
                       position: 'absolute', top: 0, left: 0, width: '100%', height: '300px',
@@ -135,22 +238,36 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                   />
                   <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.28)' }} />
                 </>
-              ) : (
-                <div style={{ position: 'absolute', inset: 0, background: '#ffffff' }} />
               )}
+              {/* White overlay that fades in as content scrolls up */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: '#ffffff',
+                  opacity: statusBarOpacity,
+                  transition: 'opacity 0.08s linear',
+                }}
+              />
             </div>
 
-            {/* Drag handle */}
+            {/* ── Drag handle ────────────────────────────────────────────────── */}
             <div
-              className="absolute inset-x-0 z-30 flex justify-center pb-6"
-              onTouchStart={onHandleTouchStart}
-              onTouchEnd={onHandleTouchEnd}
+              className="absolute inset-x-0 z-40 flex justify-center pb-6"
               style={{ touchAction: 'none', top: 0, paddingTop: 'calc(8px + env(safe-area-inset-top))' }}
             >
-              <div style={{ width: 36, height: 4, borderRadius: 9999, background: 'rgba(5,57,128,0.22)' }} />
+              <div style={{
+                width: 36,
+                height: 4,
+                borderRadius: 9999,
+                background: statusBarOpacity > 0.5
+                  ? 'rgba(5,57,128,0.22)'
+                  : 'rgba(255,255,255,0.55)',
+                transition: 'background 0.15s',
+              }} />
             </div>
 
-            {/* X button */}
+            {/* ── X button ───────────────────────────────────────────────────── */}
             <button
               onClick={onClose}
               className="absolute right-4 z-40 p-1.5 rounded-full transition-colors"
@@ -159,8 +276,8 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
               <X className="w-4 h-4" />
             </button>
 
-            {/* Reading progress bar — navy on white, clearly visible */}
-            <div style={{ height: 2, width: '100%', position: 'relative', zIndex: 21, flexShrink: 0, background: 'rgba(5,57,128,0.10)' }}>
+            {/* ── Reading progress bar ────────────────────────────────────────── */}
+            <div style={{ height: 2, width: '100%', position: 'relative', zIndex: 21, flexShrink: 0, background: 'rgba(5,57,128,0.10)', marginTop: 'env(safe-area-inset-top)' }}>
               <div
                 ref={fillRef}
                 className="progress-fill-article"
@@ -168,165 +285,159 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
               />
             </div>
 
-            {/* Scrollable content */}
+            {/* ── Scrollable content (slides over the fixed hero) ─────────────── */}
             <div
               ref={scrollRef}
               onScroll={handleScroll}
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
               className="flex-1 overflow-y-auto overscroll-contain"
-              style={{ position: 'relative', zIndex: 1, touchAction: 'pan-y' }}
+              style={{ position: 'relative', zIndex: 3, touchAction: 'pan-y' }}
             >
-              {/* Hero image */}
-              <div className="relative h-72 sm:h-80 flex-shrink-0">
-                {article.imageUrl && !imgError ? (
-                  <img
-                    src={article.imageUrl}
-                    alt={article.title}
-                    className="w-full h-full object-cover"
-                    style={{
-                      objectPosition: typeof article.imageFocalX === 'number' && typeof article.imageFocalY === 'number'
-                        ? focalToObjectPosition(article.imageFocalX, article.imageFocalY, article.imageWidth, article.imageHeight, window.innerWidth, 288)
-                        : 'center 30%',
-                    }}
-                    onError={() => setImgError(true)}
-                  />
-                ) : (
-                  <>
-                    <div className="absolute inset-0" style={{ background: '#ecf3ef' }} />
-                    <div className="absolute inset-0" style={{ background: 'rgba(15,46,30,0.32)', mixBlendMode: 'multiply' }} />
-                  </>
-                )}
-                <div
-                  className="absolute inset-0"
-                  style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 38%, rgba(255,255,255,0) 65%, rgba(255,255,255,1) 100%)' }}
-                />
-              </div>
+              {/* Transparent spacer — lets the fixed hero image show through */}
+              <div style={{ height: hasImage ? HERO_HEIGHT - 40 : 0, pointerEvents: 'none' }} />
 
-              {/* Article body */}
-              <div className="max-w-2xl mx-auto px-5 pt-7 pb-28 sm:px-8">
-
-                {/* Image credit — subtle editorial caption under the hero */}
-                {article.imageCredit && (
-                  <p
-                    className="font-['Lora']"
-                    style={{
-                      fontSize: '11px',
-                      fontStyle: 'italic',
-                      color: 'rgba(0,0,0,0.42)',
-                      letterSpacing: '0.01em',
-                      marginBottom: '14px',
-                      marginTop: '-6px',
-                    }}
-                  >
-                    Photograph — {article.imageCredit}
-                  </p>
+              {/* Article body — white background so it covers the image as it scrolls up */}
+              <div style={{ background: '#ffffff', position: 'relative', minHeight: '100vh' }}>
+                {/* Soft top edge to blend with hero gradient */}
+                {hasImage && (
+                  <div style={{
+                    position: 'absolute',
+                    top: -30,
+                    left: 0,
+                    right: 0,
+                    height: 30,
+                    background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
+                    pointerEvents: 'none',
+                  }} />
                 )}
 
-                {/* Category + source pills + date */}
-                <div className="flex flex-wrap items-center gap-2 mb-5">
-                  <span
-                    className="flex items-center gap-1 px-2 py-1 rounded-full"
-                    style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)' }}
-                  >
-                    <span style={{
-                      display: 'inline-block', width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
-                      background: CATEGORY_COLORS[article.category] ?? 'rgba(0,0,0,0.3)',
-                      boxShadow: `0 0 4px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(0,0,0,0.2)'}`,
-                    }} />
-                    <span style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', color: 'rgba(0,0,0,0.65)', letterSpacing: '0.10em', textTransform: 'uppercase' }}>
-                      {article.category}
-                    </span>
-                  </span>
-                  <span
-                    className="px-2 py-1 rounded-full"
-                    style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)', fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', color: 'rgba(0,0,0,0.50)', letterSpacing: '0.08em' }}
-                  >
-                    {article.source}
-                  </span>
-                  <span className="flex items-center gap-1" style={{ fontSize: '11px', color: 'rgba(0,0,0,0.38)', fontFamily: "'Inter', sans-serif" }}>
-                    <Calendar className="w-3 h-3" />
-                    {format(new Date(article.publishedAt), 'MMM d, yyyy')}
-                  </span>
-                </div>
+                <div className="max-w-2xl mx-auto px-5 pt-5 pb-28 sm:px-8">
 
-                {/* Headline */}
-                <h1
-                  className="font-['Manrope']"
-                  style={{ fontWeight: 800, fontSize: 'clamp(26px, 6vw, 38px)', lineHeight: 1.06, letterSpacing: '-0.02em', color: '#1a1a1a', marginBottom: '20px' }}
-                >
-                  {article.title}
-                </h1>
+                  {/* Image credit */}
+                  {article.imageCredit && (
+                    <p
+                      className="font-['Lora']"
+                      style={{
+                        fontSize: '11px',
+                        fontStyle: 'italic',
+                        color: 'rgba(0,0,0,0.42)',
+                        letterSpacing: '0.01em',
+                        marginBottom: '14px',
+                      }}
+                    >
+                      Photograph — {article.imageCredit}
+                    </p>
+                  )}
 
-                {/* Social actions — inline horizontal */}
-                <div className="flex items-center gap-5 mb-8 pb-5" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
-                  <button
-                    onClick={() => { const next = !localLiked; setLocalLiked(next); likeMutation({ id: article.id, liked: next }); }}
-                    className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
-                  >
-                    <Heart style={{ width: 22, height: 22, color: localLiked ? '#e11d48' : '#111111', fill: localLiked ? '#e11d48' : 'none', strokeWidth: 1.6 }} />
-                    <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: localLiked ? '#e11d48' : '#111111' }}>
-                      {article.likes >= 1000 ? `${(article.likes / 1000).toFixed(1)}k` : article.likes}
+                  {/* Category + source pills + date */}
+                  <div className="flex flex-wrap items-center gap-2 mb-5">
+                    <span
+                      className="flex items-center gap-1 px-2 py-1 rounded-full"
+                      style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)' }}
+                    >
+                      <span style={{
+                        display: 'inline-block', width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
+                        background: CATEGORY_COLORS[article.category] ?? 'rgba(0,0,0,0.3)',
+                        boxShadow: `0 0 4px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(0,0,0,0.2)'}`,
+                      }} />
+                      <span style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', color: 'rgba(0,0,0,0.65)', letterSpacing: '0.10em', textTransform: 'uppercase' }}>
+                        {article.category}
+                      </span>
                     </span>
-                  </button>
-                  <button
-                    onClick={() => setCommentsOpen(true)}
-                    className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
-                  >
-                    <MessageCircle style={{ width: 22, height: 22, color: '#111111', strokeWidth: 1.6 }} />
-                    <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: '#111111' }}>
-                      {getInitialCommentCount(article.id)}
+                    <span
+                      className="px-2 py-1 rounded-full"
+                      style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)', fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', color: 'rgba(0,0,0,0.50)', letterSpacing: '0.08em' }}
+                    >
+                      {article.source}
                     </span>
-                  </button>
-                  <button
-                    onClick={() => bookmarkMutation(article.id)}
-                    className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
-                    style={{ marginLeft: 'auto' }}
-                  >
-                    <Bookmark style={{ width: 22, height: 22, color: '#111111', fill: article.isBookmarked ? '#111111' : 'none', strokeWidth: 1.4 }} />
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (navigator.share) {
-                        navigator.share({ title: article.title, text: article.summary, url: window.location.href }).catch(() => {});
-                      } else {
-                        navigator.clipboard.writeText(window.location.href);
-                      }
-                    }}
-                    className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
-                  >
-                    <Share2 style={{ width: 22, height: 22, color: '#111111', strokeWidth: 1.4 }} />
-                  </button>
-                </div>
-
-                {/* TLDR — callout block */}
-                <div className="mb-8" style={{ borderLeft: '3px solid #053980', borderRadius: '0 10px 10px 0', padding: '16px 20px' }}>
-                  <div style={{ fontSize: '12px', fontFamily: "'Macabro', 'Anton', sans-serif", letterSpacing: '0.14em', color: '#053980', textTransform: 'uppercase', marginBottom: '8px' }}>
-                    TLDR
+                    <span className="flex items-center gap-1" style={{ fontSize: '11px', color: 'rgba(0,0,0,0.38)', fontFamily: "'Inter', sans-serif" }}>
+                      <Calendar className="w-3 h-3" />
+                      {format(new Date(article.publishedAt), 'MMM d, yyyy')}
+                    </span>
                   </div>
-                  <p style={{ fontSize: '16px', color: '#111111', lineHeight: 1.75, fontFamily: "'Lora', Georgia, serif", margin: 0 }}>
-                    {article.summary}
-                  </p>
-                </div>
 
-                {/* Story */}
-                <div className="mb-8">
-                  <SectionHeading>Story</SectionHeading>
-                  <div className="space-y-5" style={{ fontSize: '17px', color: '#111111', lineHeight: 1.88, fontFamily: "'Lora', Georgia, serif" }}>
-                    {article.content.split('\n\n').map((para: string, i: number) => (
-                      <p key={i}>{para}</p>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Footer CTA */}
-                <div className="mt-16 pt-8 flex items-center justify-center" style={{ borderTop: '1px solid rgba(5,57,128,0.12)' }}>
-                  <button
-                    onClick={() => { onMarkRead?.(); onClose(); }}
-                    className="flex items-center gap-2 px-7 py-3 rounded-full transition-all active:scale-95"
-                    style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '13px', letterSpacing: '0.06em', background: '#053980', color: '#fff1cd' }}
+                  {/* Headline */}
+                  <h1
+                    className="font-['Manrope']"
+                    style={{ fontWeight: 800, fontSize: 'clamp(26px, 6vw, 38px)', lineHeight: 1.06, letterSpacing: '-0.02em', color: '#1a1a1a', marginBottom: '20px' }}
                   >
-                    <Check className="w-4 h-4" strokeWidth={2.5} />
-                    {isRead ? 'Unmark as Read' : 'Mark as Read'}
-                  </button>
+                    {article.title}
+                  </h1>
+
+                  {/* Social actions */}
+                  <div className="flex items-center gap-5 mb-8 pb-5" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+                    <button
+                      onClick={() => { const next = !localLiked; setLocalLiked(next); likeMutation({ id: article.id, liked: next }); }}
+                      className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
+                    >
+                      <Heart style={{ width: 22, height: 22, color: localLiked ? '#e11d48' : '#111111', fill: localLiked ? '#e11d48' : 'none', strokeWidth: 1.6 }} />
+                      <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: localLiked ? '#e11d48' : '#111111' }}>
+                        {article.likes >= 1000 ? `${(article.likes / 1000).toFixed(1)}k` : article.likes}
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => setCommentsOpen(true)}
+                      className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
+                    >
+                      <MessageCircle style={{ width: 22, height: 22, color: '#111111', strokeWidth: 1.6 }} />
+                      <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: '#111111' }}>
+                        {getInitialCommentCount(article.id)}
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => bookmarkMutation(article.id)}
+                      className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
+                      style={{ marginLeft: 'auto' }}
+                    >
+                      <Bookmark style={{ width: 22, height: 22, color: '#111111', fill: article.isBookmarked ? '#111111' : 'none', strokeWidth: 1.4 }} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (navigator.share) {
+                          navigator.share({ title: article.title, text: article.summary, url: window.location.href }).catch(() => {});
+                        } else {
+                          navigator.clipboard.writeText(window.location.href);
+                        }
+                      }}
+                      className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
+                    >
+                      <Share2 style={{ width: 22, height: 22, color: '#111111', strokeWidth: 1.4 }} />
+                    </button>
+                  </div>
+
+                  {/* TLDR */}
+                  <div className="mb-8" style={{ borderLeft: '3px solid #053980', borderRadius: '0 10px 10px 0', padding: '16px 20px' }}>
+                    <div style={{ fontSize: '12px', fontFamily: "'Macabro', 'Anton', sans-serif", letterSpacing: '0.14em', color: '#053980', textTransform: 'uppercase', marginBottom: '8px' }}>
+                      TLDR
+                    </div>
+                    <p style={{ fontSize: '16px', color: '#111111', lineHeight: 1.75, fontFamily: "'Lora', Georgia, serif", margin: 0 }}>
+                      {article.summary}
+                    </p>
+                  </div>
+
+                  {/* Story */}
+                  <div className="mb-8">
+                    <SectionHeading>Story</SectionHeading>
+                    <div className="space-y-5" style={{ fontSize: '17px', color: '#111111', lineHeight: 1.88, fontFamily: "'Lora', Georgia, serif" }}>
+                      {article.content.split('\n\n').map((para: string, i: number) => (
+                        <p key={i}>{para}</p>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Footer CTA */}
+                  <div className="mt-16 pt-8 flex items-center justify-center" style={{ borderTop: '1px solid rgba(5,57,128,0.12)' }}>
+                    <button
+                      onClick={() => { onMarkRead?.(); onClose(); }}
+                      className="flex items-center gap-2 px-7 py-3 rounded-full transition-all active:scale-95"
+                      style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '13px', letterSpacing: '0.06em', background: '#053980', color: '#fff1cd' }}
+                    >
+                      <Check className="w-4 h-4" strokeWidth={2.5} />
+                      {isRead ? 'Unmark as Read' : 'Mark as Read'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

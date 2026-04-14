@@ -457,6 +457,12 @@ export function FeedPage() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  // ── Pull-to-refresh ─────────────────────────────────────────────────────
+  const [pullOffset, setPullOffset] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const pullStartY = useRef<number | null>(null);
+  const isPulling = useRef(false);
+
   // Measure the true full-viewport height in pixels by reading CSS 100dvh.
   //
   // On iOS standalone PWA, window.innerHeight and el.clientHeight can be
@@ -509,6 +515,50 @@ export function FeedPage() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch } =
     useInfiniteNewsFeed(undefined);
+
+  // ── Pull-to-refresh handlers ────────────────────────────────────────────
+  const handlePullStart = useCallback((e: React.TouchEvent) => {
+    const container = scrollContainerRef.current;
+    if (!container || isRefreshing) return;
+    // Only activate when scrolled to the very top (on the first date divider)
+    if (container.scrollTop > 4) return;
+    pullStartY.current = e.touches[0].clientY;
+    isPulling.current = false;
+  }, [isRefreshing]);
+
+  const handlePullMove = useCallback((e: React.TouchEvent) => {
+    if (pullStartY.current === null || isRefreshing) return;
+    const container = scrollContainerRef.current;
+    // Bail if user scrolled away from top during the touch
+    if (container && container.scrollTop > 4) {
+      pullStartY.current = null;
+      setPullOffset(0);
+      return;
+    }
+    const delta = e.touches[0].clientY - pullStartY.current;
+    if (delta <= 0) { setPullOffset(0); return; }
+    if (!isPulling.current && delta < 10) return;
+    isPulling.current = true;
+    // Damped pull — sqrt resistance so it feels elastic
+    const dampened = Math.sqrt(delta) * 6;
+    setPullOffset(Math.min(dampened, 120));
+  }, [isRefreshing]);
+
+  const handlePullEnd = useCallback(() => {
+    if (pullStartY.current === null) return;
+    pullStartY.current = null;
+    if (pullOffset > 60 && !isRefreshing) {
+      setIsRefreshing(true);
+      setPullOffset(50); // hold at indicator position while refreshing
+      refetch().finally(() => {
+        setIsRefreshing(false);
+        setPullOffset(0);
+      });
+    } else {
+      setPullOffset(0);
+    }
+    isPulling.current = false;
+  }, [pullOffset, isRefreshing, refetch]);
 
 
   useEffect(() => {
@@ -976,14 +1026,47 @@ export function FeedPage() {
         />
       )}
 
+      {/* Pull-to-refresh indicator — shows above the feed when pulling down */}
+      {activeTab === 'feed' && pullOffset > 0 && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: pullOffset,
+            zIndex: 42,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#053980',
+            overflow: 'hidden',
+            pointerEvents: 'none',
+          }}
+        >
+          <RefreshCw
+            className="w-5 h-5"
+            style={{
+              color: '#fff1cd',
+              opacity: Math.min(1, pullOffset / 50),
+              transform: `rotate(${pullOffset * 4}deg)`,
+              animation: isRefreshing ? 'spin 0.8s linear infinite' : 'none',
+            }}
+          />
+        </div>
+      )}
+
       {/* Feed — position:fixed inset:0 guarantees true full visual-viewport on all mobile browsers.
            Always mounted so scroll position is preserved when switching tabs. */}
       <div
         ref={scrollContainerRef}
+        onTouchStart={handlePullStart}
+        onTouchMove={handlePullMove}
+        onTouchEnd={handlePullEnd}
         className="pn-fullscreen snap-y snap-mandatory scrollbar-hide"
         style={{
           position: 'fixed',
-          top: 0,
+          top: pullOffset,
           left: 0,
           right: 0,
           bottom: 0,
@@ -992,6 +1075,7 @@ export function FeedPage() {
           WebkitOverflowScrolling: 'touch',
           display: activeTab === 'feed' ? 'block' : 'none',
           background: '#000',
+          transition: isPulling.current ? 'none' : 'top 0.3s cubic-bezier(0.32,0.72,0,1)',
         }}
       >
         {feedItems.length === 0 ? (
