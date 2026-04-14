@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from "react";
 import { isSameDay, startOfDay, subDays } from "date-fns";
 import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
@@ -455,14 +455,30 @@ export function FeedPage() {
   const [readIds, setReadIds] = useState<Set<number>>(new Set());
   const [pickerOpen, setPickerOpen] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Single source of truth for viewport height — avoids dvh/svh/100% inheritance
   // ambiguity on mobile browsers where chrome show/hide changes the visual viewport.
+  //
+  // In standalone PWA mode, window.innerHeight may not include the bottom safe
+  // area (home indicator). The scroll container (position:fixed; inset:0) covers
+  // the true full viewport, so we measure its clientHeight after mount and use
+  // that for card sizing — ensuring images bleed to the very bottom.
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+  useLayoutEffect(() => {
+    const el = scrollContainerRef.current;
+    if (el) {
+      const h = el.clientHeight;
+      if (h > 0 && h !== viewportHeight) setViewportHeight(h);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
-    const update = () => setViewportHeight(window.innerHeight);
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+    const measure = () => {
+      const el = scrollContainerRef.current;
+      setViewportHeight(el?.clientHeight || window.innerHeight);
+    };
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
   }, []);
 
   // Close auth modals when the user becomes authenticated (e.g. after Google OAuth redirect)
@@ -485,7 +501,6 @@ export function FeedPage() {
 
   const handleSplashDone = useCallback(() => setShowSplash(false), []);
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const pickerTouchStartYRef = useRef(0);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch } =

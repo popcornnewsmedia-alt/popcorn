@@ -20,9 +20,9 @@ export function BottomNav({ activeTab, onTabChange }: { activeTab: Tab; onTabCha
     <div
       className="pn-bottom-nav fixed bottom-0 inset-x-0 z-40 flex justify-center pointer-events-none"
       style={{
-        // In standalone PWA, push the nav closer to the screen edge (less gap above home indicator)
+        // In standalone PWA, push the nav flush to the bottom safe area edge
         paddingBottom: isStandalone
-          ? 'calc(env(safe-area-inset-bottom) + 2px)'
+          ? 'env(safe-area-inset-bottom)'
           : 'max(18px, calc(env(safe-area-inset-bottom) + 8px))',
         transition: 'opacity 0.28s ease, transform 0.28s cubic-bezier(0.32,0.72,0,1)',
       }}

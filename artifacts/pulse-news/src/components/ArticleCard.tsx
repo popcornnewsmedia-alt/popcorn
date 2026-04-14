@@ -134,6 +134,11 @@ export function ArticleCard({
   const containerW = window.innerWidth;
   const containerH = viewportHeight ?? window.innerHeight;
 
+  // In standalone PWA the blurred TopBar covers ~100px at the top of the card.
+  // Tell the focal-point algorithm the "visible" area is shorter so it biases
+  // the crop to keep faces below the chrome — without creating any gaps.
+  const focalH = isStandalone ? containerH - 100 : containerH;
+
   // When focal data exists, use the precise math. When it doesn't, use a
   // smart default that accounts for the web's landscape viewport: portrait
   // images (the majority of our feed) get heavily cropped top/bottom on wide
@@ -148,7 +153,7 @@ export function ArticleCard({
       article.imageWidth,
       article.imageHeight,
       containerW,
-      containerH,
+      focalH,
     );
   } else if (
     containerW > containerH &&
@@ -158,7 +163,8 @@ export function ArticleCard({
     // Landscape viewport + portrait image → faces are usually in top third
     objectPosition = 'center 25%';
   } else {
-    objectPosition = 'center';
+    // In standalone, default to biasing toward top so faces drop below TopBar
+    objectPosition = isStandalone ? 'center 40%' : 'center';
   }
 
   // Out-of-window: same-height snap placeholder, zero memory / decode pressure.
@@ -222,11 +228,6 @@ export function ArticleCard({
               zIndex: 5,
               opacity: imgReady ? 1 : 0,
               transition: imgReady ? 'none' : 'opacity 0.18s ease',
-              // In standalone PWA, nudge image down so faces aren't hidden
-              // behind the blurred status-bar area. The card's overflow:hidden
-              // clips the bottom; the top gap shows the skeleton gradient
-              // which blurs away under the TopBar.
-              ...(isStandalone ? { transform: 'translateY(24px)' } : {}),
             }}
           />
           {/* Subtle dark tint — z-10 */}
