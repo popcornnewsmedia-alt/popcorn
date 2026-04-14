@@ -2463,6 +2463,7 @@ Write full articles for each of the ${count} stories below.
 WRITING RULES:
 - ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show, app, platform or company — never "the app", "the platform", "the company", "the service", "the brand", "the artist" or any other generic substitute. If a product or brand is central to the story, name it every time it is referenced, not just on first mention.
 - PRESERVE KEY SPECIFICS. If the source names a specific model, product, feature, track, award, or proper noun (e.g. a model name like "Muse Spark", a song title, an award name), you MUST include it in the article. Never replace a specific name with a vague description like "a new model" or "a new feature".
+- NEVER LEAVE THE READER HANGING. If a mystery was solved, say what the answer was. If someone was caught cheating, say how. If a deal was struck, name the terms. If evidence was found, say what it showed. If something was revealed, say what it is. The substance IS the story. The reader should never finish the article thinking "okay but what actually happened?"
 - Write like you are talking to a friend. Short sentences. Simple words. No jargon.
 - No dashes or hyphens used as pauses in sentences. Use plain punctuation.
 - No bullet points inside the story content.
@@ -3306,6 +3307,7 @@ Write full articles for each of the ${count} stories below.
 WRITING RULES:
 - ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show, app, platform or company — never "the app", "the platform", "the company", "the service", "the brand", "the artist" or any other generic substitute. If a product or brand is central to the story, name it every time it is referenced, not just on first mention.
 - PRESERVE KEY SPECIFICS. If the source names a specific model, product, feature, track, award, or proper noun (e.g. a model name like "Muse Spark", a song title, an award name), you MUST include it in the article. Never replace a specific name with a vague description like "a new model" or "a new feature".
+- NEVER LEAVE THE READER HANGING. If a mystery was solved, say what the answer was. If someone was caught cheating, say how. If a deal was struck, name the terms. If evidence was found, say what it showed. If something was revealed, say what it is. The substance IS the story. The reader should never finish the article thinking "okay but what actually happened?"
 - Write like you are talking to a friend. Short sentences. Simple words. No jargon.
 - No dashes or hyphens used as pauses in sentences. Use plain punctuation.
 - No bullet points inside the story content.
