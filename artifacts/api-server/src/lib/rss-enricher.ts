@@ -9,6 +9,7 @@
 import https from "node:https";
 import fs from "node:fs";
 import path from "node:path";
+import { spawn } from "node:child_process";
 import { supabase } from "./supabase-client.js";
 
 // ─── Image pool ────────────────────────────────────────────────────────────
@@ -199,6 +200,8 @@ interface ImageCandidate {
     | "category_fallback";
   width?: number;
   height?: number;
+  /** For YouTube candidates — the video title, used to detect trailer text overlays. */
+  videoTitle?: string;
 }
 
 // ── Diversity tracker ─────────────────────────────────────────────────────────
@@ -480,6 +483,15 @@ function scoreCandidate(
   // often blurry headshots or social media crops. Editorial OG is still rewarded
   // via the bonus above, so this only hits low-quality OG sources.
   if ((intent === "PERSON" || intent === "MUSIC_ARTIST") && c.source === "og" && !isEditorialUrl(c.url)) score -= 8;
+
+  // YouTube trailer / text-overlay penalty — thumbnails for "Official Trailer",
+  // "Teaser", "Music Video" etc. contain large text overlays that look bad in
+  // the feed. If the YouTube video title matches these patterns, penalise so
+  // a clean TMDb poster or Unsplash portrait can win.
+  if (c.source === "youtube" && c.videoTitle) {
+    const trailerRe = /\b(official\s+)?trailer\b|\bteaser\b|\bofficial\s+video\b|\blyric\s+video\b|\bmusic\s+video\b|\bfull\s+movie\b|\bclip\b/i;
+    if (trailerRe.test(c.videoTitle)) score -= 20;
+  }
 
   // Diversity penalty
   score -= getDiversityPenalty(c.url);
@@ -780,23 +792,39 @@ async function selectBestImage(
         );
         if (!res.ok) return null;
         const data = await res.json() as any; // eslint-disable-line @typescript-eslint/no-explicit-any
-        const videoId: string | undefined = data?.items?.[0]?.id?.videoId;
+        const item = data?.items?.[0];
+        const videoId: string | undefined = item?.id?.videoId;
         if (!videoId) return null;
         const ytUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
         const qr = await isPixelQualityImage(ytUrl, { minShortEdge: 640, minBytesPerMP: 15_000 });
         if (!qr.pass) return null;
-        return { url: ytUrl, source: "youtube", width: qr.width, height: qr.height };
+        return { url: ytUrl, source: "youtube", width: qr.width, height: qr.height, videoTitle: item?.snippet?.title };
       } catch { return null; }
     })(),
 
     // 5. TMDb — Film & TV posters / person profiles (Option 3: now also PERSON)
+    //    For FILM_TV, also tries a person-name fallback if the primary (film-title)
+    //    search fails — e.g. "Jeremy Strong" when "The Social Network 2010 film"
+    //    doesn't yield a usable result.
     (async (): Promise<ImageCandidate | null> => {
       if (!wikiQuery || !applicableSources.includes("tmdb")) return null;
-      const url = await fetchTMDbImage(wikiQuery);
+      // TMDb movie posters are portrait-oriented (typically ~680-1000px wide).
+      // The strict 1000px short-edge gate designed for person portraits rejects
+      // most posters. Use a relaxed gate for FILM_TV so TMDb can compete.
+      const tmdbQualityOpts = intent === "FILM_TV"
+        ? { minShortEdge: 600, minBytesPerMP: 25_000 }
+        : qualityOpts;
+      let url = await fetchTMDbImage(wikiQuery);
+      // FILM_TV fallback: if the primary search (film title) fails, try extracting
+      // a person name from the headline and search TMDb for a portrait.
+      if (!isGoodImageUrl(url) && intent === "FILM_TV") {
+        const personMatch = article.title.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z]+)+)/);
+        if (personMatch) {
+          url = await fetchTMDbImage(personMatch[1]);
+        }
+      }
       if (!isGoodImageUrl(url)) return null;
-      // TMDb original images are almost always high-res canonical portraits /
-      // posters, but we still gate so bad search hits don't slip through.
-      const q = await isPixelQualityImage(url!, qualityOpts);
+      const q = await isPixelQualityImage(url!, tmdbQualityOpts);
       if (!q.pass) return null;
       return { url: url!, source: "tmdb", width: q.width, height: q.height };
     })(),
@@ -2206,7 +2234,10 @@ async function enrichWithClaude(
     )
     .join("\n\n---\n\n");
 
-  // ── Helper: call Anthropic API via node:https (bypasses undici's fetch pool) ──
+  // ── Helper: call Anthropic API via curl subprocess ──────────────────────────
+  // Node.js networking (both undici fetch and node:https) becomes unreliable
+  // after batch RSS fetches. Spawning curl as a subprocess completely isolates
+  // the Claude API call from any in-process networking state.
   const callClaude = (userPrompt: string, maxTokens: number): Promise<string> =>
     new Promise<string>((resolve, reject) => {
       const body = JSON.stringify({
@@ -2214,42 +2245,45 @@ async function enrichWithClaude(
         max_tokens: maxTokens,
         messages: [{ role: "user", content: userPrompt }],
       });
-      const req = https.request(
-        {
-          hostname: "api.anthropic.com",
-          path: "/v1/messages",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey,
-            "anthropic-version": "2023-06-01",
-            "Content-Length": Buffer.byteLength(body),
-          },
-        },
-        (res) => {
-          let data = "";
-          res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
-          res.on("end", () => {
-            if ((res.statusCode ?? 0) >= 400) {
-              reject(new Error(`Anthropic API ${res.statusCode}: ${data.slice(0, 300)}`));
+      const tmpFile = `/tmp/claude-req-${Date.now()}-${Math.random().toString(36).slice(2)}.json`;
+      fs.writeFileSync(tmpFile, body);
+
+      const curl = spawn("curl", [
+        "-s", "--http1.1", "--max-time", "180",
+        "-X", "POST",
+        "https://api.anthropic.com/v1/messages",
+        "-H", "Content-Type: application/json",
+        "-H", `x-api-key: ${apiKey}`,
+        "-H", "anthropic-version: 2023-06-01",
+        "-d", `@${tmpFile}`,
+      ]);
+
+      let stdout = "";
+      let stderr = "";
+      curl.stdout.on("data", (chunk: Buffer) => { stdout += chunk.toString(); });
+      curl.stderr.on("data", (chunk: Buffer) => { stderr += chunk.toString(); });
+      curl.on("close", (code) => {
+        try { fs.unlinkSync(tmpFile); } catch {}
+        if (code !== 0) {
+          reject(new Error(`curl exited with code ${code}: ${stderr.slice(0, 300)}`));
+        } else {
+          try {
+            const json = JSON.parse(stdout);
+            if (json.error) {
+              reject(new Error(`Anthropic API error: ${JSON.stringify(json.error).slice(0, 300)}`));
             } else {
-              try {
-                const json = JSON.parse(data);
-                const content = json?.content?.[0];
-                resolve(content?.type === "text" ? content.text : "");
-              } catch {
-                reject(new Error(`Failed to parse Anthropic response: ${data.slice(0, 200)}`));
-              }
+              const content = json?.content?.[0];
+              resolve(content?.type === "text" ? content.text : "");
             }
-          });
+          } catch {
+            reject(new Error(`Failed to parse Anthropic response: ${stdout.slice(0, 200)}`));
+          }
         }
-      );
-      req.setTimeout(180_000, () => {
-        req.destroy(new Error("Anthropic API request timed out after 180s"));
       });
-      req.on("error", reject);
-      req.write(body);
-      req.end();
+      curl.on("error", (err) => {
+        try { fs.unlinkSync(tmpFile); } catch {}
+        reject(err);
+      });
     });
 
   // ── Call 1: Selection ────────────────────────────────────────────────────────
@@ -2309,7 +2343,7 @@ CONVERSATION STRENGTH — Prioritise stories with tension, controversy, a clear 
 
 BAR TEST — "Would two culturally aware people with different interests bring this up today?" If no → exclude.
 
-PROMOTIONAL PENALTY — Trailers, teasers, and promotional cycles are not culture. Deprioritise aggressively unless there is clear, demonstrated traction well beyond the target fanbase.
+PROMOTIONAL PENALTY — Individual trailers, teasers, and routine PR-cycle announcements are not culture. Deprioritise aggressively unless there is clear, demonstrated traction well beyond the target fanbase. EXCEPTION: major industry showcase events (CinemaCon, Comic-Con, SXSW panels, D23) where a studio reveals its full upcoming slate are NOT promotional drops — they are industry-direction signals. A single studio's CinemaCon panel showing multiple tentpole films tells you where the industry is heading. Treat these as structural events, not marketing.
 
 DEFAULT FAILURES — The following story types fail Question 1 by default and require exceptional evidence to override: music or film reviews (discovery, not events); rumours and unconfirmed leaks (build-up, not consequence); interviews and meta-commentary (responses to culture, not culture itself); award nominations and festival lineups that are purely administrative. The only override is when the story's mere existence has already triggered a large-scale public reaction.
 
@@ -2323,8 +2357,13 @@ UPDATES ON PAST EVENTS — Updates and follow-ups about events from prior news c
 
 SHAREABILITY ≠ CULTURAL WEIGHT — A story can be genuinely bizarre or funny without having cultural substance. A celebrity making a sarcastic comment that goes viral is amusing but suggests nothing about how we live, what we value, or how society is changing. Ask: beyond the immediate "haha that's weird," does this story illuminate something real? Pure viral fluff with no lasting cultural or platform signal should be filtered out.
 
+━━━ CROSS-DOMAIN COLLISIONS ━━━
+Stories where two normally separate worlds collide create natural intrigue and broad appeal. Luxury × space (a watchmaker sending a timepiece to the moon), fashion × tech (AI-designed runway collections), sport × geopolitics (athletes caught in diplomatic incidents), gaming × fine art. These collisions are high-signal because they indicate cultural boundaries shifting. Do not dismiss a story as "just a product announcement" or "just a niche interest" when the collision itself is the story. Ask: does combining these two worlds create something genuinely novel that people would share out of surprise or fascination?
+
 ━━━ STRUCTURAL SHIFTS ━━━
 Prioritise stories about structural changes that shape how culture is created, distributed, or consumed — even when they lack celebrity names or viral buzz. Platform incentive changes (e.g. X cutting payments to clickbait), internet infrastructure threats (e.g. archiving tools at risk), major hardware direction shifts (e.g. Apple entering a new product category), and macro workforce changes (e.g. AI replacing significant portions of jobs) all qualify. These stories have outsized long-term cultural impact and are consistently under-selected.
+
+DEPLOYMENT MILESTONES — When a technology or concept moves from theory to real-world deployment, that transition is a structural signal. Robotaxis beginning actual passenger service in a major city, AI tools being embedded into mainstream financial products, autonomous delivery reaching residential streets — these "it's actually happening now" moments are more culturally significant than the announcements that preceded them. Prioritise deployment over announcement.
 
 ━━━ INSTITUTIONAL CULTURAL EVENTS ━━━
 Major awards ceremonies (Cannes, Olivier Awards, BAFTAs, Grammys), landmark festival lineups, and prestigious cultural milestones deserve consistent inclusion even when they are not sensational. These events actively shape cultural conversation for months afterward. Do not dismiss them as "administrative" if winners have been announced or if the event carries genuine global cultural weight. The test: does this event set the cultural agenda beyond its immediate audience?
@@ -2335,11 +2374,13 @@ AI stories should span multiple angles within a single feed: consumer-facing too
 ━━━ NOVELTY AND CURIOSITY ━━━
 Unexpected, curiosity-driven stories with strong shareability signals can elevate the feed, as long as they feel meaningful rather than empty noise. A story about a €100 raffle for a €1M Picasso, or a disqualified Pokemon Go champion fighting back, has genuine intrigue and mass appeal. Weight novelty more than prestige — a surprising underdog story can be more valuable than a predictable establishment one.
 
+INVESTIGATION AND REVEAL NARRATIVES — Stories where a long-standing mystery is solved, a fraud is exposed, or a hidden truth comes to light carry inherent crossover appeal regardless of the domain. A 30-year-old chess cheating mystery finally unmasked, or a secret scraping operation exposed, transcends the niche it originates from because the narrative structure itself — concealment then revelation — is universally compelling. Do not reject these as "too niche" just because the domain (chess, academia, a specific platform) seems narrow. If the story has a strong "wait, what?" hook that would make someone outside the domain click, it belongs.
+
 ━━━ SPORTS ━━━
 Only qualifies when crossing into mainstream cultural conversation: historic firsts that non-fans would celebrate, major controversies spilling into broader discourse, record-breaking economic moments. Never: match results, standings, transfers, injuries, or routine playoff coverage.
 
-━━━ CURIOSITY AND SHAREABILITY ━━━
-Include genuinely strange, absurd, or surprising stories with strong shareability — even when they fall outside traditional cultural categories. The test: would someone immediately screenshot this and send it to a group chat?
+━━━ PRIVACY AND ETHICAL BREACHES ━━━
+Stories exposing secret surveillance, data scraping of vulnerable communities, or corporate deception around user privacy carry high emotional and ethical stakes that resonate well beyond the tech audience. A company secretly recording addiction recovery meetings, a platform tracking users after they opted out, a hidden data pipeline — these stories combine genuine outrage with broad relevance. Do not under-weight them as "tech news" when the human cost is the real story.
 
 ━━━ LOW-WEIGHT SOURCES ━━━
 Daily Mail and Page Six are signal detectors only. They do not justify inclusion independently — the story must pass the core test on its own merits.
@@ -2411,7 +2452,7 @@ Respond with ONLY the JSON array — no markdown, no code fences, no rejected en
 
   // ── Call 2: Enrichment — batched in groups of 5 to prevent socket timeouts ──
   // Large article counts in a single call produce responses too big for the socket.
-  const ENRICH_BATCH = 5;
+  const ENRICH_BATCH = 3;
   const batchCount = Math.ceil(dedupedRawItems.length / ENRICH_BATCH);
 
   const makeEnrichmentPrompt = (articleList: string, count: number) =>
@@ -2828,6 +2869,8 @@ export async function loadLiveArticles(
     ["https://www.404media.co/rss/",                                   "404 Media"],
     // Modern Taste & Aesthetic Culture — youth culture, fashion signals
     ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
+    // Business & Innovation
+    ["https://www.inc.com/rss",                                        "Inc."],
     // ── Low-weight signal sources (early detection only) ─────────────────────
     ["https://www.dailymail.co.uk/home/index.rss",                     "Daily Mail"],
     ["https://pagesix.com/feed/",                                      "Page Six"],
@@ -3057,6 +3100,7 @@ export async function generateShortlist(
     ["https://www.404media.co/rss/",                                   "404 Media"],
     ["https://pagesix.com/feed/",                                      "Page Six"],
     ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
+    ["https://www.inc.com/rss",                                        "Inc."],
     ["https://www.dailymail.co.uk/home/index.rss",                     "Daily Mail"],
   ];
 
@@ -3206,47 +3250,52 @@ export async function enrichSelectedItems(items: RawRSSItem[], publishToday = fa
         max_tokens: maxTokens,
         messages: [{ role: "user", content: userPrompt }],
       });
-      const req = https.request(
-        {
-          hostname: "api.anthropic.com",
-          path: "/v1/messages",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey,
-            "anthropic-version": "2023-06-01",
-            "Content-Length": Buffer.byteLength(body),
-          },
-        },
-        (res) => {
-          let data = "";
-          res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
-          res.on("end", () => {
-            if ((res.statusCode ?? 0) >= 400) {
-              reject(new Error(`Anthropic API ${res.statusCode}: ${data.slice(0, 300)}`));
+      const tmpFile = `/tmp/claude-req-${Date.now()}-${Math.random().toString(36).slice(2)}.json`;
+      fs.writeFileSync(tmpFile, body);
+
+      const curl = spawn("curl", [
+        "-s", "--http1.1", "--max-time", "180",
+        "-X", "POST",
+        "https://api.anthropic.com/v1/messages",
+        "-H", "Content-Type: application/json",
+        "-H", `x-api-key: ${apiKey}`,
+        "-H", "anthropic-version: 2023-06-01",
+        "-d", `@${tmpFile}`,
+      ]);
+
+      let stdout = "";
+      let stderr = "";
+      curl.stdout.on("data", (chunk: Buffer) => { stdout += chunk.toString(); });
+      curl.stderr.on("data", (chunk: Buffer) => { stderr += chunk.toString(); });
+      curl.on("close", (code) => {
+        try { fs.unlinkSync(tmpFile); } catch {}
+        if (code !== 0) {
+          reject(new Error(`curl exited with code ${code}: ${stderr.slice(0, 300)}`));
+        } else {
+          try {
+            const json = JSON.parse(stdout);
+            if (json.error) {
+              reject(new Error(`Anthropic API error: ${JSON.stringify(json.error).slice(0, 300)}`));
             } else {
-              try {
-                const json = JSON.parse(data);
-                const content = json?.content?.[0];
-                resolve(content?.type === "text" ? content.text : "");
-              } catch {
-                reject(new Error(`Failed to parse Anthropic response: ${data.slice(0, 200)}`));
-              }
+              const content = json?.content?.[0];
+              resolve(content?.type === "text" ? content.text : "");
             }
-          });
+          } catch {
+            reject(new Error(`Failed to parse Anthropic response: ${stdout.slice(0, 200)}`));
+          }
         }
-      );
-      req.setTimeout(180_000, () => { req.destroy(new Error("Anthropic API request timed out after 180s")); });
-      req.on("error", reject);
-      req.write(body);
-      req.end();
+      });
+      curl.on("error", (err) => {
+        try { fs.unlinkSync(tmpFile); } catch {}
+        reject(err);
+      });
     });
 
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long", year: "numeric", month: "long", day: "numeric",
   });
 
-  const ENRICH_BATCH = 5;
+  const ENRICH_BATCH = 3;
   const batchCount = Math.ceil(items.length / ENRICH_BATCH);
 
   const makePrompt = (articleList: string, count: number) =>

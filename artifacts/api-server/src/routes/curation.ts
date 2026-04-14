@@ -1,8 +1,9 @@
 /**
  * Curation API — streamlined endpoints for manual editorial curation.
  *
- * POST   /api/curation/add          — add articles from uncurated pool or raw data
+ * POST   /api/curation/add          — add articles from uncurated pool or raw data (→ prod)
  * DELETE /api/curation/remove       — remove articles by Supabase ID
+ * POST   /api/curation/promote      — promote all dev articles for a date to prod
  * POST   /api/curation/reset-image  — re-select image for one article
  * PATCH  /api/curation/set-image    — set a specific image URL (through Sharp pipeline)
  * GET    /api/curation/feed         — list feed with stable Supabase IDs
@@ -15,7 +16,7 @@ import {
   resolveArticleBySupabaseId,
 } from "../lib/curation-helpers.js";
 import { enrichSelectedItems, selectBestImageForRerun, detectImageFocalPoint, type EnrichedArticle } from "../lib/rss-enricher.js";
-import { mergeFeed, saveCommittedFeed, removeArticlesBySupabaseId, updateArticleImageInMemory } from "../lib/curated-store.js";
+import { mergeFeed, saveCommittedFeed, saveCommittedFeedAsProd, removeArticlesBySupabaseId, updateArticleImageInMemory, promoteToProduction } from "../lib/curated-store.js";
 import { markLive } from "../lib/article-store.js";
 import { processAndUploadImage } from "../lib/image-processor.js";
 import { supabase } from "../lib/supabase-client.js";
@@ -81,7 +82,8 @@ router.post("/curation/add", async (req, res) => {
     console.log(`[curation/add] Enriching ${rawItems.length} articles...`);
     const enriched = await enrichSelectedItems(rawItems, true);
     const added = mergeFeed(enriched);
-    saveCommittedFeed();
+    // Manual curation additions go straight to prod — they're already reviewed.
+    saveCommittedFeedAsProd();
     markLive();
 
     res.json({
@@ -283,6 +285,26 @@ router.patch("/curation/set-image", async (req, res) => {
     });
   } catch (err) {
     console.error("[curation/set-image] error:", (err as Error).message);
+    res.status(500).json({ ok: false, error: (err as Error).message });
+  }
+});
+
+// ─── POST /api/curation/promote ──────────────────────────────────────────────
+
+router.post("/curation/promote", async (req, res) => {
+  try {
+    const { feedDate = new Date().toISOString().slice(0, 10) } = req.body as { feedDate?: string };
+    const count = await promoteToProduction(feedDate);
+    res.json({
+      ok: true,
+      promoted: count,
+      feedDate,
+      message: count > 0
+        ? `${count} articles promoted to prod for ${feedDate}`
+        : `No dev articles to promote for ${feedDate} (already prod or none exist)`,
+    });
+  } catch (err) {
+    console.error("[curation/promote] error:", (err as Error).message);
     res.status(500).json({ ok: false, error: (err as Error).message });
   }
 });

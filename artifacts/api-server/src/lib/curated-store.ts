@@ -55,10 +55,10 @@ function cleanImageUrl(url: string | null | undefined): string | null | undefine
 
 // ─── DB ↔ EnrichedArticle mappers ─────────────────────────────────────────────
 
-function articleToRow(a: EnrichedArticle, feedDate: string): Record<string, unknown> {
+function articleToRow(a: EnrichedArticle, feedDate: string, stage: 'dev' | 'prod' = 'dev'): Record<string, unknown> {
   return {
     feed_date:          feedDate,
-    stage:              'dev',
+    stage,
     title:              a.title,
     summary:            a.summary,
     content:            a.content,
@@ -234,7 +234,11 @@ async function processImagesForArticles(
   );
 }
 
-async function upsertFeedToSupabase(articles: EnrichedArticle[], feedDate: string): Promise<void> {
+async function upsertFeedToSupabase(
+  articles: EnrichedArticle[],
+  feedDate: string,
+  targetStage: 'dev' | 'prod' = 'dev'
+): Promise<void> {
   if (!process.env.SUPABASE_URL) return;
 
   // SAFETY: Never touch stage='prod' rows. Only clear the dev-staged articles
@@ -267,13 +271,14 @@ async function upsertFeedToSupabase(articles: EnrichedArticle[], feedDate: strin
   // get their images rewritten — keeps the change surgical.
   await processImagesForArticles(toInsert, feedDate);
 
-  const newRows = toInsert.map((a) => articleToRow(a, feedDate));
+  const newRows = toInsert.map((a) => articleToRow(a, feedDate, targetStage));
 
   if (newRows.length === 0) {
     console.log("[supabase] All articles for", feedDate, "already exist as prod — nothing to insert.");
     return;
   }
 
+  console.log(`[supabase] Inserting ${newRows.length} articles as stage='${targetStage}'`);
   const { error: insErr } = await supabase.from("articles").insert(newRows);
   if (insErr) {
     if (isMissingColumnError(insErr.message)) {
@@ -874,3 +879,48 @@ export function loadDailyFeed(): void { /* no-op */ }
 
 /** @deprecated No-op — loadFromSupabase() handles all sources. */
 export function loadCommittedFeeds(): void { /* no-op */ }
+
+// ─── Promotion helpers ──────────────────────────────────────────────────────
+
+/**
+ * Promote all dev-staged articles for a given date to prod in Supabase.
+ * Returns the number of articles promoted.
+ */
+export async function promoteToProduction(feedDate?: string): Promise<number> {
+  const date = feedDate ?? dateStr(0);
+  if (!process.env.SUPABASE_URL) {
+    console.warn("[promote] SUPABASE_URL not set — cannot promote.");
+    return 0;
+  }
+
+  const { data, error } = await supabase
+    .from("articles")
+    .update({ stage: "prod" })
+    .eq("feed_date", date)
+    .eq("stage", "dev")
+    .select("id, title");
+
+  if (error) {
+    console.error("[promote] Supabase error:", error.message);
+    throw new Error(`Promotion failed: ${error.message}`);
+  }
+
+  const count = data?.length ?? 0;
+  console.log(`[promote] ✓ ${count} articles promoted to prod for ${date}`);
+  return count;
+}
+
+/**
+ * Persist today's feed directly as prod (skip dev staging).
+ * Used when articles are manually curated via /api/curation/add.
+ */
+export function saveCommittedFeedAsProd(): void {
+  resetIfNewDay();
+  const today = dateStr(0);
+  const bucket = _feeds.get(today)!;
+  saveToLocalFiles(bucket);
+  console.log(`[curated] ✓ Local feed saved (${bucket.articles.length} articles)`);
+  upsertFeedToSupabase(bucket.articles, today, 'prod').catch((e) =>
+    console.warn("[curated] Supabase prod sync failed:", (e as Error).message)
+  );
+}
