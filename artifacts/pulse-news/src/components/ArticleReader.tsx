@@ -189,12 +189,12 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                   }}
                   onError={() => setImgError(true)}
                 />
-                {/* Bottom gradient fade to white */}
+                {/* Bottom gradient fade to white — soft blend at the bottom edge */}
                 <div
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0) 30%, rgba(255,255,255,0) 55%, rgba(255,255,255,1) 100%)',
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 25%, rgba(255,255,255,0) 65%, rgba(255,255,255,0.85) 90%, rgba(255,255,255,1) 100%)',
                   }}
                 />
               </div>
@@ -209,47 +209,21 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
               </div>
             )}
 
-            {/* ── Status bar area — fades from image to white as user scrolls ── */}
+            {/* ── Status bar white transition — fades in as user scrolls past hero ── */}
             <div
               style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
-                height: 'env(safe-area-inset-top)',
+                height: 'calc(env(safe-area-inset-top) + 2px)',
                 zIndex: 30,
                 pointerEvents: 'none',
-                overflow: 'hidden',
+                background: '#ffffff',
+                opacity: statusBarOpacity,
+                transition: 'opacity 0.08s linear',
               }}
-            >
-              {/* Image showing through status bar */}
-              {hasImage && (
-                <>
-                  <img
-                    src={article.imageUrl!}
-                    aria-hidden="true"
-                    style={{
-                      position: 'absolute', top: 0, left: 0, width: '100%', height: '300px',
-                      objectFit: 'cover',
-                      objectPosition: typeof article.imageFocalX === 'number' && typeof article.imageFocalY === 'number'
-                        ? focalToObjectPosition(article.imageFocalX, article.imageFocalY, article.imageWidth, article.imageHeight, window.innerWidth, 300)
-                        : 'center 20%',
-                    }}
-                  />
-                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.28)' }} />
-                </>
-              )}
-              {/* White overlay that fades in as content scrolls up */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: '#ffffff',
-                  opacity: statusBarOpacity,
-                  transition: 'opacity 0.08s linear',
-                }}
-              />
-            </div>
+            />
 
             {/* ── Drag handle ────────────────────────────────────────────────── */}
             <div
@@ -277,7 +251,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
             </button>
 
             {/* ── Reading progress bar ────────────────────────────────────────── */}
-            <div style={{ height: 2, width: '100%', position: 'relative', zIndex: 21, flexShrink: 0, background: 'rgba(5,57,128,0.10)', marginTop: 'env(safe-area-inset-top)' }}>
+            <div style={{ height: 2, width: '100%', position: 'relative', zIndex: 21, flexShrink: 0, background: 'transparent', marginTop: 'env(safe-area-inset-top)' }}>
               <div
                 ref={fillRef}
                 className="progress-fill-article"

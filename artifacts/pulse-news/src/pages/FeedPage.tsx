@@ -601,9 +601,9 @@ export function FeedPage() {
     pullStartY.current = null;
     if (pullOffset > 60 && !isRefreshing) {
       setIsRefreshing(true);
-      setPullOffset(50); // hold at indicator position while refreshing
-      // Always show the popcorn animation for at least 1s — feels intentional
-      const minDelay = new Promise(r => setTimeout(r, 1000));
+      setPullOffset(72); // hold tall enough so the full popcorn SVG is visible
+      // Always show the popcorn animation for at least 1.8s — branded moment
+      const minDelay = new Promise(r => setTimeout(r, 1800));
       Promise.all([refetch(), minDelay]).finally(() => {
         setIsRefreshing(false);
         setPullOffset(0);
@@ -1088,7 +1088,7 @@ export function FeedPage() {
             top: 0,
             left: 0,
             right: 0,
-            height: isRefreshing ? 50 : pullOffset,
+            height: pullOffset,
             zIndex: 42,
             display: 'flex',
             alignItems: 'center',
@@ -1096,14 +1096,15 @@ export function FeedPage() {
             background: '#053980',
             overflow: 'hidden',
             pointerEvents: 'none',
+            transition: isPulling.current ? 'none' : 'height 0.3s cubic-bezier(0.32,0.72,0,1)',
           }}
         >
           <div style={{
-            opacity: Math.min(1, (isRefreshing ? 50 : pullOffset) / 40),
-            transform: `scale(${Math.min(1, (isRefreshing ? 50 : pullOffset) / 50)})`,
-            transition: isRefreshing ? 'none' : 'transform 0.1s',
+            opacity: Math.min(1, pullOffset / 35),
+            transform: `scale(${Math.min(1, pullOffset / 45)})`,
+            transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
           }}>
-            <PopcornRefreshAnim active={isRefreshing || pullOffset > 40} />
+            <PopcornRefreshAnim active={isRefreshing || pullOffset > 35} />
           </div>
         </div>
       )}
