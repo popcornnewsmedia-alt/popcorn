@@ -172,7 +172,7 @@ export function ArticleCard({
     return (
       <div
         className="snap-start snap-always"
-        style={{ height: viewportHeight, width: '100vw', position: 'relative', overflow: 'hidden', background: '#053980' }}
+        style={{ height: viewportHeight, width: '100vw', position: 'relative', overflow: 'hidden', background: '#000' }}
       />
     );
   }
@@ -200,7 +200,7 @@ export function ArticleCard({
                 position: 'absolute',
                 inset: 0,
                 zIndex: 0,
-                background: 'linear-gradient(135deg, #042f6a 0%, #053980 40%, #063d8f 60%, #042f6a 100%)',
+                background: 'linear-gradient(135deg, #010812 0%, #021028 40%, #010812 60%, #000 100%)',
               }}
             />
           )}
