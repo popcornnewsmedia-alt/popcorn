@@ -138,7 +138,7 @@ select:focus-visible {
      overflow:hidden prevents bounce-scroll on the page itself. */
   html {
     height: 100%;
-    background: #053980;
+    background: #000000;
     overflow: hidden;
   }
 

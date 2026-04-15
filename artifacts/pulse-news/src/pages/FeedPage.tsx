@@ -69,7 +69,7 @@ function optimizeImageUrl(url: string | null | undefined): string | null | undef
 // ── Pull-to-refresh popcorn animation (compact version of SplashScreen SVG) ──
 function PopcornRefreshAnim({ active }: { active: boolean }) {
   return (
-    <svg viewBox="0 0 100 100" width="54" height="54" aria-hidden="true" style={{ overflow: 'visible' }}>
+    <svg viewBox="0 0 100 100" width="60" height="60" aria-hidden="true" style={{ overflow: 'visible' }}>
       {active && (
         <style>{`
           @keyframes ptr-a{0%,100%{transform:translateY(0) scaleY(1) scaleX(1)}20%{transform:translateY(1px) scaleY(.88) scaleX(1.1)}50%{transform:translateY(-8px) scaleY(1.12) scaleX(.91)}75%{transform:translateY(-5px) scaleY(1.06) scaleX(.96)}}
@@ -556,8 +556,10 @@ export function FeedPage() {
   // strip is invisible.
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
-    const isDark = readingArticle || (activeTab === 'feed' && !showSplash);
-    const color = isDark ? '#000000' : '#053980';
+    // Blue only during splash/intro — all other screens (feed, saved,
+    // profile, article reader) use black so the PWA home indicator strip
+    // blends with the dark content instead of showing a blue band.
+    const color = showSplash ? '#053980' : '#000000';
     if (meta) meta.content = color;
     document.documentElement.style.background = color;
   }, [readingArticle, activeTab, showSplash]);
@@ -1081,23 +1083,22 @@ export function FeedPage() {
         />
       )}
 
-      {/* Pull-to-refresh indicator — popcorn SVG pops above the feed.
-           In standalone PWA, pad below the notch/Dynamic Island so the
-           animation isn't obscured by the front camera. */}
+      {/* Pull-to-refresh indicator — popcorn SVG sits below the TopBar,
+           just above the date divider / first card. Uses bottom-alignment
+           so the animation emerges from under the TopBar as you pull. */}
       {activeTab === 'feed' && (pullOffset > 0 || isRefreshing) && (
         <div
           style={{
             position: 'fixed',
-            top: 0,
+            top: 'calc(56px + env(safe-area-inset-top))',
             left: 0,
             right: 0,
             height: pullOffset,
-            paddingTop: isStandalone ? 'env(safe-area-inset-top)' : undefined,
-            zIndex: 42,
+            zIndex: 35,
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-end',
             justifyContent: 'center',
-            background: '#053980',
+            paddingBottom: 12,
             overflow: 'hidden',
             pointerEvents: 'none',
             transition: isPulling.current ? 'none' : 'height 0.3s cubic-bezier(0.32,0.72,0,1)',
