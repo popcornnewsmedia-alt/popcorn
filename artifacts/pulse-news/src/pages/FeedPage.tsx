@@ -549,6 +549,12 @@ export function FeedPage() {
     if (user) { setChoiceOpen(false); setSignUpOpen(false); setSignInOpen(false); }
   }, [user]);
 
+  // True while the user sees intro/auth chrome (splash, account-choice,
+  // sign-up, sign-in). These screens use the branded blue background.
+  // Everything else (feed, saved, profile, article reader, comments) uses
+  // black so no blue hue leaks through at the bottom safe-area strip.
+  const isIntroScreen = showSplash || choiceOpen || signUpOpen || signInOpen;
+
   // Dynamic theme-color + html background based on active screen.
   // On iOS standalone PWA, position:fixed bottom:0 stops at the safe-area
   // boundary — the ~34px home indicator strip can only show the html
@@ -556,13 +562,10 @@ export function FeedPage() {
   // strip is invisible.
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
-    // Blue only during splash/intro — all other screens (feed, saved,
-    // profile, article reader) use black so the PWA home indicator strip
-    // blends with the dark content instead of showing a blue band.
-    const color = showSplash ? '#053980' : '#000000';
+    const color = isIntroScreen ? '#053980' : '#000000';
     if (meta) meta.content = color;
     document.documentElement.style.background = color;
-  }, [readingArticle, activeTab, showSplash]);
+  }, [isIntroScreen]);
 
   const handleSplashDone = useCallback(() => setShowSplash(false), []);
 
@@ -1035,10 +1038,12 @@ export function FeedPage() {
   };
 
   return (
-    <div className="pn-fullscreen fixed inset-0" style={{ background: '#053980' }}>
-      {/* Persistent grain behind all fixed content — covers full viewport including
-          bottom safe area so the home indicator region shows grain, not flat blue */}
-      <GrainBackground />
+    <div className="pn-fullscreen fixed inset-0" style={{ background: isIntroScreen ? '#053980' : '#000000' }}>
+      {/* Root-level grain only during intro/auth — on the feed and other
+          screens the feed container (black) covers the root wrapper so
+          this grain would never be visible anyway; skipping it avoids a
+          blue hue leaking through the bottom safe-area strip. */}
+      {isIntroScreen && <GrainBackground />}
 
       {showSplash && (
         <SplashScreen
