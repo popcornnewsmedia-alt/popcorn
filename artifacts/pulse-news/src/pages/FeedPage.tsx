@@ -70,54 +70,214 @@ function optimizeImageUrl(url: string | null | undefined): string | null | undef
   return url;
 }
 
-// ── Pull-to-refresh popcorn animation (compact version of SplashScreen SVG) ──
-function PopcornRefreshAnim({ active }: { active: boolean }) {
+// ── Pull-to-refresh popcorn animation ────────────────────────────────────
+// A refined, compact version of the splash-screen PopcornAnim. Upgraded
+// visual vocabulary: 6 arcing kernels (was 3), a breathing warm halo that
+// gives the moment a "stage-lit" feel, a heavier bucket body, and a richer
+// squash-and-stretch on the three puffs. All shapes scale from `size` so
+// callers can bump it without touching path data.
+function PopcornRefreshAnim({ active, size = 80 }: { active: boolean; size?: number }) {
   return (
-    <svg viewBox="0 0 100 100" width="60" height="60" aria-hidden="true" style={{ overflow: 'visible' }}>
+    <svg viewBox="0 0 100 100" width={size} height={size} aria-hidden="true" style={{ overflow: 'visible', display: 'block' }}>
+      <defs>
+        {/* Warm halo — soft radial bloom under the popcorn so it reads as
+            "stage-lit" rather than floating on black. Matches the splash's
+            spotlight cream palette. */}
+        <radialGradient id="ptr-halo-grad" cx="0.5" cy="0.58" r="0.5">
+          <stop offset="0%"   stopColor="#fff1cd" stopOpacity="0.42" />
+          <stop offset="55%"  stopColor="#fff1cd" stopOpacity="0.14" />
+          <stop offset="100%" stopColor="#fff1cd" stopOpacity="0" />
+        </radialGradient>
+        {/* Softening blur for the halo edges */}
+        <filter id="ptr-halo-blur" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2.2" />
+        </filter>
+      </defs>
       {active && (
         <style>{`
-          @keyframes ptr-a{0%,100%{transform:translateY(0) scaleY(1) scaleX(1)}20%{transform:translateY(1px) scaleY(.88) scaleX(1.1)}50%{transform:translateY(-8px) scaleY(1.12) scaleX(.91)}75%{transform:translateY(-5px) scaleY(1.06) scaleX(.96)}}
-          @keyframes ptr-b{0%,100%{transform:translateY(0) scaleY(1) scaleX(1)}20%{transform:translateY(1px) scaleY(.85) scaleX(1.12)}50%{transform:translateY(-10px) scaleY(1.14) scaleX(.89)}75%{transform:translateY(-7px) scaleY(1.07) scaleX(.95)}}
-          @keyframes ptr-c{0%,100%{transform:translateY(0) scaleY(1) scaleX(1)}20%{transform:translateY(1px) scaleY(.9) scaleX(1.08)}50%{transform:translateY(-7px) scaleY(1.1) scaleX(.92)}75%{transform:translateY(-4px) scaleY(1.05) scaleX(.97)}}
-          .ptr-pa{animation:ptr-a 1.1s cubic-bezier(.34,1.5,.64,1) infinite;transform-box:fill-box;transform-origin:center 90%}
-          .ptr-pb{animation:ptr-b 1.1s cubic-bezier(.34,1.5,.64,1) infinite .18s;transform-box:fill-box;transform-origin:center 90%}
-          .ptr-pc{animation:ptr-c 1.1s cubic-bezier(.34,1.5,.64,1) infinite .36s;transform-box:fill-box;transform-origin:center 90%}
-          @keyframes ptr-rumble{0%,100%{transform:none}20%{transform:translateX(-1px) rotate(-.3deg)}50%{transform:translateX(1px) rotate(.3deg)}80%{transform:translateX(-.5px)}}
-          .ptr-bucket{animation:ptr-rumble .35s ease-in-out infinite;transform-box:fill-box;transform-origin:center 50%}
-          @keyframes ptr-heat{0%,100%{opacity:.1}50%{opacity:.24}}
-          .ptr-heat{animation:ptr-heat .9s ease-in-out infinite}
-          @keyframes ptr-k1{0%{transform:translate(0,0) scale(0);opacity:0}7%{transform:translate(-2px,-5px) scale(1);opacity:1}55%{transform:translate(-18px,-28px) scale(.9);opacity:1}100%{transform:translate(-22px,-10px) scale(0);opacity:0}}
-          @keyframes ptr-k2{0%{transform:translate(0,0) scale(0);opacity:0}7%{transform:translate(2px,-5px) scale(1);opacity:1}55%{transform:translate(16px,-30px) scale(.9);opacity:1}100%{transform:translate(19px,-12px) scale(0);opacity:0}}
-          @keyframes ptr-k3{0%{transform:translate(0,0) scale(0);opacity:0}7%{transform:translate(0,-6px) scale(1);opacity:1}55%{transform:translate(-4px,-35px) scale(.9);opacity:1}100%{transform:translate(-5px,-18px) scale(0);opacity:0}}
-          .ptr-k1{animation:ptr-k1 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-          .ptr-k2{animation:ptr-k2 1.5s ease-in-out infinite .3s;transform-box:fill-box;transform-origin:center}
-          .ptr-k3{animation:ptr-k3 1.4s ease-in-out infinite .6s;transform-box:fill-box;transform-origin:center}
+          /* ── Squash-and-stretch puff bounce ── */
+          @keyframes ptr-a {
+            0%,100% { transform: translateY(0) scaleY(1) scaleX(1); }
+            20%      { transform: translateY(2px) scaleY(0.88) scaleX(1.1); }
+            50%      { transform: translateY(-11px) scaleY(1.12) scaleX(0.91); }
+            75%      { transform: translateY(-8px) scaleY(1.06) scaleX(0.96); }
+          }
+          @keyframes ptr-b {
+            0%,100% { transform: translateY(0) scaleY(1) scaleX(1); }
+            20%      { transform: translateY(2px) scaleY(0.85) scaleX(1.12); }
+            50%      { transform: translateY(-15px) scaleY(1.14) scaleX(0.89); }
+            75%      { transform: translateY(-10px) scaleY(1.07) scaleX(0.95); }
+          }
+          @keyframes ptr-c {
+            0%,100% { transform: translateY(0) scaleY(1) scaleX(1); }
+            20%      { transform: translateY(2px) scaleY(0.9) scaleX(1.08); }
+            50%      { transform: translateY(-10px) scaleY(1.1) scaleX(0.92); }
+            75%      { transform: translateY(-7px) scaleY(1.05) scaleX(0.97); }
+          }
+          .ptr-pa { animation: ptr-a 1.15s cubic-bezier(0.34,1.5,0.64,1) infinite;        transform-box: fill-box; transform-origin: center 90%; }
+          .ptr-pb { animation: ptr-b 1.15s cubic-bezier(0.34,1.5,0.64,1) infinite 0.20s; transform-box: fill-box; transform-origin: center 90%; }
+          .ptr-pc { animation: ptr-c 1.15s cubic-bezier(0.34,1.5,0.64,1) infinite 0.40s; transform-box: fill-box; transform-origin: center 90%; }
+
+          /* ── Bucket rumble ── */
+          @keyframes ptr-rumble {
+            0%,100% { transform: none; }
+            20%  { transform: translateX(-1.2px) rotate(-0.3deg); }
+            50%  { transform: translateX(1.2px)  rotate(0.3deg); }
+            80%  { transform: translateX(-0.6px); }
+          }
+          .ptr-bucket { animation: ptr-rumble 0.38s ease-in-out infinite; transform-box: fill-box; transform-origin: center 50%; }
+
+          /* ── Heat glow pulse at bucket mouth ── */
+          @keyframes ptr-heat {
+            0%,100% { opacity: 0.12; }
+            50%      { opacity: 0.28; }
+          }
+          .ptr-heat { animation: ptr-heat 0.95s ease-in-out infinite; }
+
+          /* ── Halo breathe — warms up + pulls back in sync with the puffs ── */
+          @keyframes ptr-halo {
+            0%,100% { opacity: 0.75; transform: scale(1); }
+            50%      { opacity: 1;    transform: scale(1.08); }
+          }
+          .ptr-halo { animation: ptr-halo 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center 60%; }
+
+          /* ── Flying kernels — six unique arcing trajectories ── */
+          @keyframes ptr-k1 {
+            0%   { transform: translate(0,0)      rotate(0deg)    scale(0);    opacity: 0; }
+            8%   { transform: translate(-3px,-5px)  rotate(40deg)   scale(1);    opacity: 1; }
+            55%  { transform: translate(-22px,-32px) rotate(210deg)  scale(0.95); opacity: 1; }
+            80%  { transform: translate(-24px,-20px) rotate(300deg)  scale(0.5);  opacity: 0.4; }
+            100% { transform: translate(-26px,-10px) rotate(360deg)  scale(0.1);  opacity: 0; }
+          }
+          @keyframes ptr-k2 {
+            0%   { transform: translate(0,0)     rotate(0deg)    scale(0);    opacity: 0; }
+            8%   { transform: translate(3px,-5px)   rotate(-40deg)  scale(1);    opacity: 1; }
+            55%  { transform: translate(20px,-34px)  rotate(-200deg) scale(0.95); opacity: 1; }
+            80%  { transform: translate(22px,-22px)  rotate(-290deg) scale(0.5);  opacity: 0.4; }
+            100% { transform: translate(24px,-12px)  rotate(-355deg) scale(0.1);  opacity: 0; }
+          }
+          @keyframes ptr-k3 {
+            0%   { transform: translate(0,0)    rotate(0deg)   scale(0);    opacity: 0; }
+            8%   { transform: translate(-1px,-7px) rotate(70deg)  scale(1);    opacity: 1; }
+            55%  { transform: translate(-6px,-40px) rotate(235deg) scale(0.95); opacity: 1; }
+            80%  { transform: translate(-7px,-28px) rotate(325deg) scale(0.5);  opacity: 0.3; }
+            100% { transform: translate(-8px,-18px) rotate(390deg) scale(0.1);  opacity: 0; }
+          }
+          @keyframes ptr-k4 {
+            0%   { transform: translate(0,0)    rotate(0deg)   scale(0);    opacity: 0; }
+            8%   { transform: translate(5px,-3px)  rotate(-70deg) scale(1);    opacity: 1; }
+            55%  { transform: translate(27px,-22px) rotate(-215deg) scale(0.95); opacity: 1; }
+            80%  { transform: translate(30px,-12px) rotate(-305deg) scale(0.5);  opacity: 0.3; }
+            100% { transform: translate(31px,-4px)  rotate(-370deg) scale(0.1);  opacity: 0; }
+          }
+          @keyframes ptr-k5 {
+            0%   { transform: translate(0,0)    rotate(0deg)   scale(0);    opacity: 0; }
+            8%   { transform: translate(-5px,-3px) rotate(110deg) scale(1);    opacity: 1; }
+            55%  { transform: translate(-29px,-18px) rotate(260deg) scale(0.95); opacity: 1; }
+            80%  { transform: translate(-31px,-8px)  rotate(350deg) scale(0.5);  opacity: 0.3; }
+            100% { transform: translate(-32px,0)     rotate(410deg) scale(0.1);  opacity: 0; }
+          }
+          @keyframes ptr-k6 {
+            0%   { transform: translate(0,0)    rotate(0deg)   scale(0);    opacity: 0; }
+            8%   { transform: translate(1px,-8px)  rotate(-90deg) scale(1);    opacity: 1; }
+            55%  { transform: translate(8px,-42px)  rotate(-220deg) scale(0.95); opacity: 1; }
+            80%  { transform: translate(9px,-30px)  rotate(-315deg) scale(0.5);  opacity: 0.3; }
+            100% { transform: translate(10px,-22px) rotate(-380deg) scale(0.1);  opacity: 0; }
+          }
+          .ptr-k1 { animation: ptr-k1 1.85s ease-in-out infinite;        transform-box: fill-box; transform-origin: center; }
+          .ptr-k2 { animation: ptr-k2 1.70s ease-in-out infinite 0.28s; transform-box: fill-box; transform-origin: center; }
+          .ptr-k3 { animation: ptr-k3 1.60s ease-in-out infinite 0.55s; transform-box: fill-box; transform-origin: center; }
+          .ptr-k4 { animation: ptr-k4 1.80s ease-in-out infinite 0.82s; transform-box: fill-box; transform-origin: center; }
+          .ptr-k5 { animation: ptr-k5 1.95s ease-in-out infinite 1.10s; transform-box: fill-box; transform-origin: center; }
+          .ptr-k6 { animation: ptr-k6 1.55s ease-in-out infinite 0.15s; transform-box: fill-box; transform-origin: center; }
         `}</style>
       )}
-      {/* Heat glow */}
-      <ellipse className={active ? "ptr-heat" : ""} cx="50" cy="61" rx="16" ry="8" fill="#fff1cd" opacity={active ? undefined : 0.15}/>
-      {/* Bucket */}
+
+      {/* Warm stage-light halo — always rendered, gently breathing when active */}
+      <ellipse
+        className={active ? "ptr-halo" : ""}
+        cx="50" cy="58" rx="44" ry="34"
+        fill="url(#ptr-halo-grad)"
+        filter="url(#ptr-halo-blur)"
+        opacity={active ? undefined : 0.55}
+      />
+
+      {/* Heat glow — narrow ellipse at bucket mouth */}
+      <ellipse
+        className={active ? "ptr-heat" : ""}
+        cx="50" cy="61" rx="19" ry="10"
+        fill="#fff1cd"
+        opacity={active ? undefined : 0.14}
+      />
+
+      {/* Bucket — rumbles subtly when active. Heavier body (4px wider + 1px
+          taller rim, thicker stroke) so the popcorn reads as substantial
+          rather than stick-figure. */}
       <g className={active ? "ptr-bucket" : ""}>
-        <rect x="30" y="58" width="40" height="6" rx="2" fill="#fff1cd"/>
-        <path d="M32 64 L36 90 L64 90 L68 64Z" fill="transparent" stroke="#fff1cd" strokeWidth="1.6" strokeLinejoin="round"/>
+        <rect x="28" y="58" width="44" height="7" rx="2.5" fill="#fff1cd" />
+        <path d="M30 65 L35 94 L65 94 L70 65 Z" fill="transparent" stroke="#fff1cd" strokeWidth="1.9" strokeLinejoin="round" />
       </g>
-      {/* Flying kernels (only when active) */}
+
+      {/* Flying kernels — all originate from bucket mouth ~(50,60) */}
       {active && (
         <>
-          <g className="ptr-k1"><circle cx="50" cy="60" r="3" fill="#fff1cd"/><circle cx="47.5" cy="58" r="2" fill="#fff1cd"/></g>
-          <g className="ptr-k2"><circle cx="50" cy="60" r="2.8" fill="#fff1cd"/><circle cx="52.5" cy="58" r="2" fill="#fff1cd"/></g>
-          <g className="ptr-k3"><circle cx="50" cy="60" r="2.6" fill="#fff1cd"/><circle cx="48" cy="57.5" r="1.8" fill="#fff1cd"/></g>
+          <g className="ptr-k1">
+            <circle cx="50" cy="60" r="3.4" fill="#fff1cd" />
+            <circle cx="47" cy="58" r="2.4" fill="#fff1cd" />
+            <circle cx="53" cy="58" r="2.1" fill="#fff1cd" />
+          </g>
+          <g className="ptr-k2">
+            <circle cx="50" cy="60" r="3.0" fill="#fff1cd" />
+            <circle cx="48" cy="57.5" r="2.0" fill="#fff1cd" />
+            <circle cx="53" cy="58.5" r="2.2" fill="#fff1cd" />
+          </g>
+          <g className="ptr-k3">
+            <circle cx="50" cy="60" r="3.1" fill="#fff1cd" />
+            <circle cx="47.5" cy="58" r="2.3" fill="#fff1cd" />
+            <circle cx="52.5" cy="57.5" r="2.0" fill="#fff1cd" />
+          </g>
+          <g className="ptr-k4">
+            <circle cx="50" cy="60" r="2.8" fill="#fff1cd" />
+            <circle cx="52.5" cy="58.5" r="2.0" fill="#fff1cd" />
+            <circle cx="48" cy="58" r="1.8" fill="#fff1cd" />
+          </g>
+          <g className="ptr-k5">
+            <circle cx="50" cy="60" r="3.0" fill="#fff1cd" />
+            <circle cx="47" cy="58.5" r="2.2" fill="#fff1cd" />
+            <circle cx="52.5" cy="57.5" r="1.8" fill="#fff1cd" />
+          </g>
+          <g className="ptr-k6">
+            <circle cx="50" cy="60" r="2.6" fill="#fff1cd" />
+            <circle cx="48" cy="57.5" r="2.0" fill="#fff1cd" />
+            <circle cx="52.5" cy="58.5" r="1.8" fill="#fff1cd" />
+          </g>
         </>
       )}
-      {/* Puffs */}
+
+      {/* Left puff */}
       <g className={active ? "ptr-pa" : ""}>
-        <circle cx="36" cy="51" r="5" fill="#fff1cd"/><circle cx="31" cy="47" r="3.5" fill="#fff1cd"/><circle cx="36" cy="43" r="4" fill="#fff1cd"/><circle cx="41" cy="47" r="3.5" fill="#fff1cd"/>
+        <circle cx="36" cy="51" r="5.5" fill="#fff1cd" />
+        <circle cx="30" cy="47" r="4"   fill="#fff1cd" />
+        <circle cx="36" cy="43" r="4.5" fill="#fff1cd" />
+        <circle cx="42" cy="47" r="4"   fill="#fff1cd" />
       </g>
+
+      {/* Centre puff — taller cluster, anchors the silhouette */}
       <g className={active ? "ptr-pb" : ""}>
-        <circle cx="50" cy="47" r="6" fill="#fff1cd"/><circle cx="44" cy="42" r="4" fill="#fff1cd"/><circle cx="50" cy="37" r="5" fill="#fff1cd"/><circle cx="56" cy="42" r="4" fill="#fff1cd"/>
+        <circle cx="50" cy="47" r="6.5" fill="#fff1cd" />
+        <circle cx="43" cy="42" r="4.5" fill="#fff1cd" />
+        <circle cx="50" cy="37" r="5.5" fill="#fff1cd" />
+        <circle cx="57" cy="42" r="4.5" fill="#fff1cd" />
+        <circle cx="44" cy="50" r="3.5" fill="#fff1cd" />
+        <circle cx="56" cy="50" r="3.5" fill="#fff1cd" />
       </g>
+
+      {/* Right puff */}
       <g className={active ? "ptr-pc" : ""}>
-        <circle cx="64" cy="51" r="5" fill="#fff1cd"/><circle cx="59" cy="47" r="3.5" fill="#fff1cd"/><circle cx="64" cy="43" r="4" fill="#fff1cd"/><circle cx="69" cy="47" r="3.5" fill="#fff1cd"/>
+        <circle cx="64" cy="51" r="5.5" fill="#fff1cd" />
+        <circle cx="58" cy="47" r="4"   fill="#fff1cd" />
+        <circle cx="64" cy="43" r="4.5" fill="#fff1cd" />
+        <circle cx="70" cy="47" r="4"   fill="#fff1cd" />
       </g>
     </svg>
   );
@@ -537,6 +697,12 @@ export function FeedPage() {
   // ── Pull-to-refresh ─────────────────────────────────────────────────────
   const [pullOffset, setPullOffset] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  // `refreshFinishing` is true for ~500ms after the fetch resolves — during
+  // this window the popcorn does a final satisfying pop + fades out while
+  // the feed is left to smoothly spring back into place. Sequencing the two
+  // transitions (fade-out vs. collapse) prevents the popcorn from snapping
+  // away as the feed rushes upward.
+  const [refreshFinishing, setRefreshFinishing] = useState(false);
   const pullStartY = useRef<number | null>(null);
   const isPulling = useRef(false);
 
@@ -656,12 +822,26 @@ export function FeedPage() {
     pullStartY.current = null;
     if (pullOffset > 60 && !isRefreshing) {
       setIsRefreshing(true);
-      setPullOffset(72); // hold tall enough so the full popcorn SVG is visible
+      setPullOffset(96); // hold tall enough so the full (larger) popcorn SVG is visible
       // Always show the popcorn animation for at least 1.8s — branded moment
       const minDelay = new Promise(r => setTimeout(r, 1800));
       Promise.all([refetch(), minDelay]).finally(() => {
-        setIsRefreshing(false);
-        setPullOffset(0);
+        // ── Three-beat exit ──
+        // 1. Set finishing state → popcorn plays a final 1.12× pop and
+        //    starts fading opacity (handled by the wrapper div's CSS).
+        // 2. ~180ms later, collapse pullOffset to 0. The scroll container's
+        //    smooth 480ms cubic-bezier(0.16,1,0.3,1) curve eases the feed
+        //    back into place beneath the fading popcorn.
+        // 3. Clear finishing + refreshing after the transition completes
+        //    so the component fully unmounts.
+        setRefreshFinishing(true);
+        window.setTimeout(() => {
+          setIsRefreshing(false);
+          setPullOffset(0);
+        }, 180);
+        window.setTimeout(() => {
+          setRefreshFinishing(false);
+        }, 700);
       });
     } else {
       setPullOffset(0);
@@ -1141,8 +1321,11 @@ export function FeedPage() {
 
       {/* Pull-to-refresh indicator — popcorn SVG sits below the TopBar,
            just above the date divider / first card. Uses bottom-alignment
-           so the animation emerges from under the TopBar as you pull. */}
-      {activeTab === 'feed' && (pullOffset > 0 || isRefreshing) && (
+           so the animation emerges from under the TopBar as you pull.
+           The outer container's height follows pullOffset with a smooth
+           ease-out-expo curve (cubic-bezier(0.16,1,0.3,1)) for the
+           graceful collapse when the refresh completes. */}
+      {activeTab === 'feed' && (pullOffset > 0 || isRefreshing || refreshFinishing) && (
         <div
           style={{
             position: 'fixed',
@@ -1154,16 +1337,26 @@ export function FeedPage() {
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'center',
-            paddingBottom: 12,
+            paddingBottom: 10,
             overflow: 'hidden',
             pointerEvents: 'none',
-            transition: isPulling.current ? 'none' : 'height 0.3s cubic-bezier(0.32,0.72,0,1)',
+            transition: isPulling.current
+              ? 'none'
+              : 'height 480ms cubic-bezier(0.16,1,0.3,1)',
           }}
         >
           <div style={{
-            opacity: Math.min(1, pullOffset / 35),
-            transform: `scale(${Math.min(1, pullOffset / 45)})`,
-            transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
+            // While finishing: fade opacity to 0 + scale up 1.12 (final pop).
+            // Otherwise: scale in from 0.62 → 1.0 as the user pulls, with a
+            // tiny floor so the popcorn never starts invisibly small.
+            opacity: refreshFinishing ? 0 : Math.min(1, pullOffset / 32),
+            transform: refreshFinishing
+              ? 'scale(1.12) translateY(-3px)'
+              : `scale(${Math.max(0.62, Math.min(1, pullOffset / 52))})`,
+            transformOrigin: 'center bottom',
+            transition: refreshFinishing
+              ? 'opacity 420ms cubic-bezier(0.16,1,0.3,1), transform 420ms cubic-bezier(0.34,1.3,0.64,1)'
+              : 'transform 180ms cubic-bezier(0.34,1.2,0.64,1), opacity 180ms ease-out',
           }}>
             <PopcornRefreshAnim active={isRefreshing || pullOffset > 35} />
           </div>
@@ -1189,7 +1382,9 @@ export function FeedPage() {
           WebkitOverflowScrolling: 'touch',
           display: activeTab === 'feed' ? 'block' : 'none',
           background: '#000',
-          transition: isPulling.current ? 'none' : 'top 0.3s cubic-bezier(0.32,0.72,0,1)',
+          transition: isPulling.current
+            ? 'none'
+            : 'top 480ms cubic-bezier(0.16,1,0.3,1)',
         }}
       >
         {feedItems.length === 0 ? (
