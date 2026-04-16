@@ -355,11 +355,11 @@ function ProfileScreen({
                   </h1>
                   <button
                     onClick={onOpenNotifications}
-                    className="transition-opacity active:opacity-60 hover:opacity-80"
+                    className="transition-opacity active:opacity-60 hover:opacity-80 ml-auto"
                     style={{ flexShrink: 0, lineHeight: 0, padding: 2 }}
                     aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
                   >
-                    <PopcornIcon size={36} hasDot={unreadCount > 0} />
+                    <PopcornIcon size={64} hasDot={unreadCount > 0} />
                   </button>
                 </div>
               )}

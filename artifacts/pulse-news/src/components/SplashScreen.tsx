@@ -35,14 +35,19 @@ function Spotlight({ visible, settled }: { visible: boolean; settled: boolean })
       aria-hidden
       style={{
         position: 'absolute',
-        // Source point is ~200px above the popcorn — gives the beam room to
-        // diverge visibly before it reaches the bucket. SVG is taller now
-        // so the cone also extends ~30px below the bucket. Only the lower
-        // ~55% of the div is actually lit (gradient opacity clips the top).
-        top: '-200px',
+        // Source point is ~160px above the popcorn (middle ground between
+        // the old -200px and the trimmed -120px — gives the beam some
+        // breathing room above the wordmark without dominating the screen).
+        // Bottom of the cone lands just below the bucket at y≈+160px
+        // (−160 + 320). Only the lower ~60% of the div is actually lit
+        // (gradient opacity clips the top).
+        top: '-160px',
         left: '50%',
-        width: '300px',
-        height: '360px',
+        // Narrower than before (300→260px) so the cone is a touch tighter
+        // around the popcorn — more of a focused stage light, less of a
+        // room-wash.
+        width: '260px',
+        height: '320px',
         transform: 'translateX(-50%)',
         pointerEvents: 'none',
         zIndex: 0,
@@ -58,19 +63,15 @@ function Spotlight({ visible, settled }: { visible: boolean; settled: boolean })
       }}
     >
       <svg
-        viewBox="0 0 300 360"
-        width="300"
-        height="360"
+        viewBox="0 0 260 320"
+        width="260"
+        height="320"
         style={{ display: 'block', overflow: 'visible' }}
       >
         <defs>
           {/* Core beam — narrow cone that only becomes visible as it
               reaches the popcorn. Fully transparent above the wordmark/
               tagline so the beam feels like it's lighting just the bucket. */}
-          {/* Stops recalculated for the taller 360-unit SVG so the visible
-              light still starts in the same place relative to the popcorn
-              (around the top of the bucket) but now reaches ~30px below
-              the bucket before fully fading out. */}
           <linearGradient id="sp-beam-core" x1="0.5" y1="0" x2="0.5" y2="1">
             <stop offset="0%"   stopColor="#fff1cd" stopOpacity="0" />
             <stop offset="52%"  stopColor="#fff1cd" stopOpacity="0" />
@@ -99,27 +100,29 @@ function Spotlight({ visible, settled }: { visible: boolean; settled: boolean })
           </filter>
         </defs>
 
-        {/* Outer halo cone — wide, blurred bloom that softens the beam edges.
-            Extended to y=330 so the halo trails past the popcorn. */}
+        {/* Outer halo cone — wide, blurred bloom that softens the beam
+            edges. Coordinates scaled from the original 300×360 viewBox
+            (×0.867 on x, ×0.889 on y) so the cone shape lines up with
+            the new 260×320 container. */}
         <path
-          d="M 136 4 L 164 4 L 272 330 L 28 330 Z"
+          d="M 118 4 L 142 4 L 236 293 L 24 293 Z"
           fill="url(#sp-beam-wide)"
           filter="url(#sp-blur-soft)"
         />
 
         {/* Core beam cone — narrow at top, widening as it reaches past the
-            popcorn into the stage floor (y=330, just below the bucket). */}
+            popcorn into the stage floor. */}
         <path
-          d="M 143 0 L 157 0 L 228 330 L 72 330 Z"
+          d="M 124 0 L 136 0 L 198 293 L 62 293 Z"
           fill="url(#sp-beam-core)"
         />
 
-        {/* Stage-floor pool where the beam lands — nudged down with the cone */}
+        {/* Stage-floor pool where the beam lands */}
         <ellipse
-          cx="150"
-          cy="322"
-          rx="94"
-          ry="17"
+          cx="130"
+          cy="286"
+          rx="82"
+          ry="15"
           fill="url(#sp-floor)"
         />
       </svg>
