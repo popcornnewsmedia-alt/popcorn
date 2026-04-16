@@ -75,14 +75,17 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
           transition: dragOffset > 0 ? 'none' : 'transform 0.38s cubic-bezier(0.32,0.72,0,1)',
-          boxShadow: '0 -24px 64px rgba(0,0,0,0.45)',
+          // Only paint the upward shadow when open — otherwise it bleeds into
+          // the bottom of the viewport despite the sheet being translated
+          // off-screen (see CommentSheet for the full story).
+          boxShadow: isOpen ? '0 -24px 64px rgba(0,0,0,0.45)' : 'none',
         }}
         onClick={stopProp}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <GrainBackground />
+        {isOpen && <GrainBackground />}
 
         {/* Handle */}
         <div className="relative z-10 flex justify-center pt-3 pb-1 flex-shrink-0">

@@ -411,8 +411,8 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
       <div
         className="fixed inset-0 z-[60] transition-opacity duration-300"
         style={{
-          background: "rgba(5,27,58,0.32)",
-          backdropFilter: "blur(2px)",
+          background: isOpen ? "rgba(5,27,58,0.32)" : "transparent",
+          backdropFilter: isOpen ? "blur(2px)" : "none",
           opacity: isOpen ? 1 : 0,
           pointerEvents: isOpen ? "auto" : "none",
         }}
@@ -425,13 +425,17 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
         style={{
           height: "82dvh",
           background: "rgba(253,247,229,0.73)",
-          backdropFilter: "blur(26px) saturate(1.3)",
-          WebkitBackdropFilter: "blur(26px) saturate(1.3)",
+          backdropFilter: isOpen ? "blur(26px) saturate(1.3)" : "none",
+          WebkitBackdropFilter: isOpen ? "blur(26px) saturate(1.3)" : "none",
           borderRadius: "22px 22px 0 0",
           overflow: "hidden",
           transform: isOpen ? `translateY(${dragOffset}px)` : "translateY(100%)",
           transition: dragOffset > 0 ? "none" : "transform 0.34s cubic-bezier(0.32,0.72,0,1)",
-          boxShadow: "0 -8px 40px rgba(5,27,58,0.22)",
+          // Only paint the upward shadow when open — otherwise it bleeds into
+          // the bottom of the viewport (even though the sheet is translated
+          // off-screen), stacking with every other closed sheet and producing
+          // a purple/pink fringing band on every page.
+          boxShadow: isOpen ? "0 -8px 40px rgba(5,27,58,0.22)" : "none",
         }}
         onClick={stopProp}
         onTouchStart={handleTouchStart}
@@ -440,7 +444,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
       >
         {/* Grain at reduced opacity so the backdrop-filter translucency shows through */}
         <div style={{ position: 'absolute', inset: 0, opacity: 0.22, pointerEvents: 'none' }}>
-          <GrainBackground variant="paper" />
+          {isOpen && <GrainBackground variant="paper" />}
         </div>
 
         {/* Handle */}
