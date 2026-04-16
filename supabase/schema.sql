@@ -178,6 +178,49 @@ BEGIN
     FROM comments c WHERE c.id = p_comment_id;
 END $$;
 
+-- Reply-to-reply mention notification.
+-- The INSERT trigger already notifies the TOP-LEVEL parent's author. When a
+-- user replies to a sibling reply (via @mention in the composer), the sibling
+-- reply's author also needs a notification. Clients can't INSERT into
+-- `notifications` directly (no RLS insert policy) so this RPC is the only
+-- path. Server-side validation prevents spam:
+--   • Caller must be authenticated.
+--   • Caller must be the author of the reply being attributed (`p_reply_comment_id`).
+--   • Recipient must have previously commented on the same article
+--     (prevents random-user notification spam).
+--   • Skip if recipient == caller (no self-notify).
+--   • Skip if recipient already got a notification from the INSERT trigger
+--     (i.e. they're the top-level parent's author).
+CREATE OR REPLACE FUNCTION notify_mention(p_recipient_id UUID, p_reply_comment_id BIGINT)
+RETURNS VOID LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+  uid UUID := auth.uid();
+  r RECORD;
+  top_parent_author UUID;
+BEGIN
+  IF uid IS NULL THEN RAISE EXCEPTION 'Must be signed in'; END IF;
+  SELECT article_id, parent_id, author_id, author_name, body
+    INTO r FROM comments WHERE id = p_reply_comment_id;
+  IF NOT FOUND THEN RAISE EXCEPTION 'Comment not found'; END IF;
+  IF r.author_id <> uid THEN RAISE EXCEPTION 'Caller is not comment author'; END IF;
+  IF p_recipient_id = uid THEN RETURN; END IF;
+  IF r.parent_id IS NOT NULL THEN
+    SELECT author_id INTO top_parent_author FROM comments WHERE id = r.parent_id;
+    IF top_parent_author = p_recipient_id THEN RETURN; END IF;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM comments
+    WHERE article_id = r.article_id AND author_id = p_recipient_id
+  ) THEN
+    RAISE EXCEPTION 'Recipient has not participated in this thread';
+  END IF;
+  INSERT INTO notifications (recipient_id, kind, article_id, parent_comment_id,
+    reply_comment_id, actor_id, actor_name, preview)
+  VALUES (p_recipient_id, 'reply', r.article_id,
+    COALESCE(r.parent_id, p_reply_comment_id),
+    p_reply_comment_id, uid, r.author_name, left(r.body, 120));
+END $$;
+
 -- ── RLS ──────────────────────────────────────────────────────────────────────
 ALTER TABLE comments      ENABLE ROW LEVEL SECURITY;
 ALTER TABLE comment_votes ENABLE ROW LEVEL SECURITY;

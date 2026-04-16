@@ -41,8 +41,13 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
   // `mention` is true when replying to another reply: the DB enforces two-level
   // threading so the new row becomes a sibling under the same top-level
   // parent, but we prefix `@author ` in the body so the context is preserved
-  // visually in the flat thread.
-  const [replyTo, setReplyTo] = useState<{ id: number; author: string; mention?: boolean } | null>(null);
+  // visually in the flat thread. `mentionUserId` is the mentioned reply
+  // author's Supabase user id, used to fire a second notification (the DB
+  // trigger only notifies the top-level parent's author by default).
+  const [replyTo, setReplyTo] = useState<
+    { id: number; author: string; mention?: boolean; mentionUserId?: string }
+    | null
+  >(null);
   const [input, setInput] = useState("");
   const [newCommentId, setNewCommentId] = useState<number | null>(null);
   const [inputFocused, setInputFocused] = useState(false);
@@ -167,7 +172,11 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
     setReplyTo(null);
     inputRef.current?.blur();
 
-    const id = await postComment(text, targetReplyTo?.id ?? null);
+    const id = await postComment(
+      text,
+      targetReplyTo?.id ?? null,
+      targetReplyTo?.mentionUserId ?? null,
+    );
     if (id == null) return;
 
     if (targetReplyTo) {
@@ -196,8 +205,10 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
 
   const sortedComments = useMemo(() => {
     const arr = [...comments];
+    // `buildTree` returns top-level comments ordered oldest-first (id asc),
+    // so "newest" needs to reverse the array; "oldest" returns it as-is.
     if (sort === "popular") return arr.sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
-    if (sort === "oldest")  return arr.reverse();
+    if (sort === "newest")  return arr.reverse();
     return arr;
   }, [comments, sort]);
 
@@ -559,7 +570,15 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                                   // under the same top-level parent (c.id) but
                                   // surfaced with an @mention of the reply's
                                   // author in the composer preview.
-                                  setReplyTo({ id: c.id, author: r.author, mention: true });
+                                  // `mentionUserId` lets postComment fire a
+                                  // notification to the reply's author (the DB
+                                  // trigger only notifies c.author).
+                                  setReplyTo({
+                                    id: c.id,
+                                    author: r.author,
+                                    mention: true,
+                                    mentionUserId: r.authorId,
+                                  });
                                 }}
                                 className="active:opacity-50 transition-opacity"
                                 style={{
