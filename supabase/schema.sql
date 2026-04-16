@@ -149,6 +149,11 @@ AFTER INSERT ON comments
 FOR EACH ROW EXECUTE FUNCTION create_reply_notification();
 
 -- Atomic vote cast/change/undo — returns refreshed counts + my_vote
+-- NOTE: The RETURNS TABLE output columns (`upvotes`, `downvotes`, `my_vote`)
+-- collide with the `comments` table's column names, so every table-column
+-- reference on the RIGHT-hand side of an UPDATE ... SET ... must be
+-- explicitly qualified with the table name (e.g. `comments.upvotes`).
+-- Otherwise PL/pgSQL raises `column reference "upvotes" is ambiguous`.
 CREATE OR REPLACE FUNCTION cast_vote(p_comment_id BIGINT, p_direction SMALLINT)
 RETURNS TABLE (upvotes INT, downvotes INT, my_vote SMALLINT)
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
@@ -159,16 +164,16 @@ BEGIN
   SELECT direction INTO existing FROM comment_votes WHERE user_id = uid AND comment_id = p_comment_id;
   IF existing IS NOT NULL THEN
     UPDATE comments SET
-      upvotes   = upvotes   - CASE WHEN existing =  1 THEN 1 ELSE 0 END,
-      downvotes = downvotes - CASE WHEN existing = -1 THEN 1 ELSE 0 END
+      upvotes   = comments.upvotes   - CASE WHEN existing =  1 THEN 1 ELSE 0 END,
+      downvotes = comments.downvotes - CASE WHEN existing = -1 THEN 1 ELSE 0 END
     WHERE id = p_comment_id;
     DELETE FROM comment_votes WHERE user_id = uid AND comment_id = p_comment_id;
   END IF;
   IF p_direction <> 0 AND (existing IS NULL OR existing <> p_direction) THEN
     INSERT INTO comment_votes (user_id, comment_id, direction) VALUES (uid, p_comment_id, p_direction);
     UPDATE comments SET
-      upvotes   = upvotes   + CASE WHEN p_direction =  1 THEN 1 ELSE 0 END,
-      downvotes = downvotes + CASE WHEN p_direction = -1 THEN 1 ELSE 0 END
+      upvotes   = comments.upvotes   + CASE WHEN p_direction =  1 THEN 1 ELSE 0 END,
+      downvotes = comments.downvotes + CASE WHEN p_direction = -1 THEN 1 ELSE 0 END
     WHERE id = p_comment_id;
   END IF;
   RETURN QUERY
