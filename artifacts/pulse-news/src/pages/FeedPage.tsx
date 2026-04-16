@@ -359,7 +359,7 @@ function ProfileScreen({
                     style={{ flexShrink: 0, lineHeight: 0, padding: 2 }}
                     aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
                   >
-                    <PopcornIcon size={26} hasDot={unreadCount > 0} />
+                    <PopcornIcon size={36} hasDot={unreadCount > 0} />
                   </button>
                 </div>
               )}
