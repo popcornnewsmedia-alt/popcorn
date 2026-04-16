@@ -38,7 +38,11 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
   const { comments, postComment, castVote } = useComments(articleId, user);
   const [sort, setSort] = useState<Sort>("popular");
   const [expandedReplies, setExpandedReplies] = useState<Set<number>>(new Set());
-  const [replyTo, setReplyTo] = useState<{ id: number; author: string } | null>(null);
+  // `mention` is true when replying to another reply: the DB enforces two-level
+  // threading so the new row becomes a sibling under the same top-level
+  // parent, but we prefix `@author ` in the body so the context is preserved
+  // visually in the flat thread.
+  const [replyTo, setReplyTo] = useState<{ id: number; author: string; mention?: boolean } | null>(null);
   const [input, setInput] = useState("");
   const [newCommentId, setNewCommentId] = useState<number | null>(null);
   const [inputFocused, setInputFocused] = useState(false);
@@ -124,7 +128,13 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
   }, [isOpen]);
 
   useEffect(() => {
-    if (replyTo && inputRef.current) inputRef.current.focus();
+    if (!replyTo) return;
+    if (replyTo.mention) {
+      const prefix = `@${replyTo.author} `;
+      // Prefill only if the user hasn't started a different line of thought.
+      setInput(prev => prev.trim().length === 0 ? prefix : prev);
+    }
+    inputRef.current?.focus();
   }, [replyTo]);
 
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
@@ -534,13 +544,33 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                             }}>
                               {r.text}
                             </p>
-                            <div className="mt-2">
+                            <div className="flex items-center gap-4 mt-2">
                               <VoteRow
                                 upvotes={r.upvotes} downvotes={r.downvotes} vote={r.vote}
                                 onUp={(e)   => voteAny(e, r.id, "up")}
                                 onDown={(e) => voteAny(e, r.id, "down")}
                                 small
                               />
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  // DB trigger enforces two-level threading,
+                                  // so a reply-to-reply is stored as a sibling
+                                  // under the same top-level parent (c.id) but
+                                  // surfaced with an @mention of the reply's
+                                  // author in the composer preview.
+                                  setReplyTo({ id: c.id, author: r.author, mention: true });
+                                }}
+                                className="active:opacity-50 transition-opacity"
+                                style={{
+                                  fontFamily: "'Manrope', sans-serif",
+                                  fontWeight: 600,
+                                  fontSize: 10.5,
+                                  color: INK_ACTION,
+                                }}
+                              >
+                                Reply
+                              </button>
                             </div>
                           </div>
                         </div>

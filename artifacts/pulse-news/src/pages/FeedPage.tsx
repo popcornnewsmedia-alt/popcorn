@@ -1244,7 +1244,7 @@ export function FeedPage() {
           <RefreshCw className="w-4 h-4" />
           Try Again
         </button>
-        <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+        <BottomNav activeTab={activeTab} onTabChange={setActiveTab} hasProfileDot={unreadCount > 0} />
       </div>
     );
   }
@@ -1438,7 +1438,7 @@ export function FeedPage() {
       {/* Overlay screens for other tabs */}
       {renderOverlayTab()}
 
-      {!isIntroScreen && <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />}
+      {!isIntroScreen && <BottomNav activeTab={activeTab} onTabChange={setActiveTab} hasProfileDot={unreadCount > 0} />}
       <ArticleReader
         article={liveReadingArticle}
         onClose={() => { setReadingArticle(null); setReaderCommentsOpen(false); setFocusCommentId(null); }}

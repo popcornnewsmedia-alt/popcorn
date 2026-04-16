@@ -102,20 +102,48 @@ export function useComments(articleId: number | undefined | null, user: User | n
 
   useEffect(() => { refetch(); }, [refetch]);
 
-  // Realtime: all changes for this article re-apply via refetch. Cheap since
-  // the volume of comments per article is small in this app.
+  // Realtime: apply row-level INSERT/UPDATE/DELETE directly to local state.
+  // A full refetch() would race with the optimistic vote update (the refetch
+  // fetches `comment_votes` separately, and the server round-trip can easily
+  // land in between the RPC reply and the realtime UPDATE — briefly wiping
+  // the newly-applied vote back to stale values).
   useEffect(() => {
     if (articleId == null) return;
     const ch = supabase
       .channel(`comments:article:${articleId}`)
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "comments", filter: `article_id=eq.${articleId}` },
-        () => { void refetch(); },
+        { event: "INSERT", schema: "public", table: "comments", filter: `article_id=eq.${articleId}` },
+        (payload) => {
+          const row = payload.new as DBComment;
+          setRows(prev => prev.some(r => r.id === row.id) ? prev : [...prev, row]);
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "comments", filter: `article_id=eq.${articleId}` },
+        (payload) => {
+          const row = payload.new as DBComment;
+          setRows(prev => prev.map(r => r.id === row.id
+            // Preserve counts that are >= the broadcast row's counts. In
+            // practice the broadcast carries the authoritative post-UPDATE
+            // values, so this just merges without fighting optimistic local
+            // state on the rare occasion the realtime event arrives later.
+            ? { ...r, ...row }
+            : r));
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "comments", filter: `article_id=eq.${articleId}` },
+        (payload) => {
+          const oldRow = payload.old as DBComment;
+          setRows(prev => prev.filter(r => r.id !== oldRow.id));
+        },
       )
       .subscribe();
     return () => { void supabase.removeChannel(ch); };
-  }, [articleId, refetch]);
+  }, [articleId]);
 
   const postComment = useCallback(async (body: string, parentId: number | null | undefined = null): Promise<number | null> => {
     if (!user || articleId == null) return null;

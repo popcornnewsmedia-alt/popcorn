@@ -204,8 +204,8 @@ export function PopcornIcon({
           last so it paints above the flying kernels. */}
       {hasDot && (
         <g>
-          <circle cx="96" cy="18" r="18" fill={haloColor} />
-          <circle cx="96" cy="18" r="14" fill={dotColor} />
+          <circle cx="88" cy="14" r="10" fill={haloColor} />
+          <circle cx="88" cy="14" r="7"  fill={dotColor} />
         </g>
       )}
     </svg>

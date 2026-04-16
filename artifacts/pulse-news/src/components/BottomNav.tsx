@@ -13,7 +13,15 @@ const BTN_W = 68;
 const BTN_H = 54;
 const PAD   = 4;
 
-export function BottomNav({ activeTab, onTabChange }: { activeTab: Tab; onTabChange: (t: Tab) => void }) {
+export function BottomNav({
+  activeTab,
+  onTabChange,
+  hasProfileDot = false,
+}: {
+  activeTab: Tab;
+  onTabChange: (t: Tab) => void;
+  hasProfileDot?: boolean;
+}) {
   const activeIndex = TABS.findIndex(t => t.id === activeTab);
 
   return (
@@ -65,16 +73,33 @@ export function BottomNav({ activeTab, onTabChange }: { activeTab: Tab; onTabCha
               className="relative z-10 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition-transform duration-100"
               style={{ width: BTN_W, height: BTN_H }}
             >
-              <Icon
-                style={{
-                  width: 19,
-                  height: 19,
-                  color: active ? '#fff1cd' : 'rgba(255,241,205,0.28)',
-                  fill: active && id !== 'profile' ? '#fff1cd' : 'none',
-                  strokeWidth: 1.6,
-                  transition: 'color 0.25s, fill 0.25s',
-                }}
-              />
+              <div style={{ position: 'relative', width: 19, height: 19 }}>
+                <Icon
+                  style={{
+                    width: 19,
+                    height: 19,
+                    color: active ? '#fff1cd' : 'rgba(255,241,205,0.28)',
+                    fill: active && id !== 'profile' ? '#fff1cd' : 'none',
+                    strokeWidth: 1.6,
+                    transition: 'color 0.25s, fill 0.25s',
+                  }}
+                />
+                {id === 'profile' && hasProfileDot && (
+                  <span
+                    aria-hidden
+                    style={{
+                      position: 'absolute',
+                      top: -2,
+                      right: -3,
+                      width: 9,
+                      height: 9,
+                      borderRadius: 999,
+                      background: '#e14b3a',
+                      boxShadow: '0 0 0 1.5px rgba(7,11,9,0.93)',
+                    }}
+                  />
+                )}
+              </div>
               <span
                 style={{
                   fontFamily: "'Macabro', 'Anton', sans-serif",
