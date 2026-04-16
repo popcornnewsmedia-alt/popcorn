@@ -15,6 +15,118 @@ interface SplashScreenProps {
   onOpenLegal: (kind: LegalKind) => void;
 }
 
+/**
+ * Theatrical spotlight rendered behind the popcorn. A narrow hot-cream source
+ * at the top diverges into a wide cone that bathes the bucket, landing in a
+ * warm elliptical pool on the "stage floor". Ignites (with a short flicker)
+ * slightly before the popcorn appears, then settles into a slow breathing
+ * pulse until `settled` is true — at which point all animations stop so we
+ * don't keep a permanent compositing layer alive.
+ */
+function Spotlight({ visible, settled }: { visible: boolean; settled: boolean }) {
+  // Conceptually the beam still falls from above — preserving that
+  // "light-from-above" feel — but we key the gradient so the cone is FULLY
+  // TRANSPARENT over the wordmark/tagline and only fades into visibility once
+  // it reaches the popcorn icon. No visible source point, no visible beam above
+  // the popcorn. Everything stops animating once `settled` is true.
+  const animating = visible && !settled;
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: 'absolute',
+        // Source point is ~200px above the popcorn — gives the beam room to
+        // diverge visibly before it reaches the bucket. SVG is taller now
+        // so the cone also extends ~30px below the bucket. Only the lower
+        // ~55% of the div is actually lit (gradient opacity clips the top).
+        top: '-200px',
+        left: '50%',
+        width: '300px',
+        height: '360px',
+        transform: 'translateX(-50%)',
+        pointerEvents: 'none',
+        zIndex: 0,
+        opacity: visible ? 1 : 0,
+        // Baseline brightness for the "on" state after animations finish —
+        // the ignite keyframe's final brightness(1.2) would otherwise snap
+        // away when `animation:none` takes over at contentSettled.
+        filter: visible ? 'brightness(1.2)' : 'brightness(1)',
+        animation: animating
+          ? 'sp-ignite 1.8s linear both, sp-breathe 4.2s ease-in-out 1.8s infinite'
+          : 'none',
+        transition: visible ? 'none' : 'opacity 0.4s ease-out',
+      }}
+    >
+      <svg
+        viewBox="0 0 300 360"
+        width="300"
+        height="360"
+        style={{ display: 'block', overflow: 'visible' }}
+      >
+        <defs>
+          {/* Core beam — narrow cone that only becomes visible as it
+              reaches the popcorn. Fully transparent above the wordmark/
+              tagline so the beam feels like it's lighting just the bucket. */}
+          {/* Stops recalculated for the taller 360-unit SVG so the visible
+              light still starts in the same place relative to the popcorn
+              (around the top of the bucket) but now reaches ~30px below
+              the bucket before fully fading out. */}
+          <linearGradient id="sp-beam-core" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%"   stopColor="#fff1cd" stopOpacity="0" />
+            <stop offset="52%"  stopColor="#fff1cd" stopOpacity="0" />
+            <stop offset="63%"  stopColor="#fff4d8" stopOpacity="0.22" />
+            <stop offset="80%"  stopColor="#fff4d8" stopOpacity="0.14" />
+            <stop offset="96%"  stopColor="#fff1cd" stopOpacity="0.06" />
+            <stop offset="100%" stopColor="#fff1cd" stopOpacity="0" />
+          </linearGradient>
+          {/* Outer halo — wider, softer bloom, also clipped above popcorn */}
+          <linearGradient id="sp-beam-wide" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%"   stopColor="#fff1cd" stopOpacity="0" />
+            <stop offset="50%"  stopColor="#fff1cd" stopOpacity="0" />
+            <stop offset="63%"  stopColor="#fff1cd" stopOpacity="0.1" />
+            <stop offset="85%"  stopColor="#fff1cd" stopOpacity="0.05" />
+            <stop offset="100%" stopColor="#fff1cd" stopOpacity="0" />
+          </linearGradient>
+          {/* Floor pool — gentle warmth under the bucket, no puddle */}
+          <radialGradient id="sp-floor" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stopColor="#fff1cd" stopOpacity="0.16" />
+            <stop offset="60%" stopColor="#fff1cd" stopOpacity="0.04" />
+            <stop offset="100%" stopColor="#fff1cd" stopOpacity="0" />
+          </radialGradient>
+          {/* Softening blur for the outer halo */}
+          <filter id="sp-blur-soft" x="-25%" y="-10%" width="150%" height="130%">
+            <feGaussianBlur stdDeviation="8" />
+          </filter>
+        </defs>
+
+        {/* Outer halo cone — wide, blurred bloom that softens the beam edges.
+            Extended to y=330 so the halo trails past the popcorn. */}
+        <path
+          d="M 136 4 L 164 4 L 272 330 L 28 330 Z"
+          fill="url(#sp-beam-wide)"
+          filter="url(#sp-blur-soft)"
+        />
+
+        {/* Core beam cone — narrow at top, widening as it reaches past the
+            popcorn into the stage floor (y=330, just below the bucket). */}
+        <path
+          d="M 143 0 L 157 0 L 228 330 L 72 330 Z"
+          fill="url(#sp-beam-core)"
+        />
+
+        {/* Stage-floor pool where the beam lands — nudged down with the cone */}
+        <ellipse
+          cx="150"
+          cy="322"
+          rx="94"
+          ry="17"
+          fill="url(#sp-floor)"
+        />
+      </svg>
+    </div>
+  );
+}
+
 function PopcornAnim() {
   return (
     <svg viewBox="0 0 100 100" width="116" height="116" aria-hidden="true" style={{ overflow: 'visible' }}>
@@ -200,7 +312,10 @@ export function SplashScreen({
 }: SplashScreenProps) {
   const [phase, setPhase] = useState<"visible" | "fading">("visible");
   const [showPopcorn, setShowPopcorn] = useState(false);
+  const [showSpotlight, setShowSpotlight] = useState(false);
   const [showCTAs, setShowCTAs] = useState(false);
+  const [ctaSettled, setCtaSettled] = useState(false);
+  const [contentSettled, setContentSettled] = useState(false);
   // Freeze a mount timestamp so we can guarantee a minimum brand display time,
   // no matter how fast Supabase resolves the session.
   const [splashStart] = useState(() => Date.now());
@@ -208,11 +323,21 @@ export function SplashScreen({
   // Staggered reveal sequence:
   //   0.40s → POPCORN wordmark fades up
   //   1.40s → CULTURE CURATED DAILY tagline fades up
-  //   3.30s → popcorn SVG lifts + scales in
-  //   4.80s → LOG IN / CREATE YOUR ACCOUNT buttons rise into view
+  //   3.20s → spotlight begins flickering (popcorn still hidden) — delayed so
+  //           the wordmark/tagline have a beat to breathe before the flicker.
+  //   4.84s → spotlight STRIKES (91% of 1.8s ignite) AND popcorn EXPLODES in
+  //           simultaneously — pop-explode keyframe bursts the bucket out of
+  //           the lit cone with an overshoot/rebound.
+  //   7.04s → popcorn explosion settles (2.2s pop-explode with halving damp tail)
   useEffect(() => {
-    const t = setTimeout(() => setShowPopcorn(true), 3300);
-    return () => clearTimeout(t);
+    const sp = setTimeout(() => setShowSpotlight(true), 3200);
+    // 3.2s + 1.8s × 0.91 = 4.838s → rounded to 4840ms to coincide with the
+    // strike flare (brightness ramps to 1.95 at this keyframe).
+    const t = setTimeout(() => setShowPopcorn(true), 4840);
+    // Clear identity transforms once both animations finish. Popcorn settles
+    // at 4.84s+2.2s=7.04s; ignite finishes at 5.0s. Buffer to 7.1s.
+    const s = setTimeout(() => setContentSettled(true), 7100);
+    return () => { clearTimeout(sp); clearTimeout(t); clearTimeout(s); };
   }, []);
 
   // Auth-aware fade / CTA logic. Re-runs any time auth state changes.
@@ -222,7 +347,7 @@ export function SplashScreen({
     if (isAuthed) {
       // Signed in — show brand for a minimum duration, then fade.
       // Timed so the full staggered sequence can complete before fade-out.
-      const MIN_VISIBLE = 5800;
+      const MIN_VISIBLE = 7600;
       const elapsed = Date.now() - splashStart;
       const wait = Math.max(0, MIN_VISIBLE - elapsed);
       setShowCTAs(false);
@@ -235,11 +360,13 @@ export function SplashScreen({
     }
 
     // Signed out — CTAs arrive last, after the popcorn has fully popped.
-    const CTA_DELAY = 4200;
+    const CTA_DELAY = 6300;
     const elapsed = Date.now() - splashStart;
     const wait = Math.max(0, CTA_DELAY - elapsed);
     const ctaTimer = setTimeout(() => setShowCTAs(true), wait);
-    return () => clearTimeout(ctaTimer);
+    // After the 3s CSS transition completes, drop the compositing layer
+    const settleTimer = setTimeout(() => setCtaSettled(true), wait + 3400);
+    return () => { clearTimeout(ctaTimer); clearTimeout(settleTimer); };
   }, [authLoading, isAuthed, onDone, splashStart]);
 
   return (
@@ -247,7 +374,6 @@ export function SplashScreen({
       className="fixed inset-0 z-[200] flex flex-col overflow-hidden"
       style={{
         backgroundColor: '#053980',
-        isolation: 'isolate',
         opacity: phase === "fading" ? 0 : 1,
         transition: 'opacity 0.6s ease-out',
         pointerEvents: phase === "fading" ? 'none' : 'auto',
@@ -279,12 +405,74 @@ export function SplashScreen({
           0%   { opacity: 0; transform: translateY(10px); }
           100% { opacity: 1; transform: translateY(0); }
         }
+        /* Spotlight ignites like an old carbon-arc lamp — the filament
+           sputters through several false starts before striking steady.
+           All stages are dimmer than before: the flicker is soft and
+           subtle, and the strike still reads as an obvious "light came
+           on" moment because it clears the peak flicker opacity by a
+           wide margin AND bumps brightness above 1.0 for the first time. */
+        @keyframes sp-ignite {
+          0%   { opacity: 0;    filter: brightness(1); }        /* cold */
+          5%   { opacity: 0.18; filter: brightness(1); }        /* first spark */
+          9%   { opacity: 0.02; filter: brightness(1); }        /* out */
+          15%  { opacity: 0.28; filter: brightness(1); }        /* second attempt */
+          20%  { opacity: 0.06; filter: brightness(1); }        /* sputters */
+          28%  { opacity: 0.36; filter: brightness(1); }        /* stronger arc */
+          34%  { opacity: 0.14; filter: brightness(1); }        /* dims */
+          42%  { opacity: 0.46; filter: brightness(1); }        /* nearly on */
+          48%  { opacity: 0.26; filter: brightness(1); }        /* wobble */
+          56%  { opacity: 0.52; filter: brightness(1); }        /* climbing */
+          62%  { opacity: 0.36; filter: brightness(1); }        /* brief dim */
+          70%  { opacity: 0.5;  filter: brightness(1); }        /* bouncing */
+          78%  { opacity: 0.42; filter: brightness(1); }        /* last wobble */
+          85%  { opacity: 0.58; filter: brightness(1); }        /* catches */
+          91%  { opacity: 1;    filter: brightness(1.5); }      /* STRIKE — clear flare */
+          96%  { opacity: 1;    filter: brightness(1.3); }      /* flare eases */
+          100% { opacity: 1;    filter: brightness(1.2); }      /* steady on, clearly brighter than flicker */
+        }
+        /* Barely-perceptible post-ignite breathing. Holds the softer
+           "on" level established by the strike flare. */
+        @keyframes sp-breathe {
+          0%,100% { opacity: 1;    filter: brightness(1.2); }
+          50%     { opacity: 0.96; filter: brightness(1.12); }
+        }
+        /* Popcorn explosion — bursts up out of the lit cone with an
+           overshoot-rebound sequence, as if the light itself punched it
+           into existence. Starts tiny deep in the floor pool, overshoots
+           past final scale, springs back, then DAMPS OUT over a very
+           long tail of ever-halving oscillations so it glides
+           imperceptibly into rest rather than snapping. */
+        @keyframes pop-explode {
+          0%    { opacity: 0; transform: scale(0.05) translateY(38px); }
+          8%    { opacity: 1; }
+          16%   { transform: scale(1.28)    translateY(-7px); }     /* burst overshoot */
+          25%   { transform: scale(0.9)     translateY(3px); }      /* rebound */
+          33%   { transform: scale(1.082)   translateY(-1.9px); }   /* second overshoot */
+          40%   { transform: scale(0.968)   translateY(0.85px); }   /* damping */
+          47%   { transform: scale(1.020)   translateY(-0.5px); }   /* smaller */
+          53%   { transform: scale(0.988)   translateY(0.27px); }   /* smaller */
+          59%   { transform: scale(1.0075)  translateY(-0.14px); }  /* tinier */
+          65%   { transform: scale(0.9965)  translateY(0.07px); }   /* tinier */
+          70%   { transform: scale(1.0024)  translateY(-0.035px); } /* tiny */
+          75%   { transform: scale(0.9991)  translateY(0.018px); }  /* tiny */
+          80%   { transform: scale(1.0009)  translateY(-0.008px); } /* micro */
+          84%   { transform: scale(0.99975) translateY(0.003px); }  /* micro */
+          88%   { transform: scale(1.00008) translateY(-0.001px); } /* near zero */
+          92%   { transform: scale(0.99998) translateY(0); }        /* near zero */
+          96%   { transform: scale(1.000015) translateY(0); }       /* sub-pixel */
+          100%  { opacity: 1; transform: scale(1) translateY(0); }  /* settled */
+        }
+        /* Source hot-spot pulses slowly, almost still. */
+        @keyframes sp-source-pulse {
+          0%,100% { transform: scale(1);    opacity: 1; }
+          50%     { transform: scale(1.04); opacity: 0.85; }
+        }
       `}</style>
 
       {/* Centre — wordmark, tagline, popcorn animation */}
       <div
         className="relative z-10 flex-1 flex flex-col items-center justify-center"
-        style={{ gap: '14px', paddingBottom: '80px', transform: 'translateY(-30px)' }}
+        style={{ gap: '14px', paddingBottom: '110px' }}
       >
         <span
           style={{
@@ -296,8 +484,9 @@ export function SplashScreen({
             lineHeight: 1,
             textTransform: 'uppercase',
             display: 'block',
-            filter: 'url(#sp-stamp)',
-            animation: 'sp-wordmark-in 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s both',
+            ...(contentSettled
+              ? { opacity: 1, transform: 'none', animation: 'none' }
+              : { animation: 'sp-wordmark-in 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s both' }),
           }}
         >
           POPCORN
@@ -312,23 +501,41 @@ export function SplashScreen({
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             margin: 0,
-            animation: 'sp-tagline-in 1.25s cubic-bezier(0.22,1,0.36,1) 1.4s both',
+            ...(contentSettled
+              ? { opacity: 1, transform: 'none', animation: 'none' }
+              : { animation: 'sp-tagline-in 1.25s cubic-bezier(0.22,1,0.36,1) 1.4s both' }),
           }}
         >
           CULTURE CURATED DAILY
         </p>
 
-        <div
-          style={{
-            marginTop: '-10px',
-            opacity: showPopcorn ? 1 : 0,
-            transform: showPopcorn ? 'scale(1) translateY(0)' : 'scale(0.1) translateY(28px)',
-            transition: showPopcorn
-              ? 'opacity 0.9s ease-out, transform 1.5s cubic-bezier(0.34, 1.95, 0.64, 1)'
-              : 'none',
-          }}
-        >
-          <PopcornAnim />
+        {/* Stage: spotlight paints behind a non-transforming parent so the
+            popcorn's scale-in transition doesn't distort the beam.
+            marginTop pushes the whole stage (spotlight cone + bucket)
+            down below the tagline so they don't crowd the wordmark. */}
+        <div style={{ position: 'relative', marginTop: '90px' }}>
+          <Spotlight visible={showSpotlight} settled={contentSettled} />
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 1,
+              // Before pop: fully invisible. After pop-explode keyframe finishes,
+              // its `both` fill keeps opacity:1 and transform identity. When
+              // contentSettled fires, animation:none takes over and this inline
+              // opacity becomes the source of truth.
+              opacity: showPopcorn ? 1 : 0,
+              animation: contentSettled
+                ? 'none'
+                : showPopcorn
+                  // 2.2s total: first ~40% is the explosion, last ~60% is a
+                  // very long halving-oscillation tail that glides into the
+                  // ambient puff rhythm instead of snapping to rest.
+                  ? 'pop-explode 2.2s cubic-bezier(0.22, 1, 0.36, 1) both'
+                  : 'none',
+            }}
+          >
+            <PopcornAnim />
+          </div>
         </div>
       </div>
 
@@ -337,12 +544,12 @@ export function SplashScreen({
       <div
         className="relative z-10 px-6 flex-shrink-0 flex flex-col items-center"
         style={{
-          marginTop: '-190px',
+          marginTop: ctaSettled ? '-220px' : '-190px',
           paddingBottom: 'max(22px, calc(env(safe-area-inset-bottom) + 14px))',
           pointerEvents: showCTAs ? 'auto' : 'none',
           opacity: showCTAs ? 1 : 0,
-          transform: showCTAs ? 'translateY(-30px)' : 'translateY(-12px)',
-          transition: 'opacity 3s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 3s cubic-bezier(0.22,1,0.36,1) 0.3s',
+          transform: ctaSettled ? 'none' : showCTAs ? 'translateY(-30px)' : 'translateY(-12px)',
+          transition: ctaSettled ? 'none' : 'opacity 3s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 3s cubic-bezier(0.22,1,0.36,1) 0.3s',
         }}
       >
         <div
@@ -359,7 +566,7 @@ export function SplashScreen({
               padding: '13px 20px',
               background: '#fff1cd',
               color: '#053980',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.35) inset',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.35) inset',
             }}
           >
             LOG IN
