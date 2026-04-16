@@ -136,6 +136,7 @@ export function useComments(articleId: number | undefined | null, user: User | n
             upvotes: Number(row.upvotes) || 0,
             downvotes: Number(row.downvotes) || 0,
           };
+          console.log("[vote] realtime UPDATE", { id: row.id, up: coerced.upvotes, down: coerced.downvotes });
           setRows(prev => prev.map(r => r.id === row.id ? { ...r, ...coerced } : r));
         },
       )
@@ -191,11 +192,12 @@ export function useComments(articleId: number | undefined | null, user: User | n
   }, [articleId, user?.id]);
 
   const castVote = useCallback(async (commentId: number, direction: 1 | -1 | 0) => {
-    if (!user) return;
+    if (!user) { console.warn("[vote] no user — aborting"); return; }
     // Read the latest vote direction synchronously from the ref — the
     // closed-over `voteMap` can be stale across rapid-fire clicks that fire
     // before React commits the previous optimistic update.
     const prevDir = voteMapRef.current.get(commentId) ?? 0;
+    console.log("[vote] click", { commentId, direction, prevDir, userId: user.id });
 
     // Optimistic local apply.
     setRows(prev => prev.map(r => {
@@ -223,9 +225,10 @@ export function useComments(articleId: number | undefined | null, user: User | n
       p_comment_id: commentId,
       p_direction: direction,
     });
+    console.log("[vote] rpc result", { commentId, data, error });
 
     if (error) {
-      console.warn("[cast_vote] RPC error — reverting optimistic vote", error);
+      console.warn("[vote] RPC error — reverting optimistic vote", error);
       // Revert to the pre-click state (don't re-fetch: a failed RPC leaves
       // the DB untouched, so the authoritative post-click count is the
       // pre-click count. A re-fetch would do the same thing but introduces
