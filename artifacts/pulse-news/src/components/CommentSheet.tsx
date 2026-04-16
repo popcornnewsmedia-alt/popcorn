@@ -1,24 +1,11 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { X, ChevronUp, ChevronDown, ArrowUp } from "lucide-react";
 import { GrainBackground } from "./GrainBackground";
+import { useAuth } from "@/hooks/use-auth";
+import { useComments } from "@/hooks/use-comments";
+import { avatarColor, YOU, BRAND, CREAM } from "@/lib/avatar";
 
 type Sort = "popular" | "newest" | "oldest";
-
-interface Reply {
-  id: number;
-  author: string;
-  initials: string;
-  color: string;
-  text: string;
-  time: string;
-  upvotes: number;
-  downvotes: number;
-  vote: "up" | "down" | null;
-}
-
-interface Comment extends Reply {
-  replies: Reply[];
-}
 
 // ── Theme ───────────────────────────────────────────────────────────────────
 const INK          = "#081b3a";                 // primary text
@@ -29,118 +16,16 @@ const INK_SORT     = "rgba(8,27,58,0.58)";      // inactive sort tabs
 const INK_FAINT    = "rgba(8,27,58,0.36)";      // faint / inactive icons
 const INK_HAIR     = "rgba(8,27,58,0.08)";      // hairlines
 const INK_SOFT     = "rgba(8,27,58,0.04)";      // soft fills
-const BRAND        = "#053980";                 // signature blue
-const CREAM        = "#fff1cd";                 // inverted cream
-
-// Avatar palette — quiet variations within the blue family
-const AVATAR_BLUES = ["#053980", "#0c4a98", "#042a62", "#1d5aa6"];
-function avatarColor(name: string): string {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) | 0;
-  return AVATAR_BLUES[Math.abs(hash) % AVATAR_BLUES.length];
-}
-
-const YOU = { author: "You", initials: "Y", color: BRAND };
-
-// ── Seed data ───────────────────────────────────────────────────────────────
-const SEED_POOLS: Comment[][] = [
-  [
-    {
-      id: 1, author: "Lena Park", initials: "LP", color: BRAND,
-      text: "This is genuinely one of the more nuanced takes I've seen on this topic. The second paragraph alone changed how I'm thinking about it.",
-      time: "1h ago", upvotes: 84, downvotes: 2, vote: null,
-      replies: [
-        { id: 11, author: "Tom Wills", initials: "TW", color: BRAND, text: "Completely agree — especially the bit about second-order effects.", time: "58m ago", upvotes: 14, downvotes: 0, vote: null },
-        { id: 12, author: "Farah N.", initials: "FN", color: BRAND, text: "Which paragraph specifically? I read it differently.", time: "45m ago", upvotes: 6, downvotes: 1, vote: null },
-      ],
-    },
-    {
-      id: 2, author: "Tom Wills", initials: "TW", color: BRAND,
-      text: "Paywall got me on the original article but this summary is solid. Anyone have a link to the full paper?",
-      time: "2h ago", upvotes: 31, downvotes: 1, vote: null,
-      replies: [],
-    },
-    {
-      id: 3, author: "Farah N.", initials: "FN", color: BRAND,
-      text: "The framing here is a bit misleading. The study had a sample size of 200 — hardly groundbreaking. Still interesting though.",
-      time: "3h ago", upvotes: 56, downvotes: 14, vote: null,
-      replies: [
-        { id: 31, author: "Dev K.", initials: "DK", color: BRAND, text: "Sample size criticism is fair but the methodology is unusually rigorous for this field.", time: "2h ago", upvotes: 22, downvotes: 3, vote: null },
-      ],
-    },
-    {
-      id: 4, author: "Dev K.", initials: "DK", color: BRAND,
-      text: "Saved. Will read properly tonight.",
-      time: "3h ago", upvotes: 12, downvotes: 0, vote: null,
-      replies: [],
-    },
-    {
-      id: 5, author: "Simone B.", initials: "SB", color: BRAND,
-      text: "I work in this space and the practical side is way more complicated than articles like this make out. That said — good starting point.",
-      time: "5h ago", upvotes: 103, downvotes: 7, vote: null,
-      replies: [
-        { id: 51, author: "Raj M.", initials: "RM", color: BRAND, text: "Would love to hear more about the practical side — any resources you'd recommend?", time: "4h ago", upvotes: 31, downvotes: 0, vote: null },
-        { id: 52, author: "Simone B.", initials: "SB", color: BRAND, text: "I'll put together a reading list — DM me.", time: "3h ago", upvotes: 18, downvotes: 0, vote: null },
-      ],
-    },
-    {
-      id: 6, author: "Iris T.", initials: "IT", color: BRAND,
-      text: "The last line really lands. Thought-provoking stuff.",
-      time: "8h ago", upvotes: 48, downvotes: 1, vote: null,
-      replies: [],
-    },
-  ],
-  [
-    {
-      id: 1, author: "Marcus O.", initials: "MO", color: BRAND,
-      text: "Been following this story for months. The new angle here is interesting — didn't realise it had gone this far.",
-      time: "45m ago", upvotes: 61, downvotes: 3, vote: null,
-      replies: [
-        { id: 11, author: "Priya S.", initials: "PS", color: BRAND, text: "Same. The timeline is wild when you map it out.", time: "30m ago", upvotes: 9, downvotes: 0, vote: null },
-      ],
-    },
-    {
-      id: 2, author: "Priya S.", initials: "PS", color: BRAND,
-      text: "Every time I think I understand this fully, an article like this comes along.",
-      time: "1h ago", upvotes: 38, downvotes: 0, vote: null,
-      replies: [],
-    },
-    {
-      id: 3, author: "Chris L.", initials: "CL", color: BRAND,
-      text: "Hot take: the real story isn't what's reported but what's being left out. Read between the lines.",
-      time: "2h ago", upvotes: 77, downvotes: 22, vote: null,
-      replies: [
-        { id: 31, author: "Anya V.", initials: "AV", color: BRAND, text: "What specifically do you think is being left out?", time: "1h ago", upvotes: 14, downvotes: 2, vote: null },
-        { id: 32, author: "Chris L.", initials: "CL", color: BRAND, text: "The funding sources. Always follow the money.", time: "55m ago", upvotes: 29, downvotes: 5, vote: null },
-      ],
-    },
-    {
-      id: 4, author: "Kwame R.", initials: "KR", color: BRAND,
-      text: "Good summary. Would love a deeper dive into the economic angle specifically.",
-      time: "5h ago", upvotes: 44, downvotes: 2, vote: null,
-      replies: [],
-    },
-    {
-      id: 5, author: "Nadia F.", initials: "NF", color: BRAND,
-      text: "Counterpoint: we've been hearing this for three years and nothing has materially changed. I'll believe it when I see it.",
-      time: "7h ago", upvotes: 55, downvotes: 18, vote: null,
-      replies: [],
-    },
-  ],
-];
 
 interface CommentSheetProps {
   isOpen: boolean;
   articleId: number;
   onClose: () => void;
+  // Deep-link target: scroll + expand replies for this comment when the sheet opens.
+  focusCommentId?: number | null;
+  // Called when an unauthenticated action is attempted (post/reply/vote).
+  onRequireAuth?: () => void;
 }
-
-export function getInitialCommentCount(articleId: number): number {
-  const pool = SEED_POOLS[articleId % SEED_POOLS.length];
-  return pool.reduce((n, c) => n + 1 + c.replies.length, 0);
-}
-
-let nextId = 1000;
 
 const SORT_LABELS: Record<Sort, string> = {
   newest:  "Latest",
@@ -148,9 +33,9 @@ const SORT_LABELS: Record<Sort, string> = {
   popular: "Popular",
 };
 
-export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) {
-  const seed = SEED_POOLS[articleId % SEED_POOLS.length];
-  const [comments, setComments] = useState<Comment[]>(seed.map(c => ({ ...c, replies: [...c.replies] })));
+export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onRequireAuth }: CommentSheetProps) {
+  const { user } = useAuth();
+  const { comments, postComment, castVote } = useComments(articleId, user);
   const [sort, setSort] = useState<Sort>("popular");
   const [expandedReplies, setExpandedReplies] = useState<Set<number>>(new Set());
   const [replyTo, setReplyTo] = useState<{ id: number; author: string } | null>(null);
@@ -201,12 +86,27 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
   }, [dragOffset, onClose]);
 
   useEffect(() => {
-    const fresh = SEED_POOLS[articleId % SEED_POOLS.length];
-    setComments(fresh.map(c => ({ ...c, replies: [...c.replies] })));
     setExpandedReplies(new Set());
     setReplyTo(null);
     setInput("");
   }, [articleId]);
+
+  // Deep-link: expand replies + scroll to a specific comment when requested
+  // (e.g. tapping a reply notification).
+  useEffect(() => {
+    if (!isOpen || !focusCommentId) return;
+    if (!comments.some(c => c.id === focusCommentId)) return;
+    setExpandedReplies(prev => new Set(prev).add(focusCommentId));
+    setSort("newest");
+    // Wait for React to paint, then scroll the target comment into view.
+    const t = setTimeout(() => {
+      const el = document.querySelector(`[data-comment-id="${focusCommentId}"]`) as HTMLElement | null;
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      setNewCommentId(focusCommentId);
+      setTimeout(() => setNewCommentId(null), 2200);
+    }, 120);
+    return () => clearTimeout(t);
+  }, [isOpen, focusCommentId, comments.length]);
 
   useEffect(() => {
     if (isOpen) {
@@ -229,76 +129,49 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
 
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
 
-  const voteComment = (e: React.MouseEvent, id: number, dir: "up" | "down") => {
+  const findCurrentVote = useCallback((id: number): "up" | "down" | null => {
+    for (const c of comments) {
+      if (c.id === id) return c.vote;
+      for (const r of c.replies) if (r.id === id) return r.vote;
+    }
+    return null;
+  }, [comments]);
+
+  const voteAny = (e: React.MouseEvent, id: number, dir: "up" | "down") => {
     e.stopPropagation();
-    setComments(prev => prev.map(c => {
-      if (c.id !== id) return c;
-      const same = c.vote === dir;
-      return {
-        ...c,
-        vote: same ? null : dir,
-        upvotes:   dir === "up"   ? c.upvotes   + (same ? -1 : 1) : c.vote === "up"   ? c.upvotes   - 1 : c.upvotes,
-        downvotes: dir === "down" ? c.downvotes + (same ? -1 : 1) : c.vote === "down" ? c.downvotes - 1 : c.downvotes,
-      };
-    }));
+    if (!user) { onRequireAuth?.(); return; }
+    const current = findCurrentVote(id);
+    // Toggle semantics identical to the old seed behaviour: same direction clears.
+    const next: 1 | -1 | 0 = current === dir ? 0 : dir === "up" ? 1 : -1;
+    void castVote(id, next);
   };
 
-  const voteReply = (e: React.MouseEvent, commentId: number, replyId: number, dir: "up" | "down") => {
-    e.stopPropagation();
-    setComments(prev => prev.map(c => {
-      if (c.id !== commentId) return c;
-      return {
-        ...c,
-        replies: c.replies.map(r => {
-          if (r.id !== replyId) return r;
-          const same = r.vote === dir;
-          return {
-            ...r,
-            vote: same ? null : dir,
-            upvotes:   dir === "up"   ? r.upvotes   + (same ? -1 : 1) : r.vote === "up"   ? r.upvotes   - 1 : r.upvotes,
-            downvotes: dir === "down" ? r.downvotes + (same ? -1 : 1) : r.vote === "down" ? r.downvotes - 1 : r.downvotes,
-          };
-        }),
-      };
-    }));
-  };
-
-  const handleSend = (e: React.MouseEvent | React.KeyboardEvent) => {
+  const handleSend = async (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation();
     const text = input.trim();
     if (!text) return;
-    const freshId = ++nextId;
+    if (!user) { onRequireAuth?.(); return; }
 
-    if (replyTo) {
-      // ── Reply ──────────────────────────────────────────────────────────
-      setComments(prev => prev.map(c => {
-        if (c.id !== replyTo.id) return c;
-        return {
-          ...c,
-          replies: [...c.replies, { id: freshId, ...YOU, text, time: "just now", upvotes: 0, downvotes: 0, vote: null }],
-        };
-      }));
-      setExpandedReplies(prev => new Set(prev).add(replyTo.id));
+    const targetReplyTo = replyTo;
+    setInput("");
+    setReplyTo(null);
+    inputRef.current?.blur();
+
+    const id = await postComment(text, targetReplyTo?.id ?? null);
+    if (id == null) return;
+
+    if (targetReplyTo) {
+      setExpandedReplies(prev => new Set(prev).add(targetReplyTo.id));
     } else {
-      // ── New top-level comment ──────────────────────────────────────────
-      setComments(prev => [
-        { id: freshId, ...YOU, text, time: "just now", upvotes: 0, downvotes: 0, vote: null, replies: [] },
-        ...prev,
-      ]);
       // Switch to Latest so the user immediately sees their comment at the top
       setSort("newest");
-      // Scroll the list to the top after React has painted the new entry
       requestAnimationFrame(() => {
         listRef.current?.scrollTo({ top: 0, behavior: "smooth" });
       });
     }
 
-    setInput("");
-    setReplyTo(null);
-    inputRef.current?.blur();
-
     // Highlight the new entry for 2 s then clear
-    setNewCommentId(freshId);
+    setNewCommentId(id);
     setTimeout(() => setNewCommentId(null), 2000);
   };
 
@@ -531,6 +404,7 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
             return (
               <div
                 key={c.id}
+                data-comment-id={c.id}
                 className={c.id === newCommentId ? "cs-entry-new" : "cs-entry"}
                 style={{ animationDelay: `${Math.min(idx, 6) * 50}ms` }}
               >
@@ -573,8 +447,8 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
                       <div className="flex items-center gap-4 mt-2.5">
                         <VoteRow
                           upvotes={c.upvotes} downvotes={c.downvotes} vote={c.vote}
-                          onUp={(e) => voteComment(e, c.id, "up")}
-                          onDown={(e) => voteComment(e, c.id, "down")}
+                          onUp={(e) => voteAny(e, c.id, "up")}
+                          onDown={(e) => voteAny(e, c.id, "down")}
                         />
                         <button
                           onClick={(e) => { e.stopPropagation(); setReplyTo({ id: c.id, author: c.author }); }}
@@ -663,8 +537,8 @@ export function CommentSheet({ isOpen, articleId, onClose }: CommentSheetProps) 
                             <div className="mt-2">
                               <VoteRow
                                 upvotes={r.upvotes} downvotes={r.downvotes} vote={r.vote}
-                                onUp={(e)   => voteReply(e, c.id, r.id, "up")}
-                                onDown={(e) => voteReply(e, c.id, r.id, "down")}
+                                onUp={(e)   => voteAny(e, r.id, "up")}
+                                onDown={(e) => voteAny(e, r.id, "down")}
                                 small
                               />
                             </div>

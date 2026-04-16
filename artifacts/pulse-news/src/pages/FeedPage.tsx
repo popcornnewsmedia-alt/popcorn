@@ -9,10 +9,14 @@ import { SignUpFlow } from "@/components/SignUpFlow";
 import { SignInSheet } from "@/components/SignInSheet";
 import { AccountChoiceSheet } from "@/components/AccountChoiceSheet";
 import { LegalSheet, type LegalKind } from "@/components/LegalSheet";
+import { NotificationsSheet } from "@/components/NotificationsSheet";
+import { PopcornIcon } from "@/components/PopcornIcon";
 import { DateDividerCard } from "@/components/DateDividerCard";
 import { GrainBackground } from "@/components/GrainBackground";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useAuth } from "@/hooks/use-auth";
+import { useNotifications } from "@/hooks/use-notifications";
+import { supabase } from "@/lib/supabase";
 import { AlertCircle, RefreshCw, Bookmark, User, LogOut, ChevronRight } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { isStandalone } from "@/lib/utils";
@@ -293,6 +297,8 @@ function ProfileScreen({
   onCreateAccount,
   onSignOut,
   onOpenLegal,
+  onOpenNotifications,
+  unreadCount,
   userName,
   userEmail,
   userAvatar,
@@ -302,6 +308,8 @@ function ProfileScreen({
   onCreateAccount: () => void;
   onSignOut: () => void;
   onOpenLegal: (kind: LegalKind) => void;
+  onOpenNotifications: () => void;
+  unreadCount: number;
   userName: string | null;
   userEmail: string | null;
   userAvatar: string | null;
@@ -339,11 +347,21 @@ function ProfileScreen({
                 </span>
               )}
             </div>
-            <div className="flex flex-col min-w-0">
+            <div className="flex flex-col min-w-0 flex-1">
               {userName && (
-                <h1 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "20px", color: "#fff1cd", letterSpacing: "0.02em", lineHeight: 1.1 }} className="truncate">
-                  {userName}
-                </h1>
+                <div className="flex items-center gap-2 min-w-0">
+                  <h1 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "20px", color: "#fff1cd", letterSpacing: "0.02em", lineHeight: 1.1 }} className="truncate">
+                    {userName}
+                  </h1>
+                  <button
+                    onClick={onOpenNotifications}
+                    className="transition-opacity active:opacity-60 hover:opacity-80"
+                    style={{ flexShrink: 0, lineHeight: 0, padding: 2 }}
+                    aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
+                  >
+                    <PopcornIcon size={26} hasDot={unreadCount > 0} />
+                  </button>
+                </div>
               )}
               {userEmail && (
                 <p className="font-['Inter'] mt-1 truncate" style={{ fontSize: "12px", color: "rgba(255,241,205,0.45)" }}>
@@ -504,6 +522,12 @@ export function FeedPage() {
   const [signInOpen, setSignInOpen] = useState(false);
   const [signInEmail, setSignInEmail] = useState("");
   const [legalSheet, setLegalSheet] = useState<LegalKind | null>(null);
+  const [notifOpen, setNotifOpen] = useState(false);
+  // Deep-link target for opening the comment sheet pre-scrolled to a reply
+  // (set when the user taps a notification row).
+  const [readerCommentsOpen, setReaderCommentsOpen] = useState(false);
+  const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
+  const { items: notifItems, unreadCount, loading: notifLoading, markRead, markAllRead } = useNotifications(user);
   const [selectedDate, setSelectedDate] = useState<Date>(startOfDay(new Date()));
   const [readIds, setReadIds] = useState<Set<number>>(new Set());
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -562,12 +586,37 @@ export function FeedPage() {
   // strip is invisible.
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
-    const color = isIntroScreen ? '#053980' : '#000000';
+    const isDark = readingArticle || (activeTab === 'feed' && !showSplash);
+    const color = isDark ? '#000000' : '#053980';
     if (meta) meta.content = color;
     document.documentElement.style.background = color;
-  }, [isIntroScreen]);
+  }, [readingArticle, activeTab, showSplash]);
 
   const handleSplashDone = useCallback(() => setShowSplash(false), []);
+
+  // ── Notifications ───────────────────────────────────────────────────────
+  // Opening the sheet immediately marks all notifications read — the red dot
+  // clears right away and the sheet acts as the inbox view.
+  const openNotifications = useCallback(() => {
+    setNotifOpen(true);
+    void markAllRead();
+  }, [markAllRead]);
+
+  // Tapping a notification row: mark it read, fetch the article, open the
+  // reader with the comments sheet pre-open and scrolled to the reply.
+  const handleSelectNotification = useCallback(async (n: { id: number; article_id: number; reply_comment_id: number }) => {
+    void markRead(n.id);
+    setNotifOpen(false);
+    const { data } = await supabase
+      .from("articles")
+      .select("*")
+      .eq("id", n.article_id)
+      .single();
+    if (!data) return;
+    setFocusCommentId(n.reply_comment_id);
+    setReaderCommentsOpen(true);
+    setReadingArticle(data as unknown as NewsArticle);
+  }, [markRead]);
 
   const pickerTouchStartYRef = useRef(0);
 
@@ -1028,6 +1077,8 @@ export function FeedPage() {
         onCreateAccount={() => setChoiceOpen(true)}
         onSignOut={() => { signOut(); setActiveTab("feed"); setShowSplash(true); }}
         onOpenLegal={setLegalSheet}
+        onOpenNotifications={openNotifications}
+        unreadCount={unreadCount}
         userName={userName}
         userEmail={userEmail}
         userAvatar={userAvatar}
@@ -1038,12 +1089,12 @@ export function FeedPage() {
   };
 
   return (
-    <div className="pn-fullscreen fixed inset-0" style={{ background: isIntroScreen ? '#053980' : '#000000' }}>
-      {/* Root-level grain only during intro/auth — on the feed and other
-          screens the feed container (black) covers the root wrapper so
-          this grain would never be visible anyway; skipping it avoids a
-          blue hue leaking through the bottom safe-area strip. */}
-      {isIntroScreen && <GrainBackground />}
+    <div className="pn-fullscreen fixed inset-0" style={{ background: '#053980' }}>
+      {/* Persistent grain behind all fixed content — covers full viewport
+          including bottom safe area so the home indicator region shows grain,
+          not a flat color that causes rainbow banding. Splash has its own
+          canvas so skip during splash to avoid double-compositing. */}
+      <GrainBackground />
 
       {showSplash && (
         <SplashScreen
@@ -1055,7 +1106,7 @@ export function FeedPage() {
           onOpenLegal={setLegalSheet}
         />
       )}
-      {activeTab === 'feed' && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker fillRef={feedBarFillRef} minDate={minDate} pickerOpen={pickerOpen} onPickerOpenChange={setPickerOpen} onScrollToDayTop={handleScrollToDayTop} />}
+      {activeTab === 'feed' && !isIntroScreen && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker fillRef={feedBarFillRef} minDate={minDate} pickerOpen={pickerOpen} onPickerOpenChange={setPickerOpen} onScrollToDayTop={handleScrollToDayTop} />}
 
       {/* Picker dismiss overlay — lives here so it can forward scroll gestures to the feed */}
       {pickerOpen && activeTab === 'feed' && (
@@ -1192,16 +1243,19 @@ export function FeedPage() {
       {/* Overlay screens for other tabs */}
       {renderOverlayTab()}
 
-      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+      {!isIntroScreen && <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />}
       <ArticleReader
         article={liveReadingArticle}
-        onClose={() => setReadingArticle(null)}
+        onClose={() => { setReadingArticle(null); setReaderCommentsOpen(false); setFocusCommentId(null); }}
         isRead={liveReadingArticle ? readIds.has(liveReadingArticle.id) : false}
         onMarkRead={() => liveReadingArticle && setReadIds(prev => {
           const next = new Set(prev);
           next.has(liveReadingArticle.id) ? next.delete(liveReadingArticle.id) : next.add(liveReadingArticle.id);
           return next;
         })}
+        initialCommentsOpen={readerCommentsOpen}
+        focusCommentId={focusCommentId}
+        onRequireAuth={() => setSignInOpen(true)}
       />
       <AccountChoiceSheet
         isOpen={choiceOpen}
@@ -1226,6 +1280,15 @@ export function FeedPage() {
       {/* Privacy / Terms sheet — reachable from the splash CTAs,
           SignUp/SignIn flows, and the Profile tab. */}
       <LegalSheet kind={legalSheet} onClose={() => setLegalSheet(null)} />
+
+      {/* Reply notifications — opened from the popcorn icon on the profile. */}
+      <NotificationsSheet
+        isOpen={notifOpen}
+        items={notifItems}
+        loading={notifLoading}
+        onClose={() => setNotifOpen(false)}
+        onSelect={handleSelectNotification}
+      />
     </div>
   );
 }

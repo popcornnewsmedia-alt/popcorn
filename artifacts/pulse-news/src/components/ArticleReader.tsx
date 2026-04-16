@@ -5,7 +5,8 @@ import { X, Calendar, Check, Bookmark, Heart, MessageCircle, Share2 } from "luci
 import { format } from "date-fns";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { useBookmarkArticle, useLikeArticle } from "@/hooks/use-news";
-import { CommentSheet, getInitialCommentCount } from "@/components/CommentSheet";
+import { CommentSheet } from "@/components/CommentSheet";
+import { useCommentCount } from "@/hooks/use-comment-count";
 import { GrainBackground } from "@/components/GrainBackground";
 
 // Converts a normalised focal point (0–1) to the correct CSS object-position
@@ -60,13 +61,20 @@ interface ArticleReaderProps {
   onClose: () => void;
   isRead?: boolean;
   onMarkRead?: () => void;
+  // When set on open, the comment sheet auto-opens (used for notification deep-links).
+  initialCommentsOpen?: boolean;
+  // Scroll-to + highlight a specific comment when the sheet opens.
+  focusCommentId?: number | null;
+  // Called when comments require a signed-in user (composer/vote taps while signed out).
+  onRequireAuth?: () => void;
 }
 
-export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: ArticleReaderProps) {
+export function ArticleReader({ article, onClose, isRead = false, onMarkRead, initialCommentsOpen = false, focusCommentId = null, onRequireAuth }: ArticleReaderProps) {
   const { mutate: bookmarkMutation } = useBookmarkArticle();
   const { mutate: likeMutation } = useLikeArticle();
   const [imgError, setImgError] = useState(false);
-  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen);
+  const commentCount = useCommentCount(article?.id ?? null);
   const [localLiked, setLocalLiked] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
@@ -82,12 +90,12 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
   useEffect(() => {
     setImgError(false);
     setLocalLiked(false);
-    setCommentsOpen(false);
+    setCommentsOpen(initialCommentsOpen);
     setScrollY(0);
     setDragOffset(0);
     if (fillRef.current) fillRef.current.style.transform = 'scaleX(0)';
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
-  }, [article?.id]);
+  }, [article?.id, initialCommentsOpen]);
 
   // ── Scroll handler: progress bar + parallax scroll tracking ───────────────
   const handleScroll = useCallback(() => {
@@ -357,7 +365,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
                     >
                       <MessageCircle style={{ width: 22, height: 22, color: '#111111', strokeWidth: 1.6 }} />
                       <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: '#111111' }}>
-                        {getInitialCommentCount(article.id)}
+                        {commentCount ?? ""}
                       </span>
                     </button>
                     <button
@@ -421,6 +429,8 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead }: 
               isOpen={commentsOpen}
               articleId={article.id}
               onClose={() => setCommentsOpen(false)}
+              focusCommentId={commentsOpen ? focusCommentId : null}
+              onRequireAuth={onRequireAuth}
             />
           </motion.div>
         )}
