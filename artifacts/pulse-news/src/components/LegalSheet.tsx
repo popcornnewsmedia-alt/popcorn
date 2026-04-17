@@ -268,10 +268,15 @@ const ABOUT: LegalDoc = {
       ],
     },
     {
+      heading: "A rolling 7-day window",
+      paragraphs: [
+        "Popcorn keeps the last seven days of stories live in the feed. Anything older rolls off and is no longer available to read — we'd rather you catch the conversation while it's fresh than doomscroll a bottomless archive.",
+      ],
+    },
+    {
       heading: "Who we are",
       paragraphs: [
         "Popcorn is an independent product. We're a small team who care deeply about media, culture, and building things that don't make people feel worse after using them.",
-        "Questions or thoughts? We'd love to hear from you at hello@popcornmedia.org.",
       ],
     },
   ],
