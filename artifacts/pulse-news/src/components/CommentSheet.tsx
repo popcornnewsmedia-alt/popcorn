@@ -495,7 +495,9 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
   useEffect(() => {
     if (!replyTo) return;
     if (replyTo.mention) {
-      const prefix = `@${replyTo.author} `;
+      // Strip a leading @ in case the author string already has one, to
+      // avoid the '@@username' double-prefix bug.
+      const prefix = `@${replyTo.author.replace(/^@/, "")} `;
       // Prefill only if the user hasn't started a different line of thought.
       setInput(prev => prev.trim().length === 0 ? prefix : prev);
     }
@@ -1111,7 +1113,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                 fontSize: 11.5,
                 color: INK_META,
               }}>
-                Reply to <span style={{ color: BRAND, fontWeight: 600 }}>@{replyTo.author}</span>
+                Reply to <span style={{ color: BRAND, fontWeight: 600 }}>@{replyTo.author.replace(/^@/, "")}</span>
               </span>
               <button
                 onClick={(e) => { e.stopPropagation(); setReplyTo(null); }}
@@ -1143,7 +1145,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                 onFocus={() => setInputFocused(true)}
                 onBlur={() => setInputFocused(false)}
                 onKeyDown={(e) => { e.stopPropagation(); if (e.key === "Enter") handleSend(e as any); }}
-                placeholder={replyTo ? `Reply to ${replyTo.author}…` : "Add a comment…"}
+                placeholder={replyTo ? `Reply to ${replyTo.author.replace(/^@/, "")}…` : "Add a comment…"}
                 className="cs-input flex-1 bg-transparent outline-none"
                 inputMode="text"
                 enterKeyHint="send"
@@ -1188,8 +1190,10 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
         <div
           className="fixed inset-0 z-[70] flex items-center justify-center"
           style={{
-            padding: 24,
-            background: "rgba(5,27,58,0.60)",
+            padding: 20,
+            // Backdrop uses the exact BRAND blue so the modal sits inside
+            // the same colour family as the rest of the app.
+            background: "rgba(5,57,128,0.62)",
             backdropFilter: "blur(8px) saturate(1.1)",
             WebkitBackdropFilter: "blur(8px) saturate(1.1)",
             animation: "csBackdropIn 0.22s ease-out both",
@@ -1203,15 +1207,15 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
             onClick={(e) => e.stopPropagation()}
             style={{
               width: "100%",
-              maxWidth: 348,
-              // Layered radial in the top-left gives the flat dark blue a
+              maxWidth: 300,
+              // Layered radial in the top-left gives the flat brand blue a
               // touch of depth without introducing grain here (the sheet
-              // behind already carries it).
-              background: `radial-gradient(120% 90% at 0% 0%, rgba(255,241,205,0.06) 0%, rgba(255,241,205,0) 55%), #051b3a`,
-              borderRadius: 18,
-              padding: "26px 24px 20px",
+              // behind already carries it). Base fill is exact BRAND.
+              background: `radial-gradient(120% 90% at 0% 0%, rgba(255,241,205,0.08) 0%, rgba(255,241,205,0) 55%), ${BRAND}`,
+              borderRadius: 16,
+              padding: "18px 18px 14px",
               color: CREAM,
-              boxShadow: "0 24px 64px rgba(0,0,0,0.42), 0 2px 0 rgba(255,241,205,0.06) inset",
+              boxShadow: "0 20px 52px rgba(0,0,0,0.42), 0 2px 0 rgba(255,241,205,0.06) inset",
               border: "1px solid rgba(255,241,205,0.12)",
               animation: "csModalIn 0.26s cubic-bezier(0.22,1,0.36,1) both",
               position: "relative",
@@ -1222,19 +1226,19 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                 than a full red top-bar and keeps the destructive cue
                 subordinate to the headline. */}
             <div style={{
-              display: "flex", alignItems: "center", gap: 8,
-              marginBottom: 10,
+              display: "flex", alignItems: "center", gap: 7,
+              marginBottom: 7,
             }}>
               <span aria-hidden style={{
-                width: 6, height: 6, borderRadius: 999,
+                width: 5, height: 5, borderRadius: 999,
                 background: `rgba(${DELETE_RED},1)`,
-                boxShadow: `0 0 10px rgba(${DELETE_RED},0.6)`,
+                boxShadow: `0 0 8px rgba(${DELETE_RED},0.6)`,
               }} />
               <span style={{
                 fontFamily: "'Manrope', sans-serif",
-                fontSize: 9.5,
+                fontSize: 9,
                 fontWeight: 700,
-                letterSpacing: "0.28em",
+                letterSpacing: "0.26em",
                 textTransform: "uppercase",
                 color: "rgba(255,241,205,0.58)",
               }}>
@@ -1247,53 +1251,53 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
               id="cs-delete-title"
               style={{
                 fontFamily: "'Macabro', 'Anton', sans-serif",
-                fontSize: 30,
-                lineHeight: 1.02,
+                fontSize: 22,
+                lineHeight: 1.05,
                 letterSpacing: "-0.005em",
                 color: CREAM,
-                marginBottom: 14,
+                marginBottom: 10,
               }}
             >
               Delete this {pendingDelete.hasReplies ? "thread" : "comment"}?
             </div>
 
-            {/* Quoted preview — cream tint on the dark blue, with a cream
+            {/* Quoted preview — cream tint on the brand blue, with a cream
                 left rule. Reads like a pulled-aside annotation. */}
             <div
               style={{
                 position: "relative",
                 background: "rgba(255,241,205,0.06)",
                 border: "1px solid rgba(255,241,205,0.09)",
-                borderRadius: 10,
-                padding: "10px 12px 11px 14px",
-                marginBottom: 16,
+                borderRadius: 9,
+                padding: "8px 10px 9px 12px",
+                marginBottom: 11,
               }}
             >
               <span aria-hidden style={{
-                position: "absolute", left: 0, top: 10, bottom: 10,
+                position: "absolute", left: 0, top: 8, bottom: 8,
                 width: 2, borderRadius: 2,
                 background: "rgba(255,241,205,0.45)",
               }} />
               <span style={{
                 fontFamily: "'Manrope', sans-serif",
-                fontSize: 10.5,
+                fontSize: 9.5,
                 fontWeight: 700,
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
                 color: "rgba(255,241,205,0.70)",
                 display: "block",
-                marginBottom: 4,
+                marginBottom: 3,
               }}>
                 @{pendingDelete.author.replace(/^@/, "")}
               </span>
               <p style={{
                 fontFamily: "'Manrope', sans-serif",
-                fontSize: 13,
-                lineHeight: 1.5,
+                fontSize: 12,
+                lineHeight: 1.45,
                 color: "rgba(255,241,205,0.88)",
                 margin: 0,
                 display: "-webkit-box",
-                WebkitLineClamp: 3,
+                WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
               }}>
@@ -1303,26 +1307,26 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
 
             <p style={{
               fontFamily: "'Manrope', sans-serif",
-              fontSize: 12.5,
-              lineHeight: 1.5,
+              fontSize: 11.5,
+              lineHeight: 1.45,
               color: "rgba(255,241,205,0.58)",
               marginTop: 0,
-              marginBottom: 18,
+              marginBottom: 13,
             }}>
               This can't be undone{pendingDelete.hasReplies ? ". Replies will also be removed." : "."}
             </p>
 
-            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
               <button
                 onClick={(e) => { e.stopPropagation(); if (!isDeleting) setPendingDelete(null); }}
                 disabled={isDeleting}
                 className="cs-delete-keep"
                 style={{
-                  padding: "10px 18px",
-                  borderRadius: 11,
+                  padding: "8px 14px",
+                  borderRadius: 10,
                   fontFamily: "'Manrope', sans-serif",
                   fontWeight: 600,
-                  fontSize: 12.5,
+                  fontSize: 12,
                   letterSpacing: "0.02em",
                   color: "rgba(255,241,205,0.85)",
                   background: "transparent",
@@ -1339,25 +1343,25 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                 disabled={isDeleting}
                 className="cs-delete-go"
                 style={{
-                  display: "inline-flex", alignItems: "center", gap: 7,
-                  padding: "10px 18px",
-                  borderRadius: 11,
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "8px 14px",
+                  borderRadius: 10,
                   fontFamily: "'Manrope', sans-serif",
                   fontWeight: 700,
-                  fontSize: 12.5,
+                  fontSize: 12,
                   letterSpacing: "0.06em",
                   textTransform: "uppercase",
-                  // Brand CTA treatment: cream fill + dark-blue text…
+                  // Brand CTA treatment: cream fill + BRAND base color…
                   color: BRAND,
                   background: CREAM,
                   border: "none",
                   cursor: isDeleting ? "default" : "pointer",
                   opacity: isDeleting ? 0.7 : 1,
-                  boxShadow: `0 8px 22px rgba(255,241,205,0.18), 0 0 0 1px rgba(${DELETE_RED},0.18) inset`,
+                  boxShadow: `0 6px 18px rgba(255,241,205,0.18), 0 0 0 1px rgba(${DELETE_RED},0.18) inset`,
                   transition: "transform 0.14s ease, box-shadow 0.14s ease, opacity 0.14s ease",
                 }}
               >
-                <Trash2 size={13} strokeWidth={2.4} color={`rgba(${DELETE_RED},1)`} />
+                <Trash2 size={12} strokeWidth={2.4} color={`rgba(${DELETE_RED},1)`} />
                 {/* …but the word itself carries the destructive hue. */}
                 <span style={{ color: `rgba(${DELETE_RED},1)` }}>
                   {isDeleting ? "Deleting…" : "Delete"}
