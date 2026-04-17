@@ -61,6 +61,10 @@ export function FeedPageHorizontal() {
   const userAvatar = user?.user_metadata?.avatar_url ?? null;
   const userTopics: string[] = user?.user_metadata?.topics ?? [];
 
+  // Only show the splash animation to signed-out visitors (it's the gate
+  // to the LOG IN / CREATE ACCOUNT CTAs). Returning or just-authenticated
+  // users skip straight to the feed — no 7.6-second popcorn intro after
+  // every Google OAuth redirect or page refresh.
   const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState<Tab>("feed");
   const [readingArticle, setReadingArticle] = useState<NewsArticle | null>(null);
@@ -116,6 +120,17 @@ export function FeedPageHorizontal() {
   useEffect(() => {
     if (user) { setChoiceOpen(false); setSignUpOpen(false); setSignInOpen(false); }
   }, [user]);
+
+  // As soon as the Supabase session resolves for an authed user, skip the
+  // splash. Covers:
+  //   • Returning users refreshing the tab
+  //   • Google OAuth redirect landing back on /
+  //   • Email-link confirmation landing back on /auth/callback
+  //   • Email/password sign-in from the bottom CTA (splash dismisses as soon
+  //     as the session materialises instead of waiting for its 7.6s fade)
+  useEffect(() => {
+    if (!authLoading && user) setShowSplash(false);
+  }, [authLoading, user]);
 
   const isIntroScreen = showSplash || choiceOpen || signUpOpen || signInOpen;
 

@@ -171,6 +171,22 @@ export function useAuth() {
     if (error) throw error;
   };
 
+  // Synchronously wipe Supabase's auth token out of localStorage. Without
+  // this, the client's background token-refresh timer (or a late onAuthStateChange
+  // from the async signOut call itself) can fire a SIGNED_IN / TOKEN_REFRESHED
+  // event milliseconds after we clear local state, read the still-present
+  // token, and re-hydrate the session — the "I logged out but got logged
+  // back in" bug. Supabase v2 stores the session under `sb-<project>-auth-token`
+  // (sometimes split into `.0`/`.1` chunks); nuking any matching key first
+  // guarantees concurrent reads see no session.
+  const purgeSupabaseStorage = () => {
+    try {
+      for (const k of Object.keys(localStorage)) {
+        if (/^sb-.+-auth-token(\.\d+)?$/.test(k)) localStorage.removeItem(k);
+      }
+    } catch { /* private-mode / storage-disabled — not fatal */ }
+  };
+
   const signOut = async () => {
     // Clear local state FIRST so the UI always responds on first click. The
     // Supabase client has been observed to wedge after a preceding
@@ -178,6 +194,7 @@ export function useAuth() {
     // indefinitely, making sign-out feel broken. We don't actually need to
     // wait for Supabase: `scope: 'local'` is just a localStorage purge, and
     // we're already doing the manual state reset right here.
+    purgeSupabaseStorage();
     loadedProfileForRef.current = null;
     setState({ user: null, session: null, profile: null, loading: false });
     // Fire-and-forget the Supabase clear. If it throws or hangs, the UI is
@@ -269,6 +286,7 @@ export function useAuth() {
       const body = await resp.json().catch(() => ({}));
       throw new Error(body.error ?? `Delete failed (${resp.status})`);
     }
+    purgeSupabaseStorage();
     loadedProfileForRef.current = null;
     setState({ user: null, session: null, profile: null, loading: false });
     void supabase.auth.signOut({ scope: 'local' }).catch(() => { /* already gone */ });
