@@ -88,6 +88,33 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
               </button>
             )}
 
+            {/* Mobile-only: tiny circled chevron hint. Same shape language
+                as the desktop button but scaled down and dimmed so it reads
+                as hint, not primary action. Pointer-events off so the tap
+                bubbles to the row's onClick. */}
+            {onScrollToDayTop && (
+              <span
+                className="pn-day-top-hint items-center justify-center"
+                aria-hidden="true"
+                style={{
+                  pointerEvents: 'none',
+                  width: 18,
+                  height: 18,
+                  borderRadius: 999,
+                  border: '1px solid rgba(255,241,205,0.22)',
+                }}
+              >
+                <ChevronUp
+                  style={{
+                    width: 9,
+                    height: 9,
+                    color: 'rgba(255,241,205,0.42)',
+                    strokeWidth: 2.25,
+                  }}
+                />
+              </span>
+            )}
+
             {showDatePicker ? (
               <button
                 onClick={(e) => { e.stopPropagation(); setPickerOpen(!pickerOpen); }}

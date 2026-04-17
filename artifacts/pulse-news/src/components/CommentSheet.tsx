@@ -422,6 +422,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
         >
           {sortedComments.map((c, idx) => {
             const repliesOpen = expandedReplies.has(c.id);
+            const isOwn = !!user && c.authorId === user.id;
             return (
               <div
                 key={c.id}
@@ -429,7 +430,19 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                 className={c.id === newCommentId ? "cs-entry-new" : "cs-entry"}
                 style={{ animationDelay: `${Math.min(idx, 6) * 50}ms` }}
               >
-                <article style={{ paddingLeft: 20, paddingRight: 20, paddingTop: 16, paddingBottom: 14 }}>
+                <article
+                  style={{
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingTop: 16,
+                    paddingBottom: 14,
+                    // Own-comment highlight — editorial annotation rather than UI chrome.
+                    // A soft tint + inset left rule in the brand ink quietly marks
+                    // the current user's posts without breaking the thread rhythm.
+                    background: isOwn ? "rgba(5,57,128,0.045)" : undefined,
+                    boxShadow: isOwn ? "inset 2px 0 0 rgba(5,57,128,0.38)" : undefined,
+                  }}
+                >
                   <div className="flex gap-3">
                     <Avatar name={c.author} initials={c.initials} size={34} />
 
@@ -444,6 +457,25 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                         }}>
                           {c.author}
                         </span>
+                        {isOwn && (
+                          <span
+                            aria-label="your comment"
+                            style={{
+                              fontFamily: "'Macabro', 'Anton', sans-serif",
+                              fontSize: 9,
+                              color: BRAND,
+                              letterSpacing: "0.12em",
+                              textTransform: "uppercase",
+                              padding: "1px 5px",
+                              borderRadius: 3,
+                              background: "rgba(5,57,128,0.10)",
+                              lineHeight: 1.1,
+                              alignSelf: "center",
+                            }}
+                          >
+                            You
+                          </span>
+                        )}
                         <span style={{
                           fontFamily: "'Manrope', sans-serif",
                           fontWeight: 400,
@@ -514,7 +546,9 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                         borderLeft: `1px solid ${INK_HAIR}`,
                       }}
                     >
-                      {c.replies.map((r, ri) => (
+                      {c.replies.map((r, ri) => {
+                        const isOwnReply = !!user && r.authorId === user.id;
+                        return (
                         <div
                           key={r.id}
                           className="flex gap-2.5"
@@ -522,6 +556,16 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                             paddingTop:    ri > 0 ? 12 : 0,
                             paddingBottom: 12,
                             borderTop: ri > 0 ? `1px solid ${INK_HAIR}` : "none",
+                            // Scaled-down own-reply highlight: negative margin
+                            // to overshoot the reply gutter's inset so the tint
+                            // reaches the left rule cleanly, then padding to
+                            // restore the content position.
+                            background: isOwnReply ? "rgba(5,57,128,0.045)" : undefined,
+                            boxShadow: isOwnReply ? "inset 2px 0 0 rgba(5,57,128,0.38)" : undefined,
+                            marginLeft: isOwnReply ? -14 : undefined,
+                            paddingLeft: isOwnReply ? 12 : undefined,
+                            marginRight: isOwnReply ? -4 : undefined,
+                            paddingRight: isOwnReply ? 4 : undefined,
                           }}
                         >
                           <Avatar name={r.author} initials={r.initials} size={26} />
@@ -536,6 +580,25 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                               }}>
                                 {r.author}
                               </span>
+                              {isOwnReply && (
+                                <span
+                                  aria-label="your reply"
+                                  style={{
+                                    fontFamily: "'Macabro', 'Anton', sans-serif",
+                                    fontSize: 8.5,
+                                    color: BRAND,
+                                    letterSpacing: "0.12em",
+                                    textTransform: "uppercase",
+                                    padding: "1px 4px",
+                                    borderRadius: 3,
+                                    background: "rgba(5,57,128,0.10)",
+                                    lineHeight: 1.1,
+                                    alignSelf: "center",
+                                  }}
+                                >
+                                  You
+                                </span>
+                              )}
                               <span style={{
                                 fontFamily: "'Manrope', sans-serif",
                                 fontWeight: 400,
@@ -593,7 +656,8 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                             </div>
                           </div>
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </article>

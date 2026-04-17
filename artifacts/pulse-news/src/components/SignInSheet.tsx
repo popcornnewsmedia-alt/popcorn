@@ -137,7 +137,7 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <GrainBackground />
+        {isOpen && <GrainBackground />}
 
         {/* Handle */}
         <div className="relative z-10 flex justify-center pt-3 pb-1 flex-shrink-0">

@@ -170,7 +170,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <GrainBackground />
+        {isOpen && <GrainBackground />}
 
         {/* Handle */}
         <div className="relative z-10 flex justify-center pt-3 pb-1 flex-shrink-0">

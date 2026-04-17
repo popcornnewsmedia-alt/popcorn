@@ -3,7 +3,9 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { FeedPage } from "@/pages/FeedPage";
+// Horizontal day-paginated feed (new). To revert to the legacy vertical feed,
+// swap this line back to: import { FeedPage } from "@/pages/FeedPage";
+import { FeedPageHorizontal as FeedPage } from "@/pages/FeedPageHorizontal";
 import NotFound from "@/pages/not-found";
 import { EmailConfirmedScreen } from "@/components/EmailConfirmedScreen";
 import { supabase } from "@/lib/supabase";

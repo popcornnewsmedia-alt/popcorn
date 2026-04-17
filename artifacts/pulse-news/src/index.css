@@ -61,6 +61,18 @@ select:focus-visible {
   }
 }
 
+/* Mobile-only whisper hint (mirror of .pn-day-top-btn): hidden on desktop
+   where the full button already appears; shown on coarse pointers as a
+   low-opacity chevron so the TopBar row reads as tappable. */
+.pn-day-top-hint {
+  display: none;
+}
+@media (hover: none) and (pointer: coarse) {
+  .pn-day-top-hint {
+    display: inline-flex;
+  }
+}
+
 @font-face {
   font-family: 'Macabro';
   src: url('/fonts/MACABRO.woff2') format('woff2'),
@@ -138,7 +150,7 @@ select:focus-visible {
      overflow:hidden prevents bounce-scroll on the page itself. */
   html {
     height: 100%;
-    background: #000000;
+    background: #053980;
     overflow: hidden;
   }
 
