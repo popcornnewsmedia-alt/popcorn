@@ -9,6 +9,8 @@
  * GET    /api/curation/feed         — list feed with stable Supabase IDs
  */
 
+import fs from "node:fs";
+import path from "node:path";
 import { Router, type IRouter } from "express";
 import {
   loadUncuratedArticles,
@@ -472,6 +474,91 @@ router.post("/curation/batch", async (req, res) => {
     res.json({ ok: true, feedDate, ...result });
   } catch (err) {
     console.error("[curation/batch] error:", (err as Error).message);
+    res.status(500).json({ ok: false, error: (err as Error).message });
+  }
+});
+
+// ─── POST /api/shortlist/diagnose ────────────────────────────────────────────
+// Given keywords, report the disposition of every matching item in today's
+// (or a given date's) audit file: raw_fetched, junk_filtered, deduplicated,
+// ranked_out, or sent_to_claude. Lets us answer "why was story X missed?" in
+// one call instead of grepping uncurated JSON by hand.
+
+router.post("/shortlist/diagnose", (req, res) => {
+  try {
+    const {
+      keywords,
+      feedDate = new Date().toISOString().slice(0, 10),
+    } = req.body as { keywords?: string[]; feedDate?: string };
+
+    if (!Array.isArray(keywords) || keywords.length === 0) {
+      res.status(400).json({ ok: false, error: 'Provide "keywords" (array of strings to match against titles)' });
+      return;
+    }
+
+    // Look up the audit file — check /tmp first (fresh run), then data/uncurated (committed).
+    const tmpPath = `/tmp/popcorn-audit-${feedDate}.json`;
+    const committedPath = path.resolve(process.cwd(), "data", "uncurated", `uncurated-${feedDate}.json`);
+    const auditPath = fs.existsSync(tmpPath) ? tmpPath : committedPath;
+
+    if (!fs.existsSync(auditPath)) {
+      res.status(404).json({ ok: false, error: `No audit file found for ${feedDate}. Expected at ${committedPath} or ${tmpPath}.` });
+      return;
+    }
+
+    const audit = JSON.parse(fs.readFileSync(auditPath, "utf-8"));
+    const articles: any[] = Array.isArray(audit.articles) ? audit.articles : [];
+
+    const stageReason = (stage: string, extra?: Record<string, unknown>): string => {
+      switch (stage) {
+        case "selected":
+          return "Selected for publishing by Claude.";
+        case "sent_to_claude":
+          return "Made the candidate pool and was shown to Claude, but not selected.";
+        case "ranked_out":
+          return `In window and clean, but rank too low to make the pool. ${extra?.rank ? `Rank: ${extra.rank}.` : ""}`.trim();
+        case "deduplicated":
+          return `Merged with a higher-ranked story with similar title. ${extra?.groupedWith ? `Grouped with: "${extra.groupedWith}" (${extra?.groupedWithSource ?? ""}).` : ""}`.trim();
+        case "rejected_by_claude":
+          return `Claude chose not to publish. ${extra?.reason ? `Reason: ${extra.reason}` : ""}`.trim();
+        default:
+          return `Stage: ${stage}`;
+      }
+    };
+
+    const results: Record<string, unknown> = {};
+    for (const kw of keywords) {
+      const needle = kw.toLowerCase().trim();
+      const matches = articles.filter((a) => String(a.title ?? "").toLowerCase().includes(needle));
+      results[kw] = {
+        found: matches.length,
+        items: matches.map((a: any) => ({
+          title: a.title,
+          source: a.source,
+          pubDate: a.pubDate,
+          stage: a.stage,
+          rank: a.dedupRank ?? null,
+          score: a.dedupScore ?? null,
+          groupedWith: a.groupedWith ?? null,
+          groupedWithSource: a.groupedWithSource ?? null,
+          reason: a.reason ?? stageReason(String(a.stage), a),
+        })),
+      };
+      if (matches.length === 0) {
+        (results[kw] as any).hint =
+          "No matches in audit. Possible causes: (1) no RSS feed covered this keyword, (2) the story was outside the time window for this feedDate, (3) a junk filter pattern stripped it before audit logging, (4) keyword mis-spelt — try shorter fragments.";
+      }
+    }
+
+    res.json({
+      ok: true,
+      feedDate,
+      auditFile: auditPath,
+      totalAuditedArticles: articles.length,
+      keywords: results,
+    });
+  } catch (err) {
+    console.error("[shortlist/diagnose] error:", (err as Error).message);
     res.status(500).json({ ok: false, error: (err as Error).message });
   }
 });

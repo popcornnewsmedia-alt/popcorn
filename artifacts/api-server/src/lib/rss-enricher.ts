@@ -2096,12 +2096,18 @@ function deduplicateAndRank(
     }
   }
 
-  // Score = coverage bonus + recency bonus
+  // Score = log-scaled coverage + recency + high-signal boost.
+  // Linear coverage weighting used to crush single-source but culturally loaded
+  // stories (chess upsets, quirky arrests, lifestyle lists). Log scaling caps
+  // the coverage advantage of pile-on stories; a high-signal keyword in the
+  // title gives single-source stories a realistic shot at the pool.
   const now = Date.now();
   const scored = groups.map((g) => {
     const ageHours = (now - g.latestMs) / 3_600_000;
     const recency = Math.max(0, 1 - ageHours / 48); // 1 = fresh, 0 = 2 days old
-    const score = g.sourceCount * 3 + recency * 2;
+    const coverage = Math.log2(g.sourceCount + 1) * 3; // 1 src → 3.0, 3 srcs → 6.0, 7 srcs → 9.0
+    const highSignal = HIGH_SIGNAL_TRIGGERS.some((p) => p.test(g.representative.title)) ? 2 : 0;
+    const score = coverage + recency * 3 + highSignal;
     return { score, g };
   });
 
@@ -3084,7 +3090,15 @@ export function clearCache(): void {
 
 function shortlistPath(): string {
   const dateStr = new Date().toISOString().slice(0, 10);
-  return path.join("/tmp", `popcorn-shortlist-${dateStr}.json`);
+  // Primary: project-root "Daily Curation Review" folder for manual review.
+  // Falls back to /tmp if the folder can't be resolved (e.g. in CI).
+  const reviewDir = path.resolve(process.cwd(), "..", "..", "Daily Curation Review");
+  try {
+    if (!fs.existsSync(reviewDir)) fs.mkdirSync(reviewDir, { recursive: true });
+    return path.join(reviewDir, `popcorn-shortlist-${dateStr}.json`);
+  } catch {
+    return path.join("/tmp", `popcorn-shortlist-${dateStr}.json`);
+  }
 }
 
 /**
@@ -3160,7 +3174,8 @@ export async function generateShortlist(
   const DOMAIN_SLOTS: Partial<Record<SignalDomain, number>> = {
     AI_TECH: 10, ECONOMIC: 8, FANDOM: 8, INTERNET: 6, SPORTS: 6, CROSSDOMAIN: 5,
   };
-  const ENTERTAINMENT_CAP = 13; // tighter cap — shortlist is user-curated so balance matters more
+  const ENTERTAINMENT_CAP = 30; // raised from 13 — caps are guidelines, not hard limits
+  const POOL_CAP = 100;         // raised from 50 — user reviews JSON so cost is free
 
   const byDomain = new Map<SignalDomain, RawRSSItem[]>();
   for (const item of allRanked) {
@@ -3178,14 +3193,14 @@ export async function generateShortlist(
     if (classifyDomain(item) === "ENTERTAINMENT" && entCount < ENTERTAINMENT_CAP) {
       candidateSet.add(item); entCount++;
     }
-    if (candidateSet.size >= 50) break;
+    if (candidateSet.size >= POOL_CAP) break;
   }
   for (const item of allRanked) {
-    if (candidateSet.size >= 50) break;
+    if (candidateSet.size >= POOL_CAP) break;
     candidateSet.add(item);
   }
 
-  const pool = allRanked.filter((item) => candidateSet.has(item)).slice(0, 50);
+  const pool = allRanked.filter((item) => candidateSet.has(item)).slice(0, POOL_CAP);
 
   // Score map from dedup audit
   const { audit: dedupAudit } = deduplicateAndRank(filteredItems, filteredItems.length);
