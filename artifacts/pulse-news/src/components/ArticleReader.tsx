@@ -206,6 +206,32 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                     background: 'linear-gradient(to bottom, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 25%, rgba(255,255,255,0) 65%, rgba(255,255,255,0.85) 90%, rgba(255,255,255,1) 100%)',
                   }}
                 />
+                {/* Image credit — bottom-right of hero, sits over the image before fade-to-white */}
+                {article.imageCredit && (
+                  <div
+                    className="font-['Inter']"
+                    style={{
+                      position: 'absolute',
+                      right: '14px',
+                      bottom: '120px',
+                      fontSize: '9px',
+                      lineHeight: 1,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      fontWeight: 500,
+                      color: 'rgba(255,241,205,0.80)',
+                      textShadow: '0 1px 3px rgba(0,0,0,0.75)',
+                      maxWidth: '60vw',
+                      textAlign: 'right',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    {article.imageCredit}
+                  </div>
+                )}
               </div>
             )}
 
@@ -298,21 +324,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
 
                 <div className="max-w-2xl mx-auto px-5 pt-5 pb-28 sm:px-8">
 
-                  {/* Image credit */}
-                  {article.imageCredit && (
-                    <p
-                      className="font-['Lora']"
-                      style={{
-                        fontSize: '11px',
-                        fontStyle: 'italic',
-                        color: 'rgba(0,0,0,0.42)',
-                        letterSpacing: '0.01em',
-                        marginBottom: '14px',
-                      }}
-                    >
-                      Photograph — {article.imageCredit}
-                    </p>
-                  )}
+                  {/* Image credit now rendered as a subtle overlay on the hero image itself */}
 
                   {/* Category + source pills + date */}
                   <div className="flex flex-wrap items-center gap-2 mb-5">

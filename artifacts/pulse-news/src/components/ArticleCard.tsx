@@ -237,6 +237,31 @@ export function ArticleCard({
             className="absolute inset-0 z-10"
             style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.78) 80%, rgba(0,0,0,0.92) 100%)' }}
           />
+          {/* Image credit — bottom-right, subtle */}
+          {article.imageCredit && (
+            <div
+              className="absolute pointer-events-none font-['Inter']"
+              style={{
+                right: '14px',
+                bottom: `calc(92px + env(safe-area-inset-bottom))`,
+                zIndex: 15,
+                fontSize: '9px',
+                lineHeight: 1,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                fontWeight: 500,
+                color: 'rgba(255,241,205,0.70)',
+                textShadow: '0 1px 3px rgba(0,0,0,0.75)',
+                maxWidth: '42vw',
+                textAlign: 'right',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {article.imageCredit}
+            </div>
+          )}
         </>
       ) : (
         <div className="absolute inset-0 ink-diffusion-bg" />
