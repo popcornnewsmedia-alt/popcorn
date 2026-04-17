@@ -901,11 +901,15 @@ export function FeedPageHorizontal() {
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}
         onAccountDeleted={() => {
-          // deleteAccount() in useAuth already called supabase.auth.signOut().
-          // Close the sheet + switch to the feed tab so the signed-out splash
-          // CTA can take over on the next render.
+          // Mirror the sign-out flow: close any sheets/overlays that might
+          // outlive the session, reset to the feed tab, and flip the splash
+          // back on so the user lands on the intro/login screen (not the
+          // feed) after their account is gone.
           setSettingsOpen(false);
+          setNotifOpen(false);
+          setLegalSheet(null);
           setActiveTab("feed");
+          setShowSplash(true);
         }}
       />
       <NotificationsSheet
