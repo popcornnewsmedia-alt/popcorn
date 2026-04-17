@@ -343,7 +343,6 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
     { id: number; text: string; author: string; hasReplies: boolean }
     | null
   >(null);
-  const [isDeleting, setIsDeleting] = useState(false);
   // Web-only kebab menu: holds the id of the row whose menu is open.
   // Hidden on touch devices via CSS media query (`@media (hover: none)`).
   const [kebabOpenId, setKebabOpenId] = useState<number | null>(null);
@@ -446,19 +445,16 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
     setPendingDelete({ id, author, text, hasReplies });
   }, []);
 
-  const confirmDelete = useCallback(async () => {
-    if (!pendingDelete || isDeleting) return;
-    setIsDeleting(true);
-    try {
-      await deleteComment(pendingDelete.id);
-    } finally {
-      // Always close the modal — if the delete failed, deleteComment rolls
-      // back the optimistic update, so the row reappears in place. Leaving
-      // the modal stuck with no feedback is worse than closing it.
-      setIsDeleting(false);
-      setPendingDelete(null);
-    }
-  }, [pendingDelete, isDeleting, deleteComment]);
+  const confirmDelete = useCallback(() => {
+    if (!pendingDelete) return;
+    const id = pendingDelete.id;
+    // Close synchronously and fire the delete in the background.
+    // `deleteComment` already removes the row optimistically and rolls
+    // back on failure, so awaiting here just opens a hang window when
+    // the Supabase request stalls on a flaky connection.
+    setPendingDelete(null);
+    void deleteComment(id);
+  }, [pendingDelete, deleteComment]);
 
   // Deep-link: expand replies + scroll to a specific comment when requested
   // (e.g. tapping a reply notification).
@@ -1198,7 +1194,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
             WebkitBackdropFilter: "blur(8px) saturate(1.1)",
             animation: "csBackdropIn 0.22s ease-out both",
           }}
-          onClick={(e) => { e.stopPropagation(); if (!isDeleting) setPendingDelete(null); }}
+          onClick={(e) => { e.stopPropagation(); setPendingDelete(null); }}
         >
           <div
             role="dialog"
@@ -1318,8 +1314,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
 
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
               <button
-                onClick={(e) => { e.stopPropagation(); if (!isDeleting) setPendingDelete(null); }}
-                disabled={isDeleting}
+                onClick={(e) => { e.stopPropagation(); setPendingDelete(null); }}
                 className="cs-delete-keep"
                 style={{
                   padding: "8px 14px",
@@ -1331,16 +1326,14 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                   color: "rgba(255,241,205,0.85)",
                   background: "transparent",
                   border: "1px solid rgba(255,241,205,0.22)",
-                  cursor: isDeleting ? "default" : "pointer",
-                  opacity: isDeleting ? 0.45 : 1,
+                  cursor: "pointer",
                   transition: "background 0.14s ease, border-color 0.14s ease, color 0.14s ease",
                 }}
               >
                 Keep
               </button>
               <button
-                onClick={(e) => { e.stopPropagation(); void confirmDelete(); }}
-                disabled={isDeleting}
+                onClick={(e) => { e.stopPropagation(); confirmDelete(); }}
                 className="cs-delete-go"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: 6,
@@ -1355,8 +1348,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                   color: BRAND,
                   background: CREAM,
                   border: "none",
-                  cursor: isDeleting ? "default" : "pointer",
-                  opacity: isDeleting ? 0.7 : 1,
+                  cursor: "pointer",
                   boxShadow: `0 6px 18px rgba(255,241,205,0.18), 0 0 0 1px rgba(${DELETE_RED},0.18) inset`,
                   transition: "transform 0.14s ease, box-shadow 0.14s ease, opacity 0.14s ease",
                 }}
@@ -1364,7 +1356,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                 <Trash2 size={12} strokeWidth={2.4} color={`rgba(${DELETE_RED},1)`} />
                 {/* …but the word itself carries the destructive hue. */}
                 <span style={{ color: `rgba(${DELETE_RED},1)` }}>
-                  {isDeleting ? "Deleting…" : "Delete"}
+                  Delete
                 </span>
               </button>
             </div>
