@@ -39,7 +39,12 @@ function App() {
   /* ── Username gate (runs on every SIGNED_IN) ─────────────────────────
      If the user has no profiles row we force the blocking UsernameSheet
      before the feed becomes interactive. Also handles the welcome-email
-     hook for Google OAuth new users. */
+     hook for Google OAuth new users.
+
+     When the profiles row is missing we also verify the user still exists
+     server-side via `getUser()`. A deleted-then-rehydrated session (the
+     user cleared their account from another tab/device) would otherwise
+     land on UsernameSheet instead of the signed-out splash. */
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event !== "SIGNED_IN" || !session?.user) return;
@@ -55,6 +60,14 @@ function App() {
           .eq("user_id", user.id)
           .maybeSingle();
         if (!profile) {
+          // Before prompting, make sure this session is still backed by a
+          // real user. A stale session for a deleted account should be
+          // purged, not upgraded through UsernameSheet.
+          const { data: live, error: liveErr } = await supabase.auth.getUser();
+          if (liveErr || !live?.user) {
+            await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+            return;
+          }
           const seed =
             (user.user_metadata?.full_name as string | undefined) ??
             (user.user_metadata?.name as string | undefined) ??
@@ -103,6 +116,13 @@ function App() {
           .eq("user_id", session.user.id)
           .maybeSingle();
         if (!profile) {
+          // Same deleted-user guard as the SIGNED_IN branch: confirm the
+          // session still points at a real user before showing the sheet.
+          const { data: live, error: liveErr } = await supabase.auth.getUser();
+          if (liveErr || !live?.user) {
+            await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+            return;
+          }
           const seed =
             (session.user.user_metadata?.full_name as string | undefined) ??
             (session.user.user_metadata?.name as string | undefined) ??

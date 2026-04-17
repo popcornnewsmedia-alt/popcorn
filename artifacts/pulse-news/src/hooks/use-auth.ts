@@ -247,8 +247,14 @@ export function useAuth() {
   /** Permanently deletes the signed-in user's account. Hits the server-side
    * /api/auth/delete-account endpoint (which uses the service-role key to
    * purge from auth.users); Postgres ON DELETE CASCADE then cleans up every
-   * downstream table (profiles, comments, comment_votes, notifications).
-   * Signs the user out on success. */
+   * downstream table (profiles, comments, comment_votes, notifications,
+   * saved_articles). Signs the user out on success.
+   *
+   * We mirror `signOut()`'s pattern: clear local state + storage instantly
+   * (fire-and-forget the Supabase call) so the UI can advance to the farewell
+   * screen immediately. Awaiting the client-side `signOut` can wedge on the
+   * mobile WebView after a POST — exactly what would leave a stale session in
+   * localStorage and drop the user into the UsernameSheet on refresh. */
   const deleteAccount = async () => {
     const token = state.session?.access_token;
     if (!token) throw new Error("Not signed in");
@@ -263,7 +269,9 @@ export function useAuth() {
       const body = await resp.json().catch(() => ({}));
       throw new Error(body.error ?? `Delete failed (${resp.status})`);
     }
-    await supabase.auth.signOut();
+    loadedProfileForRef.current = null;
+    setState({ user: null, session: null, profile: null, loading: false });
+    void supabase.auth.signOut({ scope: 'local' }).catch(() => { /* already gone */ });
   };
 
   return {
