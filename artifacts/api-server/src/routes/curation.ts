@@ -16,10 +16,11 @@ import {
   resolveArticleBySupabaseId,
 } from "../lib/curation-helpers.js";
 import { enrichSelectedItems, selectBestImageForRerun, detectImageFocalPoint, type EnrichedArticle } from "../lib/rss-enricher.js";
-import { mergeFeed, saveCommittedFeed, saveCommittedFeedAsProd, removeArticlesBySupabaseId, updateArticleImageInMemory, promoteToProduction } from "../lib/curated-store.js";
+import { mergeFeed, saveCommittedFeed, saveCommittedFeedAsProd, removeArticlesBySupabaseId, updateArticleImageInMemory, promoteToProduction, backfillFocalPointsForToday } from "../lib/curated-store.js";
 import { markLive } from "../lib/article-store.js";
 import { processAndUploadImage } from "../lib/image-processor.js";
 import { supabase } from "../lib/supabase-client.js";
+import https from "node:https";
 
 const router: IRouter = Router();
 
@@ -345,6 +346,132 @@ router.get("/curation/feed", async (req, res) => {
     });
   } catch (err) {
     console.error("[curation/feed] error:", (err as Error).message);
+    res.status(500).json({ ok: false, error: (err as Error).message });
+  }
+});
+
+// ─── POST /api/curation/batch ─────────────────────────────────────────────────
+// Single-call curation: add + remove + focal backfill + image verification.
+// Eliminates the multi-round-trip dance of calling add → backfill → verify.
+
+router.post("/curation/batch", async (req, res) => {
+  try {
+    const {
+      add,
+      remove,
+      feedDate = new Date().toISOString().slice(0, 10),
+    } = req.body as {
+      add?: {
+        indices?: number[];
+        raw?: { title: string; source: string; link: string; description?: string; imageUrl?: string }[];
+      };
+      remove?: number[];
+      feedDate?: string;
+    };
+
+    const result: {
+      added: { count: number; articles: { id?: number; title: string; category: string; tag: string }[] };
+      removed: { count: number; articles: { id: number; title: string }[] };
+      focal: { scanned: number; updated: number; skipped: number };
+      images: { total: number; ok: number; failed: string[] };
+    } = {
+      added: { count: 0, articles: [] },
+      removed: { count: 0, articles: [] },
+      focal: { scanned: 0, updated: 0, skipped: 0 },
+      images: { total: 0, ok: 0, failed: [] },
+    };
+
+    // ── Step 1: Remove articles ──────────────────────────────────────────────
+    if (Array.isArray(remove) && remove.length > 0) {
+      console.log(`[curation/batch] Removing ${remove.length} articles...`);
+      const removeResult = await removeArticlesBySupabaseId(remove);
+      result.removed = {
+        count: removeResult.removed,
+        articles: removeResult.articles.map((a) => ({ id: a.id, title: a.title })),
+      };
+    }
+
+    // ── Step 2: Add articles ─────────────────────────────────────────────────
+    if (add) {
+      let rawItems: { title: string; description: string; link: string; pubDate: string; source: string; imageUrl?: string }[] = [];
+
+      if (Array.isArray(add.indices) && add.indices.length > 0) {
+        const uncurated = loadUncuratedArticles(feedDate);
+        if (uncurated.length === 0) {
+          res.status(404).json({ ok: false, error: `No uncurated file found for ${feedDate}` });
+          return;
+        }
+        const matched = add.indices
+          .filter((i) => i >= 1 && i <= uncurated.length)
+          .map((i) => uncurated[i - 1]);
+        if (matched.length === 0) {
+          res.status(400).json({ ok: false, error: `No valid indices. Range: 1–${uncurated.length}` });
+          return;
+        }
+        console.log(`[curation/batch] Resolving ${matched.length} articles from uncurated pool...`);
+        rawItems = await Promise.all(matched.map(uncuratedToRawItem));
+      } else if (Array.isArray(add.raw) && add.raw.length > 0) {
+        rawItems = add.raw.map((a) => ({
+          title: a.title,
+          description: a.description ?? "",
+          link: a.link,
+          pubDate: new Date().toISOString(),
+          source: a.source,
+          imageUrl: a.imageUrl,
+        }));
+      }
+
+      if (rawItems.length > 0) {
+        console.log(`[curation/batch] Enriching ${rawItems.length} articles...`);
+        const enriched = await enrichSelectedItems(rawItems, true);
+        const addedCount = mergeFeed(enriched);
+        saveCommittedFeedAsProd();
+        markLive();
+        result.added = {
+          count: addedCount,
+          articles: enriched.map((a) => ({ title: a.title, category: a.category, tag: a.tag })),
+        };
+      }
+    }
+
+    // ── Step 3: Focal backfill (incremental — only new/missing) ──────────────
+    console.log(`[curation/batch] Running incremental focal backfill...`);
+    result.focal = await backfillFocalPointsForToday();
+
+    // ── Step 4: Image verification (HEAD requests) ───────────────────────────
+    const { data: articles } = await supabase
+      .from("articles")
+      .select("id, title, image_url")
+      .eq("feed_date", feedDate);
+
+    if (articles && articles.length > 0) {
+      result.images.total = articles.length;
+      const checkImage = (url: string): Promise<boolean> =>
+        new Promise((resolve) => {
+          try {
+            const req = https.request(url, { method: "HEAD", timeout: 8000 }, (resp) => {
+              resolve(resp.statusCode === 200);
+            });
+            req.on("error", () => resolve(false));
+            req.on("timeout", () => { req.destroy(); resolve(false); });
+            req.end();
+          } catch { resolve(false); }
+        });
+
+      const checks = await Promise.all(
+        articles.map(async (a: any) => {
+          if (!a.image_url) return { id: a.id, title: a.title, ok: false };
+          const ok = await checkImage(String(a.image_url));
+          return { id: a.id, title: a.title, ok };
+        })
+      );
+      result.images.ok = checks.filter((c) => c.ok).length;
+      result.images.failed = checks.filter((c) => !c.ok).map((c) => `${c.id}: ${c.title}`);
+    }
+
+    res.json({ ok: true, feedDate, ...result });
+  } catch (err) {
+    console.error("[curation/batch] error:", (err as Error).message);
     res.status(500).json({ ok: false, error: (err as Error).message });
   }
 });

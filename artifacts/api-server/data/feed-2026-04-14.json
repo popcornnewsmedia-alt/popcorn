@@ -51,7 +51,7 @@
       "imageFocalY": 0.35,
       "imageSafeW": 0.28,
       "imageSafeH": 0.45,
-      "imageCredit": "TMDB",
+      "imageCredit": null,
       "keyPoints": [
         "Jeremy Strong plays Mark Zuckerberg in The Social Reckoning, Aaron Sorkin's follow-up to The Social Network",
         "Aaron Sorkin is directing this time, taking over from David Fincher who directed the 2010 original",
@@ -113,7 +113,7 @@
       "imageFocalY": 0.4,
       "imageSafeW": 0.25,
       "imageSafeH": 0.5,
-      "imageCredit": "Variety",
+      "imageCredit": null,
       "keyPoints": [
         "Lena Dunham's memoir Famesick claims Adam Driver was verbally aggressive on the Girls set",
         "Dunham writes that Driver physically hurled her during their first filmed sex scene",

@@ -1,8 +1,15 @@
-import { useState, useRef, useCallback } from "react";
+import { Fragment, useState, useRef, useCallback, useEffect } from "react";
 import { X, ArrowRight, Check, Mail, ChevronDown } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
 import type { LegalKind } from "@/components/LegalSheet";
+import { supabase } from "@/lib/supabase";
+import {
+  checkAvailability,
+  validateUsernameFormat,
+  type AvailabilityReason,
+  type FormatReason,
+} from "@/lib/username";
 
 const TOPICS = [
   "AI & Machine Learning", "Climate", "Markets", "Geopolitics",
@@ -18,10 +25,18 @@ interface SignUpFlowProps {
 }
 
 export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInInstead }: SignUpFlowProps) {
-  const { signUp, updateProfile } = useAuth();
+  const { signUp, updateProfile, refreshProfile } = useAuth();
 
   const [step, setStep] = useState(0);
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [usernameStatus, setUsernameStatus] = useState<
+    | { kind: "idle" }
+    | { kind: "checking" }
+    | { kind: "ok" }
+    | { kind: "bad_format"; reason: FormatReason }
+    | { kind: "unavailable"; reason: AvailabilityReason }
+  >({ kind: "idle" });
   const [dobDay, setDobDay] = useState("");
   const [dobMonth, setDobMonth] = useState("");
   const [dobYear, setDobYear] = useState("");
@@ -72,10 +87,32 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
 
   const reset = () => {
     setStep(0); setDone(false); setEmailSent(false);
-    setName(""); setDobDay(""); setDobMonth(""); setDobYear(""); setEmail(""); setPassword(""); setConfirmPassword("");
+    setName(""); setUsername(""); setUsernameStatus({ kind: "idle" });
+    setDobDay(""); setDobMonth(""); setDobYear(""); setEmail(""); setPassword(""); setConfirmPassword("");
     setTopics(new Set()); setNotifs(new Set());
     setError(null); setLoading(false);
   };
+
+  // ── Debounced username availability check ────────────────────────────
+  // Local format validation runs instantly; if it passes, we hit the server
+  // (via /api/auth/username-available) after a 400ms idle window.
+  useEffect(() => {
+    const raw = username.trim().toLowerCase();
+    if (!raw) { setUsernameStatus({ kind: "idle" }); return; }
+    const fmt = validateUsernameFormat(raw);
+    if (!fmt.ok) { setUsernameStatus({ kind: "bad_format", reason: fmt.reason }); return; }
+    setUsernameStatus({ kind: "checking" });
+    let cancelled = false;
+    const t = setTimeout(async () => {
+      const r = await checkAvailability(raw);
+      if (cancelled) return;
+      // Guard against stale responses if the user kept typing.
+      if (raw !== username.trim().toLowerCase()) return;
+      if (r.available) setUsernameStatus({ kind: "ok" });
+      else setUsernameStatus({ kind: "unavailable", reason: r.reason });
+    }, 400);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [username]);
 
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -100,10 +137,36 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
           return;
         }
 
+        // Reserve the username on the profiles table. RLS permits this once
+        // the signUp response has established a session. If another signup
+        // races us to the same handle, Postgres returns 23505 and we bounce
+        // the user back to the username field.
+        const candidate = username.trim().toLowerCase();
+        const userId = data?.user?.id;
+        if (userId && candidate) {
+          const { error: profileErr } = await supabase
+            .from("profiles")
+            .insert({ user_id: userId, username: candidate });
+          if (profileErr) {
+            const code = (profileErr as { code?: string }).code;
+            if (code === "23505") {
+              setUsernameStatus({ kind: "unavailable", reason: "taken" });
+              setError("__username_taken__");
+              return;
+            }
+            // Non-fatal for any other error — surface but keep signup flow alive.
+            // App.tsx's UsernameSheet will re-prompt if the row is missing.
+            console.warn("[SignUpFlow] profiles insert error", profileErr);
+          } else {
+            // Refresh the auth hook's cached profile so downstream UI sees the handle.
+            refreshProfile().catch(() => { /* Non-fatal */ });
+          }
+        }
+
         // Store userId + name so App.tsx can send the welcome email after verification
         localStorage.setItem("popcorn_awaiting_confirm", JSON.stringify({
           ts: Date.now(),
-          userId: data?.user?.id,
+          userId,
           email: data?.user?.email ?? email,
           name,
         }));
@@ -141,7 +204,13 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
 
   const passwordsMatch = password === confirmPassword;
   const canNext =
-    step === 0 ? name.trim().length > 0 && !!dobDay && !!dobMonth && !!dobYear && email.includes("@") && password.length >= 8 && confirmPassword.length > 0 && passwordsMatch
+    step === 0 ? (
+      name.trim().length > 0 &&
+      usernameStatus.kind === "ok" &&
+      !!dobDay && !!dobMonth && !!dobYear &&
+      email.includes("@") &&
+      password.length >= 8 && confirmPassword.length > 0 && passwordsMatch
+    )
     : step === 1 ? topics.size >= 1
     : true;
 
@@ -254,8 +323,8 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                   { label: "Password", type: "password", value: password, set: setPassword, placeholder: "Min. 8 characters" },
                   { label: "Confirm Password", type: "password", value: confirmPassword, set: setConfirmPassword, placeholder: "Re-enter password" },
                 ].map(({ label, type, value, set, placeholder }, i) => (
-                  <>
-                    <div key={label} className="flex flex-col gap-1.5">
+                  <Fragment key={label}>
+                    <div className="flex flex-col gap-1.5">
                       <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>{label}</label>
                       <input
                         type={type}
@@ -267,8 +336,18 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                         style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
                       />
                     </div>
-                    {/* Date of Birth — inserted after Full Name */}
-                    {i === 0 && (
+                    {/* Username — inserted after Email */}
+                    {i === 1 && (
+                      <UsernameField
+                        key="username"
+                        value={username}
+                        onChange={setUsername}
+                        status={usernameStatus}
+                        stopProp={stopProp}
+                      />
+                    )}
+                    {/* Date of Birth — inserted after Username */}
+                    {i === 1 && (
                       <div key="dob" className="flex flex-col gap-1.5">
                         <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>Date of Birth</label>
                         <div className="flex gap-2">
@@ -299,7 +378,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                         </div>
                       </div>
                     )}
-                  </>
+                  </Fragment>
                 ))}
 
                 {confirmPassword.length > 0 && (
@@ -326,6 +405,10 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                     >
                       Sign in instead
                     </button>
+                  </p>
+                ) : error === "__username_taken__" ? (
+                  <p className="font-['Inter']" style={{ fontSize: '13px', color: '#ff8a80', lineHeight: 1.5 }}>
+                    That username was taken a moment ago — please pick another.
                   </p>
                 ) : error ? (
                   <p className="font-['Inter']" style={{ fontSize: '13px', color: '#ff8a80' }}>{error}</p>
@@ -524,6 +607,111 @@ function BrandedSelect({ value, onChange, options, placeholder }: {
       )}
     </>
   );
+}
+
+type UsernameStatus =
+  | { kind: "idle" }
+  | { kind: "checking" }
+  | { kind: "ok" }
+  | { kind: "bad_format"; reason: FormatReason }
+  | { kind: "unavailable"; reason: AvailabilityReason };
+
+function UsernameField({
+  value,
+  onChange,
+  status,
+  stopProp,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  status: UsernameStatus;
+  stopProp: (e: React.MouseEvent) => void;
+}) {
+  const hint = formatStatusHint(status);
+  const hintColor =
+    status.kind === "ok"
+      ? "rgba(130,220,160,0.90)"
+      : status.kind === "checking" || status.kind === "idle"
+        ? "rgba(255,241,205,0.45)"
+        : "rgba(255,150,130,0.90)";
+
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>
+        Username
+      </label>
+      <div className="relative">
+        <span
+          className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none font-['Inter']"
+          style={{ fontSize: '15px', color: 'rgba(255,241,205,0.45)' }}
+        >
+          @
+        </span>
+        <input
+          type="text"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          value={value}
+          onChange={(e) => onChange(e.target.value.toLowerCase().replace(/\s+/g, ''))}
+          onClick={stopProp}
+          placeholder="your_handle"
+          maxLength={20}
+          className="w-full rounded-xl pl-8 pr-10 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
+          style={{
+            background: 'rgba(255,241,205,0.07)',
+            fontSize: '15px',
+            color: '#fff1cd',
+            border: `1px solid ${status.kind === "ok" ? 'rgba(130,220,160,0.40)' : status.kind === "unavailable" || status.kind === "bad_format" ? 'rgba(255,150,130,0.40)' : 'rgba(255,241,205,0.13)'}`,
+          }}
+        />
+        {/* Right-side status glyph */}
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+          {status.kind === "ok" && (
+            <Check className="w-4 h-4" style={{ color: 'rgba(130,220,160,0.90)' }} strokeWidth={2.75} />
+          )}
+          {status.kind === "unavailable" && (
+            <X className="w-4 h-4" style={{ color: 'rgba(255,150,130,0.90)' }} strokeWidth={2.75} />
+          )}
+          {status.kind === "bad_format" && (
+            <X className="w-4 h-4" style={{ color: 'rgba(255,150,130,0.70)' }} strokeWidth={2.5} />
+          )}
+        </span>
+      </div>
+      {hint && (
+        <p className="font-['Inter']" style={{ fontSize: '11.5px', color: hintColor, marginTop: '-2px' }}>
+          {hint}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function formatStatusHint(status: UsernameStatus): string | null {
+  switch (status.kind) {
+    case "idle":
+      return "3–20 chars, letters / numbers / underscore.";
+    case "checking":
+      return "Checking availability…";
+    case "ok":
+      return "Available.";
+    case "bad_format":
+      switch (status.reason) {
+        case "too_short": return "Too short — at least 3 characters.";
+        case "too_long":  return "Too long — 20 characters max.";
+        case "bad_chars": return "Letters, numbers, and underscore only.";
+        case "reserved":  return "That handle is reserved.";
+      }
+      return "Invalid handle.";
+    case "unavailable":
+      switch (status.reason) {
+        case "taken":    return "That handle is already taken.";
+        case "reserved": return "That handle is reserved.";
+        case "format":   return "Invalid handle.";
+        case "network":  return "Couldn't check availability — try again.";
+      }
+      return "Unavailable.";
+  }
 }
 
 function NotifToggle({ label, sub, on, onToggle }: { label: string; sub: string; on: boolean; onToggle: () => void }) {

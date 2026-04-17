@@ -34,8 +34,8 @@ const SORT_LABELS: Record<Sort, string> = {
 };
 
 export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onRequireAuth }: CommentSheetProps) {
-  const { user } = useAuth();
-  const { comments, postComment, castVote } = useComments(articleId, user);
+  const { user, profile } = useAuth();
+  const { comments, postComment, castVote } = useComments(articleId, user, profile?.username ?? null);
   const [sort, setSort] = useState<Sort>("popular");
   const [expandedReplies, setExpandedReplies] = useState<Set<number>>(new Set());
   // `mention` is true when replying to another reply: the DB enforces two-level

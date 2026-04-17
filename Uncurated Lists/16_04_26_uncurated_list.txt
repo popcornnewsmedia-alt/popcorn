@@ -1,0 +1,99 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  POPCORN CANDIDATES — 2026-04-16   (MAIN RUN)
+  83 articles fetched   82 unique stories   5 selected by Claude
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+── FIRST PASS — Claude's picks (5 selected) ────────────────────────────────────────────────────────────
+  #1    5     Pitchfork                     Massive Attack’s First Song in Six Years Features Tom Waits
+  #2    4     IndieWire                     Michael B. Jordan, Ryan Gosling, and Even Rick Moranis — but No James Bond — Lead Star-Studded Amazon MGM CinemaCon
+  #3    4     Pitchfork                     Jury Finds Live Nation Acted as an Illegal Monopoly
+  #4    4     404 Media                     Ukraine Says Russians are Surrendering to Robots
+  #5    4     Futurism                      Berklee College of Music Students Furious That It’s Offering an AI “Songwriting” Class
+
+── ALL CANDIDATES (sorted by score) ─────────────────────────────────────────────────────────────────
+   #1    7     Hypebeast                     Meet the New Focker: Ariana Grande Outsmarts Ben Stiller in Official 'Focker In-Law' Trailer
+   #2    5     IndieWire                     ‘Lee Cronin’s The Mummy’ Review: A Bland, Cruel, and Derivative Creature Feature Only Distinguished by Its Rivers of Projectile Vomit
+   #3    5     Wired                         Congress Turns Up Pressure on DHS Over Palantir’s Role in Immigration Crackdown
+   #4    5     NME                           How Danish raves and Massive Attack birthed Jesper Kyd’s trip-hoppy ‘Samson’ soundtrack
+   #5    5     Hypebeast                     ARNETTE’s RAVEN Sunglasses Make a Comeback in New Season Collection
+   #6    5     Futurism                      Starbucks’ Baffling ChatGPT Collab Treats Customers Like Empty, Soulless Venti Cups
+   #7    5     NME                           Sex Pistols team up with Marshall for pink and yellow limited edition 50th anniversary amp stack ahead of Record Store Day
+   #8    5     Highsnobiety                  Kaytranada Goes Underground
+   #9    5     NME                           Big Special announce new EP ‘O’Joy!’ with reflective single ‘Only Free When Sleeping’
+   #10   5     NME                           Asa Butterfield auditioned to play George Harrison in Beatles biopics: “There are roles that you really want”
+   #11   5     The Atlantic                  If You Want a Better World, Act Like You Live in It
+   #12   5     Wired                         Smart Plug Guide (2026): When You Should and Shouldn’t Use One
+   #13   5     The Guardian Culture          Pedro Pascal v Pedro Piscal: actor in legal battle with Chilean spirit brand
+   #14   5     Wired                         LG Sound Suite Review: Big Sound for Larger Rooms
+   #15   5     Dazed                         The secret history of Black British music
+   #16   5     Wired                         Best MacBook Accessories (2026): Chargers, Covers, Keyboards, and More
+   #17   5     Dazed                         We’re Chinamaxxing our way through the death of the west
+   #18   5     Vulture                       My TV Moms
+   #19   5     The Atlantic                  If Hungary Can Do It
+   #20   5     The Atlantic                  A Pillar of the Economics Establishment Admits That It Was Wrong
+   #21   5     The Atlantic                  History Is Running Backwards
+   #22   5     Wired                         Heybike Comfort Ranger 3.0 Pro Electric Bike Review: Tough Little Cargo Ebike
+   #23   5     Wired                         This Beanie Is Designed to Read Your Thoughts
+   #24   5     Highsnobiety                  The Future of Smart Eyewear Just Got a Whole Lot Clearer
+   #25   5     Highsnobiety                  Benetton Recruits All Ranch Hands for Jean’s West Drop
+   #26   5     The New Yorker                Sharp Claws at “Becky Shaw” and “Cats: The Jellicle Ball”
+   #27   5     The New Yorker                “Beef,” “The Drama,” and the New Marriage Plot
+ ✓ #28   5     Pitchfork                     Massive Attack’s First Song in Six Years Features Tom Waits
+   #29   5     Dazed                         KYOTOGRAPHIE 2026: Inside Japan’s epic photography festival
+   #30   5     Hypebeast                     MetaMount and Timberland Reimagine the Classic 6-Inch Boot
+   #31   5     NYT Arts                      The Phillies Owner’s Other Superstars
+   #32   5     NYT Arts                      Kenya Barris on His New Documentary, ‘Jerry West: The Logo’
+   #33   5     NYT Arts                      It’s (Always) the Season for Anime
+   #34   5     NYT Arts                      ‘Mother Mary’ Review: Anne Hathaway Strikes a Pose
+   #35   5     The Guardian Culture          ‘A feeling of ecstasy’: how Anne Hathaway and FKA twigs created the thunderous Mother Mary soundtrack
+   #36   5     NYT Arts                      Kendrick Lamar’s Protégé Baby Keem Tells the Whole Story, Warts and All
+   #37   5     NYT Arts                      The Enduring Beauty of Black-and-White Games
+   #38   5     Highsnobiety                  There's More Than One Way to Pledge Your Allegiance This World Cup
+   #39   5     Vulture                       Cinematrix No. 751: April 16, 2026
+   #40   5     Highsnobiety                  Vans' Oddly Opulent Skate Sneakers Are Actually Crazy Luxurious
+   #41   5     Highsnobiety                  adidas' Bold Bowling Sneaker Is Bigger than the Lanes
+   #42   5     Highsnobiety                  You've Never Seen Laceless Timbs Before
+   #43   5     The Guardian Culture          Pragmata review – soulful sad dad saga in stunning outer space
+   #44   5     IndieWire                     ‘Beef’ Season 2 Review: Bigger Is Actually Better in Lee Sung Jin’s Searing Netflix Sequel
+   #45   5     The Guardian Culture          Beef season two review – the best show on TV becomes an unlovable White Lotus rip-off
+   #46   5     The Guardian Culture          90s rock icon Bob Mould: ‘When Cobain died, I pulled the plug – there was nothing worth saving’
+   #47   4     Hypebeast                     New Balance Unveils Tyrese Maxey’s First Signature Shoe, the Maxey V1
+ ✓ #48   4     IndieWire                     Michael B. Jordan, Ryan Gosling, and Even Rick Moranis — but No James Bond — Lead Star-Studded Amazon MGM CinemaCon
+   #49   4     The Guardian Culture          ‘Fame quickly became a nightmare’: Preston on Big Brother, falling from a balcony – and reforming the Ordinary Boys
+   #50   4     IndieWire                     ‘The Thomas Crown Affair’ CinemaCon Tease: Michael B. Jordan Remakes a Classic
+   #51   4     NYT Arts                      Review: ‘The Fear of 13,’ With Adrien Brody and Tessa Thompson, Doesn’t Add Up
+   #52   4     404 Media                     Thomson Reuters Shareholders Demand Investigation into ICE Contracts
+   #53   4     The New Yorker                Is Zohran Mamdani’s “Sewer Socialism” Resonating?
+   #54   4     NYT Arts                      5 Takeaways From the Live Nation Antitrust Trial
+   #55   4     The Atlantic                  Trump Doesn’t Have the Power to Enact His Latest Elections Scheme
+   #56   4     Dazed                         Airmaxxing with singer-songwriter Simone Ruth
+   #57   4     Futurism                      ChatGPT’s “Honest Reaction” to a “Song” Composed Entirely of Gas-Passing Noises Will Make You Question Whether It’s Honestly Evaluating Your Other Brilliant Ideas
+   #58   4     The New Yorker                Cory Doctorow on the High Cost of Living with the Ultra-Rich
+   #59   4     The New Yorker                What Brought Down Eric Swalwell
+   #60   4     Highsnobiety                  Only Watch Nerds Could Create This Freak
+ ✓ #61   4     Pitchfork                     Jury Finds Live Nation Acted as an Illegal Monopoly
+   #62   4     Futurism                      AI Is Turning Workplaces Into Hopeless Gridlock
+   #63   4     The New Yorker                The Extremes of Israeli Public Opinion
+   #64   4     Know Your Meme                Viral Triple T Dance Explained
+   #65   4     The Atlantic                  It’s Not Just Iran. Trump Is Flailing on Multiple Fronts.
+   #66   4     Pitchfork                     Ekko Astral Announce New Live Album Fuck This Band: Live at the Chapel
+   #67   4     Futurism                      Companies Just Learned a Brutal Lesson About Training AI to Do Human Jobs
+ ✓ #68   4     404 Media                     Ukraine Says Russians are Surrendering to Robots
+   #69   4     The New Yorker                A.I. Has a Message Problem of Its Own Making
+   #70   4     Futurism                      Man Engineers Giant Robot Hand to Smash His Enemies
+   #71   4     Pitchfork                     Oneohtrix Point Never Shares New Song “Dim Stars”
+   #72   4     Know Your Meme                For Some Reason, Saying 'Jessica' Seems To Calm Toddlers From Tantrums In Recent 'Jessica Trend'
+   #73   4     Pitchfork                     Jessie Ware Plots Fall 2026 Tour
+   #74   4     Futurism                      Earth Now Flying Through a Debris Field, Paper Finds
+   #75   4     The New Yorker                Daily Cartoon: Wednesday, April 15th
+   #76   4     Pitchfork                     The Field Announces First Project in Eight Years
+   #77   4     Dazed                         Silvana Estrada: ‘Bad Bunny is my hero, but Latin America is a continent’
+   #78   4     Know Your Meme                Auramaxxing Twins 'Oshone' And 'Oshoze' Blow Up On TikTok With Viral 'Fries And Chicken' Memes
+ ✓ #79   4     Futurism                      Berklee College of Music Students Furious That It’s Offering an AI “Songwriting” Class
+   #80   4     The New Yorker                The Best Books of 2026 So Far
+   #81   4     404 Media                     Emails Reveal Space Force’s Hardest Mission Is Writing a Song
+   #82   4     404 Media                     Podcast: How the FBI Extracted Deleted Signal Messages
+
+── GROUPED DUPLICATES (excluded from candidate pool) ──────────────────────────────────────────────────
+   Pitchfork                     Watch Ariana Grande Go Toe-to-Toe With Ben Stiller in Focker-in-Law Tr
+                                ↳ Grouped as duplicate of "Meet the New Focker: Ariana Grande Outsmarts Ben Stiller in 

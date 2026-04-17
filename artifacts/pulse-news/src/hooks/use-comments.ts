@@ -69,7 +69,11 @@ interface UseCommentsResult {
   castVote: (commentId: number, direction: 1 | -1 | 0) => Promise<void>;
 }
 
-export function useComments(articleId: number | undefined | null, user: User | null): UseCommentsResult {
+export function useComments(
+  articleId: number | undefined | null,
+  user: User | null,
+  username: string | null = null,
+): UseCommentsResult {
   const [rows, setRows] = useState<DBComment[]>([]);
   const [voteMap, setVoteMap] = useState<Map<number, number>>(new Map());
   const [loading, setLoading] = useState(true);
@@ -157,14 +161,17 @@ export function useComments(articleId: number | undefined | null, user: User | n
     mentionUserId: string | null | undefined = null,
   ): Promise<number | null> => {
     if (!user || articleId == null) return null;
-    const { name, initials } = deriveIdentity(user);
+    // Snapshot `@handle` into author_name when the user has picked a username;
+    // old comments keep whatever string was recorded at insert time, so we
+    // don't need a backfill.
+    const { handle, initials } = deriveIdentity(user, username);
     const { data, error } = await supabase
       .from("comments")
       .insert({
         article_id: articleId,
         parent_id: parentId ?? null,
         author_id: user.id,
-        author_name: name,
+        author_name: handle,
         author_initials: initials,
         body,
       })
@@ -188,7 +195,7 @@ export function useComments(articleId: number | undefined | null, user: User | n
         });
     }
     return newRow.id;
-  }, [articleId, user?.id]);
+  }, [articleId, user?.id, username]);
 
   const castVote = useCallback(async (commentId: number, direction: 1 | -1 | 0) => {
     if (!user) return;

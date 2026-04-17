@@ -1260,7 +1260,7 @@ export function FeedPage() {
         onOpenNotifications={openNotifications}
         unreadCount={unreadCount}
         userName={userName}
-        userEmail={userEmail}
+        userHandle={null}
         userAvatar={userAvatar}
         topics={userTopics}
       />

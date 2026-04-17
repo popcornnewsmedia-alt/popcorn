@@ -1,8 +1,15 @@
 import type { User } from "@supabase/supabase-js";
 
-// Derive the display name + initials to snapshot into a new comment row.
+// Derive the display name + handle + initials to snapshot into a new comment row.
 // Insert-time snapshot keeps rendering cheap (no auth lookup per row).
-export function deriveIdentity(user: User): { name: string; initials: string } {
+//
+// - `name`    → full_name style, used for greetings and welcome copy.
+// - `handle`  → '@username' when a profile row exists, else falls back to `name`.
+// - `initials`→ first one-or-two letters of `name`, for avatar circles.
+export function deriveIdentity(
+  user: User,
+  username?: string | null,
+): { name: string; handle: string; initials: string } {
   const rawName =
     (user.user_metadata?.full_name as string | undefined) ??
     user.email?.split("@")[0] ??
@@ -14,7 +21,8 @@ export function deriveIdentity(user: User): { name: string; initials: string } {
       ? parts[0].slice(0, 2)
       : parts.slice(0, 2).map(p => p[0]).join("")
   ).toUpperCase();
-  return { name, initials: initials || "?" };
+  const handle = username ? `@${username}` : name;
+  return { name, handle, initials: initials || "?" };
 }
 
 // Coarse relative-time formatter (matches the feel of the original seed-data

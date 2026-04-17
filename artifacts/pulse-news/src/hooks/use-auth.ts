@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+
+export interface Profile {
+  username: string;
+}
 
 interface AuthState {
   user: User | null;
   session: Session | null;
+  profile: Profile | null;
   loading: boolean;
 }
 
@@ -12,22 +17,134 @@ export function useAuth() {
   const [state, setState] = useState<AuthState>({
     user: null,
     session: null,
+    profile: null,
     loading: true,
   });
 
+  // Track the currently-loaded user id to avoid redundant fetches when
+  // onAuthStateChange fires for token refreshes.
+  const loadedProfileForRef = useRef<string | null>(null);
+
+  const loadProfile = useCallback(async (userId: string | null): Promise<Profile | null> => {
+    if (!userId) {
+      loadedProfileForRef.current = null;
+      return null;
+    }
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('user_id', userId)
+        .maybeSingle();
+      if (error) {
+        // Non-fatal: the UsernameSheet gate will also re-check.
+        console.warn('[useAuth] profile fetch error', error.message);
+        return null;
+      }
+      loadedProfileForRef.current = userId;
+      return data ? { username: data.username } : null;
+    } catch (e) {
+      // Network / unexpected throw — never let this wedge the auth loading state.
+      console.warn('[useAuth] profile fetch threw', e);
+      return null;
+    }
+  }, []);
+
   useEffect(() => {
-    // Resolve the initial session from localStorage
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setState({ user: session?.user ?? null, session, loading: false });
-    });
+    let mounted = true;
+    let settled = false;
+    const settle = (next: AuthState) => {
+      if (!mounted) return;
+      settled = true;
+      setState(next);
+    };
+
+    // Resolve the initial session from localStorage, then fetch the profile.
+    // ALWAYS flip loading→false even if anything throws; a hung profile fetch
+    // must not freeze the splash forever.
+    (async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const user = session?.user ?? null;
+        const profile = user ? await loadProfile(user.id) : null;
+        settle({ user, session, profile, loading: false });
+      } catch (e) {
+        console.warn('[useAuth] getSession threw', e);
+        settle({ user: null, session: null, profile: null, loading: false });
+      }
+    })();
+
+    // Belt-and-suspenders: if getSession somehow never resolves (offline,
+    // Supabase outage, etc), unblock the UI after 5s so the signed-out
+    // CTAs can reveal and the user can retry / sign in.
+    const safety = setTimeout(() => {
+      if (!mounted || settled) return;
+      console.warn('[useAuth] session resolve timed out — unblocking UI');
+      settle({ user: null, session: null, profile: null, loading: false });
+    }, 5000);
 
     // Keep state in sync with Supabase auth events (sign in, sign out, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setState({ user: session?.user ?? null, session, loading: false });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      try {
+        const user = session?.user ?? null;
+        // Skip reloading the profile on pure token refreshes for the same user.
+        const shouldReload = !user || loadedProfileForRef.current !== user.id;
+        if (shouldReload) {
+          const profile = user ? await loadProfile(user.id) : null;
+          settle({ user, session, profile, loading: false });
+        } else {
+          // Token refresh for the same user — preserve the already-loaded
+          // profile (avoids a stale-closure null that wipes the username).
+          if (!mounted) return;
+          settled = true;
+          setState(prev => ({ ...prev, user, session, loading: false }));
+        }
+      } catch (e) {
+        console.warn('[useAuth] authStateChange handler threw', e);
+        if (!mounted) return;
+        settled = true;
+        // Preserve whatever profile we had — don't clobber on transient errors.
+        setState(prev => ({ ...prev, user: session?.user ?? null, session: session ?? null, loading: false }));
+      }
     });
 
-    return () => subscription.unsubscribe();
+    // Cross-component profile refresh: UsernameSheet dispatches this after
+    // a successful insert so every useAuth instance reloads the profiles row
+    // without needing a page reload.
+    const onProfileUpdated = async () => {
+      try {
+        const { data: { session: s } } = await supabase.auth.getSession();
+        const uid = s?.user?.id ?? null;
+        if (!uid) return;
+        loadedProfileForRef.current = null;
+        const profile = await loadProfile(uid);
+        if (!mounted) return;
+        setState(prev => ({ ...prev, profile }));
+      } catch {
+        // Non-fatal — next auth event will reconcile.
+      }
+    };
+    window.addEventListener('popcorn:profile-updated', onProfileUpdated);
+
+    return () => {
+      mounted = false;
+      clearTimeout(safety);
+      subscription.unsubscribe();
+      window.removeEventListener('popcorn:profile-updated', onProfileUpdated);
+    };
+    // loadProfile is stable; state.profile only read for refresh shortcut
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /** Re-fetch the profile row for the current user. Call after inserting a username. */
+  const refreshProfile = useCallback(async () => {
+    const userId = state.user?.id ?? null;
+    // Force a refetch even if we already have this user cached.
+    loadedProfileForRef.current = null;
+    const profile = await loadProfile(userId);
+    setState(s => ({ ...s, profile }));
+    return profile;
+  }, [loadProfile, state.user?.id]);
 
   const signUp = async (email: string, password: string, name: string) => {
     const { data, error } = await supabase.auth.signUp({
@@ -70,5 +187,6 @@ export function useAuth() {
     signInWithGoogle,
     signOut,
     updateProfile,
+    refreshProfile,
   };
 }

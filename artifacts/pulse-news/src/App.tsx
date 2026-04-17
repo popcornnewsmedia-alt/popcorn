@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { FeedPageHorizontal as FeedPage } from "@/pages/FeedPageHorizontal";
 import NotFound from "@/pages/not-found";
 import { EmailConfirmedScreen } from "@/components/EmailConfirmedScreen";
+import { UsernameSheet } from "@/components/UsernameSheet";
 import { supabase } from "@/lib/supabase";
 
 const queryClient = new QueryClient({
@@ -33,16 +34,39 @@ function Router() {
 
 function App() {
   const [showConfirmed, setShowConfirmed] = useState(false);
+  const [usernamePrompt, setUsernamePrompt] = useState<{ userId: string; seed: string } | null>(null);
 
-  /* ── Welcome email for Google OAuth new users ──────────────────────── */
+  /* ── Username gate (runs on every SIGNED_IN) ─────────────────────────
+     If the user has no profiles row we force the blocking UsernameSheet
+     before the feed becomes interactive. Also handles the welcome-email
+     hook for Google OAuth new users. */
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event !== "SIGNED_IN" || !session?.user) return;
 
       const user = session.user;
       const provider = user.app_metadata?.provider;
 
-      // Only handle Google OAuth sign-ins (manual signups use the popcorn_awaiting_confirm flow)
+      // Username gate: fetch profile row; prompt if missing.
+      try {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("username")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (!profile) {
+          const seed =
+            (user.user_metadata?.full_name as string | undefined) ??
+            (user.user_metadata?.name as string | undefined) ??
+            user.email?.split("@")[0] ??
+            "";
+          setUsernamePrompt({ userId: user.id, seed });
+        }
+      } catch {
+        // Non-fatal — user can continue, profile gate will retry on next sign-in.
+      }
+
+      // Welcome-email logic is Google-specific.
       if (provider !== "google") return;
 
       // Detect new user: created_at is within the last 2 minutes
@@ -65,6 +89,28 @@ function App() {
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify({ userId: user.id, email, name }),
       // }).catch(() => { /* Non-fatal */ });
+    });
+
+    // Also run the gate for the session that already exists when App mounts
+    // (e.g. a returning user refreshing the tab — onAuthStateChange doesn't
+    //  always emit SIGNED_IN for rehydrated sessions).
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session?.user) return;
+      try {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("username")
+          .eq("user_id", session.user.id)
+          .maybeSingle();
+        if (!profile) {
+          const seed =
+            (session.user.user_metadata?.full_name as string | undefined) ??
+            (session.user.user_metadata?.name as string | undefined) ??
+            session.user.email?.split("@")[0] ??
+            "";
+          setUsernamePrompt({ userId: session.user.id, seed });
+        }
+      } catch { /* Non-fatal */ }
     });
 
     return () => subscription.unsubscribe();
@@ -150,6 +196,14 @@ function App() {
         <Toaster />
         {showConfirmed && (
           <EmailConfirmedScreen onContinue={() => setShowConfirmed(false)} />
+        )}
+        {usernamePrompt && (
+          <UsernameSheet
+            isOpen={true}
+            userId={usernamePrompt.userId}
+            defaultSeed={usernamePrompt.seed}
+            onComplete={() => setUsernamePrompt(null)}
+          />
         )}
       </TooltipProvider>
     </QueryClientProvider>

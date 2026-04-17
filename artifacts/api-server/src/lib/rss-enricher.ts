@@ -1113,7 +1113,11 @@ function parseRSSItems(xml: string, source: string): RawRSSItem[] {
   const items: RawRSSItem[] = [];
   let m: RegExpExecArray | null;
 
-  while ((m = pattern.exec(xml)) !== null && items.length < 12) {
+  // Keep up to 40 items per feed. Fast publishers like Wired can post >12 items
+  // per day, so a 12-item cap was silently dropping older-but-still-in-window
+  // stories (e.g. an article 24h old gets pushed out of slot 12 by the time we
+  // fetch). 40 comfortably covers a 36–48h window for any feed we currently use.
+  while ((m = pattern.exec(xml)) !== null && items.length < 40) {
     const block = m[1];
 
     const title = extractTag(block, "title");
@@ -2355,7 +2359,7 @@ NICHE FANBASE STORIES — Be cautious with stories whose primary significance is
 
 UPDATES ON PAST EVENTS — Updates and follow-ups about events from prior news cycles (subscriber loss numbers, earnings updates, status announcements) often feel like echo reporting rather than new developments. Include only if the update itself carries surprise or represents a genuine shift — not just numbers confirming expected decline.
 
-SHAREABILITY ≠ CULTURAL WEIGHT — A story can be genuinely bizarre or funny without having cultural substance. A celebrity making a sarcastic comment that goes viral is amusing but suggests nothing about how we live, what we value, or how society is changing. Ask: beyond the immediate "haha that's weird," does this story illuminate something real? Pure viral fluff with no lasting cultural or platform signal should be filtered out.
+SHAREABILITY — Shareability is a legitimate editorial signal, not a red flag. A story does not have to illuminate a societal shift to earn its place. If a story has a strong, specific, immediately graspable "wait, what?" hook — a celebrity suing an unrelated brand over a name dispute, a once-hyped D2C company pivoting to AI compute, toddlers inexplicably calmed by the name "Jessica" — include it. These stories carry the feed's texture. The ONLY thing to filter out here is generic viral fluff that's already been seen everywhere: a celebrity sarcastic comment, a low-stakes Twitter spat, a platform-native clip with no specific angle. The bar is "is this a specific, weird, genuinely surprising thing?" — not "does this change society?"
 
 ━━━ CROSS-DOMAIN COLLISIONS ━━━
 Stories where two normally separate worlds collide create natural intrigue and broad appeal. Luxury × space (a watchmaker sending a timepiece to the moon), fashion × tech (AI-designed runway collections), sport × geopolitics (athletes caught in diplomatic incidents), gaming × fine art. These collisions are high-signal because they indicate cultural boundaries shifting. Do not dismiss a story as "just a product announcement" or "just a niche interest" when the collision itself is the story. Ask: does combining these two worlds create something genuinely novel that people would share out of surprise or fascination?
@@ -2372,7 +2376,16 @@ Major awards ceremonies (Cannes, Olivier Awards, BAFTAs, Grammys), landmark fest
 AI stories should span multiple angles within a single feed: consumer-facing tools, macro workforce impact, real-world failures and accidents, cultural backlash, and creative applications. Do not cluster AI coverage around a single narrative (e.g. all "company X launches tool Y"). Prefer a mix of perspectives that together paint the full picture of AI's cultural moment.
 
 ━━━ NOVELTY AND CURIOSITY ━━━
-Unexpected, curiosity-driven stories with strong shareability signals can elevate the feed, as long as they feel meaningful rather than empty noise. A story about a €100 raffle for a €1M Picasso, or a disqualified Pokemon Go champion fighting back, has genuine intrigue and mass appeal. Weight novelty more than prestige — a surprising underdog story can be more valuable than a predictable establishment one.
+Unexpected, curiosity-driven stories with strong shareability signals elevate the feed. A story about a €100 raffle for a €1M Picasso, a disqualified Pokemon Go champion fighting back, a mind-reading beanie shipping to consumers, a former D2C darling reinventing itself as an AI compute provider — all belong. Weight novelty over prestige. A surprising underdog story, a genuinely weird corporate pivot, or a "this is a real thing happening?" moment is more valuable than a predictable establishment one. Do not talk yourself out of these by demanding they also pass a seriousness test — their weirdness IS the signal.
+
+━━━ ABSURDITY AND "WAIT, WHAT?" STORIES ━━━
+Some of the strongest Popcorn stories are simply unexpected. A celebrity suing a liquor brand over a name dispute. A beloved sneaker company pivoting to AI compute infrastructure. Russian soldiers surrendering to autonomous robots. A company launching a beanie that claims to read thoughts. These stories pass the bar on the surreal hook alone — they do not need a ripple-effect justification, an institutional actor, or a generational culture-shift angle. If the one-sentence summary would make an informed person say "wait, what?" and actually click, include it. This is a core part of the feed's character and is consistently under-selected. The only filter here is specificity — vague or uncorroborated weirdness fails; a named company / named person / concrete action passes.
+
+━━━ MAINSTREAM ANCHORS ━━━
+A strong feed always includes at least one immediately recognisable cultural moment — a mainstream IP release (major franchise trailer, anticipated sequel), a household-name celebrity doing something noteworthy, a widely-followed event. These anchor the feed for readers who aren't already culture-obsessed. A trailer for a major franchise sequel involving A-list stars (e.g. Focker In-Law with Ariana Grande + Ben Stiller) qualifies even though individual trailers normally trigger the promotional penalty — the exception is broad recognisability and mainstream pull. Do not over-apply the promotional penalty to the point where the feed has no entry point for a general audience.
+
+━━━ INTERNET-NATIVE TRENDS ━━━
+Memes, TikTok patterns, weird collective behaviours, and viral linguistic quirks are first-class Popcorn material, not novelty filler. If a specific trend has observable scale (millions of views, documented by a trend tracker like Know Your Meme, visible across multiple creator accounts) and a concrete hook (a specific word, action, or pattern), include it. "Toddlers stop tantrums when you say 'Jessica'" is a real behavioural pattern with a specific hook — that belongs. "Triple T Dance goes viral" with clear cross-platform spread belongs. Generic "this TikTok got views" does not. Internet culture is culture; cover it with the same rigour as film or music.
 
 INVESTIGATION AND REVEAL NARRATIVES — Stories where a long-standing mystery is solved, a fraud is exposed, or a hidden truth comes to light carry inherent crossover appeal regardless of the domain. A 30-year-old chess cheating mystery finally unmasked, or a secret scraping operation exposed, transcends the niche it originates from because the narrative structure itself — concealment then revelation — is universally compelling. Do not reject these as "too niche" just because the domain (chess, academia, a specific platform) seems narrow. If the story has a strong "wait, what?" hook that would make someone outside the domain click, it belongs.
 
@@ -2384,6 +2397,16 @@ Stories exposing secret surveillance, data scraping of vulnerable communities, o
 
 ━━━ LOW-WEIGHT SOURCES ━━━
 Daily Mail and Page Six are signal detectors only. They do not justify inclusion independently — the story must pass the core test on its own merits.
+
+━━━ FEED COMPOSITION TARGET ━━━
+A well-composed Popcorn feed on a normal day has:
+  • At least 1 MAINSTREAM ANCHOR (recognisable IP / household-name celebrity / broad-appeal cultural moment)
+  • At least 1 ABSURDIST / CURIOSITY story ("wait, what?" — weird corporate pivots, surreal real-world incidents, genuinely strange product launches)
+  • At least 1 INTERNET-NATIVE trend (specific meme, TikTok pattern, collective online behaviour with scale and a concrete hook)
+  • A spine of substance (economic, structural, AI, institutional) — but not MORE than half the feed
+You are consistently strong on the substance spine and consistently weak on the other three. Correct for this. If the pool contains any credible candidate for the mainstream anchor slot, the absurdist slot, or the internet-native slot — include it, even if the score is slightly lower than a substance story you already picked.
+
+"Too safe" is a real failure mode. A feed of only important-sounding stories lacks texture and reads like a business brief. Err toward including the weird specific thing over the fifth AI-industry piece.
 
 ━━━ RUN CONTEXT ━━━
 ${alreadyPublished.length === 0
@@ -3338,10 +3361,12 @@ For each article output a JSON object:
 
 Respond with ONLY a valid JSON array — no markdown, no code fences.`;
 
-  console.log(`[shortlist] Enriching ${items.length} selected articles in ${batchCount} batch(es)…`);
+  // Run enrichment batches concurrently (max 2 parallel Claude calls).
+  // Each batch is 3 articles → independent prompt. Safe under API rate limits.
+  const ENRICH_CONCURRENCY = 2;
+  console.log(`[shortlist] Enriching ${items.length} selected articles in ${batchCount} batch(es), concurrency=${ENRICH_CONCURRENCY}…`);
 
-  const enriched: any[] = [];
-  for (let b = 0; b < batchCount; b++) {
+  const enrichBatch = async (b: number): Promise<any[]> => {
     const batchItems = items.slice(b * ENRICH_BATCH, (b + 1) * ENRICH_BATCH);
     const offset = b * ENRICH_BATCH;
     const articleList = batchItems
@@ -3355,10 +3380,19 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
     if (!match) throw new Error(`Enrichment batch ${b + 1}: no JSON array in response`);
     const parsed = JSON.parse(sanitizeClaudeJson(match[0]));
     for (const p of parsed) {
-      // Map sourceIndex back to the correct raw item within this batch
       p._rawItem = batchItems[(p.sourceIndex - 1) - offset] ?? batchItems[p.sourceIndex - 1];
     }
-    enriched.push(...parsed);
+    return parsed;
+  };
+
+  const enriched: any[] = [];
+  for (let start = 0; start < batchCount; start += ENRICH_CONCURRENCY) {
+    const chunk = Array.from(
+      { length: Math.min(ENRICH_CONCURRENCY, batchCount - start) },
+      (_, i) => enrichBatch(start + i)
+    );
+    const results = await Promise.all(chunk);
+    for (const r of results) enriched.push(...r);
   }
 
   // Build EnrichedArticle[]

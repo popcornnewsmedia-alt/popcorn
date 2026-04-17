@@ -47,9 +47,15 @@ const HORIZONTAL_SPRING = "transform 340ms cubic-bezier(0.22,1,0.36,1)";
 const DIVIDER_EPS = 10;
 
 export function FeedPageHorizontal() {
-  const { user, loading: authLoading, signOut } = useAuth();
-  const userName = user?.user_metadata?.full_name ?? user?.email?.split("@")[0] ?? null;
-  const userEmail = user?.email ?? null;
+  const { user, profile, loading: authLoading, signOut } = useAuth();
+  // full_name is the display name (used for greetings + the "You" page
+  // header). `userHandle` is the public `@username` shown below the name
+  // on the profile screen (replacing the old email slot).
+  const userName =
+    (user?.user_metadata?.full_name as string | undefined)
+      ?? user?.email?.split("@")[0]
+      ?? null;
+  const userHandle = profile?.username ? `@${profile.username}` : null;
   const userAvatar = user?.user_metadata?.avatar_url ?? null;
   const userTopics: string[] = user?.user_metadata?.topics ?? [];
 
@@ -602,12 +608,12 @@ export function FeedPageHorizontal() {
       <ProfileScreen
         onSignIn={() => setSignInOpen(true)}
         onCreateAccount={() => setChoiceOpen(true)}
-        onSignOut={() => { signOut(); setActiveTab("feed"); setShowSplash(true); }}
+        onSignOut={async () => { await signOut(); }}
         onOpenLegal={setLegalSheet}
         onOpenNotifications={openNotifications}
         unreadCount={unreadCount}
         userName={userName}
-        userEmail={userEmail}
+        userHandle={userHandle}
         userAvatar={userAvatar}
         topics={userTopics}
       />

@@ -206,7 +206,7 @@ export function ProfileScreen({
   onOpenNotifications,
   unreadCount,
   userName,
-  userEmail,
+  userHandle,
   userAvatar,
   topics,
 }: {
@@ -217,12 +217,12 @@ export function ProfileScreen({
   onOpenNotifications: () => void;
   unreadCount: number;
   userName: string | null;
-  userEmail: string | null;
+  userHandle: string | null;
   userAvatar: string | null;
   topics: string[];
 }) {
-  const isLoggedIn = !!userName || !!userEmail;
-  const initial = (userName ?? userEmail ?? "?")[0].toUpperCase();
+  const isLoggedIn = !!userName || !!userHandle;
+  const initial = (userName ?? userHandle ?? "?")[0].toUpperCase();
   return (
     <div className="pn-fullscreen fixed inset-0 flex flex-col items-center overflow-hidden" style={{ background: "#053980", zIndex: 1 }}>
       <GrainBackground />
@@ -238,17 +238,15 @@ export function ProfileScreen({
             </div>
             <div className="flex flex-col min-w-0 flex-1">
               {userName && (
-                <div className="flex items-center gap-2 min-w-0">
-                  <h1 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "20px", color: "#fff1cd", letterSpacing: "0.02em", lineHeight: 1.1 }} className="truncate">{userName}</h1>
-                  <button onClick={onOpenNotifications} className="transition-opacity active:opacity-60 hover:opacity-80 ml-auto" style={{ flexShrink: 0, lineHeight: 0, padding: 2 }} aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}>
-                    <PopcornIcon size={64} hasDot={unreadCount > 0} />
-                  </button>
-                </div>
+                <h1 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "20px", color: "#fff1cd", letterSpacing: "0.02em", lineHeight: 1.1, margin: 0 }} className="truncate">{userName}</h1>
               )}
-              {userEmail && (
-                <p className="font-['Inter'] mt-1 truncate" style={{ fontSize: "12px", color: "rgba(255,241,205,0.45)" }}>{userEmail}</p>
+              {userHandle && (
+                <p className="font-['Inter'] truncate" style={{ fontSize: "13px", color: "rgba(255,241,205,0.55)", marginTop: 2, lineHeight: 1.1 }}>{userHandle}</p>
               )}
             </div>
+            <button onClick={onOpenNotifications} className="transition-opacity active:opacity-60 hover:opacity-80" style={{ flexShrink: 0, lineHeight: 0, padding: 2, marginLeft: "auto" }} aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}>
+              <PopcornIcon size={64} hasDot={unreadCount > 0} />
+            </button>
           </div>
           {topics.length > 0 && (
             <div className="px-5 mb-6">
