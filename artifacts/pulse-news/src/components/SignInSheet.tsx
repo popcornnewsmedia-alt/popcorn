@@ -69,7 +69,11 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
     setError(null);
     setLoading(true);
     const apiUrl = apiBase();
-    const raw = identifier.trim();
+    const trimmed = identifier.trim();
+    // Strip a single leading "@" so users can type "@handle" (the placeholder
+    // literally invites this). Without this, `includes("@")` would classify
+    // "@bharatarora" as an email and hand it to Supabase, which 401s.
+    const raw = trimmed.startsWith("@") ? trimmed.slice(1) : trimmed;
     const isEmail = raw.includes("@");
 
     try {
@@ -147,10 +151,13 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
   };
 
   // Accept an email (must contain "@") OR a username (3-20 chars, letters/numbers/underscore).
+  // Strip a leading "@" so "@handle" — which the placeholder invites — validates
+  // as a username instead of tripping the email classifier and failing.
   // Server-side resolver enforces the real check; this is just to gate the button.
   const trimmedIdentifier = identifier.trim();
-  const looksLikeEmail = trimmedIdentifier.includes("@");
-  const looksLikeUsername = /^[a-z0-9_]{3,20}$/i.test(trimmedIdentifier);
+  const stripped = trimmedIdentifier.startsWith("@") ? trimmedIdentifier.slice(1) : trimmedIdentifier;
+  const looksLikeEmail = stripped.includes("@");
+  const looksLikeUsername = /^[a-z0-9_]{3,20}$/i.test(stripped);
   const canSubmit = (looksLikeEmail || looksLikeUsername) && password.length >= 6;
 
   return (

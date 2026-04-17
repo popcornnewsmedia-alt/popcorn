@@ -172,8 +172,19 @@ export function useAuth() {
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
+    // Use `scope: 'local'` so sign-out doesn't block on a round-trip to
+    // Supabase to revoke the refresh token server-side. The default
+    // ('global') scope has been observed to hang on flaky networks, leaving
+    // the UI stuck on a clicked-but-unresponsive "Sign out" button until the
+    // user reloads. Local scope clears storage + fires SIGNED_OUT
+    // synchronously; the access token expires server-side on its own TTL.
+    const { error } = await supabase.auth.signOut({ scope: 'local' });
     if (error) throw error;
+    // Defence in depth: if onAuthStateChange didn't fire (rare, but seen
+    // when another tab holds the GoTrue lock), manually reset so the UI
+    // doesn't linger in the signed-in state.
+    loadedProfileForRef.current = null;
+    setState({ user: null, session: null, profile: null, loading: false });
   };
 
   const updateProfile = async (data: Record<string, unknown>) => {
