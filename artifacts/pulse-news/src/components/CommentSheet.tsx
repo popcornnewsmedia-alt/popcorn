@@ -1,11 +1,309 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { X, ChevronUp, ChevronDown, ArrowUp } from "lucide-react";
+import type { ReactNode } from "react";
+import { X, ChevronUp, ChevronDown, ArrowUp, MoreHorizontal, Trash2 } from "lucide-react";
 import { GrainBackground } from "./GrainBackground";
 import { useAuth } from "@/hooks/use-auth";
 import { useComments } from "@/hooks/use-comments";
 import { avatarColor, YOU, BRAND, CREAM } from "@/lib/avatar";
 
 type Sort = "popular" | "newest" | "oldest";
+
+// ── Swipe reveal palette ────────────────────────────────────────────────────
+// Muted, editorial shades — aligned with the #051b3a / cream theme. Green
+// leans sage (not neon), red leans brick (not alert). Both darken subtly
+// past the commit threshold so the gesture feels physical.
+const REPLY_GREEN = "47,106,78";     // r,g,b — sage
+const DELETE_RED  = "168,59,46";     // r,g,b — brick
+
+// Horizontal swipe mechanics. The commit threshold is where the gesture
+// "latches" and committing beyond that just adds weight without extra
+// travel — mirrors native iOS Mail / Messages row actions.
+const SWIPE_COMMIT_PX   = 72;
+const SWIPE_RESIST_FROM = 120;
+const SWIPE_MAX_PX      = 180;
+
+// Detect touch-primary devices once. Desktop users reach the same actions
+// through the kebab menu, so wrapping every row in a gesture layer (with its
+// own compositor layer + touch listeners) is wasted work there.
+const IS_TOUCH_DEVICE = typeof window !== "undefined"
+  && typeof window.matchMedia === "function"
+  && window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+
+type SwipeRowProps = {
+  canDelete: boolean;
+  onReply: () => void;
+  onDelete: () => void;
+  children: ReactNode;
+};
+
+// Public wrapper: short-circuits on desktop so we don't install a gesture
+// layer (with its own compositor layer + touch listeners) for every row
+// when users can't even swipe. Desktop reaches the same actions through
+// the kebab menu.
+function SwipeRow(props: SwipeRowProps) {
+  if (!IS_TOUCH_DEVICE) return <>{props.children}</>;
+  return <SwipeRowTouch {...props} />;
+}
+
+// ── SwipeRowTouch ──────────────────────────────────────────────────────────
+// Wraps one comment or reply on touch devices. Tracks its own gesture state
+// so rows don't fight each other. Locks to horizontal only once |dx|
+// dominates |dy| (otherwise the sheet's drag-down-to-close gesture takes
+// over cleanly).
+function SwipeRowTouch({
+  canDelete,
+  onReply,
+  onDelete,
+  children,
+}: SwipeRowProps) {
+  const [dx, setDx] = useState(0);
+  const [animating, setAnimating] = useState(false);
+  const start = useRef<{ x: number; y: number; locked: boolean } | null>(null);
+  const raf = useRef<number | null>(null);
+  const pendingDx = useRef(0);
+
+  const flushDx = useCallback(() => {
+    raf.current = null;
+    setDx(pendingDx.current);
+  }, []);
+
+  const scheduleDx = useCallback((next: number) => {
+    pendingDx.current = next;
+    if (raf.current == null) raf.current = requestAnimationFrame(flushDx);
+  }, [flushDx]);
+
+  useEffect(() => () => {
+    if (raf.current != null) cancelAnimationFrame(raf.current);
+  }, []);
+
+  const handleStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    start.current = { x: t.clientX, y: t.clientY, locked: false };
+    setAnimating(false);
+  };
+
+  const handleMove = (e: React.TouchEvent) => {
+    const s = start.current;
+    if (!s) return;
+    const t = e.touches[0];
+    const diffX = t.clientX - s.x;
+    const diffY = t.clientY - s.y;
+    if (!s.locked) {
+      // Need enough motion to judge direction.
+      if (Math.abs(diffX) < 6 && Math.abs(diffY) < 8) return;
+      if (Math.abs(diffX) > Math.abs(diffY) + 2) {
+        s.locked = true;
+      } else {
+        // Vertical gesture — release to the parent (drag-to-close / scroll).
+        start.current = null;
+        return;
+      }
+    }
+    // Horizontal lock: stop the sheet's drag-to-close from seeing this,
+    // and prevent the browser from also scrolling the page underneath.
+    e.stopPropagation();
+    if (e.cancelable) e.preventDefault();
+    let next = diffX;
+    if (next < 0 && !canDelete) next = 0;
+    // Resistance past the commit threshold — firm but not sticky.
+    if (Math.abs(next) > SWIPE_RESIST_FROM) {
+      const excess = Math.abs(next) - SWIPE_RESIST_FROM;
+      next = Math.sign(next) * (SWIPE_RESIST_FROM + excess * 0.35);
+    }
+    if (Math.abs(next) > SWIPE_MAX_PX) next = Math.sign(next) * SWIPE_MAX_PX;
+    scheduleDx(next);
+  };
+
+  const finish = useCallback((fire: (() => void) | null) => {
+    if (raf.current != null) { cancelAnimationFrame(raf.current); raf.current = null; }
+    pendingDx.current = 0;
+    setAnimating(true);
+    setDx(0);
+    // Fire the action AFTER the spring-back starts so the row visually
+    // returns before the modal/reply composer opens — feels less jumpy.
+    if (fire) {
+      window.setTimeout(fire, 140);
+    }
+    window.setTimeout(() => setAnimating(false), 280);
+  }, []);
+
+  const handleEnd = () => {
+    const s = start.current;
+    start.current = null;
+    const currentDx = pendingDx.current || dx;
+    if (!s || !s.locked) {
+      if (currentDx !== 0) finish(null);
+      return;
+    }
+    if (currentDx >= SWIPE_COMMIT_PX) {
+      finish(onReply);
+    } else if (currentDx <= -SWIPE_COMMIT_PX && canDelete) {
+      finish(onDelete);
+    } else {
+      finish(null);
+    }
+  };
+
+  const absDx = Math.abs(dx);
+  const reveal = Math.min(1, absDx / SWIPE_RESIST_FROM);
+  const past = absDx >= SWIPE_COMMIT_PX;
+
+  return (
+    <div
+      style={{ position: "relative", overflow: "hidden", touchAction: "pan-y" }}
+      onTouchStart={handleStart}
+      onTouchMove={handleMove}
+      onTouchEnd={handleEnd}
+      onTouchCancel={handleEnd}
+    >
+      {/* Reply reveal (right swipe) */}
+      {dx > 0 && (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute", inset: 0,
+            display: "flex", alignItems: "center",
+            paddingLeft: 22,
+            background: `rgba(${REPLY_GREEN},${0.07 + reveal * 0.22})`,
+            pointerEvents: "none",
+          }}
+        >
+          <span style={{
+            fontFamily: "'Macabro', 'Anton', sans-serif",
+            fontSize: 11,
+            letterSpacing: "0.20em",
+            textTransform: "uppercase",
+            color: past ? `rgba(${REPLY_GREEN},1)` : `rgba(${REPLY_GREEN},0.62)`,
+            transform: `scale(${0.9 + reveal * 0.18}) translateX(${Math.min(12, reveal * 16)}px)`,
+            transition: "color 0.14s ease, transform 0.14s ease",
+            textShadow: past ? `0 0 0.4px rgba(${REPLY_GREEN},0.3)` : "none",
+          }}>
+            Reply
+          </span>
+        </div>
+      )}
+      {/* Delete reveal (left swipe, own rows only) */}
+      {dx < 0 && canDelete && (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute", inset: 0,
+            display: "flex", alignItems: "center", justifyContent: "flex-end",
+            paddingRight: 22,
+            background: `rgba(${DELETE_RED},${0.07 + reveal * 0.24})`,
+            pointerEvents: "none",
+          }}
+        >
+          <span style={{
+            fontFamily: "'Macabro', 'Anton', sans-serif",
+            fontSize: 11,
+            letterSpacing: "0.20em",
+            textTransform: "uppercase",
+            color: past ? `rgba(${DELETE_RED},1)` : `rgba(${DELETE_RED},0.62)`,
+            transform: `scale(${0.9 + reveal * 0.18}) translateX(${-Math.min(12, reveal * 16)}px)`,
+            transition: "color 0.14s ease, transform 0.14s ease",
+          }}>
+            Delete
+          </span>
+        </div>
+      )}
+      {/* Foreground content */}
+      <div
+        style={{
+          transform: `translateX(${dx}px)`,
+          transition: animating ? "transform 0.26s cubic-bezier(0.22,1,0.36,1)" : "none",
+          position: "relative",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ── KebabMenu ──────────────────────────────────────────────────────────────
+// Web-only (hidden on touch devices via `.cs-kebab { display:none }` under
+// `@media (hover: none)`). Uppercase Macabro trigger + tight dropdown with
+// one action — matches the editorial voice of the sheet rather than
+// defaulting to a generic "⋯" drawer.
+function KebabMenu({
+  open, onToggle, onDelete, small = false,
+}: {
+  open: boolean;
+  onToggle: () => void;
+  onDelete: () => void;
+  small?: boolean;
+}) {
+  return (
+    <div
+      className="cs-kebab"
+      // Keep mousedown inside the menu from triggering the document-level
+      // outside-click handler (which would race with click → onDelete).
+      onMouseDown={(e) => e.stopPropagation()}
+      style={{ position: "relative", marginLeft: "auto", display: "inline-flex", alignItems: "center" }}
+    >
+      <button
+        onClick={(e) => { e.stopPropagation(); onToggle(); }}
+        aria-label="Comment actions"
+        className="cs-kebab-btn"
+        style={{
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          width: small ? 22 : 24, height: small ? 22 : 24,
+          borderRadius: 999,
+          color: open ? "rgba(8,27,58,0.68)" : "rgba(8,27,58,0.40)",
+          background: open ? "rgba(8,27,58,0.08)" : "transparent",
+          transition: "background 0.14s ease, color 0.14s ease",
+        }}
+      >
+        <MoreHorizontal size={small ? 13 : 14} strokeWidth={2.1} />
+      </button>
+      {open && (
+        <div
+          role="menu"
+          style={{
+            position: "absolute",
+            top: "calc(100% + 6px)",
+            right: 0,
+            minWidth: 128,
+            zIndex: 5,
+            background: "rgba(253,247,229,0.98)",
+            border: "1px solid rgba(8,27,58,0.10)",
+            borderRadius: 10,
+            padding: 4,
+            boxShadow: "0 10px 30px rgba(5,27,58,0.18), 0 1px 0 rgba(8,27,58,0.05)",
+            backdropFilter: "blur(10px) saturate(1.2)",
+            WebkitBackdropFilter: "blur(10px) saturate(1.2)",
+            animation: "csMenuIn 0.14s cubic-bezier(0.22,1,0.36,1) both",
+          }}
+        >
+          <button
+            role="menuitem"
+            onClick={(e) => { e.stopPropagation(); onDelete(); }}
+            className="cs-menu-item cs-menu-item-danger"
+            style={{
+              display: "flex", alignItems: "center", gap: 8,
+              width: "100%",
+              padding: "8px 10px",
+              borderRadius: 7,
+              fontFamily: "'Manrope', sans-serif",
+              fontWeight: 600,
+              fontSize: 12,
+              letterSpacing: "0.01em",
+              color: `rgba(${DELETE_RED},1)`,
+              background: "transparent",
+              textAlign: "left",
+              cursor: "pointer",
+              transition: "background 0.12s ease",
+            }}
+          >
+            <Trash2 size={13} strokeWidth={2.1} />
+            Delete comment
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ── Theme ───────────────────────────────────────────────────────────────────
 const INK          = "#081b3a";                 // primary text
@@ -35,9 +333,20 @@ const SORT_LABELS: Record<Sort, string> = {
 
 export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onRequireAuth }: CommentSheetProps) {
   const { user, profile } = useAuth();
-  const { comments, postComment, castVote } = useComments(articleId, user, profile?.username ?? null);
+  const { comments, postComment, castVote, deleteComment } = useComments(articleId, user, profile?.username ?? null);
   const [sort, setSort] = useState<Sort>("popular");
   const [expandedReplies, setExpandedReplies] = useState<Set<number>>(new Set());
+  // Delete confirmation: null when idle, else the target row's metadata.
+  // `hasReplies` drives the copy addendum ("Replies will also be removed.")
+  // because our DB cascades on parent_id.
+  const [pendingDelete, setPendingDelete] = useState<
+    { id: number; text: string; author: string; hasReplies: boolean }
+    | null
+  >(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  // Web-only kebab menu: holds the id of the row whose menu is open.
+  // Hidden on touch devices via CSS media query (`@media (hover: none)`).
+  const [kebabOpenId, setKebabOpenId] = useState<number | null>(null);
   // `mention` is true when replying to another reply: the DB enforces two-level
   // threading so the new row becomes a sibling under the same top-level
   // parent, but we prefix `@author ` in the body so the context is preserved
@@ -98,7 +407,52 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
     setExpandedReplies(new Set());
     setReplyTo(null);
     setInput("");
+    setKebabOpenId(null);
+    setPendingDelete(null);
   }, [articleId]);
+
+  // Close the kebab menu on any outside interaction. Skip clicks inside a
+  // `.cs-kebab` (button or menu) so mousedown doesn't race the click that
+  // triggered onDelete. Kebab is desktop-only — no touchstart listener
+  // needed (CSS hides it on touch devices).
+  useEffect(() => {
+    if (kebabOpenId === null) return;
+    const close = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && target.closest(".cs-kebab")) return;
+      setKebabOpenId(null);
+    };
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, [kebabOpenId]);
+
+  // ── Reply / Delete triggers (shared by swipe + manual buttons) ────────────
+  const triggerReplyToComment = useCallback((id: number, author: string) => {
+    if (!user) { onRequireAuth?.(); return; }
+    setReplyTo({ id, author });
+  }, [user, onRequireAuth]);
+
+  const triggerReplyToReply = useCallback((
+    parentId: number, replyAuthor: string, replyAuthorId: string,
+  ) => {
+    if (!user) { onRequireAuth?.(); return; }
+    setReplyTo({ id: parentId, author: replyAuthor, mention: true, mentionUserId: replyAuthorId });
+  }, [user, onRequireAuth]);
+
+  const askDelete = useCallback((
+    id: number, author: string, text: string, hasReplies: boolean,
+  ) => {
+    setKebabOpenId(null);
+    setPendingDelete({ id, author, text, hasReplies });
+  }, []);
+
+  const confirmDelete = useCallback(async () => {
+    if (!pendingDelete || isDeleting) return;
+    setIsDeleting(true);
+    const ok = await deleteComment(pendingDelete.id);
+    setIsDeleting(false);
+    if (ok) setPendingDelete(null);
+  }, [pendingDelete, isDeleting, deleteComment]);
 
   // Deep-link: expand replies + scroll to a specific comment when requested
   // (e.g. tapping a reply notification).
@@ -299,6 +653,28 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
         body.pn-comments-open .pn-bottom-nav * {
           pointer-events: none !important;
         }
+        /* Kebab menu: web only — hide on touch-primary devices where the
+           swipe gesture covers the same affordance. */
+        @media (hover: none) and (pointer: coarse) {
+          .cs-kebab { display: none !important; }
+        }
+        @media (hover: hover) {
+          .cs-kebab-btn:hover { background: rgba(8,27,58,0.08); color: rgba(8,27,58,0.68); }
+          .cs-menu-item:hover { background: rgba(8,27,58,0.06); }
+          .cs-menu-item-danger:hover { background: rgba(168,59,46,0.10); }
+        }
+        @keyframes csMenuIn {
+          from { opacity: 0; transform: translateY(-4px) scale(0.96); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes csModalIn {
+          from { opacity: 0; transform: translateY(10px) scale(0.97); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes csBackdropIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
       `}</style>
 
       {/* ── Backdrop ─────────────────────────────────────────────────────── */}
@@ -430,19 +806,25 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                 className={c.id === newCommentId ? "cs-entry-new" : "cs-entry"}
                 style={{ animationDelay: `${Math.min(idx, 6) * 50}ms` }}
               >
-                <article
-                  style={{
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                    paddingTop: 16,
-                    paddingBottom: 14,
-                    // Own-comment highlight — editorial annotation rather than UI chrome.
-                    // A soft tint + inset left rule in the brand ink quietly marks
-                    // the current user's posts without breaking the thread rhythm.
-                    background: isOwn ? "rgba(5,57,128,0.045)" : undefined,
-                    boxShadow: isOwn ? "inset 2px 0 0 rgba(5,57,128,0.38)" : undefined,
-                  }}
-                >
+                <article>
+                  <SwipeRow
+                    canDelete={isOwn}
+                    onReply={() => triggerReplyToComment(c.id, c.author)}
+                    onDelete={() => askDelete(c.id, c.author, c.text, c.replies.length > 0)}
+                  >
+                    <div
+                      style={{
+                        paddingLeft: 20,
+                        paddingRight: 20,
+                        paddingTop: 16,
+                        paddingBottom: 14,
+                        // Own-comment highlight — editorial annotation rather than UI chrome.
+                        // A soft tint + inset left rule in the brand ink quietly marks
+                        // the current user's posts without breaking the thread rhythm.
+                        background: isOwn ? "rgba(5,57,128,0.045)" : undefined,
+                        boxShadow: isOwn ? "inset 2px 0 0 rgba(5,57,128,0.38)" : undefined,
+                      }}
+                    >
                   <div className="flex gap-3">
                     <Avatar name={c.author} initials={c.initials} size={34} />
 
@@ -531,9 +913,18 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                               : `${c.replies.length} ${c.replies.length === 1 ? "reply" : "replies"}`}
                           </button>
                         )}
+                        {isOwn && (
+                          <KebabMenu
+                            open={kebabOpenId === c.id}
+                            onToggle={() => setKebabOpenId(kebabOpenId === c.id ? null : c.id)}
+                            onDelete={() => askDelete(c.id, c.author, c.text, c.replies.length > 0)}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
+                    </div>
+                  </SwipeRow>
 
                   {/* Replies */}
                   {repliesOpen && c.replies.length > 0 && (
@@ -549,8 +940,13 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                       {c.replies.map((r, ri) => {
                         const isOwnReply = !!user && r.authorId === user.id;
                         return (
-                        <div
+                        <SwipeRow
                           key={r.id}
+                          canDelete={isOwnReply}
+                          onReply={() => triggerReplyToReply(c.id, r.author, r.authorId)}
+                          onDelete={() => askDelete(r.id, r.author, r.text, false)}
+                        >
+                        <div
                           className="flex gap-2.5"
                           style={{
                             paddingTop:    ri > 0 ? 12 : 0,
@@ -653,9 +1049,18 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                               >
                                 Reply
                               </button>
+                              {isOwnReply && (
+                                <KebabMenu
+                                  small
+                                  open={kebabOpenId === r.id}
+                                  onToggle={() => setKebabOpenId(kebabOpenId === r.id ? null : r.id)}
+                                  onDelete={() => askDelete(r.id, r.author, r.text, false)}
+                                />
+                              )}
                             </div>
                           </div>
                         </div>
+                        </SwipeRow>
                         );
                       })}
                     </div>
@@ -758,6 +1163,155 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
           </div>
         </div>
       </div>
+
+      {/* ── Delete confirmation modal ─────────────────────────────────────── */}
+      {pendingDelete && (
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center"
+          style={{
+            padding: 24,
+            background: "rgba(5,27,58,0.50)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            animation: "csBackdropIn 0.18s ease-out both",
+          }}
+          onClick={(e) => { e.stopPropagation(); if (!isDeleting) setPendingDelete(null); }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cs-delete-title"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "100%",
+              maxWidth: 340,
+              background: "rgba(253,247,229,0.98)",
+              borderRadius: 16,
+              padding: "22px 22px 18px",
+              boxShadow: "0 18px 48px rgba(5,27,58,0.28), 0 2px 0 rgba(8,27,58,0.06)",
+              border: "1px solid rgba(8,27,58,0.08)",
+              animation: "csModalIn 0.22s cubic-bezier(0.22,1,0.36,1) both",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* Soft brick accent bar so the destructive intent is unmistakable
+                without shouting. Matches the swipe-left reveal colour. */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute", top: 0, left: 0, right: 0, height: 3,
+                background: `linear-gradient(90deg, rgba(${DELETE_RED},0) 0%, rgba(${DELETE_RED},0.85) 50%, rgba(${DELETE_RED},0) 100%)`,
+              }}
+            />
+            <div
+              id="cs-delete-title"
+              style={{
+                fontFamily: "'Macabro', 'Anton', sans-serif",
+                fontSize: 11,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: `rgba(${DELETE_RED},1)`,
+                marginBottom: 10,
+                lineHeight: 1,
+              }}
+            >
+              Delete {pendingDelete.hasReplies ? "thread" : "comment"}?
+            </div>
+
+            {/* Quoted preview of the comment text — a soft editorial touch so
+                the user sees exactly what they're about to lose. */}
+            <div
+              style={{
+                borderLeft: `2px solid rgba(${DELETE_RED},0.45)`,
+                paddingLeft: 10,
+                marginBottom: 14,
+              }}
+            >
+              <span style={{
+                fontFamily: "'Manrope', sans-serif",
+                fontSize: 11,
+                fontWeight: 600,
+                color: BRAND,
+                letterSpacing: "0.02em",
+                display: "block",
+                marginBottom: 3,
+              }}>
+                @{pendingDelete.author.replace(/^@/, "")}
+              </span>
+              <p style={{
+                fontFamily: "'Manrope', sans-serif",
+                fontSize: 13,
+                lineHeight: 1.5,
+                color: INK_BODY,
+                margin: 0,
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}>
+                {pendingDelete.text}
+              </p>
+            </div>
+
+            <p style={{
+              fontFamily: "'Manrope', sans-serif",
+              fontSize: 12.5,
+              lineHeight: 1.5,
+              color: INK_META,
+              marginTop: 0,
+              marginBottom: 16,
+            }}>
+              This can't be undone{pendingDelete.hasReplies ? ". Replies will also be removed." : "."}
+            </p>
+
+            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+              <button
+                onClick={(e) => { e.stopPropagation(); if (!isDeleting) setPendingDelete(null); }}
+                disabled={isDeleting}
+                style={{
+                  padding: "9px 16px",
+                  borderRadius: 10,
+                  fontFamily: "'Manrope', sans-serif",
+                  fontWeight: 600,
+                  fontSize: 12.5,
+                  letterSpacing: "0.01em",
+                  color: INK_ACTION,
+                  background: "transparent",
+                  border: `1px solid ${INK_HAIR}`,
+                  cursor: isDeleting ? "default" : "pointer",
+                  opacity: isDeleting ? 0.5 : 1,
+                  transition: "background 0.14s ease, border-color 0.14s ease",
+                }}
+              >
+                Keep
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); void confirmDelete(); }}
+                disabled={isDeleting}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "9px 16px",
+                  borderRadius: 10,
+                  fontFamily: "'Manrope', sans-serif",
+                  fontWeight: 700,
+                  fontSize: 12.5,
+                  letterSpacing: "0.02em",
+                  color: "#fdf7e5",
+                  background: `rgba(${DELETE_RED},${isDeleting ? 0.7 : 1})`,
+                  border: "none",
+                  cursor: isDeleting ? "default" : "pointer",
+                  boxShadow: `0 4px 14px rgba(${DELETE_RED},0.30)`,
+                  transition: "background 0.14s ease, transform 0.14s ease",
+                }}
+              >
+                <Trash2 size={13} strokeWidth={2.3} />
+                {isDeleting ? "Deleting…" : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

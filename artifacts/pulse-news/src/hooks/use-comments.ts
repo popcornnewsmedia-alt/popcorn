@@ -85,6 +85,7 @@ interface UseCommentsResult {
   loading: boolean;
   postComment: (body: string, parentId?: number | null, mentionUserId?: string | null) => Promise<number | null>;
   castVote: (commentId: number, direction: 1 | -1 | 0) => Promise<void>;
+  deleteComment: (commentId: number) => Promise<boolean>;
 }
 
 export function useComments(
@@ -109,6 +110,11 @@ export function useComments(
   // closure) can check whether an author's username is already cached.
   const usernamesRef = useRef(usernames);
   usernamesRef.current = usernames;
+  // Ref mirror of rows for `deleteComment`'s rollback snapshot — lets the
+  // callback capture rows-at-call-time without adding `rows` to its deps
+  // (which would invalidate the callback on every realtime event).
+  const rowsRef = useRef(rows);
+  rowsRef.current = rows;
 
   // Batch-load usernames for a set of author ids and merge into state.
   const hydrateUsernames = useCallback(async (authorIds: string[]) => {
@@ -203,7 +209,12 @@ export function useComments(
         { event: "DELETE", schema: "public", table: "comments", filter: `article_id=eq.${articleId}` },
         (payload) => {
           const oldRow = payload.old as DBComment;
-          setRows(prev => prev.filter(r => r.id !== oldRow.id));
+          // Skip re-allocating (and retriggering `buildTree`) when our
+          // optimistic delete already removed this row client-side.
+          setRows(prev => {
+            const next = prev.filter(r => r.id !== oldRow.id);
+            return next.length === prev.length ? prev : next;
+          });
         },
       )
       .subscribe();
@@ -370,7 +381,24 @@ export function useComments(
     voteMapRef.current = serverMap;
   }, [user?.id]);
 
+  const deleteComment = useCallback(async (commentId: number): Promise<boolean> => {
+    if (!user) return false;
+    // Optimistically remove the row and any descendants from local state.
+    // The DB has ON DELETE CASCADE on parent_id, so deleting a top-level
+    // comment also removes its replies — mirror that client-side so the UI
+    // doesn't briefly render orphan replies before the realtime fan-out.
+    const snapshot = rowsRef.current;
+    setRows(prev => prev.filter(r => r.id !== commentId && r.parent_id !== commentId));
+    const { error } = await supabase.from("comments").delete().eq("id", commentId);
+    if (error) {
+      console.warn("[deleteComment] failed — reverting", error);
+      setRows(snapshot);
+      return false;
+    }
+    return true;
+  }, [user?.id]);
+
   const comments = useMemo(() => buildTree(rows, voteMap, usernames), [rows, voteMap, usernames]);
 
-  return { comments, loading, postComment, castVote };
+  return { comments, loading, postComment, castVote, deleteComment };
 }
