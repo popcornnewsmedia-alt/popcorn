@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { apiBase } from '@/lib/api-base';
 
 export interface Profile {
   username: string;
@@ -196,8 +197,7 @@ export function useAuth() {
   const deleteAccount = async () => {
     const token = state.session?.access_token;
     if (!token) throw new Error("Not signed in");
-    const base = import.meta.env.VITE_API_URL ?? "";
-    const resp = await fetch(`${base}/api/auth/delete-account`, {
+    const resp = await fetch(`${apiBase()}/api/auth/delete-account`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -3,6 +3,7 @@ import { X, ArrowRight } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
 import type { LegalKind } from "@/components/LegalSheet";
+import { apiBase } from "@/lib/api-base";
 
 interface SignInSheetProps {
   isOpen: boolean;
@@ -67,7 +68,7 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
     e.stopPropagation();
     setError(null);
     setLoading(true);
-    const apiUrl = import.meta.env.VITE_API_URL ?? "";
+    const apiUrl = apiBase();
     const raw = identifier.trim();
     const isEmail = raw.includes("@");
 

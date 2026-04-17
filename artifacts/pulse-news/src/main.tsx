@@ -9,9 +9,12 @@ import { setBaseUrl } from "@workspace/api-client-react";
 let apiUrl: string | undefined;
 
 if (import.meta.env.PROD) {
-  // In production, always use the www domain explicitly
-  apiUrl = "https://www.popcornmedia.org";
-  console.log("[Popcorn] Production mode - using:", apiUrl);
+  // In production, use a relative base URL so API calls stay same-origin on
+  // whichever domain the page was loaded from (apex or www). Hardcoding a
+  // specific hostname triggers cross-origin CORS preflights + 307 redirects
+  // that browsers refuse to follow, surfacing as "network" errors in the UI.
+  apiUrl = "";
+  console.log("[Popcorn] Production mode - using relative API base");
   setBaseUrl(apiUrl);
 } else if (import.meta.env.VITE_API_URL) {
   // In dev mode, use the configured API URL if set

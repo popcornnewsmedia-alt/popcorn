@@ -1,3 +1,5 @@
+import { apiBase } from "./api-base";
+
 // Username validation + availability helpers.
 //
 // Client-side mirror of the SQL constraints in
@@ -55,8 +57,7 @@ export async function checkAvailability(username: string): Promise<AvailabilityR
   }
 
   try {
-    const base = import.meta.env.VITE_API_URL ?? "";
-    const resp = await fetch(`${base}/api/auth/check`, {
+    const resp = await fetch(`${apiBase()}/api/auth/check`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ kind: "username", value: candidate }),
