@@ -2829,6 +2829,64 @@ let _pendingDedupAudit: DedupeAuditEntry[] | null = null;
  * @param alreadyPublished - Articles already in today's curated feed. Claude
  *   will be told not to re-select these, and their links are pre-filtered out.
  */
+/**
+ * Canonical RSS feed list — single source of truth for both the
+ * enrichment pipeline (`loadLiveArticles`) and the shortlist ranker
+ * (`generateShortlist`). Category comments are for readers; fetch
+ * treats every feed equally. Add or remove sources here only.
+ */
+export const RSS_FEEDS: [string, string][] = [
+  // ── Core sources ───────────────────────────────────────────────────────────
+  // Music
+  ["https://www.rollingstone.com/feed/",                             "Rolling Stone"],
+  ["https://www.billboard.com/feed/",                                "Billboard"],
+  ["https://pitchfork.com/rss/news/",                                "Pitchfork"],
+  ["https://www.stereogum.com/feed/",                                "Stereogum"],
+  ["https://consequence.net/feed/",                                  "Consequence"],
+  // Film & TV
+  ["https://variety.com/feed/",                                      "Variety"],
+  ["https://www.hollywoodreporter.com/feed/",                        "The Hollywood Reporter"],
+  ["https://www.indiewire.com/feed/",                                "IndieWire"],
+  ["https://www.vulture.com/rss/index.xml",                          "Vulture"],
+  // Gaming
+  ["https://www.polygon.com/rss/index.xml",                          "Polygon"],
+  ["https://feeds.feedburner.com/ign/all",                           "IGN"],
+  // Fashion & Taste
+  ["https://hypebeast.com/feed",                                     "Hypebeast"],
+  ["https://www.dazeddigital.com/rss",                               "Dazed"],
+  // Culture, Ideas, Tech
+  ["https://www.theatlantic.com/feed/all/",                          "The Atlantic"],
+  ["https://www.wired.com/feed/rss",                                 "Wired"],
+  ["https://www.theguardian.com/culture/rss",                        "The Guardian Culture"],
+  ["https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml",          "NYT Arts"],
+  ["https://www.newyorker.com/feed/everything",                      "The New Yorker"],
+  // AI & Tech culture — dedicated sources for AI/internet behavior signals
+  ["https://www.theverge.com/rss/index.xml",                         "The Verge"],
+  ["https://techcrunch.com/feed/",                                   "TechCrunch"],
+  // Global fandom & music scale — international chart records, fan-driven events
+  ["https://www.nme.com/feed",                                       "NME"],
+  // Sports (cultural crossover only)
+  ["https://www.espn.com/espn/rss/news",                             "ESPN"],
+  ["https://www.skysports.com/rss/12040",                            "Sky Sports"],
+  // ── Supplementary sources ─────────────────────────────────────────────────
+  // Internet & Emerging Culture — memes, trends, online discourse
+  ["https://www.dexerto.com/feed/",                                  "Dexerto"],
+  ["https://knowyourmeme.com/newsfeed.rss",                          "Know Your Meme"],
+  // Power & Industry Insight — strategy, business of culture
+  ["https://www.semafor.com/rss.xml",                                "Semafor"],
+  ["https://feeds2.feedburner.com/businessinsider",                  "Business Insider"],
+  // Science & emerging tech with cultural resonance
+  ["https://futurism.com/feed",                                      "Futurism"],
+  ["https://www.404media.co/rss/",                                   "404 Media"],
+  // Modern Taste & Aesthetic Culture — youth culture, fashion signals
+  ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
+  // Business & Innovation
+  ["https://www.inc.com/rss",                                        "Inc."],
+  // ── Low-weight signal sources (early detection only) ─────────────────────
+  ["https://www.dailymail.co.uk/home/index.rss",                     "Daily Mail"],
+  ["https://pagesix.com/feed/",                                      "Page Six"],
+];
+
 export async function loadLiveArticles(
   alreadyPublished: { title: string; link: string }[] = [],
   windowStart?: Date,
@@ -2848,57 +2906,7 @@ export async function loadLiveArticles(
 
   // Fetch RSS feeds
   console.log("[rss] Fetching RSS feeds…");
-  const feeds: [string, string][] = [
-    // ── Core sources ─────────────────────────────────────────────────────────
-    // Music
-    ["https://www.rollingstone.com/feed/",                             "Rolling Stone"],
-    ["https://www.billboard.com/feed/",                                "Billboard"],
-    ["https://pitchfork.com/rss/news/",                                "Pitchfork"],
-    ["https://www.stereogum.com/feed/",                                "Stereogum"],
-    ["https://consequence.net/feed/",                                  "Consequence"],
-    // Film & TV
-    ["https://variety.com/feed/",                                      "Variety"],
-    ["https://www.hollywoodreporter.com/feed/",                        "The Hollywood Reporter"],
-    ["https://www.indiewire.com/feed/",                                "IndieWire"],
-    ["https://www.vulture.com/feeds/flipboard.rss",                    "Vulture"],
-    // Gaming
-    ["https://www.polygon.com/rss/index.xml",                          "Polygon"],
-    ["https://feeds.feedburner.com/ign/all",                           "IGN"],
-    // Fashion & Taste
-    ["https://hypebeast.com/feed",                                     "Hypebeast"],
-    ["https://www.dazeddigital.com/rss",                               "Dazed"],
-    // Culture, Ideas, Tech
-    ["https://www.theatlantic.com/feed/all/",                          "The Atlantic"],
-    ["https://www.wired.com/feed/rss",                                 "Wired"],
-    ["https://www.theguardian.com/culture/rss",                        "The Guardian Culture"],
-    ["https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml",          "NYT Arts"],
-    ["https://www.newyorker.com/feed/everything",                      "The New Yorker"],
-    // AI & Tech culture — dedicated sources for AI/internet behavior signals
-    ["https://www.theverge.com/rss/index.xml",                         "The Verge"],
-    ["https://techcrunch.com/feed/",                                   "TechCrunch"],
-    // Global fandom & music scale — international chart records, fan-driven events
-    ["https://www.nme.com/feed",                                       "NME"],
-    // Sports (cultural crossover only)
-    ["https://www.espn.com/espn/rss/news",                             "ESPN"],
-    ["https://www.skysports.com/rss/12040",                            "Sky Sports"],
-    // ── Supplementary sources ─────────────────────────────────────────────────
-    // Internet & Emerging Culture — memes, trends, online discourse
-    ["https://www.dexerto.com/feed/",                                  "Dexerto"],
-    ["https://knowyourmeme.com/newsfeed.rss",                          "Know Your Meme"],
-    // Power & Industry Insight — strategy, business of culture
-    ["https://www.semafor.com/rss.xml",                                "Semafor"],
-    ["https://feeds2.feedburner.com/businessinsider",                   "Business Insider"],
-    // Science & emerging tech with cultural resonance
-    ["https://futurism.com/feed",                                      "Futurism"],
-    ["https://www.404media.co/rss/",                                   "404 Media"],
-    // Modern Taste & Aesthetic Culture — youth culture, fashion signals
-    ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
-    // Business & Innovation
-    ["https://www.inc.com/rss",                                        "Inc."],
-    // ── Low-weight signal sources (early detection only) ─────────────────────
-    ["https://www.dailymail.co.uk/home/index.rss",                     "Daily Mail"],
-    ["https://pagesix.com/feed/",                                      "Page Six"],
-  ];
+  const feeds = RSS_FEEDS;
 
   // Fetch in batches of 5 — prevents undici's connection pool from becoming
   // saturated (which corrupts all subsequent network calls, including Claude).
@@ -3092,43 +3100,7 @@ export async function generateShortlist(
 ): Promise<ShortlistCandidate[]> {
   console.log("[shortlist] Fetching RSS feeds for shortlist generation…");
 
-  const defaultFeeds: [string, string][] = [
-    ["https://www.rollingstone.com/feed/",                             "Rolling Stone"],
-    ["https://www.billboard.com/feed/",                                "Billboard"],
-    ["https://pitchfork.com/rss/news/",                                "Pitchfork"],
-    ["https://www.stereogum.com/feed/",                                "Stereogum"],
-    ["https://consequence.net/feed/",                                  "Consequence"],
-    ["https://variety.com/feed/",                                      "Variety"],
-    ["https://www.hollywoodreporter.com/feed/",                        "The Hollywood Reporter"],
-    ["https://www.indiewire.com/feed/",                                "IndieWire"],
-    ["https://www.vulture.com/rss/index.xml",                          "Vulture"],
-    ["https://www.polygon.com/rss/index.xml",                          "Polygon"],
-    ["https://www.wired.com/feed/rss",                                 "Wired"],
-    ["https://www.theatlantic.com/feed/all/",                          "The Atlantic"],
-    ["https://www.dazeddigital.com/rss",                               "Dazed"],
-    ["https://www.hypebeast.com/feed",                                 "Hypebeast"],
-    ["https://www.ign.com/rss/articles.json",                         "IGN"],
-    ["https://www.newyorker.com/feed/everything",                      "The New Yorker"],
-    ["https://techcrunch.com/feed/",                                   "TechCrunch"],
-    ["https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml",         "NYT Arts"],
-    ["https://www.theverge.com/rss/index.xml",                         "The Verge"],
-    ["https://www.theguardian.com/culture/rss",                        "The Guardian Culture"],
-    ["https://www.dexerto.com/feed/",                                  "Dexerto"],
-    ["https://www.nme.com/feed",                                       "NME"],
-    ["https://semafor.com/rss.xml",                                    "Semafor"],
-    ["https://knowyourmeme.com/memes/all/rss",                         "Know Your Meme"],
-    ["https://www.espn.com/espn/rss/news",                             "ESPN"],
-    ["https://www.skysports.com/rss/12040",                            "Sky Sports"],
-    ["https://feeds2.feedburner.com/businessinsider",                   "Business Insider"],
-    ["https://futurism.com/feed",                                      "Futurism"],
-    ["https://www.404media.co/rss/",                                   "404 Media"],
-    ["https://pagesix.com/feed/",                                      "Page Six"],
-    ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
-    ["https://www.inc.com/rss",                                        "Inc."],
-    ["https://www.dailymail.co.uk/home/index.rss",                     "Daily Mail"],
-  ];
-
-  const feeds = customFeeds ?? defaultFeeds;
+  const feeds = customFeeds ?? RSS_FEEDS;
   if (customFeeds) {
     console.log(`[shortlist] Using custom feed list: ${customFeeds.map(([, name]) => name).join(", ")}`);
   }
