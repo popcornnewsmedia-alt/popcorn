@@ -13,19 +13,21 @@ interface SignInSheetProps {
 }
 
 export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, initialEmail }: SignInSheetProps) {
-  const [email, setEmail] = useState(initialEmail ?? "");
+  // `identifier` accepts an email OR a username. We resolve username → email
+  // on submit via /api/auth/resolve-identifier before calling signIn.
+  const [identifier, setIdentifier] = useState(initialEmail ?? "");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { signIn, signInWithGoogle } = useAuth();
 
-  // Pre-fill email when redirected from sign-up (existing account detected)
+  // Pre-fill when redirected from sign-up (existing account detected)
   useEffect(() => {
-    if (initialEmail) setEmail(initialEmail);
+    if (initialEmail) setIdentifier(initialEmail);
   }, [initialEmail]);
 
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
-  const reset = () => { setEmail(""); setPassword(""); setError(null); setLoading(false); };
+  const reset = () => { setIdentifier(""); setPassword(""); setError(null); setLoading(false); };
   const handleClose = (e: React.MouseEvent) => { e.stopPropagation(); reset(); onClose(); };
 
   // ── Drag-down-to-close ──────────────────────────────────────────────────
@@ -65,31 +67,61 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
     e.stopPropagation();
     setError(null);
     setLoading(true);
+    const apiUrl = import.meta.env.VITE_API_URL ?? "";
+    const raw = identifier.trim();
+    const isEmail = raw.includes("@");
+
     try {
-      await signIn(email, password);
+      // If the user typed a username, resolve it to an email first.
+      let emailForSignIn = raw;
+      if (!isEmail) {
+        try {
+          const resp = await fetch(`${apiUrl}/api/auth/resolve-identifier`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ identifier: raw }),
+          });
+          const data = await resp.json();
+          if (!data?.email) {
+            setError("No account found with that username. Please create an account first.");
+            setLoading(false);
+            return;
+          }
+          emailForSignIn = data.email;
+        } catch {
+          setError("Couldn't look up that username — check your connection and try again.");
+          setLoading(false);
+          return;
+        }
+      }
+
+      await signIn(emailForSignIn, password);
       reset();
       onClose();
     } catch (err: any) {
       const msg = (err.message ?? "").toLowerCase();
       if (msg.includes("invalid login credentials") || msg.includes("invalid_credentials")) {
-        // Supabase returns the same error for "no account" and "wrong password".
-        // Check if the email is registered so we can show a more helpful message.
-        try {
-          const apiUrl = import.meta.env.VITE_API_URL ?? "";
-          const resp = await fetch(`${apiUrl}/api/auth/user-exists`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-          });
-          const data = await resp.json();
-          if (!data.exists) {
-            setError("No account found with this email. Please create an account first.");
-          } else {
-            setError("Incorrect password. Please try again.");
+        if (isEmail) {
+          // Supabase returns the same error for "no account" and "wrong password".
+          // Check if the email is registered so we can show a more helpful message.
+          try {
+            const resp = await fetch(`${apiUrl}/api/auth/user-exists`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: raw }),
+            });
+            const data = await resp.json();
+            if (!data.exists) {
+              setError("No account found with this email. Please create an account first.");
+            } else {
+              setError("Incorrect password. Please try again.");
+            }
+          } catch {
+            setError("Incorrect email or password. Please try again.");
           }
-        } catch {
-          // If the check fails, fall back to the generic message
-          setError("Incorrect email or password. Please try again.");
+        } else {
+          // Username resolved, so the account exists — only the password can be wrong.
+          setError("Incorrect password. Please try again.");
         }
       } else if (msg.includes("email not confirmed")) {
         setError("Your email hasn't been verified yet. Check your inbox for a confirmation link.");
@@ -113,7 +145,12 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
     }
   };
 
-  const canSubmit = email.includes("@") && password.length >= 6;
+  // Accept an email (must contain "@") OR a username (3-20 chars, letters/numbers/underscore).
+  // Server-side resolver enforces the real check; this is just to gate the button.
+  const trimmedIdentifier = identifier.trim();
+  const looksLikeEmail = trimmedIdentifier.includes("@");
+  const looksLikeUsername = /^[a-z0-9_]{3,20}$/i.test(trimmedIdentifier);
+  const canSubmit = (looksLikeEmail || looksLikeUsername) && password.length >= 6;
 
   return (
     <>
@@ -165,13 +202,16 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
           {/* Fields */}
           <div className="flex flex-col gap-3.5">
             <div className="flex flex-col gap-1.5">
-              <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>Email</label>
+              <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>Email or username</label>
               <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                type="text"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                value={identifier}
+                onChange={e => setIdentifier(e.target.value)}
                 onClick={stopProp}
-                placeholder="you@example.com"
+                placeholder="you@example.com or @handle"
                 className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
                 style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
               />

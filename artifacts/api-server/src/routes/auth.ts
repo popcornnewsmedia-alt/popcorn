@@ -197,6 +197,109 @@ router.post(
 );
 
 /**
+ * POST /api/auth/username-available
+ * Dev-server mirror of the Vercel serverless endpoint at
+ * `api/auth/username-available.ts`. Returns `{ available: boolean, reason? }`.
+ * Reserved list + regex live in SQL (via the `username_available` RPC); we
+ * fall back to a direct `profiles` lookup if the RPC is not deployed yet.
+ */
+router.post(
+  "/username-available",
+  async (req: Request<{}, {}, { username: string }>, res: Response) => {
+    try {
+      const raw = (req.body?.username ?? "").toString();
+      const candidate = raw.trim().toLowerCase();
+      if (!candidate) return res.status(400).json({ error: "Missing username" });
+
+      const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
+      const RESERVED = new Set([
+        "admin", "popcorn", "root", "api", "support", "system", "null", "undefined",
+        "moderator", "staff", "help", "about", "terms", "privacy", "login", "signup",
+      ]);
+
+      if (!USERNAME_REGEX.test(candidate)) {
+        return res.json({ available: false, reason: "format" });
+      }
+      if (RESERVED.has(candidate)) {
+        return res.json({ available: false, reason: "reserved" });
+      }
+
+      const { data, error } = await supabase.rpc("username_available", { candidate });
+      if (error) {
+        const { data: rows, error: qerr } = await supabase
+          .from("profiles")
+          .select("user_id")
+          .eq("username", candidate)
+          .limit(1);
+        if (qerr) {
+          console.error("username-available fallback error:", qerr);
+          return res.status(500).json({ error: "Lookup failed" });
+        }
+        const taken = (rows ?? []).length > 0;
+        return res.json({ available: !taken, ...(taken ? { reason: "taken" } : {}) });
+      }
+
+      const available = Boolean(data);
+      return res.json({ available, ...(available ? {} : { reason: "taken" }) });
+    } catch (error) {
+      console.error("username-available error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
+/**
+ * POST /api/auth/resolve-identifier
+ * Dev-server mirror of the Vercel serverless endpoint at
+ * `api/auth/resolve-identifier.ts`. Accepts `{ identifier }` and returns
+ * `{ email }` so the client can sign in with either email or username.
+ */
+router.post(
+  "/resolve-identifier",
+  async (req: Request<{}, {}, { identifier: string }>, res: Response) => {
+    try {
+      const raw = (req.body?.identifier ?? "").toString().trim();
+      if (!raw) return res.status(400).json({ error: "Missing identifier" });
+
+      if (raw.includes("@")) {
+        return res.json({ email: raw });
+      }
+
+      const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
+      const candidate = raw.toLowerCase();
+      if (!USERNAME_REGEX.test(candidate)) {
+        return res.json({ email: null, reason: "not_found" });
+      }
+
+      const { data: profile, error: profErr } = await supabase
+        .from("profiles")
+        .select("user_id")
+        .eq("username", candidate)
+        .maybeSingle();
+
+      if (profErr) {
+        console.error("resolve-identifier profile error:", profErr);
+        return res.status(500).json({ error: "Lookup failed" });
+      }
+      if (!profile?.user_id) {
+        return res.json({ email: null, reason: "not_found" });
+      }
+
+      const { data: userRes, error: userErr } = await supabase.auth.admin.getUserById(profile.user_id);
+      if (userErr || !userRes?.user?.email) {
+        console.error("resolve-identifier user error:", userErr);
+        return res.json({ email: null, reason: "not_found" });
+      }
+
+      return res.json({ email: userRes.user.email });
+    } catch (error) {
+      console.error("resolve-identifier error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
+/**
  * POST /api/auth/user-exists
  * Check whether an email is registered (used to distinguish
  * "account not found" from "wrong password" on the client).
