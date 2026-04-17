@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Heart, MessageCircle, Bookmark, Share2 } from "lucide-react";
-import { useLikeArticle, useBookmarkArticle } from "@/hooks/use-news";
+import { useLikeArticle } from "@/hooks/use-news";
+import { useSavedArticles } from "@/hooks/use-saves";
 import { useCommentCount } from "@/hooks/use-comment-count";
 import type { NewsArticle } from "@workspace/api-client-react";
 
@@ -12,7 +13,10 @@ interface ActionButtonsProps {
 export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
   const [localLiked, setLocalLiked] = useState(false);
   const { mutate: likeMutation } = useLikeArticle();
-  const { mutate: bookmarkMutation } = useBookmarkArticle();
+  // Saves are now persisted per-user in Supabase (see use-saves.ts). We
+  // read the live set from context so both this icon and the Saved tab
+  // stay in step, and the state syncs across devices.
+  const { isSaved: isSavedFn, toggleSave } = useSavedArticles();
   const commentCount = useCommentCount(article.id);
 
   const handleLike = (e: React.MouseEvent) => {
@@ -24,7 +28,7 @@ export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
 
   const handleBookmark = (e: React.MouseEvent) => {
     e.stopPropagation();
-    bookmarkMutation(article.id);
+    void toggleSave(article.id);
   };
 
   const handleShare = (e: React.MouseEvent) => {
@@ -39,7 +43,10 @@ export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
   const handleComment = (e: React.MouseEvent) => { e.stopPropagation(); onOpenComments(); };
 
   const isLiked = localLiked;
-  const isSaved = article.isBookmarked;
+  // Prefer the live set over `article.isBookmarked` so the icon flips
+  // instantly on toggle, even if the parent hasn't re-rendered with the
+  // updated overlay yet.
+  const isSaved = isSavedFn(article.id);
   const likeCount = article.likes;
 
   const iconStyle = { filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.55))' };

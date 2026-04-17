@@ -16,6 +16,7 @@ import { GrainBackground } from "@/components/GrainBackground";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useAuth } from "@/hooks/use-auth";
 import { useNotifications } from "@/hooks/use-notifications";
+import { SavesContext, useSavesRoot } from "@/hooks/use-saves";
 import { supabase } from "@/lib/supabase";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
@@ -157,6 +158,12 @@ export function FeedPageHorizontal() {
     return () => { document.body.style.overflow = ""; };
   }, [readingArticle]);
 
+  // Saved articles — backed by the `saved_articles` Supabase table so the
+  // set syncs between the user's devices. The context this hook returns is
+  // also broadcast to every descendant via <SavesContext.Provider> below
+  // so ActionButtons / ArticleReader can read + toggle the same Set.
+  const saves = useSavesRoot(user);
+
   // Flat newest-first article list with image URL rewriting (identical to FeedPage).
   const allArticles = useMemo(
     () => (data?.pages.flatMap((page) => page.articles) ?? []).map((article) => {
@@ -167,7 +174,13 @@ export function FeedPageHorizontal() {
     }),
     [data]
   );
-  const savedArticles = allArticles.filter((a) => a.isBookmarked);
+  // Saved tab articles: filter directly against the live saves set so the
+  // list reflects the current user (the `article.isBookmarked` field from
+  // the API stub always returns false).
+  const savedArticles = useMemo(
+    () => allArticles.filter((a) => saves.savedIds.has(a.id)),
+    [allArticles, saves.savedIds]
+  );
   const liveReadingArticle = readingArticle
     ? (allArticles.find((a) => a.id === readingArticle.id) ?? readingArticle)
     : null;
@@ -642,6 +655,7 @@ export function FeedPageHorizontal() {
     : [];
 
   return (
+    <SavesContext.Provider value={saves}>
     <div className="pn-fullscreen fixed inset-0" style={{ background: '#053980' }}>
       <GrainBackground />
 
@@ -902,5 +916,6 @@ export function FeedPageHorizontal() {
         onSelect={handleSelectNotification}
       />
     </div>
+    </SavesContext.Provider>
   );
 }
