@@ -3,9 +3,9 @@ import { X, ArrowRight, Check, Mail, ChevronDown } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
 import type { LegalKind } from "@/components/LegalSheet";
-import { supabase } from "@/lib/supabase";
 import {
   checkAvailability,
+  reserveUsername,
   validateUsernameFormat,
   type AvailabilityReason,
   type FormatReason,
@@ -137,26 +137,25 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
           return;
         }
 
-        // Reserve the username on the profiles table. RLS permits this once
-        // the signUp response has established a session. If another signup
-        // races us to the same handle, Postgres returns 23505 and we bounce
-        // the user back to the username field.
+        // Reserve the username via the server-side endpoint (service-role).
+        // The anon client has no session yet when email confirmation is on,
+        // so a direct `profiles.insert` would be silently blocked by RLS and
+        // the user would be forced through UsernameSheet after verifying.
+        // A 23505 race is surfaced as `reason: "taken"` and bounces the user
+        // back to the username field.
         const candidate = username.trim().toLowerCase();
         const userId = data?.user?.id;
         if (userId && candidate) {
-          const { error: profileErr } = await supabase
-            .from("profiles")
-            .insert({ user_id: userId, username: candidate });
-          if (profileErr) {
-            const code = (profileErr as { code?: string }).code;
-            if (code === "23505") {
+          const reserve = await reserveUsername(userId, candidate);
+          if (!reserve.ok) {
+            if (reserve.reason === "taken") {
               setUsernameStatus({ kind: "unavailable", reason: "taken" });
               setError("__username_taken__");
               return;
             }
-            // Non-fatal for any other error — surface but keep signup flow alive.
+            // Non-fatal for any other error — surface but keep signup alive.
             // App.tsx's UsernameSheet will re-prompt if the row is missing.
-            console.warn("[SignUpFlow] profiles insert error", profileErr);
+            console.warn("[SignUpFlow] reserveUsername failed", reserve.reason);
           } else {
             // Refresh the auth hook's cached profile so downstream UI sees the handle.
             refreshProfile().catch(() => { /* Non-fatal */ });

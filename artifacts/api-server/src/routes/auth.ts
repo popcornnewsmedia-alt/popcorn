@@ -302,24 +302,69 @@ router.post(
 /**
  * POST /api/auth/check
  * Dev-server mirror of the Vercel serverless endpoint at `api/auth/check.ts`.
- * Unified identifier-availability endpoint — dispatches on `kind`:
- *   { kind: "username", value } → { available, reason? }
- *   { kind: "email",    value } → { exists }
+ * Unified identifier-availability + username-reservation endpoint:
+ *   { kind: "username", value }                        → { available, reason? }
+ *   { kind: "email",    value }                        → { exists }
+ *   { kind: "reserve-username", userId, username }     → { ok, reason? }
  */
 router.post(
   "/check",
-  async (req: Request<{}, {}, { kind?: string; value?: string }>, res: Response) => {
+  async (
+    req: Request<{}, {}, { kind?: string; value?: string; userId?: string; username?: string }>,
+    res: Response,
+  ) => {
     try {
-      const { kind, value } = req.body ?? {};
-      const raw = (value ?? "").toString().trim();
-      if (!kind || !raw) return res.status(400).json({ error: "Missing kind or value" });
+      const body = req.body ?? {};
+      const { kind } = body;
+      if (!kind) return res.status(400).json({ error: "Missing kind" });
+
+      const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
+      const RESERVED = new Set([
+        "admin", "popcorn", "root", "api", "support", "system", "null", "undefined",
+        "moderator", "staff", "help", "about", "terms", "privacy", "login", "signup",
+      ]);
+
+      if (kind === "reserve-username") {
+        const userId = (body.userId ?? "").toString().trim();
+        const candidate = (body.username ?? "").toString().trim().toLowerCase();
+        if (!userId || !candidate) {
+          return res.status(400).json({ error: "Missing userId or username" });
+        }
+        if (!USERNAME_REGEX.test(candidate)) return res.json({ ok: false, reason: "format" });
+        if (RESERVED.has(candidate)) return res.json({ ok: false, reason: "reserved" });
+
+        const { data: userRes, error: userErr } = await supabase.auth.admin.getUserById(userId);
+        if (userErr || !userRes?.user) {
+          return res.json({ ok: false, reason: "no_user" });
+        }
+
+        const { data: existing, error: existErr } = await supabase
+          .from("profiles")
+          .select("user_id")
+          .eq("user_id", userId)
+          .maybeSingle();
+        if (existErr) {
+          console.error("reserve-username existing lookup error:", existErr);
+          return res.status(500).json({ error: "Lookup failed" });
+        }
+        if (existing) return res.json({ ok: false, reason: "already_has_profile" });
+
+        const { error: insertErr } = await supabase
+          .from("profiles")
+          .insert({ user_id: userId, username: candidate });
+        if (insertErr) {
+          const code = (insertErr as { code?: string }).code;
+          if (code === "23505") return res.json({ ok: false, reason: "taken" });
+          console.error("reserve-username insert error:", insertErr);
+          return res.status(500).json({ error: "Insert failed" });
+        }
+        return res.json({ ok: true });
+      }
+
+      const raw = (body.value ?? "").toString().trim();
+      if (!raw) return res.status(400).json({ error: "Missing value" });
 
       if (kind === "username") {
-        const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
-        const RESERVED = new Set([
-          "admin", "popcorn", "root", "api", "support", "system", "null", "undefined",
-          "moderator", "staff", "help", "about", "terms", "privacy", "login", "signup",
-        ]);
         const candidate = raw.toLowerCase();
         if (!USERNAME_REGEX.test(candidate)) return res.json({ available: false, reason: "format" });
         if (RESERVED.has(candidate)) return res.json({ available: false, reason: "reserved" });

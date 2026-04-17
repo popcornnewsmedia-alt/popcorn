@@ -45,6 +45,44 @@ export type AvailabilityResult =
   | { available: true }
   | { available: false; reason: AvailabilityReason };
 
+export type ReserveReason =
+  | "format"
+  | "reserved"
+  | "taken"
+  | "no_user"
+  | "already_has_profile"
+  | "network";
+
+export type ReserveResult =
+  | { ok: true }
+  | { ok: false; reason: ReserveReason };
+
+/**
+ * Reserve a username on the server using the service-role key.
+ *
+ * The client-side `profiles.insert` in SignUpFlow silently fails when email
+ * confirmation is enabled (no session yet → RLS blocks the write), which
+ * leaves the user without a `profiles` row and forces the blocking
+ * UsernameSheet gate on first sign-in. This endpoint bypasses that by
+ * writing via service-role once the Supabase auth user exists.
+ */
+export async function reserveUsername(userId: string, username: string): Promise<ReserveResult> {
+  const candidate = username.trim().toLowerCase();
+  try {
+    const resp = await fetch(`${apiBase()}/api/auth/check`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ kind: "reserve-username", userId, username: candidate }),
+    });
+    if (!resp.ok) return { ok: false, reason: "network" };
+    const json = (await resp.json()) as { ok: boolean; reason?: ReserveReason };
+    if (json.ok) return { ok: true };
+    return { ok: false, reason: json.reason ?? "network" };
+  } catch {
+    return { ok: false, reason: "network" };
+  }
+}
+
 /** POST to /api/auth/check (kind: "username") and return a typed result. */
 export async function checkAvailability(username: string): Promise<AvailabilityResult> {
   const candidate = username.trim().toLowerCase();
