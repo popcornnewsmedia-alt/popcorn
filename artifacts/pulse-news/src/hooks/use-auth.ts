@@ -187,16 +187,43 @@ export function useAuth() {
     setState({ user: null, session: null, profile: null, loading: false });
   };
 
+  // Race a supabase promise against a hard timeout so settings saves can't
+  // hang the UI forever. Supabase's updateUser has been observed to stall in
+  // the browser (notably after HMR / stale GoTrue state), leaving the
+  // SAVING… button spinner spinning until the user reloads. 10s gives a
+  // healthy network plenty of headroom while still surfacing a retryable
+  // error if something's stuck.
+  const withTimeout = <T>(p: Promise<T>, ms = 10000, label = "request"): Promise<T> =>
+    Promise.race<T>([
+      p,
+      new Promise<T>((_, reject) =>
+        setTimeout(() => reject(new Error(`${label} timed out — check your connection and try again.`)), ms),
+      ),
+    ]);
+
   const updateProfile = async (data: Record<string, unknown>) => {
-    const { error } = await supabase.auth.updateUser({ data });
+    const { data: res, error } = await withTimeout(
+      supabase.auth.updateUser({ data }),
+      10000,
+      "Save",
+    );
     if (error) throw error;
+    // Mirror the new metadata into local state immediately so the "You"
+    // screen and settings row reflect the change even if the USER_UPDATED
+    // auth event is delayed (or swallowed by a concurrent token refresh).
+    const nextUser = res?.user ?? null;
+    if (nextUser) setState(prev => ({ ...prev, user: nextUser }));
   };
 
   /** Update the signed-in user's password. Supabase sends a reauth email under
    * the hood only if the session is stale; for a fresh session this is a
    * silent update. */
   const updatePassword = async (newPassword: string) => {
-    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    const { error } = await withTimeout(
+      supabase.auth.updateUser({ password: newPassword }),
+      10000,
+      "Password update",
+    );
     if (error) throw error;
   };
 

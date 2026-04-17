@@ -612,13 +612,16 @@ export function FeedPageHorizontal() {
         onCreateAccount={() => setChoiceOpen(true)}
         onSignOut={async () => {
           // Close any sheets/overlays that might outlive the signed-in
-          // session, then drop the user back on the feed tab so the
-          // signed-out Profile CTAs aren't the first thing they see.
+          // session, then flip back to the splash/intro screen (which also
+          // hides the BottomNav via `isIntroScreen`). Resetting activeTab
+          // too so a future sign-in lands the user on the feed, not the
+          // signed-out profile placeholder.
           setSettingsOpen(false);
           setNotifOpen(false);
           setLegalSheet(null);
           await signOut();
           setActiveTab("feed");
+          setShowSplash(true);
         }}
         onOpenLegal={setLegalSheet}
         onOpenNotifications={openNotifications}
