@@ -24,13 +24,24 @@ export interface Comment extends Reply {
   replies: Reply[];
 }
 
-function rowToReply(row: DBComment, myVote: number | undefined): Reply {
+function rowToReply(
+  row: DBComment,
+  myVote: number | undefined,
+  liveUsername: string | undefined,
+): Reply {
+  // Prefer the current `@username` from the profiles table over whatever
+  // was snapshotted into author_name at insert time. This guarantees that
+  // display name changes never leak into the comment stream — the feed
+  // only ever shows the authoritative handle — and that legacy rows
+  // written before the username system are upgraded on the fly.
+  const author = liveUsername ? `@${liveUsername}` : row.author_name;
+  // Seed avatar color by author_id so it stays stable across name changes.
   return {
     id: row.id,
-    author: row.author_name,
+    author,
     authorId: row.author_id,
     initials: row.author_initials,
-    color: avatarColor(row.author_name) || BRAND,
+    color: avatarColor(row.author_id) || BRAND,
     text: row.body,
     time: formatRelative(row.created_at),
     upvotes: Number(row.upvotes) || 0,
@@ -39,12 +50,19 @@ function rowToReply(row: DBComment, myVote: number | undefined): Reply {
   };
 }
 
-function buildTree(rows: DBComment[], voteMap: Map<number, number>): Comment[] {
+function buildTree(
+  rows: DBComment[],
+  voteMap: Map<number, number>,
+  usernames: Map<string, string>,
+): Comment[] {
   const tops: Comment[] = [];
   const byId = new Map<number, Comment>();
   for (const r of rows) {
     if (r.parent_id == null) {
-      const c: Comment = { ...rowToReply(r, voteMap.get(r.id)), replies: [] };
+      const c: Comment = {
+        ...rowToReply(r, voteMap.get(r.id), usernames.get(r.author_id)),
+        replies: [],
+      };
       byId.set(r.id, c);
       tops.push(c);
     }
@@ -52,7 +70,7 @@ function buildTree(rows: DBComment[], voteMap: Map<number, number>): Comment[] {
   for (const r of rows) {
     if (r.parent_id != null) {
       const parent = byId.get(r.parent_id);
-      if (parent) parent.replies.push(rowToReply(r, voteMap.get(r.id)));
+      if (parent) parent.replies.push(rowToReply(r, voteMap.get(r.id), usernames.get(r.author_id)));
     }
   }
   // Deterministic ordering inside replies (oldest first within a thread).
@@ -76,12 +94,41 @@ export function useComments(
 ): UseCommentsResult {
   const [rows, setRows] = useState<DBComment[]>([]);
   const [voteMap, setVoteMap] = useState<Map<number, number>>(new Map());
+  // Live authorId -> @username lookup. Rendered over row.author_name so
+  // comments always display the current username, not the snapshot taken
+  // at insert time (which could be stale after a name change, or fall back
+  // to full_name for pre-username rows).
+  const [usernames, setUsernames] = useState<Map<string, string>>(new Map());
   const [loading, setLoading] = useState(true);
   // Ref mirrors voteMap so castVote can read the freshest direction
   // synchronously, even across rapid-fire clicks that would otherwise capture
   // a stale closure (e.g. double-tapping before React commits).
   const voteMapRef = useRef(voteMap);
   voteMapRef.current = voteMap;
+  // Ref mirror so realtime INSERT handler (which lives outside the refetch
+  // closure) can check whether an author's username is already cached.
+  const usernamesRef = useRef(usernames);
+  usernamesRef.current = usernames;
+
+  // Batch-load usernames for a set of author ids and merge into state.
+  const hydrateUsernames = useCallback(async (authorIds: string[]) => {
+    const need = Array.from(new Set(authorIds)).filter((id) => !usernamesRef.current.has(id));
+    if (need.length === 0) return;
+    const { data } = await supabase
+      .from("profiles")
+      .select("user_id,username")
+      .in("user_id", need);
+    if (!data || data.length === 0) return;
+    setUsernames((prev) => {
+      const next = new Map(prev);
+      for (const row of data) {
+        const uid = row.user_id as string;
+        const uname = row.username as string | null;
+        if (uname) next.set(uid, uname);
+      }
+      return next;
+    });
+  }, []);
 
   const refetch = useCallback(async () => {
     if (articleId == null) { setRows([]); setLoading(false); return; }
@@ -93,6 +140,11 @@ export function useComments(
       .order("created_at", { ascending: true });
     const loaded = (commentRows ?? []) as DBComment[];
     setRows(loaded);
+
+    // Fire off a username hydration for every distinct author in one query.
+    if (loaded.length > 0) {
+      void hydrateUsernames(loaded.map((r) => r.author_id));
+    }
 
     if (user && loaded.length > 0) {
       const ids = loaded.map(r => r.id);
@@ -107,7 +159,7 @@ export function useComments(
       setVoteMap(new Map());
     }
     setLoading(false);
-  }, [articleId, user?.id]);
+  }, [articleId, user?.id, hydrateUsernames]);
 
   useEffect(() => { refetch(); }, [refetch]);
 
@@ -126,6 +178,9 @@ export function useComments(
         (payload) => {
           const row = payload.new as DBComment;
           setRows(prev => prev.some(r => r.id === row.id) ? prev : [...prev, row]);
+          // Hydrate the new author's @username so the row renders with the
+          // live handle instead of falling back to the snapshot.
+          void hydrateUsernames([row.author_id]);
         },
       )
       .on(
@@ -153,7 +208,28 @@ export function useComments(
       )
       .subscribe();
     return () => { void supabase.removeChannel(ch); };
-  }, [articleId]);
+  }, [articleId, hydrateUsernames]);
+
+  // Safety net for mobile: realtime websockets frequently drop on iOS /
+  // Android (background throttling, flaky cellular) and silently miss
+  // INSERT events, so comments posted on another device never arrive.
+  // Re-fetch whenever the tab becomes visible again or the network
+  // reconnects, so a user coming back to the sheet always sees fresh state.
+  useEffect(() => {
+    if (articleId == null) return;
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void refetch();
+    };
+    const onOnline = () => { void refetch(); };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("online", onOnline);
+    window.addEventListener("focus", onVisible);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("online", onOnline);
+      window.removeEventListener("focus", onVisible);
+    };
+  }, [articleId, refetch]);
 
   const postComment = useCallback(async (
     body: string,
@@ -182,6 +258,16 @@ export function useComments(
     // Optimistically append so the sender sees their entry instantly (realtime
     // re-fetch will reconcile, but we avoid the network round-trip delay).
     setRows(prev => prev.some(r => r.id === newRow.id) ? prev : [...prev, newRow]);
+    // Cache the poster's own @username so their own comment renders as
+    // @handle immediately, even on the first comment they ever post.
+    if (username) {
+      setUsernames(prev => {
+        if (prev.get(user.id) === username) return prev;
+        const next = new Map(prev);
+        next.set(user.id, username);
+        return next;
+      });
+    }
 
     // Reply-to-reply: the DB trigger only notifies the TOP-LEVEL parent's
     // author. If the user is replying to a sibling reply (via @mention),
@@ -284,7 +370,7 @@ export function useComments(
     voteMapRef.current = serverMap;
   }, [user?.id]);
 
-  const comments = useMemo(() => buildTree(rows, voteMap), [rows, voteMap]);
+  const comments = useMemo(() => buildTree(rows, voteMap, usernames), [rows, voteMap, usernames]);
 
   return { comments, loading, postComment, castVote };
 }

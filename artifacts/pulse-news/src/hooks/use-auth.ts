@@ -172,19 +172,19 @@ export function useAuth() {
   };
 
   const signOut = async () => {
-    // Use `scope: 'local'` so sign-out doesn't block on a round-trip to
-    // Supabase to revoke the refresh token server-side. The default
-    // ('global') scope has been observed to hang on flaky networks, leaving
-    // the UI stuck on a clicked-but-unresponsive "Sign out" button until the
-    // user reloads. Local scope clears storage + fires SIGNED_OUT
-    // synchronously; the access token expires server-side on its own TTL.
-    const { error } = await supabase.auth.signOut({ scope: 'local' });
-    if (error) throw error;
-    // Defence in depth: if onAuthStateChange didn't fire (rare, but seen
-    // when another tab holds the GoTrue lock), manually reset so the UI
-    // doesn't linger in the signed-in state.
+    // Clear local state FIRST so the UI always responds on first click. The
+    // Supabase client has been observed to wedge after a preceding
+    // updateUser / comment insert — an `await` on signOut would then hang
+    // indefinitely, making sign-out feel broken. We don't actually need to
+    // wait for Supabase: `scope: 'local'` is just a localStorage purge, and
+    // we're already doing the manual state reset right here.
     loadedProfileForRef.current = null;
     setState({ user: null, session: null, profile: null, loading: false });
+    // Fire-and-forget the Supabase clear. If it throws or hangs, the UI is
+    // already in the signed-out state — we don't care.
+    void supabase.auth.signOut({ scope: 'local' }).catch((e) => {
+      console.warn('[useAuth] signOut threw (local state already cleared)', e);
+    });
   };
 
   // Race a supabase promise against a hard timeout so settings saves can't
@@ -201,7 +201,18 @@ export function useAuth() {
       ),
     ]);
 
+  // Mobile WebViews have been observed to wedge `supabase.auth.updateUser`
+  // when the session token is stale but still valid — the client queues the
+  // call behind a refresh that never fires. Poking getSession first forces
+  // the client to surface/refresh the current session before we attempt the
+  // update, which has reliably unstuck mobile saves. Cheap on desktop.
+  const primeSession = async () => {
+    try { await withTimeout(supabase.auth.getSession(), 4000, "Session check"); }
+    catch { /* swallow — if the update hangs we'll still time it out below */ }
+  };
+
   const updateProfile = async (data: Record<string, unknown>) => {
+    await primeSession();
     const { data: res, error } = await withTimeout(
       supabase.auth.updateUser({ data }),
       10000,
@@ -219,12 +230,18 @@ export function useAuth() {
    * the hood only if the session is stale; for a fresh session this is a
    * silent update. */
   const updatePassword = async (newPassword: string) => {
-    const { error } = await withTimeout(
+    await primeSession();
+    const { data: res, error } = await withTimeout(
       supabase.auth.updateUser({ password: newPassword }),
       10000,
       "Password update",
     );
     if (error) throw error;
+    // Keep local user state in sync so subsequent session checks see the
+    // post-update user object (and so the next sign-in with the new
+    // password uses fresh credentials).
+    const nextUser = res?.user ?? null;
+    if (nextUser) setState(prev => ({ ...prev, user: nextUser }));
   };
 
   /** Permanently deletes the signed-in user's account. Hits the server-side
