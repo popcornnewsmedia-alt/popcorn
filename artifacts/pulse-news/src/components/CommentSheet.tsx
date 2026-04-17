@@ -449,9 +449,15 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
   const confirmDelete = useCallback(async () => {
     if (!pendingDelete || isDeleting) return;
     setIsDeleting(true);
-    const ok = await deleteComment(pendingDelete.id);
-    setIsDeleting(false);
-    if (ok) setPendingDelete(null);
+    try {
+      await deleteComment(pendingDelete.id);
+    } finally {
+      // Always close the modal — if the delete failed, deleteComment rolls
+      // back the optimistic update, so the row reappears in place. Leaving
+      // the modal stuck with no feedback is worse than closing it.
+      setIsDeleting(false);
+      setPendingDelete(null);
+    }
   }, [pendingDelete, isDeleting, deleteComment]);
 
   // Deep-link: expand replies + scroll to a specific comment when requested
@@ -662,7 +668,17 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
           .cs-kebab-btn:hover { background: rgba(8,27,58,0.08); color: rgba(8,27,58,0.68); }
           .cs-menu-item:hover { background: rgba(8,27,58,0.06); }
           .cs-menu-item-danger:hover { background: rgba(168,59,46,0.10); }
+          .cs-delete-keep:hover:not(:disabled) {
+            background: rgba(255,241,205,0.06);
+            border-color: rgba(255,241,205,0.35);
+            color: #fff1cd;
+          }
+          .cs-delete-go:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 28px rgba(255,241,205,0.24), 0 0 0 1px rgba(168,59,46,0.28) inset;
+          }
         }
+        .cs-delete-go:active:not(:disabled) { transform: translateY(0); }
         @keyframes csMenuIn {
           from { opacity: 0; transform: translateY(-4px) scale(0.96); }
           to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -1164,16 +1180,19 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
         </div>
       </div>
 
-      {/* ── Delete confirmation modal ─────────────────────────────────────── */}
+      {/* ── Delete confirmation modal (brand palette) ─────────────────────── */}
+      {/*    Dark blue body + cream type mirrors the feed; the destructive    */}
+      {/*    signal lives only in the brick-red Delete word on the cream CTA, */}
+      {/*    so the modal reads as a sibling of the app, not a system alert.  */}
       {pendingDelete && (
         <div
           className="fixed inset-0 z-[70] flex items-center justify-center"
           style={{
             padding: 24,
-            background: "rgba(5,27,58,0.50)",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            animation: "csBackdropIn 0.18s ease-out both",
+            background: "rgba(5,27,58,0.60)",
+            backdropFilter: "blur(8px) saturate(1.1)",
+            WebkitBackdropFilter: "blur(8px) saturate(1.1)",
+            animation: "csBackdropIn 0.22s ease-out both",
           }}
           onClick={(e) => { e.stopPropagation(); if (!isDeleting) setPendingDelete(null); }}
         >
@@ -1184,58 +1203,86 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
             onClick={(e) => e.stopPropagation()}
             style={{
               width: "100%",
-              maxWidth: 340,
-              background: "rgba(253,247,229,0.98)",
-              borderRadius: 16,
-              padding: "22px 22px 18px",
-              boxShadow: "0 18px 48px rgba(5,27,58,0.28), 0 2px 0 rgba(8,27,58,0.06)",
-              border: "1px solid rgba(8,27,58,0.08)",
-              animation: "csModalIn 0.22s cubic-bezier(0.22,1,0.36,1) both",
+              maxWidth: 348,
+              // Layered radial in the top-left gives the flat dark blue a
+              // touch of depth without introducing grain here (the sheet
+              // behind already carries it).
+              background: `radial-gradient(120% 90% at 0% 0%, rgba(255,241,205,0.06) 0%, rgba(255,241,205,0) 55%), #051b3a`,
+              borderRadius: 18,
+              padding: "26px 24px 20px",
+              color: CREAM,
+              boxShadow: "0 24px 64px rgba(0,0,0,0.42), 0 2px 0 rgba(255,241,205,0.06) inset",
+              border: "1px solid rgba(255,241,205,0.12)",
+              animation: "csModalIn 0.26s cubic-bezier(0.22,1,0.36,1) both",
               position: "relative",
               overflow: "hidden",
             }}
           >
-            {/* Soft brick accent bar so the destructive intent is unmistakable
-                without shouting. Matches the swipe-left reveal colour. */}
-            <div
-              aria-hidden
-              style={{
-                position: "absolute", top: 0, left: 0, right: 0, height: 3,
-                background: `linear-gradient(90deg, rgba(${DELETE_RED},0) 0%, rgba(${DELETE_RED},0.85) 50%, rgba(${DELETE_RED},0) 100%)`,
-              }}
-            />
+            {/* Eyebrow row: small brick dot + tiny uppercase label. Cleaner
+                than a full red top-bar and keeps the destructive cue
+                subordinate to the headline. */}
+            <div style={{
+              display: "flex", alignItems: "center", gap: 8,
+              marginBottom: 10,
+            }}>
+              <span aria-hidden style={{
+                width: 6, height: 6, borderRadius: 999,
+                background: `rgba(${DELETE_RED},1)`,
+                boxShadow: `0 0 10px rgba(${DELETE_RED},0.6)`,
+              }} />
+              <span style={{
+                fontFamily: "'Manrope', sans-serif",
+                fontSize: 9.5,
+                fontWeight: 700,
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "rgba(255,241,205,0.58)",
+              }}>
+                Confirm deletion
+              </span>
+            </div>
+
+            {/* Headline in Macabro — matches the voice of the sheet header */}
             <div
               id="cs-delete-title"
               style={{
                 fontFamily: "'Macabro', 'Anton', sans-serif",
-                fontSize: 11,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: `rgba(${DELETE_RED},1)`,
-                marginBottom: 10,
-                lineHeight: 1,
-              }}
-            >
-              Delete {pendingDelete.hasReplies ? "thread" : "comment"}?
-            </div>
-
-            {/* Quoted preview of the comment text — a soft editorial touch so
-                the user sees exactly what they're about to lose. */}
-            <div
-              style={{
-                borderLeft: `2px solid rgba(${DELETE_RED},0.45)`,
-                paddingLeft: 10,
+                fontSize: 30,
+                lineHeight: 1.02,
+                letterSpacing: "-0.005em",
+                color: CREAM,
                 marginBottom: 14,
               }}
             >
+              Delete this {pendingDelete.hasReplies ? "thread" : "comment"}?
+            </div>
+
+            {/* Quoted preview — cream tint on the dark blue, with a cream
+                left rule. Reads like a pulled-aside annotation. */}
+            <div
+              style={{
+                position: "relative",
+                background: "rgba(255,241,205,0.06)",
+                border: "1px solid rgba(255,241,205,0.09)",
+                borderRadius: 10,
+                padding: "10px 12px 11px 14px",
+                marginBottom: 16,
+              }}
+            >
+              <span aria-hidden style={{
+                position: "absolute", left: 0, top: 10, bottom: 10,
+                width: 2, borderRadius: 2,
+                background: "rgba(255,241,205,0.45)",
+              }} />
               <span style={{
                 fontFamily: "'Manrope', sans-serif",
-                fontSize: 11,
-                fontWeight: 600,
-                color: BRAND,
-                letterSpacing: "0.02em",
+                fontSize: 10.5,
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "rgba(255,241,205,0.70)",
                 display: "block",
-                marginBottom: 3,
+                marginBottom: 4,
               }}>
                 @{pendingDelete.author.replace(/^@/, "")}
               </span>
@@ -1243,7 +1290,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                 fontFamily: "'Manrope', sans-serif",
                 fontSize: 13,
                 lineHeight: 1.5,
-                color: INK_BODY,
+                color: "rgba(255,241,205,0.88)",
                 margin: 0,
                 display: "-webkit-box",
                 WebkitLineClamp: 3,
@@ -1258,30 +1305,31 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
               fontFamily: "'Manrope', sans-serif",
               fontSize: 12.5,
               lineHeight: 1.5,
-              color: INK_META,
+              color: "rgba(255,241,205,0.58)",
               marginTop: 0,
-              marginBottom: 16,
+              marginBottom: 18,
             }}>
               This can't be undone{pendingDelete.hasReplies ? ". Replies will also be removed." : "."}
             </p>
 
-            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
               <button
                 onClick={(e) => { e.stopPropagation(); if (!isDeleting) setPendingDelete(null); }}
                 disabled={isDeleting}
+                className="cs-delete-keep"
                 style={{
-                  padding: "9px 16px",
-                  borderRadius: 10,
+                  padding: "10px 18px",
+                  borderRadius: 11,
                   fontFamily: "'Manrope', sans-serif",
                   fontWeight: 600,
                   fontSize: 12.5,
-                  letterSpacing: "0.01em",
-                  color: INK_ACTION,
+                  letterSpacing: "0.02em",
+                  color: "rgba(255,241,205,0.85)",
                   background: "transparent",
-                  border: `1px solid ${INK_HAIR}`,
+                  border: "1px solid rgba(255,241,205,0.22)",
                   cursor: isDeleting ? "default" : "pointer",
-                  opacity: isDeleting ? 0.5 : 1,
-                  transition: "background 0.14s ease, border-color 0.14s ease",
+                  opacity: isDeleting ? 0.45 : 1,
+                  transition: "background 0.14s ease, border-color 0.14s ease, color 0.14s ease",
                 }}
               >
                 Keep
@@ -1289,24 +1337,31 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
               <button
                 onClick={(e) => { e.stopPropagation(); void confirmDelete(); }}
                 disabled={isDeleting}
+                className="cs-delete-go"
                 style={{
-                  display: "inline-flex", alignItems: "center", gap: 6,
-                  padding: "9px 16px",
-                  borderRadius: 10,
+                  display: "inline-flex", alignItems: "center", gap: 7,
+                  padding: "10px 18px",
+                  borderRadius: 11,
                   fontFamily: "'Manrope', sans-serif",
                   fontWeight: 700,
                   fontSize: 12.5,
-                  letterSpacing: "0.02em",
-                  color: "#fdf7e5",
-                  background: `rgba(${DELETE_RED},${isDeleting ? 0.7 : 1})`,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  // Brand CTA treatment: cream fill + dark-blue text…
+                  color: BRAND,
+                  background: CREAM,
                   border: "none",
                   cursor: isDeleting ? "default" : "pointer",
-                  boxShadow: `0 4px 14px rgba(${DELETE_RED},0.30)`,
-                  transition: "background 0.14s ease, transform 0.14s ease",
+                  opacity: isDeleting ? 0.7 : 1,
+                  boxShadow: `0 8px 22px rgba(255,241,205,0.18), 0 0 0 1px rgba(${DELETE_RED},0.18) inset`,
+                  transition: "transform 0.14s ease, box-shadow 0.14s ease, opacity 0.14s ease",
                 }}
               >
-                <Trash2 size={13} strokeWidth={2.3} />
-                {isDeleting ? "Deleting…" : "Delete"}
+                <Trash2 size={13} strokeWidth={2.4} color={`rgba(${DELETE_RED},1)`} />
+                {/* …but the word itself carries the destructive hue. */}
+                <span style={{ color: `rgba(${DELETE_RED},1)` }}>
+                  {isDeleting ? "Deleting…" : "Delete"}
+                </span>
               </button>
             </div>
           </div>
