@@ -9,6 +9,7 @@ import { SignUpFlow } from "@/components/SignUpFlow";
 import { SignInSheet } from "@/components/SignInSheet";
 import { AccountChoiceSheet } from "@/components/AccountChoiceSheet";
 import { LegalSheet, type LegalKind } from "@/components/LegalSheet";
+import { SettingsSheet } from "@/components/SettingsSheet";
 import { NotificationsSheet } from "@/components/NotificationsSheet";
 import { DateDividerCard } from "@/components/DateDividerCard";
 import { GrainBackground } from "@/components/GrainBackground";
@@ -67,6 +68,7 @@ export function FeedPageHorizontal() {
   const [signInOpen, setSignInOpen] = useState(false);
   const [signInEmail, setSignInEmail] = useState("");
   const [legalSheet, setLegalSheet] = useState<LegalKind | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [readerCommentsOpen, setReaderCommentsOpen] = useState(false);
   const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
@@ -611,6 +613,7 @@ export function FeedPageHorizontal() {
         onSignOut={async () => { await signOut(); }}
         onOpenLegal={setLegalSheet}
         onOpenNotifications={openNotifications}
+        onOpenSettings={() => setSettingsOpen(true)}
         unreadCount={unreadCount}
         userName={userName}
         userHandle={userHandle}
@@ -868,6 +871,17 @@ export function FeedPageHorizontal() {
         initialEmail={signInEmail}
       />
       <LegalSheet kind={legalSheet} onClose={() => setLegalSheet(null)} />
+      <SettingsSheet
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        onAccountDeleted={() => {
+          // deleteAccount() in useAuth already called supabase.auth.signOut().
+          // Close the sheet + switch to the feed tab so the signed-out splash
+          // CTA can take over on the next render.
+          setSettingsOpen(false);
+          setActiveTab("feed");
+        }}
+      />
       <NotificationsSheet
         isOpen={notifOpen}
         items={notifItems}

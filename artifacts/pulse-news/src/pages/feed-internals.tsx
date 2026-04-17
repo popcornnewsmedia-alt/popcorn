@@ -204,6 +204,7 @@ export function ProfileScreen({
   onSignOut,
   onOpenLegal,
   onOpenNotifications,
+  onOpenSettings,
   unreadCount,
   userName,
   userHandle,
@@ -215,6 +216,7 @@ export function ProfileScreen({
   onSignOut: () => void;
   onOpenLegal: (kind: LegalKind) => void;
   onOpenNotifications: () => void;
+  onOpenSettings: () => void;
   unreadCount: number;
   userName: string | null;
   userHandle: string | null;
@@ -229,13 +231,18 @@ export function ProfileScreen({
       {isLoggedIn ? (
         <div className="relative z-10 flex flex-col h-full overflow-y-auto scrollbar-hide pb-28 mx-auto w-full" style={{ paddingTop: 'calc(72px + env(safe-area-inset-top))', maxWidth: '480px' }}>
           <div className="px-5 flex items-center gap-4 mb-6">
-            <div style={{ width: 60, height: 60, borderRadius: "50%", flexShrink: 0, background: "rgba(255,241,205,0.09)", border: "1.5px solid rgba(255,241,205,0.22)", boxShadow: "0 0 0 5px rgba(255,241,205,0.05)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+            <button
+              onClick={onOpenSettings}
+              aria-label="Open settings"
+              className="transition-all active:scale-95 hover:opacity-90"
+              style={{ width: 60, height: 60, borderRadius: "50%", flexShrink: 0, background: "rgba(255,241,205,0.09)", border: "1.5px solid rgba(255,241,205,0.22)", boxShadow: "0 0 0 5px rgba(255,241,205,0.05)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: 0 }}
+            >
               {userAvatar ? (
                 <img src={userAvatar} alt={userName ?? ""} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               ) : (
                 <span style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "24px", color: "#fff1cd", lineHeight: 1 }}>{initial}</span>
               )}
-            </div>
+            </button>
             <div className="flex flex-col min-w-0 flex-1">
               {userName && (
                 <h1 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "20px", color: "#fff1cd", letterSpacing: "0.02em", lineHeight: 1.1, margin: 0 }} className="truncate">{userName}</h1>

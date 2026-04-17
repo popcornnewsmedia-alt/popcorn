@@ -105,10 +105,10 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
           // Supabase returns the same error for "no account" and "wrong password".
           // Check if the email is registered so we can show a more helpful message.
           try {
-            const resp = await fetch(`${apiUrl}/api/auth/user-exists`, {
+            const resp = await fetch(`${apiUrl}/api/auth/check`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email: raw }),
+              body: JSON.stringify({ kind: "email", value: raw }),
             });
             const data = await resp.json();
             if (!data.exists) {

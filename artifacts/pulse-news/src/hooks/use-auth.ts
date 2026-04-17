@@ -180,6 +180,37 @@ export function useAuth() {
     if (error) throw error;
   };
 
+  /** Update the signed-in user's password. Supabase sends a reauth email under
+   * the hood only if the session is stale; for a fresh session this is a
+   * silent update. */
+  const updatePassword = async (newPassword: string) => {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+  };
+
+  /** Permanently deletes the signed-in user's account. Hits the server-side
+   * /api/auth/delete-account endpoint (which uses the service-role key to
+   * purge from auth.users); Postgres ON DELETE CASCADE then cleans up every
+   * downstream table (profiles, comments, comment_votes, notifications).
+   * Signs the user out on success. */
+  const deleteAccount = async () => {
+    const token = state.session?.access_token;
+    if (!token) throw new Error("Not signed in");
+    const base = import.meta.env.VITE_API_URL ?? "";
+    const resp = await fetch(`${base}/api/auth/delete-account`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!resp.ok) {
+      const body = await resp.json().catch(() => ({}));
+      throw new Error(body.error ?? `Delete failed (${resp.status})`);
+    }
+    await supabase.auth.signOut();
+  };
+
   return {
     ...state,
     signUp,
@@ -187,6 +218,8 @@ export function useAuth() {
     signInWithGoogle,
     signOut,
     updateProfile,
+    updatePassword,
+    deleteAccount,
     refreshProfile,
   };
 }

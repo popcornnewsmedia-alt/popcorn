@@ -43,7 +43,7 @@ export type AvailabilityResult =
   | { available: true }
   | { available: false; reason: AvailabilityReason };
 
-/** POST to /api/auth/username-available and return a typed result. */
+/** POST to /api/auth/check (kind: "username") and return a typed result. */
 export async function checkAvailability(username: string): Promise<AvailabilityResult> {
   const candidate = username.trim().toLowerCase();
   const format = validateUsernameFormat(candidate);
@@ -56,10 +56,10 @@ export async function checkAvailability(username: string): Promise<AvailabilityR
 
   try {
     const base = import.meta.env.VITE_API_URL ?? "";
-    const resp = await fetch(`${base}/api/auth/username-available`, {
+    const resp = await fetch(`${base}/api/auth/check`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: candidate }),
+      body: JSON.stringify({ kind: "username", value: candidate }),
     });
     if (!resp.ok) return { available: false, reason: "network" };
     const json = (await resp.json()) as {
