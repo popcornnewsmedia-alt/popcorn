@@ -979,18 +979,23 @@ export function FeedPage() {
     }
   }, []);
 
-  // ── Shared progress-bar updater ─────────────────────────────────────────────
-  // Pure function that reads scrollTop and writes a scaleX transform to the
-  // fill div.  Called from TWO sites (both idempotent — same input → same DOM
-  // write, so running both never conflicts):
+  // ── Shared scroll-derived DOM updates ───────────────────────────────────────
+  // Pure function that reads scrollTop and writes both the progress-bar
+  // scaleX AND the TopBar date textContent. Called from TWO sites (both
+  // idempotent — same input → same DOM write, so running both never conflicts):
   //   • A passive `scroll` listener — fires on every compositor frame,
   //     including during CSS scroll-snap animations (where rAF can stall).
+  //     This is the primary path on iOS Safari momentum scroll.
   //   • The rAF loop — provides a baseline on initial load and for any
   //     edge cases where a scroll event might not fire.
+  //
+  // Including the date write here (instead of only in the rAF loop) closes
+  // the last perceivable gap: the date flips on the exact same compositor
+  // frame as the progress bar, which itself is locked to the scroll paint.
   const updateProgressBar = useCallback(() => {
     const container = scrollContainerRef.current;
     const fill = feedBarFillRef.current;
-    if (!container || !fill) return;
+    if (!container) return;
     const { scrollTop, clientHeight } = container;
     const totalItems = feedItemsLengthRef.current;
     if (clientHeight <= 0 || totalItems <= 0) return;
@@ -1009,9 +1014,36 @@ export function FeedPage() {
     const denom = sectionLength > 1 ? sectionLength - 1 : 1;
     const rawProgress = (fractionalIdx - sectionStart) / denom;
     const progress = Math.round(Math.max(0, Math.min(1, rawProgress)) * 1000) / 1000;
-    if (Math.abs(progress - lastProgressRef.current) > 0.0005) {
+    if (fill && Math.abs(progress - lastProgressRef.current) > 0.0005) {
       lastProgressRef.current = progress;
       fill.style.transform = `scaleX(${progress})`;
+    }
+
+    // Date: flip at scroll-snap midpoint. Done here (scroll-listener path) so
+    // the paint happens on the same compositor frame as the scroll position
+    // update — no rAF round-trip, no React commit in the critical path.
+    if (!pickerNavLockRef.current) {
+      const roundedIdx = Math.min(
+        Math.max(0, Math.round(fractionalIdx)),
+        totalItems - 1,
+      );
+      const item = feedItemsDataRef.current[roundedIdx];
+      let newDate: Date | null = null;
+      if (item?.kind === 'article') newDate = startOfDay(new Date((item.article as any).feedDate ?? item.article.publishedAt));
+      else if (item?.kind === 'divider') newDate = item.date;
+      if (newDate) {
+        const t = newDate.getTime();
+        if (t !== lastWrittenDateRef.current) {
+          lastWrittenDateRef.current = t;
+          const compact = format(newDate, 'do MMMM').toUpperCase();
+          if (feedBarDateRef.current) feedBarDateRef.current.textContent = compact;
+          if (feedBarExpandedDateRef.current) {
+            const today = startOfDay(new Date());
+            feedBarExpandedDateRef.current.textContent =
+              isSameDay(newDate, today) ? 'TODAY' : format(newDate, 'EEEE, do MMMM').toUpperCase();
+          }
+        }
+      }
     }
   }, []);
 
@@ -1051,33 +1083,17 @@ export function FeedPage() {
             // (e.g. initial load when state already happens to equal 0).
             setCurrentCardIndex(prev => (prev === roundedIdx ? prev : roundedIdx));
 
-            // Zero-lag date update: write directly to the DOM on the same
-            // frame as the scroll position crosses the snap midpoint. React
-            // state still gets updated (so picker/navigation stay in sync),
-            // but we don't wait for the React commit to paint the new date —
-            // on iOS Safari momentum scroll the commit can be deferred 1-2
-            // frames behind the visual transition, which reads as a lag.
+            // Keep React `selectedDate` state in sync so the picker and nav
+            // buttons read the right value. The imperative DOM write already
+            // happened in updateProgressBar (called above) — that's what
+            // drives the visible text. This setState just keeps React's
+            // model consistent; no paint depends on it.
             if (!pickerNavLockRef.current) {
               const item = feedItemsDataRef.current[roundedIdx];
               let newDate: Date | null = null;
               if (item?.kind === 'article') newDate = startOfDay(new Date((item.article as any).feedDate ?? item.article.publishedAt));
               else if (item?.kind === 'divider') newDate = item.date;
-              if (newDate) {
-                const t = newDate.getTime();
-                if (t !== lastWrittenDateRef.current) {
-                  lastWrittenDateRef.current = t;
-                  const compact = format(newDate, 'do MMMM').toUpperCase();
-                  if (feedBarDateRef.current) feedBarDateRef.current.textContent = compact;
-                  if (feedBarExpandedDateRef.current) {
-                    const today = startOfDay(new Date());
-                    feedBarExpandedDateRef.current.textContent =
-                      isSameDay(newDate, today) ? 'TODAY' : format(newDate, 'EEEE, do MMMM').toUpperCase();
-                  }
-                  // Keep React state in sync (picker, nav buttons read this),
-                  // but the paint has already happened imperatively above.
-                  setSelectedDate(prev => isSameDay(prev, newDate!) ? prev : newDate!);
-                }
-              }
+              if (newDate) setSelectedDate(prev => isSameDay(prev, newDate!) ? prev : newDate!);
             }
 
             // Prefetch + pre-decode the next 6 images. The nearest two get
