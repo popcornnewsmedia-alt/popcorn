@@ -1044,6 +1044,18 @@ export function FeedPage() {
             // (e.g. initial load when state already happens to equal 0).
             setCurrentCardIndex(prev => (prev === roundedIdx ? prev : roundedIdx));
 
+            // Sync selectedDate in the SAME batch as currentCardIndex so the
+            // TopBar date indicator updates on the same render as the card
+            // transition (zero-lag). Previously this ran in a useEffect
+            // watching currentCardIndex, which cost one extra render.
+            if (!pickerNavLockRef.current) {
+              const item = feedItemsDataRef.current[roundedIdx];
+              let newDate: Date | null = null;
+              if (item?.kind === 'article') newDate = startOfDay(new Date((item.article as any).feedDate ?? item.article.publishedAt));
+              else if (item?.kind === 'divider') newDate = item.date;
+              if (newDate) setSelectedDate(prev => isSameDay(prev, newDate!) ? prev : newDate!);
+            }
+
             // Prefetch + pre-decode the next 6 images. The nearest two get
             // fetchPriority=high so the network stack fetches them first on
             // mobile, which matters on fast flicks when the user jumps 3+
@@ -1088,18 +1100,6 @@ export function FeedPage() {
       }
     }
   }, [feedItems, preloadImage]);
-
-  // ── Task 2: Date sync on card change ─────────────────────────────────────────
-  // Uses functional updater with isSameDay guard so React bails out when the
-  // date hasn't actually changed — prevents re-renders on same-day Date objects.
-  useEffect(() => {
-    if (pickerNavLockRef.current) return;
-    const item = feedItems[currentCardIndex];
-    let newDate: Date | null = null;
-    if (item?.kind === 'article') newDate = startOfDay(new Date((item.article as any).feedDate ?? item.article.publishedAt));
-    else if (item?.kind === 'divider') newDate = item.date;
-    if (newDate) setSelectedDate(prev => isSameDay(prev, newDate!) ? prev : newDate!);
-  }, [currentCardIndex, feedItems]);
 
   // ── Pagination: fetch next page when 5 cards from the end ───────────────────
   // The scroll-based fetchNextPage trigger was removed in the IO refactor;
