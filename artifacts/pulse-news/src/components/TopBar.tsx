@@ -8,7 +8,11 @@ interface TopBarProps {
   onDateChange: (date: Date) => void;
   showDatePicker?: boolean;
   /** Ref forwarded to the progress fill div — caller updates style.right directly for zero-lag scroll tracking */
-  fillRef?: React.RefObject<HTMLDivElement>;
+  fillRef?: React.RefObject<HTMLDivElement | null>;
+  /** Ref forwarded to the compact date span — caller updates textContent directly during scroll for zero-lag updates (bypasses React commit which lags on iOS Safari momentum scroll) */
+  dateRef?: React.RefObject<HTMLSpanElement | null>;
+  /** Ref forwarded to the expanded "Today / weekday, date" span in the picker */
+  expandedDateRef?: React.RefObject<HTMLSpanElement | null>;
   minDate?: Date;
   pickerOpen?: boolean;
   onPickerOpenChange?: (open: boolean) => void;
@@ -16,7 +20,7 @@ interface TopBarProps {
   onScrollToDayTop?: () => void;
 }
 
-export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, minDate, pickerOpen: controlledPickerOpen, onPickerOpenChange, onScrollToDayTop }: TopBarProps) {
+export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, dateRef, expandedDateRef, minDate, pickerOpen: controlledPickerOpen, onPickerOpenChange, onScrollToDayTop }: TopBarProps) {
   const [internalPickerOpen, setInternalPickerOpen] = useState(false);
   const isControlled = controlledPickerOpen !== undefined;
   const pickerOpen = isControlled ? controlledPickerOpen! : internalPickerOpen;
@@ -121,6 +125,7 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
                 className="flex items-center gap-1.5 transition-opacity hover:opacity-75"
               >
                 <span
+                  ref={dateRef}
                   style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '11px', color: '#fff1cd', letterSpacing: '0.05em' }}
                 >
                   {format(selectedDate, 'do MMMM').toUpperCase()}
@@ -193,6 +198,7 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
 
               <div className="text-center">
                 <span
+                  ref={expandedDateRef}
                   style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '13px', letterSpacing: '0.04em', color: '#fff1cd', textTransform: 'uppercase' }}
                 >
                   {isAtToday ? 'Today' : format(selectedDate, 'EEEE, do MMMM')}

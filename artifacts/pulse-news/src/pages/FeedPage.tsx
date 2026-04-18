@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { isSameDay, startOfDay, subDays } from "date-fns";
+import { format, isSameDay, startOfDay, subDays } from "date-fns";
 import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
 import { ArticleCard } from "@/components/ArticleCard";
@@ -899,6 +899,13 @@ export function FeedPage() {
 
   // Ref forwarded to TopBar's fill div — mutated directly by the rAF loop, never by React
   const feedBarFillRef = useRef<HTMLDivElement>(null);
+  // Refs to TopBar's date spans — mutated imperatively from the rAF loop for
+  // zero-lag updates. Bypassing React's commit cycle matters on iOS Safari
+  // momentum scroll where state updates can lag a frame or two behind paint.
+  const feedBarDateRef = useRef<HTMLSpanElement>(null);
+  const feedBarExpandedDateRef = useRef<HTMLSpanElement>(null);
+  // Last date written to the DOM — skip writes when unchanged.
+  const lastWrittenDateRef = useRef<number>(0);
   // Last progress value written — skip DOM write when unchanged (< 0.001 delta)
   const lastProgressRef = useRef(-1);
 
@@ -1044,16 +1051,33 @@ export function FeedPage() {
             // (e.g. initial load when state already happens to equal 0).
             setCurrentCardIndex(prev => (prev === roundedIdx ? prev : roundedIdx));
 
-            // Sync selectedDate in the SAME batch as currentCardIndex so the
-            // TopBar date indicator updates on the same render as the card
-            // transition (zero-lag). Previously this ran in a useEffect
-            // watching currentCardIndex, which cost one extra render.
+            // Zero-lag date update: write directly to the DOM on the same
+            // frame as the scroll position crosses the snap midpoint. React
+            // state still gets updated (so picker/navigation stay in sync),
+            // but we don't wait for the React commit to paint the new date —
+            // on iOS Safari momentum scroll the commit can be deferred 1-2
+            // frames behind the visual transition, which reads as a lag.
             if (!pickerNavLockRef.current) {
               const item = feedItemsDataRef.current[roundedIdx];
               let newDate: Date | null = null;
               if (item?.kind === 'article') newDate = startOfDay(new Date((item.article as any).feedDate ?? item.article.publishedAt));
               else if (item?.kind === 'divider') newDate = item.date;
-              if (newDate) setSelectedDate(prev => isSameDay(prev, newDate!) ? prev : newDate!);
+              if (newDate) {
+                const t = newDate.getTime();
+                if (t !== lastWrittenDateRef.current) {
+                  lastWrittenDateRef.current = t;
+                  const compact = format(newDate, 'do MMMM').toUpperCase();
+                  if (feedBarDateRef.current) feedBarDateRef.current.textContent = compact;
+                  if (feedBarExpandedDateRef.current) {
+                    const today = startOfDay(new Date());
+                    feedBarExpandedDateRef.current.textContent =
+                      isSameDay(newDate, today) ? 'TODAY' : format(newDate, 'EEEE, do MMMM').toUpperCase();
+                  }
+                  // Keep React state in sync (picker, nav buttons read this),
+                  // but the paint has already happened imperatively above.
+                  setSelectedDate(prev => isSameDay(prev, newDate!) ? prev : newDate!);
+                }
+              }
             }
 
             // Prefetch + pre-decode the next 6 images. The nearest two get
@@ -1286,7 +1310,7 @@ export function FeedPage() {
           onOpenLegal={setLegalSheet}
         />
       )}
-      {activeTab === 'feed' && !isIntroScreen && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker fillRef={feedBarFillRef} minDate={minDate} pickerOpen={pickerOpen} onPickerOpenChange={setPickerOpen} onScrollToDayTop={handleScrollToDayTop} />}
+      {activeTab === 'feed' && !isIntroScreen && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker fillRef={feedBarFillRef} dateRef={feedBarDateRef} expandedDateRef={feedBarExpandedDateRef} minDate={minDate} pickerOpen={pickerOpen} onPickerOpenChange={setPickerOpen} onScrollToDayTop={handleScrollToDayTop} />}
 
       {/* Picker dismiss overlay — lives here so it can forward scroll gestures to the feed */}
       {pickerOpen && activeTab === 'feed' && (
