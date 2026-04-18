@@ -22,6 +22,7 @@ import {
   type EnrichedArticle,
 } from "../src/lib/rss-enricher.js";
 import { mergeFeed, saveCommittedFeed } from "../src/lib/curated-store.js";
+import { supabase } from "../src/lib/supabase-client.js";
 
 // ── Types (mirror pool-fetch.ts) ───────────────────────────────────────────
 
@@ -88,6 +89,38 @@ console.log(`[pool-finalize] feedDate=${feedDate} target=${target} dryRun=${dryR
 console.log(`[pool-finalize] poolPath=${poolPath}`);
 console.log(`[pool-finalize] reviewPath=${reviewPath}`);
 
+// ── Cross-day dedup: load recent published titles ──────────────────────────
+
+/**
+ * Pulls titles of articles published in the last `days` days (excluding
+ * `excludeFeedDate` itself), regardless of stage. Used to prevent Claude
+ * from re-selecting stories that have already run in the feed.
+ */
+async function loadRecentTitles(excludeFeedDate: string, days: number): Promise<string[]> {
+  if (!process.env.SUPABASE_URL) {
+    console.warn("[pool-finalize] SUPABASE_URL not set — skipping recent-titles dedup");
+    return [];
+  }
+  // Compute cutoff: days before excludeFeedDate (inclusive of cutoff, exclusive of excludeFeedDate itself)
+  const end = new Date(excludeFeedDate + "T00:00:00Z");
+  const start = new Date(end.getTime() - days * 24 * 60 * 60 * 1000);
+  const cutoff = start.toISOString().slice(0, 10);
+
+  const { data, error } = await supabase
+    .from("articles")
+    .select("title,feed_date")
+    .gte("feed_date", cutoff)
+    .lt("feed_date", excludeFeedDate)
+    .order("feed_date", { ascending: false });
+
+  if (error) {
+    console.warn("[pool-finalize] failed to load recent titles:", error.message);
+    return [];
+  }
+  const titles = (data ?? []).map((r: { title: string }) => r.title).filter(Boolean);
+  return titles;
+}
+
 // ── Claude final selection ─────────────────────────────────────────────────
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
@@ -102,11 +135,16 @@ interface Selection {
 }
 
 async function finalSelect(
-  potentials: Array<{ title: string; source: string; description: string; score: number; clusterSize: number; clusterSources: string[] }>
+  potentials: Array<{ title: string; source: string; description: string; score: number; clusterSize: number; clusterSources: string[] }>,
+  recentTitles: string[]
 ): Promise<Selection[]> {
   const numbered = potentials
     .map((it, i) => `${i + 1}. [${it.source}] "${it.title}" (score=${it.score}, covered by ${it.clusterSize} source${it.clusterSize > 1 ? "s" : ""}${it.clusterSize > 1 ? ": " + it.clusterSources.join(", ") : ""}) — ${it.description.slice(0, 200)}`)
     .join("\n");
+
+  const recentBlock = recentTitles.length
+    ? `\n\nALREADY PUBLISHED IN THE LAST 7 DAYS (${recentTitles.length} headlines) — DO NOT re-publish the same story even if today's framing, headline, or source differs. These are OFF-LIMITS:\n${recentTitles.map((t) => `  - ${t}`).join("\n")}\n`
+    : "";
 
   const prompt = `You are the final editor of a daily pop-culture feed aimed at culturally-literate millennials. The feed runs 10–15 stories per day, designed as a fast, shareable scroll that captures the day's cultural pulse.
 
@@ -118,6 +156,12 @@ EDITORIAL GOALS:
 - Favor stories covered by multiple sources (clusterSize > 1) when tie-breaking on score
 - Prefer novel internet culture over low-quality viral-of-the-day
 
+POLITICS RULE (strict):
+- REJECT pure US/UK legislative process stories (bills, senators debating, party votes, committee moves) unless they involve a globally-recognised household-name figure (Trump, Obama, Biden, AOC, Sanders, Musk-as-political-actor, etc.) OR directly affect culture, tech, or daily life in a way a non-political reader will immediately feel.
+- A senator most readers have never heard of making a prediction = REJECT.
+- "Republican/Democrat revolt over [process bill]" = REJECT.
+- Politics is only in if it crosses over into culture, tech control, surveillance that affects normal people, or names everyone knows.
+
 ANTI-PATTERNS (avoid):
 - Too many pure AI/tech narratives without cultural hooks
 - Multiple crime/scandal stories in one feed
@@ -125,8 +169,9 @@ ANTI-PATTERNS (avoid):
 - Pure trailer-only list with no substance
 - Auto-indexing on AI/tech (compensate)
 
-DEDUP: If multiple items describe the same story, pick the best framing (best source, best headline) and include once.
-
+DEDUP RULES:
+1. Within today's candidates: if multiple items describe the same story, pick the best framing (best source, best headline) and include once.
+2. Against already-published stories (list below): REJECT anything that is the same underlying story as one we've already run in the last 7 days, even if today's source has a different angle, update, or follow-up detail. New angles on a yesterday story = skip unless it's a genuinely major new development (arrest, death, resolution).${recentBlock}
 TASK: Pick exactly ${target} stories. Return JSON array, one entry per pick:
 [{"idx": 7, "reasoning": "short one-liner — why this made the cut vs. alternatives"}, ...]
 
@@ -138,7 +183,7 @@ Candidate pool (${potentials.length} items, all passed per-fetch scoring):
 ${numbered}`;
 
   const body = JSON.stringify({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-6",
     max_tokens: 6000,
     messages: [{ role: "user", content: prompt }],
   });
@@ -325,6 +370,10 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  // Pull last 7 days of published titles from Supabase for cross-day dedup
+  const recentTitles = await loadRecentTitles(feedDate, 7);
+  console.log(`[pool-finalize] passing ${recentTitles.length} recent titles to editor for dedup`);
+
   // Final Claude selection
   console.log(`[pool-finalize] asking Claude to pick ${target} from ${representatives.length}...`);
   const selections = await finalSelect(
@@ -335,7 +384,8 @@ async function main(): Promise<void> {
       score: r.score,
       clusterSize: r.clusterSize,
       clusterSources: r.clusterSources,
-    }))
+    })),
+    recentTitles
   );
   console.log(`[pool-finalize] Claude selected ${selections.length}`);
 

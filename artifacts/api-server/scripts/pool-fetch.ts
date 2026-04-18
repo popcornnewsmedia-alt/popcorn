@@ -219,6 +219,8 @@ REJECT (low score):
 - Trailer announcements UNLESS it's a major property
 - Pure stock tips / investment advice
 - Sports scores without cultural crossover
+- Pure US/UK legislative process (bills, committee votes, party manoeuvres, senators you've never heard of making predictions) — unless it involves a globally-recognised household name (Trump, Obama, Musk-as-political-actor, AOC, Sanders) OR has direct culture/tech/daily-life consequences a non-political reader would feel immediately
+- Inside-the-Beltway politics and lobbying stories without a cultural hook
 
 Respond with JSON only, an array, one entry per input item:
 [{"idx":1,"score":78,"verdict":"potential","reasoning":"short one-liner"},...]
@@ -227,7 +229,7 @@ Items:
 ${numbered}`;
 
   const body = JSON.stringify({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-6",
     max_tokens: 4000,
     messages: [{ role: "user", content: prompt }],
   });
