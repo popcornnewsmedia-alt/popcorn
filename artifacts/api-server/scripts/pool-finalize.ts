@@ -152,9 +152,24 @@ EDITORIAL GOALS:
 - Balance across five axes: Power (politics+culture crossover), Tech (meaningful tech+society), Culture (music/film/fashion/art), Internet (distinctive viral/meme), Human (scaled drama, celebrity crossovers, behavioral shifts)
 - Prioritise narrative reversals, power/tech/control moves, unexpected crossovers, fandom-driven real-world behavior
 - One controlled "dark gravity" (crime/scandal) is fine — never stack multiple
-- Accept light pop-culture fillers or franchise announcements when the feed is weak on signal
 - Favor stories covered by multiple sources (clusterSize > 1) when tie-breaking on score
 - Prefer novel internet culture over low-quality viral-of-the-day
+
+MUST-HAVE LANES (actively hunt for these — do NOT over-index on "smart/substantial" picks):
+
+1. MASS-RECOGNITION BRAND MOMENTS — globally-recognised consumer brands doing something new (Nutella new flavor, IKEA × Chupa Chups meatball lollipop, McDonald's limited item, Lego weird collab, Starbucks × tech company, etc.). Near-automatic inclusions. Universal recognition = universal shareability. Do NOT skip just because it's a "food" or "consumer product" story — those travel further than niche "smart" stories. Aim for at least 1 per feed when available.
+
+2. DEBUNKING / BELIEF REVERSALS — studies that overturn widely-held internet beliefs (manifestation debunked, popular diet disproven, habit-stacking myth, TikTok wellness claim tested). Highly shareable precisely because millions hold the belief. Score penalty for skipping these when in pool.
+
+3. DELIGHT + ABSURDITY TEXTURE (1–2 per feed) — weird brand mashups, luxury absurdism (peacock watches, $80K handbags), politician-with-a-prior-life (NYC mayor still earning rap royalties), oddly-specific consumer moments. These are the feed's TEXTURE — a feed without them feels like homework. Score penalty for skipping these.
+
+4. LEGACY LEGEND MOMENTS — iconic living musicians/artists (McCartney, Ringo, Stevie Wonder, Dylan, Madonna, Dolly level) doing something new / collaborating / breaking silences. Even a short announcement is mass-resonant. Prioritise over a same-score new-artist release.
+
+5. CELEBRITY INCIDENTS with scaled drama — public attack, arrest, breakup with concrete details. Up to 1 per feed if available.
+
+6. RELATABLE OUTRAGE / UNFAIRNESS — concrete pricing or inequality stories with mass resonance (absurd event pricing, venue surge fees, airline fee chaos). Crosses culture and daily life.
+
+SCORING BIAS: Do NOT over-penalise "lightweight" picks. Stories earn their spot through any of: depth, familiarity, absurdity, emotional resonance, shareability. A Nutella new flavor at score 35 beats a senator's AI prediction at score 70.
 
 POLITICS RULE (strict):
 - REJECT pure US/UK legislative process stories (bills, senators debating, party votes, committee moves) unless they involve a globally-recognised household-name figure (Trump, Obama, Biden, AOC, Sanders, Musk-as-political-actor, etc.) OR directly affect culture, tech, or daily life in a way a non-political reader will immediately feel.
@@ -165,9 +180,10 @@ POLITICS RULE (strict):
 ANTI-PATTERNS (avoid):
 - Too many pure AI/tech narratives without cultural hooks
 - Multiple crime/scandal stories in one feed
-- Low-signal viral with no staying power
+- Low-signal viral with no staying power (but novel/absurd/brand moments ARE high-signal)
 - Pure trailer-only list with no substance
 - Auto-indexing on AI/tech (compensate)
+- Skipping a mass-brand moment or debunking story because you preferred something "weightier"
 
 DEDUP RULES:
 1. Within today's candidates: if multiple items describe the same story, pick the best framing (best source, best headline) and include once.

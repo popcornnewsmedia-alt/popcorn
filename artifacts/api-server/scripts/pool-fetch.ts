@@ -209,6 +209,11 @@ KEEP (high score):
 - Distinctive internet culture (novel, shareable, conversation-worthy)
 - Major IP / franchise moments (GOT, Marvel, Bond, major music releases)
 - Fandom-driven real-world behavior, scaled human drama
+- MASS-RECOGNITION BRAND MOMENTS (score high, often 70+): a globally-recognised consumer brand (Nutella, IKEA, McDonald's, Lego, Coca-Cola, Disney, Nike, Apple, Starbucks, Tesla, etc.) doing something new — new flavor, new product, weird collab, unusual move. Near-automatic keeps even if the story itself reads "light" — mass recognition = mass shareability.
+- DEBUNKING / NARRATIVE REVERSAL ON POPULAR BELIEFS (score high): research that overturns a widely-held internet belief (manifestation, habit stacking, popular diets, TikTok/social advice). Highly shareable precisely BECAUSE many believe it.
+- DELIGHT + ABSURDITY (score 65-80): weird brand mashups, luxury absurdism, politician-with-a-prior-life, oddly-specific consumer moments. These are the feed's TEXTURE, not noise. Do not over-penalise for being "light" — familiarity, absurdity, or emotional resonance are legitimate reasons to earn a spot.
+- CELEBRITY INCIDENTS with real-world stakes (public attack, arrest, public meltdown, breakup with concrete details).
+- LEGACY LEGEND MOMENTS (score high): iconic living figures (McCartney, Ringo, Stevie Wonder, Dylan, Paul Simon, Madonna, Springsteen, Dolly Parton level) doing something new, collaborating, or breaking long silences — even short announcements are mass-resonant.
 
 REJECT (low score):
 - Routine industry PR / press releases with no cultural hook
