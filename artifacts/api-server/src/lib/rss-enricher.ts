@@ -18,74 +18,74 @@ import { supabase } from "./supabase-client.js";
 // Category-matched fallback images — used only when a real image cannot be found
 const CATEGORY_FALLBACK_IMAGES: Record<string, string[]> = {
   "Music": [
-    "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1600&q=90", // concert crowd
-    "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1600&q=90", // festival stage
-    "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1600&q=90", // microphone
-    "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1600&q=90", // recording studio
-    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1600&q=90", // DJ / nightlife
+    "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=2400&q=92", // concert crowd
+    "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=2400&q=92", // festival stage
+    "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=2400&q=92", // microphone
+    "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=2400&q=92", // recording studio
+    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=2400&q=92", // DJ / nightlife
   ],
   "Film & TV": [
-    "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600&q=90", // movie theater
-    "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1600&q=90", // film camera
-    "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=1600&q=90", // retro TV
-    "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1600&q=90", // streaming glow
+    "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=2400&q=92", // movie theater
+    "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=2400&q=92", // film camera
+    "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=2400&q=92", // retro TV
+    "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=2400&q=92", // streaming glow
   ],
   "Gaming": [
-    "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600&q=90", // gaming setup
-    "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1600&q=90", // controller
-    "https://images.unsplash.com/photo-1518972734183-cc86ec78ee26?w=1600&q=90", // neon lights
+    "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=2400&q=92", // gaming setup
+    "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=2400&q=92", // controller
+    "https://images.unsplash.com/photo-1518972734183-cc86ec78ee26?w=2400&q=92", // neon lights
   ],
   "Fashion": [
-    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=90", // runway
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1600&q=90", // sneakers
-    "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=1600&q=90", // editorial
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=2400&q=92", // runway
+    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=2400&q=92", // sneakers
+    "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=2400&q=92", // editorial
   ],
   "Internet": [
-    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=90", // people on phones / social scrolling
-    "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1600&q=90", // scrolling screen
-    "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?w=1600&q=90", // neon city night
-    "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=90", // crowd / viral energy
+    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=2400&q=92", // people on phones / social scrolling
+    "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=2400&q=92", // scrolling screen
+    "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?w=2400&q=92", // neon city night
+    "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=2400&q=92", // crowd / viral energy
   ],
   "Sports": [
-    "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1600&q=90", // soccer ball
-    "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1600&q=90", // football match action
-    "https://images.unsplash.com/photo-1540747913346-19212a4f5f57?w=1600&q=90", // stadium crowd
-    "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=90", // pitch aerial
+    "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=2400&q=92", // soccer ball
+    "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=2400&q=92", // football match action
+    "https://images.unsplash.com/photo-1540747913346-19212a4f5f57?w=2400&q=92", // stadium crowd
+    "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=2400&q=92", // pitch aerial
   ],
   "Tech": [
-    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=90", // circuit board
-    "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=1600&q=90", // laptop dark
-    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1600&q=90", // device glow
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=2400&q=92", // circuit board
+    "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=2400&q=92", // laptop dark
+    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=2400&q=92", // device glow
   ],
   "AI": [
-    "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1600&q=90", // neural abstract
-    "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=90", // robot/AI face
-    "https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?w=1600&q=90", // data streams
+    "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=2400&q=92", // neural abstract
+    "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=2400&q=92", // robot/AI face
+    "https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?w=2400&q=92", // data streams
   ],
   "Culture": [
-    "https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=1600&q=90", // art gallery
-    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=90", // editorial
-    "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1600&q=90", // crowd at event
+    "https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=2400&q=92", // art gallery
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=2400&q=92", // editorial
+    "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=2400&q=92", // crowd at event
   ],
   "World": [
-    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=90", // earth from space
-    "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&q=90", // city aerial
-    "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1600&q=90", // globe map
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=2400&q=92", // earth from space
+    "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=2400&q=92", // city aerial
+    "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=2400&q=92", // globe map
   ],
   "Industry": [
-    "https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=1600&q=90", // office/business
-    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1600&q=90", // suited exec
-    "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1600&q=90", // deal/handshake
+    "https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=2400&q=92", // office/business
+    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=2400&q=92", // suited exec
+    "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=2400&q=92", // deal/handshake
   ],
   "Books": [
-    "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=90", // library shelves
-    "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=1600&q=90", // open book
-    "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1600&q=90", // bookshelf warm
+    "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=2400&q=92", // library shelves
+    "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=2400&q=92", // open book
+    "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=2400&q=92", // bookshelf warm
   ],
   "Science": [
-    "https://images.unsplash.com/photo-1532094349884-543559872441?w=1600&q=90", // lab/microscope
-    "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1600&q=90", // space/stars
-    "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?w=1600&q=90", // moon close
+    "https://images.unsplash.com/photo-1532094349884-543559872441?w=2400&q=92", // lab/microscope
+    "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=2400&q=92", // space/stars
+    "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?w=2400&q=92", // moon close
   ],
 };
 
@@ -152,6 +152,11 @@ export interface EnrichedArticle {
   gradientEnd: string;
   tag: string;
   imageUrl?: string | null;
+  /** The ORIGINAL third-party source URL the hero image was fetched from,
+   *  preserved after the image is downloaded and re-uploaded to Supabase
+   *  Storage. Persisted so we can re-process (backfill) the image at a
+   *  higher quality target later without re-running enrichment. */
+  sourceImageUrl?: string | null;
   imageWidth?: number | null;
   imageHeight?: number | null;
   /** Human-readable attribution for the hero image (e.g. "Wikimedia Commons",

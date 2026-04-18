@@ -9,8 +9,11 @@
  *
  * Pipeline:
  *   1. Fetch source bytes (10s timeout, follows redirects)
- *   2. sharp() — resize to max 1080px wide (no upscaling), re-encode as
- *      JPEG quality 85, auto-rotate via EXIF, strip metadata
+ *   2. sharp() — resize to max 2400px wide (no upscaling), re-encode as
+ *      JPEG quality 95, auto-rotate via EXIF, strip metadata.
+ *      2400 is chosen so that a portrait-cropped landscape source still
+ *      retains ≥1:1 pixel density on iPhone Pro Max (1290 device px wide)
+ *      after ~35% horizontal crop from object-fit:cover on the feed card.
  *   3. Upload to the `article-images` Supabase bucket with a deterministic
  *      key so retries are idempotent (`YYYY-MM-DD/<hash>.jpg`)
  *   4. Return the bucket's public URL
@@ -29,8 +32,8 @@ import crypto from "node:crypto";
 import { supabase } from "./supabase-client.js";
 
 const BUCKET = "article-images";
-const TARGET_WIDTH = 1440;
-const JPEG_QUALITY = 93;
+const TARGET_WIDTH = 2400;
+const JPEG_QUALITY = 95;
 const FETCH_TIMEOUT_MS = 10_000;
 
 export interface ProcessedImage {

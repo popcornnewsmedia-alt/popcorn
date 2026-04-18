@@ -230,8 +230,10 @@ export function ArticleCard({
               transition: imgReady ? 'none' : 'opacity 0.18s ease',
             }}
           />
-          {/* Subtle dark tint — z-10 */}
-          <div className="absolute inset-0 z-10" style={{ background: 'rgba(0,0,0,0.20)' }} />
+          {/* Subtle dark tint — z-10. Kept intentionally light (0.10) so the
+              image reads crisp and vibrant; the bottom gradient below handles
+              text contrast on the metadata/headline overlay region. */}
+          <div className="absolute inset-0 z-10" style={{ background: 'rgba(0,0,0,0.10)' }} />
           {/* Bottom gradient — z-10 */}
           <div
             className="absolute inset-0 z-10"

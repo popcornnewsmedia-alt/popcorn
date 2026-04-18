@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS articles (
   gradient_end    TEXT,
   tag             TEXT        DEFAULT 'FEATURE',
   image_url       TEXT,
+  source_image_url TEXT,
   image_width     INT,
   image_height    INT,
   image_focal_x   float8,

@@ -71,6 +71,7 @@ function articleToRow(a: EnrichedArticle, feedDate: string, stage: 'dev' | 'prod
     gradient_end:       a.gradientEnd,
     tag:                a.tag,
     image_url:          a.imageUrl ?? null,
+    source_image_url:   a.sourceImageUrl ?? null,
     image_width:        a.imageWidth ?? null,
     image_height:       a.imageHeight ?? null,
     image_focal_x:      a.imageFocalX ?? null,
@@ -100,6 +101,7 @@ function rowToArticle(row: Record<string, unknown>, id: number): EnrichedArticle
     gradientEnd:      String(row.gradient_end ?? "#0e2a5a"),
     tag:              String(row.tag ?? "FEATURE"),
     imageUrl:         row.image_url ? String(row.image_url) : null,
+    sourceImageUrl:   row.source_image_url ? String(row.source_image_url) : null,
     imageWidth:       row.image_width ? Number(row.image_width) : undefined,
     imageHeight:      row.image_height ? Number(row.image_height) : undefined,
     imageFocalX:      row.image_focal_x != null ? Number(row.image_focal_x) : undefined,
@@ -215,8 +217,13 @@ async function processImagesForArticles(
     const batch = targets.slice(i, i + CONCURRENCY);
     await Promise.all(
       batch.map(async (article) => {
-        const result = await processAndUploadImage(article.imageUrl!, feedDate);
+        const originalUrl = article.imageUrl!;
+        const result = await processAndUploadImage(originalUrl, feedDate);
         if (result) {
+          // Preserve the original third-party URL BEFORE overwriting imageUrl
+          // with the Supabase Storage URL — enables future backfills at a
+          // higher-quality target without re-running Claude enrichment.
+          article.sourceImageUrl = originalUrl;
           article.imageUrl = result.url;
           article.imageWidth = result.width;
           article.imageHeight = result.height;
