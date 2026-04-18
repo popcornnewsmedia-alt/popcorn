@@ -31,6 +31,16 @@
       "itemsInWindow": 57,
       "itemsAdded": 49,
       "dedupMerges": 1
+    },
+    {
+      "n": 4,
+      "windowStart": "2026-04-18T03:30:00.000Z",
+      "windowEnd": "2026-04-18T08:30:00.000Z",
+      "ranAt": "2026-04-18T10:32:53.910Z",
+      "itemsRawFromFeeds": 725,
+      "itemsInWindow": 57,
+      "itemsAdded": 41,
+      "dedupMerges": 0
     }
   ],
   "items": [
@@ -6164,6 +6174,736 @@
       "verdict": "rejected",
       "reasoning": "Retail beauty sale roundup — low-signal sponsored-adjacent content with no cultural staying power",
       "clusterId": "c-b04912a3b259a9e7",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Page Six"
+      ]
+    },
+    {
+      "id": "f3a4454a3f23a263",
+      "url": "https://www.rollingstone.com/music/music-news/madonna-sabrina-carpenter-coachella-2026-1235549915/",
+      "title": "Madonna, Sabrina Carpenter Make Coachella History With Stunning &#8216;Vogue&#8217; and &#8216;Like a Prayer&#8217; Duets",
+      "source": "Rolling Stone",
+      "pubDate": "2026-04-18T06:57:38.000Z",
+      "description": "Carpenter brought out the pop icon for a performance that ignited Weekend Two",
+      "fetchedInRun": 4,
+      "score": 88,
+      "verdict": "potential",
+      "reasoning": "Madonna x Sabrina Carpenter Coachella collab is a major cultural moment — generational pop icon crossover with real buzz",
+      "clusterId": "c-f3a4454a3f23a263",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Rolling Stone"
+      ]
+    },
+    {
+      "id": "f007cbaaf9ebce4e",
+      "url": "https://www.rollingstone.com/tv-movies/tv-movie-news/dylan-sprouse-tackled-trespasser-los-angeles-home-1235549927/",
+      "title": "Dylan Sprouse Tackled and Held Down Trespasser at L.A. Home Until Police Arrived",
+      "source": "Rolling Stone",
+      "pubDate": "2026-04-18T05:45:03.000Z",
+      "description": "The actor reportedly held the trespasser at gunpoint prior to tackling him",
+      "fetchedInRun": 4,
+      "score": 52,
+      "verdict": "potential",
+      "reasoning": "Dylan Sprouse home intruder story has tabloid-celebrity hook and some shareability, but thin cultural stakes",
+      "clusterId": "c-f007cbaaf9ebce4e",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Rolling Stone"
+      ]
+    },
+    {
+      "id": "2bff29ea6fce7958",
+      "url": "https://www.billboard.com/music/rb-hip-hop/6lack-new-single-sunday-again-featuring-2-chainz-1236226092/",
+      "title": "6LACK Shares New Single &#8216;Sunday Again&#8217; Featuring 2&#160;Chainz",
+      "source": "Billboard",
+      "pubDate": "2026-04-18T07:31:21.000Z",
+      "description": "The track features additional vocal contributions from Serayah, Jordan Ward and Dos Dias, among others.",
+      "fetchedInRun": 4,
+      "score": 22,
+      "verdict": "rejected",
+      "reasoning": "Routine new single drop from mid-tier artist, no cultural hook or narrative weight",
+      "clusterId": "c-2bff29ea6fce7958",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Billboard"
+      ]
+    },
+    {
+      "id": "1d3bb85b759d49b2",
+      "url": "https://www.billboard.com/music/concerts/madonna-sabrina-carpenter-coachella-2026-1236226082/",
+      "title": "Sabrina Carpenter Brought Out Madonna for Coachella Weekend Two&#160;Performance",
+      "source": "Billboard",
+      "pubDate": "2026-04-18T05:46:42.000Z",
+      "description": "The Queen of Pop emerged during Carpenter's performance of \"Juno\".",
+      "fetchedInRun": 4,
+      "score": 72,
+      "verdict": "potential",
+      "reasoning": "Duplicate of the Madonna/Carpenter Coachella story — strong moment but redundant; lower score as dupe",
+      "clusterId": "c-1d3bb85b759d49b2",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Billboard"
+      ]
+    },
+    {
+      "id": "a087bf473f188d58",
+      "url": "https://consequence.net/2026/04/madonna-sabrina-carpenter-coachella/",
+      "title": "Madonna Joins Sabrina Carpenter at Coachella for Surprise Performance, Astrology Lesson: Watch",
+      "source": "Consequence",
+      "pubDate": "2026-04-18T05:52:55.000Z",
+      "description": "Madge performed \"Vogue,\" \"Get Together,\" \"Like a Prayer,\" and a song from her upcoming Confessions II. Madonna Joins Sabrina Carpenter at Coachella for Surprise Performance, Astrology Lesson: Watch Paolo Ragusa and Alex Young",
+      "rawImageUrl": "https://consequence.net/wp-content/uploads/2026/04/Sabrina-Carpenter-and-Madonna.jpeg?quality=80",
+      "fetchedInRun": 4,
+      "score": 85,
+      "verdict": "potential",
+      "reasoning": "Best version of the Madonna/Carpenter story — adds Confessions II teaser detail, astrology bit makes it more distinctive and shareable",
+      "clusterId": "c-a087bf473f188d58",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Consequence"
+      ]
+    },
+    {
+      "id": "47d776cf9d0d5bc6",
+      "url": "https://consequence.net/2026/04/dylan-sprouse-home-intruder/",
+      "title": "Dylan Sprouse Holds Home Intruder at Gun Point",
+      "source": "Consequence",
+      "pubDate": "2026-04-18T04:29:45.000Z",
+      "description": "The suspect was taken into custody on outstanding warrants. Dylan Sprouse Holds Home Intruder at Gun Point Scoop Harrison",
+      "rawImageUrl": "https://consequence.net/wp-content/uploads/2026/04/Dylan-Sprouse.jpeg?quality=80",
+      "fetchedInRun": 4,
+      "score": 48,
+      "verdict": "rejected",
+      "reasoning": "Dylan Sprouse intruder story — slightly below threshold, celebrity but low cultural weight, no staying power",
+      "clusterId": "c-47d776cf9d0d5bc6",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Consequence"
+      ]
+    },
+    {
+      "id": "67c19c675dc01d9c",
+      "url": "https://variety.com/2026/music/news/madonna-sabrina-carpenter-surprise-performance-coachella-1236713383/",
+      "title": "Madonna Teams Up With Sabrina Carpenter at Coachella for Transcendent Duets: &#8216;Vogue,&#8217; &#8216;Like a Prayer&#8217; and New Song",
+      "source": "Variety",
+      "pubDate": "2026-04-18T05:41:22.000Z",
+      "description": "After rumors swirled that she would appear at Coachella weekend one, Madonna made a cameo during Sabrina Carpenter&#8217;s headlining performance on Friday night, emerging near the end of the set to perform &#8220;Vogue,&#8221; &#8220;Like a Prayer&#",
+      "rawImageUrl": "https://variety.com/wp-content/uploads/2026/04/Screenshot-2026-04-17-at-10.22.50-PM-e1776490392836.png",
+      "fetchedInRun": 4,
+      "score": 80,
+      "verdict": "potential",
+      "reasoning": "Strong Variety take on the Madonna/Carpenter moment with good detail, but redundant given item 5",
+      "clusterId": "c-67c19c675dc01d9c",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Variety"
+      ]
+    },
+    {
+      "id": "d8333cef396686ee",
+      "url": "https://variety.com/2026/music/news/sabrina-carpenter-thelma-louise-coachella-geena-davis-1236724940/",
+      "title": "Sabrina Carpenter Goes Full &#8216;Thelma &#038; Louise&#8217; at Coachella Weekend Two With Geena Davis Monologue",
+      "source": "Variety",
+      "pubDate": "2026-04-18T05:09:15.000Z",
+      "description": "Sabrina Carpenter leaned into a “Thelma &#38; Louise” theme with her weekend-two Coachella appearance Friday by featuring Geena Davis reading the mid-show monologue as an older &#8220;Aunt Sabrina,&#8221; succeeding last weekend’s guest Susan Sarando",
+      "rawImageUrl": "https://variety.com/wp-content/uploads/2026/04/Screenshot-2026-04-17-at-9.46.43-PM-e1776488791476.png",
+      "fetchedInRun": 4,
+      "score": 74,
+      "verdict": "potential",
+      "reasoning": "Geena Davis/Thelma & Louise cameo at Coachella is a distinct, shareable cultural crossover moment worth separating from the Madonna story",
+      "clusterId": "c-d8333cef396686ee",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Variety"
+      ]
+    },
+    {
+      "id": "0d1f08e0b74dd6ca",
+      "url": "https://www.hollywoodreporter.com/lifestyle/shopping/coachella-2026-brand-activations-heineken-house-the-clinker-1236556638/",
+      "title": "How Coachella&#8217;s Longest-Standing Sponsor Has Remained Relevant in the Age of Brand Activations",
+      "source": "The Hollywood Reporter",
+      "pubDate": "2026-04-18T07:15:13.000Z",
+      "description": "During Weekend One, Heineken debuted a first-of-its-kind device that brings fans back to what Coachella used to feel like: connected.",
+      "fetchedInRun": 4,
+      "score": 18,
+      "verdict": "rejected",
+      "reasoning": "Brand activation PR for Heineken — pure sponsored content with no real cultural hook",
+      "clusterId": "c-0d1f08e0b74dd6ca",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Hollywood Reporter"
+      ]
+    },
+    {
+      "id": "bbc2cca7976fcf25",
+      "url": "https://www.hollywoodreporter.com/music/music-news/sabrina-carpenter-madonna-coachella-performance-1236567589/",
+      "title": "Sabrina Carpenter Brings Out Madonna at Coachella Weekend Two Headlining Set",
+      "source": "The Hollywood Reporter",
+      "pubDate": "2026-04-18T05:19:42.000Z",
+      "description": "\"The thrilling thing I need to point out to everybody right now is this probably the first time I’ve ever performed with someone who’s shorter than me,” the Queen of Pop said of her performance with the \"Manchild\" singer.",
+      "fetchedInRun": 4,
+      "score": 65,
+      "verdict": "potential",
+      "reasoning": "Good Madonna quote ('first time I've performed with someone shorter than me') but redundant Madonna/Carpenter coverage",
+      "clusterId": "c-bbc2cca7976fcf25",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Hollywood Reporter"
+      ]
+    },
+    {
+      "id": "569ad787ae0637fb",
+      "url": "https://www.indiewire.com/features/best-of/gregg-araki-smiley-face-stoner-midnight-movie-420-1235189395/",
+      "title": "When 4/20 Lands on a Monday, You Have to Watch Gregg Araki&#8217;s &#8216;Smiley Face&#8217; — OR ELSE!",
+      "source": "IndieWire",
+      "pubDate": "2026-04-18T03:59:00.000Z",
+      "description": "Anna Faris leads an endlessly surprising cast in one of the greatest stoner movies ever made.",
+      "fetchedInRun": 4,
+      "score": 42,
+      "verdict": "rejected",
+      "reasoning": "4/20 stoner movie recommendation is low-signal, calendar-driven filler with no news hook",
+      "clusterId": "c-569ad787ae0637fb",
+      "clusterSize": 1,
+      "clusterSources": [
+        "IndieWire"
+      ]
+    },
+    {
+      "id": "38a776b4e994622d",
+      "url": "https://www.polygon.com/pragmata-terra-dome-100-sector-walkthrough-rem-safe-box-lunum-location/",
+      "title": "Terra Dome 100% sector walkthrough in Pragmata",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T07:01:21.000Z",
+      "description": "In this walkthrough, we'll guide you through the Terra Dome sector, and lead you to everything you need to 100% each block.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/terra-dome_pr.jpg",
+      "fetchedInRun": 4,
+      "score": 5,
+      "verdict": "rejected",
+      "reasoning": "Deep game walkthrough guide — pure B2B/utility content, zero cultural feed value",
+      "clusterId": "c-38a776b4e994622d",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "68a2fecc0068ed35",
+      "url": "https://www.polygon.com/pragmata-mass-production-array-100-sector-walkthrough-rem-pure-lunum-location/",
+      "title": "Mass Production Array 100% sector walkthrough in Pragmata",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T07:01:21.000Z",
+      "description": "In this walkthrough, we'll guide you through the Mass Production Array in Pragmata and how to 100% the sector.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/diana-and-cat_pr.jpg",
+      "fetchedInRun": 4,
+      "score": 5,
+      "verdict": "rejected",
+      "reasoning": "Game walkthrough — same as above, reject",
+      "clusterId": "c-68a2fecc0068ed35",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "5dcd44303918bff9",
+      "url": "https://www.polygon.com/pragmata-central-port-100-sector-walkthrough-safe-box-rem-location/",
+      "title": "Central Port 100% sector walkthrough in Pragmata",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T07:01:20.000Z",
+      "description": "In this walkthrough, we'll be guiding you through the Central Port and also how to 100% the sector.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/earth_pr.jpg",
+      "fetchedInRun": 4,
+      "score": 5,
+      "verdict": "rejected",
+      "reasoning": "Game walkthrough — reject",
+      "clusterId": "c-5dcd44303918bff9",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "792325ee916447da",
+      "url": "https://www.polygon.com/pragmata-experimental-pragmatics-walkthrough/",
+      "title": "Experimental Pragmatics walkthrough in Pragmata",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T07:01:20.000Z",
+      "description": "In this walkthrough, we'll guide you through the Experimental Pragmatics sector in Pragmata.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/holo_pr.jpg",
+      "fetchedInRun": 4,
+      "score": 5,
+      "verdict": "rejected",
+      "reasoning": "Game walkthrough — reject",
+      "clusterId": "c-792325ee916447da",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "e9ef1a4420d758c5",
+      "url": "https://www.polygon.com/pragmata-lunum-mines-100-sector-walkthrough-safe-box-rem-location/",
+      "title": "Lunum Mines 100% sector walkthrough in Pragmata",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T07:01:20.000Z",
+      "description": "In this walkthrough, we'll guide you through the Lunum Mines in Pragmata, while finding every safe box, REM, and more so you can 100% the sector.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/space_pr.jpg",
+      "fetchedInRun": 4,
+      "score": 5,
+      "verdict": "rejected",
+      "reasoning": "Game walkthrough — reject",
+      "clusterId": "c-e9ef1a4420d758c5",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "f936e954f54fdcac",
+      "url": "https://www.polygon.com/pragmata-all-central-port-upgrade-component-locations/",
+      "title": "All Central Port upgrade component locations in Pragmata",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T07:01:20.000Z",
+      "description": "In this guide you learn where to find all the upgrade components in Central Port, the final sector in the game.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/pragmata_guide_beginners-1.jpg",
+      "fetchedInRun": 4,
+      "score": 5,
+      "verdict": "rejected",
+      "reasoning": "Game guide/collectibles — reject",
+      "clusterId": "c-f936e954f54fdcac",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "b858a8b58b204126",
+      "url": "https://www.polygon.com/pragmata-all-lunum-mines-upgrade-component-locations/",
+      "title": "All Lunum Mines upgrade component locations in Pragmata",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T07:01:20.000Z",
+      "description": "Here are all the upgrade components you can find in the Lunum Mines in Pragmata, which you use to level up Hugh and Diana's skills.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/pragmata_guide_upgrades_sector4_header.jpg",
+      "fetchedInRun": 4,
+      "score": 5,
+      "verdict": "rejected",
+      "reasoning": "Game guide/collectibles — reject",
+      "clusterId": "c-b858a8b58b204126",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "f882985af9db4186",
+      "url": "https://www.polygon.com/pragmata-mini-cabin-figure-locations/",
+      "title": "Mini Cabin figure locations in Pragmata",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T07:00:18.000Z",
+      "description": "If you're looking to find all the little collectable Mini Cabin figures in Pragmata, we list their locations in our guide.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/pragmata_guide_figures_header.jpg",
+      "fetchedInRun": 4,
+      "score": 5,
+      "verdict": "rejected",
+      "reasoning": "Game collectibles guide — reject",
+      "clusterId": "c-f882985af9db4186",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "03ea0a7d30fd87d1",
+      "url": "https://www.ign.com/articles/lg-b5-4k-oled-tv-deal-at-best-buy-includes-second-free-tv",
+      "title": "The Massive 77\" LG B5 4K OLED TV Drops to $1,399.99 and Includes a Free 2nd TV",
+      "source": "IGN",
+      "pubDate": "2026-04-18T04:35:00.000Z",
+      "description": "One for your living room, another for your bedroom.",
+      "rawImageUrl": "https://assets-prd.ignimgs.com/2026/04/18/lgb5-1776486441884.jpg",
+      "fetchedInRun": 4,
+      "score": 8,
+      "verdict": "rejected",
+      "reasoning": "TV deal/product ad — pure commerce, no cultural angle",
+      "clusterId": "c-03ea0a7d30fd87d1",
+      "clusterSize": 1,
+      "clusterSources": [
+        "IGN"
+      ]
+    },
+    {
+      "id": "0d49f1dcd9ea52fb",
+      "url": "https://hypebeast.com/2026/4/justin-bieber-skylrk-coachella-weekend-2-purpose-tour-nostalgia-swag-merch-release-info",
+      "title": "Justin Bieber's SKYLRK Taps Into 'Purpose' Tour Nostalgia for Coachella Weekend 2 Merch Drop",
+      "source": "Hypebeast",
+      "pubDate": "2026-04-18T07:25:44.000Z",
+      "description": "SummaryJustin Bieber has officially unveiled his Coachella Weekend 2 merchandise, pulling heavy inspiration from his iconic 2016–2017 Purpose TourThe extensive collection leans into vintage tour-style graphics, aggressive gothic fonts, bold back prin",
+      "rawImageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F04%2F18%2Fjustin-bieber-skylrk-coachella-weekend-2-purpose-tour-nostalgia-swag-merch-release-info-000.jpg?w=800&cbr=1&q=90&fit=max",
+      "fetchedInRun": 4,
+      "score": 38,
+      "verdict": "rejected",
+      "reasoning": "Celebrity merch drop with nostalgia hook is borderline but Bieber's SKYLRK is low-stakes PR, not a cultural moment",
+      "clusterId": "c-0d49f1dcd9ea52fb",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Hypebeast"
+      ]
+    },
+    {
+      "id": "766e38c9d93c715d",
+      "url": "https://hypebeast.com/2026/4/nutella-peanut-new-flavor-official-launch-announcement",
+      "title": "Nutella Officially Has a New Flavor, and It's Peanut",
+      "source": "Hypebeast",
+      "pubDate": "2026-04-18T05:29:15.000Z",
+      "description": "SummaryFor the first time in over six decades, Nutella is introducing a brand-new flavor to its iconic spread lineup: Nutella PeanutThe new nationwide release doesn't replace the beloved hazelnut base, but rather layers it with a distinctly roasted p",
+      "rawImageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F04%2F18%2Fnutella-peanut-new-flavor-official-launch-announcement-000.jpg?w=800&cbr=1&q=90&fit=max",
+      "fetchedInRun": 4,
+      "score": 35,
+      "verdict": "rejected",
+      "reasoning": "Nutella new flavor is mildly viral-of-the-day fodder but low staying power and no real cultural stakes",
+      "clusterId": "c-766e38c9d93c715d",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Hypebeast"
+      ]
+    },
+    {
+      "id": "a505d7f6cfb793b8",
+      "url": "https://www.theguardian.com/culture/2026/apr/18/kae-tempest-on-creativity-and-his-gender-transition-im-just-glad-to-be-alive",
+      "title": "Kae Tempest on creativity and his gender transition: ‘I’m just glad to be alive’",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T08:01:07.000Z",
+      "description": "<p>Ten years after his debut novel, the poet and musician has written a follow-up exploring self-discovery and a life lived on the edge. He talks about sexuality, pronouns and drawing strength from the literature he loves</p><p>Kae Tempest sidles int",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/209c0c9ea71723b48249740155ba979ba3f57b7e/53_790_3686_2949/master/3686.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=545a63bbf88d9b33da3a1d374e4c47e6",
+      "fetchedInRun": 4,
+      "score": 72,
+      "verdict": "potential",
+      "reasoning": "Kae Tempest interview on gender transition and creativity — meaningful human/culture story with real weight for literate millennial audience",
+      "clusterId": "c-a505d7f6cfb793b8",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "5d8fb68e1e0b5366",
+      "url": "https://www.theguardian.com/tv-and-radio/2026/apr/18/half-man-richard-gadds-follow-up-to-baby-reindeer-is-uncomfortably-erotic-and-utterly-monstrous",
+      "title": "Half Man: Richard Gadd’s follow-up to Baby Reindeer is uncomfortably erotic – and utterly monstrous",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T06:00:06.000Z",
+      "description": "<p>Gadd and Jamie Bell are so frank they’re almost feral in a show so violent you’ll think you can taste blood in your mouth. This man can hit a nerve like no other </p><p>Part of the thrill of Baby Reindeer was the feeling of watching the birth of a",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/57b9bd9ac87066a5dd36bf1879f3215b291a4635/269_0_2500_2000/master/2500.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=45b34dce2c3950cf2ca90c2ddb747432",
+      "fetchedInRun": 4,
+      "score": 82,
+      "verdict": "potential",
+      "reasoning": "Richard Gadd's Baby Reindeer follow-up is a major IP/creator moment — high anticipation, culturally loaded, conversation-worthy",
+      "clusterId": "c-5d8fb68e1e0b5366",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "1e20bd8c138941ef",
+      "url": "https://www.theguardian.com/culture/2026/apr/18/my-cultural-awakening-zelda",
+      "title": "Zelda taught me the importance of play – and has helped me deal with work, parenting and grief",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T06:00:05.000Z",
+      "description": "<p>I initially dismissed the Wind Waker’s cartoonish visuals as juvenile. But now I try to carry the game’s sense of joy into all aspects of my life</p><p>I had a complicated relationship with video games when I was a teenager. I had straightforwardl",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/f790060a51bc1ef0e0c1b4ab0da4bef840b3576b/17_0_3364_2692/master/3364.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=270fdc75cd88927277ec1d494b4a37bb",
+      "fetchedInRun": 4,
+      "score": 48,
+      "verdict": "rejected",
+      "reasoning": "Zelda personal essay is warm but niche, lacks news hook or scaled drama — borderline but just misses",
+      "clusterId": "c-1e20bd8c138941ef",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "4941fe2486a5f1a2",
+      "url": "https://www.theguardian.com/culture/2026/apr/18/entertainment-week-ahead-lee-cronin-mummy-zayn-half-man-jessie-ware",
+      "title": "From Lee Cronin’s The Mummy to Zayn: your complete entertainment guide to the week ahead",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T05:00:05.000Z",
+      "description": "<p>The horror maestro delivers a fresh take on the classic monster schlocker, and the former 1D man is back with a new album of slinky, loved-up R’n’B</p><p><strong>Lee Cronin’s The Mummy</strong><br><em>Out now</em><br> You probably know what The Mu",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/ed422fb954f83cff44b3cd29f723f9dc367d0100/0_0_5000_4000/master/5000.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=46227aa3fe56546bb71503dfe8a2217c",
+      "fetchedInRun": 4,
+      "score": 55,
+      "verdict": "potential",
+      "reasoning": "Entertainment preview with Zayn comeback album and new Mummy horror — two notable cultural hooks make it worth flagging",
+      "clusterId": "c-4941fe2486a5f1a2",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "4749859f7c2f9660",
+      "url": "https://www.theguardian.com/culture/2026/apr/18/week-in-rave-reviews-grayson-perry-miroirs-no-3",
+      "title": "Grayson Perry Has Seen the Future to Miroirs No 3: the week in rave reviews",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T05:00:05.000Z",
+      "description": "<p>The artist and national treasure explores the terrifying onset of AI, and Christian Petzold and Paula Beer team up again for a mysterious drama. Here’s the pick of the week’s culture, taken from the Guardian’s best-rated reviews</p> <a href=\"https",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/e54af5fd9e72444f06dc35eb643e810307a76ce0/0_0_5000_4000/master/5000.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=980c6075661bc8ba3da676eae9dc26f5",
+      "fetchedInRun": 4,
+      "score": 44,
+      "verdict": "rejected",
+      "reasoning": "Weekly rave reviews roundup is too aggregated and low-signal for a curated feed",
+      "clusterId": "c-4749859f7c2f9660",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "778700318c3d037f",
+      "url": "https://www.theguardian.com/culture/2026/apr/18/the-plaza-prizes-winners-judges-writing-awards",
+      "title": "Winners and judges out of pocket as £20,000 writing awards appear to have closed",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T06:00:07.000Z",
+      "description": "<p>The Plaza Prizes offered 10 awards in 2025 but some judges say they were not paid, while a number of winners hit back over AI accusations</p><p>A competition for new writers that promised a £20,000 prize fund appears to have shut down, leaving win",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/369829f38a3a31d74f10682fbd3bec7e4c7f9b61/566_0_3557_2848/master/3557.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=499aa583ab1bf29a2d258b43384a171b",
+      "fetchedInRun": 4,
+      "score": 62,
+      "verdict": "potential",
+      "reasoning": "Writing prize scandal with AI accusations and unpaid judges is a juicy, Internet-ready drama with real cultural stakes around AI and the arts",
+      "clusterId": "c-778700318c3d037f",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "e45570cdfea4f89c",
+      "url": "https://www.theguardian.com/culture/2026/apr/18/lost-federico-garcia-lorca-verse-discovered-93-years-after-it-was-written",
+      "title": "Lost Federico García Lorca verse discovered 93 years after it was written",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T04:00:03.000Z",
+      "description": "<p>Eight-line poem found on the back of a manuscript sheds light on Spanish poet’s preoccupation with time</p><p>A previously unknown verse attributed to <a href=\"https://www.theguardian.com/culture/federico-garcia-lorca\">Federico García Lorca</a> ha",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/678c526692104717729d6fefc6f2b8dc6fb6f577/871_85_1951_1559/master/1951.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=badea032f36e77fd9f5c7a420d4596ef",
+      "fetchedInRun": 4,
+      "score": 58,
+      "verdict": "potential",
+      "reasoning": "Lost Lorca poem discovery is a genuine narrative surprise — literary history meets detective story, strong for culturally-literate audience",
+      "clusterId": "c-e45570cdfea4f89c",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "6cd2bd603ab9162d",
+      "url": "https://www.theguardian.com/tv-and-radio/2026/apr/18/tv-tonight-minnie-driver-makes-look-good-in-a-juicy-new-drama",
+      "title": "TV tonight: Minnie Driver makes crime look good in a juicy new drama",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T05:15:04.000Z",
+      "description": "<p>It’s all gun toting and great hair in The Murder Line. Plus: World’s Most Secret Hotels returns. Here’s what to watch this evening</p><p><strong>10pm, ITV1</strong></p> <a href=\"https://www.theguardian.com/tv-and-radio/2026/apr/18/tv-tonight-minni",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/9767b1f89fc929e4ad2ca4ea783e1f253381ac89/415_0_2132_1706/master/2132.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=5eb1feb6b5373764bcd51d9ce9af38d4",
+      "fetchedInRun": 4,
+      "score": 22,
+      "verdict": "rejected",
+      "reasoning": "Routine TV preview — low signal, no cultural hook",
+      "clusterId": "c-6cd2bd603ab9162d",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "25a55e88fefda529",
+      "url": "https://www.theguardian.com/stage/2026/apr/18/heart-wall-review-bush-theatre-london",
+      "title": "Heart Wall review – grief knocks a family karaoke reunion off-key",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T07:00:07.000Z",
+      "description": "<p><strong>Bush theatre, London<br></strong>Secrets are exposed during a pub singalong as Franky returns home to find her parents divided in Kit Withington’s drama</p><p>You can hear this play before you enter the auditorium. Inside, a karaoke sessio",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/68278f463a2ea9f7538649c3e76c78ffb1391752/0_0_3564_2851/master/3564.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=120ed1a371613fe1237fcc1796b00ecc",
+      "fetchedInRun": 4,
+      "score": 18,
+      "verdict": "rejected",
+      "reasoning": "Local theatre review — too niche, no scaled audience",
+      "clusterId": "c-25a55e88fefda529",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "99891c4a73814f87",
+      "url": "https://techcrunch.com/2026/04/17/once-close-enough-for-an-acquisition-stripe-and-airwallex-are-now-going-after-each-other/",
+      "title": "Once close enough for an acquisition, Stripe and Airwallex are now going after each other",
+      "source": "TechCrunch",
+      "pubDate": "2026-04-18T05:20:11.000Z",
+      "description": "For most of its life, Airwallex and Stripe have mostly operated in different geographies, selling to different buyers. That's changing.",
+      "fetchedInRun": 4,
+      "score": 35,
+      "verdict": "rejected",
+      "reasoning": "Stripe vs Airwallex fintech rivalry — B2B finance with no direct cultural hook",
+      "clusterId": "c-99891c4a73814f87",
+      "clusterSize": 1,
+      "clusterSources": [
+        "TechCrunch"
+      ]
+    },
+    {
+      "id": "ef98af4513310114",
+      "url": "https://www.nme.com/news/music/homelessness-charity-cuts-ties-with-sharon-osbourne-after-she-appears-to-lend-support-to-tommy-robinson-far-right-rally-this-sort-of-event-does-not-align-with-our-values-3941007?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=homelessness-charity-cuts-ties-with-sharon-osbourne-after-she-appears-to-lend-support-to-tommy-robinson-far-right-rally-this-sort-of-event-does-not-align-with-our-values",
+      "title": "Homelessness charity cuts ties with Sharon Osbourne after she appears to lend support to Tommy Robinson far-right rally: “This sort of event does not align with our values&#8221;",
+      "source": "NME",
+      "pubDate": "2026-04-18T07:49:26.000Z",
+      "description": "Osbourne is facing criticism for commenting “see you at the march\" under a post about the far-right gathering The post Homelessness charity cuts ties with Sharon Osbourne after she appears to lend support to Tommy Robinson far-right rally: “This sort",
+      "rawImageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Sharon-Osbourne.-CREDIT_-Neil-Mockford_FilmMagic.jpg",
+      "fetchedInRun": 4,
+      "score": 76,
+      "verdict": "potential",
+      "reasoning": "Sharon Osbourne/Tommy Robinson/charity fallout is a Power story with real stakes — celebrity, far-right politics, institutional consequences",
+      "clusterId": "c-ef98af4513310114",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NME"
+      ]
+    },
+    {
+      "id": "9a94b447f4602718",
+      "url": "https://www.nme.com/news/music/watch-madonna-join-forces-with-sabrina-carpenter-at-coachella-for-vogue-like-a-prayer-and-new-unreleased-track-3941001?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=watch-madonna-join-forces-with-sabrina-carpenter-at-coachella-for-vogue-like-a-prayer-and-new-unreleased-track",
+      "title": "Watch Madonna join forces with Sabrina Carpenter at Coachella for ‘Vogue,’ ‘Like a Prayer’ and new unreleased track",
+      "source": "NME",
+      "pubDate": "2026-04-18T07:32:30.000Z",
+      "description": "The Queen of Pop joined Carpenter for a song seemingly from her recently announced 'Confessions II' The post Watch Madonna join forces with Sabrina Carpenter at Coachella for ‘Vogue,’ ‘Like a Prayer’ and new unreleased track appeared first on NME .",
+      "rawImageUrl": "https://www.nme.com/wp-content/uploads/2026/04/live-madonna-sabrina-carpenter.jpg",
+      "fetchedInRun": 4,
+      "score": 70,
+      "verdict": "potential",
+      "reasoning": "Another Madonna/Carpenter Coachella story — redundant but NME framing adds Confessions II unreleased track angle",
+      "clusterId": "c-9a94b447f4602718",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NME"
+      ]
+    },
+    {
+      "id": "fb1f573a72144a48",
+      "url": "https://www.dexerto.com/tv-movies/euphoria-season-3-episode-2-release-date-time-hbo-3353216/",
+      "title": "What time is Euphoria Season 3 Episode 2 out?",
+      "source": "Dexerto",
+      "pubDate": "2026-04-18T07:00:00.000Z",
+      "description": "Details of when and where to watch Episode 2 of Euphoria Season 3, plus a recap of what happened to Rue in Episode 1.",
+      "rawImageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/17/Rue-Euphoria.jpg?width=1080&amp;quality=75&amp;format=auto",
+      "fetchedInRun": 4,
+      "score": 62,
+      "verdict": "potential",
+      "reasoning": "Euphoria S3 Episode 2 drop time — major IP franchise with massive millennial/Gen Z fandom, high relevance even as a scheduling post",
+      "clusterId": "c-fb1f573a72144a48",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Dexerto"
+      ]
+    },
+    {
+      "id": "be283e8b5407d3d4",
+      "url": "https://www.businessinsider.com/lawmakers-staff-ban-prediction-markets-2026-4",
+      "title": "Work on Capitol Hill? Your boss may want to ban you from betting on prediction markets",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T08:27:01.000Z",
+      "description": "\"The first thing we should do is police our own,\" said Rep. Seth Moulton, the first lawmaker to announce he&#39;s banning staff from prediction markets.",
+      "rawImageUrl": "https://i.insider.com/69dfac6b777ecc79d62f4ed0?format=jpeg",
+      "fetchedInRun": 4,
+      "score": 60,
+      "verdict": "potential",
+      "reasoning": "Capitol Hill prediction market ban story sits at Power/tech/culture crossover — policy meets internet gambling culture",
+      "clusterId": "c-be283e8b5407d3d4",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "37cb5fa1adb0b45f",
+      "url": "https://www.businessinsider.com/ai-startup-moving-into-smaller-neighborhoods-changing-office-culture-sf-2026-3",
+      "title": "AI startups are shifting the economic center of gravity of San Francisco",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T08:11:01.000Z",
+      "description": "AI startups and their collaborative and fast-moving culture are leading them to choose office spaces away from downtown SF in smaller neighborhoods.",
+      "rawImageUrl": "https://i.insider.com/69a8c68f1fb3fcb42648f1f4?format=jpeg",
+      "fetchedInRun": 4,
+      "score": 55,
+      "verdict": "potential",
+      "reasoning": "AI reshaping SF's urban geography is a meaningful tech-society story with real cultural resonance",
+      "clusterId": "c-37cb5fa1adb0b45f",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "f031ed5ecb22133e",
+      "url": "https://www.businessinsider.com/guides/streaming/where-to-watch-world-snooker-championship-2026",
+      "title": "Where to watch World Snooker Championship: Live stream 2026 frames free from anywhere",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T08:00:01.000Z",
+      "description": "The World Snooker Championship returns to Sheffield. We&#39;ll show you how to watch from anywhere.",
+      "rawImageUrl": "https://i.insider.com/69e29a33a98bc8fdc096c05a?format=jpeg",
+      "fetchedInRun": 4,
+      "score": 8,
+      "verdict": "rejected",
+      "reasoning": "Snooker streaming guide — pure sports utility, no cultural crossover",
+      "clusterId": "c-f031ed5ecb22133e",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "52f904874b5abb71",
+      "url": "https://www.businessinsider.com/microsoft-job-offers-minecraft-50-rejections-what-worked-advice-2026-4",
+      "title": "How I got 2 Microsoft job offers at once after more than 50 rejections",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T07:39:01.000Z",
+      "description": "Benjamin Phillips, 26, landed two job offers with Microsoft at the same time after 15 months and lots of rejections.",
+      "rawImageUrl": "https://i.insider.com/69df65dcddf31b99606d4142?format=jpeg",
+      "fetchedInRun": 4,
+      "score": 28,
+      "verdict": "rejected",
+      "reasoning": "Job rejection success story — inspirational content but low cultural weight, feels like LinkedIn PR",
+      "clusterId": "c-52f904874b5abb71",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "61b5e22079202b77",
+      "url": "https://www.businessinsider.com/tesla-owners-fsd-europe-full-self-driving-netherlands-2026-4",
+      "title": "&#39;Life-changing&#39;: Tesla owners in Europe take a victory lap after finally getting FSD",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T04:01:01.000Z",
+      "description": "The Dutch auto regulator approved Full Self-Driving, which Tesla says allows its EVs to drive themselves almost anywhere under human supervision.",
+      "rawImageUrl": "https://i.insider.com/69e2370e3fecbb42897a0f40?format=jpeg",
+      "fetchedInRun": 4,
+      "score": 52,
+      "verdict": "potential",
+      "reasoning": "Tesla FSD finally reaching Europe with owner reactions is a tech-society moment — touches autonomy, regulation, and the Tesla culture war",
+      "clusterId": "c-61b5e22079202b77",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "f7be3b24fa084663",
+      "url": "https://pagesix.com/2026/04/18/entertainment/laurie-metcalf-reveals-snl-legend-norm-macdonald-wrote-iconic-roseanne-scene/",
+      "title": "Laurie Metcalf names the &#8216;SNL&#8217; legend behind her Emmy-winning &#8216;Roseanne&#8217; scene",
+      "source": "Page Six",
+      "pubDate": "2026-04-18T05:44:12.000Z",
+      "description": "The three-time Emmy winner, currently promoting Netflix’s “Big Mistakes,” stopped by “The Drew Barrymore Show” this week and revisited her iconic “Roseanne” scene.",
+      "rawImageUrl": "https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F04%2Flaurie-metcalf-attends-nyc-premiere-125132876.jpg?w%3D683",
+      "fetchedInRun": 4,
+      "score": 32,
+      "verdict": "rejected",
+      "reasoning": "Nostalgia PR beat tied to a Netflix promo appearance — no narrative reversal, no cultural stakes, routine daytime TV press circuit.",
+      "clusterId": "c-f7be3b24fa084663",
       "clusterSize": 1,
       "clusterSources": [
         "Page Six"
