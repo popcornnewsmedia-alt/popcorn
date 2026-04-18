@@ -1,0 +1,407 @@
+/**
+ * Pool finalize — runs at 7:30pm BKK after the final fetch. Reads the
+ * day's pool JSON, asks Claude to pick 10-15 articles for today's feed,
+ * enriches them (content rewrite + image processing + focal detection)
+ * using the existing pipeline, saves to Supabase as `dev` stage, then
+ * writes a human-facing markdown review doc to `curation-review/`.
+ *
+ * Usage:
+ *   cd artifacts/api-server
+ *   node --env-file=../../.env --import tsx scripts/pool-finalize.ts \
+ *     [--feed-date=2026-04-18]   # defaults to today's BKK date
+ *     [--target=12]              # target selection count (default 12, range 10-15)
+ *     [--dry-run]                # skip enrichment + Supabase write; still writes review doc stub
+ */
+
+import fs from "node:fs";
+import path from "node:path";
+import https from "node:https";
+import {
+  enrichSelectedItems,
+  type RawRSSItem,
+  type EnrichedArticle,
+} from "../src/lib/rss-enricher.js";
+import { mergeFeed, saveCommittedFeed } from "../src/lib/curated-store.js";
+
+// ── Types (mirror pool-fetch.ts) ───────────────────────────────────────────
+
+interface PoolItem {
+  id: string;
+  url: string;
+  title: string;
+  source: string;
+  pubDate: string;
+  description: string;
+  rawImageUrl?: string;
+  fetchedInRun: number;
+  score: number;
+  verdict: "potential" | "rejected" | "published";
+  reasoning: string;
+  clusterId: string;
+  clusterSize: number;
+  clusterSources: string[];
+  /** Set by finalize when the item is chosen for the feed */
+  publishedReasoning?: string;
+}
+
+interface FetchRecord {
+  n: number;
+  windowStart: string;
+  windowEnd: string;
+  ranAt: string;
+  itemsRawFromFeeds: number;
+  itemsInWindow: number;
+  itemsAdded: number;
+  dedupMerges: number;
+}
+
+interface Pool {
+  feedDate: string;
+  dayStart: string;
+  fetches: FetchRecord[];
+  items: PoolItem[];
+  /** Set by finalize when it runs successfully */
+  finalizedAt?: string;
+}
+
+// ── Args ───────────────────────────────────────────────────────────────────
+
+const args = process.argv.slice(2);
+function arg(name: string): string | undefined {
+  const hit = args.find((a) => a.startsWith(`--${name}=`));
+  return hit ? hit.slice(name.length + 3) : undefined;
+}
+const dryRun = args.includes("--dry-run");
+const target = Math.max(10, Math.min(15, parseInt(arg("target") ?? "12", 10)));
+
+function bkkDateString(d: Date): string {
+  const shifted = new Date(d.getTime() + 7 * 60 * 60 * 1000);
+  return shifted.toISOString().slice(0, 10);
+}
+
+const feedDate = arg("feed-date") ?? bkkDateString(new Date());
+const poolPath = path.join(process.cwd(), "data", "pool", `pool-${feedDate}.json`);
+const reviewDir = path.resolve(process.cwd(), "..", "..", "curation-review");
+const reviewPath = path.join(reviewDir, `review-${feedDate}.md`);
+
+console.log(`[pool-finalize] feedDate=${feedDate} target=${target} dryRun=${dryRun}`);
+console.log(`[pool-finalize] poolPath=${poolPath}`);
+console.log(`[pool-finalize] reviewPath=${reviewPath}`);
+
+// ── Claude final selection ─────────────────────────────────────────────────
+
+const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+if (!ANTHROPIC_KEY) {
+  console.error("Missing ANTHROPIC_API_KEY");
+  process.exit(1);
+}
+
+interface Selection {
+  idx: number;              // 1-based index into the `potential` list we sent
+  reasoning: string;
+}
+
+async function finalSelect(
+  potentials: Array<{ title: string; source: string; description: string; score: number; clusterSize: number; clusterSources: string[] }>
+): Promise<Selection[]> {
+  const numbered = potentials
+    .map((it, i) => `${i + 1}. [${it.source}] "${it.title}" (score=${it.score}, covered by ${it.clusterSize} source${it.clusterSize > 1 ? "s" : ""}${it.clusterSize > 1 ? ": " + it.clusterSources.join(", ") : ""}) — ${it.description.slice(0, 200)}`)
+    .join("\n");
+
+  const prompt = `You are the final editor of a daily pop-culture feed aimed at culturally-literate millennials. The feed runs 10–15 stories per day, designed as a fast, shareable scroll that captures the day's cultural pulse.
+
+EDITORIAL GOALS:
+- Balance across five axes: Power (politics+culture crossover), Tech (meaningful tech+society), Culture (music/film/fashion/art), Internet (distinctive viral/meme), Human (scaled drama, celebrity crossovers, behavioral shifts)
+- Prioritise narrative reversals, power/tech/control moves, unexpected crossovers, fandom-driven real-world behavior
+- One controlled "dark gravity" (crime/scandal) is fine — never stack multiple
+- Accept light pop-culture fillers or franchise announcements when the feed is weak on signal
+- Favor stories covered by multiple sources (clusterSize > 1) when tie-breaking on score
+- Prefer novel internet culture over low-quality viral-of-the-day
+
+ANTI-PATTERNS (avoid):
+- Too many pure AI/tech narratives without cultural hooks
+- Multiple crime/scandal stories in one feed
+- Low-signal viral with no staying power
+- Pure trailer-only list with no substance
+- Auto-indexing on AI/tech (compensate)
+
+DEDUP: If multiple items describe the same story, pick the best framing (best source, best headline) and include once.
+
+TASK: Pick exactly ${target} stories. Return JSON array, one entry per pick:
+[{"idx": 7, "reasoning": "short one-liner — why this made the cut vs. alternatives"}, ...]
+
+Order the array by how prominent the story should be in the feed (top = most prominent).
+
+Respond with ONLY the JSON array, no prose.
+
+Candidate pool (${potentials.length} items, all passed per-fetch scoring):
+${numbered}`;
+
+  const body = JSON.stringify({
+    model: "claude-sonnet-4-6",
+    max_tokens: 6000,
+    messages: [{ role: "user", content: prompt }],
+  });
+
+  const raw = await new Promise<string>((resolve, reject) => {
+    const req = https.request(
+      {
+        hostname: "api.anthropic.com",
+        path: "/v1/messages",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": ANTHROPIC_KEY!,
+          "anthropic-version": "2023-06-01",
+          "Content-Length": Buffer.byteLength(body),
+        },
+      },
+      (res) => {
+        let data = "";
+        res.on("data", (c) => (data += c.toString()));
+        res.on("end", () => {
+          if ((res.statusCode ?? 0) >= 400) {
+            reject(new Error(`finalSelect HTTP ${res.statusCode}: ${data.slice(0, 300)}`));
+          } else {
+            try {
+              const json = JSON.parse(data);
+              const text = json?.content?.[0]?.type === "text" ? json.content[0].text : "";
+              resolve(text);
+            } catch (e) {
+              reject(new Error(`finalSelect parse: ${(e as Error).message}`));
+            }
+          }
+        });
+      }
+    );
+    req.setTimeout(180_000, () => req.destroy(new Error("finalSelect timeout")));
+    req.on("error", reject);
+    req.write(body);
+    req.end();
+  });
+
+  const match = raw.match(/\[[\s\S]*\]/);
+  if (!match) throw new Error(`finalSelect: no JSON array in response — got: ${raw.slice(0, 300)}`);
+  return JSON.parse(match[0]) as Selection[];
+}
+
+// ── Review doc writer ──────────────────────────────────────────────────────
+
+function writeReviewDoc(
+  pool: Pool,
+  publishedItems: PoolItem[],
+  enriched: EnrichedArticle[],
+  borderlineBelowCut: PoolItem[]
+): void {
+  const publishedIds = new Set(publishedItems.map((p) => p.id));
+  const potentialNotPublished = pool.items.filter(
+    (p) => p.verdict === "potential" && !publishedIds.has(p.id)
+  );
+  // Group rejects
+  const lowScore = pool.items.filter((p) => p.verdict === "rejected" && p.score < 40);
+  const midScore = pool.items.filter((p) => p.verdict === "rejected" && p.score >= 40);
+
+  // Unique cluster count
+  const uniqueClusters = new Set(pool.items.map((p) => p.clusterId)).size;
+
+  // Top sources by coverage (items with their source in clusterSources)
+  const sourceCoverage = new Map<string, number>();
+  pool.items.forEach((p) => p.clusterSources.forEach((s) => sourceCoverage.set(s, (sourceCoverage.get(s) ?? 0) + 1)));
+  const topSources = [...sourceCoverage.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
+
+  const lines: string[] = [];
+  lines.push(`# Review — ${pool.feedDate}`);
+  lines.push("");
+  lines.push(`Generated ${new Date().toISOString()} · 24h window starting ${pool.dayStart}`);
+  lines.push("");
+  lines.push("## Summary");
+  lines.push("");
+  lines.push(`- **Fetches run:** ${pool.fetches.length} / 5`);
+  lines.push(`- **Total items in pool:** ${pool.items.length}`);
+  lines.push(`- **Unique stories (clusters):** ${uniqueClusters}`);
+  lines.push(`- **Potential:** ${pool.items.filter((p) => p.verdict === "potential" || p.verdict === "published").length}`);
+  lines.push(`- **Rejected by scoring:** ${pool.items.filter((p) => p.verdict === "rejected").length}`);
+  lines.push(`- **Published to preview:** ${publishedItems.length}`);
+  lines.push("");
+  lines.push("### Fetches");
+  lines.push("");
+  lines.push("| # | Window | Items in window | New | Dedup merges |");
+  lines.push("|---|---|---|---|---|");
+  pool.fetches.forEach((f) => {
+    lines.push(`| ${f.n} | ${f.windowStart.slice(11, 16)}→${f.windowEnd.slice(11, 16)} UTC | ${f.itemsInWindow} | ${f.itemsAdded} | ${f.dedupMerges} |`);
+  });
+  lines.push("");
+  lines.push("### Top sources by coverage");
+  lines.push("");
+  lines.push(topSources.map(([s, n]) => `- ${s}: ${n}`).join("\n"));
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push(`## ✓ Published (${publishedItems.length})`);
+  lines.push("");
+  publishedItems.forEach((p, i) => {
+    const enr = enriched.find((e) => e.title === p.title);
+    const img = enr?.imageUrl;
+    lines.push(`### ${i + 1}. ${p.title}`);
+    lines.push("");
+    lines.push(`- **Source:** ${p.source} · **Score:** ${p.score} · **Coverage:** ${p.clusterSize} source${p.clusterSize > 1 ? "s" : ""}`);
+    if (enr) {
+      lines.push(`- **Category:** ${enr.category} · **Tag:** ${enr.tag}`);
+    }
+    lines.push(`- **Why published:** ${p.publishedReasoning ?? "—"}`);
+    lines.push(`- **Per-fetch reasoning:** ${p.reasoning}`);
+    if (img) lines.push(`- ![image](${img})`);
+    lines.push(`- [Original article](${p.url})`);
+    lines.push("");
+  });
+  lines.push("---");
+  lines.push("");
+  lines.push(`## ⚬ Not published — potential but not picked (${potentialNotPublished.length})`);
+  lines.push("");
+  lines.push("_These passed scoring but didn't make the final 10–15 cut. The first ~10 are the closest calls; tell me any numbers to swap in._");
+  lines.push("");
+  potentialNotPublished
+    .sort((a, b) => b.score - a.score)
+    .forEach((p, i) => {
+      lines.push(`${i + 1}. **[${p.source}]** "${p.title}" — score=${p.score}, coverage=${p.clusterSize}`);
+      lines.push(`   - ${p.reasoning}`);
+      lines.push(`   - [Link](${p.url})`);
+    });
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push(`## ✗ Rejected — mid-score (${midScore.length})`);
+  lines.push("");
+  lines.push("_Score 40–49. Borderline noise. Flag here if you want me to consider any._");
+  lines.push("");
+  midScore.sort((a, b) => b.score - a.score).forEach((p) => {
+    lines.push(`- **[${p.source}]** "${p.title}" — score=${p.score} — ${p.reasoning}`);
+  });
+  lines.push("");
+  lines.push(`## ✗ Rejected — low-score (${lowScore.length})`);
+  lines.push("");
+  lines.push("_Score < 40. Routine noise / off-brand / promo. Expand only if nothing else is working._");
+  lines.push("");
+  lines.push("<details><summary>Expand low-score list</summary>");
+  lines.push("");
+  lowScore.sort((a, b) => b.score - a.score).forEach((p) => {
+    lines.push(`- **[${p.source}]** "${p.title}" — score=${p.score}`);
+  });
+  lines.push("");
+  lines.push("</details>");
+  lines.push("");
+
+  fs.mkdirSync(reviewDir, { recursive: true });
+  fs.writeFileSync(reviewPath, lines.join("\n"));
+  console.log(`[pool-finalize] ✓ review doc written: ${reviewPath}`);
+}
+
+// ── Main ───────────────────────────────────────────────────────────────────
+
+async function main(): Promise<void> {
+  if (!fs.existsSync(poolPath)) {
+    console.error(`[pool-finalize] pool file not found: ${poolPath}`);
+    console.error("Have you run pool-fetch.ts at least once for this feedDate?");
+    process.exit(1);
+  }
+
+  const pool = JSON.parse(fs.readFileSync(poolPath, "utf8")) as Pool;
+  console.log(`[pool-finalize] pool has ${pool.items.length} items across ${pool.fetches.length} fetches`);
+
+  // Dedup at the cluster level: one representative per cluster, highest score wins
+  const byCluster = new Map<string, PoolItem>();
+  for (const it of pool.items) {
+    if (it.verdict !== "potential" && it.verdict !== "published") continue;
+    const existing = byCluster.get(it.clusterId);
+    if (!existing || it.score > existing.score) byCluster.set(it.clusterId, it);
+  }
+  const representatives = [...byCluster.values()].sort((a, b) => b.score - a.score);
+  console.log(`[pool-finalize] potential cluster reps: ${representatives.length}`);
+
+  if (representatives.length === 0) {
+    console.error("[pool-finalize] no potential items to choose from — exiting");
+    process.exit(1);
+  }
+
+  // Final Claude selection
+  console.log(`[pool-finalize] asking Claude to pick ${target} from ${representatives.length}...`);
+  const selections = await finalSelect(
+    representatives.map((r) => ({
+      title: r.title,
+      source: r.source,
+      description: r.description,
+      score: r.score,
+      clusterSize: r.clusterSize,
+      clusterSources: r.clusterSources,
+    }))
+  );
+  console.log(`[pool-finalize] Claude selected ${selections.length}`);
+
+  // Map selections back to items
+  const publishedItems: PoolItem[] = [];
+  for (const sel of selections) {
+    const idx = sel.idx - 1;
+    if (idx < 0 || idx >= representatives.length) {
+      console.warn(`[pool-finalize] bad idx ${sel.idx} — skipping`);
+      continue;
+    }
+    const item = representatives[idx];
+    item.publishedReasoning = sel.reasoning;
+    publishedItems.push(item);
+  }
+
+  // Mark published in pool (mutates all cluster members)
+  const publishedClusterIds = new Set(publishedItems.map((p) => p.clusterId));
+  pool.items.forEach((p) => {
+    if (publishedClusterIds.has(p.clusterId) && (p.verdict === "potential" || p.verdict === "published")) {
+      p.verdict = "published";
+    }
+  });
+
+  // Run enrichment + image pipeline on selected items
+  let enriched: EnrichedArticle[] = [];
+  if (!dryRun && publishedItems.length > 0) {
+    const rawItems: RawRSSItem[] = publishedItems.map((p) => ({
+      title: p.title,
+      description: p.description,
+      link: p.url,
+      pubDate: p.pubDate,
+      source: p.source,
+      imageUrl: p.rawImageUrl,
+    }));
+
+    console.log(`[pool-finalize] enriching ${rawItems.length} articles...`);
+    enriched = await enrichSelectedItems(rawItems, true);
+    console.log(`[pool-finalize] ✓ enrichment complete (${enriched.length} articles)`);
+
+    console.log("[pool-finalize] merging into feed + saving to Supabase dev stage...");
+    const added = mergeFeed(enriched);
+    saveCommittedFeed();
+    console.log(`[pool-finalize] ✓ ${added} new articles merged to today's feed`);
+  } else if (dryRun) {
+    console.log("[pool-finalize] --dry-run: skipping enrichment + Supabase write");
+  }
+
+  // Persist updated pool (verdict changes)
+  pool.finalizedAt = new Date().toISOString();
+  fs.writeFileSync(poolPath, JSON.stringify(pool, null, 2) + "\n");
+  console.log(`[pool-finalize] ✓ pool updated with published verdicts`);
+
+  // Borderline candidates: top 8 potential-not-published for easy swap reference
+  const publishedIds = new Set(publishedItems.map((p) => p.id));
+  const borderlineBelowCut = pool.items
+    .filter((p) => (p.verdict === "potential") && !publishedIds.has(p.id))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 8);
+
+  writeReviewDoc(pool, publishedItems, enriched, borderlineBelowCut);
+
+  console.log(`[pool-finalize] DONE — ${publishedItems.length} published, review at ${reviewPath}`);
+}
+
+main().catch((e) => {
+  console.error("[pool-finalize] fatal:", e);
+  process.exit(1);
+});

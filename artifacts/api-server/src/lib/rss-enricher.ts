@@ -1109,7 +1109,7 @@ function extractImage(block: string): string | undefined {
   return undefined;
 }
 
-function parseRSSItems(xml: string, source: string): RawRSSItem[] {
+export function parseRSSItems(xml: string, source: string): RawRSSItem[] {
   const isAtom = /<feed[\s>]/i.test(xml);
   const pattern = isAtom
     ? /<entry>([\s\S]*?)<\/entry>/gi
@@ -1852,7 +1852,7 @@ async function fetchSpotifyImage(query: string): Promise<string | undefined> {
 
 // ─── Fetch ───────────────────────────────────────────────────────────────────
 
-async function fetchFeed(
+export async function fetchFeed(
   url: string,
   sourceName: string
 ): Promise<RawRSSItem[]> {
