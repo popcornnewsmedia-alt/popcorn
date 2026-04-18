@@ -41,6 +41,16 @@
       "itemsInWindow": 57,
       "itemsAdded": 41,
       "dedupMerges": 0
+    },
+    {
+      "n": 5,
+      "windowStart": "2026-04-18T08:30:00.000Z",
+      "windowEnd": "2026-04-18T12:30:00.000Z",
+      "ranAt": "2026-04-18T12:35:30.517Z",
+      "itemsRawFromFeeds": 761,
+      "itemsInWindow": 133,
+      "itemsAdded": 128,
+      "dedupMerges": 0
     }
   ],
   "items": [
@@ -824,13 +834,14 @@
       "rawImageUrl": "https://media.wired.com/photos/69e24d762c03fd43832a42f8/master/pass/GettyImages-2214140680.jpg",
       "fetchedInRun": 1,
       "score": 82,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Sam Altman's World ID now on Tinder is a perfect Power/Tech/Culture crossover — surveillance capitalism meets dating apps, highly shareable",
       "clusterId": "c-44ae7aa51ea2a480",
       "clusterSize": 1,
       "clusterSources": [
         "Wired"
-      ]
+      ],
+      "publishedReasoning": "Sam Altman's Orb now gatekeeping Tinder matches is the perfect Tech-meets-Internet-culture crossover — absurd, dystopian, and instantly shareable; Wired's wry framing is ideal"
     },
     {
       "id": "c4af8c4e7a3e92ba",
@@ -860,13 +871,14 @@
       "rawImageUrl": "https://media.wired.com/photos/69e2353a04c989eedf38a6d1/master/pass/GettyImages-2270864437.jpg",
       "fetchedInRun": 1,
       "score": 80,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Rare Republican revolt sinking a Trump surveillance push is a narrative reversal with real civil liberties stakes — strong Power story",
       "clusterId": "c-f04584e02b9a2da6",
       "clusterSize": 1,
       "clusterSources": [
         "Wired"
-      ]
+      ],
+      "publishedReasoning": "Republican mutiny killing warrantless surveillance extension is a genuine Power reversal — the surveillance state losing a vote it expected to win, with cultural civil liberties implications"
     },
     {
       "id": "33a654f6e5fe4997",
@@ -1055,13 +1067,14 @@
       "rawImageUrl": "https://static01.nyt.com/images/2026/04/18/multimedia/18xp-d4vd-assw/18xp-d4vd-assw-mediumSquareAt3X.jpg",
       "fetchedInRun": 1,
       "score": 85,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Rising Gen Z artist arrested in connection with a teenager's death is major scaled human drama with real cultural stakes",
       "clusterId": "c-8419ec72fed50342",
       "clusterSize": 1,
       "clusterSources": [
         "NYT Arts"
-      ]
+      ],
+      "publishedReasoning": "D4vd arrested in connection with a teenage girl's death is the feed's one dark-gravity crime entry — NYT framing is most authoritative and includes the legal defense angle"
     },
     {
       "id": "05574d752976d529",
@@ -1439,13 +1452,14 @@
       "description": "Netflix is going to launch a TikTok-like vertical video feed within its apps this month, and plans to use AI broadly for content creation and recommendations.",
       "fetchedInRun": 1,
       "score": 78,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Netflix adding TikTok-style vertical feed is a major platform convergence moment — signals where streaming is headed and sparks genuine audience reaction",
       "clusterId": "c-026fec4e2a3fe298",
       "clusterSize": 1,
       "clusterSources": [
         "TechCrunch"
-      ]
+      ],
+      "publishedReasoning": "Netflix launching TikTok-style vertical feed is a platform-behavior shift story that signals where streaming goes next — meaningful Tech/Culture crossover, not pure trailer filler"
     },
     {
       "id": "67d1503e04f8ce48",
@@ -2153,13 +2167,14 @@
       "rawImageUrl": "https://futurism.com/wp-content/uploads/2026/04/val-kilmer-ai-film.jpg?quality=85",
       "fetchedInRun": 1,
       "score": 50,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "score-failure-default",
       "clusterId": "c-622b0c255aed0202",
       "clusterSize": 1,
       "clusterSources": [
         "Futurism"
-      ]
+      ],
+      "publishedReasoning": "Val Kilmer's estate using AI to put him in a film post-death is a provocative Human/Tech story about consent, grief, and the entertainment industry's AI frontier — genuine outrage fuel"
     },
     {
       "id": "a8919d08bf912829",
@@ -2400,13 +2415,14 @@
       "rawImageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/mark-warner-ai-prediction-inc.jpg",
       "fetchedInRun": 1,
       "score": 85,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Senator-level alarm about 30% post-grad unemployment from AI is a Power/Tech crossover with massive generational stakes; politically charged and deeply shareable",
       "clusterId": "c-4fd2054ebf1330b8",
       "clusterSize": 1,
       "clusterSources": [
         "Inc."
-      ]
+      ],
+      "publishedReasoning": "Senator Warner's 30% post-grad unemployment prediction tied to AI job cuts is a Human/Tech crossover with real millennial anxiety stakes — not pure AI navel-gazing"
     },
     {
       "id": "8cad322c91da254d",
@@ -2840,13 +2856,14 @@
       "rawImageUrl": "https://lede-admin.stereogum.com/wp-content/uploads/sites/64/2026/04/dropdead.jpg?w=564",
       "fetchedInRun": 2,
       "score": 75,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Critical take on Olivia Rodrigo's lead single is timely culture commentary on a major release moment",
       "clusterId": "c-b3fc0d7f9d8173fc",
       "clusterSize": 1,
       "clusterSources": [
         "Stereogum"
-      ]
+      ],
+      "publishedReasoning": "Olivia Rodrigo 'drop dead' lead single is a major pop-culture signal — Stereogum's review nails the cultural read (Cure-influenced, dreamy pivot) better than straight news coverage"
     },
     {
       "id": "0e2ae515e534474b",
@@ -2894,13 +2911,14 @@
       "rawImageUrl": "https://consequence.net/wp-content/uploads/2026/04/Kanye-West-1.jpeg?quality=80",
       "fetchedInRun": 2,
       "score": 85,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Kanye concert canceled in Poland over Holocaust concerns is high-stakes Power/Culture crossover with global resonance",
       "clusterId": "c-764ea25cea00a7cb",
       "clusterSize": 1,
       "clusterSources": [
         "Consequence"
-      ]
+      ],
+      "publishedReasoning": "Kanye Poland cancellation is a rare power/culture crossover — a government citing Holocaust history to block entertainment is a consequential narrative reversal with global resonance; Consequence framing cleaner"
     },
     {
       "id": "5d8a422e314be8de",
@@ -3622,13 +3640,14 @@
       "rawImageUrl": "https://cdn.theatlantic.com/thumbor/60GuY6j4s7BhYlupqp7j83kvbxs=/0x0:4000x2248/media/img/mt/2026/04/2026_04_18_The_Night_That_Kash_Patel_Thought_Hed_Been_Fired/original.jpg",
       "fetchedInRun": 2,
       "score": 85,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "FBI Director reportedly AWOL with drinking episodes is a major Power story with real institutional stakes and high shareability",
       "clusterId": "c-5a70c7c9dec8fff3",
       "clusterSize": 1,
       "clusterSources": [
         "The Atlantic"
-      ]
+      ],
+      "publishedReasoning": "FBI Director Kash Patel MIA via The Atlantic is a dark-gravity Power story — institutional chaos at the top of law enforcement, credible sourcing, and alarming enough to cut through"
     },
     {
       "id": "718117c22a3127e7",
@@ -6188,13 +6207,14 @@
       "description": "Carpenter brought out the pop icon for a performance that ignited Weekend Two",
       "fetchedInRun": 4,
       "score": 88,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Madonna x Sabrina Carpenter Coachella collab is a major cultural moment — generational pop icon crossover with real buzz",
       "clusterId": "c-f3a4454a3f23a263",
       "clusterSize": 1,
       "clusterSources": [
         "Rolling Stone"
-      ]
+      ],
+      "publishedReasoning": "Madonna x Sabrina Carpenter Coachella duet is the weekend's defining cultural moment — gen-gap power move, history-making, and the story everyone is sharing; Rolling Stone framing is best"
     },
     {
       "id": "f007cbaaf9ebce4e",
@@ -6908,6 +6928,2307 @@
       "clusterSources": [
         "Page Six"
       ]
+    },
+    {
+      "id": "cf0f848ed51fec1c",
+      "url": "https://www.rollingstone.com/product-recommendations/streaming/where-to-stream-nba-playoffs-2026-watch-basketball-online-1235549797/",
+      "title": "Where to Stream the 2026 NBA Playoffs Online",
+      "source": "Rolling Stone",
+      "pubDate": "2026-04-18T11:34:00.000Z",
+      "description": "The NBA postseason has arrived, but figuring out where to stream every game is no layup",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-cf0f848ed51fec1c",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Rolling Stone"
+      ]
+    },
+    {
+      "id": "697b26f940d1fd98",
+      "url": "https://www.rollingstone.com/music/music-features/jimin-bts-interview-they-dont-know-bout-us-1235544860/",
+      "title": "Jimin on Solo Stardom and Gaining Confidence: ‘I Wasn’t Afraid to Ask Questions’",
+      "source": "Rolling Stone",
+      "pubDate": "2026-04-18T11:00:00.000Z",
+      "description": "The BTS vocalist on his enormous solo success, his unique singing style, writing “They Don’t Know ’Bout Us,” and much more",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-697b26f940d1fd98",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Rolling Stone"
+      ]
+    },
+    {
+      "id": "f699f8a0982b3bcf",
+      "url": "https://www.billboard.com/music/music-news/anyma-coachella-weekend-two-performance-recap-lisa-joji-1236226209/",
+      "title": "Anyma Delivers Striking Coachella 2026 Set With Special Guests LISA, Joji &#038;&#160;More",
+      "source": "Billboard",
+      "pubDate": "2026-04-18T12:29:31.000Z",
+      "description": "The performance was the world debut of the producer's new show, ÆDEN .",
+      "rawImageUrl": "https://www.billboard.com/wp-content/uploads/2026/04/Billboard-Anyma-Lisa-2026jpeg.jpeg?w=237&#038;h=147&#038;crop=1",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-f699f8a0982b3bcf",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Billboard"
+      ]
+    },
+    {
+      "id": "bc0caaec6fccee49",
+      "url": "https://www.polygon.com/dust-bunny-bryan-fuller-mads-mikkelsen-streaming-hbo-max/",
+      "title": "Bryan Fuller's surreal hitman fairy tale Dust Bunny debuts on HBO Max",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T12:00:19.000Z",
+      "description": "The creator of Hannibal and Pushing Daisies makes his feature film directorial debut by combining whimsy and disturbing visuals.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/screenshot-2026-04-17-at-2-05-46-pm.png",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-bc0caaec6fccee49",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "f5d65e57f270aea6",
+      "url": "https://www.polygon.com/gamer-birthday-gifts-books-plush-tabletop-subscriptions/",
+      "title": "The best birthday gifts for gamers for every price range",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T11:30:17.000Z",
+      "description": "Looking to pick up a birthday gift for the gamer in your life? Polygon's gift guide has you covered.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/screenshot-2026-04-17-at-11-52-45-am.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-f5d65e57f270aea6",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "b1205893713361d3",
+      "url": "https://www.polygon.com/jojos-bizarre-adventure-part-one-phantom-blood-defense-retrospective/",
+      "title": "In defense of JoJo's Bizarre Adventure: Phantom Blood",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T11:00:18.000Z",
+      "description": "Hirohiko Araki's first installment in the JoJo saga is more impressive and taut than you remember.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/gyp8dp1my-backdrop_wide-1.avif",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-b1205893713361d3",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "181221b673526cb0",
+      "url": "https://www.polygon.com/10-best-manga-crunchyroll-app/",
+      "title": "10 best manga you can read on Crunchyroll Manga",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T11:00:18.000Z",
+      "description": "Crunchyroll's digital reading manga app offers a variety of titles from different publishers, from Jujutsu Kaisen to The Summer Hikaru Died.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/crunchyroll-manga-app.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-181221b673526cb0",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "2e964910a626f167",
+      "url": "https://www.polygon.com/disney-pixar-hoppers-streaming/",
+      "title": "When will Hoppers come to streaming, Blu-ray, and DVD?",
+      "source": "Polygon",
+      "pubDate": "2026-04-18T10:31:19.000Z",
+      "description": "Hoppers was a box office his, but when will it come to streaming (Disney Plus), Blu-ray, and DVD? Here's what we know.",
+      "rawImageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/03/hoppers-online-use-h170_1_pub-pub16-131.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-2e964910a626f167",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Polygon"
+      ]
+    },
+    {
+      "id": "914a187283ab9bd8",
+      "url": "https://www.theatlantic.com/culture/2026/04/mother-mary-review/686841/?utm_source=feed",
+      "title": "A Beguiling Film About the Downsides of Pop Stardom",
+      "source": "The Atlantic",
+      "pubDate": "2026-04-18T12:00:00.000Z",
+      "description": "<em>Mother Mary</em> offers a spooky spin on what it takes to stay famous.",
+      "rawImageUrl": "https://cdn.theatlantic.com/thumbor/AIjuFaILe9PNKB7gQdZ9iaXVxrg=/media/img/mt/2026/04/2026_04_15_Mother_Mary_Review/original.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-914a187283ab9bd8",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Atlantic"
+      ]
+    },
+    {
+      "id": "a9dabae75632ded0",
+      "url": "https://www.theatlantic.com/magazine/2026/05/john-mark-comer-spiritual-practices/686586/?utm_source=feed",
+      "title": "Can Turning Off Your Phone Bring You Closer to God?",
+      "source": "The Atlantic",
+      "pubDate": "2026-04-18T12:00:00.000Z",
+      "description": "Pastor John Mark Comer has won a massive following by preaching about the ills of technology.",
+      "rawImageUrl": "https://cdn.theatlantic.com/thumbor/DqqACq8T1NbUcJG-yFpUChm6g-g=/media/img/2026/04/000409410010_16x9/original.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-a9dabae75632ded0",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Atlantic"
+      ]
+    },
+    {
+      "id": "5ae0c37b2883f2bf",
+      "url": "https://www.theatlantic.com/ideas/2026/04/sorrow-and-pity-trump/686829/?utm_source=feed",
+      "title": "The Film From 1969 That Explains Contemporary America",
+      "source": "The Atlantic",
+      "pubDate": "2026-04-18T11:00:00.000Z",
+      "description": "<em>The Sorrow and the Pity</em> has lessons for how authoritarianism takes root.",
+      "rawImageUrl": "https://cdn.theatlantic.com/thumbor/468U27Nwm1olbuc-xajka6mdsrY=/media/img/mt/2026/04/2026_03_30_The_Daily_The_Sorrow_and_the_Pity/original.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-5ae0c37b2883f2bf",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Atlantic"
+      ]
+    },
+    {
+      "id": "a81628323b488681",
+      "url": "https://www.theatlantic.com/ideas/2026/04/ukraine-trump-us-oil-russia/686854/?utm_source=feed",
+      "title": "Ukraine Has Written Off the United States",
+      "source": "The Atlantic",
+      "pubDate": "2026-04-18T10:00:00.000Z",
+      "description": "Zelensky has stopped pretending that Trump might be an ally.",
+      "rawImageUrl": "https://cdn.theatlantic.com/thumbor/4AM2VYotr-COVuhe1aVAASm2gmM=/media/img/mt/2026/04/2026_04_17_Ukraine_Has_Written_Off_the_US/original.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-a81628323b488681",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Atlantic"
+      ]
+    },
+    {
+      "id": "e11dc0845c14389b",
+      "url": "https://www.wired.com/story/smart-home-curb-appeal/",
+      "title": "The Best Smart Home Accessories to Boost Your Curb Appeal (2026)",
+      "source": "Wired",
+      "pubDate": "2026-04-18T11:02:00.000Z",
+      "description": "These locks, lights, and other smart home upgrades let you add automation without messing up your home’s vibe.",
+      "rawImageUrl": "https://media.wired.com/photos/69e2927e26dabb307b73e8ca/master/pass/Your-Outdoor-Smart-Home-Gear-Doesn't-Have-To-Be-Ugly.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-e11dc0845c14389b",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Wired"
+      ]
+    },
+    {
+      "id": "2b4ff43d8de764d1",
+      "url": "https://www.wired.com/story/how-to-clean-vinyl-records/",
+      "title": "How to Clean Your Vinyl Records (2026): Vacuum, Ultrasonic, Solution, Brush",
+      "source": "Wired",
+      "pubDate": "2026-04-18T11:00:00.000Z",
+      "description": "Those clicks and pops aren't supposed to be there. Give your music a proper bath with this handy guide.",
+      "rawImageUrl": "https://media.wired.com/photos/67ca18d6dd326b3d912b0e49/master/pass/Vinyl-record-cleaning-brush-GettyImages-1129795475-peuceta-(cropped).jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-2b4ff43d8de764d1",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Wired"
+      ]
+    },
+    {
+      "id": "a6a98a2e71e28fc0",
+      "url": "https://www.wired.com/review/asus-tuf-gaming-a14-2026/",
+      "title": "Asus TUF Gaming A14 (2026) Review: GPU-Less Gaming Laptop",
+      "source": "Wired",
+      "pubDate": "2026-04-18T10:30:00.000Z",
+      "description": "A gaming laptop without a discrete graphics card feels revolutionary, but the TUF Gaming A14 doesn't quite take full advantage of AMD's daring new silicon.",
+      "rawImageUrl": "https://media.wired.com/photos/69e28a8f04c989eedf38ac69/master/pass/tuf-A14-02-top.JPG",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-a6a98a2e71e28fc0",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Wired"
+      ]
+    },
+    {
+      "id": "a6024bb5b0cd73eb",
+      "url": "https://www.wired.com/story/schematik-is-cursor-for-hardware-anthropic-wants-in-on-it/",
+      "title": "Schematik Is ‘Cursor for Hardware.’ Anthropic Wants In",
+      "source": "Wired",
+      "pubDate": "2026-04-18T10:30:00.000Z",
+      "description": "Schematik is a program that aims to help people vibe code for physical devices. Hopefully, it won’t blow anything up.",
+      "rawImageUrl": "https://media.wired.com/photos/69e261f2c08b65b67742964b/master/pass/IMG_0608%202.jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-a6024bb5b0cd73eb",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Wired"
+      ]
+    },
+    {
+      "id": "945983801d2e3dcf",
+      "url": "https://www.wired.com/story/security-news-this-week-it-takes-2-minutes-to-hack-the-eus-new-age-verification-app/",
+      "title": "It Takes 2 Minutes to Hack the EU’s New Age-Verification App",
+      "source": "Wired",
+      "pubDate": "2026-04-18T10:30:00.000Z",
+      "description": "Plus: Major data breaches at a gym chain and hotel giant, a disruptive DDoS attack against Bluesky, dubious ICE hires, and more.",
+      "rawImageUrl": "https://media.wired.com/photos/69e297a5b6d175715986c107/master/pass/security_EU_Age_Getty_1.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-945983801d2e3dcf",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Wired"
+      ]
+    },
+    {
+      "id": "ed5caf6cf28abd47",
+      "url": "https://www.wired.com/story/where-to-shop-for-vinyl-records-online/",
+      "title": "Where to Shop for Vinyl Records Online (2026): Discogs, Bandcamp, Ebay",
+      "source": "Wired",
+      "pubDate": "2026-04-18T10:30:00.000Z",
+      "description": "Don’t just load up an Amazon cart! Here are the better ways to find your favorite vinyl records online.",
+      "rawImageUrl": "https://media.wired.com/photos/67d71775e784d4b8067ba635/master/pass/Record-player-turntable-vinyl-headphones-GettyImages-2163788608-EyeEm-Mobile-GmbH-(cropped).jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-ed5caf6cf28abd47",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Wired"
+      ]
+    },
+    {
+      "id": "1c109cad0d7e6403",
+      "url": "https://www.wired.com/story/the-best-movies-to-stream-right-now/",
+      "title": "The Best Movies to Stream This Month (April 2026)",
+      "source": "Wired",
+      "pubDate": "2026-04-18T09:30:00.000Z",
+      "description": "28 Years Later: The Bone Temple, Crime 101, and Deathstalker are among the films deserving of your eyeballs this month",
+      "rawImageUrl": "https://media.wired.com/photos/69e15d364605cb6e7cbd6490/master/pass/Movie-Guide-Culture-rev-1-WPN-FP-0069_High_Res_JPEG.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-1c109cad0d7e6403",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Wired"
+      ]
+    },
+    {
+      "id": "32d63e915c57cd56",
+      "url": "https://www.wired.com/story/the-lonely-runner-problem-only-appears-simple/",
+      "title": "The ‘Lonely Runner’ Problem Only Appears Simple",
+      "source": "Wired",
+      "pubDate": "2026-04-18T09:00:00.000Z",
+      "description": "Take a group of runners circling a track at unique, constant paces. Answering the question of how many will always end up running alone, no matter their speed, has vexed mathematicians for decades.",
+      "rawImageUrl": "https://media.wired.com/photos/69e2785f18346d309af9882b/master/pass/LonelyRunnercr-MarkBelan-Lede.gif",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-32d63e915c57cd56",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Wired"
+      ]
+    },
+    {
+      "id": "a3557c2da49fd5d7",
+      "url": "https://www.theguardian.com/tv-and-radio/2026/apr/18/why-even-claudia-winkleman-cant-save-the-chatshow",
+      "title": "A dubious career move: how The Claudia Winkleman Show ended the presenter’s winning streak",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T09:00:09.000Z",
+      "description": "<p>It seems that even the Traitors host can’t save the ailing chatshow format. As her series ends, it’s hard not to feel that she never quite got out of Graham Norton’s shadow</p><p>Six weeks ago, before Claudia Winkleman launched her BBC One Friday ",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/3f75b0c693a7d5b6da0855e94c7935eede31a95c/359_0_3715_2973/master/3715.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=e67e1433aa176da0389be406e55bf075",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-a3557c2da49fd5d7",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "7788c44691cfb464",
+      "url": "https://www.theguardian.com/music/ng-interactive/2026/apr/18/michael-jackson-biopic-jaafar-jackson",
+      "title": "Can a new biopic change your mind about Michael Jackson?",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T09:00:09.000Z",
+      "description": "<p>In life, the singer’s image was shaken by abuse allegations. In death, he is a billion-dollar business</p><p>In December 1993, <a href=\"https://www.theguardian.com/music/michaeljackson\">Michael Jackson</a>’s genitals were <a href=\"https://www.nyti",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/59ef85706d4fefdb4b7f9a40fc20761b681d64f4/0_476_2400_1919/master/2400.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=cb44c519db4ff0ddd312909f89adc9a2",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-7788c44691cfb464",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "9288892c190471f4",
+      "url": "https://www.theguardian.com/artanddesign/2026/apr/18/v-and-a-east-first-exhibition-black-british-music",
+      "title": "Story of Black British music writ large in first exhibition at V&A East",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T09:00:10.000Z",
+      "description": "<p>Museum says The Music is Black is part of a push to reposition scene as central to UK’s cultural history</p><p>Jacqueline Springer is standing in the middle of the V&amp;A’s new exhibition space looking wistfully at a pair of drainpipe trousers, a",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/7caef3d97c3f842fe8688a0efe8a348f7bb68064/807_78_4709_3769/master/4709.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=fb7b6f74683f688e6353ddd71c52f77b",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-9288892c190471f4",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "a1f2e27e5baad237",
+      "url": "https://www.theguardian.com/commentisfree/2026/apr/18/nostalgia-industry-malcolm-in-the-middle-reboot-sitcom",
+      "title": "No generation is safe from the nostalgia industry – just look at the disappointing Malcolm in the Middle reboot",
+      "source": "The Guardian Culture",
+      "pubDate": "2026-04-18T09:00:10.000Z",
+      "description": "<p>The revival of the hit 2000s sitcom has none of the political subversiveness of the original. But should we be surprised?</p><p>One day in the near future, millennials like myself will be shuffling off into care homes. Once inside, what will we do",
+      "rawImageUrl": "https://i.guim.co.uk/img/media/36d51e22bbc0db97f4f4dc498149793d4019d8de/135_0_2500_2000/master/2500.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=d5e3f705f191ae0bbf40dcdad902acaa",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-a1f2e27e5baad237",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Guardian Culture"
+      ]
+    },
+    {
+      "id": "654f59817e8fc1a7",
+      "url": "https://www.nytimes.com/2026/04/18/arts/music/luca-guadagnino-death-of-klinghoffer-maggio-musicale.html",
+      "title": "Luca Guadagnino Wants a Difficult Opera to Break Free of Polemics",
+      "source": "NYT Arts",
+      "pubDate": "2026-04-18T09:02:34.000Z",
+      "description": "The Italian filmmaker hopes his staging of John Adams’s “The Death of Klinghoffer” will help audiences look past the controversies surrounding the work.",
+      "rawImageUrl": "https://static01.nyt.com/images/2026/04/18/multimedia/18cul-guadagnino-opera-01-zvch/18cul-guadagnino-opera-01-zvch-mediumSquareAt3X.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-654f59817e8fc1a7",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NYT Arts"
+      ]
+    },
+    {
+      "id": "c08c5259d5a5a62c",
+      "url": "https://www.nytimes.com/2026/04/18/arts/music/10000-concerts-tape-recordings-chicago.html",
+      "title": "A Chicago Man’s 10,000 Concerts on Tape Are Becoming Digital History",
+      "source": "NYT Arts",
+      "pubDate": "2026-04-18T09:02:22.000Z",
+      "description": "From the mid-1980s until just a few years ago, Aadam Jacobs recorded thousands of club shows, including an early Nirvana performance. Volunteers are adding them to an online archive.",
+      "rawImageUrl": "https://static01.nyt.com/images/2025/04/18/multimedia/00xp-recordings-aadam-basement-vctl/00xp-recordings-aadam-basement-vctl-mediumSquareAt3X.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-c08c5259d5a5a62c",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NYT Arts"
+      ]
+    },
+    {
+      "id": "37f621d4b13e30b2",
+      "url": "https://www.nytimes.com/2026/04/18/arts/music/lana-del-rey-anitta-new-songs.html",
+      "title": "Lana Del Rey, Prince: 10 Songs We’re Talking About This Week",
+      "source": "NYT Arts",
+      "pubDate": "2026-04-18T09:02:01.000Z",
+      "description": "Lana Del Rey reveals a dramatic theme for a James Bond video game, and a look back at the chart from 40 years ago, when Prince reigned supreme.",
+      "rawImageUrl": "https://static01.nyt.com/images/2026/04/18/multimedia/18cul-songs-pcgb/18cul-songs-pcgb-mediumSquareAt3X.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-37f621d4b13e30b2",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NYT Arts"
+      ]
+    },
+    {
+      "id": "9b2a2829cbe760a1",
+      "url": "https://www.nytimes.com/2026/04/18/arts/at-milan-design-week-noodling-around-with-an-italian-classic.html",
+      "title": "At Milan Design Week, Noodling Around With an Italian Classic",
+      "source": "NYT Arts",
+      "pubDate": "2026-04-18T09:01:02.000Z",
+      "description": "An exhibition of 3-D-printed pasta reveals what could be the most disruptive culinary innovation since the eggbeater.",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-9b2a2829cbe760a1",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NYT Arts"
+      ]
+    },
+    {
+      "id": "642c052b06ce8595",
+      "url": "https://www.nytimes.com/2026/04/18/arts/design/barber-osgerby-milan-triennale.html",
+      "title": "Barber Osgerby, a British Design Team, Is Honored in Milan",
+      "source": "NYT Arts",
+      "pubDate": "2026-04-18T09:00:44.000Z",
+      "description": "The Triennale design museum is hosting an exhibition of work by the renowned studio Barber Osgerby.",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-642c052b06ce8595",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NYT Arts"
+      ]
+    },
+    {
+      "id": "720ae97f003ef763",
+      "url": "https://www.nytimes.com/2026/04/18/arts/television/jason-chambers-below-deck-down-under.html",
+      "title": "How Jason Chambers Runs a Tight Ship on ‘Below Deck’",
+      "source": "NYT Arts",
+      "pubDate": "2026-04-18T09:00:13.000Z",
+      "description": "On the current season of the Bravo reality show, he has his hands full with real housewives and more. These are the things that keep him grounded.",
+      "rawImageUrl": "https://static01.nyt.com/images/2026/04/26/arts/26myten-chambers/26myten-chambers-mediumSquareAt3X.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-720ae97f003ef763",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NYT Arts"
+      ]
+    },
+    {
+      "id": "f4bfb4041dac0e6f",
+      "url": "https://www.newyorker.com/culture/critics-notebook/euphorias-descent-into-hell",
+      "title": "“Euphoria” ’s Descent Into Hell",
+      "source": "The New Yorker",
+      "pubDate": "2026-04-18T10:00:00.000Z",
+      "description": "With Season 3, the HBO drama feels like it’s clicked into its final, hardened form: a thrilling, disturbing horror show, delivered with a sneer and a smile.",
+      "rawImageUrl": "https://media.newyorker.com/photos/69e2572cd289bfe7ea62e3de/master/pass/NY-Euphoria_BT_Final_3.gif",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-f4bfb4041dac0e6f",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The New Yorker"
+      ]
+    },
+    {
+      "id": "5bf55849f310ffac",
+      "url": "https://www.newyorker.com/magazine/2026/04/27/j-d-vances-bumpy-ride",
+      "title": "J. D. Vance’s Bumpy Ride",
+      "source": "The New Yorker",
+      "pubDate": "2026-04-18T10:00:00.000Z",
+      "description": "It wasn’t the first time that Trump had debased someone who serves him. It wasn’t even the first time that Vance had had to downplay a blasphemy-themed A.I. image.",
+      "rawImageUrl": "https://media.newyorker.com/photos/69e28d0dbd6ef2e6093aab2d/master/pass/r49144.png",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-5bf55849f310ffac",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The New Yorker"
+      ]
+    },
+    {
+      "id": "26ca7f6bc2c58d5e",
+      "url": "https://www.newyorker.com/culture/the-lede/justin-bieber-pop-musics-fallen-angel-rises-again-at-coachella",
+      "title": "Justin Bieber, Pop Music’s Fallen Angel, Rises Again at Coachella",
+      "source": "The New Yorker",
+      "pubDate": "2026-04-18T10:00:00.000Z",
+      "description": "The former child star, who, now past thirty, often gestures at a deep well of discontent, wants us to know that he’s got his own ideas.",
+      "rawImageUrl": "https://media.newyorker.com/photos/69e2921270ff04f30b05e5ae/master/pass/RD-JB-V6.jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-26ca7f6bc2c58d5e",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The New Yorker"
+      ]
+    },
+    {
+      "id": "35862a1f99f6de2c",
+      "url": "https://www.newyorker.com/culture/photo-booth/emmet-gowins-american-family",
+      "title": "Emmet Gowin’s American Family",
+      "source": "The New Yorker",
+      "pubDate": "2026-04-18T10:00:00.000Z",
+      "description": "The photographer has said, of his images of his wife Edith’s extended clan, “I wanted to pay attention to the body and personality that had agreed out of love to reveal itself.”",
+      "rawImageUrl": "https://media.newyorker.com/photos/69e0f3d3406dc6291404e885/master/pass/19%20Elijah%20E%20Danville%201972.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-35862a1f99f6de2c",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The New Yorker"
+      ]
+    },
+    {
+      "id": "c86605054b5fe32a",
+      "url": "https://www.newyorker.com/culture/the-weekend-essay/the-pain-and-play-of-divorce-on-kids-tv",
+      "title": "The Pain and Play of Divorce on Kids’ TV",
+      "source": "The New Yorker",
+      "pubDate": "2026-04-18T10:00:00.000Z",
+      "description": "A “Sesame Street” writer once said it was easier to write an episode about death than one about divorce. Where are the shows that manage to do it well?",
+      "rawImageUrl": "https://media.newyorker.com/photos/69e14a604eae4d96c35807b6/master/pass/Bluey_tv_family.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-c86605054b5fe32a",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The New Yorker"
+      ]
+    },
+    {
+      "id": "1bb718e475ea36f8",
+      "url": "https://www.theverge.com/games/908358/people-of-note-pc-playstation-xbox-nintendo-switch-2",
+      "title": "There’s nothing like an RPG over vacation",
+      "source": "The Verge",
+      "pubDate": "2026-04-18T12:00:00.000Z",
+      "description": "With a vacation comes a big choice: What game should I focus on during the trip? I thought about grinding out the harder levels of Super Meat Boy 3D, but I was looking for something more chill. I could have dabbled more with Slay the Spire II, but I ",
+      "rawImageUrl": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/videoframe_121699.png?quality=90&#038;strip=all&#038;crop=0,0,100,100",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-1bb718e475ea36f8",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Verge"
+      ]
+    },
+    {
+      "id": "0212732723a79d13",
+      "url": "https://www.theverge.com/tech/914429/the-ai-apps-are-coming-for-your-pc",
+      "title": "The AI apps are coming for your PC",
+      "source": "The Verge",
+      "pubDate": "2026-04-18T12:00:00.000Z",
+      "description": "Hi, friends! Welcome to Installer No. 124, your guide to the best and Verge-iest stuff in the world. (If you're new here, welcome, send me your Coachella fits, and also you can read all the old editions at the Installer homepage.) This week, I've bee",
+      "rawImageUrl": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/Installer-124.png?quality=90&#038;strip=all&#038;crop=0,0,100,100",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-0212732723a79d13",
+      "clusterSize": 1,
+      "clusterSources": [
+        "The Verge"
+      ]
+    },
+    {
+      "id": "7faf11957961763d",
+      "url": "https://www.nme.com/news/music/record-store-day-2026-has-fans-flocking-to-stores-for-limited-edition-releases-3941064?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=record-store-day-2026-has-fans-flocking-to-stores-for-limited-edition-releases",
+      "title": "Record Store Day 2026 has fans flocking to stores for limited edition releases with exclusive Taylor Swift and Slipknot records up for grabs",
+      "source": "NME",
+      "pubDate": "2026-04-18T10:46:54.000Z",
+      "description": "The annual event has seen stores report their largest ever queues, with the ultra-dedicated camping over 24 hours in advance The post Record Store Day 2026 has fans flocking to stores for limited edition releases with exclusive Taylor Swift and Slipk",
+      "rawImageUrl": "https://www.nme.com/wp-content/uploads/2026/04/live-record-store-day-2025.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-7faf11957961763d",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NME"
+      ]
+    },
+    {
+      "id": "9d19acc339b4e069",
+      "url": "https://www.nme.com/news/music/moby-will-donate-all-profits-from-coachella-2026-to-animal-rights-organisations-3941056?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=moby-will-donate-all-profits-from-coachella-2026-to-animal-rights-organisations",
+      "title": "Moby will donate all profits from Coachella 2026 to animal rights organisations",
+      "source": "NME",
+      "pubDate": "2026-04-18T10:42:46.000Z",
+      "description": "\"My main job in life is working as an animal rights activist\" The post Moby will donate all profits from Coachella 2026 to animal rights organisations appeared first on NME .",
+      "rawImageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Moby.-CREDIT_-Kurt-Krieger-Corbis_Corbis-via-Getty-Images.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-9d19acc339b4e069",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NME"
+      ]
+    },
+    {
+      "id": "406850acc317042b",
+      "url": "https://www.nme.com/news/music/kneecap-the-mary-wallopers-annie-mac-and-more-back-stop-the-game-campaign-protesting-ireland-v-israel-game-3941040?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=kneecap-the-mary-wallopers-annie-mac-and-more-back-stop-the-game-campaign-protesting-ireland-v-israel-game",
+      "title": "Kneecap, The Mary Wallopers, Annie Mac and more back &#8216;Stop The Game&#8217; campaign protesting Ireland v Israel game",
+      "source": "NME",
+      "pubDate": "2026-04-18T09:53:09.000Z",
+      "description": "\"We will not take part in this competition against a country that is slaughtering humans in front of our very eyes with impunity\" The post Kneecap, The Mary Wallopers, Annie Mac and more back &#8216;Stop The Game&#8217; campaign protesting Ireland v ",
+      "rawImageUrl": "https://www.nme.com/wp-content/uploads/2026/04/live-football-draw.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-406850acc317042b",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NME"
+      ]
+    },
+    {
+      "id": "3d9433b0e09486cd",
+      "url": "https://www.nme.com/news/music/after-calling-it-an-utter-and-complete-load-of-bollocks-iron-maiden-will-skip-the-rock-roll-hall-of-fame-induction-ceremony-3941020?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=after-calling-it-an-utter-and-complete-load-of-bollocks-iron-maiden-will-skip-the-rock-roll-hall-of-fame-induction-ceremony",
+      "title": "After calling it &#8220;an utter and complete load of bollocks”, Iron Maiden will skip the Rock &#038; Roll Hall Of Fame induction ceremony",
+      "source": "NME",
+      "pubDate": "2026-04-18T09:26:58.000Z",
+      "description": "Bruce Dickinson previously said the organisation was run by \"a bunch of sanctimonious bloody Americans who wouldn’t know rock and roll if it hit them in the face\" The post After calling it &#8220;an utter and complete load of bollocks”, Iron Maiden w",
+      "rawImageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Bruce-Dickinson-of-Iron-Maiden.-CREDIT_-Jo-Hale_Redferns.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-3d9433b0e09486cd",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NME"
+      ]
+    },
+    {
+      "id": "ed83d49474bfdf35",
+      "url": "https://www.nme.com/news/music/kanye-west-poland-gig-cancelled-after-government-backlash-we-cannot-pretend-that-this-is-just-entertainment-3941016?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=kanye-west-poland-gig-cancelled-after-government-backlash-we-cannot-pretend-that-this-is-just-entertainment",
+      "title": "Kanye West Poland gig cancelled after government backlash: &#8220;We cannot pretend that this is just entertainment”",
+      "source": "NME",
+      "pubDate": "2026-04-18T08:33:27.000Z",
+      "description": "It comes after the rapper was prevented from coming to the UK over his previous anti-Semitic comments The post Kanye West Poland gig cancelled after government backlash: &#8220;We cannot pretend that this is just entertainment” appeared first on NME ",
+      "rawImageUrl": "https://www.nme.com/wp-content/uploads/2026/04/live-kanye-west-2022.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-ed83d49474bfdf35",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NME"
+      ]
+    },
+    {
+      "id": "643fc9e22e2148df",
+      "url": "https://www.nme.com/news/music/check-out-madonnas-official-release-of-intoxicating-new-song-i-feel-so-free-3941025?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=check-out-madonnas-official-release-of-intoxicating-new-song-i-feel-so-free",
+      "title": "Check out Madonna&#8217;s official release of intoxicating new song &#8216;I Feel So Free&#8217;",
+      "source": "NME",
+      "pubDate": "2026-04-18T08:33:21.000Z",
+      "description": "It comes after the track was given its live debut during Sabrina Carpenter's headline Coachella performance The post Check out Madonna&#8217;s official release of intoxicating new song &#8216;I Feel So Free&#8217; appeared first on NME .",
+      "rawImageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Madonna.-CREDIT_-Rafael-Pavarotti.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-643fc9e22e2148df",
+      "clusterSize": 1,
+      "clusterSources": [
+        "NME"
+      ]
+    },
+    {
+      "id": "c845f32cfab67c14",
+      "url": "https://www.dexerto.com/entertainment/1-million-bees-terrorize-highway-after-beekeepers-truck-crashes-3353614/",
+      "title": "1 million bees terrorize highway after beekeeper’s truck crashes",
+      "source": "Dexerto",
+      "pubDate": "2026-04-18T11:51:55.000Z",
+      "description": "A truck transporting a million bees crashed on an interstate highway, unleashing them on the standstill traffic and a local racetrack.",
+      "rawImageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/18/bees.jpg?width=1080&amp;quality=75&amp;format=auto",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-c845f32cfab67c14",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Dexerto"
+      ]
+    },
+    {
+      "id": "fa8a8ab4dde3e4fd",
+      "url": "https://www.dexerto.com/entertainment/chinese-car-company-patents-voice-controlled-toilet-for-vehicles-3353590/",
+      "title": "Chinese car company patents voice-controlled toilet for vehicles",
+      "source": "Dexerto",
+      "pubDate": "2026-04-18T10:25:06.000Z",
+      "description": "A car company based in China has been granted a patent to develop a voice-controlled toilet that can be used while inside the car.",
+      "rawImageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/18/pexels-marketing-emotors-2154818928-33412068-2.jpg?width=1080&amp;quality=75&amp;format=auto",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-fa8a8ab4dde3e4fd",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Dexerto"
+      ]
+    },
+    {
+      "id": "c94d776cead1df13",
+      "url": "https://www.businessinsider.com/guides/style/cider-sweater-set-review",
+      "title": "I fell for an Instagram ad for this hot pink set from Cider, and it was one of my best impulse buys ever",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T12:28:19.000Z",
+      "description": "I don&#39;t usually buy fast fashion, but I&#39;m happy to report that Cider is legit and I have no regrets.",
+      "rawImageUrl": "https://i.insider.com/6222568bdcce010019a6dc62?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-c94d776cead1df13",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "5dd5f4c3705206de",
+      "url": "https://www.businessinsider.com/stanford-grad-couldnt-find-job-created-a-six-figure-business-2026-4",
+      "title": "I graduated from Stanford and couldn&#39;t find a job, so I created my own. I turned it into a six-figure business.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T12:27:01.000Z",
+      "description": "I thought I was overqualified for most of the jobs I was applying for as a Stanford grad. I started my own PR company, and it&#39;s been successful.",
+      "rawImageUrl": "https://i.insider.com/69e13119051936af5919a433?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-5dd5f4c3705206de",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "c3565d2684b44551",
+      "url": "https://www.businessinsider.com/guides/style/under-armour-recover-review",
+      "title": "I tried the clothes Tom Brady uses to help him sleep better and recover faster after games — and they work surprisingly well",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T12:07:00.000Z",
+      "description": "Under Armour and future hall-of-famer Tom Brady created one of the best ways to recover after a workout — and it&#39;s easy as getting dressed.",
+      "rawImageUrl": "https://i.insider.com/59e7b6a9b0c29214e12731c7?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-c3565d2684b44551",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "c6fa0ca11f16287e",
+      "url": "https://www.businessinsider.com/guides/style/rebag-official-review",
+      "title": "Rebag sells authentic second-hand designer bags for half the price of retail — and you can make money selling bags you already own",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T12:05:53.000Z",
+      "description": "Buying a designer bag is a big expense, but Rebag makes it more affordable. You can safely purchase second-hand bags that look new, at prices below retail.",
+      "rawImageUrl": "https://i.insider.com/5f05db49f34d053e235fff9b?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-c6fa0ca11f16287e",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "cedaa16114973a00",
+      "url": "https://www.businessinsider.com/guides/style/best-flip-flops",
+      "title": "The18 best flip-flops for comfort",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T12:03:00.000Z",
+      "description": "Whether you&#39;re at the beach or the pool, a good pair of flip-flops will help you go far. These are the best flip-flops for comfort and style.",
+      "rawImageUrl": "https://i.insider.com/60edcd2861b8600019f16d60?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-cedaa16114973a00",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "90fc0424a289c69d",
+      "url": "https://www.businessinsider.com/guides/style/ray-ban-review",
+      "title": "Ray-Ban&#39;s sunglasses are popular for a reason — here&#39;s why they&#39;re worth the money, plus our favorite pairs",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T12:02:00.000Z",
+      "description": "Ray-Ban has been making quality sunglasses since the 1930s. Here&#39;s why it&#39;s our go-to eyewear brand and what makes the sunglasses a great value.",
+      "rawImageUrl": "https://i.insider.com/60e6158f85fa1700185229ad?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-90fc0424a289c69d",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "1f50a0f190f0a041",
+      "url": "https://www.businessinsider.com/guides/style/adidas-parely-ultra-boost-womens-review",
+      "title": "These Adidas are made from recycled ocean plastic, and they&#39;re the most comfortable running sneakers I&#39;ve tried",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T12:00:51.000Z",
+      "description": "Made out of recycled ocean plastic, the Adidas Ultra Boost X Parley are good for the earth and good for making personal records on the track.",
+      "rawImageUrl": "https://i.insider.com/59b2a05d45e2381e008b563a?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-1f50a0f190f0a041",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "0608ed44dfcc713d",
+      "url": "https://www.businessinsider.com/guides/style/thredup-upcycling-review",
+      "title": "ThredUP rewards you for cleaning out your closet while donating to those in need — here&#39;s what it&#39;s like to use",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T11:59:44.000Z",
+      "description": "ThredUP makes donating and upcycling clothes as easy as possible. Order a bag online, fill it up, and schedule a USPS pickup. Here&#39;s exactly how it works.",
+      "rawImageUrl": "https://i.insider.com/5d8a7e1e2e22af171c65d05b?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-0608ed44dfcc713d",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "266cfc5db4545bbc",
+      "url": "https://www.businessinsider.com/guides/style/sustainable-sneaker-brands",
+      "title": "One sneaker takes up to 40 years to decompose in a landfill. These 10 brands are changing that by making shoes from recycled and renewable materials.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T11:57:52.000Z",
+      "description": "These brands are setting a new standard by making sneakers with innovative, eco-friendly materials and more sustainable production methods.",
+      "rawImageUrl": "https://i.insider.com/600881c46d4c620018e410e6?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-266cfc5db4545bbc",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "1f06004837e2a5cc",
+      "url": "https://www.businessinsider.com/guides/style/amazon-in-house-fashion-brands",
+      "title": "A guide to the best Amazon in-house fashion brands, from workout gear to winter coats",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T11:54:53.000Z",
+      "description": "Amazon has a slew of surprisingly stylish and affordable in-house fashion brands. We&#39;ve broken down which ones are worth shopping and what you should buy.",
+      "rawImageUrl": "https://i.insider.com/5fa969b3f7d1cb0019e3a821?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-1f06004837e2a5cc",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "d7e4ff67fbd62e29",
+      "url": "https://www.businessinsider.com/guides/style/sustainability-as-a-value-is-changing-how-consumers-shop",
+      "title": "Sustainability sells: Why consumers and clothing brands alike are turning to sustainability as a guiding light",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T11:52:53.000Z",
+      "description": "In a climate crisis, shoppers are demanding more eco-friendly products and brands are delivering. Here&#39;s our deep dive on why sustainable fashion sells.",
+      "rawImageUrl": "https://i.insider.com/5e13ad36855cc20132030f95?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-d7e4ff67fbd62e29",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "b2a889d20b75f3c2",
+      "url": "https://www.businessinsider.com/eight-year-old-walks-to-school-alone-independence-2026-4",
+      "title": "I let my 8-year-old walk to school alone and taught her to cook at 7. I want her to be independent, like I was growing up.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T11:07:01.000Z",
+      "description": "I grew up in El Salvador, where I was given a lot of freedom. I&#39;m now raising my kids in the US, and I want them to have the same independence.",
+      "rawImageUrl": "https://i.insider.com/69e104ba051936af5919a2cd?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-b2a889d20b75f3c2",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "3fb39f86b4f6ab00",
+      "url": "https://www.businessinsider.com/jump-trading-star-quants-zhang-kirovski-exit-2026-4",
+      "title": "Two Jump Trading stars exit the quant giant — and one of its most profitable units",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T11:03:01.000Z",
+      "description": "Yiming Zhang and Darko Kirovski were foundational leaders in the vaunted Jump Core Strategies trading group.",
+      "rawImageUrl": "https://i.insider.com/69e2e8f2367066d7c296e43c?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-3fb39f86b4f6ab00",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "9e501defa91bd2ef",
+      "url": "https://www.businessinsider.com/foreign-students-j1-visa-summer-jobs-2026-4",
+      "title": "The foreign students powering American summer jobs may be harder to find this year",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T10:59:01.000Z",
+      "description": "The J-1 Visa program aids small US businesses by providing around 100,000 student workers each summer. Visa delays and geopolitics pose challenges.",
+      "rawImageUrl": "https://i.insider.com/69e169dccb96e245212af11d?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-9e501defa91bd2ef",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "0ee03c83994d8d41",
+      "url": "https://www.businessinsider.com/warren-buffett-abel-cook-jobs-apple-berkshire-succession-leadership-ceo-2026-4",
+      "title": "What Warren Buffett&#39;s successor Greg Abel can learn from Tim Cook about following an iconic CEO",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T10:49:01.000Z",
+      "description": "Greg Abel, who succeeded Warren Buffett as Berkshire Hathaway&#39;s CEO this year, can learn from Tim Cook&#39;s leadership of Apple since Steve Jobs&#39; death.",
+      "rawImageUrl": "https://i.insider.com/69e2416d367066d7c296de83?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-0ee03c83994d8d41",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "e36d554bc6c1f20e",
+      "url": "https://www.businessinsider.com/bi-today-saturday-newsletter-hot-at-work-get-ahead-2026-4",
+      "title": "Ambitious professionals are splurging on their looks to get ahead in the workplace",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T10:38:01.000Z",
+      "description": "In this Saturday edition of Business Insider Today, we&#39;re talking about why people are investing in being hot at work.",
+      "rawImageUrl": "https://i.insider.com/69e283383fecbb42897a12ec?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-e36d554bc6c1f20e",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "8586d22aee6c31c2",
+      "url": "https://www.businessinsider.com/irans-military-says-it-has-placed-hormuz-under-strict-control-again-2026-4",
+      "title": "Iran&#39;s military says it has placed the Strait of Hormuz under strict control again",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T10:30:10.000Z",
+      "description": "Iran&#39;s military accused the US of acts of \"piracy\" over the blockade of its ports — and that in response it had resumed management of Hormuz.",
+      "rawImageUrl": "https://i.insider.com/69e35938367066d7c296e4dd?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-8586d22aee6c31c2",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "1228ed8fd6f336ff",
+      "url": "https://www.businessinsider.com/wall-street-banks-ai-strategy-jpmorgan-goldman-citi-bofa-2026",
+      "title": "Wall Street CEOs keep getting pressed on AI — here&#39;s what banks have said about how they&#39;re using it",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T10:25:01.000Z",
+      "description": "Wall Street banks like JPMorgan and Goldman Sachs are investing billions in AI, reshaping workflows and culture — not to mention budgets.",
+      "rawImageUrl": "https://i.insider.com/66bf62b05da406397bf6895f?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-1228ed8fd6f336ff",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "970ef573f6e66197",
+      "url": "https://www.businessinsider.com/iran-war-ukrainian-companies-business-moment-2026-4",
+      "title": "This Ukrainian counter-drone company is worried about missing its moment in the Iran war",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T10:00:01.000Z",
+      "description": "Ukraine&#39;s battle-proven drone interceptors are seeing new interest. One maker worries that without being able to export, it will miss the window.",
+      "rawImageUrl": "https://i.insider.com/69e22f723fecbb42897a0eff?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-970ef573f6e66197",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "57f7f7df0d425228",
+      "url": "https://www.businessinsider.com/uber-lyft-driver-gas-prices-affecting-which-trips-i-take-2026-4",
+      "title": "I&#39;m an ex-Wall Street trader who drives for Uber and Lyft. Gas prices have me rethinking which trips I take.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:49:01.000Z",
+      "description": "An Uber and Lyft driver says high gas prices are changing how he drives and which trips he accepts.",
+      "rawImageUrl": "https://i.insider.com/69dd57974d9d0b2056492385?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-57f7f7df0d425228",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "781d6a2f37640a53",
+      "url": "https://www.businessinsider.com/80-year-old-vo2max-longevity-fitness-habits-2026-4",
+      "title": "An 80-year-old woman has an elite VO2 max. She&#39;s as healthy as a 60-year-old thanks to a simple routine.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:46:01.000Z",
+      "description": "Linda Kelly is 80 years old. She&#39;s as fit as someone decades younger and has an elite-level VO₂ max. Her easy daily habits add up to peak longevity.",
+      "rawImageUrl": "https://i.insider.com/69e131e0420cfc5419687ebe?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-781d6a2f37640a53",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "5d41e01f6f72444f",
+      "url": "https://www.businessinsider.com/monograms-clothing-accessories-menswear-status-symbol-2026-4",
+      "title": "This menswear status symbol is so subtle you might not even notice it",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:42:01.000Z",
+      "description": "Monograms were once used to differentiate items at dry cleaners. Now, clothes and accessories that feature the small letters signal status.",
+      "rawImageUrl": "https://i.insider.com/69dcf4a64d9d0b2056491fd8?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-5d41e01f6f72444f",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "f423f3379a15db73",
+      "url": "https://www.businessinsider.com/where-to-invest-iran-war-strait-of-hormuz-stock-market-2026-4",
+      "title": "Market pros say load up on these 3 investments as the Strait of Hormuz reopening sets the economy up to roar",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:40:02.000Z",
+      "description": "The stock market was in party mode on Friday as Iran announced it was ending its weekslong blockade of the Strait of Hormuz. Here&#39;s where to invest.",
+      "rawImageUrl": "https://i.insider.com/69e2777b3fecbb42897a1280?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-f423f3379a15db73",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "ac2a6b91150ad89c",
+      "url": "https://www.businessinsider.com/iran-war-inflation-shock-oil-prices-us-economy-outlook-2026-4",
+      "title": "Why one analyst thinks the US economy will be feeling the Iran-fueled inflation shock for years to come",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:40:01.000Z",
+      "description": "Inflation could double from its current rate and stick around for years after the Iran war ends, Chris Whalen told Business Insider.",
+      "rawImageUrl": "https://i.insider.com/69e11715cb96e245212aeec6?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-ac2a6b91150ad89c",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "24a529c5140febff",
+      "url": "https://www.businessinsider.com/airline-points-miles-book-flights-vacation-travel-gurus-prices-2026-4",
+      "title": "It&#39;s time to start using those points you&#39;ve been stashing away",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:29:01.000Z",
+      "description": "The cost of flights is rising as jet fuel prices surge. Redeeming airline points or miles is best when cash prices are high, say travel experts.",
+      "rawImageUrl": "https://i.insider.com/69e1f23b051936af5919a6d7?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-24a529c5140febff",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "ce8629ec97402a6e",
+      "url": "https://www.businessinsider.com/physician-longevity-shares-anti-aging-habits-2026-4",
+      "title": "4 healthy aging habits that a longevity doctor follows most days, including strength training",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:25:01.000Z",
+      "description": "Dr. Julie Chen prioritizes sleep, exercises regularly, and eats the rainbow.",
+      "rawImageUrl": "https://i.insider.com/69d67022cc468aeec524ce8b?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-ce8629ec97402a6e",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "cd724709fb54d7fc",
+      "url": "https://www.businessinsider.com/mamdani-nyc-pied-a-terre-tax-hit-billionaires-bezos-griffin-2026-4",
+      "title": "Penthouse pieds-à-terre: Bezos, Trump, and other billionaires facing Mamdani&#39;s proposed tax",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:24:01.000Z",
+      "description": "New York City&#39;s proposed pied-à-terre tax targets billionaires like Jeff Bezos and Ken Griffin with luxury second homes.",
+      "rawImageUrl": "https://i.insider.com/69e2a1403fecbb42897a1457?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-cd724709fb54d7fc",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "fa74220af0c001b4",
+      "url": "https://www.businessinsider.com/dubai-expat-return-iran-war-ceasefire-schools-reopen-2026-4",
+      "title": "The cautious return to Dubai has begun",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:19:20.000Z",
+      "description": "With the US-Iran ceasefire holding for now, some expats are deciding to return to their lives in Dubai, albeit with caution.",
+      "rawImageUrl": "https://i.insider.com/69e237493fecbb42897a0f46?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-fa74220af0c001b4",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "2f7894f07f589120",
+      "url": "https://www.businessinsider.com/gas-prices-high-how-to-save-money-2026-4",
+      "title": "Gas prices are sky-high. Here are 8 ways to save at the pump.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:16:01.000Z",
+      "description": "Gas prices are high. There are many ways drivers can save on gas, such as traveling outside peak hours, carpooling, and maintaining their vehicles.",
+      "rawImageUrl": "https://i.insider.com/69dfc5a116ad6f0000dc4c5d?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-2f7894f07f589120",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "0896d96e29a01854",
+      "url": "https://www.businessinsider.com/top-side-hustles-passive-income-streams-atms-sports-cards-2026-4",
+      "title": "A full-time government employee with multiple side hustles shares his top passive income hits and flops",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:15:01.000Z",
+      "description": "William Butterton is wary of the term \"passive income,\" but of all the businesses he&#39;s tried, \"ATM is the closest thing that I have personally found.\"",
+      "rawImageUrl": "https://i.insider.com/69e26f5ba98bc8fdc096be5b?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-0896d96e29a01854",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "a2457be44e690993",
+      "url": "https://www.businessinsider.com/job-seeker-looking-for-work-gets-ghosted-2026-4",
+      "title": "I&#39;ve been unemployed for almost a year. Getting ghosted is making it worse.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:11:03.000Z",
+      "description": "Christopher Santoso&#39;s job search in Chicago highlights challenges like ghosting and financial strain following his layoff as a UX designer.",
+      "rawImageUrl": "https://i.insider.com/69e2a9193fecbb42897a148a?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-a2457be44e690993",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "450feb742be60148",
+      "url": "https://www.businessinsider.com/silicon-valley-biohacking-wellness-event-best-hacks-not-what-expected-2026-4",
+      "title": "I visited a members-only tech hub to see the biohacking tricks Silicon Valley founders swear by. It wasn&#39;t what I expected.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:11:02.000Z",
+      "description": "I visited a members-only tech hub in San Francisco to see the biohacking tricks Silicon Valley founders swear by. It was much simpler than I expected.",
+      "rawImageUrl": "https://i.insider.com/69e245373fecbb42897a1017?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-450feb742be60148",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "8b6d3a861ff56826",
+      "url": "https://www.businessinsider.com/scam-park-fraud-hustle-my-mistake-cost-me-thousands-2026-4",
+      "title": "I didn&#39;t think I was the type of person who would fall for a scam. A $15,000 charge on my credit card proves otherwise.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:11:01.000Z",
+      "description": "I was lost in thought while walking my dog when three people asked for help. Later, I realized I&#39;d been scammed.",
+      "rawImageUrl": "https://i.insider.com/69e22a9da98bc8fdc096bb7d?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-8b6d3a861ff56826",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "7a46fc340fbce7f8",
+      "url": "https://www.businessinsider.com/day-in-the-life-nba-knicks-star-karl-anthony-towns-2026-4",
+      "title": "I&#39;m Karl-Anthony Towns. Here&#39;s a day in my life on the New York Knicks, from a bone broth breakfast to 2-hour pre-game naps.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:05:01.000Z",
+      "description": "New York Knicks player Karl-Anthony Towns shares his training routine, diet, and mentality on the court.",
+      "rawImageUrl": "https://i.insider.com/69de69d6bb50bc96d0b4d045?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-7a46fc340fbce7f8",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "f35132b763036826",
+      "url": "https://www.businessinsider.com/bankers-rushing-to-prepare-ipos-after-a-market-reversal-2026-4",
+      "title": "At an exclusive party at Nobu Malibu, bankers told me they are rushing to prepare IPOs after a wild market reversal",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:00:02.000Z",
+      "description": "At Nobu Malibu, there was celebration about the upcoming mega IPOs mixed with relief volatility tied to the war in Iran faded faster than feared.",
+      "rawImageUrl": "https://i.insider.com/69e2a6e93fecbb42897a1479?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "score-failure-default",
+      "clusterId": "c-f35132b763036826",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "138525d94205cd7d",
+      "url": "https://www.businessinsider.com/woman-creates-facebook-marketplace-alternative-ai-code-sell-furniture-2026-4",
+      "title": "I moved from Texas to Spain and used AI to code a Facebook Marketplace alternative to sell my furniture",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T09:00:01.000Z",
+      "description": "Johanna Abzug tried selling her furniture on Facebook Marketplace, but said buyers were \"uncommitted.\" She decided to vibe code her own platform.",
+      "rawImageUrl": "https://i.insider.com/69e0e7b13c23517615b2fb7e?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 62,
+      "verdict": "potential",
+      "reasoning": "Relatable millennial expat + vibe coding narrative has genuine cultural novelty and shareability",
+      "clusterId": "c-138525d94205cd7d",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "ba4b821ab8e35dd1",
+      "url": "https://www.businessinsider.com/latest-stories-on-hedge-fund-talent-war",
+      "title": "Hedge funds are spending fortunes to win the talent war. It&#39;s changing the industry in the process.",
+      "source": "Business Insider",
+      "pubDate": "2026-04-18T08:45:01.000Z",
+      "description": "The $5 trillion hedge fund industry revolves around talent. Business Insider has reported on how firms attract it, keep it, and afford it.",
+      "rawImageUrl": "https://i.insider.com/67ffcad6a466d2b74ab34ed6?format=jpeg",
+      "fetchedInRun": 5,
+      "score": 22,
+      "verdict": "rejected",
+      "reasoning": "Routine finance industry talent piece, no cultural hook for millennial pop-culture feed",
+      "clusterId": "c-ba4b821ab8e35dd1",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Business Insider"
+      ]
+    },
+    {
+      "id": "17e8237b5256b262",
+      "url": "https://futurism.com/artificial-intelligence/lawyer-claude-ai-chatbot",
+      "title": "Things You Told ChatGPT or Claude My Have Already Doomed You in Court",
+      "source": "Futurism",
+      "pubDate": "2026-04-18T12:15:00.000Z",
+      "description": "\"Disclosure of privileged communications to a third-party AI platform may constitute a waiver of the attorney-client privilege.\" The post Things You Told ChatGPT or Claude My Have Already Doomed You in Court appeared first on Futurism .",
+      "rawImageUrl": "https://futurism.com/wp-content/uploads/2026/04/lawyer-claude-ai-chatbot.jpg?quality=85",
+      "fetchedInRun": 5,
+      "score": 82,
+      "verdict": "potential",
+      "reasoning": "High-stakes legal consequence of AI use — privacy/power story with direct audience relevance and real societal impact",
+      "clusterId": "c-17e8237b5256b262",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Futurism"
+      ]
+    },
+    {
+      "id": "1edeaa40ebfd18d3",
+      "url": "https://futurism.com/space/nasa-mars-rover-crater-rocks",
+      "title": "NASA’s Mars Rover Comes Across Formation That Looks Like the Scales of a Massive Cosmic Reptile",
+      "source": "Futurism",
+      "pubDate": "2026-04-18T11:30:00.000Z",
+      "description": "What can this strange landscape tell us about Mars' mysterious past? The post NASA&#8217;s Mars Rover Comes Across Formation That Looks Like the Scales of a Massive Cosmic Reptile appeared first on Futurism .",
+      "rawImageUrl": "https://futurism.com/wp-content/uploads/2026/04/nasa-mars-rover-crater-rocks.jpg?quality=85",
+      "fetchedInRun": 5,
+      "score": 48,
+      "verdict": "rejected",
+      "reasoning": "Mildly viral space imagery but low staying power, no real cultural stakes",
+      "clusterId": "c-1edeaa40ebfd18d3",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Futurism"
+      ]
+    },
+    {
+      "id": "73356862dba35742",
+      "url": "https://futurism.com/space/physicists-hubble-constant-universe",
+      "title": "Physicists Have a Major Problem With the Universe",
+      "source": "Futurism",
+      "pubDate": "2026-04-18T10:45:00.000Z",
+      "description": "Two steps forward, one step back. The post Physicists Have a Major Problem With the Universe appeared first on Futurism .",
+      "rawImageUrl": "https://futurism.com/wp-content/uploads/2026/04/physicists-hubble-constant-universe.jpg?quality=85",
+      "fetchedInRun": 5,
+      "score": 45,
+      "verdict": "rejected",
+      "reasoning": "Vague physics headline with no concrete narrative hook or reversal",
+      "clusterId": "c-73356862dba35742",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Futurism"
+      ]
+    },
+    {
+      "id": "d79b44b5d5417b71",
+      "url": "https://futurism.com/robots-and-machines/delivery-robot-fail-compilation",
+      "title": "Wild Video Shows Delivery Robots Causing Havoc, Getting Obliterated",
+      "source": "Futurism",
+      "pubDate": "2026-04-18T10:00:00.000Z",
+      "description": "When will it end? The post Wild Video Shows Delivery Robots Causing Havoc, Getting Obliterated appeared first on Futurism .",
+      "rawImageUrl": "https://futurism.com/wp-content/uploads/2026/04/delivery-robot-fail-compilation.jpg?quality=85",
+      "fetchedInRun": 5,
+      "score": 63,
+      "verdict": "potential",
+      "reasoning": "Delivery robot chaos video is distinctive, shareable internet culture with tech-society undertone",
+      "clusterId": "c-d79b44b5d5417b71",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Futurism"
+      ]
+    },
+    {
+      "id": "92d77fed34249c5e",
+      "url": "https://www.highsnobiety.com/p/nike-air-jordan-11-university-blue/",
+      "title": "Nike Brought Back Its Iciest Jordan & It Has Never Looked as Clean",
+      "source": "Highsnobiety",
+      "pubDate": "2026-04-18T12:04:01.000Z",
+      "description": "Nike's Air Jordan 11 Retro Low returns in University Blue, featuring patent leather mudguards, an icy translucent outsole and a full-length Air-Sole unit.",
+      "fetchedInRun": 5,
+      "score": 44,
+      "verdict": "rejected",
+      "reasoning": "Standard sneaker restock PR, no cultural crossover moment",
+      "clusterId": "c-92d77fed34249c5e",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Highsnobiety"
+      ]
+    },
+    {
+      "id": "450ba93f40aa3b72",
+      "url": "https://www.highsnobiety.com/p/vans-premium-old-skool-36-pearls-brown/",
+      "title": "Vans' Earthiest Skate Shoe Looks Dripped Out With Its Pearl Necklace",
+      "source": "Highsnobiety",
+      "pubDate": "2026-04-18T09:03:01.000Z",
+      "description": "Vans' Premium Old Skool 36 returns in Vintage Cocoa Brown with pearlized detailing, a gloss sidewall, and all-day comfort cushioning.",
+      "fetchedInRun": 5,
+      "score": 22,
+      "verdict": "rejected",
+      "reasoning": "Routine product release, no cultural hook",
+      "clusterId": "c-450ba93f40aa3b72",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Highsnobiety"
+      ]
+    },
+    {
+      "id": "a94a1b966fa87db7",
+      "url": "https://www.inc.com/elizabeth-gore/noah-glass-almost-sold-olo-for-65-million-years-later-it-sold-for-2-billion/91321216",
+      "title": "Noah Glass Almost Sold Olo for $65 Million. Years Later, it Sold for $2 Billion",
+      "source": "Inc.",
+      "pubDate": "2026-04-18T12:00:00.000Z",
+      "description": "The best founders don’t chase trends. They outlast them.",
+      "rawImageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/founders-outlast-trends-inc-2177716579.jpg",
+      "fetchedInRun": 5,
+      "score": 35,
+      "verdict": "rejected",
+      "reasoning": "Standard founder hustle narrative, B2B-adjacent, low cultural resonance",
+      "clusterId": "c-a94a1b966fa87db7",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Inc."
+      ]
+    },
+    {
+      "id": "77cd34936456ebf9",
+      "url": "https://www.inc.com/amaya-nichole/storage-unit-side-hustle-rent/91332832",
+      "title": "The Surprising ‘Secret Weapon’ Side Hustlers Are Using to Make $8,000 a Year",
+      "source": "Inc.",
+      "pubDate": "2026-04-18T09:19:00.000Z",
+      "description": "More than a quarter of Americans who rent storage units do so to support a side hustle. Here’s how they’re making it work.",
+      "rawImageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/storage-unit-side-hustle.jpg",
+      "fetchedInRun": 5,
+      "score": 28,
+      "verdict": "rejected",
+      "reasoning": "Low-signal side hustle content, no real cultural weight",
+      "clusterId": "c-77cd34936456ebf9",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Inc."
+      ]
+    },
+    {
+      "id": "ce50d3476c52e447",
+      "url": "https://www.inc.com/kristin-shaw/i-took-apart-a-500000-mile-engine-to-see-if-this-anti-aging-oil-hack-actually-works/91331446",
+      "title": "I Took Apart a 500,000-Mile Engine to See If This ‘Anti-Aging’ Oil Hack Actually Works",
+      "source": "Inc.",
+      "pubDate": "2026-04-18T09:00:00.000Z",
+      "description": "As Americans keep their cars for longer, Kentucky-based Valvoline says one of its synthetic oil products can turn back time in an engine.",
+      "rawImageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/valvoline-pano-inc.jpg",
+      "fetchedInRun": 5,
+      "score": 30,
+      "verdict": "rejected",
+      "reasoning": "Product advertorial dressed as journalism, no cultural stakes",
+      "clusterId": "c-ce50d3476c52e447",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Inc."
+      ]
+    },
+    {
+      "id": "0d84a1435f2864fb",
+      "url": "https://www.dailymail.co.uk/news/article-15744237/Oil-Strait-Hormuz-Britain-strong-military-contribution-Trump-peace-deal-close.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Iran closes Strait of Hormuz less than 24 hours after reopening key waterway: live updates",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T12:27:20.000Z",
+      "description": "LIVE: The latest updates on the Middle East as Iran declares the Strait of Hormuz is closed less than 24 hours after opening it.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/09/107985405-0-image-a-14_1776499248464.jpg",
+      "fetchedInRun": 5,
+      "score": 88,
+      "verdict": "potential",
+      "reasoning": "Strait of Hormuz closure is major geopolitical flashpoint with immediate global economic and cultural ripple effects",
+      "clusterId": "c-0d84a1435f2864fb",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "415da1cf9ffe2390",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15744217/Jack-Whitehall-Roxy-Horners-final-lavish-wedding-preparations-underway-van-flowers-arrives-Cotswolds-country-manor-amid-tight-security.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Jack Whitehall's mother Hilary can't wipe the smile off her face as she arrives at Cotswolds country manor ahead of comedian and fiancée Roxy Horner tying the knot",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T12:18:19.000Z",
+      "description": "Snaps taken on Saturday morning at the Euridge Manor Farm in the Cotswolds show a hive of activity at the idyllic location.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/13/107987133-0-image-a-2_1776514270492.jpg",
+      "fetchedInRun": 5,
+      "score": 25,
+      "verdict": "rejected",
+      "reasoning": "B-list UK celebrity wedding prep, no millennial cultural relevance",
+      "clusterId": "c-415da1cf9ffe2390",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "8728d79028bfd5d0",
+      "url": "https://www.dailymail.co.uk/news/article-15744349/Moment-violent-shoplifter-passing-martial-arts-beginner-attacked-worker.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Moment violent shoplifter gets taste of instant karma as passing martial arts beginner takes him down after he attacked Co-op worker",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T12:02:04.000Z",
+      "description": "In the footage, filmed outside a Co-op store in Swansea, a man dressed in a grey tracksuit can be seen tussling with a member of staff from the store.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/11/107986561-0-image-a-28_1776509019373.jpg",
+      "fetchedInRun": 5,
+      "score": 55,
+      "verdict": "potential",
+      "reasoning": "Instant karma vigilante justice video has strong viral legs and feeds ongoing retail crime discourse",
+      "clusterId": "c-8728d79028bfd5d0",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "0ea2889de054ee80",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15744411/Downton-Abbey-star-Nathalie-Baye-dies-aged-77-following-dementia-diagnosis.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Downton Abbey star Nathalie Baye dies aged 77 following a dementia diagnosis",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T12:00:21.000Z",
+      "description": "The actress' family said she had passed away at her home in Paris on Friday evening after suffering from Lewy body dementia.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/11/107986547-0-image-a-30_1776509245150.jpg",
+      "fetchedInRun": 5,
+      "score": 52,
+      "verdict": "potential",
+      "reasoning": "Respected French actress death with Downton Abbey adjacency gives it mild cultural weight for literate audience",
+      "clusterId": "c-0ea2889de054ee80",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "a156a2b88cbeab16",
+      "url": "https://www.dailymail.co.uk/news/royals/article-15744441/Zara-Tindall-smiles-saddle-compete-international-horse-trials.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Zara Tindall is all smiles as she gets back in the saddle to compete at international horse trials",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:58:18.000Z",
+      "description": "Princess Anne's daughter is taking part in the Barefoot Retreats Burnham Market International Horse Trials, in Norfolk, one of the major equestrian events of the year.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/12/107987055-0-image-a-49_1776513381241.jpg",
+      "fetchedInRun": 5,
+      "score": 18,
+      "verdict": "rejected",
+      "reasoning": "Minor UK royal at horse trials, zero cultural crossover",
+      "clusterId": "c-a156a2b88cbeab16",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "91b36aa30c429cba",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15744363/Tulisa-Bells-palsy-attack-paralysis-egg-retrieval-health-update.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Tulisa suffers a Bell's palsy attack and minor short term paralysis as she cancels egg retrieval after 'crazy life experiences' in candid health update",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:35:11.000Z",
+      "description": "Giving her Instagram followers an update, she went through some of the 'highs and lows' she has experienced recently in a bid to be more 'authentic.'",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/12/107986525-0-image-a-40_1776511157104.jpg",
+      "fetchedInRun": 5,
+      "score": 32,
+      "verdict": "rejected",
+      "reasoning": "Niche UK celebrity health update, limited audience recognition",
+      "clusterId": "c-91b36aa30c429cba",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "31503d9cf5b31d14",
+      "url": "https://www.dailymail.co.uk/news/article-15744391/Arsonists-attack-Jewish-building-London-Islamist-group-launched-drones-Israeli-Embassy-claims-responsibility.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Counter-terror police launch probe after arsonists target Jewish business in London",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:26:19.000Z",
+      "description": "Police said that a man was seen approaching a row of shops with a plastic bag containing what was later found to be three bottles containing fluid.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/12/107986767-0-image-a-59_1776511416701.jpg",
+      "fetchedInRun": 5,
+      "score": 65,
+      "verdict": "potential",
+      "reasoning": "Counter-terror probe into antisemitic arson in London fits Power tier — hate crime at scale with societal stakes",
+      "clusterId": "c-31503d9cf5b31d14",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "01a5ba4f0260515c",
+      "url": "https://www.dailymail.co.uk/tv/article-15728211/Steven-Bartletts-biggest-regret-Dragons-Den-worth-40million-track-double-value-year-despite-BBC-hopefuls-asking-just-50k-show.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Steven Bartlett's 'biggest regret' on Dragons' Den is now worth £40million and on track to double its value in a year - despite BBC hopefuls asking for just £50k on show",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:21:41.000Z",
+      "description": "The businessman, 33, has made a number of investments with budding entrepreneurs since joining the BBC programme in 2021. But there is one company that he wishes he got on board with.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/12/107986625-0-image-a-2_1776510012223.jpg",
+      "fetchedInRun": 5,
+      "score": 40,
+      "verdict": "rejected",
+      "reasoning": "UK business reality TV investment story, too niche and PR-adjacent",
+      "clusterId": "c-01a5ba4f0260515c",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "6cf4b70723c4226f",
+      "url": "https://www.dailymail.co.uk/news/article-15744299/Nationwide-cashier-stole-thousands-vulnerable-customers-caught-Facebook-pictures-lavish-holidays.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Nationwide cashier who stole thousands from vulnerable customers was caught out by Facebook pictures of her lavish holidays",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:21:14.000Z",
+      "description": "Kelly Kershaw earned just £1,400-per-month working as a cashier for the building society, but boasted about her trips on Facebook, including to Dubai, the Maldives and Indonesia.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/10/107985991-0-image-a-7_1776504122106.jpg",
+      "fetchedInRun": 5,
+      "score": 38,
+      "verdict": "rejected",
+      "reasoning": "Local crime/fraud story, doesn't scale culturally",
+      "clusterId": "c-6cf4b70723c4226f",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "be8e6da0d964afaa",
+      "url": "https://www.dailymail.co.uk/lifestyle/article-15735243/Film-star-11-Bafta-winner-20-Netflix-sensation-28-MOLLY-WINDSOR-discusses-sex-secrets-sinister-cults-ahead-starring-role-hotly-anticipated-new-thriller-Unchosen.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Sex, secrets and sinister cults: MOLLY WINDSOR on the new Netflix thriller that lifts the lid on life in Britain's hidden communities",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:18:43.000Z",
+      "description": "MOLLY WINDSOR's hotly anticipated new thriller, shining a light on the sinister world of religious cults, is sure to get everyone talking.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/12/107986689-0-image-a-2_1776510400739.jpg",
+      "fetchedInRun": 5,
+      "score": 58,
+      "verdict": "potential",
+      "reasoning": "Netflix cult thriller with PR push — major streaming property angle plus taboo subject matter drives conversation",
+      "clusterId": "c-be8e6da0d964afaa",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "5340726b2e699fce",
+      "url": "https://www.dailymail.co.uk/property/article-15744371/Londons-property-apocalypse-lats-40-cent-properties-seller-you-15k-deposit.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "London's property apocalypse laid bare - here's where you can buy flats which are down 40 per cent, and even properties where the seller will give you £15k towards a deposit",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:11:53.000Z",
+      "description": "London Price Drop has already gained more than 14,000 followers on X by posting screenshots from Rightmove, which illustrate how property prices in the capital are falling sharply",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/11/107986409-0-image-a-5_1776507733680.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "London property crash framed through viral social account has Internet tier energy and real economic stakes",
+      "clusterId": "c-5340726b2e699fce",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "a0e51056bbe3b649",
+      "url": "https://www.dailymail.co.uk/news/article-15744331/Meghan-superfans-investing-women-finally-invest-me.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Meghan tells £1,700-a-head superfans 'I've spent all my life investing in women, can I finally invest in me?' on money-spinning Australia trip",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:07:31.000Z",
+      "description": "Meghan Markle was speaking to a private audience at Her Best Life retreat on Friday as her four-day trip to Australia with Prince Harry came to an end.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/11/107986329-0-image-a-27_1776508011506.jpg",
+      "fetchedInRun": 5,
+      "score": 72,
+      "verdict": "potential",
+      "reasoning": "Meghan Markle pay-to-play 'invest in me' quote is pure Power/Culture crossover catnip — highly shareable and discourse-generating",
+      "clusterId": "c-a0e51056bbe3b649",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "1bf1091d594a6235",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15744281/Line-Duty-Vicky-McClure-Martin-Compston-boogie-filming-new-series.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Line Of Duty favourites Vicky McClure and Martin Compston enjoy a boogie as they tease fans while filming for new series",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:05:52.000Z",
+      "description": "Actress Vicky, 42, who stars as DI Kate Flemming, was seen playfully dancing away and singing Whitney Houston hit, I Wanna Dance with Somebody.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/10/107985939-0-image-a-15_1776503894877.jpg",
+      "fetchedInRun": 5,
+      "score": 48,
+      "verdict": "rejected",
+      "reasoning": "Line of Duty filming tease is minor IP moment, not enough stakes for the cut",
+      "clusterId": "c-1bf1091d594a6235",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "e57b2caf49572612",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15743591/Zayn-Malik-punched-Louis-Tomlinson-face-cut-head-making-comment-late-mother-filming-Netflix-road-trip-show.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Zayn Malik 'punched Louis Tomlinson in the face and cut his head after making a comment about his late mother' during filming for Netflix road trip show - as Louis's sisters unfollow the singer",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T11:03:44.000Z",
+      "description": "It was previously reported that the former One Direction bandmates had signed a multi-million pound deal to travel the US, discuss their lives and reflect on memories from their days in the band.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/22/107980481-0-image-a-9_1776461890666.jpg",
+      "fetchedInRun": 5,
+      "score": 80,
+      "verdict": "published",
+      "reasoning": "Zayn punching Louis during Netflix One Direction reunion shoot is massive fandom-driven drama with real cultural weight",
+      "clusterId": "c-e57b2caf49572612",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ],
+      "publishedReasoning": "Zayn punching Louis Tomlinson on a Netflix shoot is peak internet-fandom chaos — 1D stans, Netflix deal, family unfollows, and a hospitalization all in one story"
+    },
+    {
+      "id": "b140d419dff95ecd",
+      "url": "https://www.dailymail.co.uk/health/article-15742613/Mother-two-Hannah-35-tiredness-headaches-mum-life-collapsed-home-aggressive-brain-tumour-life-expectancy-12-months-simple-daily-habits-helping-beat-odds.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Mother-of-two Hannah, 35, put her tiredness and headaches down to 'mum life' - then she collapsed at home with an aggressive brain tumour with a life expectancy of 12 months. So which simple daily habits are helping her beat the odds?",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T10:58:50.000Z",
+      "description": "Diagnosed with an aggressive brain tumour that carries an average life expectancy of 12 to 18 months, Hannah Langton's reaction, as a mother of two, was understandable.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/10/107985821-0-image-a-9_1776503186752.jpg",
+      "fetchedInRun": 5,
+      "score": 55,
+      "verdict": "potential",
+      "reasoning": "Human tier — young mum beating aggressive brain tumour odds, emotionally resonant scaled drama",
+      "clusterId": "c-b140d419dff95ecd",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "47d39a72a73fe63a",
+      "url": "https://www.dailymail.co.uk/news/article-15744319/Starmer-faces-TWO-judgment-days-save-job-Prime-Minister-face-MPs-Mandelson-scandal-Monday-sacked-Foreign-Office-boss-sticks-knife-Tuesday.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Starmer faces TWO judgment days to save his job: Prime Minister will face MPs over Mandelson scandal on Monday before sacked Foreign Office boss sticks the knife in on Tuesday",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T10:55:02.000Z",
+      "description": "The Prime Minister will appear before MPs on Monday ahead of Sir Olly Robbins's own Parliament appearance the next day to explain his department's role in Lord Mandelson's failed security clearance.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/10/107985891-0-image-a-18_1776503704772.jpg",
+      "fetchedInRun": 5,
+      "score": 60,
+      "verdict": "potential",
+      "reasoning": "UK PM facing dual parliamentary crises is a genuine Power story with narrative tension and stakes",
+      "clusterId": "c-47d39a72a73fe63a",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "c9087b4066769dbf",
+      "url": "https://www.dailymail.co.uk/travel/article-15738697/Middle-class-families-turning-noses-Butlins-bargain-holiday-parks-missing-out.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Middle-class families turning their noses up at Butlin's are missing out - Britain's bargain holiday park has NINE state-of-the-art attractions plus more",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T10:40:37.000Z",
+      "description": "The UK's string of holiday parks promise bucket-and-spade fun, great entertainment and pools galore - without breaking the bank - so, what's not to like? Asks Hayley Minn.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/14/107969233-0-image-a-29_1776431089914.jpg",
+      "fetchedInRun": 5,
+      "score": 15,
+      "verdict": "rejected",
+      "reasoning": "Tourism PR puff piece, no cultural hook",
+      "clusterId": "c-c9087b4066769dbf",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "c5469b663fadfadc",
+      "url": "https://www.dailymail.co.uk/tv/article-15728293/Netflix-fans-rave-magnificently-crafted-period-drama-fills-sexy-TV-series-hole-left-Bridgerton.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Netflix fans rave over 'magnificently crafted' period drama that 'fills the sexy TV series hole left by Bridgerton'",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T10:40:17.000Z",
+      "description": "German historical drama, The Empress, hit the streaming service back in 2022. The show, written by Katharina Eyssen, has had 12 episodes air across two seasons.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/13/16/107860567-0-image-a-21_1776093272739.jpg",
+      "fetchedInRun": 5,
+      "score": 52,
+      "verdict": "potential",
+      "reasoning": "Bridgerton-gap framing of The Empress taps active streaming discourse and millennial TV fandom",
+      "clusterId": "c-c5469b663fadfadc",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "48ef840f6d320387",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15732539/Teen-Mom-Farrah-Abraham-Sophia-autobiography-Mayor-AI-bot.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Teen Mom's Farrah Abraham reveals daughter Sophia, 17, is writing an autobiography and doubles down on her plans to run for Austin Mayor as she launches X-rated AI chatbot",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T10:32:04.000Z",
+      "description": "The Teen Mom star, 34, is currently working with X-rated AI-powered chatbot Joi AI , and revealed her only child is also launching a new phase of her career, as an author.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/16/13/107941801-0-image-a-4_1776342513914.jpg",
+      "fetchedInRun": 5,
+      "score": 45,
+      "verdict": "rejected",
+      "reasoning": "Teen Mom adjacent, X-rated AI chatbot angle is trashy rather than culturally meaningful",
+      "clusterId": "c-48ef840f6d320387",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "176fd039054ad7df",
+      "url": "https://www.dailymail.co.uk/lifestyle/article-15732117/Queens-Crucible-snooker-WAGs-quietly-chic-cohort-Queen-Bee-actress-played-footballers-wife-TV.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Queens of the Crucible: Why snooker WAGs are a quietly chic cohort - and the Queen Bee is an actress who played a footballer's wife on TV",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T10:29:25.000Z",
+      "description": "The wives and girlfriends supporting the players at The Snooker World Championship, which kicks off this weekend in Sheffield, are a quietly chic cohort.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/15/12/107912439-0-image-a-42_1776253513935.jpg",
+      "fetchedInRun": 5,
+      "score": 20,
+      "verdict": "rejected",
+      "reasoning": "Snooker WAGs lifestyle piece, extremely niche",
+      "clusterId": "c-176fd039054ad7df",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "94b4766af243ec7e",
+      "url": "https://www.dailymail.co.uk/sport/othersports/article-15721499/Viral-ice-bath-perfect-recovery-tool-bargain-hunters.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Would you take the plunge into Aldi's £24.99 ice bath? In search of a cheap cure for aches and pains, HARRY BAMFORTH tries out the blow-up tub that's caused a sensation in the middle aisle",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T10:26:09.000Z",
+      "description": "HARRY BAMFORTH: It has long been known that the cold plunge, while not the most pleasant experience, is brilliant for recovery after periods of intense exercise.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/13/10/107852759-0-image-a-2_1776073849757.jpg",
+      "fetchedInRun": 5,
+      "score": 30,
+      "verdict": "rejected",
+      "reasoning": "Aldi ice bath advertorial, low cultural signal",
+      "clusterId": "c-94b4766af243ec7e",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "b7dc20b70aba13df",
+      "url": "https://www.dailymail.co.uk/sciencetech/article-15738659/Iron-Woman-exoskeleton-really-turn-athlete.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Iron Woman! I tested a Marvel-style exoskeleton - so, can it really turn me into an athlete?",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T10:15:49.000Z",
+      "description": "Iron Man, Inspector Gadget, Wallace & Gromit, and now…me! Exoskeletons are no longer constrained to science fiction, as I found out this week.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/11/107966321-0-image-a-70_1776422486090.jpg",
+      "fetchedInRun": 5,
+      "score": 42,
+      "verdict": "rejected",
+      "reasoning": "Exoskeleton novelty piece lacks real stakes or Marvel IP connection beyond headline bait",
+      "clusterId": "c-b7dc20b70aba13df",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "9825fac1378a92a1",
+      "url": "https://www.dailymail.co.uk/travel/article-15719401/cornwall-tourism-businesses-brink-soaring-costs.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Cornwall locals who branded tourists 'ants' are now desperate for them to return - as restaurants, hotels and pubs are left on the brink by Labour's skyrocketing rates",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T10:14:23.000Z",
+      "description": "Last summer saw locals expressing frustration over tourist crowds but the mood has changed, with footfall considered vital after the Government's 'quadruple hit' on the hospitality industry.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/13/107968757-0-image-a-3_1776429653015.jpg",
+      "fetchedInRun": 5,
+      "score": 35,
+      "verdict": "rejected",
+      "reasoning": "UK tourism economics piece, too local and niche",
+      "clusterId": "c-9825fac1378a92a1",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "183c03742f6e67ad",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15744267/Actress-Nadia-Fares-dies-aged-57-unconscious-swimming-pool-French-gym-daughters-pay-tribute-great-artist-mother.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Actress Nadia Fares dies aged 57 after being found unconscious in swimming pool of French gym as her daughters pay tribute to 'a great artist and mother'",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:45:07.000Z",
+      "description": "French actress Nadia Fares has died aged 57 after she was discovered unconscious in a pool at a luxury gym last week.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/10/107986005-0-image-a-13_1776504291232.jpg",
+      "fetchedInRun": 5,
+      "score": 48,
+      "verdict": "rejected",
+      "reasoning": "French actress death is tragic but figure has low recognition for target audience",
+      "clusterId": "c-183c03742f6e67ad",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "0be9a96ad08f08d7",
+      "url": "https://www.dailymail.co.uk/news/article-15741429/Woman-murdered-lobster-snatching-restaurateur-tank-throwing-sea-eco-warrior-hypocrite-travelled-globe-gas-guzzling-car.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Scientist who 'killed' lobster by snatching it from restaurateur's tank and throwing it in sea is a globe trotting eco hypocrite who travelled 80,000 miles in a gas-guzzling four-by-four",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:40:09.000Z",
+      "description": "Emma Smart (pictured), 47, stormed into Catch at the Old Fish Market in Weymouth, Dorset, and freed the crustacean, which she believed was going to be eaten.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/15/107970709-0-image-a-25_1776435030397.jpg",
+      "fetchedInRun": 5,
+      "score": 60,
+      "verdict": "potential",
+      "reasoning": "Eco-activist hypocrisy story has strong Internet culture energy — irony-rich and highly shareable",
+      "clusterId": "c-0be9a96ad08f08d7",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "770bd957785abb33",
+      "url": "https://www.dailymail.co.uk/money/investing/article-15742969/Refuel-portfolio-oil-stocks.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "It's time to refuel with oil stocks - but should you buy BP or Shell?",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:38:55.000Z",
+      "description": "Fortunes have already been made from the oil price boom sparked by the war in Iran, and there are likely to be more gains to come.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/18/107975907-0-image-a-83_1776447733222.jpg",
+      "fetchedInRun": 5,
+      "score": 12,
+      "verdict": "rejected",
+      "reasoning": "Pure investment advice / stock tips, explicitly rejected category",
+      "clusterId": "c-770bd957785abb33",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "efc7c3f9b792a85f",
+      "url": "https://www.dailymail.co.uk/sport/snooker/article-15741861/Sex-drugs-potting-balls-wildest-snooker-hellraisers-grace-Crucible-Ladies-Man-Bolton-cavorted-table-Page-3-models-star-downing-24-pints-game.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Sex, drugs and potting balls: The wildest snooker hellraisers to grace The Crucible - from the Ladies Man of Bolton who cavorted on the table with Page 3 models to the star downing 24 pints BEFORE a game",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:26:37.000Z",
+      "description": "Don't let the waistcoats and polished shoes fool you, the pristine world of the baize is in complete contrast to the depravity explored by some of the legends who made their living with cue in hand.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/15/107970525-0-image-a-16_1776434549918.jpg",
+      "fetchedInRun": 5,
+      "score": 55,
+      "verdict": "potential",
+      "reasoning": "Snooker hellraisers oral history is surprisingly rich culture content — sex, drugs, sport excess hits Human tier nicely",
+      "clusterId": "c-efc7c3f9b792a85f",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "46a4e6fd2544b0d6",
+      "url": "https://www.dailymail.co.uk/news/article-15743095/wealthy-Wimbledon-crash-Land-Rover-driver-unanswered-questions.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "The wealthy Wimbledon crash Land Rover driver who mowed down two little girls and the unanswered questions - as GUY ADAMS visits street where it happened and reveals astonishing twist in case",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:23:07.000Z",
+      "description": "In 2023 the lady of the house, an investment banker's wife and mother-of-three Claire Freemantle, cruised the streets in a top-of-the-range Land Rover Defender",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/09/107985633-0-image-a-23_1776501116697.jpg",
+      "fetchedInRun": 5,
+      "score": 42,
+      "verdict": "rejected",
+      "reasoning": "Local UK crime story without sufficient scale or cultural crossover",
+      "clusterId": "c-46a4e6fd2544b0d6",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "f95e20ba88bae415",
+      "url": "https://www.dailymail.co.uk/news/article-15744253/Inside-family-feud-sister-black-paint-wedding.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Inside the family feud that saw sister-in-law hurl black paint onto tearful bride's dress in wedding from hell",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:18:36.000Z",
+      "description": "Gemma Monk, 35, (pictured) was subjected to the 'revenge' attack by Antonia Eastwood as she tied the knot in front of stunned guests to her now-husband Ken in May 2024.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/09/107985683-0-image-a-19_1776501560094.jpg",
+      "fetchedInRun": 5,
+      "score": 50,
+      "verdict": "potential",
+      "reasoning": "Paint-on-wedding-dress family feud is peak scaled Human drama — visceral, shareable, conversation-starter",
+      "clusterId": "c-f95e20ba88bae415",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "185da9925cf87886",
+      "url": "https://www.dailymail.co.uk/money/markets/article-15743001/ALEX-BRUMMER-Anthropics-lethal-new-AI-tool-threat-national-security.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Why Anthropic's new AI tool has central banks and authorities terrified: ALEX BRUMMER",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:16:11.000Z",
+      "description": "Britain knows from the damaging hacks on Marks & Spencer, the Co-op and Jaguar Land Rover in the last year the impact on financial performance.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/18/107975879-0-image-a-68_1776447640505.jpg",
+      "fetchedInRun": 5,
+      "score": 52,
+      "verdict": "potential",
+      "reasoning": "AI-meets-financial-security angle has societal stakes, but framed as opinion column PR with thin original reporting; borderline tech/power crossover",
+      "clusterId": "c-185da9925cf87886",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "cd952760390074de",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15744221/Jesy-Nelson-romance-rumours-mystery-man-split-Zion-Foster.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Jesy Nelson fuels romance rumours as she enjoys an evening out with a mystery man - three months after split from Zion Foster",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:15:42.000Z",
+      "description": "The former Little Mix star, 34, ended her four-year relationship with Zion, 27, in January after the couple announced their twin daughters had been diagnosed with SMA Type 1.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/08/107985365-0-image-a-6_1776498916720.jpg",
+      "fetchedInRun": 5,
+      "score": 18,
+      "verdict": "rejected",
+      "reasoning": "Routine celebrity dating rumour with no cultural weight beyond tabloid gossip; B-tier pop figure",
+      "clusterId": "c-cd952760390074de",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "96beafe1518ddd16",
+      "url": "https://www.dailymail.co.uk/money/mortgageshome/article-15738801/My-neighbours-climbing-hydrangea-control-sort-out.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "My neighbour's climbing hydrangea is out of control - how can I sort this out?",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:10:52.000Z",
+      "description": "My neighbour has grown a climbing hydrangea up the rear of my property which rises over my single-storey kitchen and has filled my gutter with leaves. How can I get it cut back?",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/16/107972447-0-image-a-7_1776438754044.jpg",
+      "fetchedInRun": 5,
+      "score": 2,
+      "verdict": "rejected",
+      "reasoning": "Hyper-local gardening dispute; zero cultural relevance",
+      "clusterId": "c-96beafe1518ddd16",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "c0baa9b612997902",
+      "url": "https://www.dailymail.co.uk/news/royals/article-15735883/princess-kate-beatrice.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "What does cautious Kate REALLY think of Princess Beatrice? Andrew's eldest daughter had 'playboy' boyfriends 'hated' by William and attended raucous parties 'with drugs' as a teenager",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T09:01:57.000Z",
+      "description": "It is perhaps no wonder that cautious Catherine, Princess of Wales - who will one day be Queen - could be keeping her distance from the royal wild child.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/12/107966965-0-image-a-4_1776424211949.jpg",
+      "fetchedInRun": 5,
+      "score": 30,
+      "verdict": "rejected",
+      "reasoning": "Royal family intrigue has some Power-adjacent appeal but this is speculative soft gossip with no new information or real stakes",
+      "clusterId": "c-c0baa9b612997902",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "d0b0066737658b19",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15744093/madonna-coachella-sabrina-carpenter-lingerie-iconic-hits.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "Madonna, 67, hijacks Sabrina Carpenter's Coachella headlining set in racy purple lingerie as the duo perform her most iconic hits to Gen Z crowd",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T08:58:11.000Z",
+      "description": "Madonna made her Coachella comeback as she made a surprise cameo during Sabrina Carpenter's headlining set on Friday.",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/18/06/107984855-0-image-a-108_1776491799954.jpg",
+      "fetchedInRun": 5,
+      "score": 88,
+      "verdict": "potential",
+      "reasoning": "Madonna surprise-crashing Gen Z's biggest Coachella moment in lingerie is a major unexpected celebrity crossover — generational culture clash, high shareability, genuine cultural weight",
+      "clusterId": "c-d0b0066737658b19",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "7af279a870abf7db",
+      "url": "https://www.dailymail.co.uk/money/electriccars/article-15738533/What-five-minute-EV-charging-really-like-try-BYDs-game-changing-Flash-Charging-coming-UK-year.html?ns_mchannel=rss&amp;ns_campaign=1490&amp;ito=1490",
+      "title": "What five-minute EV charging is really like: We try BYD's game-changing Flash Charging before it comes to the UK this year",
+      "source": "Daily Mail",
+      "pubDate": "2026-04-18T08:46:11.000Z",
+      "description": "Five-minute EV charging is here - thanks to Chinese EV giant BYD. It will bring its Flash Charging to the UK, which can replenish an EV battery in the time it takes you to buy a coffee at a service station..",
+      "rawImageUrl": "https://i.dailymail.co.uk/1s/2026/04/17/10/107964137-0-image-a-4_1776417611698.jpg",
+      "fetchedInRun": 5,
+      "score": 55,
+      "verdict": "potential",
+      "reasoning": "Five-minute EV charging is a genuine consumer tech milestone with real societal impact on adoption; BYD's UK arrival adds geopolitical-tech dimension, though execution is listicle-y",
+      "clusterId": "c-7af279a870abf7db",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Daily Mail"
+      ]
+    },
+    {
+      "id": "9f406f64428c43f5",
+      "url": "https://pagesix.com/2026/04/18/celebrity-news/past-allegations-keeps-coming-back-to-haunt-katy-perry/",
+      "title": "Katy Perry is eager to look respectable with boyfriend Justin Trudeau — but her past keeps coming back to haunt her",
+      "source": "Page Six",
+      "pubDate": "2026-04-18T12:00:00.000Z",
+      "description": "The singer was \"blindsided\" this week as Ruby Rose publicly accused her of sexual assault, her friends told Page Six.",
+      "rawImageUrl": "https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F04%2Fjustin-trudeau-katy-perry-nicole-125455441_46e39a.jpg?w%3D1024",
+      "fetchedInRun": 5,
+      "score": 82,
+      "verdict": "published",
+      "reasoning": "Katy Perry sexual assault accusation from Ruby Rose is a high-stakes narrative with compounding layers — #MeToo, celebrity power, Trudeau adjacency adds political-culture crossover punch",
+      "clusterId": "c-9f406f64428c43f5",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Page Six"
+      ],
+      "publishedReasoning": "Katy Perry blindsided by Ruby Rose sexual assault accusation while trying to rehabilitate image with Trudeau is a layered celebrity-power story with genuine staying power"
+    },
+    {
+      "id": "3e8c239e05287fb3",
+      "url": "https://pagesix.com/2026/04/18/entertainment/madonna-joins-sabrina-carpenter-onstage-at-coachella-2026-in-surprise-cameo/",
+      "title": "Madonna makes shock return to the stage during Sabrina Carpenter’s Coachella set",
+      "source": "Page Six",
+      "pubDate": "2026-04-18T09:54:59.000Z",
+      "description": "The 67-year-old pop icon joined Carpenter toward the end of the performance, marking 20 years since her own headlining set at the California festival in 2006.",
+      "rawImageUrl": "https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F04%2Fmadonna-sabrina-4.png?w%3D1024",
+      "fetchedInRun": 5,
+      "score": 85,
+      "verdict": "potential",
+      "reasoning": "Same Madonna/Carpenter Coachella story as item 5 but with the added 20-year anniversary framing; Page Six sourcing slightly stronger — prefer this version, consolidate with idx 5 if deduplicating",
+      "clusterId": "c-3e8c239e05287fb3",
+      "clusterSize": 1,
+      "clusterSources": [
+        "Page Six"
+      ]
     }
-  ]
+  ],
+  "finalizedAt": "2026-04-18T12:40:54.424Z"
 }
