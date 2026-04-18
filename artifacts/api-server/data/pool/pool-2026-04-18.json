@@ -496,14 +496,15 @@
       "rawImageUrl": "https://consequence.net/wp-content/uploads/2026/04/paul-mccartney-ringo-starr-collaboration.jpg?quality=80",
       "fetchedInRun": 1,
       "score": 50,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "score-failure-default",
       "clusterId": "c-83b50e39017d1730",
       "clusterSize": 2,
       "clusterSources": [
         "Consequence",
         "NME"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "9f8055b726be19b8",
@@ -841,7 +842,7 @@
       "clusterSources": [
         "Wired"
       ],
-      "publishedReasoning": "Sam Altman's Orb now gatekeeping Tinder matches is the perfect Tech-meets-Internet-culture crossover — absurd, dystopian, and instantly shareable; Wired's wry framing is ideal"
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "c4af8c4e7a3e92ba",
@@ -1316,13 +1317,14 @@
       "description": "Meeting platform Zoom has announced a partnership with World, Sam Altman's human ID verification company, to ensure that the people attending meetings are actually human and not AI-generated imposters. Zoom will show a badge on verified participants'",
       "fetchedInRun": 1,
       "score": 75,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Zoom + World ID verifying humans in meetings is a quietly alarming Tech/Power story — surveillance infrastructure normalizing in the workplace",
       "clusterId": "c-879bf0f1a4e7ec8b",
       "clusterSize": 1,
       "clusterSources": [
         "TechCrunch"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "110af4038e4e44ae",
@@ -1459,7 +1461,7 @@
       "clusterSources": [
         "TechCrunch"
       ],
-      "publishedReasoning": "Netflix launching TikTok-style vertical feed is a platform-behavior shift story that signals where streaming goes next — meaningful Tech/Culture crossover, not pure trailer filler"
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "67d1503e04f8ce48",
@@ -2174,7 +2176,7 @@
       "clusterSources": [
         "Futurism"
       ],
-      "publishedReasoning": "Val Kilmer's estate using AI to put him in a film post-death is a provocative Human/Tech story about consent, grief, and the entertainment industry's AI frontier — genuine outrage fuel"
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "a8919d08bf912829",
@@ -2452,13 +2454,14 @@
       "rawImageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/manifesting-backfires-inc-506912388.jpg",
       "fetchedInRun": 1,
       "score": 76,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Yale research debunking manifestation is a narrative reversal targeting a massive social media belief system — high shareability and culture-war lite energy",
       "clusterId": "c-6ac85321fe801232",
       "clusterSize": 1,
       "clusterSources": [
         "Inc."
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "17ceb51ab5ea4ff3",
@@ -2678,13 +2681,14 @@
       "description": "\"The only thing that will be going viral for them is their mugshots,\" Ice Spice's attorney Bradford Cohen tells Billboard .",
       "fetchedInRun": 2,
       "score": 74,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Celebrity attacked in public + sharp lawyer quote = viral human drama with real stakes and staying power",
       "clusterId": "c-fecd85cf64ca66a6",
       "clusterSize": 1,
       "clusterSources": [
         "Billboard"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "4cf3644d04366513",
@@ -2918,7 +2922,7 @@
       "clusterSources": [
         "Consequence"
       ],
-      "publishedReasoning": "Kanye Poland cancellation is a rare power/culture crossover — a government citing Holocaust history to block entertainment is a consequential narrative reversal with global resonance; Consequence framing cleaner"
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "5d8a422e314be8de",
@@ -2948,13 +2952,14 @@
       "rawImageUrl": "https://consequence.net/wp-content/uploads/2026/04/zohran-mamdani-2025-tax-return.jpg?quality=80",
       "fetchedInRun": 2,
       "score": 72,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "NYC mayor earning rap royalties is peak Power/Culture crossover — quirky, shareable, real stakes",
       "clusterId": "c-538f5fe59926602e",
       "clusterSize": 1,
       "clusterSources": [
         "Consequence"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "e7e62ef581e7fd72",
@@ -3496,13 +3501,14 @@
       "rawImageUrl": "https://assets-prd.ignimgs.com/2026/04/17/gettyimages-2271835562-1776457372228.jpg",
       "fetchedInRun": 2,
       "score": 75,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Clair Obscur winning BAFTA Best Game is a concrete cultural moment for a beloved indie; strong GOTY narrative continuation",
       "clusterId": "c-8c5164cb5aef895a",
       "clusterSize": 1,
       "clusterSources": [
         "IGN"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "ce611616d77f6ac0",
@@ -3647,7 +3653,7 @@
       "clusterSources": [
         "The Atlantic"
       ],
-      "publishedReasoning": "FBI Director Kash Patel MIA via The Atlantic is a dark-gravity Power story — institutional chaos at the top of law enforcement, credible sourcing, and alarming enough to cut through"
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "718117c22a3127e7",
@@ -4156,13 +4162,14 @@
       "rawImageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/17/ikea-meatball-flavor-Chupa-chups-lollipop.jpg?width=1080&amp;quality=75&amp;format=auto",
       "fetchedInRun": 2,
       "score": 58,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "IKEA meatball x Chupa Chups collab is weird brand crossover with strong shareability and cultural brand recognition",
       "clusterId": "c-53480e7c8f5c2ffe",
       "clusterSize": 1,
       "clusterSources": [
         "Dexerto"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "c61699a994c4d382",
@@ -4353,13 +4360,14 @@
       "rawImageUrl": "https://i.insider.com/69e28112367066d7c296e1aa?format=jpeg",
       "fetchedInRun": 2,
       "score": 67,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "$150 World Cup train fare vs. $12.90 normal price is a scalable outrage story with real stakes — power/culture/sports crossover",
       "clusterId": "c-884fc1495dcdd5d4",
       "clusterSize": 1,
       "clusterSources": [
         "Business Insider"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "c7abea9f2d600a90",
@@ -6214,7 +6222,7 @@
       "clusterSources": [
         "Rolling Stone"
       ],
-      "publishedReasoning": "Madonna x Sabrina Carpenter Coachella duet is the weekend's defining cultural moment — gen-gap power move, history-making, and the story everyone is sharing; Rolling Stone framing is best"
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "f007cbaaf9ebce4e",
@@ -6580,13 +6588,14 @@
       "rawImageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F04%2F18%2Fnutella-peanut-new-flavor-official-launch-announcement-000.jpg?w=800&cbr=1&q=90&fit=max",
       "fetchedInRun": 4,
       "score": 35,
-      "verdict": "rejected",
+      "verdict": "published",
       "reasoning": "Nutella new flavor is mildly viral-of-the-day fodder but low staying power and no real cultural stakes",
       "clusterId": "c-766e38c9d93c715d",
       "clusterSize": 1,
       "clusterSources": [
         "Hypebeast"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "a505d7f6cfb793b8",
@@ -6616,13 +6625,14 @@
       "rawImageUrl": "https://i.guim.co.uk/img/media/57b9bd9ac87066a5dd36bf1879f3215b291a4635/269_0_2500_2000/master/2500.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=45b34dce2c3950cf2ca90c2ddb747432",
       "fetchedInRun": 4,
       "score": 82,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "Richard Gadd's Baby Reindeer follow-up is a major IP/creator moment — high anticipation, culturally loaded, conversation-worthy",
       "clusterId": "c-5d8fb68e1e0b5366",
       "clusterSize": 1,
       "clusterSources": [
         "The Guardian Culture"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "1e20bd8c138941ef",
@@ -8411,13 +8421,14 @@
       "rawImageUrl": "https://futurism.com/wp-content/uploads/2026/04/lawyer-claude-ai-chatbot.jpg?quality=85",
       "fetchedInRun": 5,
       "score": 82,
-      "verdict": "potential",
+      "verdict": "published",
       "reasoning": "High-stakes legal consequence of AI use — privacy/power story with direct audience relevance and real societal impact",
       "clusterId": "c-17e8237b5256b262",
       "clusterSize": 1,
       "clusterSources": [
         "Futurism"
-      ]
+      ],
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "1edeaa40ebfd18d3",
@@ -8812,7 +8823,7 @@
       "clusterSources": [
         "Daily Mail"
       ],
-      "publishedReasoning": "Zayn punching Louis Tomlinson on a Netflix shoot is peak internet-fandom chaos — 1D stans, Netflix deal, family unfollows, and a hospitalization all in one story"
+      "publishedReasoning": "manually added via pool-add"
     },
     {
       "id": "b140d419dff95ecd",
