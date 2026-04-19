@@ -9,6 +9,17 @@
 // In dev the Vite server on :5173 and the API server on :3001 are different
 // origins, so we fall back to VITE_API_URL from .env.local.
 export function apiBase(): string {
+  // Capacitor native builds load from capacitor://localhost (iOS) or
+  // http://localhost (Android), so relative URLs don't reach the backend.
+  // Native must always use an absolute production URL.
+  if (typeof window !== "undefined") {
+    const cap = (window as unknown as {
+      Capacitor?: { isNativePlatform?: () => boolean };
+    }).Capacitor;
+    if (cap?.isNativePlatform?.() || window.location.protocol === "capacitor:") {
+      return "https://www.popcornmedia.org";
+    }
+  }
   if (import.meta.env.PROD) return "";
   return import.meta.env.VITE_API_URL ?? "";
 }

@@ -107,6 +107,7 @@ export function ArticleCard({
     iw: number | null | undefined,
     ih: number | null | undefined,
     cw: number, ch: number,
+    topReserve = 0, bottomReserve = 0,
   ): string {
     if (!iw || !ih) {
       // No image dimensions stored — fall back to the naive approximation.
@@ -122,9 +123,15 @@ export function ArticleCard({
       px = Math.max(0, Math.min(100, px));
     }
 
+    // Vertical target: center of the VISIBLE area (between TopBar and
+    // BottomNav). Using ch/2 would center the focal in the full container
+    // — which for a standalone/native layout means the face hides partly
+    // behind the TopBar. Shifting the target to the middle of the visible
+    // band keeps faces in the unobstructed zone.
+    const targetY = topReserve + (ch - topReserve - bottomReserve) / 2;
     let py = 50;
     if (scaledH > ch + 0.5) {
-      py = ((ch / 2) - fy * scaledH) / (ch - scaledH) * 100;
+      py = (targetY - fy * scaledH) / (ch - scaledH) * 100;
       py = Math.max(0, Math.min(100, py));
     }
 
@@ -134,10 +141,14 @@ export function ArticleCard({
   const containerW = window.innerWidth;
   const containerH = viewportHeight ?? window.innerHeight;
 
-  // In standalone PWA the blurred TopBar covers ~100px at the top of the card.
-  // Tell the focal-point algorithm the "visible" area is shorter so it biases
-  // the crop to keep faces below the chrome — without creating any gaps.
-  const focalH = isStandalone ? containerH - 100 : containerH;
+  // Chrome reserves in standalone/native. We deliberately bias faces toward
+  // the BOTTOM half of the screen — subjects read better when they sit
+  // between the TopBar chrome and the (less chrome-heavy) bottom nav area.
+  // Using only a top reserve (and 0 bottom) pulls the focal target clearly
+  // below true center by ~half the reserve. 160 ≈ TopBar (100) + a generous
+  // buffer so hair/hats aren't clipped by the blur band.
+  const topReserve    = isStandalone ? 160 : 0;
+  const bottomReserve = 0;
 
   // When focal data exists, use the precise math. When it doesn't, use a
   // smart default that accounts for the web's landscape viewport: portrait
@@ -153,7 +164,9 @@ export function ArticleCard({
       article.imageWidth,
       article.imageHeight,
       containerW,
-      focalH,
+      containerH,
+      topReserve,
+      bottomReserve,
     );
   } else if (
     containerW > containerH &&
@@ -163,8 +176,12 @@ export function ArticleCard({
     // Landscape viewport + portrait image → faces are usually in top third
     objectPosition = 'center 25%';
   } else {
-    // In standalone, default to biasing toward top so faces drop below TopBar
-    objectPosition = isStandalone ? 'center 40%' : 'center';
+    // In standalone, bias strongly toward the top of the image (low Y%).
+    // object-position Y% < 50 shifts the image DOWN in the container, so
+    // the subject's head drops below the TopBar blur instead of being
+    // clipped by it. 15% is an aggressive push-down that works well for
+    // the mostly-face editorial images in the feed.
+    objectPosition = isStandalone ? 'center 15%' : 'center';
   }
 
   // Out-of-window: same-height snap placeholder, zero memory / decode pressure.
@@ -219,7 +236,17 @@ export function ArticleCard({
             fetchPriority={isActive ? 'high' : 'low'}
             style={{
               position: 'absolute',
-              top: 0,
+              // In standalone/native, the container is the full-device
+              // height but the image's composition centre almost always sits
+              // in the top third of the source frame (editorial close-ups).
+              // object-fit:cover + object-position-Y can only nudge the
+              // crop by a few px when scaledH ≈ containerH, so a CSS-only
+              // focal shift isn't enough on its own. We physically offset
+              // the image down by ~44px so the subject drops below the
+              // TopBar blur band; the image still extends from behind the
+              // blur (the first 44px shows the card bg through the blur)
+              // and its bottom simply clips past the container edge.
+              top: isStandalone ? 44 : 0,
               left: 0,
               width: '100vw',
               height: '100%',

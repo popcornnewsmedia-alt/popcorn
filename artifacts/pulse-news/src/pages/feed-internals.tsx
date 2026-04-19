@@ -12,18 +12,80 @@ import type { LegalKind } from "@/components/LegalSheet";
 
 export const APP_VERSION = "1.0.0";
 
-// ── Image URL optimisation — same 1080px target as FeedPage.tsx ─────────
+// ── Image URL optimisation ──────────────────────────────────────────────
+// Target ≈ 1 CSS-pixel viewport width (1080 covers iPhone Pro Max at 1x);
+// multiplied by device-pixel-ratio at call time to serve DPR-aware sizes.
+// Capped at 3x (higher is wasted — no iOS device ships >3x).
 export const TARGET_IMAGE_WIDTH = 1080;
 
-export function optimizeImageUrl(url: string | null | undefined): string | null | undefined {
+/**
+ * Rewrite a source image URL to a smaller, CDN-optimised variant.
+ *
+ * Handles the four CDNs we actually see in the feed:
+ *   - Supabase Storage (99% of production images) → render/image/public/
+ *     transform endpoint with width + quality query. Supabase Pro's image
+ *     transform serves webp automatically when the request accepts it.
+ *   - Unsplash → native ?w / ?q / ?fm / ?auto=format / ?fit=crop params
+ *   - TMDb (image.tmdb.org) → path-based {size} segment (w780 / w1280 / original)
+ *   - Wikipedia (upload.wikimedia.org) → /thumb/…/NNNpx-… numeric segment
+ *   - WordPress /wp-content/uploads — Jetpack Photon ?w=
+ *
+ * Pass the current `devicePixelRatio` so the served width matches the
+ * physical pixel count of the device (≈ 1080 × dpr). Defaults to 1 for
+ * callers that can't supply it (e.g. SSR, tests).
+ */
+export function optimizeImageUrl(
+  url: string | null | undefined,
+  dpr: number = 1,
+): string | null | undefined {
   if (!url || typeof url !== 'string') return url;
+  const effectiveDpr = Math.min(Math.max(dpr || 1, 1), 3);
+  const width = Math.round(TARGET_IMAGE_WIDTH * effectiveDpr);
+
+  // Supabase Storage public object → image transform endpoint.
+  // Skipped if the URL already points at the transform endpoint (idempotent
+  // re-optimisation is fine but we don't want to double-append query params).
+  const supabaseObjIdx = url.indexOf('/storage/v1/object/public/');
+  if (supabaseObjIdx !== -1 && url.includes('.supabase.co')) {
+    const transformed = url.replace(
+      '/storage/v1/object/public/',
+      '/storage/v1/render/image/public/',
+    );
+    const sep = transformed.includes('?') ? '&' : '?';
+    return `${transformed}${sep}width=${width}&quality=85`;
+  }
+  if (url.includes('/storage/v1/render/image/public/') && !/[?&]width=\d+/i.test(url)) {
+    const sep = url.includes('?') ? '&' : '?';
+    return `${url}${sep}width=${width}&quality=85`;
+  }
+
+  // Unsplash
+  if (/\bimages\.unsplash\.com\b/i.test(url) && !/[?&]w=\d+/i.test(url)) {
+    const sep = url.includes('?') ? '&' : '?';
+    return `${url}${sep}w=${width}&q=85&fm=jpg&auto=format&fit=crop`;
+  }
+
+  // TMDb — path-based sizes. Only rewrite if the existing size isn't
+  // already "original" (largest).
+  if (/\bimage\.tmdb\.org\/t\/p\//i.test(url)) {
+    const tmdbSize = width > 1280 ? 'original' : width > 780 ? 'w1280' : 'w780';
+    return url.replace(/\/t\/p\/[^/]+\//, `/t/p/${tmdbSize}/`);
+  }
+
+  // Wikipedia / Wikimedia thumbnails
+  if (/\bupload\.wikimedia\.org\/wikipedia\/.*\/thumb\//i.test(url)) {
+    return url.replace(/\/(\d+)px-/, `/${width}px-`);
+  }
+
+  // WordPress wp-content JPG/PNG → Photon / Jetpack ?w=
   const isWpImg =
     /\/wp-content\/uploads\//i.test(url) &&
     /\.(jpe?g|png)(\?|$)/i.test(url);
   if (isWpImg && !/[?&]w=\d+/i.test(url)) {
     const sep = url.includes('?') ? '&' : '?';
-    return `${url}${sep}w=${TARGET_IMAGE_WIDTH}`;
+    return `${url}${sep}w=${width}`;
   }
+
   return url;
 }
 

@@ -48,26 +48,12 @@ function dividerIdForDate(d: Date) {
 // All other URLs (YouTube thumbnails, Unsplash, iTunes, etc.) are left alone
 // because they're either already viewport-sized or don't support resize
 // query params.
-const TARGET_IMAGE_WIDTH = 1080;
-
+// Kept as a thin shim over feed-internals so both feed impls stay in sync.
+// See feed-internals.tsx for the full CDN-matching logic.
+import { optimizeImageUrl as optimizeImageUrlShared } from './feed-internals';
 function optimizeImageUrl(url: string | null | undefined): string | null | undefined {
-  if (!url || typeof url !== 'string') return url;
-
-  // Wikipedia Commons — skip optimization. Wikipedia's thumbnail service
-  // frequently returns 503 for programmatically constructed /thumb/ URLs,
-  // especially with URL-encoded filenames. The original full-res images
-  // load reliably and modern browsers handle decode efficiently.
-
-  // WordPress wp-content/uploads JPG / PNG → ensure ?w=1080
-  const isWpImg =
-    /\/wp-content\/uploads\//i.test(url) &&
-    /\.(jpe?g|png)(\?|$)/i.test(url);
-  if (isWpImg && !/[?&]w=\d+/i.test(url)) {
-    const sep = url.includes('?') ? '&' : '?';
-    return `${url}${sep}w=${TARGET_IMAGE_WIDTH}`;
-  }
-
-  return url;
+  const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
+  return optimizeImageUrlShared(url, dpr);
 }
 
 // ── Pull-to-refresh popcorn animation ────────────────────────────────────

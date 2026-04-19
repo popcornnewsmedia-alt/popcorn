@@ -8,9 +8,23 @@ import { setBaseUrl } from "@workspace/api-client-react";
 // In dev: if VITE_API_URL is not set, the mock middleware handles it
 let apiUrl: string | undefined;
 
-if (import.meta.env.PROD) {
-  // In production, use a relative base URL so API calls stay same-origin on
-  // whichever domain the page was loaded from (apex or www). Hardcoding a
+// Detect Capacitor native runtime. The app loads from capacitor://localhost
+// on iOS (and http://localhost on Android), so relative API paths resolve to
+// a non-existent local origin. Native builds must target the real backend.
+const isCapacitor =
+  typeof window !== "undefined" &&
+  ((window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } })
+    .Capacitor?.isNativePlatform?.() ??
+    window.location.protocol === "capacitor:");
+
+if (isCapacitor) {
+  // Native iOS/Android: always use the absolute production API URL.
+  apiUrl = "https://www.popcornmedia.org";
+  console.log("[Popcorn] Capacitor native mode - using absolute API base:", apiUrl);
+  setBaseUrl(apiUrl);
+} else if (import.meta.env.PROD) {
+  // In production web, use a relative base URL so API calls stay same-origin
+  // on whichever domain the page was loaded from (apex or www). Hardcoding a
   // specific hostname triggers cross-origin CORS preflights + 307 redirects
   // that browsers refuse to follow, surfacing as "network" errors in the UI.
   apiUrl = "";
