@@ -70,6 +70,7 @@ function articleToRow(a: EnrichedArticle, feedDate: string, stage: 'dev' | 'prod
     gradient_start:     a.gradientStart,
     gradient_end:       a.gradientEnd,
     tag:                a.tag,
+    source_link:        a.link ?? null,
     image_url:          a.imageUrl ?? null,
     source_image_url:   a.sourceImageUrl ?? null,
     image_width:        a.imageWidth ?? null,
@@ -100,6 +101,7 @@ function rowToArticle(row: Record<string, unknown>, id: number): EnrichedArticle
     gradientStart:    String(row.gradient_start ?? "#080e24"),
     gradientEnd:      String(row.gradient_end ?? "#0e2a5a"),
     tag:              String(row.tag ?? "FEATURE"),
+    link:             row.source_link ? String(row.source_link) : null,
     imageUrl:         row.image_url ? String(row.image_url) : null,
     sourceImageUrl:   row.source_image_url ? String(row.source_image_url) : null,
     imageWidth:       row.image_width ? Number(row.image_width) : undefined,
@@ -163,6 +165,7 @@ function stripUnknownColumns(row: Record<string, unknown>): Record<string, unkno
     image_focal_x, image_focal_y, // eslint-disable-line @typescript-eslint/no-unused-vars
     image_safe_w,  image_safe_h,  // eslint-disable-line @typescript-eslint/no-unused-vars
     image_credit,                 // eslint-disable-line @typescript-eslint/no-unused-vars
+    source_link,                  // eslint-disable-line @typescript-eslint/no-unused-vars
     ...rest
   } = row;
   return rest;
@@ -170,7 +173,7 @@ function stripUnknownColumns(row: Record<string, unknown>): Record<string, unkno
 
 function isMissingColumnError(msg: string | undefined): boolean {
   if (!msg) return false;
-  return /image_focal|image_safe|image_credit|column.*does not exist|schema cache/i.test(msg);
+  return /image_focal|image_safe|image_credit|source_link|column.*does not exist|schema cache/i.test(msg);
 }
 
 /**
@@ -310,6 +313,94 @@ async function deleteFromSupabase(titles: string[]): Promise<void> {
   if (!process.env.SUPABASE_URL || titles.length === 0) return;
   const { error } = await supabase.from("articles").delete().in("title", titles);
   if (error) console.warn("[supabase] delete error:", error.message);
+}
+
+/**
+ * Given a list of source links, return a map of link → preserved image data
+ * for any article previously published with that link. Used to avoid
+ * re-running image selection (and potentially losing the original image)
+ * when an article is re-added via /api/curation/add or the pool-add script.
+ *
+ * Returns an empty map if the source_link column hasn't been created yet
+ * (graceful fallback for environments that haven't run the migration).
+ */
+export interface PreservedImageData {
+  imageUrl: string | null;
+  sourceImageUrl: string | null;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFocalX: number | null;
+  imageFocalY: number | null;
+  imageSafeW: number | null;
+  imageSafeH: number | null;
+  imageCredit: string | null;
+}
+
+export async function lookupPreservedImagesByLinks(
+  links: string[],
+): Promise<Map<string, PreservedImageData>> {
+  const result = new Map<string, PreservedImageData>();
+  if (!process.env.SUPABASE_URL || links.length === 0) return result;
+
+  const filtered = [...new Set(links.filter(Boolean))];
+  if (filtered.length === 0) return result;
+
+  const { data, error } = await supabase
+    .from("articles")
+    .select(
+      "source_link,image_url,source_image_url,image_width,image_height,image_focal_x,image_focal_y,image_safe_w,image_safe_h,image_credit",
+    )
+    .in("source_link", filtered);
+
+  if (error) {
+    if (isMissingColumnError(error.message)) {
+      console.warn(
+        "[preserve-image] source_link column missing — cannot match re-added articles to originals. " +
+          "Run: ALTER TABLE articles ADD COLUMN IF NOT EXISTS source_link TEXT; " +
+          "CREATE INDEX IF NOT EXISTS idx_articles_source_link ON articles(source_link);",
+      );
+      return result;
+    }
+    console.warn("[preserve-image] lookup error:", error.message);
+    return result;
+  }
+
+  for (const row of data ?? []) {
+    const link = (row as { source_link?: string }).source_link;
+    if (!link) continue;
+    // Prefer the most recent row for the link — the query is ordered by
+    // created_at desc in Supabase by default on ties, but we'll pick the
+    // first image_url we see since duplicates are fine.
+    if (result.has(link)) continue;
+    result.set(link, {
+      imageUrl: (row as any).image_url ? String((row as any).image_url) : null,
+      sourceImageUrl: (row as any).source_image_url
+        ? String((row as any).source_image_url)
+        : null,
+      imageWidth:
+        (row as any).image_width != null ? Number((row as any).image_width) : null,
+      imageHeight:
+        (row as any).image_height != null ? Number((row as any).image_height) : null,
+      imageFocalX:
+        (row as any).image_focal_x != null ? Number((row as any).image_focal_x) : null,
+      imageFocalY:
+        (row as any).image_focal_y != null ? Number((row as any).image_focal_y) : null,
+      imageSafeW:
+        (row as any).image_safe_w != null ? Number((row as any).image_safe_w) : null,
+      imageSafeH:
+        (row as any).image_safe_h != null ? Number((row as any).image_safe_h) : null,
+      imageCredit: (row as any).image_credit
+        ? String((row as any).image_credit)
+        : null,
+    });
+  }
+
+  if (result.size > 0) {
+    console.log(
+      `[preserve-image] Found ${result.size} previously-published article(s) — will reuse original images.`,
+    );
+  }
+  return result;
 }
 
 // ─── Public API ───────────────────────────────────────────────────────────────

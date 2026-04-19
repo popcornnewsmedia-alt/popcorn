@@ -23,6 +23,7 @@ import {
 } from "../src/lib/rss-enricher.js";
 import { mergeFeed, saveCommittedFeed } from "../src/lib/curated-store.js";
 import { supabase } from "../src/lib/supabase-client.js";
+import { buildFinalizerPrompt } from "../src/lib/curation-prompt.js";
 
 // ── Types (mirror pool-fetch.ts) ───────────────────────────────────────────
 
@@ -136,73 +137,10 @@ interface Selection {
 
 async function finalSelect(
   potentials: Array<{ title: string; source: string; description: string; score: number; clusterSize: number; clusterSources: string[] }>,
-  recentTitles: string[]
+  recentTitles: string[],
+  target: number,
 ): Promise<Selection[]> {
-  const numbered = potentials
-    .map((it, i) => `${i + 1}. [${it.source}] "${it.title}" (score=${it.score}, covered by ${it.clusterSize} source${it.clusterSize > 1 ? "s" : ""}${it.clusterSize > 1 ? ": " + it.clusterSources.join(", ") : ""}) — ${it.description.slice(0, 200)}`)
-    .join("\n");
-
-  const recentBlock = recentTitles.length
-    ? `\n\nALREADY PUBLISHED IN THE LAST 7 DAYS (${recentTitles.length} headlines) — DO NOT re-publish the same story even if today's framing, headline, or source differs. These are OFF-LIMITS:\n${recentTitles.map((t) => `  - ${t}`).join("\n")}\n`
-    : "";
-
-  const prompt = `You are the final editor of a daily pop-culture feed aimed at culturally-literate millennials. The feed runs 10–15 stories per day, designed as a fast, shareable scroll that captures the day's cultural pulse.
-
-SELECTION PHILOSOPHY (most important rule):
-Story quality comes FIRST. Theme / topic / tone balance is a SOFT TIE-BREAKER, never a hard cap.
-- If two crime stories are both genuinely strong on their own merits, include both. Do NOT drop one just because "we already have a crime story".
-- If three mass-brand stories are all newsworthy, include all three.
-- If two A-tier celebrities died on the same day, publish both.
-- Theme balance only matters when picking between items of similar quality — use it to avoid monotony, not to override genuine story strength.
-- Never skip a strong story to "leave room for variety". Variety is a nice-to-have; quality is the point.
-
-EDITORIAL GOALS:
-- Think across five axes when tie-breaking for balance: Power (politics+culture crossover), Tech (meaningful tech+society), Culture (music/film/fashion/art), Internet (distinctive viral/meme), Human (scaled drama, celebrity crossovers, behavioral shifts)
-- Prioritise narrative reversals, power/tech/control moves, unexpected crossovers, fandom-driven real-world behavior
-- Favor stories covered by multiple sources (clusterSize > 1) when tie-breaking on score
-- Prefer novel internet culture over low-quality viral-of-the-day
-
-MUST-HAVE LANES (actively hunt for these — do NOT over-index on "smart/substantial" picks):
-
-1. MASS-RECOGNITION BRAND MOMENTS — globally-recognised consumer brands doing something new (Nutella new flavor, IKEA × Chupa Chups meatball lollipop, McDonald's limited item, Lego weird collab, Starbucks × tech company, etc.). Near-automatic inclusions. Universal recognition = universal shareability. Do NOT skip just because it's a "food" or "consumer product" story — those travel further than niche "smart" stories. Aim for at least 1 per feed when available.
-
-2. DEBUNKING / BELIEF REVERSALS — studies that overturn widely-held internet beliefs (manifestation debunked, popular diet disproven, habit-stacking myth, TikTok wellness claim tested). Highly shareable precisely because millions hold the belief. Score penalty for skipping these when in pool.
-
-3. DELIGHT + ABSURDITY TEXTURE — weird brand mashups, luxury absurdism (peacock watches, $80K handbags), politician-with-a-prior-life (NYC mayor still earning rap royalties), oddly-specific consumer moments. These are the feed's TEXTURE — a feed without any feels like homework. Include as many as the pool genuinely offers, don't artificially cap.
-
-4. LEGACY LEGEND MOMENTS — iconic living musicians/artists (McCartney, Ringo, Stevie Wonder, Dylan, Madonna, Dolly level) doing something new / collaborating / breaking silences. Even a short announcement is mass-resonant. Prioritise over a same-score new-artist release.
-
-5. CELEBRITY INCIDENTS with scaled drama — public attack, arrest, breakup with concrete details. Include as many as are genuinely strong on their own; don't cap.
-
-6. RELATABLE OUTRAGE / UNFAIRNESS — concrete pricing or inequality stories with mass resonance (absurd event pricing, venue surge fees, airline fee chaos). Crosses culture and daily life.
-
-SCORING BIAS: Do NOT over-penalise "lightweight" picks. Stories earn their spot through any of: depth, familiarity, absurdity, emotional resonance, shareability. A Nutella new flavor at score 35 beats a senator's AI prediction at score 70.
-
-POLITICS RULE (strict):
-- REJECT pure US/UK legislative process stories (bills, senators debating, party votes, committee moves) unless they involve a globally-recognised household-name figure (Trump, Obama, Biden, AOC, Sanders, Musk-as-political-actor, etc.) OR directly affect culture, tech, or daily life in a way a non-political reader will immediately feel.
-- A senator most readers have never heard of making a prediction = REJECT.
-- "Republican/Democrat revolt over [process bill]" = REJECT.
-- Politics is only in if it crosses over into culture, tech control, surveillance that affects normal people, or names everyone knows.
-
-SOFT ANTI-PATTERNS (avoid if it doesn't cost you a strong story):
-- Over-indexing on pure AI/tech narratives without cultural hooks
-- Low-signal viral with no staying power (but novel/absurd/brand moments ARE high-signal)
-- Pure trailer-only list with no substance
-- Skipping a mass-brand moment or debunking story because you preferred something "weightier"
-Note: these are soft preferences. If every pick independently earns its spot, don't drop one just to satisfy variety.
-
-DEDUP RULES:
-1. Within today's candidates: if multiple items describe the same story, pick the best framing (best source, best headline) and include once.
-2. Against already-published stories (list below): REJECT anything that is the same underlying story as one we've already run in the last 7 days, even if today's source has a different angle, update, or follow-up detail. New angles on a yesterday story = skip unless it's a genuinely major new development (arrest, death, resolution).${recentBlock}
-TASK: Pick exactly ${target} stories. Return JSON array, one entry per pick:
-[{"idx": 7, "reasoning": "short one-liner — why this made the cut vs. alternatives"}, ...]
-
-Order the array by how prominent the story should be in the feed (top = most prominent).
-
-Respond with ONLY the JSON array, no prose.
-
-Candidate pool (${potentials.length} items, all passed per-fetch scoring):
-${numbered}`;
+  const prompt = buildFinalizerPrompt(potentials, recentTitles, target);
 
   const body = JSON.stringify({
     model: "claude-opus-4-6",
@@ -407,7 +345,8 @@ async function main(): Promise<void> {
       clusterSize: r.clusterSize,
       clusterSources: r.clusterSources,
     })),
-    recentTitles
+    recentTitles,
+    target,
   );
   console.log(`[pool-finalize] Claude selected ${selections.length}`);
 

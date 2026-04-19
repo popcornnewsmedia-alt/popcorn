@@ -11,6 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import { supabase } from "./supabase-client.js";
+import { buildRefreshPrompt } from "./curation-prompt.js";
 
 // ─── Image pool ────────────────────────────────────────────────────────────
 // Curated Unsplash photos that work well as article hero images.
@@ -151,6 +152,10 @@ export interface EnrichedArticle {
   gradientStart: string;
   gradientEnd: string;
   tag: string;
+  /** Original RSS/source link for the article — stable across re-adds,
+   *  used to preserve the original image when a previously-published
+   *  article is re-selected. Persisted as `source_link` in Supabase. */
+  link?: string | null;
   imageUrl?: string | null;
   /** The ORIGINAL third-party source URL the hero image was fetched from,
    *  preserved after the image is downloaded and re-uploaded to Supabase
@@ -2302,161 +2307,7 @@ async function enrichWithClaude(
     });
 
   // ── Call 1: Selection ────────────────────────────────────────────────────────
-  const alreadyPublishedBlock = alreadyPublished.length > 0
-    ? `ALREADY IN TODAY'S FEED — do not re-select these stories:\n${alreadyPublished.map((a, i) => `${i + 1}. ${a.title}`).join("\n")}\nYour selections must all be NEW stories not already in today's feed. Judge by story identity, not headline wording. If nothing new clears the bar, select zero.\n\n`
-    : "";
-
-  const selectionPrompt = `You are the editorial voice for Popcorn — a cultural lens app. Today is ${today}.
-
-Popcorn is a high-signal, opinionated snapshot of what actually matters in culture right now — not a general news feed, not a tabloid, not an intellectual reading list.
-
-Your job is not to apply rules. It is to exercise taste. Every decision is an editorial judgment.
-
-━━━ THE ONLY TEST ━━━
-"Does this meaningfully shape, reflect, or interrupt culture right now?"
-
-If the answer requires justification — it's a no.
-
-A story earns its place only if it meets at least one:
-  • SCALE — widely discussed, trending, or dominating attention right now
-  • INFLUENCE — actively shaping taste, behaviour, or public discourse
-  • SIGNAL — indicates a real shift in culture, media, or society
-
-A strong feed is balanced across entertainment, internet culture, economic power, fandom, and cross-domain collisions. Do not over-index on any one area.
-
-━━━ THREE QUESTIONS FOR EVERY STORY ━━━
-
-1. HAS SOMETHING ACTUALLY HAPPENED?
-   Reviews, announcements, nominations, interviews, think-pieces, and unconfirmed speculation fail this test by default. The bar is a discrete, observable moment — something a neutral third party could witness or verify. Real events leave evidence: an economic decision, an institutional action, a cancellation, a ban, a first-ever occurrence, a measurable reach or scale shift, a visible behaviour change at audience scale. If the story could have been written before anything occurred, nothing has happened yet. When a trigger and its downstream consequence are both in the pool, always take the consequence — the furthest downstream event carries the most cultural weight.
-   Valid events include: a significant expansion of scale or access (new market, new platform capability, massive audience upgrade), a bizarre or chaotic real-world incident with spread potential, and any first that a broad public would recognise as meaningful.
-
-   MOMENT VS COMMENTARY — Ask: does this story exist because something happened, or because a writer responded to something already happening? Interviews, think-pieces, reviews, and meta-analysis are content about culture. Popcorn selects for things happening within culture. If the story can exist without a triggering event, it is commentary. Commentary fails.
-
-2. HAS IT BROKEN OUT?
-   Fan interest, trade coverage, or insider commentary is not culture yet. Something that forces a public reaction — not just a read — has broken out. Something that generates debate, contradiction, or surprise across communities with no shared stake has broken out. Something still contained within its originating audience has not. Ask: would people with no connection to this domain bring it up today?
-   Virality and shareability are legitimate forms of cultural weight. A bizarre, human, or chaotic incident that spreads because it is genuinely surprising counts — prestige and institutional importance are not required. Do not over-index on seriousness.
-
-3. DOES IT BELONG HERE?
-   Remove the cultural figure from the story. What remains? If the answer is political, economic, geopolitical, retail, or trade news — it belongs on a different feed. Popcorn covers culture. Cultural adjacency is not cultural consequence.
-
-━━━ SCORING (0–100) ━━━
-Assign each article a cultural relevance score from 0 to 100:
-  • 90–100 → Dominant cultural moment → must include
-  • 75–89  → Strong relevance, widely discussed → include
-  • 60–74  → Borderline → include only if clearly additive and not covered by a stronger story
-  • Below 60 → Exclude
-
-Ask: would this story exist without a press release, a publicist, or a PR cycle? If not — score it low. The presence of a famous name does not compensate for the absence of genuine cultural consequence.
-
-━━━ EDITORIAL INSTINCTS ━━━
-
-RIPPLE EFFECTS — Prioritise cultural events that create ripple effects, not just cultural updates. A cultural update tells you something happened. A ripple-effect story changes something: it shifts public perception, forces a response from institutions, opens a debate that didn't exist before, or makes the next story inevitable. Ask: what does this story unlock or change?
-
-REPLACEABILITY — "If this story was removed, would the feed feel weaker?" If no → cut it.
-
-CONVERSATION STRENGTH — Prioritise stories with tension, controversy, a clear debate hook, an unexpected crossover, or a genuinely surprising and extreme angle. Passive, informational, or "nice to know" stories have no place here.
-
-BAR TEST — "Would two culturally aware people with different interests bring this up today?" If no → exclude.
-
-PROMOTIONAL PENALTY — Individual trailers, teasers, and routine PR-cycle announcements are not culture. Deprioritise aggressively unless there is clear, demonstrated traction well beyond the target fanbase. EXCEPTION: major industry showcase events (CinemaCon, Comic-Con, SXSW panels, D23) where a studio reveals its full upcoming slate are NOT promotional drops — they are industry-direction signals. A single studio's CinemaCon panel showing multiple tentpole films tells you where the industry is heading. Treat these as structural events, not marketing.
-
-DEFAULT FAILURES — The following story types fail Question 1 by default and require exceptional evidence to override: music or film reviews (discovery, not events); rumours and unconfirmed leaks (build-up, not consequence); interviews and meta-commentary (responses to culture, not culture itself); award nominations and festival lineups that are purely administrative. The only override is when the story's mere existence has already triggered a large-scale public reaction.
-
-SPECIFICITY — If you cannot name the person, the event, and the verifiable fact from the article alone, reject it. Stories that require insider knowledge to evaluate are not Popcorn material.
-
-CELEBRITY TIERS — Understand that celebrity weight is contextual. A-tier figures (major tech CEOs driving public discourse, headline artists at landmark events, politicians setting policy) have cultural weight. Mid-tier celebrities (chart-competing artists, mid-level creators) require a genuinely significant moment to warrant inclusion. Low-tier beef, apologies, and internal feuds within a fanbase do not. The bar: would someone outside that celebrity's fanbase care about this story?
-
-NICHE FANBASE STORIES — Be cautious with stories whose primary significance is internal to a specific fanbase, franchise, or online subculture (anime studio decisions, niche gaming controversies, specific creator announcements). Ask: does this have resonance beyond people already invested in that specific series/community? If the story only interests fans of that IP and nobody else, it is too niche.
-
-UPDATES ON PAST EVENTS — Updates and follow-ups about events from prior news cycles (subscriber loss numbers, earnings updates, status announcements) often feel like echo reporting rather than new developments. Include only if the update itself carries surprise or represents a genuine shift — not just numbers confirming expected decline.
-
-SHAREABILITY — Shareability is a legitimate editorial signal, not a red flag. A story does not have to illuminate a societal shift to earn its place. If a story has a strong, specific, immediately graspable "wait, what?" hook — a celebrity suing an unrelated brand over a name dispute, a once-hyped D2C company pivoting to AI compute, toddlers inexplicably calmed by the name "Jessica" — include it. These stories carry the feed's texture. The ONLY thing to filter out here is generic viral fluff that's already been seen everywhere: a celebrity sarcastic comment, a low-stakes Twitter spat, a platform-native clip with no specific angle. The bar is "is this a specific, weird, genuinely surprising thing?" — not "does this change society?"
-
-━━━ CROSS-DOMAIN COLLISIONS ━━━
-Stories where two normally separate worlds collide create natural intrigue and broad appeal. Luxury × space (a watchmaker sending a timepiece to the moon), fashion × tech (AI-designed runway collections), sport × geopolitics (athletes caught in diplomatic incidents), gaming × fine art. These collisions are high-signal because they indicate cultural boundaries shifting. Do not dismiss a story as "just a product announcement" or "just a niche interest" when the collision itself is the story. Ask: does combining these two worlds create something genuinely novel that people would share out of surprise or fascination?
-
-━━━ STRUCTURAL SHIFTS ━━━
-Prioritise stories about structural changes that shape how culture is created, distributed, or consumed — even when they lack celebrity names or viral buzz. Platform incentive changes (e.g. X cutting payments to clickbait), internet infrastructure threats (e.g. archiving tools at risk), major hardware direction shifts (e.g. Apple entering a new product category), and macro workforce changes (e.g. AI replacing significant portions of jobs) all qualify. These stories have outsized long-term cultural impact and are consistently under-selected.
-
-DEPLOYMENT MILESTONES — When a technology or concept moves from theory to real-world deployment, that transition is a structural signal. Robotaxis beginning actual passenger service in a major city, AI tools being embedded into mainstream financial products, autonomous delivery reaching residential streets — these "it's actually happening now" moments are more culturally significant than the announcements that preceded them. Prioritise deployment over announcement.
-
-━━━ INSTITUTIONAL CULTURAL EVENTS ━━━
-Major awards ceremonies (Cannes, Olivier Awards, BAFTAs, Grammys), landmark festival lineups, and prestigious cultural milestones deserve consistent inclusion even when they are not sensational. These events actively shape cultural conversation for months afterward. Do not dismiss them as "administrative" if winners have been announced or if the event carries genuine global cultural weight. The test: does this event set the cultural agenda beyond its immediate audience?
-
-━━━ AI COVERAGE BALANCE ━━━
-AI stories should span multiple angles within a single feed: consumer-facing tools, macro workforce impact, real-world failures and accidents, cultural backlash, and creative applications. Do not cluster AI coverage around a single narrative (e.g. all "company X launches tool Y"). Prefer a mix of perspectives that together paint the full picture of AI's cultural moment.
-
-━━━ NOVELTY AND CURIOSITY ━━━
-Unexpected, curiosity-driven stories with strong shareability signals elevate the feed. A story about a €100 raffle for a €1M Picasso, a disqualified Pokemon Go champion fighting back, a mind-reading beanie shipping to consumers, a former D2C darling reinventing itself as an AI compute provider — all belong. Weight novelty over prestige. A surprising underdog story, a genuinely weird corporate pivot, or a "this is a real thing happening?" moment is more valuable than a predictable establishment one. Do not talk yourself out of these by demanding they also pass a seriousness test — their weirdness IS the signal.
-
-━━━ ABSURDITY AND "WAIT, WHAT?" STORIES ━━━
-Some of the strongest Popcorn stories are simply unexpected. A celebrity suing a liquor brand over a name dispute. A beloved sneaker company pivoting to AI compute infrastructure. Russian soldiers surrendering to autonomous robots. A company launching a beanie that claims to read thoughts. These stories pass the bar on the surreal hook alone — they do not need a ripple-effect justification, an institutional actor, or a generational culture-shift angle. If the one-sentence summary would make an informed person say "wait, what?" and actually click, include it. This is a core part of the feed's character and is consistently under-selected. The only filter here is specificity — vague or uncorroborated weirdness fails; a named company / named person / concrete action passes.
-
-━━━ MAINSTREAM ANCHORS ━━━
-A strong feed always includes at least one immediately recognisable cultural moment — a mainstream IP release (major franchise trailer, anticipated sequel), a household-name celebrity doing something noteworthy, a widely-followed event. These anchor the feed for readers who aren't already culture-obsessed. A trailer for a major franchise sequel involving A-list stars (e.g. Focker In-Law with Ariana Grande + Ben Stiller) qualifies even though individual trailers normally trigger the promotional penalty — the exception is broad recognisability and mainstream pull. Do not over-apply the promotional penalty to the point where the feed has no entry point for a general audience.
-
-━━━ INTERNET-NATIVE TRENDS ━━━
-Memes, TikTok patterns, weird collective behaviours, and viral linguistic quirks are first-class Popcorn material, not novelty filler. If a specific trend has observable scale (millions of views, documented by a trend tracker like Know Your Meme, visible across multiple creator accounts) and a concrete hook (a specific word, action, or pattern), include it. "Toddlers stop tantrums when you say 'Jessica'" is a real behavioural pattern with a specific hook — that belongs. "Triple T Dance goes viral" with clear cross-platform spread belongs. Generic "this TikTok got views" does not. Internet culture is culture; cover it with the same rigour as film or music.
-
-INVESTIGATION AND REVEAL NARRATIVES — Stories where a long-standing mystery is solved, a fraud is exposed, or a hidden truth comes to light carry inherent crossover appeal regardless of the domain. A 30-year-old chess cheating mystery finally unmasked, or a secret scraping operation exposed, transcends the niche it originates from because the narrative structure itself — concealment then revelation — is universally compelling. Do not reject these as "too niche" just because the domain (chess, academia, a specific platform) seems narrow. If the story has a strong "wait, what?" hook that would make someone outside the domain click, it belongs.
-
-━━━ SPORTS ━━━
-Only qualifies when crossing into mainstream cultural conversation: historic firsts that non-fans would celebrate, major controversies spilling into broader discourse, record-breaking economic moments. Never: match results, standings, transfers, injuries, or routine playoff coverage.
-
-━━━ PRIVACY AND ETHICAL BREACHES ━━━
-Stories exposing secret surveillance, data scraping of vulnerable communities, or corporate deception around user privacy carry high emotional and ethical stakes that resonate well beyond the tech audience. A company secretly recording addiction recovery meetings, a platform tracking users after they opted out, a hidden data pipeline — these stories combine genuine outrage with broad relevance. Do not under-weight them as "tech news" when the human cost is the real story.
-
-━━━ LOW-WEIGHT SOURCES ━━━
-Daily Mail and Page Six are signal detectors only. They do not justify inclusion independently — the story must pass the core test on its own merits.
-
-━━━ FEED COMPOSITION TARGET ━━━
-A well-composed Popcorn feed on a normal day has:
-  • At least 1 MAINSTREAM ANCHOR (recognisable IP / household-name celebrity / broad-appeal cultural moment)
-  • At least 1 ABSURDIST / CURIOSITY story ("wait, what?" — weird corporate pivots, surreal real-world incidents, genuinely strange product launches)
-  • At least 1 INTERNET-NATIVE trend (specific meme, TikTok pattern, collective online behaviour with scale and a concrete hook)
-  • A spine of substance (economic, structural, AI, institutional) — but not MORE than half the feed
-You are consistently strong on the substance spine and consistently weak on the other three. Correct for this. If the pool contains any credible candidate for the mainstream anchor slot, the absurdist slot, or the internet-native slot — include it, even if the score is slightly lower than a substance story you already picked.
-
-"Too safe" is a real failure mode. A feed of only important-sounding stories lacks texture and reads like a business brief. Err toward including the weird specific thing over the fifth AI-industry piece.
-
-━━━ RUN CONTEXT ━━━
-${alreadyPublished.length === 0
-  ? `This is a full reset run with no existing feed. Apply the full editorial bar across all domains. Do not pad with borderline entertainment content — if the strong stories only cover 3 domains, that is fine.`
-  : `This is an incremental update. ${alreadyPublished.length} stories are already in today's feed (including cross-day historical dedup from all previously published editions). Only add stories clearly stronger than the weakest already published. Prefer 2 excellent new stories over 8 mediocre ones.`
-}
-
-━━━ HISTORICAL DEDUP ━━━
-The "already in today's feed" list above includes ALL articles published in previous editions of this feed — not just today. Do not re-select any story that is the same topic or event as something already covered, even if the headline or angle differs slightly. A story covered two days ago is still covered. Judge by story identity, not headline wording.
-
-━━━ OUTPUT PHILOSOPHY ━━━
-Do not target a fixed number. Include only what genuinely earns its place.
-A feed of 8 strong stories is better than 20 diluted ones.
-Including weak stories is a failure. Missing strong non-entertainment stories is also a failure.
-The goal is balanced cultural signal detection — not a filtered celebrity feed.
-
-━━━ FINAL STANDARD ━━━
-The feed should feel like: "The most important things that happened in culture in the last 48 hours — across entertainment, internet behaviour, economic power, global fandom, and cultural collisions."
-Not noisy. Not tabloid-driven. Not niche. Not entertainment-biased.
-
-━━━ DOMAIN LABELS ━━━
-Each article below is tagged with a DOMAIN. Use this to maintain balanced coverage:
-  • AI_TECH — AI systems, model behaviour, internet-reshaping tech
-  • ECONOMIC — wealth signals, pricing events, streaming/box office records
-  • FANDOM — fan-scale events, chart records, global audience mobilisation
-  • INTERNET — viral content, memes, TikTok trends, online discourse
-  • SPORTS — athlete controversies, record moments, economic shock
-  • CROSSDOMAIN — collisions across politics, sport, tech, and culture
-  • ENTERTAINMENT — film, TV, music, creators
-
-Do not over-index on ENTERTAINMENT. If AI_TECH, ECONOMIC, FANDOM, or CROSSDOMAIN stories meet the bar, include them even if entertainment stories score similarly.
-
-${alreadyPublishedBlock}ARTICLES:
-${articleList}
-
-Output ONLY the articles you select as a compact JSON array — one object per selected article:
-{"sourceIndex":N,"score":N,"bucket":"CULTURE|INTERNET|CREATOR ECONOMY|CULTURAL SPILLOVER"}
-If nothing qualifies, output [].
-Respond with ONLY the JSON array — no markdown, no code fences, no rejected entries.`;
+  const selectionPrompt = buildRefreshPrompt(articleList, alreadyPublished, today);
 
   console.log("[rss] Call 1/2 — selecting articles...");
   const selectionText = await callClaude(selectionPrompt, 2000);
@@ -2498,6 +2349,8 @@ WRITING RULES:
 - ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show, app, platform or company — never "the app", "the platform", "the company", "the service", "the brand", "the artist" or any other generic substitute. If a product or brand is central to the story, name it every time it is referenced, not just on first mention.
 - PRESERVE KEY SPECIFICS. If the source names a specific model, product, feature, track, award, or proper noun (e.g. a model name like "Muse Spark", a song title, an award name), you MUST include it in the article. Never replace a specific name with a vague description like "a new model" or "a new feature".
 - NEVER LEAVE THE READER HANGING. If a mystery was solved, say what the answer was. If someone was caught cheating, say how. If a deal was struck, name the terms. If evidence was found, say what it showed. If something was revealed, say what it is. The substance IS the story. The reader should never finish the article thinking "okay but what actually happened?"
+- PRESERVE THE HOOK IN THE HEADLINE. If the source headline already contains the story's genuine twist, surprise, reversal, or hidden fact (signal words: "doesn't know", "unknowingly", "secretly", "turns out", "while actually", "without realising", "revealed to be", named quote, unexpected cause, etc.), that element MUST survive in your headline. Do not paraphrase it away in the name of brevity — a 14–16 word headline that lands the hook is better than a 10-word headline that strips it. Example: source "Mother Doesn't Know Her Son Died Because She's Been Talking to an AI Version of Him" → your headline keeps the "doesn't know / still talking to AI version" tension. It does NOT become "Mom Talks to AI Clone of Dead Son" (which implies she knows, and kills the story).
+- HEADLINES NAME THE CAUSE / TRIGGER when it is what makes the story interesting. If a policy was signed because of a celebrity text, name the celebrity. If a quote is the whole point of the story, put the quote (or its essence) in the headline. If the triggering event is a surprise, it goes in the headline, not buried in paragraph two.
 - Write like you are talking to a friend. Short sentences. Simple words. No jargon.
 - No dashes or hyphens used as pauses in sentences. Use plain punctuation.
 - No bullet points inside the story content.
@@ -2512,7 +2365,7 @@ ${articleList}
 
 For each article output a JSON object:
 {
-  "title": "Short punchy headline, max 10 words — MUST include the real name",
+  "title": "Punchy headline — target 10 words, but extend to 14–16 words if needed to preserve the source's hook/twist/named-cause. MUST include the real name.",
   "summary": "2–3 sentences. First sentence names who/what and what happened. Second sentence says why it matters or gives key context. Optional third sentence for a striking detail, number, or quote that hooks the reader.",
   "content": "3–4 paragraphs for BREAKING/RELEASE, 5–6 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people and things throughout. Include brief backstory where needed. Weave in specific numbers, dates, quotes, or details from the source — readers want the full picture, not just the headline.",
   "keyPoints": ["3 to 5 short plain-English takeaways (no dashes, no jargon)"],
@@ -2596,6 +2449,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
       gradientStart,
       gradientEnd,
       tag: String(item.tag ?? "ANALYSIS"),
+      link: originalRawItem?.link ?? null,
       imageUrl: imageUrl ?? `__NEEDS_OG__${originalRawItem?.link ?? ""}`,
       wikiSearchQuery: typeof item.wikiSearchQuery === "string" ? item.wikiSearchQuery : "",
       keyPoints: Array.isArray(item.keyPoints) ? item.keyPoints : [],
@@ -2858,27 +2712,36 @@ export const RSS_FEEDS: [string, string][] = [
   ["https://variety.com/feed/",                                      "Variety"],
   ["https://www.hollywoodreporter.com/feed/",                        "The Hollywood Reporter"],
   ["https://www.indiewire.com/feed/",                                "IndieWire"],
-  ["https://www.vulture.com/rss/index.xml",                          "Vulture"],
+  ["https://deadline.com/feed",                                      "Deadline"],
+  ["https://www.vanityfair.com/feed/rss",                            "Vanity Fair"],
+  // Vulture removed — RSS feed was killed by NY Mag (returns 404; no <link rel="alternate"> in their HTML).
+  // Culture coverage overlap: NYT Arts, The Guardian Culture, The New Yorker.
   // Gaming
   ["https://www.polygon.com/rss/index.xml",                          "Polygon"],
   ["https://feeds.feedburner.com/ign/all",                           "IGN"],
   // Fashion & Taste
   ["https://hypebeast.com/feed",                                     "Hypebeast"],
   ["https://www.dazeddigital.com/rss",                               "Dazed"],
+  ["https://www.businessoffashion.com/feeds/news/",                  "Business of Fashion"],
   // Culture, Ideas, Tech
   ["https://www.theatlantic.com/feed/all/",                          "The Atlantic"],
   ["https://www.wired.com/feed/rss",                                 "Wired"],
   ["https://www.theguardian.com/culture/rss",                        "The Guardian Culture"],
   ["https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml",          "NYT Arts"],
   ["https://www.newyorker.com/feed/everything",                      "The New Yorker"],
+  ["https://feeds.feedburner.com/TheRinger",                         "The Ringer"],
   // AI & Tech culture — dedicated sources for AI/internet behavior signals
   ["https://www.theverge.com/rss/index.xml",                         "The Verge"],
   ["https://techcrunch.com/feed/",                                   "TechCrunch"],
+  ["https://feeds.arstechnica.com/arstechnica/index",                "Ars Technica"],
+  ["https://www.technologyreview.com/feed/",                         "MIT Technology Review"],
+  ["https://www.engadget.com/rss.xml",                               "Engadget"],
   // Global fandom & music scale — international chart records, fan-driven events
   ["https://www.nme.com/feed",                                       "NME"],
   // Sports (cultural crossover only)
   ["https://www.espn.com/espn/rss/news",                             "ESPN"],
   ["https://www.skysports.com/rss/12040",                            "Sky Sports"],
+  ["https://defector.com/feed",                                      "Defector"],
   // ── Supplementary sources ─────────────────────────────────────────────────
   // Internet & Emerging Culture — memes, trends, online discourse
   ["https://www.dexerto.com/feed/",                                  "Dexerto"],
@@ -2886,6 +2749,7 @@ export const RSS_FEEDS: [string, string][] = [
   // Power & Industry Insight — strategy, business of culture
   ["https://www.semafor.com/rss.xml",                                "Semafor"],
   ["https://feeds2.feedburner.com/businessinsider",                  "Business Insider"],
+  ["https://puck.news/feed/",                                        "Puck"],
   // Science & emerging tech with cultural resonance
   ["https://futurism.com/feed",                                      "Futurism"],
   ["https://www.404media.co/rss/",                                   "404 Media"],
@@ -2893,6 +2757,7 @@ export const RSS_FEEDS: [string, string][] = [
   ["https://www.highsnobiety.com/feed/",                             "Highsnobiety"],
   // Business & Innovation
   ["https://www.inc.com/rss",                                        "Inc."],
+  ["https://www.fastcompany.com/latest/rss",                         "Fast Company"],
   // ── Low-weight signal sources (early detection only) ─────────────────────
   ["https://www.dailymail.co.uk/home/index.rss",                     "Daily Mail"],
   ["https://pagesix.com/feed/",                                      "Page Six"],
@@ -3323,6 +3188,8 @@ WRITING RULES:
 - ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show, app, platform or company — never "the app", "the platform", "the company", "the service", "the brand", "the artist" or any other generic substitute. If a product or brand is central to the story, name it every time it is referenced, not just on first mention.
 - PRESERVE KEY SPECIFICS. If the source names a specific model, product, feature, track, award, or proper noun (e.g. a model name like "Muse Spark", a song title, an award name), you MUST include it in the article. Never replace a specific name with a vague description like "a new model" or "a new feature".
 - NEVER LEAVE THE READER HANGING. If a mystery was solved, say what the answer was. If someone was caught cheating, say how. If a deal was struck, name the terms. If evidence was found, say what it showed. If something was revealed, say what it is. The substance IS the story. The reader should never finish the article thinking "okay but what actually happened?"
+- PRESERVE THE HOOK IN THE HEADLINE. If the source headline already contains the story's genuine twist, surprise, reversal, or hidden fact (signal words: "doesn't know", "unknowingly", "secretly", "turns out", "while actually", "without realising", "revealed to be", named quote, unexpected cause, etc.), that element MUST survive in your headline. Do not paraphrase it away in the name of brevity — a 14–16 word headline that lands the hook is better than a 10-word headline that strips it. Example: source "Mother Doesn't Know Her Son Died Because She's Been Talking to an AI Version of Him" → your headline keeps the "doesn't know / still talking to AI version" tension. It does NOT become "Mom Talks to AI Clone of Dead Son" (which implies she knows, and kills the story).
+- HEADLINES NAME THE CAUSE / TRIGGER when it is what makes the story interesting. If a policy was signed because of a celebrity text, name the celebrity. If a quote is the whole point of the story, put the quote (or its essence) in the headline. If the triggering event is a surprise, it goes in the headline, not buried in paragraph two.
 - Write like you are talking to a friend. Short sentences. Simple words. No jargon.
 - No dashes or hyphens used as pauses in sentences. Use plain punctuation.
 - No bullet points inside the story content.
@@ -3337,7 +3204,7 @@ ${articleList}
 
 For each article output a JSON object:
 {
-  "title": "Short punchy headline, max 10 words — MUST include the real name",
+  "title": "Punchy headline — target 10 words, but extend to 14–16 words if needed to preserve the source's hook/twist/named-cause. MUST include the real name.",
   "summary": "2–3 sentences. First sentence names who/what and what happened. Second sentence says why it matters or gives key context. Optional third sentence for a striking detail, number, or quote that hooks the reader.",
   "content": "3–4 paragraphs for BREAKING/RELEASE, 5–6 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people, products and things throughout — never use vague substitutes. Weave in specific numbers, dates, quotes, or details from the source.",
   "keyPoints": ["3 to 5 short plain-English takeaways"],
@@ -3423,6 +3290,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
       gradientStart,
       gradientEnd,
       tag: String(item.tag ?? "FEATURE"),
+      link: rawItem?.link ?? null,
       imageUrl: imageUrl ?? `__NEEDS_OG__${rawItem?.link ?? ""}`,
       wikiSearchQuery: typeof item.wikiSearchQuery === "string" ? item.wikiSearchQuery : "",
       keyPoints: Array.isArray(item.keyPoints) ? item.keyPoints : [],

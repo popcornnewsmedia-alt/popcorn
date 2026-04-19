@@ -29,6 +29,7 @@ import {
   fetchFeed,
   type RawRSSItem,
 } from "../src/lib/rss-enricher.js";
+import { buildScorerPrompt } from "../src/lib/curation-prompt.js";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -194,44 +195,7 @@ interface ScoredResponse {
 async function scoreBatch(
   batch: Array<{ title: string; source: string; description: string }>
 ): Promise<ScoredResponse[]> {
-  const numbered = batch
-    .map((it, i) => `${i + 1}. [${it.source}] "${it.title}" — ${it.description.slice(0, 200)}`)
-    .join("\n");
-
-  const prompt = `You are curating a pop-culture news feed aimed at a culturally-literate millennial audience. The feed mixes Power (politics+culture crossover), Tech (meaningful tech+society), Culture (music/film/fashion), Internet (distinctive viral), and Human (scaled drama). Daily cut is 10-15 stories.
-
-SCORE each item 0-100 on how strong a candidate it is for today's feed, and classify as "potential" (score ≥ 50) or "rejected" (score < 50).
-
-KEEP (high score):
-- Narrative reversals with real stakes (e.g. drug trial fails, study overturns consensus)
-- Power/tech/control stories with societal impact
-- Unexpected celebrity crossovers / human stories with cultural weight
-- Distinctive internet culture (novel, shareable, conversation-worthy)
-- Major IP / franchise moments (GOT, Marvel, Bond, major music releases)
-- Fandom-driven real-world behavior, scaled human drama
-- MASS-RECOGNITION BRAND MOMENTS (score high, often 70+): a globally-recognised consumer brand (Nutella, IKEA, McDonald's, Lego, Coca-Cola, Disney, Nike, Apple, Starbucks, Tesla, etc.) doing something new — new flavor, new product, weird collab, unusual move. Near-automatic keeps even if the story itself reads "light" — mass recognition = mass shareability.
-- DEBUNKING / NARRATIVE REVERSAL ON POPULAR BELIEFS (score high): research that overturns a widely-held internet belief (manifestation, habit stacking, popular diets, TikTok/social advice). Highly shareable precisely BECAUSE many believe it.
-- DELIGHT + ABSURDITY (score 65-80): weird brand mashups, luxury absurdism, politician-with-a-prior-life, oddly-specific consumer moments. These are the feed's TEXTURE, not noise. Do not over-penalise for being "light" — familiarity, absurdity, or emotional resonance are legitimate reasons to earn a spot.
-- CELEBRITY INCIDENTS with real-world stakes (public attack, arrest, public meltdown, breakup with concrete details).
-- LEGACY LEGEND MOMENTS (score high): iconic living figures (McCartney, Ringo, Stevie Wonder, Dylan, Paul Simon, Madonna, Springsteen, Dolly Parton level) doing something new, collaborating, or breaking long silences — even short announcements are mass-resonant.
-
-REJECT (low score):
-- Routine industry PR / press releases with no cultural hook
-- Pure crypto / finance unless directly tied to culture
-- Deep B2B enterprise SaaS / developer tooling
-- Local crime not scaled
-- Low-signal viral-of-the-day with no staying power
-- Trailer announcements UNLESS it's a major property
-- Pure stock tips / investment advice
-- Sports scores without cultural crossover
-- Pure US/UK legislative process (bills, committee votes, party manoeuvres, senators you've never heard of making predictions) — unless it involves a globally-recognised household name (Trump, Obama, Musk-as-political-actor, AOC, Sanders) OR has direct culture/tech/daily-life consequences a non-political reader would feel immediately
-- Inside-the-Beltway politics and lobbying stories without a cultural hook
-
-Respond with JSON only, an array, one entry per input item:
-[{"idx":1,"score":78,"verdict":"potential","reasoning":"short one-liner"},...]
-
-Items:
-${numbered}`;
+  const prompt = buildScorerPrompt(batch);
 
   const body = JSON.stringify({
     model: "claude-opus-4-6",

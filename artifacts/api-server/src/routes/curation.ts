@@ -18,7 +18,7 @@ import {
   resolveArticleBySupabaseId,
 } from "../lib/curation-helpers.js";
 import { enrichSelectedItems, selectBestImageForRerun, detectImageFocalPoint, type EnrichedArticle } from "../lib/rss-enricher.js";
-import { mergeFeed, saveCommittedFeed, saveCommittedFeedAsProd, removeArticlesBySupabaseId, updateArticleImageInMemory, promoteToProduction, backfillFocalPointsForToday } from "../lib/curated-store.js";
+import { mergeFeed, saveCommittedFeed, saveCommittedFeedAsProd, removeArticlesBySupabaseId, updateArticleImageInMemory, promoteToProduction, backfillFocalPointsForToday, lookupPreservedImagesByLinks } from "../lib/curated-store.js";
 import { markLive } from "../lib/article-store.js";
 import { processAndUploadImage } from "../lib/image-processor.js";
 import { supabase } from "../lib/supabase-client.js";
@@ -82,8 +82,39 @@ router.post("/curation/add", async (req, res) => {
       return;
     }
 
+    // Look up any previously-published articles by link so we can preserve
+    // their original image data instead of re-running image selection (which
+    // can return a different/worse image on a second run).
+    const preservedImages = await lookupPreservedImagesByLinks(
+      rawItems.map((r) => r.link).filter((l): l is string => !!l),
+    );
+
     console.log(`[curation/add] Enriching ${rawItems.length} articles...`);
     const enriched = await enrichSelectedItems(rawItems, true);
+
+    // Restore the original image for any article whose link was previously
+    // published. This overrides the freshly-selected image — so a re-add
+    // without an explicit image-change request keeps the original.
+    let preservedCount = 0;
+    for (const article of enriched) {
+      if (!article.link) continue;
+      const preserved = preservedImages.get(article.link);
+      if (!preserved || !preserved.imageUrl) continue;
+      article.imageUrl = preserved.imageUrl;
+      article.sourceImageUrl = preserved.sourceImageUrl;
+      article.imageWidth = preserved.imageWidth;
+      article.imageHeight = preserved.imageHeight;
+      article.imageFocalX = preserved.imageFocalX;
+      article.imageFocalY = preserved.imageFocalY;
+      article.imageSafeW = preserved.imageSafeW;
+      article.imageSafeH = preserved.imageSafeH;
+      article.imageCredit = preserved.imageCredit;
+      preservedCount++;
+    }
+    if (preservedCount > 0) {
+      console.log(`[curation/add] Preserved original image for ${preservedCount} re-added article(s).`);
+    }
+
     const added = mergeFeed(enriched);
     // Manual curation additions go straight to prod — they're already reviewed.
     saveCommittedFeedAsProd();

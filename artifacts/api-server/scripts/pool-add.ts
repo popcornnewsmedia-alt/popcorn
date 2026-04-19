@@ -24,6 +24,7 @@ import {
 } from "../src/lib/rss-enricher.js";
 import {
   loadFromSupabase,
+  lookupPreservedImagesByLinks,
   mergeFeed,
   saveCommittedFeed,
 } from "../src/lib/curated-store.js";
@@ -168,12 +169,37 @@ async function main(): Promise<void> {
     image: p.rawImageUrl,
   }));
 
+  // Preserve original images for any previously-published re-adds.
+  const preservedImages = await lookupPreservedImagesByLinks(
+    rawItems.map((r) => r.link).filter((l): l is string => !!l),
+  );
+
   const enriched = await enrichSelectedItems(rawItems, true);
   console.log(`[pool-add] enriched ${enriched.length} items`);
 
   if (enriched.length === 0) {
     console.error("[pool-add] enrichment returned 0 items — exiting without writing");
     process.exit(1);
+  }
+
+  let preservedCount = 0;
+  for (const article of enriched) {
+    if (!article.link) continue;
+    const preserved = preservedImages.get(article.link);
+    if (!preserved || !preserved.imageUrl) continue;
+    article.imageUrl = preserved.imageUrl;
+    article.sourceImageUrl = preserved.sourceImageUrl;
+    article.imageWidth = preserved.imageWidth;
+    article.imageHeight = preserved.imageHeight;
+    article.imageFocalX = preserved.imageFocalX;
+    article.imageFocalY = preserved.imageFocalY;
+    article.imageSafeW = preserved.imageSafeW;
+    article.imageSafeH = preserved.imageSafeH;
+    article.imageCredit = preserved.imageCredit;
+    preservedCount++;
+  }
+  if (preservedCount > 0) {
+    console.log(`[pool-add] preserved original image for ${preservedCount} re-added article(s)`);
   }
 
   // Merge + persist (dev stage by default)
