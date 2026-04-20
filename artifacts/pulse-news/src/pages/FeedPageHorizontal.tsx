@@ -284,38 +284,27 @@ export function FeedPageHorizontal() {
   // Progress bar fill ref (forwarded to TopBar).
   const feedBarFillRef = useRef<HTMLDivElement>(null);
   const lastProgressRef = useRef(-1);
-  // Tracks the last-frame "on completion slide?" state so we can switch the
-  // fill's CSS transition on only when crossing into/out of completion —
-  // during normal scroll tracking we leave transition off for zero-lag follow.
-  const lastOnCompletionRef = useRef(false);
 
   const updateProgressBar = useCallback(() => {
     const day = dayGroupsRef.current[currentDayIdxRef.current];
     const fill = feedBarFillRef.current;
     const container = dayScrollRefs.current[currentDayIdxRef.current];
     if (!day || !fill || !container) return;
-    const { scrollTop, clientHeight, scrollHeight } = container;
+    const { scrollTop, clientHeight } = container;
     if (clientHeight <= 0) return;
     // Snap children: divider (0), articles (1..N), completion card (N+1).
-    // Progress fills from divider → last article; the completion slide resets
-    // the bar to 0 so the TopBar visually echoes the "fresh day" cue.
+    // Progress fills divider → last article from 0 → 1, then REVERSES back
+    // toward 0 as the user swipes from the last article into the completion
+    // card — so the fill visibly drains along with the swipe rather than
+    // snapping after landing.
     const articleCount = day.articles.length;
-    const onCompletion = scrollTop >= scrollHeight - clientHeight - 4;
-    const fractionalIdx = scrollTop / clientHeight;
     const denom = articleCount > 0 ? articleCount : 1;
-    const rawProgress = onCompletion ? 0 : fractionalIdx / denom;
+    const fractionalIdx = scrollTop / clientHeight;
+    const rawProgress =
+      fractionalIdx <= articleCount
+        ? fractionalIdx / denom
+        : Math.max(0, articleCount + 1 - fractionalIdx);
     const progress = Math.round(Math.max(0, Math.min(1, rawProgress)) * 1000) / 1000;
-
-    // Toggle the CSS transition on the fill so the reset (1 → 0) flows back
-    // smoothly instead of snapping, while keeping active scroll tracking
-    // transition-less for responsive 1:1 feel.
-    if (onCompletion !== lastOnCompletionRef.current) {
-      fill.style.transition = onCompletion
-        ? "transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)"
-        : "none";
-      lastOnCompletionRef.current = onCompletion;
-    }
-
     if (Math.abs(progress - lastProgressRef.current) > 0.0005) {
       lastProgressRef.current = progress;
       fill.style.transform = `scaleX(${progress})`;
