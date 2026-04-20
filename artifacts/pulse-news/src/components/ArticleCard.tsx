@@ -266,31 +266,6 @@ export function ArticleCard({
             className="absolute inset-0 z-10"
             style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.78) 80%, rgba(0,0,0,0.92) 100%)' }}
           />
-          {/* Image credit — bottom-right, subtle */}
-          {article.imageCredit && (
-            <div
-              className="absolute pointer-events-none font-['Inter']"
-              style={{
-                right: '14px',
-                bottom: `calc(92px + env(safe-area-inset-bottom))`,
-                zIndex: 15,
-                fontSize: '9px',
-                lineHeight: 1,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                fontWeight: 500,
-                color: 'rgba(255,241,205,0.70)',
-                textShadow: '0 1px 3px rgba(0,0,0,0.75)',
-                maxWidth: '42vw',
-                textAlign: 'right',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {article.imageCredit}
-            </div>
-          )}
         </>
       ) : (
         <div className="absolute inset-0 ink-diffusion-bg" />
@@ -299,8 +274,13 @@ export function ArticleCard({
       {/* Read indicator badge */}
       {isRead && (
         <div
-          className="absolute top-[68px] left-4 z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-          style={{ background: 'rgba(27,122,74,0.85)', backdropFilter: 'blur(8px)' }}
+          className="absolute left-4 z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+          style={{
+            top: `calc(env(safe-area-inset-top) + 60px)`,
+            background: 'rgba(27,122,74,0.85)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+          }}
         >
           <CheckCircle2 className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
           <span className="font-['Inter'] font-semibold text-white" style={{ fontSize: '11px', letterSpacing: '0.02em' }}>Read</span>
