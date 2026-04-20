@@ -12,6 +12,7 @@ import { LegalSheet, type LegalKind } from "@/components/LegalSheet";
 import { SettingsSheet } from "@/components/SettingsSheet";
 import { NotificationsSheet } from "@/components/NotificationsSheet";
 import { DateDividerCard } from "@/components/DateDividerCard";
+import { DayCompletionCard } from "@/components/DayCompletionCard";
 import { GrainBackground } from "@/components/GrainBackground";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useAuth } from "@/hooks/use-auth";
@@ -289,13 +290,16 @@ export function FeedPageHorizontal() {
     const fill = feedBarFillRef.current;
     const container = dayScrollRefs.current[currentDayIdxRef.current];
     if (!day || !fill || !container) return;
-    const { scrollTop, clientHeight } = container;
+    const { scrollTop, clientHeight, scrollHeight } = container;
     if (clientHeight <= 0) return;
-    const totalItems = day.articles.length + 1; // +1 for divider
+    // Snap children: divider (0), articles (1..N), completion card (N+1).
+    // Progress fills from divider → last article; the completion slide resets
+    // the bar to 0 so the TopBar visually echoes the "fresh day" cue.
+    const articleCount = day.articles.length;
+    const onCompletion = scrollTop >= scrollHeight - clientHeight - 4;
     const fractionalIdx = scrollTop / clientHeight;
-    // Section length from divider → end of day. If only divider exists, pin at 0.
-    const denom = totalItems > 1 ? totalItems - 1 : 1;
-    const rawProgress = fractionalIdx / denom;
+    const denom = articleCount > 0 ? articleCount : 1;
+    const rawProgress = onCompletion ? 0 : fractionalIdx / denom;
     const progress = Math.round(Math.max(0, Math.min(1, rawProgress)) * 1000) / 1000;
     if (Math.abs(progress - lastProgressRef.current) > 0.0005) {
       lastProgressRef.current = progress;
@@ -872,6 +876,28 @@ export function FeedPageHorizontal() {
                         isActive={false}
                       />
                     ))}
+                    {mountArticles && (() => {
+                      // Prev = chronologically older day = NEXT entry in the
+                      // newest-first dayGroups array.
+                      const prevIdx = dataIdx + 1;
+                      // Next = chronologically newer day = PREVIOUS entry.
+                      const nextIdx = dataIdx - 1;
+                      const prevAvailable = prevIdx < dayGroups.length;
+                      const nextAvailable = nextIdx >= 0;
+                      return (
+                        <DayCompletionCard
+                          date={day.date}
+                          id={`day-complete-${day.id}`}
+                          viewportHeight={viewportHeight}
+                          hasPrevDay={prevAvailable}
+                          hasNextDay={nextAvailable}
+                          prevDate={prevAvailable ? dayGroups[prevIdx].date : null}
+                          nextDate={nextAvailable ? dayGroups[nextIdx].date : null}
+                          onGoToPrev={prevAvailable ? () => landOnDay(prevIdx) : undefined}
+                          onGoToNext={nextAvailable ? () => landOnDay(nextIdx) : undefined}
+                        />
+                      );
+                    })()}
                   </div>
                 </div>
               );
