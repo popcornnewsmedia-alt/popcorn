@@ -284,6 +284,10 @@ export function FeedPageHorizontal() {
   // Progress bar fill ref (forwarded to TopBar).
   const feedBarFillRef = useRef<HTMLDivElement>(null);
   const lastProgressRef = useRef(-1);
+  // Tracks the last-frame "on completion slide?" state so we can switch the
+  // fill's CSS transition on only when crossing into/out of completion —
+  // during normal scroll tracking we leave transition off for zero-lag follow.
+  const lastOnCompletionRef = useRef(false);
 
   const updateProgressBar = useCallback(() => {
     const day = dayGroupsRef.current[currentDayIdxRef.current];
@@ -301,6 +305,17 @@ export function FeedPageHorizontal() {
     const denom = articleCount > 0 ? articleCount : 1;
     const rawProgress = onCompletion ? 0 : fractionalIdx / denom;
     const progress = Math.round(Math.max(0, Math.min(1, rawProgress)) * 1000) / 1000;
+
+    // Toggle the CSS transition on the fill so the reset (1 → 0) flows back
+    // smoothly instead of snapping, while keeping active scroll tracking
+    // transition-less for responsive 1:1 feel.
+    if (onCompletion !== lastOnCompletionRef.current) {
+      fill.style.transition = onCompletion
+        ? "transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)"
+        : "none";
+      lastOnCompletionRef.current = onCompletion;
+    }
+
     if (Math.abs(progress - lastProgressRef.current) > 0.0005) {
       lastProgressRef.current = progress;
       fill.style.transform = `scaleX(${progress})`;

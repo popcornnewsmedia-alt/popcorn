@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { format, isToday, isYesterday } from "date-fns";
+import { format } from "date-fns";
 import { GrainBackground } from "./GrainBackground";
 
 interface DayCompletionCardProps {
@@ -42,9 +42,11 @@ function ChevRight({ style }: { style?: React.CSSProperties }) {
   );
 }
 
+// Always return the literal weekday name — this slide and its nav pills
+// intentionally use concrete day names rather than relative shorthand, so
+// Saturday's closing card nav says "SUNDAY" (not "YESTERDAY") and the
+// supporting copy always reads "…for Saturday, 18th April 2026."
 function dayLabel(d: Date): string {
-  if (isToday(d)) return "Today";
-  if (isYesterday(d)) return "Yesterday";
   return format(d, "EEEE");
 }
 
@@ -83,13 +85,11 @@ export function DayCompletionCard({
     return () => observer.disconnect();
   }, [date, onEnter]);
 
-  const title = dayLabel(date);
   const sub = format(date, "do MMMM yyyy");
-  // The supporting line owns the full date reference now ("…for Saturday,
-  // 18th April 2026") — matching the user's preference for a single, more
-  // literary sentence rather than a bold headline + sub stack.
-  const supportingSubject =
-    title === "Today" ? "today" : title === "Yesterday" ? "yesterday" : `${title}, ${sub}`;
+  // Supporting line always names the weekday + full date (e.g. "Saturday,
+  // 18th April 2026") — no Today/Yesterday shorthand, so the closing card
+  // always reads as a concrete moment the user just finished.
+  const supportingSubject = `${dayLabel(date)}, ${sub}`;
 
   const prevEnabled = hasPrevDay && !!prevDate && !!onGoToPrev;
   const nextEnabled = hasNextDay && !!nextDate && !!onGoToNext;
@@ -128,28 +128,8 @@ export function DayCompletionCard({
         className="relative z-10 flex flex-col items-center text-center"
         style={{ gap: 18, paddingLeft: 28, paddingRight: 28, width: "100%", maxWidth: 440 }}
       >
-        {/* Eyebrow + decorative kernel row — signals "closing" vs the opening
-            divider's plain hairline. The kernel gently breathes so the slide
-            feels alive while parked. */}
-        <div
-          className="pn-comp-reveal pn-comp-reveal-1"
-          style={{ display: "flex", alignItems: "center", gap: 12 }}
-        >
-          <div style={{ width: 28, height: 1, background: "rgba(255,241,205,0.28)" }} />
-          <span
-            className="pn-comp-kernel"
-            aria-hidden="true"
-            style={{
-              display: "inline-block",
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#fff1cd",
-            }}
-          />
-          <div style={{ width: 28, height: 1, background: "rgba(255,241,205,0.28)" }} />
-        </div>
-
+        {/* Eyebrow — dash-dot-dash row removed per design pass; the eyebrow
+            alone is enough vertical rhythm above the headline. */}
         <p
           className="font-['Inter'] pn-comp-reveal pn-comp-reveal-1"
           style={{
@@ -158,7 +138,6 @@ export function DayCompletionCard({
             color: "rgba(255,241,205,0.48)",
             textTransform: "uppercase",
             fontWeight: 600,
-            marginTop: -4,
           }}
         >
           End of Day
