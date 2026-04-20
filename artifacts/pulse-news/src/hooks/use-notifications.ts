@@ -25,14 +25,20 @@ export function useNotifications(user: User | null): UseNotificationsResult {
   const refetch = useCallback(async () => {
     if (!user) { setItems([]); setLoading(false); return; }
     setLoading(true);
-    const { data } = await supabase
-      .from("notifications")
-      .select("*")
-      .eq("recipient_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(100);
-    setItems((data ?? []) as DBNotification[]);
-    setLoading(false);
+    try {
+      const { data } = await supabase
+        .from("notifications")
+        .select("*")
+        .eq("recipient_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(100);
+      setItems((data ?? []) as DBNotification[]);
+    } catch {
+      // Network/RLS failures must not strand the sheet on "Loading…".
+      // Leave existing items intact and let realtime or the next refetch heal.
+    } finally {
+      setLoading(false);
+    }
   }, [user?.id]);
 
   useEffect(() => { void refetch(); }, [refetch]);
