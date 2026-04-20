@@ -52,20 +52,33 @@ export function ArticleCard({
   // If false, we fall back to the existing CSS fade-in.
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgReady, setImgReady] = useState(false);
+  // Natural aspect ratio read directly from the loaded <img> — backend's
+  // stored imageWidth/imageHeight can be wrong (e.g. 1080×? reported as
+  // landscape when the file is actually 1080×1260 portrait), so we defer
+  // to the actual decoded dimensions. `null` before load → we fall back
+  // to the backend values so the plate still gets a sensible first paint.
+  const [naturalAr, setNaturalAr] = useState<number | null>(null);
   useLayoutEffect(() => {
     const img = imgRef.current;
     if (!img) return;
+    const capture = () => {
+      if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+        setNaturalAr(img.naturalWidth / img.naturalHeight);
+      }
+    };
     if (img.complete && img.naturalWidth > 0) {
       setImgReady(true);
+      capture();
       return;
     }
-    const onLoad = () => setImgReady(true);
+    const onLoad = () => { setImgReady(true); capture(); };
     img.addEventListener('load', onLoad);
     // Re-check after adding listener — handles the race where the image
     // finishes loading between the `complete` check above and the
     // addEventListener call (load event already fired, won't fire again).
     if (img.complete && img.naturalWidth > 0) {
       setImgReady(true);
+      capture();
     }
     return () => img.removeEventListener('load', onLoad);
     // `renderContent` is critical here: when the card first mounts outside the
@@ -138,51 +151,44 @@ export function ArticleCard({
     return `${px.toFixed(1)}% ${py.toFixed(1)}%`;
   }
 
-  const containerW = window.innerWidth;
-  const containerH = viewportHeight ?? window.innerHeight;
+  const viewportW = window.innerWidth;
+  const viewportH = viewportHeight ?? window.innerHeight;
 
-  // Chrome reserves in standalone/native. We deliberately bias faces toward
-  // the BOTTOM half of the screen — subjects read better when they sit
-  // between the TopBar chrome and the (less chrome-heavy) bottom nav area.
-  // Using only a top reserve (and 0 bottom) pulls the focal target clearly
-  // below true center by ~half the reserve. 160 ≈ TopBar (100) + a generous
-  // buffer so hair/hats aren't clipped by the blur band.
-  const topReserve    = isStandalone ? 160 : 0;
-  const bottomReserve = 0;
+  // ── Hero plate geometry ──
+  // The plate fills the available area between the progress rule and the
+  // action column / swipe hint. Width is viewport minus a thin side margin
+  // so the blurred wash reads as a colored halo framing the image; height
+  // extends down past the category pills so the plate visually "consumes"
+  // the headline block. The feather mask dissolves the edges into the
+  // atmosphere — no hard border.
+  //
+  // Portrait images (most of the feed) can show nearly full at this size;
+  // landscape images use object-fit: cover with focal-point positioning so
+  // the subject stays centred and the crop only trims neutral edges.
+  const PLATE_SIDE_MARGIN = 0;                         // flush with viewport edge
+  const PLATE_TOP_OFFSET  = isStandalone ? 137 : 47;   // flush with progress rule
+  // Bottom of the plate lands just above the category pills, so the pills
+  // sit on clean reading-gradient ground below the feathered dissolve.
+  const PLATE_BOTTOM_CAP  = 236;
 
-  // When focal data exists, use the precise math. When it doesn't, use a
-  // smart default that accounts for the web's landscape viewport: portrait
-  // images (the majority of our feed) get heavily cropped top/bottom on wide
-  // screens, cutting off faces. Biasing toward 25% vertical keeps heads in
-  // frame. On mobile (portrait viewport) the image fills naturally so plain
-  // 'center' is fine.
-  let objectPosition: string;
-  if (hasFocal) {
-    objectPosition = focalToObjectPosition(
-      article.imageFocalX as number,
-      article.imageFocalY as number,
-      article.imageWidth,
-      article.imageHeight,
-      containerW,
-      containerH,
-      topReserve,
-      bottomReserve,
-    );
-  } else if (
-    containerW > containerH &&
-    article.imageWidth && article.imageHeight &&
-    article.imageHeight > article.imageWidth
-  ) {
-    // Landscape viewport + portrait image → faces are usually in top third
-    objectPosition = 'center 25%';
-  } else {
-    // In standalone, bias strongly toward the top of the image (low Y%).
-    // object-position Y% < 50 shifts the image DOWN in the container, so
-    // the subject's head drops below the TopBar blur instead of being
-    // clipped by it. 15% is an aggressive push-down that works well for
-    // the mostly-face editorial images in the feed.
-    objectPosition = isStandalone ? 'center 15%' : 'center';
-  }
+  const plateW = Math.max(1, viewportW - PLATE_SIDE_MARGIN * 2);
+  const plateH = Math.max(1, viewportH - PLATE_TOP_OFFSET - PLATE_BOTTOM_CAP);
+  const plateLeft = PLATE_SIDE_MARGIN;
+  const plateTop  = PLATE_TOP_OFFSET;
+
+  // The plate is portrait-leaning (narrower than tall), so almost every
+  // source image will be wider than the plate's aspect — cover-crop is the
+  // right default and keeps the image dominant. Focal-point positioning
+  // keeps the subject centred so the crop trims neutral edges, not faces.
+  const objectPosition = hasFocal
+    ? focalToObjectPosition(
+        article.imageFocalX as number,
+        article.imageFocalY as number,
+        article.imageWidth,
+        article.imageHeight,
+        plateW, plateH,
+      )
+    : 'center center';
 
   // Out-of-window: same-height snap placeholder, zero memory / decode pressure.
   if (!renderContent) {
@@ -207,65 +213,101 @@ export function ArticleCard({
     >
       {hasImage ? (
         <>
-          {/* SKELETON — only shown until the image is ready. When cached, we
-              skip this entirely so there's zero perceptible lag on fast
-              transitions. For uncached images we display a solid gradient
-              (no fade animation — it's hidden the instant the img loads). */}
-          {!imgReady && (
+          {/* ── BLUR BLEED ──
+              Second copy of the same URL at a heavy blur + mild saturation
+              boost, scaled ~175% and centred so the Gaussian doesn't vignette
+              at the edges. Acts as an atmospheric colour halo — the image's
+              palette bleeds into every area the inset hero doesn't cover.
+              Browsers cache the decode by URL so the bandwidth cost is one
+              fetch per card; the GPU handles the blur compositing.            */}
+          <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
+            <img
+              src={article.imageUrl}
+              alt=""
+              loading="eager"
+              decoding="async"
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                width: '175%',
+                height: '175%',
+                transform: 'translate(-50%, -50%)',
+                objectFit: 'cover',
+                filter: 'blur(64px) saturate(1.35) brightness(0.92)',
+                opacity: 0.92,
+              }}
+            />
+            {/* Navy vignette — pulls bright corners (sky, stage lights) back
+                toward the app palette so the TopBar chrome still reads. */}
             <div
               style={{
                 position: 'absolute',
                 inset: 0,
-                zIndex: 0,
-                background: 'linear-gradient(135deg, #042f6a 0%, #053980 40%, #063d8f 60%, #042f6a 100%)',
+                background:
+                  'radial-gradient(ellipse at 50% 38%, rgba(5,57,128,0) 0%, rgba(5,57,128,0.18) 55%, rgba(5,57,128,0.52) 100%)',
               }}
             />
-          )}
+            {/* Reading gradient for the headline block at the bottom */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'linear-gradient(to bottom, rgba(0,0,0,0) 48%, rgba(0,0,0,0.42) 72%, rgba(0,0,0,0.78) 88%, rgba(0,0,0,0.90) 100%)',
+              }}
+            />
+          </div>
 
-          {/* FOREGROUND — the ONLY decode of this image. No backdrop blur
-              (it was invisible once the foreground loaded anyway and cost a
-              full extra decode + GPU Gaussian blur per card). When `imgReady`
-              is true we set opacity: 1 directly with no animation; when
-              false we fall back to a short CSS fade. */}
-          <img
-            ref={imgRef}
-            src={article.imageUrl}
-            alt={article.title}
-            loading="eager"
-            decoding="async"
-            fetchPriority={isActive ? 'high' : 'low'}
-            style={{
-              position: 'absolute',
-              // In standalone/native, the container is the full-device
-              // height but the image's composition centre almost always sits
-              // in the top third of the source frame (editorial close-ups).
-              // object-fit:cover + object-position-Y can only nudge the
-              // crop by a few px when scaledH ≈ containerH, so a CSS-only
-              // focal shift isn't enough on its own. We physically offset
-              // the image down by ~44px so the subject drops below the
-              // TopBar blur band; the image still extends from behind the
-              // blur (the first 44px shows the card bg through the blur)
-              // and its bottom simply clips past the container edge.
-              top: isStandalone ? 44 : 0,
-              left: 0,
-              width: '100vw',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition,
-              zIndex: 5,
-              opacity: imgReady ? 1 : 0,
-              transition: imgReady ? 'none' : 'opacity 0.18s ease',
-            }}
-          />
-          {/* Subtle dark tint — z-10. Kept intentionally light (0.10) so the
-              image reads crisp and vibrant; the bottom gradient below handles
-              text contrast on the metadata/headline overlay region. */}
-          <div className="absolute inset-0 z-10" style={{ background: 'rgba(0,0,0,0.10)' }} />
-          {/* Bottom gradient — z-10 */}
+          {/* ── HERO PLATE ──
+              The image is laid out as an editorial plate at its natural
+              aspect ratio (no crop). A thin halo of the blurred wash is
+              always visible around it on top / left / right; the bottom
+              extends past the pill row so the plate visually "consumes"
+              the headline block. All four edges are feathered via a CSS
+              mask so the sharp plate dissolves into its own colored
+              atmosphere — no hard border, just a glowing fade.            */}
           <div
-            className="absolute inset-0 z-10"
-            style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.78) 80%, rgba(0,0,0,0.92) 100%)' }}
-          />
+            className="absolute z-10"
+            style={{
+              top: plateTop,
+              left: plateLeft,
+              width: plateW,
+              height: plateH,
+              // Feather all four edges. 34 px of fade on each side is
+              // wide enough to feel atmospheric while preserving a
+              // clearly defined sharp core.
+              // Asymmetric mask: tiny top fade (connects with the progress
+              // rule), 2 px side fades (barely-there halo — image extends
+              // right up to the viewport edges), 34 px bottom fade
+              // (dissolves over the pills into the reading gradient).
+              WebkitMaskImage:
+                'linear-gradient(to right, transparent 0, black 2px, black calc(100% - 2px), transparent 100%), linear-gradient(to bottom, transparent 0, black 8px, black calc(100% - 34px), transparent 100%)',
+              maskImage:
+                'linear-gradient(to right, transparent 0, black 2px, black calc(100% - 2px), transparent 100%), linear-gradient(to bottom, transparent 0, black 8px, black calc(100% - 34px), transparent 100%)',
+              WebkitMaskComposite: 'source-in',
+              maskComposite: 'intersect',
+            }}
+          >
+            <img
+              ref={imgRef}
+              src={article.imageUrl}
+              alt={article.title}
+              loading="eager"
+              decoding="async"
+              fetchPriority={isActive ? 'high' : 'low'}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition,
+                opacity: imgReady ? 1 : 0,
+                transition: imgReady ? 'none' : 'opacity 0.18s ease',
+              }}
+            />
+          </div>
         </>
       ) : (
         <div className="absolute inset-0 ink-diffusion-bg" />
@@ -306,8 +348,13 @@ export function ArticleCard({
       {/* Bottom text content — left side, clear of the buttons */}
       <div className="relative z-20 px-5 pb-[90px] pr-24 sm:px-7 sm:pr-28">
 
-        {/* Category pill + source pill */}
-        <div className="flex items-center gap-2 mb-3">
+        {/* Category pill + source pill. `flex-wrap` lets the source pill drop
+            to its own row when long source names (e.g. "The Hollywood Reporter")
+            can't fit alongside a wide category pill (e.g. "Culture") — without
+            it, flex-shrink squeezes the source below its natural width, the
+            text wraps internally, and the pill keeps the shrunk width leaving
+            awkward empty space beside the shorter wrapped line. */}
+        <div className="flex flex-wrap items-center gap-2 mb-3">
           {/* Category pill with coloured dot */}
           <span
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
@@ -335,7 +382,9 @@ export function ArticleCard({
             </span>
           </span>
 
-          {/* Source pill */}
+          {/* Source pill. `whiteSpace: nowrap` belt-and-braces with the
+              parent's flex-wrap — the pill never wraps its own text, so we
+              don't risk the "shrunk pill with empty space" layout. */}
           <span
             className="px-2.5 py-1 rounded-full tracking-wide"
             style={{
@@ -344,6 +393,7 @@ export function ArticleCard({
               border: '1px solid rgba(255,255,255,0.15)',
               color: 'rgba(255,255,255,0.65)',
               fontFamily: "'Macabro', 'Anton', sans-serif",
+              whiteSpace: 'nowrap',
             }}
           >
             {article.source}

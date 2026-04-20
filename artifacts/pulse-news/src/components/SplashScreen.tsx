@@ -377,6 +377,9 @@ export function SplashScreen({
       className="fixed inset-0 z-[200] flex flex-col overflow-hidden"
       style={{
         backgroundColor: '#053980',
+        // Match main app's top inset so content doesn't jump down when the
+        // splash fades out. TopBar + FeedPage all pad by env(safe-area-inset-top).
+        paddingTop: 'env(safe-area-inset-top)',
         opacity: phase === "fading" ? 0 : 1,
         transition: 'opacity 0.6s ease-out',
         pointerEvents: phase === "fading" ? 'none' : 'auto',
@@ -543,15 +546,23 @@ export function SplashScreen({
       </div>
 
       {/* Bottom — sign-up CTAs, revealed only when signed-out and after the
-          popcorn has started popping. Stays out of the way for returning users. */}
+          popcorn has started popping. Stays out of the way for returning users.
+          NOTE: `marginTop` is held constant. The previous swap from -190px →
+          -220px on ctaSettled caused a flex-layout reflow — the more-negative
+          margin shrunk the CTA block's effective size in the flex calculation,
+          which gave the flex-1 centre 30px of additional space. With
+          justify-center, that pushed the wordmark/tagline/bucket DOWN by 15px,
+          producing a visible jump. Keeping marginTop fixed and leaving the
+          transform in place after settlement trades a tiny static compositing
+          layer for a stable layout. */}
       <div
         className="relative z-10 px-6 flex-shrink-0 flex flex-col items-center"
         style={{
-          marginTop: ctaSettled ? '-220px' : '-190px',
+          marginTop: '-190px',
           paddingBottom: 'max(22px, calc(env(safe-area-inset-bottom) + 14px))',
           pointerEvents: showCTAs ? 'auto' : 'none',
           opacity: showCTAs ? 1 : 0,
-          transform: ctaSettled ? 'none' : showCTAs ? 'translateY(-30px)' : 'translateY(-12px)',
+          transform: showCTAs ? 'translateY(-30px)' : 'translateY(-12px)',
           transition: ctaSettled ? 'none' : 'opacity 3s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 3s cubic-bezier(0.22,1,0.36,1) 0.3s',
         }}
       >

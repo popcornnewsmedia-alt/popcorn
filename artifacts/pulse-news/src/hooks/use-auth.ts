@@ -84,29 +84,61 @@ export function useAuth() {
       settle({ user: null, session: null, profile: null, loading: false });
     }, 5000);
 
-    // Keep state in sync with Supabase auth events (sign in, sign out, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      try {
-        const user = session?.user ?? null;
-        // Skip reloading the profile on pure token refreshes for the same user.
-        const shouldReload = !user || loadedProfileForRef.current !== user.id;
-        if (shouldReload) {
-          const profile = user ? await loadProfile(user.id) : null;
-          settle({ user, session, profile, loading: false });
-        } else {
-          // Token refresh for the same user — preserve the already-loaded
-          // profile (avoids a stale-closure null that wipes the username).
-          if (!mounted) return;
-          settled = true;
-          setState(prev => ({ ...prev, user, session, loading: false }));
-        }
-      } catch (e) {
-        console.warn('[useAuth] authStateChange handler threw', e);
-        if (!mounted) return;
+    // Keep state in sync with Supabase auth events (sign in, sign out, token refresh).
+    //
+    // CRITICAL: Do NOT await another Supabase call (e.g. loadProfile) synchronously
+    // inside this callback. Supabase-js v2 holds the GoTrue navigator-lock for the
+    // duration of signInWithPassword / signInWithOAuth, and fires this event WHILE
+    // still holding that lock. Any DB query inside this callback that needs the
+    // same lock will deadlock: signIn waits for this callback to return, this
+    // callback waits for the DB call, the DB call waits for the lock. The symptom
+    // is "login freezes, refresh shows logged in" — the token was persisted to
+    // localStorage before the deadlock, so a reload reads it cleanly via
+    // getSession (which runs outside the locked context).
+    //
+    // Fix: update user/session synchronously so the UI can react (FeedPage's
+    // user-effect closes the sign-in sheet). Defer loadProfile to a 0ms timeout
+    // so it runs AFTER the lock releases.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+      const user = session?.user ?? null;
+      const shouldReload = !user || loadedProfileForRef.current !== user.id;
+
+      if (!shouldReload) {
+        // Token refresh for the same user — preserve the already-loaded profile.
         settled = true;
-        // Preserve whatever profile we had — don't clobber on transient errors.
-        setState(prev => ({ ...prev, user: session?.user ?? null, session: session ?? null, loading: false }));
+        setState(prev => ({ ...prev, user, session, loading: false }));
+        return;
       }
+
+      // Flip UI state immediately (user is now authed; sheet can close) WITHOUT
+      // awaiting anything. If signing out (user === null) clear profile now.
+      settled = true;
+      setState(prev => ({
+        ...prev,
+        user,
+        session,
+        profile: user ? prev.profile : null,
+        loading: false,
+      }));
+
+      if (!user) {
+        loadedProfileForRef.current = null;
+        return;
+      }
+
+      // Defer the profile fetch outside the auth-lock to avoid the deadlock
+      // described above. setTimeout(…, 0) is sufficient; the signIn promise
+      // will have resolved by the time this fires.
+      setTimeout(async () => {
+        try {
+          const profile = await loadProfile(user.id);
+          if (!mounted) return;
+          setState(prev => ({ ...prev, profile }));
+        } catch (e) {
+          console.warn('[useAuth] deferred profile fetch threw', e);
+        }
+      }, 0);
     });
 
     // Cross-component profile refresh: UsernameSheet dispatches this after
