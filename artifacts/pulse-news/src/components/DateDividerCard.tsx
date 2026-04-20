@@ -170,12 +170,12 @@ export function DateDividerCard({
         <div style={{ width: 40, height: 1, background: "rgba(255,241,205,0.3)" }} />
         <div className="flex flex-col items-center gap-1">
           <span
-            style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "38px", lineHeight: 1.1, color: "#fff1cd", letterSpacing: "0.03em", textTransform: "uppercase" }}
+            style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "26px", lineHeight: 1.1, color: "#fff1cd", letterSpacing: "0.04em", textTransform: "uppercase" }}
           >
             {label}
           </span>
           <span
-            style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "15px", color: "rgba(255,241,205,0.6)", letterSpacing: "0.06em", textTransform: "uppercase" }}
+            style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "12px", color: "rgba(255,241,205,0.6)", letterSpacing: "0.07em", textTransform: "uppercase" }}
           >
             {sub}
           </span>
