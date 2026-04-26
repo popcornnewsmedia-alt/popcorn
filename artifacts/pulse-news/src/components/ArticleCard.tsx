@@ -259,7 +259,13 @@ export function ArticleCard({
   // headline then sits centered beneath the pills. Unified across iOS
   // and mobile-web. (Desktop uses its own plate geometry below and is
   // unaffected by this value.)
-  const PLATE_BOTTOM_CAP  = 278;
+  // iOS standalone keeps 278px (comfortable for 4-line headlines + safe area).
+  // Web browser: scale proportionally so the plate is just large enough to
+  // hold pills + headline + READ MORE + bottom-nav clearance, leaving more
+  // of the viewport for the image. Clamp: min 220 (content floor) to 278.
+  const PLATE_BOTTOM_CAP  = isStandalone
+    ? 278
+    : Math.max(220, Math.round(viewportHeight * 0.30));
 
   // ── Plate geometry ──
   // Mobile / iOS / mobile-web (< DESKTOP_BREAKPOINT): full-bleed portrait
