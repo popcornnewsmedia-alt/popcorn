@@ -42,7 +42,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Gaming':       '#a3e635',
   'Fashion':      '#f472b6',
   'Culture':      '#fb923c',
-  'Sports':       '#34d399',
+  'Sports':       '#f87171',
   'Science':      '#22d3ee',
   'AI':           '#818cf8',
   'Social Media': '#fbbf24',

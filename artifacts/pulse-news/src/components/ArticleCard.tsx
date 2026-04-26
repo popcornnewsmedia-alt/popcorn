@@ -22,7 +22,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Gaming':       '#a3e635',  // lime
   'Fashion':      '#f472b6',  // hot pink
   'Culture':      '#fb923c',  // orange
-  'Sports':       '#34d399',  // emerald
+  'Sports':       '#f87171',  // coral red
   'Science':      '#22d3ee',  // cyan
   'AI':           '#818cf8',  // indigo
   'Social Media': '#fbbf24',  // amber
@@ -837,10 +837,8 @@ export function ArticleCard({
                 </span>
               </div>
 
-              <h2 className="text-[22px] mb-3 text-white overflow-hidden" style={{
-                display: '-webkit-box',
-                WebkitLineClamp: 4,
-                WebkitBoxOrient: 'vertical',
+              <h2 className="mb-3 text-white" style={{
+                fontSize: '21.5px',
                 lineHeight: 1.2,
                 fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
                 fontWeight: 600,

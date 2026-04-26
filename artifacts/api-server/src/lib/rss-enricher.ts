@@ -104,7 +104,7 @@ const CATEGORY_GRADIENTS: Record<string, [string, string]> = {
   Gaming:      ["#0a1e14", "#1e5a38"],  // dark forest green
   Fashion:     ["#1e0a12", "#6a1e36"],  // dark crimson/rose
   Internet:    ["#080e24", "#0e2a5a"],  // midnight blue
-  Sports:      ["#0f1a08", "#2a4a10"],  // dark olive green
+  Sports:      ["#200808", "#5a1818"],  // dark coral/red
   Tech:        ["#0d1520", "#1a3858"],  // steel blue
   AI:          ["#0a0818", "#260e52"],  // deep indigo/electric
   Culture:     ["#1a0c08", "#4a2010"],  // dark burnt sienna
