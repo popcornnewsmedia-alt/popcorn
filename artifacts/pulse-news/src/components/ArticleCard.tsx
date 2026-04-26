@@ -470,17 +470,16 @@ export function ArticleCard({
               }}
             />
             {/* Reading gradient for the headline block at the bottom.
-                Black-based so the blurred image-color halo behind it
-                stays visible and tints the headline zone with the
-                photo's palette — keeps the card feeling like one
-                continuous atmosphere instead of "image plus a navy
-                strip". */}
+                Kept subtle so the headline panel's backdrop-filter sees
+                the image-tinted atmosphere (like the TopBar does at the
+                top), not a dark wash. The headline panel adds its own
+                soft darkening on top for text readability. */}
             <div
               style={{
                 position: 'absolute',
                 inset: 0,
                 background:
-                  'linear-gradient(to bottom, rgba(0,0,0,0) 48%, rgba(0,0,0,0.42) 72%, rgba(0,0,0,0.78) 88%, rgba(0,0,0,0.90) 100%)',
+                  'linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.10) 80%, rgba(0,0,0,0.18) 100%)',
               }}
             />
           </div>
@@ -628,13 +627,12 @@ export function ArticleCard({
             style={{ flex: '0 0 auto', height: `${PLATE_TOP_OFFSET + plateH}px` }}
           />
 
-          {/* ── Layer 1: photo-bled editorial plate ──
-              The frame applies the top-edge feather mask + grain
-              (.popcorn-noir-plate). Inside, two children: a heavily
-              blurred + saturated copy of the article photo as the
-              ground (so the WHOLE panel — even below the image —
-              picks up THIS story's color), and a darkening gradient
-              wash on top to keep the white headline legible. */}
+          {/* ── Layer 1: frosted editorial plate ──
+              Matches the TopBar aesthetic exactly: transparent background
+              + backdropFilter blur(24px). Both the TopBar and this panel
+              blur the same z-0 atmosphere layer, so they read as the same
+              frosted glass color derived from the image. The darkening
+              gradient below keeps the white headline legible. */}
           <div
             aria-hidden
             className="popcorn-noir-plate absolute left-0 right-0"
@@ -650,30 +648,6 @@ export function ArticleCard({
               maskImage: 'none',
             }}
           >
-            {hasImage && (
-              <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage: `url(${article.imageUrl})`,
-                  backgroundSize: 'cover',
-                  // Sample the IMAGE CENTER (not bottom-weighted) so
-                  // the noir plate's color matches the z-0 atmosphere
-                  // behind the TopBar, which centers its sampling too.
-                  // Without this, photos with very different top vs
-                  // bottom palettes (Ellen on a lit stage, Hulu yacht
-                  // with sky over water) showed mismatched colors
-                  // between TopBar and headline panel.
-                  backgroundPosition: 'center center',
-                  // Heavier blur (84) + low saturation (1.15) so the
-                  // panel reads as frosted glass with a subtle hint
-                  // of image color, harmonizing with the TopBar at
-                  // the top of the same image.
-                  filter: 'blur(84px) saturate(115%) brightness(0.94)',
-                  transform: 'scale(1.5)',
-                  transformOrigin: 'center center',
-                }}
-              />
-            )}
             {/* Cream hairline at the top of the panel — web desktop only.
                 On mobile the image's bottom edge serves as the divider. */}
             {isWebDesktop && (
@@ -683,33 +657,20 @@ export function ArticleCard({
                 zIndex: 1,
               }} />
             )}
-            {/* Frosted shared-tint veil — same dominant-color tint as
-                the z-0 atmosphere under the TopBar so both regions
-                read as the same frosted glass. Falls back to cream
-                on CORS-tainted canvas.
-                Web desktop: add backdrop-filter (Chrome/Firefox safe).
-                iOS/mobile: no backdrop-filter (WebKit blurs z-20 siblings). */}
+            {/* Frosted veil — IDENTICAL formula to the TopBar: pure
+                transparent background + backdropFilter blur(24px). The
+                dominant-color tint already lives on the z-0 atmosphere
+                behind both regions, so adding it again here would
+                double-tint the panel. Letting the z-0 tint show through
+                via backdrop-filter alone keeps both regions visually
+                identical. Applied inside overflow:hidden so iOS
+                backdrop-filter does not bleed into z-20 siblings. */}
             <div
               className="absolute inset-0"
               style={{
-                background: dominantColor
-                  ? `rgba(${dominantColor},0.26)`
-                  : 'rgba(255,241,205,0.14)',
-                ...(isWebDesktop ? {
-                  backdropFilter: 'blur(24px)',
-                  WebkitBackdropFilter: 'blur(24px)',
-                } : {}),
-              }}
-            />
-            {/* Bottom-only darkening — keeps headline + READ MORE
-                legible without dimming the top half where colors
-                are most vibrant. Top 40% stays clean (full color
-                burst), gentle ramp from 40% → 100%. */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.18) 70%, rgba(0,0,0,0.42) 100%)',
+                background: 'rgba(0,0,0,0)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
               }}
             />
           </div>
