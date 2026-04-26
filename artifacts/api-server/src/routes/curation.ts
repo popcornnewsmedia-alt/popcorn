@@ -18,7 +18,7 @@ import {
   resolveArticleBySupabaseId,
 } from "../lib/curation-helpers.js";
 import { enrichSelectedItems, selectBestImageForRerun, detectImageFocalPoint, type EnrichedArticle } from "../lib/rss-enricher.js";
-import { mergeFeed, saveCommittedFeed, saveCommittedFeedAsProd, removeArticlesBySupabaseId, updateArticleImageInMemory, promoteToProduction, backfillFocalPointsForToday, lookupPreservedImagesByLinks } from "../lib/curated-store.js";
+import { mergeFeed, saveCommittedFeed, saveCommittedFeedAsProd, removeArticlesBySupabaseId, updateArticleImageInMemory, updateArticleTitleInMemory, promoteToProduction, backfillFocalPointsForToday, lookupPreservedImagesByLinks } from "../lib/curated-store.js";
 import { markLive } from "../lib/article-store.js";
 import { processAndUploadImage } from "../lib/image-processor.js";
 import { supabase } from "../lib/supabase-client.js";
@@ -115,8 +115,8 @@ router.post("/curation/add", async (req, res) => {
       console.log(`[curation/add] Preserved original image for ${preservedCount} re-added article(s).`);
     }
 
-    const added = mergeFeed(enriched);
     // Manual curation additions go straight to prod — they're already reviewed.
+    const added = await mergeFeed(enriched, { stage: 'prod' });
     saveCommittedFeedAsProd();
     markLive();
 
@@ -323,6 +323,27 @@ router.patch("/curation/set-image", async (req, res) => {
   }
 });
 
+// ─── PATCH /api/curation/set-title ───────────────────────────────────────────
+
+router.patch("/curation/set-title", async (req, res) => {
+  try {
+    const { id, title } = req.body as { id?: number; title?: string };
+    if (!id || !title || !title.trim()) {
+      res.status(400).json({ ok: false, error: 'Provide "id" (Supabase ID) and non-empty "title"' });
+      return;
+    }
+    const result = await updateArticleTitleInMemory(id, title.trim());
+    if (!result.ok) {
+      res.status(500).json({ ok: false, error: "Supabase update failed", previousTitle: result.previousTitle });
+      return;
+    }
+    res.json({ ok: true, id, previousTitle: result.previousTitle, title: title.trim() });
+  } catch (err) {
+    console.error("[curation/set-title] error:", (err as Error).message);
+    res.status(500).json({ ok: false, error: (err as Error).message });
+  }
+});
+
 // ─── POST /api/curation/promote ──────────────────────────────────────────────
 
 router.post("/curation/promote", async (req, res) => {
@@ -457,7 +478,7 @@ router.post("/curation/batch", async (req, res) => {
       if (rawItems.length > 0) {
         console.log(`[curation/batch] Enriching ${rawItems.length} articles...`);
         const enriched = await enrichSelectedItems(rawItems, true);
-        const addedCount = mergeFeed(enriched);
+        const addedCount = await mergeFeed(enriched, { stage: 'prod' });
         saveCommittedFeedAsProd();
         markLive();
         result.added = {

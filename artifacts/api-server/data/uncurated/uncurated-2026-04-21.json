@@ -1,0 +1,2204 @@
+{
+  "fetchedAt": "2026-04-21T16:33:10.842Z",
+  "totalRawItems": 143,
+  "uniqueStories": 142,
+  "sentToClaude": 100,
+  "selectedCount": 46,
+  "rejectedCount": 96,
+  "rankedOutCount": 0,
+  "dedupedCount": 1,
+  "articles": [
+    {
+      "title": "UK approves smoking ban proposal for anyone born after 2008",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 12:26:25 GMT",
+      "link": "https://www.dexerto.com/entertainment/uk-approves-smoking-ban-proposal-for-anyone-born-after-2008-3354662/",
+      "dedupRank": 1,
+      "dedupScore": 7.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "UK approves smoking ban proposal for anyone born after 2008",
+        "description": "The UK government has agreed on legislation that will stop anyone born on or after January 1, 2009, from ever legally buying cigarettes.",
+        "link": "https://www.dexerto.com/entertainment/uk-approves-smoking-ban-proposal-for-anyone-born-after-2008-3354662/",
+        "pubDate": "Tue, 21 Apr 2026 12:26:25 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/21/stock-photo-of-smoking.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Get ready for more canceled flights",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:23:09 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/get-ready-for-more-cancelled-flights",
+      "dedupRank": 2,
+      "dedupScore": 7.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Get ready for more canceled flights",
+        "description": "International Energy Agency chief Fatih Birol warned recently that Europe could run out of jet fuel in “six weeks or so.”",
+        "link": "https://www.semafor.com/article/04/21/2026/get-ready-for-more-cancelled-flights",
+        "pubDate": "Tue, 21 Apr 2026 12:23:09 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/726de46ea82a7fed620b6fa886fe8fac0d769dd3-3500x2255.jpg"
+      }
+    },
+    {
+      "title": "Peter Hujar’s Photos Are All the Rage. He’d Be Shocked.",
+      "source": "The Atlantic",
+      "pubDate": "Tue, 21 Apr 2026 07:30:00 -0400",
+      "link": "https://www.theatlantic.com/books/2026/04/andrew-durbin-biography-peter-hujar-and-paul-thek-book-review/686870/?utm_source=feed",
+      "dedupRank": 3,
+      "dedupScore": 7.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Peter Hujar’s Photos Are All the Rage. He’d Be Shocked.",
+        "description": "A new biography brings the the late photographer’s relationship with the artist Paul Thek to vivid life.",
+        "link": "https://www.theatlantic.com/books/2026/04/andrew-durbin-biography-peter-hujar-and-paul-thek-book-review/686870/?utm_source=feed",
+        "pubDate": "Tue, 21 Apr 2026 07:30:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/qhuExw3YTMSB3jnoYVnx6AVlXTE=/media/img/mt/2026/04/2026_04_20_Hujar_Thek/original.jpg"
+      }
+    },
+    {
+      "title": "Man arrested after selling “fake” Rolex that turned out to be real",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 11:25:10 GMT",
+      "link": "https://www.dexerto.com/entertainment/man-arrested-after-selling-fake-rolex-that-turned-out-to-be-real-3354618/",
+      "dedupRank": 4,
+      "dedupScore": 7.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Man arrested after selling “fake” Rolex that turned out to be real",
+        "description": "A man who believed he was unloading a fake Rolex instead ended up at the center of what was later described in court as an “impossible attempt.”",
+        "link": "https://www.dexerto.com/entertainment/man-arrested-after-selling-fake-rolex-that-turned-out-to-be-real-3354618/",
+        "pubDate": "Tue, 21 Apr 2026 11:25:10 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/21/stock-photo-of-rolex.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Escentric Molecules' First Ever Cologne Is Endless Freshness In A Bottle",
+      "source": "Highsnobiety",
+      "pubDate": "Tue, 21 Apr 2026 11:21:37 GMT",
+      "link": "https://www.highsnobiety.com/p/the-subtle-charm-of-escentric-molecules-cologne-one/",
+      "dedupRank": 5,
+      "dedupScore": 7.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Escentric Molecules' First Ever Cologne Is Endless Freshness In A Bottle",
+        "description": "Escentric Molecules have launched Cologne One, their first-ever cologne fragrance.",
+        "link": "https://www.highsnobiety.com/p/the-subtle-charm-of-escentric-molecules-cologne-one/",
+        "pubDate": "Tue, 21 Apr 2026 11:21:37 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "Pokemon fan goes viral after being gifted vintage 1999 pack from boss",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 11:15:33 GMT",
+      "link": "https://www.dexerto.com/pokemon/pokemon-fan-goes-viral-after-being-gifted-vintage-1999-pack-from-boss-3354606/",
+      "dedupRank": 6,
+      "dedupScore": 7.67,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Pokemon fan goes viral after being gifted vintage 1999 pack from boss",
+        "description": "A lucky Pokemon fan showed up to work on a Monday morning and was gifted a rare pack of cards not available since 1999 by his boss, of all people.",
+        "link": "https://www.dexerto.com/pokemon/pokemon-fan-goes-viral-after-being-gifted-vintage-1999-pack-from-boss-3354606/",
+        "pubDate": "Tue, 21 Apr 2026 11:15:33 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/21/Pokemon-fan-goes-viral-after-being-gifted-vintage-1999-pack-from-boss.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "The Unpolished Marketing Playbook Spot & Tango Is Using to Grow Beyond $100 Million in Revenue",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+      "link": "https://www.inc.com/ali-donaldson/the-unpolished-marketing-playbook-spot-tango-is-using-to-grow-beyond-100m-in-revenue/91333420",
+      "dedupRank": 7,
+      "dedupScore": 7.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Unpolished Marketing Playbook Spot & Tango Is Using to Grow Beyond $100 Million in Revenue",
+        "description": "Spot & Tango founder Russell Breuer and chief marketing officer Chondita Dayton share their winning strategy for scaling an e-commerce brand.",
+        "link": "https://www.inc.com/ali-donaldson/the-unpolished-marketing-playbook-spot-tango-is-using-to-grow-beyond-100m-in-revenue/91333420",
+        "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/spot-and-tango-inc.jpg"
+      }
+    },
+    {
+      "title": "Worldview | Rio de Janeiro Stages Fashion Week Comeback",
+      "source": "Business of Fashion",
+      "pubDate": "Tue, 21 Apr 2026 10:50:15 +0000",
+      "link": "https://www.businessoffashion.com/articles/global-markets/worldview-rio-de-janeiro-stages-fashion-week-comeback/",
+      "dedupRank": 8,
+      "dedupScore": 7.64,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Worldview | Rio de Janeiro Stages Fashion Week Comeback",
+        "description": "This week’s round-up of global markets fashion business news also features Dubai malls, Mexican designers and China’s social commerce giant.",
+        "link": "https://www.businessoffashion.com/articles/global-markets/worldview-rio-de-janeiro-stages-fashion-week-comeback/",
+        "pubDate": "Tue, 21 Apr 2026 10:50:15 +0000",
+        "source": "Business of Fashion",
+        "imageUrl": "https://img.businessoffashion.com/resizer/v2/BXWTQD2WEZFZPDNBLPJX6BVHRQ.png?auth=60044d067e1efe35dd24821cc751997cb3dd3664db1b7b8ac1b2cf89a22ff2d5&amp;smart=true&amp;width=1800&amp;height=1013"
+      }
+    },
+    {
+      "title": "15-year-old rabbit breaks Guinness World Record for oldest living bunny",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 10:25:05 GMT",
+      "link": "https://www.dexerto.com/entertainment/15-year-old-rabbit-breaks-guinness-world-record-for-oldest-living-bunny-3354571/",
+      "dedupRank": 9,
+      "dedupScore": 7.62,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "15-year-old rabbit breaks Guinness World Record for oldest living bunny",
+        "description": "A rabbit in the UK has been awarded a Guinness World Record for being the oldest living bunny in the world.",
+        "link": "https://www.dexerto.com/entertainment/15-year-old-rabbit-breaks-guinness-world-record-for-oldest-living-bunny-3354571/",
+        "pubDate": "Tue, 21 Apr 2026 10:25:05 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/21/15-year-old-rabbit-breaks-Guinness-World-Record-for-oldest-living-bunny.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Blue Energy raises $380M to build grid-scale nuclear reactors in shipyards",
+      "source": "TechCrunch",
+      "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+      "link": "https://techcrunch.com/2026/04/21/blue-energy-raises-380m-to-build-grid-scale-nuclear-reactors-in-shipyards/",
+      "dedupRank": 10,
+      "dedupScore": 7.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Blue Energy raises $380M to build grid-scale nuclear reactors in shipyards",
+        "description": "By building reactors in shipyards, Blue Energy says it will tame nuclear power's cost problems, giving it access to cheaper financing.",
+        "link": "https://techcrunch.com/2026/04/21/blue-energy-raises-380m-to-build-grid-scale-nuclear-reactors-in-shipyards/",
+        "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "There are 5 technical signals that hint the record-breaking stock rally is out of steam, Jefferies says",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 09:40:01 +0000",
+      "link": "https://www.businessinsider.com/stock-market-outlook-sp500-rally-technical-analysis-signals-2026-4",
+      "dedupRank": 11,
+      "dedupScore": 7.57,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "There are 5 technical signals that hint the record-breaking stock rally is out of steam, Jefferies says",
+        "description": "Jefferies outlined a handful of technical indicators that suggested the stock market rally has stalled.",
+        "link": "https://www.businessinsider.com/stock-market-outlook-sp500-rally-technical-analysis-signals-2026-4",
+        "pubDate": "Tue, 21 Apr 2026 09:40:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e64082367066d7c296e97e?format=jpeg"
+      }
+    },
+    {
+      "title": "League of Legends’ JD Gaming unveils official team pet and it’s already viral",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 09:29:14 GMT",
+      "link": "https://www.dexerto.com/gaming/league-of-legends-jd-gaming-unveils-official-team-pet-and-its-already-viral-3354563/",
+      "dedupRank": 12,
+      "dedupScore": 7.56,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "League of Legends’ JD Gaming unveils official team pet and it’s already viral",
+        "description": "League of Legends team JD GAMING have unveiled their official team pet, Duobao, a less than six-month-old puppy, and he’s already brought “joy” to the squad.",
+        "link": "https://www.dexerto.com/gaming/league-of-legends-jd-gaming-unveils-official-team-pet-and-its-already-viral-3354563/",
+        "pubDate": "Tue, 21 Apr 2026 09:29:14 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/21/League-of-Legends-esports-team-unveils-official-team-pet-and-its-already-viral.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Popular manga creator goes viral after calling out piracy culture",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 09:28:00 GMT",
+      "link": "https://www.dexerto.com/entertainment/popular-manga-creator-goes-viral-after-calling-out-piracy-culture-3354545/",
+      "dedupRank": 13,
+      "dedupScore": 7.56,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Popular manga creator goes viral after calling out piracy culture",
+        "description": "Gachiakuta creator Kei Urana has spoken out against manga piracy, pushing back on claims that it doesn’t harm the industry.",
+        "link": "https://www.dexerto.com/entertainment/popular-manga-creator-goes-viral-after-calling-out-piracy-culture-3354545/",
+        "pubDate": "Tue, 21 Apr 2026 09:28:00 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/21/Manga-creator-fires-back-at-piracy-arguments-in-viral-statement.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "SocGen&#39;s stock chief breaks down why physical assets are his highest conviction trade right now, and shares 4 ways to invest",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 09:25:01 +0000",
+      "link": "https://www.businessinsider.com/where-to-invest-now-physical-assets-metals-industrials-materials-gold-2026-4",
+      "dedupRank": 14,
+      "dedupScore": 7.56,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "SocGen&#39;s stock chief breaks down why physical assets are his highest conviction trade right now, and shares 4 ways to invest",
+        "description": "SocGen says the best investment opportunities right now are in commodities like metals and in stocks tied to demand for hard assets.",
+        "link": "https://www.businessinsider.com/where-to-invest-now-physical-assets-metals-industrials-materials-gold-2026-4",
+        "pubDate": "Tue, 21 Apr 2026 09:25:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e664f03fecbb42897a1bad?format=jpeg"
+      }
+    },
+    {
+      "title": "Manga Artist's Struggles Go Viral, Fans Donate Over $5,600",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 09:24:20 +0000",
+      "link": "https://www.ign.com/articles/manga-artists-struggles-go-viral-fans-donate-over-5600",
+      "dedupRank": 15,
+      "dedupScore": 7.55,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Manga Artist's Struggles Go Viral, Fans Donate Over $5,600",
+        "description": "Opening up about how they “can barely afford cheap coffee,” a Japanese manga artist’s frank social media post about financial struggles has gone viral. Overseas fans stepped up, not only offering words of encouragement but also donating over 900,000 ",
+        "link": "https://www.ign.com/articles/manga-artists-struggles-go-viral-fans-donate-over-5600",
+        "pubDate": "Tue, 21 Apr 2026 09:24:20 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/21/coffee-1776763410918.jpg"
+      }
+    },
+    {
+      "title": "Why the Most Viral Brand Posts All Have 1 Thing in Common (It’s Not the Algorithm)",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 05:00:00 -0400",
+      "link": "https://www.inc.com/annabel-burba/why-the-most-viral-brand-posts-all-have-1-thing-in-common-its-not-the-algorithm/91333438",
+      "dedupRank": 16,
+      "dedupScore": 7.53,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Why the Most Viral Brand Posts All Have 1 Thing in Common (It’s Not the Algorithm)",
+        "description": "Founders and social teams can learn a lesson from these viral posts.",
+        "link": "https://www.inc.com/annabel-burba/why-the-most-viral-brand-posts-all-have-1-thing-in-common-its-not-the-algorithm/91333438",
+        "pubDate": "Tue, 21 Apr 2026 05:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/viral-social-post-inc.jpg"
+      }
+    },
+    {
+      "title": "Victor Wembanyama Becomes First Unanimous Defensive Player of the Year in History",
+      "source": "Hypebeast",
+      "pubDate": "Tue, 21 Apr 2026 08:55:54 +0000",
+      "link": "https://hypebeast.com/2026/4/victor-wembanyama-becomes-first-unanimous-dpoy-ever",
+      "dedupRank": 17,
+      "dedupScore": 7.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Iran peace talks up in air as ceasefire deadline looms",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:24:30 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/no-iran-officials-sent-to-us-talks-yet-as-ceasefire-deadline-looms",
+      "dedupRank": 18,
+      "dedupScore": 7.5,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Iran peace talks up in air as ceasefire deadline looms",
+        "description": "The White House announced Vice President JD Vance will lead the US delegation for the secind round of negotiations.",
+        "link": "https://www.semafor.com/article/04/21/2026/no-iran-officials-sent-to-us-talks-yet-as-ceasefire-deadline-looms",
+        "pubDate": "Tue, 21 Apr 2026 12:24:30 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/3ad3b84f70c0f24c0760e6339a8b2dcc8e5e310c-3972x2648.jpg"
+      }
+    },
+    {
+      "title": "Iran peace talks in doubt as ceasefire deadline looms",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 11:17:56 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/iran-peace-talks-in-doubt-as-ceasefire-deadline-looms",
+      "dedupRank": 18,
+      "dedupScore": 7.5,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Iran peace talks up in air as ceasefire deadline looms\" (Semafor)"
+    },
+    {
+      "title": "US top fusion CEO says Washington losing race to China",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:27:25 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/us-top-fusion-ceo-says-washington-losing-race-to-china",
+      "dedupRank": 19,
+      "dedupScore": 5.75,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "US top fusion CEO says Washington losing race to China",
+        "description": "Bob Mumgaard cautioned that the US is lagging behind China in backing for construction of the first generation of commercial-scale plants.",
+        "link": "https://www.semafor.com/article/04/21/2026/us-top-fusion-ceo-says-washington-losing-race-to-china",
+        "pubDate": "Tue, 21 Apr 2026 12:27:25 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/dd53daace232ce7e76a76ffddd3d1df74efdc90f-2048x1365.jpg"
+      }
+    },
+    {
+      "title": "UAE arrests Iran-linked terror cell",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:25:49 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/uae-arrests-iran-linked-terror-cell",
+      "dedupRank": 20,
+      "dedupScore": 5.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "UAE arrests Iran-linked terror cell",
+        "description": "There have been similar arrests across the Gulf since the US-Israel war with Iran began, but this is the largest of its kind to date.",
+        "link": "https://www.semafor.com/article/04/21/2026/uae-arrests-iran-linked-terror-cell",
+        "pubDate": "Tue, 21 Apr 2026 12:25:49 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/a90fba98913ff7cb639ff66f9c6c54eed9498a30-2890x1598.png"
+      }
+    },
+    {
+      "title": "Translucent fried chicken wing gives Crystal Pepsi a run for its money",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 12:24:16 GMT",
+      "link": "https://www.dexerto.com/food/translucent-fried-chicken-wing-gives-crystal-pepsi-a-run-for-its-money-3354642/",
+      "dedupRank": 21,
+      "dedupScore": 5.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Translucent fried chicken wing gives Crystal Pepsi a run for its money",
+        "description": "A food blogger has created a translucent fried chicken recipe that turns crispy wings into edible works of art, and it’s just as bizarre as it is beautiful.",
+        "link": "https://www.dexerto.com/food/translucent-fried-chicken-wing-gives-crystal-pepsi-a-run-for-its-money-3354642/",
+        "pubDate": "Tue, 21 Apr 2026 12:24:16 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/21/Translucent-fried-chicken-gives-Crystal-Pepsi-a-run-for-its-money.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Saudi Arabia nearly doubles renewables capacity in 2025",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:22:15 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/saudi-arabia-nearly-doubles-renewables-capacity-in-2025",
+      "dedupRank": 22,
+      "dedupScore": 5.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Saudi Arabia nearly doubles renewables capacity in 2025",
+        "description": "While the pace of new projects is accelerating, the kingdom is still some way off its target of producing 50% of electricity from renewables by 2030.",
+        "link": "https://www.semafor.com/article/04/21/2026/saudi-arabia-nearly-doubles-renewables-capacity-in-2025",
+        "pubDate": "Tue, 21 Apr 2026 12:22:15 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/cae2f4a8e9731a83782ba75c4f7751259aa69c87-3200x2133.jpg"
+      }
+    },
+    {
+      "title": "Jean-Michel Jarre urges music and film industries to embrace AI",
+      "source": "The Guardian Culture",
+      "pubDate": "Tue, 21 Apr 2026 12:20:35 GMT",
+      "link": "https://www.theguardian.com/music/2026/apr/21/jean-michel-jarre-music-film-industries-embrace-ai",
+      "dedupRank": 23,
+      "dedupScore": 5.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Jean-Michel Jarre urges music and film industries to embrace AI",
+        "description": "<p>French musician’s comments are in stark contrast to fears expressed by artists such as Elton John and Dua Lipa</p><p>Jean-Michel Jarre has attacked the conservatism of the music and film industries over AI and urged them to embrace the technology ",
+        "link": "https://www.theguardian.com/music/2026/apr/21/jean-michel-jarre-music-film-industries-embrace-ai",
+        "pubDate": "Tue, 21 Apr 2026 12:20:35 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/b96991a924842fb02d5542258dff00004ec45bf3/405_0_4640_3712/master/4640.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=deb8c206387fe8875fa2d4834d8a4caf"
+      }
+    },
+    {
+      "title": "Closure of Strait of Hormuz distorts oil markets",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:19:55 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/closure-of-strait-of-hormuz-distorts-oil-markets",
+      "dedupRank": 24,
+      "dedupScore": 5.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Closure of Strait of Hormuz distorts oil markets",
+        "description": "Futures, driven by events and Trump tweets, are trending down, while physical barrels trade at huge premiums as refiners scramble for immediate supply.",
+        "link": "https://www.semafor.com/article/04/21/2026/closure-of-strait-of-hormuz-distorts-oil-markets",
+        "pubDate": "Tue, 21 Apr 2026 12:19:55 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/b54916941384c1729857a5fda25af9134014aee4-5500x3667.jpg"
+      }
+    },
+    {
+      "title": "NASA shuts off Voyager 1 probe",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:16:34 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/nasa-shuts-off-voyager-science-instrument",
+      "dedupRank": 25,
+      "dedupScore": 5.73,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "USA Rare Earth to acquire Brazil's Serra Verde in $2.8B deal",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:15:32 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/usa-rare-earth-to-acquire-brazils-serra-verde-in-28b-deal",
+      "dedupRank": 26,
+      "dedupScore": 5.73,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "USA Rare Earth to acquire Brazil's Serra Verde in $2.8B deal",
+        "description": "It’s the latest in a string of acquisitions as the US looks to reduce its dependence on Chinese exports.",
+        "link": "https://www.semafor.com/article/04/21/2026/usa-rare-earth-to-acquire-brazils-serra-verde-in-28b-deal",
+        "pubDate": "Tue, 21 Apr 2026 12:15:32 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/b04884d4a2ee8961b6ae6899c8d2778e659c3d53-4000x2668.jpg"
+      }
+    },
+    {
+      "title": "i-D Launches Dedicated Beauty Vertical and Zine",
+      "source": "Business of Fashion",
+      "pubDate": "Tue, 21 Apr 2026 12:11:17 +0000",
+      "link": "https://www.businessoffashion.com/news/beauty/i-d-magazine-beauty-vertical-zine-tyla/",
+      "dedupRank": 27,
+      "dedupScore": 5.73,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "i-D Launches Dedicated Beauty Vertical and Zine",
+        "description": "The UK magazine is introducing a multi-platform vertical and inaugural dedicated beauty print zine fronted by popstar Tyla.",
+        "link": "https://www.businessoffashion.com/news/beauty/i-d-magazine-beauty-vertical-zine-tyla/",
+        "pubDate": "Tue, 21 Apr 2026 12:11:17 +0000",
+        "source": "Business of Fashion",
+        "imageUrl": "https://img.businessoffashion.com/resizer/v2/XOJ6F2EVBFGI3EEDFYEEMY2GXQ.jpg?auth=25ce0978f9f8827521580d9aa5ffc29eec34d4c6f47227ad551a3c181b8fe84a&amp;smart=true&amp;width=900&amp;height=1350"
+      }
+    },
+    {
+      "title": "PSG Star João Neves Plays the Tuba for the Ami Paris Spring Collection",
+      "source": "Highsnobiety",
+      "pubDate": "Tue, 21 Apr 2026 12:11:12 GMT",
+      "link": "https://www.highsnobiety.com/p/ami-paris-spring-2026/",
+      "dedupRank": 28,
+      "dedupScore": 5.73,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "PSG Star João Neves Plays the Tuba for the Ami Paris Spring Collection",
+        "description": "The Ami Paris Spring Collection is available now online and at flagship stores worldwide.",
+        "link": "https://www.highsnobiety.com/p/ami-paris-spring-2026/",
+        "pubDate": "Tue, 21 Apr 2026 12:11:12 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "The Download: turning down human noise, and LA&#8217;s stunning subway upgrade",
+      "source": "MIT Technology Review",
+      "pubDate": "Tue, 21 Apr 2026 12:10:00 +0000",
+      "link": "https://www.technologyreview.com/2026/04/21/1136246/the-download-human-noise-la-subway-upgrade/",
+      "dedupRank": 29,
+      "dedupScore": 5.73,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Download: turning down human noise, and LA&#8217;s stunning subway upgrade",
+        "description": "This is today&#8217;s edition of The Download, our weekday newsletter that provides a daily dose of what&#8217;s going on in the world of technology. The noise we make is hurting animals. Can we learn to shut up? As human society has expanded, animal",
+        "link": "https://www.technologyreview.com/2026/04/21/1136246/the-download-human-noise-la-subway-upgrade/",
+        "pubDate": "Tue, 21 Apr 2026 12:10:00 +0000",
+        "source": "MIT Technology Review",
+        "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2024/08/SO24-feature_archives_Opener_thumb.jpg?w=2342"
+      }
+    },
+    {
+      "title": "UK PM Starmer's domestic woes mount",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:09:44 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/uk-pm-starmers-domestic-woes-mount",
+      "dedupRank": 30,
+      "dedupScore": 5.73,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "UK PM Starmer's domestic woes mount",
+        "description": "Starmer faced a hostile Parliament Monday over his appointment of the disgraced Peter Mandelson as US ambassador.",
+        "link": "https://www.semafor.com/article/04/21/2026/uk-pm-starmers-domestic-woes-mount",
+        "pubDate": "Tue, 21 Apr 2026 12:09:44 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/5a36df2924b33e0be63518f8b004238dc25c999f-4547x3031.jpg"
+      }
+    },
+    {
+      "title": "Trump praises &#39;Tim Apple&#39; in a nod to his infamous 2019 name slip-up",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 12:09:18 +0000",
+      "link": "https://www.businessinsider.com/trump-praises-tim-cook-apple-references-viral-name-slip-up-2026-4",
+      "dedupRank": 31,
+      "dedupScore": 5.73,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Trump praises &#39;Tim Apple&#39; in a nod to his infamous 2019 name slip-up",
+        "description": "\"When I got the call I said, wow, it&#39;s Tim Apple (Cook!) calling, how big is that?\" President Trump wrote, reviving his viral 2019 nickname.",
+        "link": "https://www.businessinsider.com/trump-praises-tim-cook-apple-references-viral-name-slip-up-2026-4",
+        "pubDate": "Tue, 21 Apr 2026 12:09:18 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e763a5a98bc8fdc096cd86?format=jpeg"
+      }
+    },
+    {
+      "title": "US labor secretary steps down amid cabinet turmoil",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:08:17 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/us-labor-secretary-steps-down-amid-cabinet-turmoil",
+      "dedupRank": 32,
+      "dedupScore": 5.73,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "US labor secretary steps down amid cabinet turmoil",
+        "description": "She is the third cabinet member to leave in two months, and the crisis is compounding challenges for Republicans ahead of midterms.",
+        "link": "https://www.semafor.com/article/04/21/2026/us-labor-secretary-steps-down-amid-cabinet-turmoil",
+        "pubDate": "Tue, 21 Apr 2026 12:08:17 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/5eab260cf399188e22d53c61d0be466b817f59b0-2048x1366.jpg"
+      }
+    },
+    {
+      "title": "Cloning woolly mammoths is cool. Can it be profitable?",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 12:06:31 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/cloning-woolly-mammoths-is-cool-can-it-be-profitable",
+      "dedupRank": 33,
+      "dedupScore": 5.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Cloning woolly mammoths is cool. Can it be profitable?",
+        "description": "Ben Lamm, CEO of bioengineering lab Colossal, says the money-making opportunity in thwarting extinction is “immeasurable.” Just don’t expect a Jurassic Park.",
+        "link": "https://www.semafor.com/article/04/21/2026/cloning-woolly-mammoths-is-cool-can-it-be-profitable",
+        "pubDate": "Tue, 21 Apr 2026 12:06:31 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/ea48d84179b05e095ed87daf340d1561cb805d8b-5332x3000.png"
+      }
+    },
+    {
+      "title": "&#8216;Michael&#8217; director Antoine Fuqua questions Jackson accusers&#8217; integrity: &#8220;Sometimes people do nasty things for money”",
+      "source": "NME",
+      "pubDate": "Tue, 21 Apr 2026 12:05:07 +0000",
+      "link": "https://www.nme.com/news/film/michael-director-antoine-fuqua-questions-jackson-accusers-integrity-sometimes-people-do-nasty-things-for-money-3941640?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=michael-director-antoine-fuqua-questions-jackson-accusers-integrity-sometimes-people-do-nasty-things-for-money",
+      "dedupRank": 34,
+      "dedupScore": 5.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "&#8216;Michael&#8217; director Antoine Fuqua questions Jackson accusers&#8217; integrity: &#8220;Sometimes people do nasty things for money”",
+        "description": "The biopic of the artist is released this week The post &#8216;Michael&#8217; director Antoine Fuqua questions Jackson accusers&#8217; integrity: &#8220;Sometimes people do nasty things for money” appeared first on NME .",
+        "link": "https://www.nme.com/news/film/michael-director-antoine-fuqua-questions-jackson-accusers-integrity-sometimes-people-do-nasty-things-for-money-3941640?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=michael-director-antoine-fuqua-questions-jackson-accusers-integrity-sometimes-people-do-nasty-things-for-money",
+        "pubDate": "Tue, 21 Apr 2026 12:05:07 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Shot-from-Michael.jpg"
+      }
+    },
+    {
+      "title": "PlayStation Begins UK and Ireland Age Verification Checks",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 12:03:19 +0000",
+      "link": "https://www.ign.com/articles/playstation-begins-uk-and-ireland-age-verification-checks",
+      "dedupRank": 35,
+      "dedupScore": 5.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "PlayStation Begins UK and Ireland Age Verification Checks",
+        "description": "Sony Interactive Entertainment is writing to all UK and Ireland users to request they verify their age as part of the company's commitment to creating \"safe, age-appropriate experiences for players and families.\"",
+        "link": "https://www.ign.com/articles/playstation-begins-uk-and-ireland-age-verification-checks",
+        "pubDate": "Tue, 21 Apr 2026 12:03:19 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2024/09/25/ps5-pro-handsonpreview-blogroll-1727223976585.jpg"
+      }
+    },
+    {
+      "title": "Ultras review – love letter to football’s most dedicated supporters",
+      "source": "The Guardian Culture",
+      "pubDate": "Tue, 21 Apr 2026 12:00:50 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/21/ultras-review-love-letter-to-footballs-most-dedicated-supporters",
+      "dedupRank": 36,
+      "dedupScore": 5.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Ultras review – love letter to football’s most dedicated supporters",
+        "description": "<p>Ragnhild Ekner’s documentary weaves together breathtaking collective displays around the world, but soft-pedals its less photogenic aspects </p><p>Here is a visually epic and surprisingly positive documentary about a maligned subculture: football ",
+        "link": "https://www.theguardian.com/film/2026/apr/21/ultras-review-love-letter-to-footballs-most-dedicated-supporters",
+        "pubDate": "Tue, 21 Apr 2026 12:00:50 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/b0bb92a2c0d840a2a6ca0c7bc5922f414c15398a/647_0_3253_2603/master/3253.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=5334ef51317c46a38ac156c278cef031"
+      }
+    },
+    {
+      "title": "Natural Fragrance Brand Abel Appoints New CEO",
+      "source": "Business of Fashion",
+      "pubDate": "Tue, 21 Apr 2026 12:00:00 +0000",
+      "link": "https://www.businessoffashion.com/news/beauty/abel-fragrance-appoints-ceo-creative-director/",
+      "dedupRank": 37,
+      "dedupScore": 5.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Natural Fragrance Brand Abel Appoints New CEO",
+        "description": "Following its 2025 relaunch, Dave Shoemack has joined the fragrance house as chief executive, as former CEO and brand founder Frances Shoemack transitions to the role of creative director.",
+        "link": "https://www.businessoffashion.com/news/beauty/abel-fragrance-appoints-ceo-creative-director/",
+        "pubDate": "Tue, 21 Apr 2026 12:00:00 +0000",
+        "source": "Business of Fashion",
+        "imageUrl": "https://img.businessoffashion.com/resizer/v2/EC7EW34WNJEOPMHODB5ZXN6HVU.jpg?auth=c7160412fde637c7720d06ccb1fbae997ae202962fe429e50558e7822b2f5de6&amp;smart=true&amp;width=900&amp;height=1350"
+      }
+    },
+    {
+      "title": "What Changes When You Treat Employees Like Customers",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 08:00:00 -0400",
+      "link": "https://www.inc.com/tony-manganiello/what-changes-when-you-treat-employees-like-customers/91330177",
+      "dedupRank": 38,
+      "dedupScore": 5.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "What Changes When You Treat Employees Like Customers",
+        "description": "The way you treat your employees is the business model.",
+        "link": "https://www.inc.com/tony-manganiello/what-changes-when-you-treat-employees-like-customers/91330177",
+        "pubDate": "Tue, 21 Apr 2026 08:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/GettyImages-2247112721.jpg"
+      }
+    },
+    {
+      "title": "Wu Lyf announce 2026 UK and European tour",
+      "source": "NME",
+      "pubDate": "Tue, 21 Apr 2026 11:59:09 +0000",
+      "link": "https://www.nme.com/news/music/wu-lyf-announce-2026-uk-and-european-tour-buy-tickets-3941609?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=wu-lyf-announce-2026-uk-and-european-tour-buy-tickets",
+      "dedupRank": 39,
+      "dedupScore": 5.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Wu Lyf announce 2026 UK and European tour",
+        "description": "They've also shared a previously-hidden track, ‘Triumph’, which dates back 15 years The post Wu Lyf announce 2026 UK and European tour appeared first on NME .",
+        "link": "https://www.nme.com/news/music/wu-lyf-announce-2026-uk-and-european-tour-buy-tickets-3941609?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=wu-lyf-announce-2026-uk-and-european-tour-buy-tickets",
+        "pubDate": "Tue, 21 Apr 2026 11:59:09 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/WU_LYF_The_Fool_Credit_Anthony_Harrison-1.jpg"
+      }
+    },
+    {
+      "title": "War-linked bets spark insider trading fears",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 11:58:35 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/iran-war-linked-bets-spark-insider-trading-fears",
+      "dedupRank": 40,
+      "dedupScore": 5.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "War-linked bets spark insider trading fears",
+        "description": "A BBC analysis found a “consistent pattern” of trading spikes hours before a White House public statement sent oil prices or the stock market up or down.",
+        "link": "https://www.semafor.com/article/04/21/2026/iran-war-linked-bets-spark-insider-trading-fears",
+        "pubDate": "Tue, 21 Apr 2026 11:58:35 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/d98cbc4db02bbc08947f1746d9ad19bceb8fb5ff-2048x1365.jpg"
+      }
+    },
+    {
+      "title": "The Onion and Sandy Hook victims&#8217; families finally land deal to take over Alex Jones’ Infowars and relaunch right-wing site as parody of itself",
+      "source": "NME",
+      "pubDate": "Tue, 21 Apr 2026 11:56:21 +0000",
+      "link": "https://www.nme.com/news/music/the-onion-and-sandy-hook-victims-families-finally-land-deal-to-take-over-alex-jones-infowars-and-relaunch-right-wing-site-as-parody-of-itself-3941619?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-onion-and-sandy-hook-victims-families-finally-land-deal-to-take-over-alex-jones-infowars-and-relaunch-right-wing-site-as-parody-of-itself",
+      "dedupRank": 41,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Onion and Sandy Hook victims&#8217; families finally land deal to take over Alex Jones’ Infowars and relaunch right-wing site as parody of itself",
+        "description": "The conspiracy theorist declared bankruptcy in 2022 after being ordered to pay $1billion in compensation to the families over his claims that the 2012 shooting was a hoax The post The Onion and Sandy Hook victims&#8217; families finally land deal to ",
+        "link": "https://www.nme.com/news/music/the-onion-and-sandy-hook-victims-families-finally-land-deal-to-take-over-alex-jones-infowars-and-relaunch-right-wing-site-as-parody-of-itself-3941619?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-onion-and-sandy-hook-victims-families-finally-land-deal-to-take-over-alex-jones-infowars-and-relaunch-right-wing-site-as-parody-of-itself",
+        "pubDate": "Tue, 21 Apr 2026 11:56:21 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/InfoWars-founder-Alex-Jones.-CREDIT_-Joe-Buglewicz_Getty-Images.jpg"
+      }
+    },
+    {
+      "title": "The perfume brand bottling the scent of Timothée Chalamet’s armpits",
+      "source": "Dazed",
+      "pubDate": "2026-04-21T11:56:00Z",
+      "link": "https://www.dazeddigital.com/beauty/article/70108/1/perfume-brand-anti-parfum-inspired-by-timothee-chalamet-s-armpit?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=the-perfume-brand-bottling-the-scent-of-timothee-chalamet-s-armpits",
+      "dedupRank": 42,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Martin Scorsese’s film about Pope Francis to receive world premiere in Vatican City",
+      "source": "The Guardian Culture",
+      "pubDate": "Tue, 21 Apr 2026 11:53:08 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/21/martin-scorsese-film-about-pope-francis-world-premiere-vatican-city-aldeas-the-final-dream-of-pope-francis",
+      "dedupRank": 43,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Martin Scorsese’s film about Pope Francis to receive world premiere in Vatican City",
+        "description": "<p>Aldeas, The Final Dream of Pope Francis is being screened to commemorate the first anniversary of Francis’s death</p><p>Martin Scorsese’s documentary about Pope Francis is to have its world premiere in the Vatican today as one of a set of events c",
+        "link": "https://www.theguardian.com/film/2026/apr/21/martin-scorsese-film-about-pope-francis-world-premiere-vatican-city-aldeas-the-final-dream-of-pope-francis",
+        "pubDate": "Tue, 21 Apr 2026 11:53:08 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/40b69bbb2291d3866e2ef0df982bfd67b294f6ca/0_248_1548_1238/master/1548.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=f1b5e18fb23e14b97153abd7d10e1184"
+      }
+    },
+    {
+      "title": "Amazon allegedly pressured companies to raise product prices with other retailers",
+      "source": "Engadget",
+      "pubDate": "Tue, 21 Apr 2026 11:53:02 +0000",
+      "link": "",
+      "dedupRank": 44,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Amazon allegedly pressured companies to raise product prices with other retailers",
+        "description": "Rob Bonta, the Attorney General of California, has released an unredacted copy of a legal document that the state filed in relation to its lawsuit against Amazon, containing details of the company’s alleged price fixing scheme. In it, the state of Ca",
+        "link": "",
+        "pubDate": "Tue, 21 Apr 2026 11:53:02 +0000",
+        "source": "Engadget"
+      }
+    },
+    {
+      "title": "YouTuber keeps Subway open after closing time with 50 customers but viewers are split",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 11:51:37 GMT",
+      "link": "https://www.dexerto.com/youtube/youtuber-keeps-subway-open-after-closing-time-with-50-customers-but-viewers-are-split-3354652/",
+      "dedupRank": 45,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "YouTuber keeps Subway open after closing time with 50 customers but viewers are split",
+        "description": "A YouTuber has gone viral after he and 50 people stormed into a Subway store seconds before closing time and kept it open for a further hour to complete all their orders.",
+        "link": "https://www.dexerto.com/youtube/youtuber-keeps-subway-open-after-closing-time-with-50-customers-but-viewers-are-split-3354652/",
+        "pubDate": "Tue, 21 Apr 2026 11:51:37 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2023/09/25/IMG_5182.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Former Trump aides argue his policies are paying off",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 11:50:25 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/former-trump-aides-argue-his-policies-are-paying-off",
+      "dedupRank": 46,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Former Trump aides argue his policies are paying off",
+        "description": "Washington’s focus on key geopolitical battlegrounds, rather than being the world’s policeman, is paying off, an ex-assistant secretary of state wrote.",
+        "link": "https://www.semafor.com/article/04/21/2026/former-trump-aides-argue-his-policies-are-paying-off",
+        "pubDate": "Tue, 21 Apr 2026 11:50:25 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/8ac100968422ddc7ec47657f8200243b4e1f0e46-4156x2771.jpg"
+      }
+    },
+    {
+      "title": "What smart people are saying about Tim Cook&#39;s legacy at Apple",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 11:49:57 +0000",
+      "link": "https://www.businessinsider.com/smart-people-comments-tim-cook-legacy-apple-2026-4",
+      "dedupRank": 47,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "What smart people are saying about Tim Cook&#39;s legacy at Apple",
+        "description": "Apple CEO Tim Cook is stepping down after nearly 15 years. Here&#39;s what smart people are saying about his legacy.",
+        "link": "https://www.businessinsider.com/smart-people-comments-tim-cook-legacy-apple-2026-4",
+        "pubDate": "Tue, 21 Apr 2026 11:49:57 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e6d8a9367066d7c296eecf?format=jpeg"
+      }
+    },
+    {
+      "title": "Beiersdorf Eyes Possible Price Hikes as Middle East Crisis Hits Local Sales",
+      "source": "Business of Fashion",
+      "pubDate": "Tue, 21 Apr 2026 11:43:48 +0000",
+      "link": "https://www.businessoffashion.com/news/beauty/beiersdorf-eyes-possible-price-hikes-as-middle-east-crisis-hits-local-sales/",
+      "dedupRank": 48,
+      "dedupScore": 5.7,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Beiersdorf Eyes Possible Price Hikes as Middle East Crisis Hits Local Sales",
+        "description": "The owner of La Prairie and Nivea reported a drop in first-quarter organic sales owing to disruptions in major channels like US department stores, Chinese travel retail and its growing Middle Eastern market.",
+        "link": "https://www.businessoffashion.com/news/beauty/beiersdorf-eyes-possible-price-hikes-as-middle-east-crisis-hits-local-sales/",
+        "pubDate": "Tue, 21 Apr 2026 11:43:48 +0000",
+        "source": "Business of Fashion",
+        "imageUrl": "https://img.businessoffashion.com/resizer/v2/LMIYR4T44ZE25CQ4DCHKQ4MW24.jpg?auth=6900ba43f3479ac9b979bd678d7538fc5893584cac4c0e1ca0acd30c92cbb820&amp;smart=true&amp;width=4256&amp;height=2832"
+      }
+    },
+    {
+      "title": "Stranger Things: Tales From ’85 showrunner promises it isn’t just a “monster of the week” series",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 11:43:46 GMT",
+      "link": "https://www.dexerto.com/tv-movies/stranger-things-tales-from-85-showrunner-promises-it-isnt-just-a-monster-of-the-week-series-3354629/",
+      "dedupRank": 49,
+      "dedupScore": 5.7,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Stranger Things: Tales From ’85 showrunner promises it isn’t just a “monster of the week” series",
+        "description": "The showrunner behind Stranger Things: Tales From ’85 says its monsters are part of a larger storyline instead of just singular episodes.",
+        "link": "https://www.dexerto.com/tv-movies/stranger-things-tales-from-85-showrunner-promises-it-isnt-just-a-monster-of-the-week-series-3354629/",
+        "pubDate": "Tue, 21 Apr 2026 11:43:46 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/21/TalesFrom85-FirstLook_002-final.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Avatar Ty Lee Voice Actor Comments on Leak",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 11:39:52 +0000",
+      "link": "https://www.ign.com/articles/avatar-ty-lee-voice-actor-comments-on-leak",
+      "dedupRank": 50,
+      "dedupScore": 5.7,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Avatar Ty Lee Voice Actor Comments on Leak",
+        "description": "A voice actor from Avatar: The Last Airbender has called on Paramount to release The Legend of Aang: The Last Airbender in theaters following its high-profile leak.",
+        "link": "https://www.ign.com/articles/avatar-ty-lee-voice-actor-comments-on-leak",
+        "pubDate": "Tue, 21 Apr 2026 11:39:52 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/21/gettyimages-2227306549-1776771415581.jpg"
+      }
+    },
+    {
+      "title": "‘Final Fantasy 10’ anthem gets stunning BAFTA Games Awards live performance",
+      "source": "NME",
+      "pubDate": "Tue, 21 Apr 2026 11:38:30 +0000",
+      "link": "https://www.nme.com/news/gaming-news/final-fantasy-10-anthem-bafta-games-awards-live-performance-3941642?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=final-fantasy-10-anthem-bafta-games-awards-live-performance",
+      "dedupRank": 51,
+      "dedupScore": 5.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "‘Final Fantasy 10’ anthem gets stunning BAFTA Games Awards live performance",
+        "description": "“I’m glad we made you cry” The post ‘Final Fantasy 10’ anthem gets stunning BAFTA Games Awards live performance appeared first on NME .",
+        "link": "https://www.nme.com/news/gaming-news/final-fantasy-10-anthem-bafta-games-awards-live-performance-3941642?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=final-fantasy-10-anthem-bafta-games-awards-live-performance",
+        "pubDate": "Tue, 21 Apr 2026 11:38:30 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/BAFTA-Games-Awards-2026.jpg"
+      }
+    },
+    {
+      "title": "More than 1.5million young people in UK give up on music ambitions with five venues lost per day since 2019",
+      "source": "NME",
+      "pubDate": "Tue, 21 Apr 2026 11:38:24 +0000",
+      "link": "https://www.nme.com/news/music/more-than-1-5million-young-people-in-uk-give-up-on-music-ambitions-with-five-venues-lost-per-day-since-2019-3941601?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=more-than-1-5million-young-people-in-uk-give-up-on-music-ambitions-with-five-venues-lost-per-day-since-2019",
+      "dedupRank": 52,
+      "dedupScore": 5.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "More than 1.5million young people in UK give up on music ambitions with five venues lost per day since 2019",
+        "description": "New research warns that the UK may lose its next generation of headline talent with opportunities for young people dwindling The post More than 1.5million young people in UK give up on music ambitions with five venues lost per day since 2019 appeared",
+        "link": "https://www.nme.com/news/music/more-than-1-5million-young-people-in-uk-give-up-on-music-ambitions-with-five-venues-lost-per-day-since-2019-3941601?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=more-than-1-5million-young-people-in-uk-give-up-on-music-ambitions-with-five-venues-lost-per-day-since-2019",
+        "pubDate": "Tue, 21 Apr 2026 11:38:24 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Thom-Rylance-and-Katie-Lloyd-of-The-Lottery-Winners.-CREDIT_-Lorne-Thomson_Redferns.jpg"
+      }
+    },
+    {
+      "title": "Ralph Lauren clothes and Annie Hall script among Diane Keaton items to be auctioned",
+      "source": "The Guardian Culture",
+      "pubDate": "Tue, 21 Apr 2026 11:38:09 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/21/ralph-lauren-clothes-and-annie-hall-script-among-diane-keaton-items-to-be-auctioned",
+      "dedupRank": 53,
+      "dedupScore": 5.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Ralph Lauren clothes and Annie Hall script among Diane Keaton items to be auctioned",
+        "description": "<p>Four auctions in June will allow fans to bid for clothing and personal objects owned by the Oscar-winning actor – as well as the original, untitled script for Annie Hall</p><p>Six months after the death of Oscar-winning actor Diane Keaton, four au",
+        "link": "https://www.theguardian.com/film/2026/apr/21/ralph-lauren-clothes-and-annie-hall-script-among-diane-keaton-items-to-be-auctioned",
+        "pubDate": "Tue, 21 Apr 2026 11:38:09 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/9d0d4b614a19603b71c243f95c199680a7c88544/225_0_2522_2018/master/2522.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=506e4594bd53ddd0c595db8cfca04493"
+      }
+    },
+    {
+      "title": "Apple&#39;s new CEO pick shows it&#39;s sticking to its guns in the AI wars",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 11:37:05 +0000",
+      "link": "https://www.businessinsider.com/apple-new-ceo-pick-ai-wars-cook-ternus-2026-4",
+      "dedupRank": 54,
+      "dedupScore": 5.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Apple&#39;s new CEO pick shows it&#39;s sticking to its guns in the AI wars",
+        "description": "Apple CEO Tim Cook is stepping down this fall. Meet the soon-to-be CEO and the tall task ahead of him.",
+        "link": "https://www.businessinsider.com/apple-new-ceo-pick-ai-wars-cook-ternus-2026-4",
+        "pubDate": "Tue, 21 Apr 2026 11:37:05 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e760afa98bc8fdc096cd77?format=jpeg"
+      }
+    },
+    {
+      "title": "Clarkson's Farm Season 5 Release Date",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 11:32:42 +0000",
+      "link": "https://www.ign.com/articles/clarksons-farm-season-5-release-date",
+      "dedupRank": 55,
+      "dedupScore": 5.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Clarkson's Farm Season 5 Release Date",
+        "description": "Amazon has announced a release date for the fifth season of Clarkson's Farm, which will begin streaming in June.",
+        "link": "https://www.ign.com/articles/clarksons-farm-season-5-release-date",
+        "pubDate": "Tue, 21 Apr 2026 11:32:42 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/21/gettyimages-2194063108-1776770730399.jpg"
+      }
+    },
+    {
+      "title": "Why Justin Bieber Played YouTube Onstage for Thousands of People",
+      "source": "The Atlantic",
+      "pubDate": "Tue, 21 Apr 2026 07:30:00 -0400",
+      "link": "https://www.theatlantic.com/culture/2026/04/justin-bieber-coachella-performances-youtube/686871/?utm_source=feed",
+      "dedupRank": 56,
+      "dedupScore": 5.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Why Justin Bieber Played YouTube Onstage for Thousands of People",
+        "description": "The pop star transformed the normal act of browsing your laptop into something interesting—and unsettling.",
+        "link": "https://www.theatlantic.com/culture/2026/04/justin-bieber-coachella-performances-youtube/686871/?utm_source=feed",
+        "pubDate": "Tue, 21 Apr 2026 07:30:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/ua-NFqopohNc9TRqYiqp32jrfJY=/media/img/mt/2026/04/2026_04_20_Bieber_Coachella/original.jpg"
+      }
+    },
+    {
+      "title": "Best Gaming Laptops (2026): Razer, Asus, Dell, and More",
+      "source": "Wired",
+      "pubDate": "Tue, 21 Apr 2026 11:30:00 +0000",
+      "link": "https://www.wired.com/story/best-gaming-laptops/",
+      "dedupRank": 57,
+      "dedupScore": 5.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Best Gaming Laptops (2026): Razer, Asus, Dell, and More",
+        "description": "You don't want any old gaming laptop. Here's my take on which to get based on hundreds of hours of testing.",
+        "link": "https://www.wired.com/story/best-gaming-laptops/",
+        "pubDate": "Tue, 21 Apr 2026 11:30:00 +0000",
+        "source": "Wired",
+        "imageUrl": "https://media.wired.com/photos/69e668fcab15b90f6c64db2c/master/pass/The-Best-Gaming-Laptops.jpg"
+      }
+    },
+    {
+      "title": "Bahrain bets on AI to boost oil output",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 11:28:35 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/bahrain-bets-on-ai-to-boost-oil-output",
+      "dedupRank": 58,
+      "dedupScore": 5.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Bahrain bets on AI to boost oil output",
+        "description": "State oil company Bapco tapped SLB and US AI startup Geminus to increase production.",
+        "link": "https://www.semafor.com/article/04/21/2026/bahrain-bets-on-ai-to-boost-oil-output",
+        "pubDate": "Tue, 21 Apr 2026 11:28:35 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/8be02db45c80b749beda6103aceb0f9e88e74e75-2048x1365.jpg"
+      }
+    },
+    {
+      "title": "Huge LEGO Star Wars Sale Is Now Live at Amazon Ahead of May the 4th",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 11:19:12 +0000",
+      "link": "https://www.ign.com/articles/star-wars-lego-sale-at-amazon",
+      "dedupRank": 59,
+      "dedupScore": 5.67,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Huge LEGO Star Wars Sale Is Now Live at Amazon Ahead of May the 4th",
+        "description": "Amazon just launched a new LEGO Star Wars sale ahead of May the 4th celebrations - here's what's been discounted.",
+        "link": "https://www.ign.com/articles/star-wars-lego-sale-at-amazon",
+        "pubDate": "Tue, 21 Apr 2026 11:19:12 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/21/lego-may-4-sale-star-wars-day-deals-amazon-1776767706241.png"
+      }
+    },
+    {
+      "title": "What Tim Cook taught us about succeeding a legend",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 11:17:40 +0000",
+      "link": "https://www.businessinsider.com/tim-cook-steve-jobs-apple-ceo-succession-lessons-values-china-2026-4",
+      "dedupRank": 60,
+      "dedupScore": 5.67,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "What Tim Cook taught us about succeeding a legend",
+        "description": "Tim Cook, Steve Jobs&#39; successor as Apple CEO, upended expectations by combining his strengths and judgment with Jobs&#39; values.",
+        "link": "https://www.businessinsider.com/tim-cook-steve-jobs-apple-ceo-succession-lessons-values-china-2026-4",
+        "pubDate": "Tue, 21 Apr 2026 11:17:40 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e76874a98bc8fdc096cdb6?format=jpeg"
+      }
+    },
+    {
+      "title": "The Legend of Zelda Fans Are Trying to Guess a Secret Movie Character",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 11:17:02 +0000",
+      "link": "https://www.ign.com/articles/the-legend-of-zelda-movie-cast-member-fan-guessing-aryll-saria",
+      "dedupRank": 61,
+      "dedupScore": 5.67,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Legend of Zelda Fans Are Trying to Guess a Secret Movie Character",
+        "description": "Nintendo fans are trying to work out which character a secret member of the upcoming live-action The Legend of Zelda movie cast might be playing, with guesses that include Link's sister Aryll and Ocarina of Time sage Saria.",
+        "link": "https://www.ign.com/articles/the-legend-of-zelda-movie-cast-member-fan-guessing-aryll-saria",
+        "pubDate": "Tue, 21 Apr 2026 11:17:02 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/21/screenshot-2026-04-21-120514-1776769631578.png"
+      }
+    },
+    {
+      "title": "Apple’s new boss faces dual challenge in China",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 11:16:58 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/apples-new-boss-to-face-dual-challenge-in-chinese-market",
+      "dedupRank": 62,
+      "dedupScore": 5.67,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Apple’s new boss faces dual challenge in China",
+        "description": "Increased competition in the massive consumer market and a need to diversify from the country as a major supplier are the main hurdles.",
+        "link": "https://www.semafor.com/article/04/21/2026/apples-new-boss-to-face-dual-challenge-in-chinese-market",
+        "pubDate": "Tue, 21 Apr 2026 11:16:58 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/1d559f1e8f094c37f195edb79ca8d808a2c99583-4181x3064.jpg"
+      }
+    },
+    {
+      "title": "Tim Cook’s Farewell Letter Just Revealed His Most Important Leadership Habit",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 07:07:18 -0400",
+      "link": "https://www.inc.com/jason-aten/tim-cooks-farewell-letter-just-revealed-his-most-important-leadership-habit/91333849",
+      "dedupRank": 63,
+      "dedupScore": 5.66,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Tim Cook’s Farewell Letter Just Revealed His Most Important Leadership Habit",
+        "description": "Cook’s retirement announcement explains how he stays connected to customers.",
+        "link": "https://www.inc.com/jason-aten/tim-cooks-farewell-letter-just-revealed-his-most-important-leadership-habit/91333849",
+        "pubDate": "Tue, 21 Apr 2026 07:07:18 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/tim_cook_customers.jpg"
+      }
+    },
+    {
+      "title": "Hot startup Lovable&#39;s security stumble shows one big risk in using AI to code",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 11:05:50 +0000",
+      "link": "https://www.businessinsider.com/lovable-security-access-vibe-coding-projects-risk-2026-4",
+      "dedupRank": 64,
+      "dedupScore": 5.66,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Hot startup Lovable&#39;s security stumble shows one big risk in using AI to code",
+        "description": "A security flaw in Lovable&#39;s system allowed access to users&#39; data and sparked online backlash over the startup&#39;s response.",
+        "link": "https://www.businessinsider.com/lovable-security-access-vibe-coding-projects-risk-2026-4",
+        "pubDate": "Tue, 21 Apr 2026 11:05:50 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e726ea3fecbb42897a2056?format=jpeg"
+      }
+    },
+    {
+      "title": "Global growth in solar \"the largest ever observed for any source\"",
+      "source": "Ars Technica",
+      "pubDate": "Tue, 21 Apr 2026 11:00:16 +0000",
+      "link": "https://arstechnica.com/science/2026/04/global-growth-in-solar-the-largest-ever-observed-for-any-source/",
+      "dedupRank": 65,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Global growth in solar \"the largest ever observed for any source\"",
+        "description": "On Monday, the International Energy Agency released its analysis of the energy trends of 2025, covering the entire globe. It confirms and extends the primary conclusion of a more limited analysis by the International Renewable Energy Agency: 2025 was",
+        "link": "https://arstechnica.com/science/2026/04/global-growth-in-solar-the-largest-ever-observed-for-any-source/",
+        "pubDate": "Tue, 21 Apr 2026 11:00:16 +0000",
+        "source": "Ars Technica",
+        "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2026/04/GettyImages-1322960375-1152x648.jpg"
+      }
+    },
+    {
+      "title": "This new app uses AI to help you catalog and make new memories with your closest friends",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 11:00:01 +0000",
+      "link": "https://www.businessinsider.com/bond-social-app-launches-seed-connecting-friends-memories-ai-2026-4",
+      "dedupRank": 66,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "This new app uses AI to help you catalog and make new memories with your closest friends",
+        "description": "Bond is a new social app built by a team of engineers and designers from Big Tech companies like Meta, TikTok, and Google.",
+        "link": "https://www.businessinsider.com/bond-social-app-launches-seed-connecting-friends-memories-ai-2026-4",
+        "pubDate": "Tue, 21 Apr 2026 11:00:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69de3f06899c9d3be0510476?format=jpeg"
+      }
+    },
+    {
+      "title": "An Extra-Embarrassing White House Correspondents’ Dinner",
+      "source": "The Atlantic",
+      "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+      "link": "https://www.theatlantic.com/politics/2026/04/white-house-correspondents-dinner-trump/686866/?utm_source=feed",
+      "dedupRank": 67,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "An Extra-Embarrassing White House Correspondents’ Dinner",
+        "description": "Why is Donald Trump breaking bread with the “enemy of the people”?",
+        "link": "https://www.theatlantic.com/politics/2026/04/white-house-correspondents-dinner-trump/686866/?utm_source=feed",
+        "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/ibJVcG7ngLMayjzrBIy-WnPsXfc=/media/img/mt/2026/04/2026_04_16_The_WHCA_Dinner/original.jpg"
+      }
+    },
+    {
+      "title": "The New Age of Performance Anxiety",
+      "source": "The Atlantic",
+      "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+      "link": "https://www.theatlantic.com/culture/2026/04/screen-people-stage-fright-performance-anxiety/686803/?utm_source=feed",
+      "dedupRank": 68,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The New Age of Performance Anxiety",
+        "description": "With the rise of screen culture, all the world has stage fright.",
+        "link": "https://www.theatlantic.com/culture/2026/04/screen-people-stage-fright-performance-anxiety/686803/?utm_source=feed",
+        "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/GrV77QjQ1tGDEyKSyk2cqqOQvIE=/0x648:2160x1863/media/img/mt/2026/04/2026_04_19_Garber_Screen_People_Lead_JCT_Li_final/original.jpg"
+      }
+    },
+    {
+      "title": "On Losing a Daughter",
+      "source": "The Atlantic",
+      "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+      "link": "https://www.theatlantic.com/magazine/2026/05/death-bereavement-maternal-grief/686590/?utm_source=feed",
+      "dedupRank": 69,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "On Losing a Daughter",
+        "description": "The people we were died at the exact moment our child did.",
+        "link": "https://www.theatlantic.com/magazine/2026/05/death-bereavement-maternal-grief/686590/?utm_source=feed",
+        "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/5tuxtkTYnngsbgvQeFKDdZvf810=/media/img/2026/04/Lede_16_9_Crop/original.jpg"
+      }
+    },
+    {
+      "title": "This Scammer Used an AI-Generated MAGA Girl to Grift ‘Super Dumb’ Men",
+      "source": "Wired",
+      "pubDate": "Tue, 21 Apr 2026 11:00:00 +0000",
+      "link": "https://www.wired.com/story/ai-generated-maga-girls/",
+      "dedupRank": 70,
+      "dedupScore": 5.65,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Yelp&#8217;s updated AI assistant can answer questions and book a restaurant or service in one conversation",
+      "source": "TechCrunch",
+      "pubDate": "Tue, 21 Apr 2026 11:00:00 +0000",
+      "link": "https://techcrunch.com/2026/04/21/yelps-updated-ai-assistant-can-answer-questions-and-book-a-restaurant-or-service-in-one-conversation/",
+      "dedupRank": 71,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Yelp&#8217;s updated AI assistant can answer questions and book a restaurant or service in one conversation",
+        "description": "With its latest update, Yelp is letting people ask questions, get restaurant reservations, order food delivery, and book service professionals, all through its updated AI assistant.",
+        "link": "https://techcrunch.com/2026/04/21/yelps-updated-ai-assistant-can-answer-questions-and-book-a-restaurant-or-service-in-one-conversation/",
+        "pubDate": "Tue, 21 Apr 2026 11:00:00 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "Yelp's AI chatbot can now make your dinner reservation",
+      "source": "Engadget",
+      "pubDate": "Tue, 21 Apr 2026 11:00:00 +0000",
+      "link": "",
+      "dedupRank": 72,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Yelp's AI chatbot can now make your dinner reservation",
+        "description": "Every business seems to think that its customers want more AI. Yelp is the latest to add more artificial intelligence tools. The review site has upgraded its Yelp Assistant, an agentic AI chatbot, to work across all of Yelp&#39;s categories. Yelp Ass",
+        "link": "",
+        "pubDate": "Tue, 21 Apr 2026 11:00:00 +0000",
+        "source": "Engadget",
+        "imageUrl": "https://o.aolcdn.com/images/dims?image_uri=https%3A%2F%2Fd29szjachogqwa.cloudfront.net%2Fimages%2Fuser-uploaded%2Fyelp_assistant__making_beauty_appointments_via_vagaro_6734.jpg&amp;resize=1400%2C787&amp;client=19f2b5e49a271b2bde77&amp;signature=56c642ee17dafa5006e51c33080891f0bfaf5e23"
+      }
+    },
+    {
+      "title": "A Gene Therapy That Can Reverse Blindness Just Won a $3 Million Prize",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+      "link": "https://www.inc.com/leila-sheridan/blindness-gene-therapy-breakthrough-prize-life-sciences/91333275",
+      "dedupRank": 73,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A Gene Therapy That Can Reverse Blindness Just Won a $3 Million Prize",
+        "description": "The breakthrough treatment, developed over 25 years, has already helped restore vision for some patients.",
+        "link": "https://www.inc.com/leila-sheridan/blindness-gene-therapy-breakthrough-prize-life-sciences/91333275",
+        "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/vision-gene-therapy-inc-2272142813.jpg"
+      }
+    },
+    {
+      "title": "People Are Quietly Using AI Instead of Google and It’s Changing Everything",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+      "link": "https://www.inc.com/peter-economy/people-are-quietly-using-ai-instead-of-google-and-its-changing-everything/91332379",
+      "dedupRank": 74,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "People Are Quietly Using AI Instead of Google and It’s Changing Everything",
+        "description": "The move away from traditional search engines has been less a conscious decision than a quiet habit change.",
+        "link": "https://www.inc.com/peter-economy/people-are-quietly-using-ai-instead-of-google-and-its-changing-everything/91332379",
+        "pubDate": "Tue, 21 Apr 2026 07:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/GettyImages-2271439426.jpg"
+      }
+    },
+    {
+      "title": "Trump’s Fed chair pick Kevin Warsh faces Senate hearing",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 10:58:55 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/trumps-fed-chair-pick-kevin-warsh-faces-senate-hearing",
+      "dedupRank": 75,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Trump’s Fed chair pick Kevin Warsh faces Senate hearing",
+        "description": "Analysts and lawmakers have been skeptical of Warsh’s independence amid intense White House pressure on the central bank.",
+        "link": "https://www.semafor.com/article/04/21/2026/trumps-fed-chair-pick-kevin-warsh-faces-senate-hearing",
+        "pubDate": "Tue, 21 Apr 2026 10:58:55 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/7bbf79f4fda61bd35f8a16022f1b3992e8469883-2048x1366.jpg"
+      }
+    },
+    {
+      "title": "Opinion: Are Peptides Just Snake Oil? Don’t Ask the FDA.",
+      "source": "Business of Fashion",
+      "pubDate": "Tue, 21 Apr 2026 10:57:19 +0000",
+      "link": "https://www.businessoffashion.com/articles/beauty/peptide-regulation-fda-rfk-jr-joe-rogan/",
+      "dedupRank": 76,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Opinion: Are Peptides Just Snake Oil? Don’t Ask the FDA.",
+        "description": "US health secretary Robert F. Kennedy Jr.’s push to deregulate peptides purports to make buying the drugs less fraught, but doesn’t give people what they really need: evidence they work and are safe, writes Bloomberg’s Lisa Jarvis.",
+        "link": "https://www.businessoffashion.com/articles/beauty/peptide-regulation-fda-rfk-jr-joe-rogan/",
+        "pubDate": "Tue, 21 Apr 2026 10:57:19 +0000",
+        "source": "Business of Fashion",
+        "imageUrl": "https://img.businessoffashion.com/resizer/v2/ESWOEXMXRRCFDHAM53BILZKLJE.jpg?auth=080e56ba7a3c0aa2f17c596611a0a02856849454f66a0149fab86f87c29114a6&amp;smart=true&amp;width=1800&amp;height=1013"
+      }
+    },
+    {
+      "title": "Women’s culture goes dark: why aren’t there more ‘femcel’ movies?",
+      "source": "The Guardian Culture",
+      "pubDate": "Tue, 21 Apr 2026 10:56:18 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/21/womens-culture-goes-dark-why-arent-there-more-femcel-movies",
+      "dedupRank": 77,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Women’s culture goes dark: why aren’t there more ‘femcel’ movies?",
+        "description": "<p>Male incels have been plentifully depicted on screen, while few film-makers have explored the varied controversies of toxic female radicalisation and the ‘womanosphere’. But a handful of movies have been treading a brave path</p><p>Most people wou",
+        "link": "https://www.theguardian.com/film/2026/apr/21/womens-culture-goes-dark-why-arent-there-more-femcel-movies",
+        "pubDate": "Tue, 21 Apr 2026 10:56:18 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/8f3f77926108239af29970bf902d59d5b9b3702f/565_0_5000_4000/master/5000.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=1d293a86494737e07a3c50b70c2f5c06"
+      }
+    },
+    {
+      "title": "With a family of 6, I have to keep an eye on our budget. Thrift shopping has helped me furnish our home and buy luxury clothes.",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 10:51:01 +0000",
+      "link": "https://www.businessinsider.com/thrift-shopping-family-budget-furnish-home-buy-luxury-clothes-2026-4",
+      "dedupRank": 78,
+      "dedupScore": 5.64,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "With a family of 6, I have to keep an eye on our budget. Thrift shopping has helped me furnish our home and buy luxury clothes.",
+        "description": "Thrift shopping helps my family keep an eye on our budget. I&#39;ve decorated my home with thrift store finds and found expensive clothes for less.",
+        "link": "https://www.businessinsider.com/thrift-shopping-family-budget-furnish-home-buy-luxury-clothes-2026-4",
+        "pubDate": "Tue, 21 Apr 2026 10:51:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e64b483fecbb42897a1b03?format=jpeg"
+      }
+    },
+    {
+      "title": "Elden Ring Movie Budget Update",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 10:44:11 +0000",
+      "link": "https://www.ign.com/articles/elden-ring-movie-budget-update",
+      "dedupRank": 79,
+      "dedupScore": 5.64,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Elden Ring Movie Budget Update",
+        "description": "It sounds like movie production company A24 is pumping more money into the live-action Elden Ring film than any project it’s ever worked on before.",
+        "link": "https://www.ign.com/articles/elden-ring-movie-budget-update",
+        "pubDate": "Tue, 21 Apr 2026 10:44:11 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/21/ss-fa6b881ef7c30522012ab2b2b83001e79baee093-1920x1080-1776768082589.jpg"
+      }
+    },
+    {
+      "title": "The next US-China battle",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 10:38:29 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/the-next-us-china-battle",
+      "dedupRank": 80,
+      "dedupScore": 5.63,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The next US-China battle",
+        "description": "Although the superpowers’ tariff conflict is ending, a potentially far more damaging supply battle is just getting going.",
+        "link": "https://www.semafor.com/article/04/21/2026/the-next-us-china-battle",
+        "pubDate": "Tue, 21 Apr 2026 10:38:29 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/eabe193c09c2f969654aeccc613e7884d5fa8bb1-4119x2659.jpg"
+      }
+    },
+    {
+      "title": "YouTube quietly changes classic channel feature and viewers aren’t happy",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 10:37:42 GMT",
+      "link": "https://www.dexerto.com/youtube/youtube-silently-changes-classic-channel-feature-and-viewers-arent-happy-3354620/",
+      "dedupRank": 81,
+      "dedupScore": 5.63,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Couple finds backyard full of strangers after emergency hot air balloon landing",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 10:31:20 GMT",
+      "link": "https://www.dexerto.com/entertainment/couple-finds-backyard-full-of-strangers-after-emergency-hot-air-balloon-landing-3354547/",
+      "dedupRank": 82,
+      "dedupScore": 5.62,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "H2O Audio Tri Run Workout Headphones Review: A Little Underwhelming",
+      "source": "Wired",
+      "pubDate": "Tue, 21 Apr 2026 10:30:00 +0000",
+      "link": "https://www.wired.com/review/h2o-audio-tri-run-workout-headphones/",
+      "dedupRank": 83,
+      "dedupScore": 5.62,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "H2O Audio Tri Run Workout Headphones Review: A Little Underwhelming",
+        "description": "H2O Audio’s stab at a sub-$100 pair of bone-conduction workout headphones just misses the mark.",
+        "link": "https://www.wired.com/review/h2o-audio-tri-run-workout-headphones/",
+        "pubDate": "Tue, 21 Apr 2026 10:30:00 +0000",
+        "source": "Wired",
+        "imageUrl": "https://media.wired.com/photos/69e66df4d29b04dda3eea016/master/pass/H20-Tri-Run-source-Michael-Sawh.jpg"
+      }
+    },
+    {
+      "title": "The Internet’s Favorite Lawyer Says We’re Living Through ‘Multiple Watergates per Week’",
+      "source": "Wired",
+      "pubDate": "Tue, 21 Apr 2026 10:30:00 +0000",
+      "link": "https://www.wired.com/story/the-big-interview-podcast-legal-eagle-devin-stone/",
+      "dedupRank": 84,
+      "dedupScore": 5.62,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Internet’s Favorite Lawyer Says We’re Living Through ‘Multiple Watergates per Week’",
+        "description": "Devin Stone turned punchy legal explainers into a YouTube empire. Now he’s warning that the sheer volume of Trump administration scandals is distorting reality itself.",
+        "link": "https://www.wired.com/story/the-big-interview-podcast-legal-eagle-devin-stone/",
+        "pubDate": "Tue, 21 Apr 2026 10:30:00 +0000",
+        "source": "Wired",
+        "imageUrl": "https://media.wired.com/photos/69e667f1c6b38abb04c72e4a/master/pass/Big-Interview-UV-Devin-Stone-Politics.png"
+      }
+    },
+    {
+      "title": "Gundam Movie Update",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 10:14:30 +0000",
+      "link": "https://www.ign.com/articles/gundam-movie-update",
+      "dedupRank": 85,
+      "dedupScore": 5.61,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Gundam Movie Update",
+        "description": "The live-action Gundam film has started production, Netflix has announced. We also have a full cast reveal and basic plot details from the streamer.",
+        "link": "https://www.ign.com/articles/gundam-movie-update",
+        "pubDate": "Tue, 21 Apr 2026 10:14:30 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/21/gettyimages-1514749704-1776766191925.jpg"
+      }
+    },
+    {
+      "title": "Overwatch’s mysterious new dog has players hoping for Jetpack Cat rival",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 10:06:19 GMT",
+      "link": "https://www.dexerto.com/overwatch/overwatchs-mysterious-new-dog-has-players-hoping-for-jetpack-cat-rival-3354553/",
+      "dedupRank": 86,
+      "dedupScore": 5.6,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "6:AM is the Milanese Studio Breathing Life into Murano Glass",
+      "source": "Hypebeast",
+      "pubDate": "Tue, 21 Apr 2026 10:03:15 +0000",
+      "link": "https://hypebeast.com/2026/4/6am-glass-milan-design-week-installation-interview",
+      "dedupRank": 87,
+      "dedupScore": 5.6,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "6:AM is the Milanese Studio Breathing Life into Murano Glass",
+        "description": "Since they began their studio 10 years ago, 6:AM founders Edoardo Pandolfo and Francesco Palù have been working very, very hard. For starters, they chose to work with a material famously difficult, and famously specialist. Secondly, they made it thei",
+        "link": "https://hypebeast.com/2026/4/6am-glass-milan-design-week-installation-interview",
+        "pubDate": "Tue, 21 Apr 2026 10:03:15 +0000",
+        "source": "Hypebeast",
+        "imageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F04%2F21%2F6am-glass-milan-design-week-installation-interview-0.jpg?w=800&cbr=1&q=90&fit=max"
+      }
+    },
+    {
+      "title": "Java script error: why The Devil Wears Prada 2’s Starbucks tie-in leaves a strange taste",
+      "source": "The Guardian Culture",
+      "pubDate": "Tue, 21 Apr 2026 10:03:15 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/21/the-devil-wears-prada-2-starbucks-collaboration",
+      "dedupRank": 88,
+      "dedupScore": 5.6,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Java script error: why The Devil Wears Prada 2’s Starbucks tie-in leaves a strange taste",
+        "description": "<p>A theatrically released movie about glossy magazines, released at a time when there are minimal audiences for either, has ordered up a no foam, extra shot, venti facepalm</p><p>It might, of course, turn out to be a masterpiece. Yet there has been ",
+        "link": "https://www.theguardian.com/film/2026/apr/21/the-devil-wears-prada-2-starbucks-collaboration",
+        "pubDate": "Tue, 21 Apr 2026 10:03:15 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/a19add51e450c1a5c6988e47d1a89599964baab0/276_0_2082_1666/master/2082.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=263dbcbd80dac4fbfbcb1dc962d32581"
+      }
+    },
+    {
+      "title": "Designer Sofía Abadi is creating a hyper-femme world",
+      "source": "Dazed",
+      "pubDate": "2026-04-21T10:02:00Z",
+      "link": "https://www.dazeddigital.com/fashion/article/70117/1/sofia-abadi-online-girl-in-a-hyper-femme-world-rising-designer?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=designer-sofia-abadi-is-creating-a-hyper-femme-world",
+      "dedupRank": 89,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Designer Sofía Abadi is creating a hyper-femme world",
+        "description": "The former High Fashion Twitter lynchpin makes whimsical clothes that speak to a new generation of women who’ve grown up on the internet",
+        "link": "https://www.dazeddigital.com/fashion/article/70117/1/sofia-abadi-online-girl-in-a-hyper-femme-world-rising-designer?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=designer-sofia-abadi-is-creating-a-hyper-femme-world",
+        "pubDate": "2026-04-21T10:02:00Z",
+        "source": "Dazed",
+        "imageUrl": "https://images-prod.dazeddigital.com/786/azure/dazed-prod/1440/3/1443651.jpg"
+      }
+    },
+    {
+      "title": "Speeding driver blames Chinese takeout after being caught at over 135 mph",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 10:01:15 GMT",
+      "link": "https://www.dexerto.com/food/speeding-driver-blames-chinese-takeout-after-being-caught-at-over-135-mph-3354582/",
+      "dedupRank": 90,
+      "dedupScore": 5.59,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Scrapped The Super Mario Bros. Movie Ending Revealed",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 10:00:55 +0000",
+      "link": "https://www.ign.com/articles/scrapped-the-super-mario-bros-movie-ending-revealed",
+      "dedupRank": 91,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Scrapped The Super Mario Bros. Movie Ending Revealed",
+        "description": "Nintendo originally planned to include more cameos in The Super Mario Bros. Movie, including a character from Paper Mario: The Thousand-Year Door.",
+        "link": "https://www.ign.com/articles/scrapped-the-super-mario-bros-movie-ending-revealed",
+        "pubDate": "Tue, 21 Apr 2026 10:00:55 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/21/screenshot-2026-04-21-103343-1776765420310.png"
+      }
+    },
+    {
+      "title": "Hotel Exile by Jane Rogoyska review – the remarkable story of a wartime institution",
+      "source": "The Guardian Culture",
+      "pubDate": "Tue, 21 Apr 2026 10:00:48 GMT",
+      "link": "https://www.theguardian.com/books/2026/apr/21/hotel-exile-by-jane-rogoyska-review-the-remarkable-story-of-a-wartime-institution",
+      "dedupRank": 92,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Hotel Exile by Jane Rogoyska review – the remarkable story of a wartime institution",
+        "description": "<p>From a haven for intellectuals fleeing Hitler to the HQ of the feared Abwehr, the changing fortunes of a Parisian icon</p><p>The word “hotel” is cognate with “hostel” and “hospital”, and for a few short years in the middle of the 20th century, one",
+        "link": "https://www.theguardian.com/books/2026/apr/21/hotel-exile-by-jane-rogoyska-review-the-remarkable-story-of-a-wartime-institution",
+        "pubDate": "Tue, 21 Apr 2026 10:00:48 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/d446bd4ff5845861e7f67ed722c5b5fcd72dcbb1/411_0_6439_5154/master/6439.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=5d57aa839f24352fe919fcd9ec2f99ea"
+      }
+    },
+    {
+      "title": "Nico Williams & Alejandro Balde's Nike By You Creations Are Pro-Grade",
+      "source": "Highsnobiety",
+      "pubDate": "Tue, 21 Apr 2026 10:00:02 GMT",
+      "link": "https://www.highsnobiety.com/p/nike-by-you-design/",
+      "dedupRank": 93,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Nico Williams & Alejandro Balde's Nike By You Creations Are Pro-Grade",
+        "description": "Nike By You gives us all the opportunity to live our sneaker design dreams in real life. Check out pro footballlers Nico Williams & Alejandro balde's creations here.",
+        "link": "https://www.highsnobiety.com/p/nike-by-you-design/",
+        "pubDate": "Tue, 21 Apr 2026 10:00:02 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "Jesmyn Ward Will Soon Publish On Witness and Respair. Read the Exclusive Excerpt.",
+      "source": "Vanity Fair",
+      "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+      "link": "https://www.vanityfair.com/culture/story/jesmyn-ward-excerpt",
+      "dedupRank": 94,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Jesmyn Ward Will Soon Publish On Witness and Respair. Read the Exclusive Excerpt.",
+        "description": "In an essay from her forthcoming work of nonfiction, the novelist and recipient of the MacArthur Genius Grant reflects on the storytellers that made her a writer.",
+        "link": "https://www.vanityfair.com/culture/story/jesmyn-ward-excerpt",
+        "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+        "source": "Vanity Fair",
+        "imageUrl": "https://media.vanityfair.com/photos/69e67d836af407520b343a6d/master/pass/VF1223_Jesmyn_Ward_1.jpg"
+      }
+    },
+    {
+      "title": "They Built a Legendary Privacy Tool. Now They’re Sworn Enemies",
+      "source": "Wired",
+      "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+      "link": "https://www.wired.com/story/they-built-privacy-tool-grapheneos-now-sworn-enemies/",
+      "dedupRank": 95,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "They Built a Legendary Privacy Tool. Now They’re Sworn Enemies",
+        "description": "There’s a lot of love all over the world for GrapheneOS, the gold standard of mobile security. There’s very little love between the two guys at the center of its history.",
+        "link": "https://www.wired.com/story/they-built-privacy-tool-grapheneos-now-sworn-enemies/",
+        "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+        "source": "Wired",
+        "imageUrl": "https://media.wired.com/photos/69e295a92e2d64bf927d8ec2/master/pass/wired%20final%20featured%20illustration.jpg"
+      }
+    },
+    {
+      "title": "What Nicolás Maduro’s Life Is Like in a Notorious Brooklyn Jail",
+      "source": "The New Yorker",
+      "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/news/the-lede/what-nicolas-maduros-life-is-like-in-a-notorious-brooklyn-jail",
+      "dedupRank": 96,
+      "dedupScore": 5.59,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "If You Ask Me: Save the Rich White Women",
+      "source": "The New Yorker",
+      "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/humor/shouts-murmurs/if-you-ask-me-save-the-rich-white-women",
+      "dedupRank": 97,
+      "dedupScore": 5.59,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Digging for clues about the North Pole&#8217;s past",
+      "source": "MIT Technology Review",
+      "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+      "link": "https://www.technologyreview.com/2026/04/21/1135231/digging-for-truth-north-pole-past-seabed/",
+      "dedupRank": 98,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Digging for clues about the North Pole&#8217;s past",
+        "description": "In the past, even with an icebreaker and during peak melt season, getting to the North Pole wasn’t a sure bet. It took favorable winds to crack the frozen ocean surface, and ships had to fight through ice that had grown many meters thick over several",
+        "link": "https://www.technologyreview.com/2026/04/21/1135231/digging-for-truth-north-pole-past-seabed/",
+        "pubDate": "Tue, 21 Apr 2026 10:00:00 +0000",
+        "source": "MIT Technology Review",
+        "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/04/North_Pole_Expedition_MIT_Tech_Rev_TimK_004.jpg?w=2667"
+      }
+    },
+    {
+      "title": "The SaaSpocalypse Is Finally Upon Us. Here’s Who Survives",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 06:00:00 -0400",
+      "link": "https://www.inc.com/joe-procopio/the-saaspocalypse-is-finally-upon-us-heres-who-survives/91333610",
+      "dedupRank": 99,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The SaaSpocalypse Is Finally Upon Us. Here’s Who Survives",
+        "description": "FOBO the Clown is coming for your job, according to the VCs.",
+        "link": "https://www.inc.com/joe-procopio/the-saaspocalypse-is-finally-upon-us-heres-who-survives/91333610",
+        "pubDate": "Tue, 21 Apr 2026 06:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/GettyImages-2263573576.jpg"
+      }
+    },
+    {
+      "title": "I’ve Made Over $15 Million From Live Virtual Events. Here’s How to Run One That Converts",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 06:00:00 -0400",
+      "link": "https://www.inc.com/ashley-couto/virtual-live-events-convert-webinars-engagement-audience/91333440",
+      "dedupRank": 100,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I’ve Made Over $15 Million From Live Virtual Events. Here’s How to Run One That Converts",
+        "description": "Virtual live events can be a powerful revenue driver, but only if you build them the right way. Here’s what actually works.",
+        "link": "https://www.inc.com/ashley-couto/virtual-live-events-convert-webinars-engagement-audience/91333440",
+        "pubDate": "Tue, 21 Apr 2026 06:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/GettyImages-1960413271.jpg"
+      }
+    },
+    {
+      "title": "Amazon Has a Gas Discount Most Prime Members Don’t Even Know Exists",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 06:00:00 -0400",
+      "link": "https://www.inc.com/fast-company-2/amazon-gas-discount-prime-members-bp-earnify-perk/91333112",
+      "dedupRank": 101,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Amazon Has a Gas Discount Most Prime Members Don’t Even Know Exists",
+        "description": "A little-known perk can knock up to 20 cents off per gallon—but hardly anyone is using it.",
+        "link": "https://www.inc.com/fast-company-2/amazon-gas-discount-prime-members-bp-earnify-perk/91333112",
+        "pubDate": "Tue, 21 Apr 2026 06:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/p-91525332-amazon-prime-gas-discount.webp"
+      }
+    },
+    {
+      "title": "How to Sell Your Aging Parents’ Home (Without a Family Blowup)",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 06:00:00 -0400",
+      "link": "https://www.inc.com/howard-tullman/sell-your-aging-parents-home-sale-contingency-quickbuy/91332429",
+      "dedupRank": 102,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "How to Sell Your Aging Parents’ Home (Without a Family Blowup)",
+        "description": "Sales contingencies can wreck deals. Here’s a way around it.",
+        "link": "https://www.inc.com/howard-tullman/sell-your-aging-parents-home-sale-contingency-quickbuy/91332429",
+        "pubDate": "Tue, 21 Apr 2026 06:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/sell-parents-house-inc-2153009909.jpg"
+      }
+    },
+    {
+      "title": "Sydney Sweeney and Noah Centineo cast in live-action Gundam movie for Netflix",
+      "source": "Dexerto",
+      "pubDate": "Tue, 21 Apr 2026 09:55:46 GMT",
+      "link": "https://www.dexerto.com/tv-movies/sydney-sweeney-and-noah-centineo-cast-in-live-action-gundam-movie-for-netflix-3354541/",
+      "dedupRank": 103,
+      "dedupScore": 5.59,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The AI data center boom is moving closer to cities — and this Texas developer just raised $2 billion to bet on it",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 09:55:01 +0000",
+      "link": "https://www.businessinsider.com/databank-financing-dallas-data-center-inference-2026-4",
+      "dedupRank": 104,
+      "dedupScore": 5.59,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Pokémon TCG: Full Release Schedule for 2026",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 09:52:00 +0000",
+      "link": "https://www.ign.com/articles/pokemon-tcg-full-release-schedule-2026",
+      "dedupRank": 105,
+      "dedupScore": 5.58,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Pokémon TCG: Full Release Schedule for 2026",
+        "description": "Here’s every confirmed Pokémon TCG release for 2026, including Mega Evolution sets, launch dates, and what to expect next.",
+        "link": "https://www.ign.com/articles/pokemon-tcg-full-release-schedule-2026",
+        "pubDate": "Tue, 21 Apr 2026 09:52:00 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/02/27/pokemon-release-schedule-2026-1772205383977.png"
+      }
+    },
+    {
+      "title": "Take my breadth away: What a historically top-heavy stock market means for investors",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 09:50:01 +0000",
+      "link": "https://www.businessinsider.com/low-stock-market-breadth-earnings-revisions-tech-equity-outlook-sp500-2026-4",
+      "dedupRank": 106,
+      "dedupScore": 5.58,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The Pitt Camera Tricks",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 09:48:40 +0000",
+      "link": "https://www.ign.com/articles/the-pitt-camera-tricks",
+      "dedupRank": 107,
+      "dedupScore": 5.58,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Pitt Camera Tricks",
+        "description": "There's a myriad of reasons why we're so locked into The Pitt right now — the gripping stories, the authentic cast of characters, the glimpse of how ER doctors can make life or death split-second decisions — but according to director of photography J",
+        "link": "https://www.ign.com/articles/the-pitt-camera-tricks",
+        "pubDate": "Tue, 21 Apr 2026 09:48:40 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/21/unnamed-25-1776764906154.jpg"
+      }
+    },
+    {
+      "title": "Kneecap, Erika de Casier, Smerz and more call to boycott Eurovision",
+      "source": "Dazed",
+      "pubDate": "2026-04-21T09:48:00Z",
+      "link": "https://www.dazeddigital.com/music/article/70116/1/kneecap-erika-de-casier-smerz-boycott-eurovision-gaza-israel?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=kneecap-erika-de-casier-smerz-and-more-call-to-boycott-eurovision",
+      "dedupRank": 108,
+      "dedupScore": 5.58,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Why Nvidia Co-Founder Jensen Huang Refuses to Hold One-on-One ‘Catch Up’ Meetings With Employees",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 05:42:00 -0400",
+      "link": "https://www.inc.com/jeff-haden/why-nvidia-co-founder-jensen-huang-refuses-to-hold-one-on-one-catch-up-meetings-with-employees/91333184",
+      "dedupRank": 109,
+      "dedupScore": 5.57,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Keychron's Ultra 8K Keyboards Debut With 660-Hour Power",
+      "source": "Hypebeast",
+      "pubDate": "Tue, 21 Apr 2026 09:40:02 +0000",
+      "link": "https://hypebeast.com/2026/4/keychron-ultra-8k-keyboards-debut-with-660-hour-power",
+      "dedupRank": 110,
+      "dedupScore": 5.57,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Keychron's Ultra 8K Keyboards Debut With 660-Hour Power",
+        "description": "SummaryKeychron's new Ultra 8K series keyboards debuted at CES 2026 with a massive 660-hour battery life and an open-source ZMK firmware architectureThe collection spans the premium aluminum Q Ultra line and the accessible polymer V Ultra line, all e",
+        "link": "https://hypebeast.com/2026/4/keychron-ultra-8k-keyboards-debut-with-660-hour-power",
+        "pubDate": "Tue, 21 Apr 2026 09:40:02 +0000",
+        "source": "Hypebeast",
+        "imageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F04%2F21%2Fftkeychron-ultra-8k-keyboards-debut-with-660-hour-power.jpg?w=800&cbr=1&q=90&fit=max"
+      }
+    },
+    {
+      "title": "New Era Goes Back to Hawkins for the ‘Stranger Things’ SS26 Collection",
+      "source": "Hypebeast",
+      "pubDate": "Tue, 21 Apr 2026 09:39:52 +0000",
+      "link": "https://hypebeast.com/2026/4/stranger-things-new-era-spring-summer-ss-2026-collaboration-collection-release-info",
+      "dedupRank": 111,
+      "dedupScore": 5.57,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "New Era Goes Back to Hawkins for the ‘Stranger Things’ SS26 Collection",
+        "description": "SummaryNew Era taps Netflix's hit series Stranger Things for a specialized Spring/Summer 2026 lineupThe collection centers around the show's iconic title logo and thematic elements like the Hellfire Club and DemogorgonFans can expect a selection of 5",
+        "link": "https://hypebeast.com/2026/4/stranger-things-new-era-spring-summer-ss-2026-collaboration-collection-release-info",
+        "pubDate": "Tue, 21 Apr 2026 09:39:52 +0000",
+        "source": "Hypebeast",
+        "imageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F04%2F21%2FStranger-Things-New-Era-spring-summer-ss-2026-Collaboration-collection-Release-Info.jpg?w=800&cbr=1&q=90&fit=max"
+      }
+    },
+    {
+      "title": "Primark to Spin off From Ab Foods Into Standalone Company",
+      "source": "Business of Fashion",
+      "pubDate": "Tue, 21 Apr 2026 09:39:48 +0000",
+      "link": "https://www.businessoffashion.com/news/retail/primark-to-spin-off-from-ab-foods-into-standalone-company/",
+      "dedupRank": 112,
+      "dedupScore": 5.57,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "I&#39;m a millennial who ditched my smartphone for a month. I made new friends and ended up keeping my flip phone.",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 09:37:01 +0000",
+      "link": "https://www.businessinsider.com/millennial-switched-to-flip-phone-for-month-2026-4",
+      "dedupRank": 113,
+      "dedupScore": 5.57,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The Apple products that define Tim Cook&#39;s era",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 09:36:01 +0000",
+      "link": "https://www.businessinsider.com/apple-products-that-define-ceo-tim-cook-era-2026-4",
+      "dedupRank": 114,
+      "dedupScore": 5.57,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Homeland Security reportedly wants to develop smart glasses for ICE",
+      "source": "Engadget",
+      "pubDate": "Tue, 21 Apr 2026 09:34:49 +0000",
+      "link": "",
+      "dedupRank": 115,
+      "dedupScore": 5.57,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "I&#39;m a Bank of America exec who once got passed over for a promotion. Here&#39;s what it taught me.",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 09:31:01 +0000",
+      "link": "https://www.businessinsider.com/bank-of-america-exec-shares-lessons-learned-from-missing-promotion-2026-4",
+      "dedupRank": 116,
+      "dedupScore": 5.56,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "What Employee Engagement Really Means (and 6 Clear Steps to Do It Right)",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 05:30:00 -0400",
+      "link": "https://www.inc.com/marcel-schwantes/employee-engagement-boost-leadership-advice-hr/91332802",
+      "dedupRank": 117,
+      "dedupScore": 5.56,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Scrapped The Mandalorian Season 4 Scripts Featured Thrawn",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 09:26:52 +0000",
+      "link": "https://www.ign.com/articles/the-mandalorian-and-grogu-scrapped-mandalorian-season-4-scripts-with-thrawn",
+      "dedupRank": 118,
+      "dedupScore": 5.56,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "(UPDATE) Metal Gear Solid Master Collection Vol. 2 Steelbook Confirmed as Preorder Bonus for Select Regions",
+      "source": "IGN",
+      "pubDate": "Tue, 21 Apr 2026 09:16:16 +0000",
+      "link": "https://www.ign.com/articles/konami-reveals-steelbook-for-metal-gear-solid-master-collection-vol-2",
+      "dedupRank": 119,
+      "dedupScore": 5.55,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "I moved to San Francisco to work in AI. Living here requires sacrifices — I gave up normalcy to gain access.",
+      "source": "Business Insider",
+      "pubDate": "Tue, 21 Apr 2026 09:11:01 +0000",
+      "link": "https://www.businessinsider.com/startup-founder-moved-to-san-francisco-feels-ambition-pressure-2026-4",
+      "dedupRank": 120,
+      "dedupScore": 5.54,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "How John Dowland Built a Music Career on Tearful Melancholy",
+      "source": "NYT Arts",
+      "pubDate": "Tue, 21 Apr 2026 09:02:21 +0000",
+      "link": "https://www.nytimes.com/2026/04/21/arts/music/john-dowland-400.html",
+      "dedupRank": 121,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "For Italy’s Art Pioneer, a New Bronze Age",
+      "source": "NYT Arts",
+      "pubDate": "Tue, 21 Apr 2026 09:02:06 +0000",
+      "link": "https://www.nytimes.com/2026/04/21/arts/for-italys-art-pioneer-a-new-bronze-age.html",
+      "dedupRank": 122,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Adrien Brody, Tessa Thompson and the Truth Behind ‘The Fear of 13’",
+      "source": "NYT Arts",
+      "pubDate": "Tue, 21 Apr 2026 09:01:49 +0000",
+      "link": "https://www.nytimes.com/2026/04/21/theater/adrien-brody-tessa-thompson-broadway-fear-of-13.html",
+      "dedupRank": 123,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "This Insanely Sweet Jordan Is the Sneaker Equivalent of a Strawberry Milkshake",
+      "source": "Highsnobiety",
+      "pubDate": "Tue, 21 Apr 2026 09:01:26 GMT",
+      "link": "https://www.highsnobiety.com/p/nike-air-jordan-4-pink-denim/",
+      "dedupRank": 124,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "‘Funny Pages,’ ‘BlackBerry’ and More Streaming Gems",
+      "source": "NYT Arts",
+      "pubDate": "Tue, 21 Apr 2026 09:00:47 +0000",
+      "link": "https://www.nytimes.com/2026/04/21/movies/funny-pages-blackberry-offbeat-streaming.html",
+      "dedupRank": 125,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Why are respected film-makers suddenly embracing AI?",
+      "source": "The Guardian Culture",
+      "pubDate": "Tue, 21 Apr 2026 09:00:20 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/21/ai-film-soderbergh-aronofsky",
+      "dedupRank": 126,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Brian Eno, Massive Attack, Sigur Rós Call for Eurovision 2026 Boycott",
+      "source": "Pitchfork",
+      "pubDate": "Tue, 21 Apr 2026 09:00:00 +0000",
+      "link": "https://pitchfork.com/news/brian-eno-massive-attack-sigur-ros-call-for-eurovision-2026-boycott/",
+      "dedupRank": 127,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "How to Watch the 2026 Lyrids Meteor Shower at Its Peak",
+      "source": "Wired",
+      "pubDate": "Tue, 21 Apr 2026 09:00:00 +0000",
+      "link": "https://www.wired.com/story/how-to-watch-the-lyrids-meteor-shower-at-its-peak-2026/",
+      "dedupRank": 128,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Tim Cook Didn’t Just Replace Steve Jobs—He Turned Apple Into a Shareholder Cash Machine",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 05:00:00 -0400",
+      "link": "https://www.inc.com/phil-rosen/stock-market-outlook-iran-conflict-trump-sp500-investors-2/91333520",
+      "dedupRank": 129,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "AI Robodogs Can Follow Commands—but Can They Replace Guide Dogs?",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 05:00:00 -0400",
+      "link": "https://www.inc.com/lucia-auerbach/ai-robodogs-can-follow-commands-but-can-they-replace-guide-dogs/91333361",
+      "dedupRank": 130,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The Great Rollback Has Begun: Deloitte and Zoom Take the Lead in Slashing the Most Coveted Benefits",
+      "source": "Inc.",
+      "pubDate": "Tue, 21 Apr 2026 04:59:00 -0400",
+      "link": "https://www.inc.com/kaylawebster/the-great-rollback-has-begun-deloitte-and-zoom-take-the-lead-in-slashing-the-most-coveted-benefits/91333534",
+      "dedupRank": 131,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Dyson's Newest Supersonic Travel Shrinks Its Flagship Hair Dryer",
+      "source": "Hypebeast",
+      "pubDate": "Tue, 21 Apr 2026 08:56:17 +0000",
+      "link": "https://hypebeast.com/2026/4/https-dyson-h-assetsadobe2-com-is-image-content-dam-dyson-images-products-primary-492454-01-png",
+      "dedupRank": 132,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Nike Pushes the Boundaries of Molded Footwear With the Mind 001 \"Pink Smoke\"",
+      "source": "Hypebeast",
+      "pubDate": "Tue, 21 Apr 2026 08:49:28 +0000",
+      "link": "https://hypebeast.com/2026/4/nike-mind-001-pink-smoke-hq4309-601-release-info",
+      "dedupRank": 133,
+      "dedupScore": 5.52,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Cherfilus-McCormick faces potential expulsion",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 08:46:56 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/cherfilus-mccormick-faces-potential-expulsion",
+      "dedupRank": 134,
+      "dedupScore": 5.52,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Powell probe looms over Warsh hearing",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 08:46:07 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/powell-probe-looms-over-warsh-hearing",
+      "dedupRank": 135,
+      "dedupScore": 5.51,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Why Chavez-DeRemer’s departure surprised few",
+      "source": "Semafor",
+      "pubDate": "Tue, 21 Apr 2026 08:45:44 +0000",
+      "link": "https://www.semafor.com/article/04/20/2026/why-chavez-deremers-departure-surprised-few",
+      "dedupRank": 136,
+      "dedupScore": 5.51,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "JJJJound Teases the Ultimate Minimalist Summer Essential: The All-Black Flip Flop",
+      "source": "Hypebeast",
+      "pubDate": "Tue, 21 Apr 2026 08:45:12 +0000",
+      "link": "https://hypebeast.com/2026/4/jjjjound-ss26-all-black-flip-flops-teaser",
+      "dedupRank": 137,
+      "dedupScore": 5.51,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Report: Estée Lauder Seeks €5 Billion Funding for Puig Deal",
+      "source": "Business of Fashion",
+      "pubDate": "Tue, 21 Apr 2026 08:41:11 +0000",
+      "link": "https://www.businessoffashion.com/news/beauty/estee-lauder-puig-jpmorgan-5-billion-funding/",
+      "dedupRank": 138,
+      "dedupScore": 5.51,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "New Balance's Weirdly Wavy Sneaker Is the Dad Shoe of the Future",
+      "source": "Highsnobiety",
+      "pubDate": "Tue, 21 Apr 2026 08:36:25 GMT",
+      "link": "https://www.highsnobiety.com/p/new-balance-5030-sneakers/",
+      "dedupRank": 139,
+      "dedupScore": 5.5,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "New Balance's Sweetened Dad Shoe Has a Surprisingly Fiery Kick",
+      "source": "Highsnobiety",
+      "pubDate": "Tue, 21 Apr 2026 08:34:24 GMT",
+      "link": "https://www.highsnobiety.com/p/new-balance-991v2-grenadine/",
+      "dedupRank": 140,
+      "dedupScore": 5.5,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "‘Muslim kids are really underrepresented’: the animated movie where medieval maths meets eager young minds",
+      "source": "The Guardian Culture",
+      "pubDate": "Tue, 21 Apr 2026 08:34:15 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/21/muslim-kids-are-really-underrepresented-the-animated-movie-where-medieval-maths-meets-eager-young-minds",
+      "dedupRank": 141,
+      "dedupScore": 5.5,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "adidas' Super-Minimal Sneaker Isn’t Just Flat — It’s “Barefoot”",
+      "source": "Highsnobiety",
+      "pubDate": "Tue, 21 Apr 2026 08:30:06 GMT",
+      "link": "https://www.highsnobiety.com/p/adidas-groundflow-sneakers/",
+      "dedupRank": 142,
+      "dedupScore": 5.5,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    }
+  ]
+}

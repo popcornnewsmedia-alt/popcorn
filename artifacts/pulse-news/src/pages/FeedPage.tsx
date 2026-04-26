@@ -1148,6 +1148,17 @@ export function FeedPage() {
     return startOfDay(oldest);
   }, [allArticles]);
 
+  // Dynamic max date — newest feed day actually loaded. Stops the picker's
+  // forward chevron from sliding past the latest published edition.
+  const maxDate = useMemo(() => {
+    if (allArticles.length === 0) return startOfDay(new Date());
+    const newest = allArticles.reduce((max, a) => {
+      const d = new Date((a as any).feedDate ?? a.publishedAt);
+      return d > max ? d : max;
+    }, new Date((allArticles[0] as any).feedDate ?? allArticles[0].publishedAt));
+    return startOfDay(newest);
+  }, [allArticles]);
+
   // ── Crossfade jump helper ────────────────────────────────────────────────
   // Short hops (≤ 3 cards) use native smooth-scroll. Longer jumps crossfade
   // the feed container to avoid the jarring stutter of scrolling through many
@@ -1312,7 +1323,7 @@ export function FeedPage() {
           onOpenLegal={setLegalSheet}
         />
       )}
-      {activeTab === 'feed' && !isIntroScreen && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker fillRef={feedBarFillRef} dateRef={feedBarDateRef} expandedDateRef={feedBarExpandedDateRef} minDate={minDate} pickerOpen={pickerOpen} onPickerOpenChange={setPickerOpen} onScrollToDayTop={handleScrollToDayTop} />}
+      {activeTab === 'feed' && !isIntroScreen && <TopBar selectedDate={selectedDate} onDateChange={handleDatePick} showDatePicker fillRef={feedBarFillRef} dateRef={feedBarDateRef} expandedDateRef={feedBarExpandedDateRef} minDate={minDate} maxDate={maxDate} pickerOpen={pickerOpen} onPickerOpenChange={setPickerOpen} onScrollToDayTop={handleScrollToDayTop} />}
 
       {/* Picker dismiss overlay — lives here so it can forward scroll gestures to the feed */}
       {pickerOpen && activeTab === 'feed' && (

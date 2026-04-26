@@ -240,6 +240,50 @@ select:focus-visible {
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
   }
+
+  /* ── Editorial photo-bled plate — used behind the headline area
+     on the mobile ArticleCard. The panel itself is just a clipping
+     frame: a feathered top-edge mask + a procedural newsprint
+     grain pseudo. Inside the panel the JSX renders a heavily
+     blurred + saturated copy of THIS article's photo as the
+     ground layer, so the whole plate (even below the image)
+     picks up the dominant colour of the story — warm for an
+     amber portrait, cool for a city shot, etc. A second child
+     handles the bottom-darkening wash that keeps the white
+     headline legible. NO blue ink. */
+  .popcorn-noir-plate {
+    overflow: hidden;
+    /* Shorter fade — was 170px (long brush-out at image bottom /
+       headline top), now 70px for a crisper, more deliberate edge
+       between the image and the headline panel. */
+    -webkit-mask-image: linear-gradient(to bottom,
+      transparent 0,
+      transparent 12px,
+      rgba(0,0,0,0.32) 28px,
+      rgba(0,0,0,0.68) 48px,
+      rgba(0,0,0,0.90) 60px,
+      #000 70px);
+            mask-image: linear-gradient(to bottom,
+      transparent 0,
+      transparent 12px,
+      rgba(0,0,0,0.32) 28px,
+      rgba(0,0,0,0.68) 48px,
+      rgba(0,0,0,0.90) 60px,
+      #000 70px);
+  }
+  /* Newsprint grain — cream-tinted noise on screen blend so it
+     reads as halftone paper, not digital noise. Sits ABOVE the
+     photo bg + dark wash children (last in DOM stacking order). */
+  .popcorn-noir-plate::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch' seed='11'/><feColorMatrix values='0 0 0 0 1   0 0 0 0 0.95   0 0 0 0 0.80   0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.42'/></svg>");
+    background-size: 200px 200px;
+    mix-blend-mode: screen;
+    opacity: 0.16;
+  }
 }
 
 /* ── Splash & Onboarding Animations ────────────────────── */

@@ -620,7 +620,7 @@ export function SplashScreen({
             onClick={() => onOpenLegal("terms")}
             className="inline"
             style={{
-              color: 'rgba(255,241,205,0.72)',
+              color: '#fff1cd',
               borderBottom: '1px solid rgba(255,241,205,0.28)',
               fontWeight: 600,
             }}
@@ -632,7 +632,7 @@ export function SplashScreen({
             onClick={() => onOpenLegal("privacy")}
             className="inline"
             style={{
-              color: 'rgba(255,241,205,0.72)',
+              color: '#fff1cd',
               borderBottom: '1px solid rgba(255,241,205,0.28)',
               fontWeight: 600,
             }}
@@ -643,7 +643,7 @@ export function SplashScreen({
             onClick={() => onOpenLegal("about")}
             className="inline"
             style={{
-              color: 'rgba(255,241,205,0.72)',
+              color: '#fff1cd',
               borderBottom: '1px solid rgba(255,241,205,0.28)',
               fontWeight: 600,
             }}

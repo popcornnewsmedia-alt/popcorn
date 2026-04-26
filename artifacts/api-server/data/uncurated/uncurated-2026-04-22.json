@@ -1,0 +1,2579 @@
+{
+  "fetchedAt": "2026-04-22T13:36:39.789Z",
+  "totalRawItems": 182,
+  "uniqueStories": 178,
+  "sentToClaude": 100,
+  "selectedCount": 82,
+  "rejectedCount": 96,
+  "rankedOutCount": 0,
+  "dedupedCount": 4,
+  "articles": [
+    {
+      "title": "Shania Twain to Host the 2026 ACM Awards",
+      "source": "Rolling Stone",
+      "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+      "link": "https://www.rollingstone.com/music/music-country/shania-twain-host-2026-acm-awards-1235551754/",
+      "dedupRank": 1,
+      "dedupScore": 8.9,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Man! I Feel Like a Host!: Shania Twain Set to Host 2026 Academy of Country Music&#160;Awards\" (Billboard)"
+    },
+    {
+      "title": "Man! I Feel Like a Host!: Shania Twain Set to Host 2026 Academy of Country Music&#160;Awards",
+      "source": "Billboard",
+      "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+      "link": "https://www.billboard.com/music/awards/shania-twain-host-2026-academy-of-country-music-awards-1236228544/",
+      "dedupRank": 1,
+      "dedupScore": 8.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Man! I Feel Like a Host!: Shania Twain Set to Host 2026 Academy of Country Music&#160;Awards",
+        "description": "The crossover star won entertainer of the year at the ACM Awards in 2000.",
+        "link": "https://www.billboard.com/music/awards/shania-twain-host-2026-academy-of-country-music-awards-1236228544/",
+        "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+        "source": "Billboard",
+        "imageUrl": "https://www.billboard.com/wp-content/uploads/2026/03/P103X7O7-e1775688298481.jpg?w=237&#038;h=147&#038;crop=1"
+      }
+    },
+    {
+      "title": "Shania Twain Set As Host Of Academy Of Country Music Awards 2026 On Prime Video",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+      "link": "https://deadline.com/2026/04/shania-twain-host-academy-of-country-music-awards-2026-prime-video-1236867651/",
+      "dedupRank": 1,
+      "dedupScore": 8.9,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Man! I Feel Like a Host!: Shania Twain Set to Host 2026 Academy of Country Music&#160;Awards\" (Billboard)"
+    },
+    {
+      "title": "Brittany Cartwright spills on &#8216;The Valley&#8217; drama and Amanda, West scandal with VRT",
+      "source": "Page Six",
+      "pubDate": "Wed, 22 Apr 2026 08:30:00 -0400",
+      "link": "https://pagesix.com/video/brittany-cartwright-spills-on-the-valley-drama-and-amandawest-scandal-with-vrt/",
+      "dedupRank": 2,
+      "dedupScore": 7.93,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Brittany Cartwright spills on &#8216;The Valley&#8217; drama and Amanda, West scandal with VRT",
+        "description": "Your Tea has been served by Brittany Cartwright! &#8220;The Valley&#8221; star stopped by the Page Six studio to chat with our &#8220;Virtual Reali-Tea&#8221; co-hosts, Danny Murphy and Evan Real, about all the latest drama on season three of the hit",
+        "link": "https://pagesix.com/video/brittany-cartwright-spills-on-the-valley-drama-and-amandawest-scandal-with-vrt/",
+        "pubDate": "Wed, 22 Apr 2026 08:30:00 -0400",
+        "source": "Page Six",
+        "imageUrl": "https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F04%2FMAIN-GUEST-TEMPLATE-32-1-1.png"
+      }
+    },
+    {
+      "title": "MrBeast’s company denies claims in former employee’s lawsuit",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 12:18:46 GMT",
+      "link": "https://www.dexerto.com/youtube/mrbeasts-company-denies-claims-in-former-employees-lawsuit-3354713/",
+      "dedupRank": 3,
+      "dedupScore": 7.92,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "MrBeast’s company denies claims in former employee’s lawsuit",
+        "description": "Beast Industries has responded to a maternity leave lawsuit, disputing the allegations made in the complaint.",
+        "link": "https://www.dexerto.com/youtube/mrbeasts-company-denies-claims-in-former-employees-lawsuit-3354713/",
+        "pubDate": "Wed, 22 Apr 2026 12:18:46 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2025/09/16/mrbeast-making-changes-to-video-content.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Dave Mason, legendary Traffic co-founder, dead at 79",
+      "source": "Page Six",
+      "pubDate": "Wed, 22 Apr 2026 07:56:57 -0400",
+      "link": "https://pagesix.com/2026/04/22/entertainment/dave-mason-legendary-traffic-co-founder-dead-at-79/",
+      "dedupRank": 4,
+      "dedupScore": 7.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Dave Mason, legendary Traffic co-founder, dead at 79",
+        "description": "The 79-year-old, who wrote \"Feelin' Alright?\" and \"Hole in my Shoe,\" two of the group's biggest hits, passed away over the weekend.",
+        "link": "https://pagesix.com/2026/04/22/entertainment/dave-mason-legendary-traffic-co-founder-dead-at-79/",
+        "pubDate": "Wed, 22 Apr 2026 07:56:57 -0400",
+        "source": "Page Six",
+        "imageUrl": "https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F04%2Fdave-mason-performs-dave-masons-126156148.jpg"
+      }
+    },
+    {
+      "title": "Dave Mason, Songwriter Who Co-Founded Traffic, Dies at 79",
+      "source": "NYT Arts",
+      "pubDate": "Wed, 22 Apr 2026 11:46:11 +0000",
+      "link": "https://www.nytimes.com/2026/04/22/arts/music/mason-dave-dead.html",
+      "dedupRank": 5,
+      "dedupScore": 7.89,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Dave Mason, Songwriter Who Co-Founded Traffic, Dies at 79",
+        "description": "The English singer and guitarist wrote mainstays of the classic-rock canon like “Feelin’ Alright?” and “Only You Know and I Know.” He also had a successful solo career.",
+        "link": "https://www.nytimes.com/2026/04/22/arts/music/mason-dave-dead.html",
+        "pubDate": "Wed, 22 Apr 2026 11:46:11 +0000",
+        "source": "NYT Arts",
+        "imageUrl": "https://static01.nyt.com/images/2026/04/22/multimedia/22mason-dave-top/22mason-dave-top-mediumSquareAt3X.jpg"
+      }
+    },
+    {
+      "title": "Avengers: Doomsday Spoiler Leaked by Composer",
+      "source": "IGN",
+      "pubDate": "Wed, 22 Apr 2026 11:14:16 +0000",
+      "link": "https://www.ign.com/articles/avengers-doomsday-spoiler-leaked-by-composer",
+      "dedupRank": 6,
+      "dedupScore": 7.85,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Avengers: Doomsday Spoiler Leaked by Composer",
+        "description": "Legendary composer Alan Silvestri has revealed a spoilery location that looks set to appear in Avengers: Doomsday.",
+        "link": "https://www.ign.com/articles/avengers-doomsday-spoiler-leaked-by-composer",
+        "pubDate": "Wed, 22 Apr 2026 11:14:16 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2025/02/04/mixcollage-04-feb-2025-10-35-am-3426-1738683306791.jpg"
+      }
+    },
+    {
+      "title": "Why Saudi is weathering the war shock better than most",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 11:13:05 +0000",
+      "link": "https://www.semafor.com/article/04/22/2026/why-saudi-is-weathering-the-war-shock-better-than-most",
+      "dedupRank": 7,
+      "dedupScore": 7.85,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Why Saudi is weathering the war shock better than most",
+        "description": "A week in Riyadh offers evidence that oil buffers and pragmatic policymaking are containing the fallout.",
+        "link": "https://www.semafor.com/article/04/22/2026/why-saudi-is-weathering-the-war-shock-better-than-most",
+        "pubDate": "Wed, 22 Apr 2026 11:13:05 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/507b80ad96f965617a01ed2c533f09d18f4281c2-2048x1493.jpg"
+      }
+    },
+    {
+      "title": "First vacuums — then the world",
+      "source": "The Verge",
+      "pubDate": "2026-04-22T07:00:00-04:00",
+      "link": "https://www.theverge.com/report/914244/dreame-china-vacuums-hypercars-elon-musk",
+      "dedupRank": 8,
+      "dedupScore": 7.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "First vacuums — then the world",
+        "description": "Many startups spend years trying to become a household name. Others just spend $10 million on a Super Bowl ad. That's Dreame's bet. The little-known Chinese robot vacuum company has grand ambitions to become a global consumer electronics giant and ch",
+        "link": "https://www.theverge.com/report/914244/dreame-china-vacuums-hypercars-elon-musk",
+        "pubDate": "2026-04-22T07:00:00-04:00",
+        "source": "The Verge",
+        "imageUrl": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/Vrg_illo_janet_mac_dreame_lede.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
+      }
+    },
+    {
+      "title": "First Loch Ness Monster sighting of 2026 reported after months of silence",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 10:54:58 GMT",
+      "link": "https://www.dexerto.com/entertainment/first-loch-ness-monster-sighting-of-2026-reported-after-months-of-silence-3355093/",
+      "dedupRank": 9,
+      "dedupScore": 7.83,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "First Loch Ness Monster sighting of 2026 reported after months of silence",
+        "description": "The first reported sighting of the Loch Ness Monster in 2026 has officially been logged, ending a months-long dry spell.",
+        "link": "https://www.dexerto.com/entertainment/first-loch-ness-monster-sighting-of-2026-reported-after-months-of-silence-3355093/",
+        "pubDate": "Wed, 22 Apr 2026 10:54:58 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/First-Loch-Ness-Monster-sighting-of-2026-reported-after-months-of-silence.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Dave Mason, co-founder of Traffic who had a star-studded solo career, dies aged 79",
+      "source": "The Guardian Culture",
+      "pubDate": "Wed, 22 Apr 2026 10:44:58 GMT",
+      "link": "https://www.theguardian.com/music/2026/apr/22/dave-mason-co-founder-of-traffic-solo-career-dies-aged-79",
+      "dedupRank": 10,
+      "dedupScore": 7.82,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Dave Mason, co-founder of Traffic who had a star-studded solo career, dies aged 79",
+        "description": "<p>British singer and guitarist wrote and performed Traffic classics including Feelin’ Alright? before platinum-selling solo albums and work with Jimi Hendrix, Fleetwood Mac and more</p><p>Dave Mason, the co-founder of rock band Traffic who also coll",
+        "link": "https://www.theguardian.com/music/2026/apr/22/dave-mason-co-founder-of-traffic-solo-career-dies-aged-79",
+        "pubDate": "Wed, 22 Apr 2026 10:44:58 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/8925782834108c6852da1805ca6fe89b349405c1/0_0_3361_2687/master/3361.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=df46193cb8034fbe7818387caa3af682"
+      }
+    },
+    {
+      "title": "Air Force responds after pilot’s bizarre flight patterns go viral",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 10:43:52 GMT",
+      "link": "https://www.dexerto.com/entertainment/air-force-responds-after-pilots-bizarre-flight-patterns-go-viral-3355044/",
+      "dedupRank": 11,
+      "dedupScore": 7.82,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Air Force responds after pilot’s bizarre flight patterns go viral",
+        "description": "Finland’s Air Force has launched an investigation after cadet pilots were found to have flown training routes that resembled penis shapes.",
+        "link": "https://www.dexerto.com/entertainment/air-force-responds-after-pilots-bizarre-flight-patterns-go-viral-3355044/",
+        "pubDate": "Wed, 22 Apr 2026 10:43:52 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/plane.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "11 Scientists Are Dead or Missing. It Was Only a Matter of Time Before Conspiracy Theories Hit the White House.",
+      "source": "Vanity Fair",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.vanityfair.com/news/story/missing-scientists-conspiracy-theories-white-house",
+      "dedupRank": 12,
+      "dedupScore": 7.78,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "11 Scientists Are Dead or Missing. It Was Only a Matter of Time Before Conspiracy Theories Hit the White House.",
+        "description": "A haphazard grouping of recent cases emerged from what one paranormal investigator describes as “mystery-mongering data mining.” It also made for ideal fodder for the president and our leading media personalities alike.",
+        "link": "https://www.vanityfair.com/news/story/missing-scientists-conspiracy-theories-white-house",
+        "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+        "source": "Vanity Fair",
+        "imageUrl": "https://media.vanityfair.com/photos/69e64df09d57c70b8d17dedb/master/pass/VF0426_Neil-McCasland_Tout.jpg"
+      }
+    },
+    {
+      "title": "Netflix Reveals Details Of &#8216;Kylie&#8217; &#038; Drops First-Look Image Of Australian Pop Icon In &#8220;Intimate&#8221; Doc Series",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 09:58:54 +0000",
+      "link": "https://deadline.com/2026/04/netflix-kylie-doc-first-look-ventureland-producer-1236867766/",
+      "dedupRank": 13,
+      "dedupScore": 7.77,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Netflix Reveals Details Of &#8216;Kylie&#8217; &#038; Drops First-Look Image Of Australian Pop Icon In &#8220;Intimate&#8221; Doc Series",
+        "description": "In a first look at Kylie Minogue in her intimate Netflix documentary, the Australian pop icon certainly isn&#8217;t spinning around. Instead, the image for Kylie sees the Can&#8217;t Get You Out of My Head singer wrapped in a warm-look coat as she lo",
+        "link": "https://deadline.com/2026/04/netflix-kylie-doc-first-look-ventureland-producer-1236867766/",
+        "pubDate": "Wed, 22 Apr 2026 09:58:54 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/04/Kylie.jpg"
+      }
+    },
+    {
+      "title": "thisisneverthat x Starbucks Brew First-Ever Collaborative Collection",
+      "source": "Hypebeast",
+      "pubDate": "Wed, 22 Apr 2026 09:33:42 +0000",
+      "link": "https://hypebeast.com/2026/4/thisisneverthat-starbucks-neverthatcoffee-collaboration-collection-release-info",
+      "dedupRank": 14,
+      "dedupScore": 7.75,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The Pope’s Warnings About AI Were AI-Generated, a Detection Tool Claims",
+      "source": "Wired",
+      "pubDate": "Wed, 22 Apr 2026 09:30:00 +0000",
+      "link": "https://www.wired.com/story/pope-tweets-ai-generated-pangram-chrome-extension/",
+      "dedupRank": 15,
+      "dedupScore": 7.74,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Sam Altman compares Anthropic&#39;s Mythos to dropping a bomb while selling a $100 billion bomb shelter",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:19:01 +0000",
+      "link": "https://www.businessinsider.com/sam-altman-anthropic-claude-mythos-bomb-shelter-2026-4",
+      "dedupRank": 16,
+      "dedupScore": 7.73,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Sam Altman compares Anthropic&#39;s Mythos to dropping a bomb while selling a $100 billion bomb shelter",
+        "description": "OpenAI CEO Sam Altman said in contrast to Anthropic&#39;s recent moves, OpenAI would err on the side of giving more people access to AI models.",
+        "link": "https://www.businessinsider.com/sam-altman-anthropic-claude-mythos-bomb-shelter-2026-4",
+        "pubDate": "Wed, 22 Apr 2026 09:19:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e7eba3a98bc8fdc096d30b?format=jpeg"
+      }
+    },
+    {
+      "title": "Logan Paul’s $550K One Piece and Dragon Ball manga purchase leaves fans furious",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 09:06:05 GMT",
+      "link": "https://www.dexerto.com/entertainment/logan-pauls-550k-one-piece-and-dragon-ball-manga-purchase-leaves-fans-furious-3355003/",
+      "dedupRank": 17,
+      "dedupScore": 7.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Logan Paul’s $550K One Piece and Dragon Ball manga purchase leaves fans furious",
+        "description": "Logan Paul has stepped into the manga-collecting world, but his purchase of One Piece and Dragon Ball chapters has already sparked backlash from fans.",
+        "link": "https://www.dexerto.com/entertainment/logan-pauls-550k-one-piece-and-dragon-ball-manga-purchase-leaves-fans-furious-3355003/",
+        "pubDate": "Wed, 22 Apr 2026 09:06:05 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/Logan-Pauls-550K-One-Piece-and-Dragon-Ball-manga-buy-leaves-fans-furious.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "TikTok, an AI sitcom and clowns: how Hacks and The Comeback nail the humiliations of modern celebrity",
+      "source": "The Guardian Culture",
+      "pubDate": "Wed, 22 Apr 2026 09:00:53 GMT",
+      "link": "https://www.theguardian.com/tv-and-radio/2026/apr/22/hacks-comeback-social-media-humiliation",
+      "dedupRank": 18,
+      "dedupScore": 7.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "TikTok, an AI sitcom and clowns: how Hacks and The Comeback nail the humiliations of modern celebrity",
+        "description": "<p>No indignity is too great for the leads of these darkly funny shows as they pursue a comeback at any cost</p><p>In the fifth and final season of sitcom <a href=\"https://www.theguardian.com/tv-and-radio/hacks\">Hacks</a>, the legendary comedian Debo",
+        "link": "https://www.theguardian.com/tv-and-radio/2026/apr/22/hacks-comeback-social-media-humiliation",
+        "pubDate": "Wed, 22 Apr 2026 09:00:53 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/1f7b5386608816fcd1f349a83d2cafc0dfa8a764/360_0_1200_960/master/1200.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=93f0c001fe77d50e0b146f6eb9361826"
+      }
+    },
+    {
+      "title": "Ralph Fiennes, Viggo Mortensen, Charlotte Rampling, Katherine Langford &#038; More Set For István Szabó&#8217;s &#8216;Embers&#8217;; Filming Underway &#038; First Looks Revealed With Embankment Aboard For Cannes Market",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 09:00:21 +0000",
+      "link": "https://deadline.com/2026/04/ralph-fiennes-viggo-mortensen-katherine-langford-embers-1236867746/",
+      "dedupRank": 19,
+      "dedupScore": 7.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Ralph Fiennes, Viggo Mortensen, Charlotte Rampling, Katherine Langford &#038; More Set For István Szabó&#8217;s &#8216;Embers&#8217;; Filming Underway &#038; First Looks Revealed With Embankment Aboard For Cannes Market",
+        "description": "EXCLUSIVE: Three-time Oscar nominees Ralph Fiennes (Conclave) and Viggo Mortensen (Eastern Promises) are leading cast in Oscar winner István Szabó&#8217;s (Mephisto) under-the-radar period drama Embers, which has begun filming in Budapest, Hungary. A",
+        "link": "https://deadline.com/2026/04/ralph-fiennes-viggo-mortensen-katherine-langford-embers-1236867746/",
+        "pubDate": "Wed, 22 Apr 2026 09:00:21 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/04/Ralph-Fiennes-Viggo-Mortensen-Charlotte-Rampling-Katherine-Langford-Louis-Hofmann-Gijs-Blom-1.jpg"
+      }
+    },
+    {
+      "title": "Krysten Ritter Returns as Jessica Jones in “Daredevil: Born Again”",
+      "source": "NYT Arts",
+      "pubDate": "Wed, 22 Apr 2026 09:00:13 +0000",
+      "link": "https://www.nytimes.com/2026/04/22/arts/television/krysten-ritter-jessica-jones-daredevil.html",
+      "dedupRank": 20,
+      "dedupScore": 7.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Krysten Ritter Returns as Jessica Jones in “Daredevil: Born Again”",
+        "description": "More than six years after “Jessica Jones” came to an end, the actress returns to the role in the new season of “Daredevil: Born Again.”",
+        "link": "https://www.nytimes.com/2026/04/22/arts/television/krysten-ritter-jessica-jones-daredevil.html",
+        "pubDate": "Wed, 22 Apr 2026 09:00:13 +0000",
+        "source": "NYT Arts",
+        "imageUrl": "https://static01.nyt.com/images/2026/04/22/multimedia/22cul-ritter-daredevil-promo/22cul-ritter-daredevil-promo-mediumSquareAt3X.jpg"
+      }
+    },
+    {
+      "title": "The 4 Rules Brands Must Follow to Win in a TikTok-First World",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 05:00:00 -0400",
+      "link": "https://www.inc.com/kira-jackson/the-4-rules-brands-must-follow-to-win-in-a-tiktok-first-world/91333986",
+      "dedupRank": 21,
+      "dedupScore": 7.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The 4 Rules Brands Must Follow to Win in a TikTok-First World",
+        "description": "Treat your customer like your best influencer. She just might be.",
+        "link": "https://www.inc.com/kira-jackson/the-4-rules-brands-must-follow-to-win-in-a-tiktok-first-world/91333986",
+        "pubDate": "Wed, 22 Apr 2026 05:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/tiktok-first-marketing-inc.jpg"
+      }
+    },
+    {
+      "title": "Japanese Website Owner Fined $6,300 for Posting Godzilla and Overlord Spoilers",
+      "source": "IGN",
+      "pubDate": "Wed, 22 Apr 2026 08:39:03 +0000",
+      "link": "https://www.ign.com/articles/japanese-website-owner-fined-6300-for-posting-godzilla-and-overlord-spoilers",
+      "dedupRank": 22,
+      "dedupScore": 7.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Japanese Website Owner Fined $6,300 for Posting Godzilla and Overlord Spoilers",
+        "description": "We live in a world where most people don’t think twice about posting detailed spoiler articles or video breakdowns of the latest blockbuster movies or TV shows. However, this month, the Tokyo District Court handed down an 18 month suspended prison se",
+        "link": "https://www.ign.com/articles/japanese-website-owner-fined-6300-for-posting-godzilla-and-overlord-spoilers",
+        "pubDate": "Wed, 22 Apr 2026 08:39:03 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/22/unnamed-8-1776846847425.png"
+      }
+    },
+    {
+      "title": "Becoming Michael: how Jaafar Jackson trained to portray his uncle",
+      "source": "NME",
+      "pubDate": "Wed, 22 Apr 2026 11:22:50 +0000",
+      "link": "https://www.nme.com/features/film-features/jaafar-jackson-michael-interview-biopic-3941401?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=jaafar-jackson-michael-interview-biopic",
+      "dedupRank": 23,
+      "dedupScore": 7.62,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Becoming Michael: how Jaafar Jackson trained to portray his uncle",
+        "description": "It took work, work and more work for Jaafar to embody his uncle The post Becoming Michael: how Jaafar Jackson trained to portray his uncle appeared first on NME .",
+        "link": "https://www.nme.com/features/film-features/jaafar-jackson-michael-interview-biopic-3941401?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=jaafar-jackson-michael-interview-biopic",
+        "pubDate": "Wed, 22 Apr 2026 11:22:50 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Jafaar-Jackson-in-Michael.jpg"
+      }
+    },
+    {
+      "title": "Introducing Jaafar Jackson as Michael Jackson",
+      "source": "NME",
+      "pubDate": "Wed, 22 Apr 2026 11:20:10 +0000",
+      "link": "https://www.nme.com/features/film-features/jaafar-jackson-audition-michael-biopic-dance-lessons-3941414?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=jaafar-jackson-audition-michael-biopic-dance-lessons",
+      "dedupRank": 23,
+      "dedupScore": 7.62,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Becoming Michael: how Jaafar Jackson trained to portray his uncle\" (NME)"
+    },
+    {
+      "title": "Invincible season 4 ending explained and how it sets up season 5 and beyond",
+      "source": "Polygon",
+      "pubDate": "Wed, 22 Apr 2026 11:01:17 GMT",
+      "link": "https://www.polygon.com/lee-pace-interview-thragg-invincible-season-4-finale/",
+      "dedupRank": 24,
+      "dedupScore": 7.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Invincible season 4 ending explained and how it sets up season 5 and beyond",
+        "description": "The actor explains the character's goals, his relationship with Mark, and what he's like to see in future seasons.",
+        "link": "https://www.polygon.com/lee-pace-interview-thragg-invincible-season-4-finale/",
+        "pubDate": "Wed, 22 Apr 2026 11:01:17 GMT",
+        "source": "Polygon",
+        "imageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/screenshot-2026-04-21-at-11-05-27-am.png"
+      }
+    },
+    {
+      "title": "Invincible Season 4 ending explained: What is Thragg’s disturbing plan for Earth?",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 10:30:39 GMT",
+      "link": "https://www.dexerto.com/tv-movies/invincible-season-4-ending-explained-what-is-thraggs-disturbing-plan-for-earth-3355010/",
+      "dedupRank": 24,
+      "dedupScore": 7.59,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Invincible season 4 ending explained and how it sets up season 5 and beyond\" (Polygon)"
+    },
+    {
+      "title": "Trump&#8217;s Long, Strange Relationship With Faith",
+      "source": "Rolling Stone",
+      "pubDate": "Wed, 22 Apr 2026 12:30:00 +0000",
+      "link": "https://www.rollingstone.com/politics/political-commentary/trump-long-strange-relationship-faith-1235551579/",
+      "dedupRank": 25,
+      "dedupScore": 5.93,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Trump&#8217;s Long, Strange Relationship With Faith",
+        "description": "What the president learned from a prosperity gospel minister decades ago may help explain his attacks against the pope",
+        "link": "https://www.rollingstone.com/politics/political-commentary/trump-long-strange-relationship-faith-1235551579/",
+        "pubDate": "Wed, 22 Apr 2026 12:30:00 +0000",
+        "source": "Rolling Stone"
+      }
+    },
+    {
+      "title": "Al Gore Isn’t Worried Trump Is Killing the Climate",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Wed, 22 Apr 2026 12:30:00 +0000",
+      "link": "https://www.hollywoodreporter.com/movies/movie-features/al-gore-interview-climate-change-trump-inconvenient-truth-1236565723/",
+      "dedupRank": 26,
+      "dedupScore": 5.93,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Al Gore Isn’t Worried Trump Is Killing the Climate",
+        "description": "“The fact that public opinion is so strongly on the side of doing something makes it inevitable that we will solve the climate crisis,” says the former VP and ‘An Inconvenient Truth’ prophet, two decades after the documentary‘s release.",
+        "link": "https://www.hollywoodreporter.com/movies/movie-features/al-gore-interview-climate-change-trump-inconvenient-truth-1236565723/",
+        "pubDate": "Wed, 22 Apr 2026 12:30:00 +0000",
+        "source": "The Hollywood Reporter"
+      }
+    },
+    {
+      "title": "The clues that made Jesse Solomon &#8216;suspicious&#8217; of &#8216;Summer House&#8217; co-stars Amanda Batula, West Wilson",
+      "source": "Page Six",
+      "pubDate": "Wed, 22 Apr 2026 08:22:46 -0400",
+      "link": "https://pagesix.com/2026/04/22/celebrity-news/the-clues-that-made-jesse-solomon-suspicious-of-summer-house-co-stars-amanda-batula-west-wilson/",
+      "dedupRank": 27,
+      "dedupScore": 5.92,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The clues that made Jesse Solomon &#8216;suspicious&#8217; of &#8216;Summer House&#8217; co-stars Amanda Batula, West Wilson",
+        "description": "The \"Summer House\" star revealed to Andy Cohen the clues he noticed when he became \"suspicious\" that his castmates were more than friends.",
+        "link": "https://pagesix.com/2026/04/22/celebrity-news/the-clues-that-made-jesse-solomon-suspicious-of-summer-house-co-stars-amanda-batula-west-wilson/",
+        "pubDate": "Wed, 22 Apr 2026 08:22:46 -0400",
+        "source": "Page Six",
+        "imageUrl": "https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F04%2Fwww-youtube-com-watch-v-126154801.jpg"
+      }
+    },
+    {
+      "title": "Ne-Yo&#8217;s Nashville Experience Wasn&#8217;t What He Was Warned It Would Be",
+      "source": "Rolling Stone",
+      "pubDate": "Wed, 22 Apr 2026 12:22:02 +0000",
+      "link": "https://www.rollingstone.com/music/music-features/ne-yo-goes-country-nashville-experience-broadway-1235551641/",
+      "dedupRank": 28,
+      "dedupScore": 5.92,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Ne-Yo&#8217;s Nashville Experience Wasn&#8217;t What He Was Warned It Would Be",
+        "description": "The R&#38;B great is making inroads into country music with a new project: \"I’m waiting to meet whoever the hell it is that’s going to be the bane of my Nashville existence\"",
+        "link": "https://www.rollingstone.com/music/music-features/ne-yo-goes-country-nashville-experience-broadway-1235551641/",
+        "pubDate": "Wed, 22 Apr 2026 12:22:02 +0000",
+        "source": "Rolling Stone"
+      }
+    },
+    {
+      "title": "Anker's 'Thus' chip brings AI to its headphones and other products",
+      "source": "Engadget",
+      "pubDate": "Wed, 22 Apr 2026 12:21:42 +0000",
+      "link": "",
+      "dedupRank": 29,
+      "dedupScore": 5.92,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Anker's 'Thus' chip brings AI to its headphones and other products",
+        "description": "Anker has announced its own chip that can give its small, wearable products AI capabilities that run locally on device. The company is planning to debut the chip called “Thus” on a new model of headphones, slated to be unveiled at its Anker Day event",
+        "link": "",
+        "pubDate": "Wed, 22 Apr 2026 12:21:42 +0000",
+        "source": "Engadget",
+        "imageUrl": "https://o.aolcdn.com/images/dims?image_uri=https%3A%2F%2Fd29szjachogqwa.cloudfront.net%2Fimages%2Fuser-uploaded%2Fanker-thus_1597.jpg&amp;resize=1400%2C831&amp;client=19f2b5e49a271b2bde77&amp;signature=8a1fe6ec078a2a09391171a84c704edb757887b7"
+      }
+    },
+    {
+      "title": "Can Fireproofing Be Climate-Friendly?",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Wed, 22 Apr 2026 12:15:00 +0000",
+      "link": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/los-angeles-fires-designers-helping-homeowners-1236565785/",
+      "dedupRank": 30,
+      "dedupScore": 5.92,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Can Fireproofing Be Climate-Friendly?",
+        "description": "Following the devastating wildfires of 2025, L.A.’s elite design community is helping homeowners navigate the tricky intersection between ecological concerns and blaze resilience.",
+        "link": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/los-angeles-fires-designers-helping-homeowners-1236565785/",
+        "pubDate": "Wed, 22 Apr 2026 12:15:00 +0000",
+        "source": "The Hollywood Reporter"
+      }
+    },
+    {
+      "title": "Celebrity deaths 2026: Actors, singers and stars we lost this year",
+      "source": "Page Six",
+      "pubDate": "Wed, 22 Apr 2026 08:15:00 -0400",
+      "link": "https://pagesix.com/celebrity-news/celebrity-deaths-2026-actors-singers-and-stars-we-lost-this-year/",
+      "dedupRank": 31,
+      "dedupScore": 5.92,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Celebrity deaths 2026: Actors, singers and stars we lost this year",
+        "description": "Kim Vo, Yeison Jiménez, T.K. Carter, Roger Ewing and more celebrities died in 2026.",
+        "link": "https://pagesix.com/celebrity-news/celebrity-deaths-2026-actors-singers-and-stars-we-lost-this-year/",
+        "pubDate": "Wed, 22 Apr 2026 08:15:00 -0400",
+        "source": "Page Six",
+        "imageUrl": "https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F03%2Frock-musician-dave-mason-performs-126156154_2f46d5.jpg"
+      }
+    },
+    {
+      "title": "Noah Kahan Is a Rock Star Now, and a Good Dude Too, on &#8216;The Great Divide&#8217;",
+      "source": "Rolling Stone",
+      "pubDate": "Wed, 22 Apr 2026 12:14:20 +0000",
+      "link": "https://www.rollingstone.com/music/music-album-reviews/noah-kahan-the-great-divide-review-1235550894/",
+      "dedupRank": 32,
+      "dedupScore": 5.92,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Noah Kahan Is a Rock Star Now, and a Good Dude Too, on &#8216;The Great Divide&#8217;",
+        "description": "The singer-songwriter's impressive new album is about connections we lose and the fight to keep fraying friendships together",
+        "link": "https://www.rollingstone.com/music/music-album-reviews/noah-kahan-the-great-divide-review-1235550894/",
+        "pubDate": "Wed, 22 Apr 2026 12:14:20 +0000",
+        "source": "Rolling Stone"
+      }
+    },
+    {
+      "title": "Cannes Critics’ Week Jury Unveiled: Payal Kapadia Set As President",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 12:12:53 +0000",
+      "link": "https://deadline.com/2026/04/cannes-critics-week-jury-payal-kapadia-president-1236867866/",
+      "dedupRank": 33,
+      "dedupScore": 5.91,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Cannes Critics’ Week Jury Unveiled: Payal Kapadia Set As President",
+        "description": "Indian filmmaker Payal Kapadia has been announced as the president of the jury for the 65th edition of Cannes Critics’ Week. She will be joined by Quebecois actor Théodore Pellerin, singer-songwriter Oklou, Ghanaian-British producer Ama Ampadu, and j",
+        "link": "https://deadline.com/2026/04/cannes-critics-week-jury-payal-kapadia-president-1236867866/",
+        "pubDate": "Wed, 22 Apr 2026 12:12:53 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/04/MixCollage-22-Apr-2026-12-56-PM-8525.jpg"
+      }
+    },
+    {
+      "title": "Buffed Warzone SMG with unreal TTK is new close-range meta",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 12:10:52 GMT",
+      "link": "https://www.dexerto.com/call-of-duty/buffed-warzone-smg-with-unreal-ttk-is-new-close-range-meta-3355179/",
+      "dedupRank": 34,
+      "dedupScore": 5.91,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Buffed Warzone SMG with unreal TTK is new close-range meta",
+        "description": "Warzone’s newest SMG has shot to the top of the meta after receiving a substantial buff, making it comfortably the best close-range gun in the game.",
+        "link": "https://www.dexerto.com/call-of-duty/buffed-warzone-smg-with-unreal-ttk-is-new-close-range-meta-3355179/",
+        "pubDate": "Wed, 22 Apr 2026 12:10:52 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/Buffed-Warzone-SMG-with-unreal-TTK-is-new-close-range-meta.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "The Download: introducing the 10 Things That Matter in AI Right Now",
+      "source": "MIT Technology Review",
+      "pubDate": "Wed, 22 Apr 2026 12:10:00 +0000",
+      "link": "https://www.technologyreview.com/2026/04/22/1136310/the-download-10-things-that-matter-in-ai-right-now/",
+      "dedupRank": 35,
+      "dedupScore": 5.91,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Download: introducing the 10 Things That Matter in AI Right Now",
+        "description": "This is today&#8217;s edition of The Download, our weekday newsletter that provides a daily dose of what&#8217;s going on in the world of technology. Introducing: 10 Things That Matter in AI Right Now What actually matters in AI right now? It’s getti",
+        "link": "https://www.technologyreview.com/2026/04/22/1136310/the-download-10-things-that-matter-in-ai-right-now/",
+        "pubDate": "Wed, 22 Apr 2026 12:10:00 +0000",
+        "source": "MIT Technology Review",
+        "imageUrl": "https://wp.technologyreview.com/wp-content/uploads/2026/04/09_20_JFM_MIT_TheDownload.webp?w=2127"
+      }
+    },
+    {
+      "title": "$8.5 billion consulting firm Grant Thornton is tying US partner bonuses to AI use",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 12:09:06 +0000",
+      "link": "https://www.businessinsider.com/grant-thornton-consultancy-tom-puthiyamadam-performance-reviews-annual-bonuses-ai-2026-4",
+      "dedupRank": 36,
+      "dedupScore": 5.91,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "$8.5 billion consulting firm Grant Thornton is tying US partner bonuses to AI use",
+        "description": "If you&#39;re a senior US leader at Grant Thornton, you might miss out on part of your bonus if you&#39;re not using AI, advisory boss Tom Puthiyamadam says.",
+        "link": "https://www.businessinsider.com/grant-thornton-consultancy-tom-puthiyamadam-performance-reviews-annual-bonuses-ai-2026-4",
+        "pubDate": "Wed, 22 Apr 2026 12:09:06 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e68c73a98bc8fdc096c9bd?format=jpeg"
+      }
+    },
+    {
+      "title": "Shawna Thomas To Join MS NOW As Political Director",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 12:05:49 +0000",
+      "link": "https://deadline.com/2026/04/shawna-thomas-ms-now-as-political-director-1236867847/",
+      "dedupRank": 37,
+      "dedupScore": 5.91,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Shawna Thomas To Join MS NOW As Political Director",
+        "description": "Shawna Thomas is joining MS NOW as political director after her recent departure from CBS News, where she was executive producer of CBS Mornings. Thomas will lead the network&#8217;s political unit and direct coverage of campaigns and elections, and ",
+        "link": "https://deadline.com/2026/04/shawna-thomas-ms-now-as-political-director-1236867847/",
+        "pubDate": "Wed, 22 Apr 2026 12:05:49 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/04/Shawna-Thomas-e1776863805234.jpg"
+      }
+    },
+    {
+      "title": "Daredevil season 2 episode 6 finally reveals what Jessica Jones (and Luke Cage) have been up to since 2019",
+      "source": "Polygon",
+      "pubDate": "Wed, 22 Apr 2026 12:02:19 GMT",
+      "link": "https://www.polygon.com/jessica-jones-daredevil-born-again-recap/",
+      "dedupRank": 38,
+      "dedupScore": 5.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Daredevil season 2 episode 6 finally reveals what Jessica Jones (and Luke Cage) have been up to since 2019",
+        "description": "Jessica Jones returns to Marvel in Daredevil: Born Again and she's got some surprising updates.",
+        "link": "https://www.polygon.com/jessica-jones-daredevil-born-again-recap/",
+        "pubDate": "Wed, 22 Apr 2026 12:02:19 GMT",
+        "source": "Polygon",
+        "imageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/03/otk-201-01280_r.jpg"
+      }
+    },
+    {
+      "title": "Google&#39;s new chips are a shot at Nvidia — and a big hint at where AI goes next",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 12:01:01 +0000",
+      "link": "https://www.businessinsider.com/google-new-ai-chips-tpu-inference-training-nvidia-2026-4",
+      "dedupRank": 39,
+      "dedupScore": 5.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Google&#39;s new chips are a shot at Nvidia — and a big hint at where AI goes next",
+        "description": "Google is for the first time splitting its AI chips into two lines, a sign that a new AI battleground is emerging.",
+        "link": "https://www.businessinsider.com/google-new-ai-chips-tpu-inference-training-nvidia-2026-4",
+        "pubDate": "Wed, 22 Apr 2026 12:01:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e7d2cb3fecbb42897a2548?format=jpeg"
+      }
+    },
+    {
+      "title": "Nas: What Miles Davis Means to Me",
+      "source": "Rolling Stone",
+      "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+      "link": "https://www.rollingstone.com/music/music-features/nas-miles-davis-book-memoir-foreword-1235547542/",
+      "dedupRank": 40,
+      "dedupScore": 5.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Nas: What Miles Davis Means to Me",
+        "description": "Read the hip-hop artist’s reflections on how the jazz icon gave him a new understanding of music in a new foreword to the recently reissued Miles: The Autobiography",
+        "link": "https://www.rollingstone.com/music/music-features/nas-miles-davis-book-memoir-foreword-1235547542/",
+        "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+        "source": "Rolling Stone"
+      }
+    },
+    {
+      "title": "Behind the unraveling of Dan Crenshaw",
+      "source": "The Verge",
+      "pubDate": "2026-04-22T08:00:00-04:00",
+      "link": "https://www.theverge.com/features/916289/dan-crenshaw-ouster-trolls-online",
+      "dedupRank": 41,
+      "dedupScore": 5.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Behind the unraveling of Dan Crenshaw",
+        "description": "In 2019, a 36-year-old Rep. Dan Crenshaw (R-TX), newly elected to Congress, was photographed for the inaugural Time 100 Next List, wearing a dashing eye patch and looking upwards with hope. A Harvard-educated Navy SEAL who'd lost an eye while fightin",
+        "link": "https://www.theverge.com/features/916289/dan-crenshaw-ouster-trolls-online",
+        "pubDate": "2026-04-22T08:00:00-04:00",
+        "source": "The Verge",
+        "imageUrl": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/268424_How_a_GOP_superstar_destroyed_his_political_career_by_fighting_the_commenters_too_much_CVirginia.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
+      }
+    },
+    {
+      "title": "The most interesting startups showcased at Google Cloud Next 2026",
+      "source": "TechCrunch",
+      "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+      "link": "https://techcrunch.com/2026/04/22/the-most-interesting-startups-showcased-at-google-cloud-next-2026/",
+      "dedupRank": 42,
+      "dedupScore": 5.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The most interesting startups showcased at Google Cloud Next 2026",
+        "description": "Google wants AI startups on its cloud and has showcased a long list of them at its annual conference.",
+        "link": "https://techcrunch.com/2026/04/22/the-most-interesting-startups-showcased-at-google-cloud-next-2026/",
+        "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "Duolingo is now giving free users access to advanced learning content",
+      "source": "TechCrunch",
+      "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+      "link": "https://techcrunch.com/2026/04/22/duolingo-is-now-giving-free-users-access-to-advanced-learning-content-that-was-previously-reserved-for-paid-subs/",
+      "dedupRank": 43,
+      "dedupScore": 5.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Duolingo is now giving free users access to advanced learning content",
+        "description": "Duolingo is opening up its advanced language learning content offering to free users, allowing them to acquire skills that were previously reserved to paid subscribers.",
+        "link": "https://techcrunch.com/2026/04/22/duolingo-is-now-giving-free-users-access-to-advanced-learning-content-that-was-previously-reserved-for-paid-subs/",
+        "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "Google Maps is about to get a big dose of AI",
+      "source": "TechCrunch",
+      "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+      "link": "https://techcrunch.com/2026/04/22/google-maps-is-about-to-get-a-big-dose-of-ai/",
+      "dedupRank": 44,
+      "dedupScore": 5.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Google Maps is about to get a big dose of AI",
+        "description": "Generative AI is being infused into Google's popular feature within Maps.",
+        "link": "https://techcrunch.com/2026/04/22/google-maps-is-about-to-get-a-big-dose-of-ai/",
+        "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "Exclusive: Google deepens Thinking Machines Lab ties with new multi-billion-dollar deal",
+      "source": "TechCrunch",
+      "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+      "link": "https://techcrunch.com/2026/04/22/exclusive-google-deepens-thinking-machines-lab-ties-with-new-multi-billion-dollar-deal/",
+      "dedupRank": 45,
+      "dedupScore": 5.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Exclusive: Google deepens Thinking Machines Lab ties with new multi-billion-dollar deal",
+        "description": "Mira Murati's Thinking Machines Lab has signed a multi-billion-dollar deal with Google Cloud for AI infrastructure powered by Nvidia's latest GB300 chips, TechCrunch has exclusively learned.",
+        "link": "https://techcrunch.com/2026/04/22/exclusive-google-deepens-thinking-machines-lab-ties-with-new-multi-billion-dollar-deal/",
+        "pubDate": "Wed, 22 Apr 2026 12:00:00 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "When Congress Pulled the Plug on Public Radio, A Billionaire Wrote an $80 Million Check",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 08:00:00 -0400",
+      "link": "https://www.inc.com/micah-solomon/npr-was-facing-a-crisis-then-two-billionaires-stepped-in-with-113-million/91333135",
+      "dedupRank": 46,
+      "dedupScore": 5.9,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Audrey Diwan Teases &#8216;The Marriage Portrait&#8217; &#038; Talks Adapting Novels For Screen: &#8220;You Have To Define That Secret Place That Hurts But Is Fascinating&#8221; &#8212; Storyhouse",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 11:59:07 +0000",
+      "link": "https://deadline.com/2026/04/audrey-diwan-the-marriage-portrait-storyhouse-happening-1236866947/",
+      "dedupRank": 47,
+      "dedupScore": 5.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Audrey Diwan Teases &#8216;The Marriage Portrait&#8217; &#038; Talks Adapting Novels For Screen: &#8220;You Have To Define That Secret Place That Hurts But Is Fascinating&#8221; &#8212; Storyhouse",
+        "description": "Audrey Diwan is no stranger to adapting books for the big screen with her films Happening and Emmanuelle both originating as novels. The French filmmaker touched down at Dublin’s Storyhouse screenwriting festival, where she discussed her approach to ",
+        "link": "https://deadline.com/2026/04/audrey-diwan-the-marriage-portrait-storyhouse-happening-1236866947/",
+        "pubDate": "Wed, 22 Apr 2026 11:59:07 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/04/MixCollage-22-Apr-2026-12-51-PM-4295.jpg"
+      }
+    },
+    {
+      "title": "Josh Groban Gets Engaged to Theater Actress Natalie McQueen at Disneyland: &#8216;MY BEST FRIEND SAID&#160;YES!!!&#8217;",
+      "source": "Billboard",
+      "pubDate": "Wed, 22 Apr 2026 11:53:15 +0000",
+      "link": "https://www.billboard.com/music/pop/josh-groban-gets-engaged-natalie-mcqueen-disneyland-1236228627/",
+      "dedupRank": 48,
+      "dedupScore": 5.89,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Josh Groban Gets Engaged to Theater Actress Natalie McQueen at Disneyland: &#8216;MY BEST FRIEND SAID&#160;YES!!!&#8217;",
+        "description": "The pair have been dating for more than three years.",
+        "link": "https://www.billboard.com/music/pop/josh-groban-gets-engaged-natalie-mcqueen-disneyland-1236228627/",
+        "pubDate": "Wed, 22 Apr 2026 11:53:15 +0000",
+        "source": "Billboard",
+        "imageUrl": "https://i.imgur.com/2HpFicp.png"
+      }
+    },
+    {
+      "title": "Mark Ruffalo Just Dropped Another Big Marvel Spoiler",
+      "source": "IGN",
+      "pubDate": "Wed, 22 Apr 2026 11:50:04 +0000",
+      "link": "https://www.ign.com/articles/mark-ruffalo-just-dropped-another-big-marvel-spoiler",
+      "dedupRank": 49,
+      "dedupScore": 5.89,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Mark Ruffalo Just Dropped Another Big Marvel Spoiler",
+        "description": "Marvel spoiler culprit Mark Ruffalo appears to have leaked yet more information about an upcoming movie — this time, seemingly, for Spider-Man: Brand New Day.",
+        "link": "https://www.ign.com/articles/mark-ruffalo-just-dropped-another-big-marvel-spoiler",
+        "pubDate": "Wed, 22 Apr 2026 11:50:04 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/22/gettyimages-2259754137-1776858131349.jpg"
+      }
+    },
+    {
+      "title": "YouTube Inks Deal Making SiriusXM Exclusive Audio Advertising Rep in U.S.",
+      "source": "Variety",
+      "pubDate": "Wed, 22 Apr 2026 11:46:13 +0000",
+      "link": "https://variety.com/2026/digital/news/youtube-siriusxm-audio-advertising-us-exclusive-1236727709/",
+      "dedupRank": 50,
+      "dedupScore": 5.89,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "YouTube Inks Deal Making SiriusXM Exclusive Audio Advertising Rep in U.S.",
+        "description": "Google and YouTube sell billions in advertising every month. But now they&#8217;re partnering with SiriusXM to handle a specific bucket of inventory: audio ads that run against YouTube content like podcasts, talk shows and music. SiriusXM struck a de",
+        "link": "https://variety.com/2026/digital/news/youtube-siriusxm-audio-advertising-us-exclusive-1236727709/",
+        "pubDate": "Wed, 22 Apr 2026 11:46:13 +0000",
+        "source": "Variety",
+        "imageUrl": "https://variety.com/wp-content/uploads/2023/11/SiriusXM-Next-Generation-App.jpg"
+      }
+    },
+    {
+      "title": "Duolingo dials back its &#39;unhinged&#39; marketing",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 11:45:01 +0000",
+      "link": "https://www.businessinsider.com/duolingo-resets-unhinged-marketing-tiktok-strategy-2026-4",
+      "dedupRank": 51,
+      "dedupScore": 5.88,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Duolingo dials back its &#39;unhinged&#39; marketing",
+        "description": "Duolingo CMO Manu Orssaud said he&#39;s aiming for fewer \"butt jokes\" and more wholesome content. The learning app is also rethinking its TikTok strategy.",
+        "link": "https://www.businessinsider.com/duolingo-resets-unhinged-marketing-tiktok-strategy-2026-4",
+        "pubDate": "Wed, 22 Apr 2026 11:45:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e7dac73fecbb42897a25b4?format=jpeg"
+      }
+    },
+    {
+      "title": "Apple&#39;s incoming CEO faces a fresh set of marketing challenges",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 11:40:01 +0000",
+      "link": "https://www.businessinsider.com/apples-incoming-ceo-faces-a-fresh-set-of-marketing-challenges-2026-4",
+      "dedupRank": 52,
+      "dedupScore": 5.88,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Apple&#39;s incoming CEO faces a fresh set of marketing challenges",
+        "description": "Apple&#39;s John Ternus will inherit a brand in fine shape from Tim Cook. The dilemma: Is Apple at a peak?",
+        "link": "https://www.businessinsider.com/apples-incoming-ceo-faces-a-fresh-set-of-marketing-challenges-2026-4",
+        "pubDate": "Wed, 22 Apr 2026 11:40:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e78d6f367066d7c296f184?format=jpeg"
+      }
+    },
+    {
+      "title": "Marie Osmond remembers &#8216;incredible&#8217; brother Alan after his death at 76: &#8216;Always very protective of me&#8217;",
+      "source": "Page Six",
+      "pubDate": "Wed, 22 Apr 2026 07:36:32 -0400",
+      "link": "https://pagesix.com/2026/04/22/celebrity-news/marie-osmond-remembers-incredible-brother-alan-after-his-death-at-76/",
+      "dedupRank": 53,
+      "dedupScore": 5.88,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Marie Osmond remembers &#8216;incredible&#8217; brother Alan after his death at 76: &#8216;Always very protective of me&#8217;",
+        "description": "Alan, the oldest of the nine Osmond siblings, died on April 20 at the age of 76.",
+        "link": "https://pagesix.com/2026/04/22/celebrity-news/marie-osmond-remembers-incredible-brother-alan-after-his-death-at-76/",
+        "pubDate": "Wed, 22 Apr 2026 07:36:32 -0400",
+        "source": "Page Six",
+        "imageUrl": "https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F04%2Fwww-instagram-com-p-cty30nkuapp-126100482.jpg"
+      }
+    },
+    {
+      "title": "Sands: Artistic Director Ania Trzebiatowska On The Festival’s Milestone Fifth Edition &#038; How The Event Has Cultivated A Dedicated Local Audience",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 11:32:15 +0000",
+      "link": "https://deadline.com/2026/04/sands-ania-trzebiatowska-fifth-edition-1236867808/",
+      "dedupRank": 54,
+      "dedupScore": 5.87,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Sands: Artistic Director Ania Trzebiatowska On The Festival’s Milestone Fifth Edition &#038; How The Event Has Cultivated A Dedicated Local Audience",
+        "description": "The Sands International Film Festival wrapped Sunday evening, concluding the Scottish event’s milestone fifth year on the circuit.&#160; The festival opened on April 17 with a UK preview of John Carney’s latest feature, Power Ballad. Starring Paul Ru",
+        "link": "https://deadline.com/2026/04/sands-ania-trzebiatowska-fifth-edition-1236867808/",
+        "pubDate": "Wed, 22 Apr 2026 11:32:15 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/04/GettyImages-2272015819.jpg"
+      }
+    },
+    {
+      "title": "Labrinth comments further on &#8216;Euphoria&#8217; &#8220;drama&#8221;, refuses to &#8220;reduce&#8221; his music to &#8220;online fodder&#8221;",
+      "source": "NME",
+      "pubDate": "Wed, 22 Apr 2026 11:32:01 +0000",
+      "link": "https://www.nme.com/news/tv/labrinth-comments-further-on-euphoria-drama-refuses-to-reduce-his-music-to-online-fodder-3941812?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=labrinth-comments-further-on-euphoria-drama-refuses-to-reduce-his-music-to-online-fodder",
+      "dedupRank": 55,
+      "dedupScore": 5.87,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Labrinth comments further on &#8216;Euphoria&#8217; &#8220;drama&#8221;, refuses to &#8220;reduce&#8221; his music to &#8220;online fodder&#8221;",
+        "description": "The musician recently hit out at the industry, his record label and the HBO show itself The post Labrinth comments further on &#8216;Euphoria&#8217; &#8220;drama&#8221;, refuses to &#8220;reduce&#8221; his music to &#8220;online fodder&#8221; appeare",
+        "link": "https://www.nme.com/news/tv/labrinth-comments-further-on-euphoria-drama-refuses-to-reduce-his-music-to-online-fodder-3941812?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=labrinth-comments-further-on-euphoria-drama-refuses-to-reduce-his-music-to-online-fodder",
+        "pubDate": "Wed, 22 Apr 2026 11:32:01 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/2026_labrith_getty_2000x1270.jpg"
+      }
+    },
+    {
+      "title": "U.K.&#8217;s Official Charts Company Shares Leadership Update Following CEO’s&#160;Departure",
+      "source": "Billboard",
+      "pubDate": "Wed, 22 Apr 2026 11:31:08 +0000",
+      "link": "https://www.billboard.com/pro/uk-official-charts-company-leadership-martin-talbot-departure/",
+      "dedupRank": 56,
+      "dedupScore": 5.87,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "U.K.&#8217;s Official Charts Company Shares Leadership Update Following CEO’s&#160;Departure",
+        "description": "In March it was announced that Martin Talbot would be stepping down from the role of chief executive.",
+        "link": "https://www.billboard.com/pro/uk-official-charts-company-leadership-martin-talbot-departure/",
+        "pubDate": "Wed, 22 Apr 2026 11:31:08 +0000",
+        "source": "Billboard",
+        "imageUrl": "https://www.billboard.com/wp-content/uploads/2026/03/martin-talbot-1800.jpg?w=237&#038;h=147&#038;crop=1"
+      }
+    },
+    {
+      "title": "Is Cohabitation the Feminist Future?",
+      "source": "The Atlantic",
+      "pubDate": "Wed, 22 Apr 2026 07:30:00 -0400",
+      "link": "https://www.theatlantic.com/books/2026/04/sisters-in-yellow-mieko-kawakami-book-review/686886/?utm_source=feed",
+      "dedupRank": 57,
+      "dedupScore": 5.87,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Is Cohabitation the Feminist Future?",
+        "description": "Stories about women living together are proliferating—and offering alternative visions to the nuclear family.",
+        "link": "https://www.theatlantic.com/books/2026/04/sisters-in-yellow-mieko-kawakami-book-review/686886/?utm_source=feed",
+        "pubDate": "Wed, 22 Apr 2026 07:30:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/zHgIhzlxS23hKPTSnLwUeATsurU=/0x570:4855x3301/media/img/mt/2026/04/2026_04_14_Women_Livving_Together/original.jpg"
+      }
+    },
+    {
+      "title": "Best Chromebooks (2026): Most Are Bad, but These Aren't",
+      "source": "Wired",
+      "pubDate": "Wed, 22 Apr 2026 11:30:00 +0000",
+      "link": "https://www.wired.com/story/best-chromebooks/",
+      "dedupRank": 58,
+      "dedupScore": 5.87,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Best Chromebooks (2026): Most Are Bad, but These Aren't",
+        "description": "Chromebooks have a reputation for being cheap and crappy. But they don't have to be, and these are the Chromebooks that prove it.",
+        "link": "https://www.wired.com/story/best-chromebooks/",
+        "pubDate": "Wed, 22 Apr 2026 11:30:00 +0000",
+        "source": "Wired",
+        "imageUrl": "https://media.wired.com/photos/69e7df555301878a0065581e/master/pass/The-Best-Chromebooks.jpg"
+      }
+    },
+    {
+      "title": "The supporting cast of &#8216;Michael&#8217; – and who they&#8217;re playing",
+      "source": "NME",
+      "pubDate": "Wed, 22 Apr 2026 11:29:05 +0000",
+      "link": "https://www.nme.com/features/film-features/the-supporting-cast-of-michael-and-who-theyre-playing-3941393?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-supporting-cast-of-michael-and-who-theyre-playing",
+      "dedupRank": 59,
+      "dedupScore": 5.87,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The supporting cast of &#8216;Michael&#8217; – and who they&#8217;re playing",
+        "description": "A guide to the most important people in MJ’s life The post The supporting cast of &#8216;Michael&#8217; – and who they&#8217;re playing appeared first on NME .",
+        "link": "https://www.nme.com/features/film-features/the-supporting-cast-of-michael-and-who-theyre-playing-3941393?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-supporting-cast-of-michael-and-who-theyre-playing",
+        "pubDate": "Wed, 22 Apr 2026 11:29:05 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Michael_Bad_Tour.jpg"
+      }
+    },
+    {
+      "title": "The haircare brand keeping my long, dyed hair healthy and happy",
+      "source": "Dazed",
+      "pubDate": "2026-04-22T11:25:00Z",
+      "link": "https://www.dazeddigital.com/beauty/article/70123/1/how-to-look-after-long-dyed-hair-davines-minu-range-review?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=the-haircare-brand-keeping-my-long-dyed-hair-healthy-and-happy",
+      "dedupRank": 60,
+      "dedupScore": 5.86,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The haircare brand keeping my long, dyed hair healthy and happy",
+        "description": "With a newly formulated range that is even more sustainable than before, Davines is a great choice for anyone who wants both nice hair and a healthy planet",
+        "link": "https://www.dazeddigital.com/beauty/article/70123/1/how-to-look-after-long-dyed-hair-davines-minu-range-review?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=the-haircare-brand-keeping-my-long-dyed-hair-healthy-and-happy",
+        "pubDate": "2026-04-22T11:25:00Z",
+        "source": "Dazed",
+        "imageUrl": "https://images-prod.dazeddigital.com/786/azure/dazed-prod/1440/3/1443674.jpeg"
+      }
+    },
+    {
+      "title": "SpaceX&#39;s IPO could be a real problem for Tesla",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 11:19:07 +0000",
+      "link": "https://www.businessinsider.com/spacexs-ipo-could-be-a-real-problem-for-tesla-2026-4",
+      "dedupRank": 61,
+      "dedupScore": 5.86,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "SpaceX&#39;s IPO could be a real problem for Tesla",
+        "description": "Tesla reports earnings today, but investors&#39; eyes might ultimately be on another one of Elon Musk&#39;s prizes.",
+        "link": "https://www.businessinsider.com/spacexs-ipo-could-be-a-real-problem-for-tesla-2026-4",
+        "pubDate": "Wed, 22 Apr 2026 11:19:07 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e7dba0a98bc8fdc096d243?format=jpeg"
+      }
+    },
+    {
+      "title": "Shivendra Singh Dungarpur on Saving India&#8217;s Film Past: &#8216;There&#8217;s Not a Single Moment When I&#8217;m Not Thinking About Cinema&#8217;",
+      "source": "Variety",
+      "pubDate": "Wed, 22 Apr 2026 11:18:54 +0000",
+      "link": "https://variety.com/2026/film/news/shivendra-singh-dungarpur-film-heritage-foundation-las-palmas-1236727536/",
+      "dedupRank": 62,
+      "dedupScore": 5.86,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Shivendra Singh Dungarpur on Saving India&#8217;s Film Past: &#8216;There&#8217;s Not a Single Moment When I&#8217;m Not Thinking About Cinema&#8217;",
+        "description": "Seventy per cent of India&#8217;s films made before 1950 are gone forever. Film Heritage Foundation founder Shivendra Singh Dungarpur is trying to save the rest. Not long ago, a food-delivery worker turned up at Mumbai&#8217;s Regal Cinema on a Thurs",
+        "link": "https://variety.com/2026/film/news/shivendra-singh-dungarpur-film-heritage-foundation-las-palmas-1236727536/",
+        "pubDate": "Wed, 22 Apr 2026 11:18:54 +0000",
+        "source": "Variety",
+        "imageUrl": "https://variety.com/wp-content/uploads/2026/04/Shivendra-Singh-Dungarpur.jpg"
+      }
+    },
+    {
+      "title": "The stunning live performances in &#8216;Michael&#8217;",
+      "source": "NME",
+      "pubDate": "Wed, 22 Apr 2026 11:16:49 +0000",
+      "link": "https://www.nme.com/features/film-features/michael-jackson-live-performances-jaafar-biopic-wembley-beat-it-3941428?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=michael-jackson-live-performances-jaafar-biopic-wembley-beat-it",
+      "dedupRank": 63,
+      "dedupScore": 5.86,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The stunning live performances in &#8216;Michael&#8217;",
+        "description": "From moonwalking at Motown to lighting up Wembley The post The stunning live performances in &#8216;Michael&#8217; appeared first on NME .",
+        "link": "https://www.nme.com/features/film-features/michael-jackson-live-performances-jaafar-biopic-wembley-beat-it-3941428?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=michael-jackson-live-performances-jaafar-biopic-wembley-beat-it",
+        "pubDate": "Wed, 22 Apr 2026 11:16:49 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Jaafar-Jackson-in-Michael-4.jpg"
+      }
+    },
+    {
+      "title": "Our favorite gear at Sea Otter Classic wasn't the bikes—it was the accessories",
+      "source": "Ars Technica",
+      "pubDate": "Wed, 22 Apr 2026 11:15:49 +0000",
+      "link": "https://arstechnica.com/cars/2026/04/our-favorite-gear-at-sea-otter-classic-wasnt-the-bikes-it-was-the-accessories/",
+      "dedupRank": 64,
+      "dedupScore": 5.85,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Our favorite gear at Sea Otter Classic wasn't the bikes—it was the accessories",
+        "description": "MONTEREY COUNTY, Calif.—Bicycles are a strange technology. While there have been some notable modifications from the dandy horse to the penny-farthing , since the advent of the “ safety bicycle ” in the 1880s, the fundamentals of bike design haven't ",
+        "link": "https://arstechnica.com/cars/2026/04/our-favorite-gear-at-sea-otter-classic-wasnt-the-bikes-it-was-the-accessories/",
+        "pubDate": "Wed, 22 Apr 2026 11:15:49 +0000",
+        "source": "Ars Technica",
+        "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2026/04/Allen-SB-05-Lifestyle-Beach-01-1152x648.jpg"
+      }
+    },
+    {
+      "title": "&#8216;Michael&#8217;: ‘Off The Wall’ and the solo stardom that followed",
+      "source": "NME",
+      "pubDate": "Wed, 22 Apr 2026 11:14:43 +0000",
+      "link": "https://www.nme.com/features/film-features/michael-off-the-wall-solo-stardom-3941442?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=michael-off-the-wall-solo-stardom",
+      "dedupRank": 65,
+      "dedupScore": 5.85,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "&#8216;Michael&#8217;: ‘Off The Wall’ and the solo stardom that followed",
+        "description": "How MJ created his own sound The post &#8216;Michael&#8217;: ‘Off The Wall’ and the solo stardom that followed appeared first on NME .",
+        "link": "https://www.nme.com/features/film-features/michael-off-the-wall-solo-stardom-3941442?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=michael-off-the-wall-solo-stardom",
+        "pubDate": "Wed, 22 Apr 2026 11:14:43 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Michael_Jaafar_Jackson_Solo_stardom.jpg"
+      }
+    },
+    {
+      "title": "&#8216;Michael&#8217;: how The Jackson 5 and the early years are portrayed",
+      "source": "NME",
+      "pubDate": "Wed, 22 Apr 2026 11:11:54 +0000",
+      "link": "https://www.nme.com/features/film-features/michael-the-jackson-5-early-years-3941426?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=michael-the-jackson-5-early-years",
+      "dedupRank": 66,
+      "dedupScore": 5.85,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "&#8216;Michael&#8217;: how The Jackson 5 and the early years are portrayed",
+        "description": "From humble beginnings to the big time The post &#8216;Michael&#8217;: how The Jackson 5 and the early years are portrayed appeared first on NME .",
+        "link": "https://www.nme.com/features/film-features/michael-the-jackson-5-early-years-3941426?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=michael-the-jackson-5-early-years",
+        "pubDate": "Wed, 22 Apr 2026 11:11:54 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/04/Michael_Jackson_5.jpg"
+      }
+    },
+    {
+      "title": "Island with 20 residents will give you free home to move there, but there’s a catch",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 11:09:45 GMT",
+      "link": "https://www.dexerto.com/entertainment/island-with-20-residents-will-give-you-free-home-to-move-there-but-theres-a-catch-3355143/",
+      "dedupRank": 67,
+      "dedupScore": 5.85,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Island with 20 residents will give you free home to move there, but there’s a catch",
+        "description": "A Greek Island is giving people a free home and some money so that they can bolster their population of 20 people. However, everyone is asking the same question.",
+        "link": "https://www.dexerto.com/entertainment/island-with-20-residents-will-give-you-free-home-to-move-there-but-theres-a-catch-3355143/",
+        "pubDate": "Wed, 22 Apr 2026 11:09:45 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/Island-with-20-residents-will-give-you-free-home-to-move-there-but-theres-a-catch.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "British Stunt Performers Face Alleged Threats After Joining New Professional Guild",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 11:08:06 +0000",
+      "link": "https://deadline.com/2026/04/british-stunt-performers-face-alleged-threats-new-guild-1236867812/",
+      "dedupRank": 68,
+      "dedupScore": 5.85,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "British Stunt Performers Face Alleged Threats After Joining New Professional Guild",
+        "description": "EXCLUSIVE: A split has emerged in the British stunt community, with some performers allegedly facing bullying and the threat of losing work after joining a new professional body. The Stunt Guild (TSG), which claims to be the oldest stunt organization",
+        "link": "https://deadline.com/2026/04/british-stunt-performers-face-alleged-threats-new-guild-1236867812/",
+        "pubDate": "Wed, 22 Apr 2026 11:08:06 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-22-at-11.56.56-AM-1-e1776855531127.jpeg"
+      }
+    },
+    {
+      "title": "Dinnerly Meal Kit Review (2026): Hearty Meals on a Budget",
+      "source": "Wired",
+      "pubDate": "Wed, 22 Apr 2026 11:07:00 +0000",
+      "link": "https://www.wired.com/review/dinnerly-meal-kit-2026/",
+      "dedupRank": 69,
+      "dedupScore": 5.85,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Dinnerly Meal Kit Review (2026): Hearty Meals on a Budget",
+        "description": "Martha Stewart–endorsed Dinnerly is a budget meal kit that doesn’t feel budget anymore, with interesting, far-flung flavors. Just add a little rice.",
+        "link": "https://www.wired.com/review/dinnerly-meal-kit-2026/",
+        "pubDate": "Wed, 22 Apr 2026 11:07:00 +0000",
+        "source": "Wired",
+        "imageUrl": "https://media.wired.com/photos/69e7f8937793f14ca157546c/master/pass/Review--Dinnerly.jpg"
+      }
+    },
+    {
+      "title": "This Is a Gardening Show review – Zach Galifianakis’ charming new series feels like perfect TV",
+      "source": "The Guardian Culture",
+      "pubDate": "Wed, 22 Apr 2026 11:06:04 GMT",
+      "link": "https://www.theguardian.com/tv-and-radio/2026/apr/22/this-is-a-gardening-show-review-zach-galifianakis-netflix",
+      "dedupRank": 70,
+      "dedupScore": 5.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "This Is a Gardening Show review – Zach Galifianakis’ charming new series feels like perfect TV",
+        "description": "<p>Part lesson, part lark, these 15-minute episodes are a total joy. They have such a deliriously light touch they will make you want to run outside and plunge your hands into the soil</p><p>This might sound like heresy to some, but I can comfortably",
+        "link": "https://www.theguardian.com/tv-and-radio/2026/apr/22/this-is-a-gardening-show-review-zach-galifianakis-netflix",
+        "pubDate": "Wed, 22 Apr 2026 11:06:04 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/f6cd708fb64fc1d63964230b69b32b978eced51c/306_0_2700_2160/master/2700.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=5db632c460dcd590f67e9c966b13d319"
+      }
+    },
+    {
+      "title": "Investors lost billions on Trump’s memecoin. Another gala won’t fix that.",
+      "source": "Ars Technica",
+      "pubDate": "Wed, 22 Apr 2026 11:00:02 +0000",
+      "link": "https://arstechnica.com/tech-policy/2026/04/investors-lost-billions-on-trumps-memecoin-another-gala-wont-fix-that/",
+      "dedupRank": 71,
+      "dedupScore": 5.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Investors lost billions on Trump’s memecoin. Another gala won’t fix that.",
+        "description": "The next Donald Trump memecoin event could very well be the last. If Democrats retake control of Congress this fall, they may succeed in quickly passing legislation banning the president and his family from profiting from the shady token that has dee",
+        "link": "https://arstechnica.com/tech-policy/2026/04/investors-lost-billions-on-trumps-memecoin-another-gala-wont-fix-that/",
+        "pubDate": "Wed, 22 Apr 2026 11:00:02 +0000",
+        "source": "Ars Technica",
+        "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2026/03/trump-meme-coin-1152x648.jpg"
+      }
+    },
+    {
+      "title": "WrestleMania 42 With John Cena, Liv Morgan, Shawn Michaels &#038; More &#124; All&#160;Access",
+      "source": "Billboard",
+      "pubDate": "Wed, 22 Apr 2026 11:00:00 +0000",
+      "link": "https://www.billboard.com/video/wrestlemania-42-john-cena-ishowspeed-liv-morgan-shawn-michaels/",
+      "dedupRank": 72,
+      "dedupScore": 5.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "WrestleMania 42 With John Cena, Liv Morgan, Shawn Michaels &#038; More &#124; All&#160;Access",
+        "description": "Billboard News caught up with wrestlers and fans at WrestleMania 42. We asked what they thought was the best wrestling entrance theme of all time. From interviews with John Cena to talking with Liv Morgan about her new music video for “Trouble,” keep",
+        "link": "https://www.billboard.com/video/wrestlemania-42-john-cena-ishowspeed-liv-morgan-shawn-michaels/",
+        "pubDate": "Wed, 22 Apr 2026 11:00:00 +0000",
+        "source": "Billboard"
+      }
+    },
+    {
+      "title": "How Democrats Can Lose Michigan, Again",
+      "source": "The Atlantic",
+      "pubDate": "Wed, 22 Apr 2026 07:00:00 -0400",
+      "link": "https://www.theatlantic.com/politics/2026/04/abdul-el-sayed-michigan-race/686882/?utm_source=feed",
+      "dedupRank": 73,
+      "dedupScore": 5.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "How Democrats Can Lose Michigan, Again",
+        "description": "What Abdul El-Sayed doesn’t get about Trump",
+        "link": "https://www.theatlantic.com/politics/2026/04/abdul-el-sayed-michigan-race/686882/?utm_source=feed",
+        "pubDate": "Wed, 22 Apr 2026 07:00:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/HGZ_nac7dF8dKKwQbWFUOsV-hhQ=/media/img/mt/2026/04/2026_04_21_El_Sayed/original.jpg"
+      }
+    },
+    {
+      "title": "A ‘Barbaric’ Problem in American Hospitals Is Only Getting Bigger",
+      "source": "The Atlantic",
+      "pubDate": "Wed, 22 Apr 2026 07:00:00 -0400",
+      "link": "https://www.theatlantic.com/health/2026/04/emergency-department-boarding-crisis/686765/?utm_source=feed",
+      "dedupRank": 74,
+      "dedupScore": 5.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A ‘Barbaric’ Problem in American Hospitals Is Only Getting Bigger",
+        "description": "Patients are getting stuck in the emergency department for days while waiting for a spot in an inpatient ward.",
+        "link": "https://www.theatlantic.com/health/2026/04/emergency-department-boarding-crisis/686765/?utm_source=feed",
+        "pubDate": "Wed, 22 Apr 2026 07:00:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/NVtsMRP1i_3_p7Q3OpIPN-WlBzo=/0x745:2160x1960/media/img/mt/2026/04/2026_04_10_Rosenthal_ED_boarding_FinalIllustration_Isabel_Seliger/original.jpg"
+      }
+    },
+    {
+      "title": "Why U.S. Employers Are Putting Their Health Insurance Plans Up for Bid",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 07:00:00 -0400",
+      "link": "https://www.inc.com/bruce-crumley/why-u-s-employers-are-putting-their-health-insurance-plans-up-for-bid/91333845",
+      "dedupRank": 75,
+      "dedupScore": 5.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Why U.S. Employers Are Putting Their Health Insurance Plans Up for Bid",
+        "description": "Soaring premiums and new transparency rules are pushing companies to seek cheaper, nontraditional health insurers and pharmacy benefit managers.",
+        "link": "https://www.inc.com/bruce-crumley/why-u-s-employers-are-putting-their-health-insurance-plans-up-for-bid/91333845",
+        "pubDate": "Wed, 22 Apr 2026 07:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/rising-healthcare-costs-inc-1319970985.jpg"
+      }
+    },
+    {
+      "title": "What Applebee’s, IHOP, and Formula 1 Get Right About Branding",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 07:00:00 -0400",
+      "link": "https://www.inc.com/peter-economy/when-brand-recognition-isnt-enough-to-win-loyalty/91333090",
+      "dedupRank": 76,
+      "dedupScore": 5.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "What Applebee’s, IHOP, and Formula 1 Get Right About Branding",
+        "description": "Recognition is nice. Preference is profitable.",
+        "link": "https://www.inc.com/peter-economy/when-brand-recognition-isnt-enough-to-win-loyalty/91333090",
+        "pubDate": "Wed, 22 Apr 2026 07:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/04/company-branding-inc.jpg"
+      }
+    },
+    {
+      "title": "Safety fears could slow China's robotaxi rollout",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 10:59:49 +0000",
+      "link": "https://www.semafor.com/article/04/22/2026/safety-fears-could-slow-chinas-robotaxi-rollout",
+      "dedupRank": 77,
+      "dedupScore": 5.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Safety fears could slow China's robotaxi rollout",
+        "description": "Goldman Sachs predicted that China will have almost 15,000 robotaxis by the end of the year, but consumers are increasingly wary.",
+        "link": "https://www.semafor.com/article/04/22/2026/safety-fears-could-slow-chinas-robotaxi-rollout",
+        "pubDate": "Wed, 22 Apr 2026 10:59:49 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/d26d39791d956743223ac2eb1eb91c4b0e18ac33-6000x4000.jpg"
+      }
+    },
+    {
+      "title": "European carmakers lose premium brand status in China",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 10:58:04 +0000",
+      "link": "https://www.semafor.com/article/04/22/2026/european-carmakers-lose-premium-brand-status-in-china",
+      "dedupRank": 78,
+      "dedupScore": 5.84,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "European carmakers lose premium brand status in China",
+        "description": "Chinese manufacturers have a leg up in terms of technology, and experts say European rivals are too far behind to catch up.",
+        "link": "https://www.semafor.com/article/04/22/2026/european-carmakers-lose-premium-brand-status-in-china",
+        "pubDate": "Wed, 22 Apr 2026 10:58:04 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/39af45f1e58a512ef324364bef9871728dd1b1af-5824x3883.jpg"
+      }
+    },
+    {
+      "title": "Gulf trade will be permanently reshaped",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 10:54:09 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/gulf-trade-will-be-permanently-reshaped",
+      "dedupRank": 79,
+      "dedupScore": 5.83,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Gulf trade will be permanently reshaped",
+        "description": "Iran’s closure of the Strait of Hormuz has demonstrated the reality of a long-threatened nightmare scenario.",
+        "link": "https://www.semafor.com/article/04/21/2026/gulf-trade-will-be-permanently-reshaped",
+        "pubDate": "Wed, 22 Apr 2026 10:54:09 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/f6b5b33efaa402364d9eca0eb2a32af5dd7fe68a-3594x2020.jpg"
+      }
+    },
+    {
+      "title": "Impact of rising fuel costs expands in real economy",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 10:53:37 +0000",
+      "link": "https://www.semafor.com/article/04/22/2026/impact-of-rising-fuel-costs-expand-in-real-economy-to-fuel-costs-plastics-and-condoms",
+      "dedupRank": 80,
+      "dedupScore": 5.83,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Impact of rising fuel costs expands in real economy",
+        "description": "European jet fuel prices have roughly doubled, and the world’s largest condom maker said it would also raise prices.",
+        "link": "https://www.semafor.com/article/04/22/2026/impact-of-rising-fuel-costs-expand-in-real-economy-to-fuel-costs-plastics-and-condoms",
+        "pubDate": "Wed, 22 Apr 2026 10:53:37 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/1fe7747d8e790aae96d6bb7c68d3e91e9795e607-2758x1850.jpg"
+      }
+    },
+    {
+      "title": "I worked 12-hour shifts on fishing boats. I used the money I made to start a business that&#39;s now worth millions.",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 10:51:01 +0000",
+      "link": "https://www.businessinsider.com/saved-60000-opened-restaurant-immigrant-success-story-2026-4",
+      "dedupRank": 81,
+      "dedupScore": 5.83,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I worked 12-hour shifts on fishing boats. I used the money I made to start a business that&#39;s now worth millions.",
+        "description": "Jack Ng immigrated to the US at 12, worked as a fisherman, and used his savings to build a multimillion-dollar restaurant business.",
+        "link": "https://www.businessinsider.com/saved-60000-opened-restaurant-immigrant-success-story-2026-4",
+        "pubDate": "Wed, 22 Apr 2026 10:51:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69d4066ec02a678bd7e4860e?format=jpeg"
+      }
+    },
+    {
+      "title": "Elon Musk says government checks for all wouldn&#39;t spike inflation. Economist Steve Hanke says that&#39;s not guaranteed.",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 10:51:00 +0000",
+      "link": "https://www.businessinsider.com/elon-musk-steve-hanke-universal-high-income-inflation-ai-unemployment-2026-4",
+      "dedupRank": 82,
+      "dedupScore": 5.83,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Elon Musk says government checks for all wouldn&#39;t spike inflation. Economist Steve Hanke says that&#39;s not guaranteed.",
+        "description": "Elon Musk says government checks for all could offset AI job losses without causing inflation. \"Money Doctor\" Steve Hanke said that might not be true.",
+        "link": "https://www.businessinsider.com/elon-musk-steve-hanke-universal-high-income-inflation-ai-unemployment-2026-4",
+        "pubDate": "Wed, 22 Apr 2026 10:51:00 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e7871b3fecbb42897a221e?format=jpeg"
+      }
+    },
+    {
+      "title": "Ukraine reopens Russian oil pipeline to get €90B EU loan",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 10:49:14 +0000",
+      "link": "https://www.semafor.com/article/04/22/2026/ukraine-reopens-russian-oil-pipeline-to-get-90b-eu-loan",
+      "dedupRank": 83,
+      "dedupScore": 5.83,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Ukraine reopens Russian oil pipeline to get €90B EU loan",
+        "description": "Though Kyiv is in effect helping its invader fund itself, Ukraine views the loan as critical to maintain its ability to repel Russian forces.",
+        "link": "https://www.semafor.com/article/04/22/2026/ukraine-reopens-russian-oil-pipeline-to-get-90b-eu-loan",
+        "pubDate": "Wed, 22 Apr 2026 10:49:14 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/ab306e2840eb1e5967c756404a846c8b2ac0a37c-3930x2759.jpg"
+      }
+    },
+    {
+      "title": "Stalled Iran talks spark leave energy markets in the lurch",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 10:47:26 +0000",
+      "link": "https://www.semafor.com/article/04/22/2026/stalled-iran-talks-spark-leave-oil-and-gas-markets-in-the-lurch",
+      "dedupRank": 84,
+      "dedupScore": 5.82,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Stalled Iran talks spark leave energy markets in the lurch",
+        "description": "President Donald Trump’s indefinite ceasefire extension and blockade of the Strait of Hormuz have raised questions about a prolonged disruption.",
+        "link": "https://www.semafor.com/article/04/22/2026/stalled-iran-talks-spark-leave-oil-and-gas-markets-in-the-lurch",
+        "pubDate": "Wed, 22 Apr 2026 10:47:26 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/701d49e8272b3c4f829f2d7284b3f5ecf5f031aa-3063x1766.jpg"
+      }
+    },
+    {
+      "title": "Here&#39;s what CEOs and top execs are saying about how the Iran war is affecting business",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 10:44:39 +0000",
+      "link": "https://www.businessinsider.com/what-ceos-execs-say-about-impact-of-iran-war-business-2026-4",
+      "dedupRank": 85,
+      "dedupScore": 5.82,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Here&#39;s what CEOs and top execs are saying about how the Iran war is affecting business",
+        "description": "Executives such as Goldman Sachs CEO David Solomon and LVMH CFO Cécile Cabanis have made comments on how the Iran war is affecting their businesses.",
+        "link": "https://www.businessinsider.com/what-ceos-execs-say-about-impact-of-iran-war-business-2026-4",
+        "pubDate": "Wed, 22 Apr 2026 10:44:39 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69de36dcdfb2c132adcfd2ab?format=jpeg"
+      }
+    },
+    {
+      "title": "MLB star admits he keeps trading cards that fans send him to sign",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 10:42:54 GMT",
+      "link": "https://www.dexerto.com/entertainment/mlb-star-admits-he-keeps-trading-cards-that-fans-send-him-to-sign-3355087/",
+      "dedupRank": 86,
+      "dedupScore": 5.82,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "MLB star admits he keeps trading cards that fans send him to sign",
+        "description": "Trey Yesavage gets sent trading cards by fans all the time, but he refuses to sign anything and just keeps the cards instead.",
+        "link": "https://www.dexerto.com/entertainment/mlb-star-admits-he-keeps-trading-cards-that-fans-send-him-to-sign-3355087/",
+        "pubDate": "Wed, 22 Apr 2026 10:42:54 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/trey-yesavage.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Beatbot Sora 30 Review: Midrange Price, High-End Results",
+      "source": "Wired",
+      "pubDate": "Wed, 22 Apr 2026 10:33:00 +0000",
+      "link": "https://www.wired.com/review/beatbot-sora-30/",
+      "dedupRank": 87,
+      "dedupScore": 5.81,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Beatbot Sora 30 Review: Midrange Price, High-End Results",
+        "description": "Strong coverage and a long run time make this pool-cleaning robot a compelling alternative to pricier models.",
+        "link": "https://www.wired.com/review/beatbot-sora-30/",
+        "pubDate": "Wed, 22 Apr 2026 10:33:00 +0000",
+        "source": "Wired",
+        "imageUrl": "https://media.wired.com/photos/69e7d758030fb91129bff2fd/master/pass/Review--Beatbot-Sora-30.jpg"
+      }
+    },
+    {
+      "title": "Daredevil: Showrunner Discusses Reveal of Key Marvel Character",
+      "source": "IGN",
+      "pubDate": "Wed, 22 Apr 2026 10:32:13 +0000",
+      "link": "https://www.ign.com/articles/daredevil-showrunner-discusses-reveal-of-key-marvel-character",
+      "dedupRank": 88,
+      "dedupScore": 5.81,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "X finally adds custom timelines",
+      "source": "Engadget",
+      "pubDate": "Wed, 22 Apr 2026 10:31:30 +0000",
+      "link": "",
+      "dedupRank": 89,
+      "dedupScore": 5.81,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "New Gas-Powered Data Centers Could Emit More Greenhouse Gases Than Entire Nations",
+      "source": "Wired",
+      "pubDate": "Wed, 22 Apr 2026 10:30:00 +0000",
+      "link": "https://www.wired.com/story/new-gas-powered-data-centers-could-emit-more-greenhouse-gases-than-entire-nations/",
+      "dedupRank": 90,
+      "dedupScore": 5.81,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Helldivers 2 Exo Experts Warbond Revealed",
+      "source": "IGN",
+      "pubDate": "Wed, 22 Apr 2026 10:29:04 +0000",
+      "link": "https://www.ign.com/articles/helldivers-2-exo-experts-warbond-revealed",
+      "dedupRank": 91,
+      "dedupScore": 5.81,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Red Lobster diners loved &#39;Endless Shrimp.&#39; Just don&#39;t ask the waiters about it.",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 10:23:01 +0000",
+      "link": "https://www.businessinsider.com/former-red-lobster-staff-nightmare-endless-shrimp-returns-2026-4",
+      "dedupRank": 92,
+      "dedupScore": 5.8,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "YouTube makes deepfakes easier to takedown, but not for everyone just yet",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 10:21:05 GMT",
+      "link": "https://www.dexerto.com/youtube/youtube-makes-deepfakes-easier-to-takedown-but-not-for-everyone-just-yet-3355107/",
+      "dedupRank": 93,
+      "dedupScore": 5.8,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Shawna Thomas Jumps to MS NOW After Running &#8216;CBS Mornings&#8217;",
+      "source": "Variety",
+      "pubDate": "Wed, 22 Apr 2026 10:19:56 +0000",
+      "link": "https://variety.com/2026/tv/news/shawna-thomas-ms-now-cbs-mornings-1236727647/",
+      "dedupRank": 94,
+      "dedupScore": 5.8,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Zara Larsson: ‘The second I come home, all my clothes come off’",
+      "source": "Dazed",
+      "pubDate": "2026-04-22T10:11:00Z",
+      "link": "https://www.dazeddigital.com/fashion/article/70124/1/zara-larsson-main-rose-swimwear-all-my-clothes-come-off-rebrand-dolphin-meme?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=zara-larsson-the-second-i-come-home-all-my-clothes-come-off",
+      "dedupRank": 95,
+      "dedupScore": 5.79,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "AI needs a strong data fabric to deliver business value",
+      "source": "MIT Technology Review",
+      "pubDate": "Wed, 22 Apr 2026 10:05:06 +0000",
+      "link": "https://www.technologyreview.com/2026/04/22/1135295/ai-needs-a-strong-data-fabric-to-deliver-business-value/",
+      "dedupRank": 96,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Studio TF1 Launches Sales On Cannes-Bound ‘Forsaken’ About Killing Of Teacher Samuel Paty",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 10:04:41 +0000",
+      "link": "https://deadline.com/2026/04/studio-tf1-sales-cannes-forsaken-abandon-samuel-paty-1236867802/",
+      "dedupRank": 97,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Exit 8 review – Escher-esque subway station corridor leads to disquieting psychological mystery",
+      "source": "The Guardian Culture",
+      "pubDate": "Wed, 22 Apr 2026 10:00:24 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/22/exit-8-movie-review-corridor-subway-station-mystery-video-game",
+      "dedupRank": 98,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The Mystery of the Missing Time Magazine Cocaine Cover",
+      "source": "Vanity Fair",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.vanityfair.com/style/story/the-curious-case-of-cecchis-cocaine-cover",
+      "dedupRank": 99,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Gloria Steinem Invited Me Over to Her Brownstone for a Group Discussion on Sexual Desire. This Is How It Went.",
+      "source": "Vanity Fair",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.vanityfair.com/hollywood/story/gloria-steinem-two-women-film-discussion-salon-apartment",
+      "dedupRank": 100,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Join Our Livestream: Musk v. Altman and the Future of OpenAI",
+      "source": "Wired",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.wired.com/story/livestream-musk-v-altman-trial/",
+      "dedupRank": 101,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Infinite Machine Olto Review: A Tremendously Fun Ride",
+      "source": "Wired",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.wired.com/review/infinite-machine-olto/",
+      "dedupRank": 102,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "That One Week Every Year You Forget You Have Allergies",
+      "source": "The New Yorker",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/humor/shouts-murmurs/that-one-week-every-year-you-forget-you-have-allergies",
+      "dedupRank": 103,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The Kardashians Explain Everything (Because They Are Everything)",
+      "source": "The New Yorker",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/culture/infinite-scroll/the-kardashians-explain-everything-because-they-are-everything",
+      "dedupRank": 104,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Gwendoline Riley’s New Novel Surveys the Wreckage of Middle Age",
+      "source": "The New Yorker",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.newyorker.com/books/under-review/gwendoline-rileys-new-novel-surveys-the-wreckage-of-middle-age",
+      "dedupRank": 105,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "3 things Michelle Kim is into right now",
+      "source": "MIT Technology Review",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.technologyreview.com/2026/04/22/1135423/3-things-michelle-kim/",
+      "dedupRank": 106,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "One town’s scheme to get rid of its geese",
+      "source": "MIT Technology Review",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.technologyreview.com/2026/04/22/1135430/california-town-scheme-get-rid-geese/",
+      "dedupRank": 107,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "There is no nature anymore",
+      "source": "MIT Technology Review",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.technologyreview.com/2026/04/22/1135440/editors-letter-may-2026/",
+      "dedupRank": 108,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Los Angeles is finally going underground",
+      "source": "MIT Technology Review",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 +0000",
+      "link": "https://www.technologyreview.com/2026/04/22/1135449/los-angeles-subway-going-underground/",
+      "dedupRank": 109,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The Fashion Brands That Don't Need Earth Day to Care",
+      "source": "Highsnobiety",
+      "pubDate": "Wed, 22 Apr 2026 10:00:00 GMT",
+      "link": "https://www.highsnobiety.com/p/responsible-fashion-brands-for-earth-day/",
+      "dedupRank": 110,
+      "dedupScore": 5.78,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Fashion Brands That Don't Need Earth Day to Care",
+        "description": "To celebrate Earth Day, we wanted to walk readers through a select few favorites from the roster of designers that go the extra mile in the name of the planet.",
+        "link": "https://www.highsnobiety.com/p/responsible-fashion-brands-for-earth-day/",
+        "pubDate": "Wed, 22 Apr 2026 10:00:00 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "Please Don’t Talk to People Like You Talk to AI",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 06:00:00 -0400",
+      "link": "https://www.inc.com/joe-procopio/please-dont-talk-to-people-like-you-talk-to-ai/91334060",
+      "dedupRank": 111,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Macy’s Is Closing More Stores in 2026: See an Updated List of Locations That Will Shutter Soon",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 06:00:00 -0400",
+      "link": "https://www.inc.com/fast-company-2/macys-closing-more-stores-locations-shutter-soon/91334021",
+      "dedupRank": 112,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "5 Lessons From an AI Startup That’s Quietly Disrupting a $30 Billion Industry",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 06:00:00 -0400",
+      "link": "https://www.inc.com/dave-kerpen/business-lessons-ai-startup-disrupting-industry/91333881",
+      "dedupRank": 113,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Make These 3 Changes to Your LinkedIn Posts to Improve Reach With the 360 Brew Algorithm",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 06:00:00 -0400",
+      "link": "https://www.inc.com/ashley-couto/linkedin-posts-improve-reach-360-brew-algorithm/91333801",
+      "dedupRank": 114,
+      "dedupScore": 5.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "NHL fans rain glass on opposition coach after celebrating unbelivable playoffs save",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 09:59:17 GMT",
+      "link": "https://www.dexerto.com/entertainment/nhl-fans-rain-glass-on-opposition-coach-after-celebrating-unbelivable-playoffs-save-3355033/",
+      "dedupRank": 115,
+      "dedupScore": 5.77,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "An Instacart founder shares his sneaker test for entrepreneurs",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:58:01 +0000",
+      "link": "https://www.businessinsider.com/instacart-cofounder-max-mullen-judges-entrepreneurs-by-their-shoes-2026-4",
+      "dedupRank": 116,
+      "dedupScore": 5.77,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "How to Make ASICS' Dad Shoe Daddier? Make It a BBQ Sandal",
+      "source": "Highsnobiety",
+      "pubDate": "Wed, 22 Apr 2026 09:54:27 GMT",
+      "link": "https://www.highsnobiety.com/p/asics-gel-1130-cv/",
+      "dedupRank": 117,
+      "dedupScore": 5.77,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "How to Make ASICS' Dad Shoe Daddier? Make It a BBQ Sandal",
+        "description": "The ASICS GEL-1130 is a textbook example of a dad shoe. Now, the all-new ASICS GEL-1130 CV is a textbook example of an elderly orthopedic dad sandal.",
+        "link": "https://www.highsnobiety.com/p/asics-gel-1130-cv/",
+        "pubDate": "Wed, 22 Apr 2026 09:54:27 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "HUGO Is Taking the Leap. Will You?",
+      "source": "Highsnobiety",
+      "pubDate": "Wed, 22 Apr 2026 09:52:20 GMT",
+      "link": "https://www.highsnobiety.com/p/hugo-red-means-go/",
+      "dedupRank": 118,
+      "dedupScore": 5.77,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "HUGO Is Taking the Leap. Will You?",
+        "description": "HUGO’s Red Means Go campaign explores modern ambition, featuring global creatives who challenge expectations and choose their own path.",
+        "link": "https://www.highsnobiety.com/p/hugo-red-means-go/",
+        "pubDate": "Wed, 22 Apr 2026 09:52:20 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "5 stats that explain Apple&#39;s stock-market dominance during the Tim Cook era",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:50:02 +0000",
+      "link": "https://www.businessinsider.com/apple-stock-price-returns-explained-under-ceo-tim-cook-buybacks-2026-4",
+      "dedupRank": 119,
+      "dedupScore": 5.77,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "How a real estate investor shifted his strategy to boost property appreciation and attract tenants",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:50:01 +0000",
+      "link": "https://www.businessinsider.com/how-to-optimize-real-estate-portfolio-rental-properties-improve-returns-2026-4",
+      "dedupRank": 120,
+      "dedupScore": 5.77,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "From Nike to Crocs, the Seven Best Sneakers to Cop Right Now",
+      "source": "Highsnobiety",
+      "pubDate": "Wed, 22 Apr 2026 09:47:05 GMT",
+      "link": "https://www.highsnobiety.com/p/sneaker-releases-2026-april-week-4/",
+      "dedupRank": 121,
+      "dedupScore": 5.76,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "From Nike to Crocs, the Seven Best Sneakers to Cop Right Now",
+        "description": "The world of sneaker releases is tricky to navigate, but we’ve got you covered with the best drops of the week, from ASICS to Nike, Crocs to adidas, and more.",
+        "link": "https://www.highsnobiety.com/p/sneaker-releases-2026-april-week-4/",
+        "pubDate": "Wed, 22 Apr 2026 09:47:05 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "Fallout: New Vegas 2 was real but plans “evaporated” according to lead dev",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 09:46:09 GMT",
+      "link": "https://www.dexerto.com/fallout/fallout-new-vegas-2-was-real-but-plans-evaporated-according-to-lead-dev-3355020/",
+      "dedupRank": 122,
+      "dedupScore": 5.76,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Marathon Changes Announced",
+      "source": "IGN",
+      "pubDate": "Wed, 22 Apr 2026 09:43:05 +0000",
+      "link": "https://www.ign.com/articles/marathon-changes-announced",
+      "dedupRank": 123,
+      "dedupScore": 5.76,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Google Research Shows Building a Great Team Requires Focusing on How, Not Who",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 05:42:00 -0400",
+      "link": "https://www.inc.com/jeff-haden/google-research-shows-building-a-great-team-requires-focusing-on-how-not-who/91333854",
+      "dedupRank": 124,
+      "dedupScore": 5.76,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Elden Ring Movie Set Photos Leak",
+      "source": "IGN",
+      "pubDate": "Wed, 22 Apr 2026 09:35:52 +0000",
+      "link": "https://www.ign.com/articles/elden-ring-movie-set-photos-leak",
+      "dedupRank": 125,
+      "dedupScore": 5.75,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "A top BlackRock strategist shares the 4 biggest market trends she&#39;s watching, and how to invest in each",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:35:01 +0000",
+      "link": "https://www.businessinsider.com/how-to-invest-right-now-stock-market-strategy-blackrock-ishares-2026-4",
+      "dedupRank": 126,
+      "dedupScore": 5.75,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "LG Debuts Flagship OLED evo W6 Wallpaper TV",
+      "source": "Hypebeast",
+      "pubDate": "Wed, 22 Apr 2026 09:33:45 +0000",
+      "link": "https://hypebeast.com/2026/4/lg-oled-evo-w6-wallpaper-tv-debuts-wireless-design",
+      "dedupRank": 127,
+      "dedupScore": 5.75,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "LG Debuts Flagship OLED evo W6 Wallpaper TV",
+        "description": "SummaryLG has announced that its new OLED evo W6 Wallpaper TV starts at $5,499.99 USD for the 77-inch model and $7,499.99 USD for the 83-inch variantThe 9.9mm-thin display boasts a completely wireless design, utilizing a Zero Connect Box to transmit ",
+        "link": "https://hypebeast.com/2026/4/lg-oled-evo-w6-wallpaper-tv-debuts-wireless-design",
+        "pubDate": "Wed, 22 Apr 2026 09:33:45 +0000",
+        "source": "Hypebeast",
+        "imageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F04%2F22%2Flg-oled-evo-w6-wallpaper-tv-debuts-wireless-design.jpg?w=800&cbr=1&q=90&fit=max"
+      }
+    },
+    {
+      "title": "Post your questions for Ian McKellen",
+      "source": "The Guardian Culture",
+      "pubDate": "Wed, 22 Apr 2026 09:32:15 GMT",
+      "link": "https://www.theguardian.com/film/2026/apr/22/post-your-questions-for-ian-mckellen",
+      "dedupRank": 128,
+      "dedupScore": 5.75,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Ranking the Best Red Light Therapy Mask and LED Devices of 2026",
+      "source": "Wired",
+      "pubDate": "Wed, 22 Apr 2026 09:30:00 +0000",
+      "link": "https://www.wired.com/story/led-face-masks-and-red-light-therapy/",
+      "dedupRank": 129,
+      "dedupScore": 5.74,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Anker made its own chip to bring AI to all its products",
+      "source": "The Verge",
+      "pubDate": "2026-04-22T05:30:00-04:00",
+      "link": "https://www.theverge.com/tech/916463/anker-thus-chip-announcement",
+      "dedupRank": 130,
+      "dedupScore": 5.74,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Karol G Announces Massive \"Viajando Por El Mundo Tropitour\" Global Stadium Tour",
+      "source": "Hypebeast",
+      "pubDate": "Wed, 22 Apr 2026 09:29:29 +0000",
+      "link": "https://hypebeast.com/2026/4/karol-g-viajando-por-el-mundo-tropitour-global-stadium-tour-announcement",
+      "dedupRank": 131,
+      "dedupScore": 5.74,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Imagining the Manosphere as a Kinder, Gentler Place",
+      "source": "NYT Arts",
+      "pubDate": "Wed, 22 Apr 2026 09:27:05 +0000",
+      "link": "https://www.nytimes.com/2026/04/22/arts/design/manosphere-exhibition-stedelijk.html",
+      "dedupRank": 132,
+      "dedupScore": 5.74,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "What time is Stranger Things: Tales From ’85 on Netflix?",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 09:25:48 GMT",
+      "link": "https://www.dexerto.com/tv-movies/stranger-things-tales-from-85-release-date-time-netflix-3355011/",
+      "dedupRank": 133,
+      "dedupScore": 5.74,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Dog walks herself to day care to play with “boyfriend” after escaping owner’s house",
+      "source": "Dexerto",
+      "pubDate": "Wed, 22 Apr 2026 09:23:21 GMT",
+      "link": "https://www.dexerto.com/entertainment/dog-walks-herself-to-day-care-to-play-with-boyfriend-after-escaping-owners-house-3355049/",
+      "dedupRank": 134,
+      "dedupScore": 5.74,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "AELIZA’s “Case Study 4: Your Life” Reflects on Societal Archetypes",
+      "source": "Hypebeast",
+      "pubDate": "Wed, 22 Apr 2026 09:21:15 +0000",
+      "link": "https://hypebeast.com/2026/4/aeliza-case-study-4-your-life-collection-muhaku-new-york-pop-up-info",
+      "dedupRank": 135,
+      "dedupScore": 5.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "AELIZA’s “Case Study 4: Your Life” Reflects on Societal Archetypes",
+        "description": "AELIZA’s philosophy is rooted in introspection, embracing the mirror held up to ourselves. For its latest release, “Case Study 4: Your Life,” the London-based label continues that ethos, going against the societal archetypes that make us conform.Stan",
+        "link": "https://hypebeast.com/2026/4/aeliza-case-study-4-your-life-collection-muhaku-new-york-pop-up-info",
+        "pubDate": "Wed, 22 Apr 2026 09:21:15 +0000",
+        "source": "Hypebeast",
+        "imageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F04%2F22%2Faeliza-case-study-4-your-life-collection-muhaku-new-york-pop-up-info-00.jpg?w=800&cbr=1&q=90&fit=max"
+      }
+    },
+    {
+      "title": "Anthropic’s most dangerous AI model just fell into the wrong hands",
+      "source": "The Verge",
+      "pubDate": "2026-04-22T05:18:40-04:00",
+      "link": "https://www.theverge.com/ai-artificial-intelligence/916501/anthropic-mythos-unauthorized-users-access-security",
+      "dedupRank": 136,
+      "dedupScore": 5.73,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Pokémon Doubles Down on Decision to Penalize Pro Player",
+      "source": "IGN",
+      "pubDate": "Wed, 22 Apr 2026 09:17:56 +0000",
+      "link": "https://www.ign.com/articles/pokmon-doubles-down-on-decision-to-penalize-pro-player",
+      "dedupRank": 137,
+      "dedupScore": 5.73,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "‘An Element of Exploitation’: The World of TikTok Child Skincare Influencers",
+      "source": "Business of Fashion",
+      "pubDate": "Wed, 22 Apr 2026 09:16:12 +0000",
+      "link": "https://www.businessoffashion.com/articles/beauty/child-skincare-influencers-tiktok/",
+      "dedupRank": 138,
+      "dedupScore": 5.73,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "A wealth management exec says AI could be putting your FIRE dreams at risk",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:15:01 +0000",
+      "link": "https://www.businessinsider.com/retire-early-coast-fire-movement-ai-job-risks-financial-independence-2026-4",
+      "dedupRank": 139,
+      "dedupScore": 5.73,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "‘Nobody knows what works. There’s a lot of panic’: can African pop get back to global success?",
+      "source": "The Guardian Culture",
+      "pubDate": "Wed, 22 Apr 2026 09:10:50 GMT",
+      "link": "https://www.theguardian.com/music/2026/apr/22/african-pop-panic-global-success-afrobeats-rema-burna-boy",
+      "dedupRank": 140,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Pat Sajak’s daughter Maggie goes public with Savannah Bananas star Jackson Olson",
+      "source": "Page Six",
+      "pubDate": "Wed, 22 Apr 2026 05:10:39 -0400",
+      "link": "https://pagesix.com/2026/04/22/celebrity-news/pat-sajaks-daughter-maggie-dating-savannah-bananas-star-player-jackson-olson/",
+      "dedupRank": 141,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Anthropic is investigating 'unauthorized access' of its Mythos cybersecurity tool",
+      "source": "Engadget",
+      "pubDate": "Wed, 22 Apr 2026 09:10:17 +0000",
+      "link": "",
+      "dedupRank": 142,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "I applied to 2,000 jobs before getting offers at Target and a startup. Here&#39;s how I decided which to pick.",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:10:01 +0000",
+      "link": "https://www.businessinsider.com/engineer-lands-target-internship-and-startup-offer-2026-4",
+      "dedupRank": 143,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Smart's defense on KD helps Lakers to 2-0 lead",
+      "source": "ESPN",
+      "pubDate": "Wed, 22 Apr 2026 04:07:37 EST",
+      "link": "",
+      "dedupRank": 144,
+      "dedupScore": 5.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Smart's defense on KD helps Lakers to 2-0 lead",
+        "description": "The Rockets had Kevin Durant back for Game 2 of their first-round matchup Tuesday. But the Lakers had Marcus Smart guard him in their 101-94 win to take a 2-0 series lead.",
+        "link": "",
+        "pubDate": "Wed, 22 Apr 2026 04:07:37 EST",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "The 3 prompts Mark Cuban recommends you plug into Claude",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:06:01 +0000",
+      "link": "https://www.businessinsider.com/mark-cuban-future-proof-career-ai-2026-4",
+      "dedupRank": 145,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Americans give Congress a thumbs down",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 09:05:45 +0000",
+      "link": "https://www.semafor.com/article/04/21/2026/americans-give-congress-a-thumbs-down",
+      "dedupRank": 146,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Barrasso argues Sanders, not Schumer, leads Democrats on Israel",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 09:05:34 +0000",
+      "link": "https://www.semafor.com/article/04/22/2026/barrasso-argues-sanders-not-schumer-leads-democrats-on-israel",
+      "dedupRank": 147,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "El-Sayed’s rise riles Democratic moderates, delights the left",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 09:05:19 +0000",
+      "link": "https://www.semafor.com/article/04/22/2026/el-sayeds-rise-riles-democratic-moderates-delights-the-left",
+      "dedupRank": 148,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "New York wants to tax empty second homes. Here&#39;s what happened in cities that tried it.",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:05:03 +0000",
+      "link": "https://www.businessinsider.com/nyc-wants-tax-second-homes-what-happened-cities-did-it-2026-4",
+      "dedupRank": 149,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Deciding between multiple job offers? Let us analyze them for you.",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:05:02 +0000",
+      "link": "https://www.businessinsider.com/got-multiple-job-offers-let-us-help-2026-4",
+      "dedupRank": 150,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Nobel Prize-winning economist isn&#39;t convinced by Anthropic CEO&#39;s warning of a white-collar jobs wipeout",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:05:01 +0000",
+      "link": "https://www.businessinsider.com/daron-acemoglu-economist-dario-amodei-ai-job-loss-yann-lecun-2026-4",
+      "dedupRank": 151,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Vilma Jää’s Voice Is Unlike Anything in Opera",
+      "source": "NYT Arts",
+      "pubDate": "Wed, 22 Apr 2026 09:02:20 +0000",
+      "link": "https://www.nytimes.com/2026/04/22/arts/music/vilma-jaa-innocence-met-opera.html",
+      "dedupRank": 152,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "4 Takeaways From ‘Lorne,’ the Movie About Lorne Michaels and ‘S.N.L.’",
+      "source": "NYT Arts",
+      "pubDate": "Wed, 22 Apr 2026 09:02:13 +0000",
+      "link": "https://www.nytimes.com/2026/04/22/movies/lorne-michaels-movie-documentary-snl.html",
+      "dedupRank": 153,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Bob, The Newest Labubu, Takes a Seat in the New USM x Kasing Lung Capsule",
+      "source": "Hypebeast",
+      "pubDate": "Wed, 22 Apr 2026 09:02:08 +0000",
+      "link": "https://hypebeast.com/2026/4/usm-how2work-kasing-lung-beautiful-thing-the-monsters-release-info",
+      "dedupRank": 154,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Inside LACMA’s Eye-Popping New Home, How Do You Find the Art?",
+      "source": "NYT Arts",
+      "pubDate": "Wed, 22 Apr 2026 09:02:03 +0000",
+      "link": "https://www.nytimes.com/2026/04/22/arts/design/lacma-david-geffen-galleries.html",
+      "dedupRank": 155,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "My husband won&#39;t help me manage our money, but he&#39;s full of opinions about how I spend it. Am I wrong to ignore him?",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:02:01 +0000",
+      "link": "https://www.businessinsider.com/manage-family-finances-husband-disengaged-house-division-of-labor-2026-4",
+      "dedupRank": 156,
+      "dedupScore": 5.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "École des Sables, Africa’s Premier Dance School, Faces a Precarious Future",
+      "source": "NYT Arts",
+      "pubDate": "Wed, 22 Apr 2026 09:01:34 +0000",
+      "link": "https://www.nytimes.com/2026/04/22/arts/dance/ecole-des-sables-germaine-acogny.html",
+      "dedupRank": 157,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Warsh hearing puts Fed onus back on Trump",
+      "source": "Semafor",
+      "pubDate": "Wed, 22 Apr 2026 09:01:01 +0000",
+      "link": "https://www.semafor.com/article/04/22/2026/warsh-hearing-puts-fed-onus-back-on-trump",
+      "dedupRank": 158,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "It Doesn't Get Much Crisper Than Jordan's Minimalist Baller",
+      "source": "Highsnobiety",
+      "pubDate": "Wed, 22 Apr 2026 09:01:01 GMT",
+      "link": "https://www.highsnobiety.com/p/nike-air-jordan-5-retro-og-white-metallic-silver/",
+      "dedupRank": 159,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Edison Chen Unveils the CLOT x adidas Originals Mundial Collection",
+      "source": "Hypebeast",
+      "pubDate": "Wed, 22 Apr 2026 09:01:00 +0000",
+      "link": "https://hypebeast.com/2026/4/clot-adidas-mundial-collection-edison-chen-announcement",
+      "dedupRank": 160,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The AI boom won&#39;t last, a top VC warns, as he urges startups to cash out",
+      "source": "Business Insider",
+      "pubDate": "Wed, 22 Apr 2026 09:00:01 +0000",
+      "link": "https://www.businessinsider.com/ai-startup-founders-warning-elad-gilsell-while-boom-lasts-2026-4",
+      "dedupRank": 161,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Amazon Just Put the Biggest Trade of the Decade on the Wrong Side—and Big Pharma Is Paying for It",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 05:00:00 -0400",
+      "link": "https://www.inc.com/phil-rosen/stock-market-outlook-amazon-eli-lilly-glp1-investing-novo/91334534",
+      "dedupRank": 162,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Deloitte Is Cutting Perks. Your Small Business Just Got More Competitive",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 05:00:00 -0400",
+      "link": "https://www.inc.com/suzanne-lucas/deloitte-is-cutting-perks-your-small-business-just-got-more-competitive/91334165",
+      "dedupRank": 163,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Duolingo’s AI U-turn Is a Warning for Other Companies",
+      "source": "Inc.",
+      "pubDate": "Wed, 22 Apr 2026 05:00:00 -0400",
+      "link": "https://www.inc.com/jessica-stillman/duolingos-ai-u-turn-is-a-warning-for-other-companies/91331342",
+      "dedupRank": 164,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Wemby concussed on hard fall in Spurs' G2 loss",
+      "source": "ESPN",
+      "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+      "link": "",
+      "dedupRank": 165,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Wemby concussed on hard fall in Spurs' G2 loss",
+        "description": "Victor Wembanyama sustained a concussion on a hard fall during the second quarter of the Spurs' Game 2 playoff loss to the Trail Blazers.",
+        "link": "",
+        "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "Edgecombe makes history with 30-10 to stun C's",
+      "source": "ESPN",
+      "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+      "link": "",
+      "dedupRank": 166,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Edgecombe makes history with 30-10 to stun C's",
+        "description": "VJ Edgecombe had 30 points and 10 rebounds while playing through pain after taking a hard fall on his back early in the game, Tyrese Maxey scored 29 points, and the 76ers beat the Celtics 111-97 to tie their series at one game apiece.",
+        "link": "",
+        "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "Splitter on Dundon reports: 'Trying to be a pro'",
+      "source": "ESPN",
+      "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+      "link": "",
+      "dedupRank": 167,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Splitter on Dundon reports: 'Trying to be a pro'",
+        "description": "In response to questions about reported cost-cutting measures by new Trail Blazers owner Tom Dundon, interim coach Tiago Splitter said he is focusing on basketball.",
+        "link": "",
+        "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "Williams' collapse in 9th brings Mets' slide to 12",
+      "source": "ESPN",
+      "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+      "link": "",
+      "dedupRank": 168,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Williams' collapse in 9th brings Mets' slide to 12",
+        "description": "The Mets dropped their 12th straight game, this time blowing an early 3-0 lead and allowing the Twins to score two in the ninth in a 5-3 win at Citi Field.",
+        "link": "",
+        "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "Kings coach hit by shattered glass as panel breaks",
+      "source": "ESPN",
+      "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+      "link": "",
+      "dedupRank": 169,
+      "dedupScore": 5.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Kings coach hit by shattered glass as panel breaks",
+        "description": "Kings interim coach D.J. Smith had shattered glass fall on him after a pane broke behind the Los Angeles bench Tuesday night in Game 2 against Colorado.",
+        "link": "",
+        "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "📸 Drake trolls Bears' QB in rollout of new album",
+      "source": "ESPN",
+      "pubDate": "Wed, 22 Apr 2026 03:58:01 EST",
+      "link": "",
+      "dedupRank": 170,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Kentucky governor blasts decision-making at UK",
+      "source": "ESPN",
+      "pubDate": "Wed, 22 Apr 2026 03:58:00 EST",
+      "link": "",
+      "dedupRank": 171,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Bruins 'played to our identity' in Game 2 victory",
+      "source": "ESPN",
+      "pubDate": "Wed, 22 Apr 2026 03:58:00 EST",
+      "link": "",
+      "dedupRank": 172,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "An Installation in Nature has Climate Lessons for Humans",
+      "source": "NYT Arts",
+      "pubDate": "Wed, 22 Apr 2026 08:54:36 +0000",
+      "link": "https://www.nytimes.com/2026/04/21/arts/design/finland-climate-clock.html",
+      "dedupRank": 173,
+      "dedupScore": 5.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Soccer Couple Rebekah and Jamie Vardy Set Reality Series at ITV Four Years After ‘Wagatha Christie’ Trial",
+      "source": "Variety",
+      "pubDate": "Wed, 22 Apr 2026 08:40:50 +0000",
+      "link": "https://variety.com/2026/tv/global/rebekah-vardy-itv-reality-series-wagatha-1236727607/",
+      "dedupRank": 174,
+      "dedupScore": 5.69,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "CMG Productions &#038; &#8216;The Football Ramble&#8217; Firm Stak To Co-Create Sport And Crime Podcasts",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 08:40:32 +0000",
+      "link": "https://deadline.com/2026/04/cmg-productions-stak-sport-crime-podcast-slate-1236867743/",
+      "dedupRank": 175,
+      "dedupScore": 5.69,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Rebel Wilson Accused Of Making Life &#8220;Nightmarish&#8221; For &#8216;The Deb&#8217; Co-Star Charlotte MacInnes",
+      "source": "Deadline",
+      "pubDate": "Wed, 22 Apr 2026 08:31:37 +0000",
+      "link": "https://deadline.com/2026/04/rebel-wilson-nightmarish-the-deb-charlotte-macinnes-1236867737/",
+      "dedupRank": 176,
+      "dedupScore": 5.68,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "101 Years of Lee, Reborn: The Feng Chen Wang Collab Makes Its Western Debut",
+      "source": "Hypebeast",
+      "pubDate": "Wed, 22 Apr 2026 08:31:02 +0000",
+      "link": "https://hypebeast.com/2026/4/lee-feng-chen-wang-collection-europe-north-america-release-info",
+      "dedupRank": 177,
+      "dedupScore": 5.68,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "New Balance's Popsicle-Flavored Dad Shoe Is A Tangerine Dream",
+      "source": "Highsnobiety",
+      "pubDate": "Wed, 22 Apr 2026 08:30:14 GMT",
+      "link": "https://www.highsnobiety.com/p/new-balance-990v4-mo4-tangerine-heat/",
+      "dedupRank": 178,
+      "dedupScore": 5.68,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    }
+  ]
+}

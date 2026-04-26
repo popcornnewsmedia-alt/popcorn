@@ -219,8 +219,8 @@ function runCurationCycle(attempt: number, windowStart?: Date, publishToday = fa
   );
 
   loadLiveArticles(alreadyPublished, windowStart, publishToday, windowEnd)
-    .then((enriched) => {
-      const added = mergeFeed(enriched);
+    .then(async (enriched) => {
+      const added = await mergeFeed(enriched);
       saveCommittedFeed();
       _isLive = true;
       const total = getPublishedFeed().length;
@@ -280,7 +280,12 @@ export async function triggerShortlist(
   if (_shortlistRunning) throw new Error("Shortlist generation already in progress");
   _shortlistRunning = true;
   try {
-    const alreadyPublished = getPublishedRefs();
+    // Use the FULL historical published-title set (126 titles in
+    // `_allPublishedTitles`), not just the 7-day `_feeds` window.
+    // This matches the auto-refresh cycle (runCurationCycle) and
+    // catches stories we published more than a week ago that would
+    // otherwise sneak back through the shortlist as "fresh".
+    const alreadyPublished = getAllPublishedRefs();
     const candidates = await generateShortlist(alreadyPublished, windowStart, windowEnd, customFeeds);
     return candidates;
   } finally {
@@ -304,7 +309,7 @@ export async function publishSelected(indices: number[]): Promise<number> {
 
   const rawItems = selected.map((c) => c._raw);
   const enriched = await enrichSelectedItems(rawItems);
-  const added = mergeFeed(enriched);
+  const added = await mergeFeed(enriched);
   saveCommittedFeed();
   _isLive = true;
   return added;
@@ -313,14 +318,83 @@ export async function publishSelected(indices: number[]): Promise<number> {
 /**
  * Reset today's feed and publish a list of raw RSS items directly.
  * Used when the user selects from the full unfiltered RSS pull (not the shortlist).
+ *
+ * Safety-net dedup: before enrichment, drop any item whose title Jaccard-matches
+ * a story already in the full historical published set (`getAllPublishedRefs()`).
+ * This catches paraphrased duplicates that slipped past the shortlist filter.
+ * Callers can pass `override: true` to bypass the check (e.g. intentional
+ * republish with a corrected headline/image).
  */
-export async function publishRawItems(items: RawRSSItem[], reset: boolean, publishToday = false): Promise<number> {
+export async function publishRawItems(
+  items: RawRSSItem[],
+  reset: boolean,
+  publishToday = false,
+  override = false,
+): Promise<{ added: number; skipped: { title: string; matched: string }[] }> {
   if (reset) resetTodayFeed();
-  const enriched = await enrichSelectedItems(items, publishToday);
-  const added = mergeFeed(enriched);
+
+  const skipped: { title: string; matched: string }[] = [];
+  let toPublish = items;
+  if (!override) {
+    const published = getAllPublishedRefs();
+    const publishedLinks = new Set(published.map((a) => a.link).filter(Boolean));
+    const publishedTokenSets = published.map((a) => ({ title: a.title, tokens: _titleTokens(a.title) }));
+    toPublish = [];
+    for (const item of items) {
+      if (item.link && publishedLinks.has(item.link)) {
+        skipped.push({ title: item.title, matched: `exact link match` });
+        continue;
+      }
+      const tokens = _titleTokens(item.title);
+      const hit = publishedTokenSets.find((p) => _jaccard(tokens, p.tokens) >= 0.35);
+      if (hit) {
+        skipped.push({ title: item.title, matched: hit.title });
+        continue;
+      }
+      toPublish.push(item);
+    }
+    if (skipped.length > 0) {
+      console.warn(
+        `[publish-raw] dedup caught ${skipped.length} item(s) already in the 7-day feed:\n` +
+          skipped.map((s) => `  - "${s.title}" ≈ "${s.matched}"`).join("\n") +
+          `\n  Pass { "override": true } to bypass.`,
+      );
+    }
+  }
+
+  if (toPublish.length === 0) {
+    return { added: 0, skipped };
+  }
+
+  const enriched = await enrichSelectedItems(toPublish, publishToday);
+  const added = await mergeFeed(enriched);
   saveCommittedFeed();
   _isLive = true;
-  return added;
+  return { added, skipped };
+}
+
+// Local dedup helpers (inlined rather than exported from rss-enricher to avoid
+// a circular-ish coupling; tokenization rules match generateShortlist).
+const _STOP = new Set([
+  "a","an","the","and","or","but","of","in","on","for","to","with","at","by","from",
+  "is","are","was","were","be","been","being","it","its","this","that","these","those",
+  "as","after","before","over","under","up","down","out","into","about","amid","vs",
+  "says","said","will","has","have","had","he","she","they","we","you","his","her","their",
+]);
+function _titleTokens(title: string): Set<string> {
+  return new Set(
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((t) => t.length > 2 && !_STOP.has(t)),
+  );
+}
+function _jaccard(a: Set<string>, b: Set<string>): number {
+  if (a.size === 0 || b.size === 0) return 0;
+  let inter = 0;
+  for (const t of a) if (b.has(t)) inter++;
+  return inter / (a.size + b.size - inter);
 }
 
 /**

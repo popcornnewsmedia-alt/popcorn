@@ -1,0 +1,987 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  POPCORN CANDIDATES — 2026-04-25   (MAIN RUN)
+  536 articles fetched   519 unique stories   424 selected by Claude
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+── FIRST PASS — Claude's picks (424 selected) ────────────────────────────────────────────────────────────
+  #1    10    NME                           Helena Bonham Carter exits ‘The White Lotus’, role set to be “rewritten and recast”
+  #2    7     The Hollywood Reporter        Box Office Stunner: ‘Michael’ Now on Course to Near $90 Million in Record-Smashing Domestic Opening
+  #3    7     Inc.                          $34,000 From a Hairdryer? Police Are Investigating a Weather Sensor Hack at a Major Airport Linked to Crypto Bets
+  #4    7     The Guardian Culture          Haruki Murakami to publish first novel to feature woman as lead character
+  #5    6     Stereogum                     Michael Stipe Debuts New Song “The Rest Of Ever” And Discusses First Solo Album On Colbert
+  #6    6     Daily Mail                    You're washing your clothes WRONG! Experts reveal how often you need to clean your jeans - and it turns out 79% of Brits are overdoing it
+  #7    6     Vanity Fair                   How the Michael Costume Designer Recreated Jackson’s World Through Fashion
+  #8    6     Daily Mail                    Small boat gang rapist launched sex attack with two other gang rapists on Brighton Beach after he was turned down for asylum
+  #9    6     Daily Mail                    Britain and France should lead new European NATO without help from the US, says ex-chief
+  #10   6     Daily Mail                    Alex Scott vows to end Football Focus on a high amid criticism following BBC's decision to axe show after 52 years
+  #11   6     Daily Mail                    'How do these people do it?': MIC 'liggers' Ollie and Gareth Locke mysteriously land ANOTHER £4m home after being evicted from the last. But as OLIVIA KEMP reveals, their new well-heeled neighbours are less than impressed...
+  #12   6     BBC Sport                     Steelers draft QB with Rodgers future still unclear
+  #13   6     The Guardian Culture          Tate at a turning point: new director must confront unwieldy ‘beast’ of an art institution
+  #14   6     Polygon                       Good Boy on streaming: This subversive 2025 horror movie just landed on Hulu
+  #15   6     The Atlantic                  The Republican Who Outsmarted Trump
+  #16   6     The Verge                     The most exciting laptop I’ve seen in forever
+  #17   6     Engadget                      Engadget review recap: DJI Osmo Pocket 4, Recteq X-Fire Pro and Alienware 27 QD-OLED
+  #18   6     Inc.                          81% of Small Businesses Are Excited About AI. So Why Aren’t They Using It Daily?
+  #19   6     Page Six                      Jason Biggs reveals why he went public with sobriety journey
+  #20   6     BBC Sport                     Allen sees off Wilson to reach Crucible quarters
+  #21   6     Daily Mail                    Off the tracks! Public transport 'crime wave' fears as robbery soars by 136% and sexual offences 17% since before Covid
+  #22   6     Business Insider              Crowded, costly, and complicated: 3 former Floridians explain why they left the state
+  #23   6     Daily Mail                    Revealed: The monster father who raped Nick Knowles's wife Katie for years... and her dark struggle to process and understand the man who stole her childhood
+  #24   6     BBC Sport                     GB's Potter wins World Triathlon Series opener
+  #25   6     Daily Mail                    Woman who married her own FATHER aged 20 then announced it on Facebook shares how she has moved on from incest grooming nightmare with new man... as her dad's latest disgrace is revealed
+  #26   6     Daily Mail                    Beyonce and husband Jay Z 'set to splash out on a lavish 16th century French chateau after scrapping plans to relocate to the UK'
+  #27   6     Variety                       ‘Fargo’ and ‘Alien: Earth’ Creator Noah Hawley Says YouTube Is His ‘Biggest Competition’: ‘You Are Losing Eyeballs to Things That Are Free’
+  #28   6     Polygon                       Sega Game Gear at 35: Switch and Steam Deck might not exist without this flop
+  #29   6     Futurism                      GLP-1 Drugs Linked to Cognitive Impairment, Though the Reason Why Probably Isn’t What You Expect
+  #30   6     Daily Mail                    Three young brothers vanished on Thanksgiving 2010... now investigators believe they have made a tragic break in the case
+  #31   6     Daily Mail                    BEL MOONEY: My stepdad abused me at 17... but it's Mum I can't forgive
+  #32   6     Variety                       Kunchacko Boban, Lijomol Jose Thriller Title Set as ‘Unmadham,’ Release Date Unveiled (EXCLUSIVE)
+  #33   6     Daily Mail                    Is lady of the manor Pippa Middleton more like TV star sister-in-law Vogue Williams than she'd care to admit? How the pair really get on - after Kate's sister was branded 'nouveau riche' in neighbour war near £15million home
+  #34   6     Daily Mail                    Cruz Beckham, 21, wraps his arm around girlfriend Jackie Apostel, 30, as they enjoy a shopping trip in NYC
+  #35   6     Business Insider              What it's really like living abroad, from expats who made homes overseas
+  #36   6     Daily Mail                    Moment Russell Brand fails to find Bible passage he read in court in excruciating 90 second clip - after admitting he fears going to prison
+  #37   6     The Atlantic                  Where Is Tulsi Gabbard?
+  #38   6     Daily Mail                    Awkward kiss cam encounters! Getting attacked by a mascot and the most painful rejection feature among hilarious clips
+  #39   6     Daily Mail                    'He's in constant fear his past will come back to haunt him': KATIE HIND reveals what's REALLY behind the reinvention of Chris Evans - and the age gap romance, disgusting sexual 'prank' and ditching of A-list friends that could torpedo him for good
+  #40   6     Business Insider              My parents pay my rent in New York City because I can't find a full-time job after college. I feel like I failed.
+  #41   6     Daily Mail                    Inside the gilded cage of MRS Kinahan: As her gangster husband Daniel languishes in jail, why ruthless 'Queen of the Molls' is full of regret, living in fear in Dubai and longing for her old life in Dublin
+  #42   6     Daily Mail                    Gemma Collins says David Haye and Jimmy Bullard should be 'disgusted with themselves' in scathing rant after storming off I'm A Celeb set during chaotic finale
+  #43   6     Sky Sports                    Women's Six Nations: Red Roses pulling clear of Wales LIVE!
+  #44   6     Dexerto                       Final Fantasy 14 is getting an entire raid series based on Neon Genesis Evangelion
+  #45   6     Daily Mail                    ITV accused of 'good editing' to 'protect golden boy' Adam Thomas after Jimmy Bullard blew up at Ant McPartlin - after I'm A Celeb all-stars final descended into utter chaos
+  #46   6     Polygon                       Beef's Big Matthew Kim finally opens up on childhood before k-pop
+  #47   6     The Atlantic                  Why Silicon Valley Is Turning to the Catholic Church
+  #48   6     The Verge                     The US gets the worst phones
+  #49   6     Inc.                          5 Night Shift Side Hustle Businesses You Can Run After 9 p.m.
+  #50   6     NME                           Slam Dunk director to step down from festival operations amid allegations
+  #51   6     Ars Technica                  Palantir employees are talking about company's "descent into fascism"
+  #52   6     NME                           Kat Graham says her scenes as Diana Ross in Michael Jackson biopic were cut due to legal issues
+  #53   6     Business Insider              I shopped Gap's new Victoria Beckham collection. It's one of the best fashion collaborations of the year — if you're tall enough to wear it.
+  #54   6     Futurism                      Scientists Say They’ve Tested a Way to Get to Alpha Centauri in Just 20 Years
+  #55   6     BBC Sport                     Forest condemn Rhinos to eighth consecutive defeat
+  #56   6     Business Insider              I brought my 3-year-old and 6-year-old sons to work with me. Here's what I learned.
+  #57   6     Wired                         ‘Saros’ Shows Off the PS5’s DualSense Tricks
+  #58   6     Wired                         Discord Sleuths Gained Unauthorized Access to Anthropic’s Mythos
+  #59   6     Business Insider              I'm self-employed, and family planning as a freelancer is scary. I don't have parental leave, and I don't know how much money to save.
+  #60   6     Business Insider              Junior talent 'can see how to disrupt us': Goldman partner Kunal Shah on the next generation of bankers
+  #61   6     Polygon                       5 sci-fi books like Pragmata for fans to read next
+  #62   6     The Guardian Culture          Palermo ‘honoured’ by rumours Dua Lipa and Callum Turner might marry there in June
+  #63   6     Business Insider              I visited Wayfair's new Atlanta store and found 18 Way Day deals worth shopping
+  #64   6     Vanity Fair                   A Complete Timeline of the Drama Surrounding ‘Michael’ Movie
+  #65   6     Wired                         The Online Civil War About ‘Michael’ Is a Battle Over Truth
+  #66   6     The New Yorker                A Chernobyl Widow’s Tragedy, Forty Years Later
+  #67   6     The New Yorker                Inside the World-Conquering Rise of the Micro-Drama
+  #68   6     The New Yorker                With A.I., Anyone Can Be an Influencer
+  #69   6     Futurism                      Elon Musk Fans Increasingly Disgusted by His Toxic Outbursts
+  #70   6     Inc.                          ‘No One Knew I Was in a Different Time Zone’: The Workers Who Travel, Play Tennis, and Do Chores on the Clock
+  #71   6     Inc.                          The Hidden Guilt of Solo Entrepreneurship
+  #72   6     Inc.                          A New Study Finds Leadership Often Attracts ‘Dark’ Personality Traits
+  #73   6     Page Six                      ‘Fake Cartier heiress’ defends her lineage — and says ‘mean girls’ won’t stop her partying
+  #74   6     Business Insider              4 people who pivoted into AI jobs — and how they did it
+  #75   6     Business Insider              You can thank Tim Cook for the large iPhones
+  #76   6     NYT Arts                      How Will BTS Endure a Grueling World Tour? We Asked Their Ex-Trainer.
+  #77   6     Business Insider              A research firm says 4 signs show the AI trade could spark a 30% stock rally that echoes the dot-com era
+  #78   6     Business Insider              Meet the single moms raising their kids together in a Manhattan 'mommune'
+  #79   6     NME                           Here’s what went down when Yungblud brought his ‘Idols’ world tour’ to London’s O2
+  #80   6     Wired                         Ace the Ping-Pong Robot Can Whup Your Ass
+  #81   6     Inc.                          Caitlin Clark, Simone Biles and Ilia Malinin All Do 1 Thing That Every Great Leader Does Too
+  #82   6     Business Insider              People are injecting DIY peptides for weight loss and longevity. Doctors are alarmed at the side effects.
+  #83   6     Business Insider              Andrew Yang says AI could swell economic inequality at an 'epic, unprecedented scale'
+  #84   6     Business Insider              I went to a kids' Pokémon event. I expected child's play, but got a trading floor.
+  #85   6     Business Insider              Why the oil market hasn't seen the Iran war doomsday scenario that experts warned about
+  #86   6     NME                           ‘Leaving Neverland’ director says Michael Jackson was “worse than Jeffrey Epstein”
+  #87   6     Business Insider              This Ukrainian company is upgrading its battlefield robots like smartphones. Here's how it's chasing the edge in combat.
+  #88   6     Business Insider              I tried every trick to stand out in my job search. A tip I found on Reddit was the only strategy that got me an offer.
+  #89   6     Billboard                     Jimmy Barnes, INXS Lead Tributes to James Valentine Following Death at 64
+  #90   6     Business Insider              I'm a Gen Z Microsoft engineer. AI doesn't always save me time, but it's still made my job easier.
+  #91   6     Business Insider              New tech status symbol alert: A Sequoia-engraved Mac Mini for your AI agent
+  #92   6     NYT Arts                      Fact-Checking ‘Michael’: What the Biopic Gets Right and Wrong About Michael Jackson
+  #93   6     NYT Arts                      Shayok Misha Chowdhury’s ‘Rheology’ Asks: Can Physics Soften a Mother’s Death?
+  #94   6     NYT Arts                      The Long, Challenging Road to D4vd’s Arrest
+  #95   6     NYT Arts                      6 Podcasts About Classical Music
+  #96   6     Business Insider              'We're both from the same city': How Mamdani and Trump's relationship has evolved over time
+  #97   6     NYT Arts                      Poetry Month Reading Recommendations
+  #98   6     NYT Arts                      Jet Li Believes in Showing Up on Time, or Earlier
+  #99   6     Inc.                          The Most Powerful Business Strategy Isn’t a Product or a Pitch. It’s a Person
+  #100  6     Business Insider              Meta employees face a slow-swinging axe and a tough choice: hustle or job hunt
+  #101  6     Variety                       Javier Ambrossi and Javier Calvo and Movistar Plus+ Bow ‘I Always Sometime,’ A Vision of Breadline Motherhood in Gentrified Barcelona
+  #102  6     Variety                       Haitian Woman Judged by Bible Instead of Law Focus of Documentary ‘Job 1:21,’ Winner of Visions du Réel Award
+  #103  6     Rolling Stone                 Boyz II Men Join Cody Johnson for Surprise ‘On Bended Knee’ Performance at Stagecoach
+  #104  6     BBC Sport                     James leads Lakers to brink of play-off series win
+  #105  6     BBC Sport                     Fitzpatricks one shot off lead in PGA pairs event
+  #106  6     The Guardian Culture          ‘I saw the backlash coming’: civil rights activist Kimberlé Crenshaw on America and race
+  #107  6     Page Six                      Jenna Bush Hager reveals she was banned from her daughter’s volleyball games
+  #108  6     Variety                       ‘Boho’ Encourages Women of All Ages to Dream – and to Dance: ‘This Show Is Like a Warm Blanket in Hard Times’
+  #109  6     BBC Sport                     FA Cup game: Answer our prompts for a Man City v Southampton prediction
+  #110  6     NME                           Black Sabbath regain ownership of “historically important” early Earth demos after legal battle
+  #111  6     BBC Sport                     How Newcastle's 'bullies' became too nice
+  #112  6     Business Insider              How I taught myself to code, quit my consulting job, and started an AI robotics firm by age 25
+  #113  6     Rolling Stone                 Ashlee Simpson Brings the Y2K Nostalgia to Emo Nite at Stagecoach
+  #114  6     NME                           Tom Rowley on how playing with Arctic Monkeys shaped his debut album: “You come across some fucking mad people”
+  #115  6     Business Insider              Best gardening tools for beginners: what to buy and what to skip
+  #116  6     Dexerto                       What time is Euphoria Season 3 Episode 3 out?
+  #117  6     BBC Sport                     How Guardiola found his best Man City XI
+  #118  6     Billboard                     Xaviersobased Announces Debut Australia Tour With Vivid LIVE Date
+  #119  6     The Guardian Culture          When did northern soul get so southern?
+  #120  6     The Guardian Culture          This Is Not a Murder Mystery: cosy-crime meets art in an irresistibly surreal Belgian drama
+  #121  6     Sky Sports                    Itauma now looking to win world title 'as soon as possible'
+  #122  5     BBC Sport                     Could Spurs fans take solace from a season in the Championship?
+  #123  5     ESPN                          Which teams won -- and lost -- on Day 2 of the NFL draft? Kiper on the best values, biggest reaches
+  #124  5     BBC Sport                     Why is Kelly not an automatic starter for Arsenal or England?
+  #125  5     The Guardian Culture          TV tonight: another pandemic strikes in a special Casualty series
+  #126  5     BBC Sport                     Welsh fire, England captain - how Meg Jones became a dual-nation icon
+  #127  5     The Guardian Culture          From Mother Mary to Foo Fighters: your complete entertainment guide to the week ahead
+  #128  5     Sky Sports                    Seven Questions and Dyonisos go for Silver Trophy glory
+  #129  5     Rolling Stone                 BigXthaPlug Leads a Sing-a-Long to Ella Langley’s ‘Choosin’ Texas,’ Delivers the Hits to Stagecoach
+  #130  5     ESPN                          Open to work no more: Mendoza celebrates with a LinkedIn post after taken at No. 1
+  #131  5     ESPN                          Drafted in drip: Looking at the best outfits from the 2026 NFL draft
+  #132  5     BBC Sport                     Ramsey's marathon in memory of 'amazing' young boy
+  #133  5     Inc.                          Want to Raise Successful Kids? Harvard Research Says It All Comes Down to 1 Simple Word
+  #134  5     Fast Company                  What it’s like to stay in Ikea’s only hotel
+  #135  5     Fast Company                  This ‘anti-Grammarly’ AI tool adds typos to your emails on purpose
+  #136  5     Deadline                      Chris Meloni Has ‘Law & Order’ Reunion With Mariska Hargitay While “Freshly Unemployed” After ‘Organized Crime’ Cancellation
+  #137  5     IndieWire                     Watch Michelle Yeoh, Maggie Cheung, and Anita Mui Save a Bunch of Floating Babies in ‘The Heroic Trio’
+  #138  5     The New Yorker                Donald Trump’s Economic Warfare Abroad Comes Home
+  #139  5     Rolling Stone                 Noah Cyrus Makes It a Family Affair at Stagecoach With Billy Ray and Braison Cyrus
+  #140  5     The Hollywood Reporter        David Ellison Held Dinner Party “Honoring” Trump Where President Gave Hour-Long Remarks
+  #141  5     Fast Company                  Here’s how to learn from failure—without being consumed by it
+  #142  5     Rolling Stone                 Ella Langley Brings Out Theo Von for ‘You Look Like You Love Me’ Duet at Stagecoach
+  #143  5     Fast Company                  Independent Bookstore Day: Bookshop.org founder on how small retailers are taking on Amazon
+  #144  5     Fast Company                  Here’s how to decide when travel insurance is worth it
+  #145  5     Fast Company                  What earnings for America’s largest homebuilder reveal about the housing market
+  #146  5     Variety                       ‘Deep Water’ Review: Renny Harlin’s Double-Dip Disaster Movie — Plane Crash + Shark Thriller — Has His Signature Schlock Touch
+  #147  5     Ars Technica                  This is who's developing Golden Dome's orbital interceptors—if they're ever built
+  #148  5     The Hollywood Reporter        What I Learned From Dean Tavoularis, the Legendary Production Designer of New Hollywood
+  #149  5     The Hollywood Reporter        Nikki Glaser Roasts Katy Perry, Hailey Bieber, Victoria Beckham and More at Time 100 Gala
+  #150  5     The Hollywood Reporter        Margot Robbie and Jacob Elordi’s ‘Wuthering Heights’ Sets HBO Max Streaming Debut
+  #151  5     Page Six                      David Hasselhoff, 73, uses walker during rare outing with wife Hayley Roberts
+  #152  5     Fast Company                  Meet your favorite new way to watch YouTube
+  #153  5     Fast Company                  Most people can’t tell when a personal text message is written by AI. Here’s why it matters
+  #154  5     Variety                       Chase Infiniti Says It Was ‘Totally Surreal’ to Work With Morgan Freeman in New Audi Commercial
+  #155  5     Fast Company                  4 science-backed skills to start flourishing and change your life
+  #156  5     Page Six                      Kesha ditches her clothes to celebrate Earth Day in the ocean: ‘The divine feminine’
+  #157  5     Billboard                     Otis Redding Center for the Arts Celebrates One-Year Anniversary: Ensuring the ‘Legacy Keeps Reaching Forward’
+  #158  5     Deadline                      iHeartMedia Shares Jump After Report Of Early Merger Talks With SiriusXM
+  #159  5     Consequence                   Born-Again Christian Russell Brand Struggles to Find Bible Passage
+  #160  5     The Hollywood Reporter        Noah Kahan Surprise Drops ‘The Great Divide’ Extended Version ‘The Last of the Bugs’
+  #161  5     Deadline                      Melissa McCarthy Surprises Mariska Hargitay During ‘Law & Order: SVU’ Guest Role: “Mind Blown”
+  #162  5     Variety                       Stagecoach Livestream Schedule: When and Where to Catch Lainey Wilson, Ella Langley, Post Malone and Other Festival Stars Online
+  #163  5     Business Insider              Coursera has a free CME-eligible course that gives students an overview of COVID-19 in just 3 hours
+  #164  5     TechCrunch                    Steve Ballmer blasts founder he backed who pleaded guilty to fraud: ‘I was duped and feel silly’
+  #165  5     Business Insider              Coursera's Workforce Recovery Initiative gives unemployed workers free access to 90% of its online course catalog — here's how it works
+  #166  5     Business Insider              4 things I loved about Stanford's popular online nutrition and cooking class — and why it's worth signing up for
+  #167  5     Business Insider              12 public health courses you can take online for free, offered by schools like Yale, Johns Hopkins, Duke, Emory, and more
+  #168  5     Business Insider              Coursera is offering 90% of its online classes to college students for free until September 30, 2020 — here's how to enroll
+  #169  5     Business Insider              Coursera and edX are two popular online learning platforms — here's how they compare in terms of price and programs offered
+  #170  5     Business Insider              This is the free Google online course in Python programming I wish I took before I started my master's degree
+  #171  5     Business Insider              The 9 most popular online courses people are taking on Coursera from Stanford, Yale, and Princeton
+  #172  5     Business Insider              Coursera offers split-screen tutorials to gain new skills in a few hours. Despite some glitches, I learned the basics of Figma really fast.
+  #173  5     IGN                           The Official Shrek Retro TV Toaster Offers Up a Shrekfast Lifestyle
+  #174  5     Puck                          Bari’s Post-WHCD Purge
+  #175  5     The Hollywood Reporter        SiriusXM, iHeartMedia Eye Merger, With Irving Azoff and Apollo in Mix
+  #176  5     Billboard                     Billboard’s Music Industry Events Calendar
+  #177  5     Highsnobiety                  New Balance's Vibram "Miu Miu" Sneaker Is Small But Mighty
+  #178  5     Deadline                      ‘Summer House’ Cast Reacts To Reunion Audio Leak: Kyle Cooke Says It’s “Unfortunate” & A “Bummer”
+  #179  5     Deadline                      Comcast Co-CEO Mike Cavanagh Lands $72 Million Pay Package For 2025
+  #180  5     IGN                           For Earth Day, Get a Bonus $10 Gift Card on Top of Cash When Trading In Electronics at PayMore
+  #181  5     Highsnobiety                  Nike’s Oldest Sneaker Just Made It Back to Earth
+  #182  5     IGN                           Bundle & Save 20% on Shirts, Pants, Jeans, and More at Men's Wearhouse Right Now for Spring Savings
+  #183  5     Deadline                      Everything We Know About The Hulu Adaptation of ‘Count My Lies’ So Far
+  #184  5     Puck                          Salone, and Thanks for All the Fish
+  #185  5     IGN                           Expand Your Home Gym on the Cheap With the Yoleo Weight Bench for Just $54 Shipped
+  #186  5     IGN                           The $14 Portable Neck Fan Is the Budget-Friendly Solution to Beating the Summer Heat
+  #187  5     BBC Sport                     'Something special' - O'Sullivan & Higgins renew rivalry
+  #188  5     Hypebeast                     New Era Fuses Heritage with Its Homegrown Roots at New NYC Flagship
+  #189  5     Sky Sports Football           Sunderland latest: Le Bris reacts to Mukiele exchange with fans
+  #190  5     Deadline                      Andrea Newman Leaving ‘Chicago Fire’ After 14 Seasons; Victor Teran Named New Showrunner
+  #191  5     IndieWire                     Pete Ohs Wants Filmmaking to Be Fun — and for You to Edit His Movies
+  #192  5     The Atlantic                  Sam Altman Wants to Know Whether You’re Human
+  #193  5     The Hollywood Reporter        As ‘Michael’ Opens, ‘Leaving Neverland’ Accuser James Safechuck Issues Message to Abuse Survivors
+  #194  5     TechCrunch                    Palantir is reportedly helping the IRS investigate financial crimes
+  #195  5     BBC Sport                     Rogers open to European move - Saturday's gossip
+  #196  5     Sky Sports                    Lowry, Koepka miss cut at Zurich Classic with Fitzpatrick brothers in contention
+  #197  5     Engadget                      XChat, the standalone app for messaging on X, is available on iOS now
+  #198  5     BBC Sport                     Forest stun Sunderland to boost survival hopes
+  #199  5     NYT Arts                      Student Contest Based on Trump’s Garden of Heroes Downplays Darker History
+  #200  5     MIT Technology Review         Three reasons why DeepSeek’s new model matters
+  #201  5     IGN                           Best Gaming Earbuds 2026: Top (Mostly) Wireless In-Ear Headphones
+  #202  5     Deadline                      Ex-Paramount President Jeff Shell’s 2025 Pay Tops $60 Million
+  #203  5     TechCrunch                    Cohere acquires, merges with Germany-based startup to create a ‘transatlantic AI powerhouse’
+  #204  5     BBC Sport                     Dominant RB Leipzig see off Union Berlin
+  #205  5     IGN                           The Mummy 4 Moved Up to 2027 as Miami Vice '85 Is Pushed to 2028
+  #206  5     IGN                           Prime Minister of South Korea Hails Crimson Desert, Say It Has 'Opened a New Chapter for K-Content'
+  #207  5     Dexerto                       MrBeast lets fans from every country vote for Beast Games Season 3 contestants
+  #208  5     Billboard                     LE SSERAFIM’s ‘CELEBRATION’ Kicks Off a New & Personal Era | Billboard News
+  #209  5     IndieWire                     WGA Members Ratify New 4-Year Deal with Film and TV Studios
+  #210  5     IGN                           Final Fantasy XIV Is Coming to Nintendo Switch 2 in August With a Separate Subscription
+  #211  5     Polygon                       Marty Supreme and every new movie on Netflix, HBO, and more this weekend
+  #212  5     Sky Sports Football           Five-goal Forest take huge step towards safety with Sunderland thrashing
+  #213  5     Futurism                      Three Years Ago Today, “Avengers” Director Joe Russo Predicted There Would Be a Fully AI-Generated Movie Within Two Years
+  #214  5     Sky Sports Football           Millwall go second with late equaliser at relegated Leicester
+  #215  5     TechCrunch                    Two college kids raise a $5.1 million pre-seed to build an AI social network in iMessage
+  #216  5     Stereogum                     Orphan Donor Announce New Album Ailments: Hear “Show Me The Way”
+  #217  5     Engadget                      Maine governor vetoes bill temporarily banning large data centers in the state
+  #218  5     Billboard                     Allison Jones Named EVP of A&R at Big Machine Records/Nashville Harbor Records & Entertainment
+  #219  5     The Guardian Culture          The Neighbourhood review – Graham Norton is the only good thing about this tired reality show
+  #220  5     IndieWire                     ‘Stranger Things: Tales from ’85’ Should Be More Like a Saturday Morning Cartoon
+  #221  5     IGN                           Upcoming New Disney and Pixar Movies: 2026 Release Dates and Beyond
+  #222  5     Business of Fashion           Brunello Cucinelli Tightens Controls on Sanctions Compliance After Allegations
+  #223  5     Hypebeast                     Gagosian Runs Back Duchamp’s Greatest “Readymades”
+  #224  5     Business of Fashion           Saks Settles Fight With Simon Property, Cuts Deal With Creditors
+  #225  5     Dexerto                       Klaudiaglam’s mom starts GoFundMe as doctors “don’t believe she’ll survive” rival’s alleged attack
+  #226  5     TechCrunch                    Meta’s loss is Thinking Machines’ gain
+  #227  5     Hypebeast                     Gucci’s Contemporary Refresh Kickstarts with New Muses and a Campaign Shot by Demna
+  #228  5     The Verge                     Microsoft will let you pause Windows Updates indefinitely, 35 days at a time
+  #229  5     IGN                           The Popular AstroAI S8 Cordless Car Jump Starter Drops Below $20 on Amazon
+  #230  5     Billboard                     BTS Is Selling Snacks & Energy Drinks at Walmart Now? Everything You Need to Know
+  #231  5     Business of Fashion           The Acts of Love Behind Milan Design Week
+  #232  5     NYT Arts                      The World According to Aldwyth
+  #233  5     Vanity Fair                   All of Kim Kardashian’s Met Gala Looks From 2013 to Now
+  #234  5     NYT Arts                      6 Shows Our Theater Critics Are Talking About
+  #235  5     Billboard                     The Best Ticketing Sites to Find Affordable Tickets to Ariana Grande, Foo Fighters & ENHYPEN
+  #236  5     Business of Fashion           Why Fashion Is Still Stuck on Sustainability Double Standards
+  #237  5     IGN                           Tides Of Tomorrow Review
+  #238  5     Futurism                      Just 11 AI Data Centers Could Belch More Fumes Than Entire Countries
+  #239  5     Dexerto                       Police couldn’t find missing woman because she used filters on all her Instagram photos
+  #240  5     IGN                           Invincible Creator Robert Kirkman Says Tech Jacket was Gender-Swapped to Address a Comic Book 'Shortcoming'
+  #241  5     Puck                          Sotheby’s $96M de Gunzburg Blockbuster
+  #242  5     The Verge                     Alex Jones has uncovered another massive conspiracy
+  #243  5     Inc.                          Bed Bath & Beyond Is Returning to a State It Once Vowed to Avoid
+  #244  5     Engadget                      The DOJ is backing xAI in its lawsuit against Colorado
+  #245  5     Inc.                          New Gene Therapy Can Restore Hearing in Deaf Kids—And It Comes With an Unexpected Price Tag
+  #246  5     IndieWire                     The Fight Sounds in ‘Beef’ Season 2 Bloom Like a Bruise
+  #247  5     Inc.                          America Is Running Out of Primary Care Doctors. AI Is Filling the Gap
+  #248  5     Dexerto                       McDonald’s UK adds Frank’s RedHot breakfast items and new McCrispy burgers
+  #249  5     Consequence                   Heavy Song of the Week: Korn’s Artistic Renaissance Continues on “Reward the Scars”
+  #250  5     TechCrunch                    X launches stand-alone XChat app on iOS
+  #251  5     Hypebeast                     Aimé Leon Dore Los Angeles Opens & SKYLRK Makes Coachella Merch History in This Week's Top Fashion News
+  #252  5     Consequence                   Alex Jones Loses What’s Left of His Mind After Discovering Tim Heidecker’s Old Adult Swim Clips
+  #253  5     NYT Arts                      Venice Biennale Bars Awards for Countries Facing Crimes Against Humanity Charges
+  #254  5     Business of Fashion           The BoF Podcast | Britt Moran on Why Atmosphere Is a Real Luxury Product
+  #255  5     Engadget                      What you need to know as Elon Musk's lawsuit against Sam Altman begins
+  #256  5     Futurism                      Chinese Netflix Competitor Opens Floodgates to AI Slop
+  #257  5     Know Your Meme                Missing Scientists Conspiracy Theory Explained
+  #258  5     Ars Technica                  Why are top university websites serving porn? It comes down to shoddy housekeeping.
+  #259  5     The Guardian Culture          Conteh review – the dazzling rise and bruising fall of a 70s boxing great
+  #260  5     IndieWire                     Movies You Won’t Want to Miss: Hear from John Early and IndieWire Staffers About CinemaCon, ‘The Mummy,’ and ‘Maddie’s Secret’
+  #261  5     Business of Fashion           As Brands Get Tariff Refunds, What Do They Owe Their Customers?
+  #262  5     Defector                      Don’t Make The Tiny Man Dribble While Everyone Else Stands Still
+  #263  5     Inc.                          Want to Get AI and Cybersecurity Right? Consider Following the Pope’s Example
+  #264  5     Engadget                      Google plans to invest even more money into Anthropic
+  #265  5     Ars Technica                  In rare chickenpox case, itchy blisters mushroom into large, rubbery nodules
+  #266  5     Inc.                          Is Everyone an Introvert Now?
+  #267  5     Engadget                      Singapore police arrest alleged The Legend of Aang: The Last Airbender leaker
+  #268  5     Wired                         Give Mom Warm Coffee All Year Long With This Ember Smart Mug Deal
+  #269  5     Hypebeast                     New Balance & Dover Street Market's Head-to-Toe Running Capsule Is Ready to Race
+  #270  5     Stereogum                     Bedouine Shares New Benefit Single “Canopies” For Armenian Genocide Remembrance Day
+  #271  5     ESPN                          How Rams quietly zeroed in on Ty Simpson in the draft -- and kept it a secret
+  #272  5     ESPN                          Answering big questions from Round 1 of the draft
+  #273  5     Inc.                          The New Ingredient for 2026’s Retail Recipe
+  #274  5     BBC Sport                     London Marathon is 'my Everest' - Hampson
+  #275  5     Defector                      Tony Dokoupil Is Still Eating Shit, Even If No One’s Watching
+  #276  5     IndieWire                     ‘Gail Daughtry and the Celebrity Sex Pass’ Teaser: Zoey Deutch Is on a Mission to Sleep with Jon Hamm
+  #277  5     The New Yorker                “Fat Swim” and Literature’s Fatphobia Problem
+  #278  5     The New Yorker                Why Senator Rand Paul Voted to Limit Donald Trump’s War Powers
+  #279  5     Consequence                   Rob Reiner’s Son Jake Breaks Silence on “Living Nightmare” of Parents’ Deaths
+  #280  5     The Guardian Culture          Michael B Jordan to take on big-screen adaptation of hit video game Battlefield
+  #281  5     Dexerto                       Gardener reveals what happens when you bury Taco Bell under tomato plant
+  #282  5     Stereogum                     Sugar World – “Terra Incognita”
+  #283  5     Wired                         Beatbot Pool-Cleaning Robots Are on Sale for a Limited Time
+  #284  5     Inc.                          This ‘Analog’ Tractor Startup Is Winning Over Farmers—but Is It Too Good to Be True?
+  #285  5     The Verge                     BMW is one step closer to selling you a color-changing car
+  #286  5     BBC Sport                     Defending champion Alcaraz to miss French Open
+  #287  5     The Verge                     Google’s handsome Pixel Watch 4 is on sale for $40 off in both size configurations
+  #288  5     Ars Technica                  Meet the 19-meter Cretaceous kraken that swam with mosasaurs
+  #289  5     Dazed                         New Balance heads to Amsterdam to launch collection with Lack of Guidance
+  #290  5     Wired                         AI-Designed Drugs by a DeepMind Spinoff Are Headed to Human Trials
+  #291  5     Defector                      How Close To The Stanford Prison Experiment Can A Reality Show Get?
+  #292  5     Dazed                         Exclusive: New Balance and Lack of Guidance show football knows no borders
+  #293  5     Stereogum                     Rosco P Coldchain & Nicholas Craven Share Collaborative Album Play With Something Safe
+  #294  5     BBC Sport                     Staying this long at Man Utd isn't for everyone - Fernandes
+  #295  5     Vanity Fair                   The 2026 White House Correspondents’ Dinner Gossip Pack
+  #296  5     404 Media                     Behind the Blog: Waiting in the Apple Store
+  #297  5     Wired                         Designer Baby Companies Are in Turmoil
+  #298  5     Consequence                   RZA Makes Direct Pitch to Obama to Induct Wu-Tang Into Rock Hall
+  #299  5     Futurism                      Palantir’s Employees Are in Crisis
+  #300  5     BBC Sport                     Why I stayed at 'struggling' Man Utd and didn't think we'd be third now - Fernandes
+  #301  5     Consequence                   Coal Chamber Drummer Mikey “Bug” Cox Reveals Stage 3 Cancer Battle
+  #302  5     Consequence                   Stream On This Week: Zach Galifianakis Connects with Nature, and an Animated Cat Speaks His Truth
+  #303  5     IndieWire                     ‘Cave of Forgotten Dreams’ Review: Werner Herzog’s Natural Museum in 3D
+  #304  5     The Atlantic                  How Short-Form Clips Took Over the Internet
+  #305  5     Engadget                      The MacBook Neo is a glimpse into John Ternus's Apple
+  #306  5     Inc.                          The Real Reason Your Content Isn’t Bringing in Clients
+  #307  5     Hypebeast                     Artist Kazuhisa Uragami Builds a "Noble Outsider" From Kyushu’s Fire and Iron for Forza Horizon 6
+  #308  5     Vanity Fair                   Prince Louis Celebrated His Eighth Birthday With a Brand New Smiley Photo
+  #309  5     Inc.                          Workplace Stress and Bullying Are Linked to 840,000 Deaths a Year, New Study Finds
+  #310  5     NYT Arts                      Saudis Withdraw Offer of Millions to Metropolitan Opera
+  #311  5     Semafor                       Musk pitches ‘universal high income’
+  #312  5     BBC Sport                     Wales face arguably biggest task in sport - stopping England
+  #313  5     TechCrunch                    Marked-up Mac minis flood eBay amid shortages driven by AI
+  #314  5     Stereogum                     Latto – “GOMF” (Feat. GloRilla)
+  #315  5     NYT Arts                      Review: Barbara Hannigan Is Conductor, Director and Star
+  #316  5     NYT Arts                      How Ashley Padilla, Breakout ‘S.N.L.’ Star, Nails Comic Timing
+  #317  5     BBC Sport                     The remarkable rise of Chelsea's little-known interim boss
+  #318  5     Consequence                   Amaia Performs with a Chair Flute in New Tiny Desk Concert: Watch
+  #319  5     Consequence                   Jimmy Kimmel Performs Alternative White House Correspondents’ Dinner Monologue
+  #320  5     Inc.                          Why New Graduates Are Taking ‘Any Job’—and Planning to Leave Fast
+  #321  5     Semafor                       Expect more tech layoffs
+  #322  5     Dazed                         Ballet continues to thrive thanks to Saul Nash’s designs
+  #323  5     Consequence                   Kacey Musgraves Covers SZA’s “Kill Bill” on BBC 1 Live Lounge: Watch
+  #324  5     Semafor                       AIs hunt for signs of intelligent life
+  #325  5     Stereogum                     Mina Tindle – “My Light” (Feat. Sufjan Stevens)
+  #326  5     Semafor                       Google CEO says 75% of company's new code is AI-generated
+  #327  5     Pitchfork                     Stagecoach 2026 Livestream Schedule & Details
+  #328  5     Inc.                          Jeff Bezos Just Made a $34 Million Bet to Replace Cotton and Polyester
+  #329  5     Vanity Fair                   Charting the Limitless Allure of Zendaya, From Disney Youth to A-List Movie Star
+  #330  5     Highsnobiety                  In an Insanely Rich Caramel, adidas' Handball Spezial Is Sickly Sweet
+  #331  5     Inc.                          The Surprising Way Smart Leaders Turn Fear Into Progress
+  #332  5     Futurism                      Tech Companies Are Using Insidious Tactics to Build Data Centers on Indigenous Lands, Activists Say
+  #333  5     Dazed                         In pictures: The intimate artefacts left behind in cruising spots
+  #334  5     Dazed                         The story behind Mother Mary, the film even A24 thought was too weird
+  #335  5     Consequence                   Metallica Mourn Passing of “S&M2” Co-Conductor Michael Tilson Thomas
+  #336  5     Stereogum                     Love Remain – “Paris, Forever”
+  #337  5     Semafor                       Department of Justice drops criminal probe into Fed chair Powell
+  #338  5     Sky Sports                    Leeds Rhinos thrash Catalans to remain top as Hull FC score 50 at Castleford
+  #339  5     Dazed                         Techno-fascist fashion: Why Silicon Valley is moving into menswear
+  #340  5     Stereogum                     Skepta Is Making House Music Now
+  #341  5     IndieWire                     ‘The School Duel’ Review: A Dystopian Answer to Pointless Shootings Announces a Provocative New Film Talent
+  #342  5     Consequence                   Michael Stipe Thinks Billie Eilish Could Play Young Version of Him in R.E.M. Biopic
+  #343  5     Dexerto                       VTuber agency terminates streamers for falling in love
+  #344  5     Vanity Fair                   Grindr Goes to Washington—But Will Washington Come to Grindr?
+  #345  5     Consequence                   Neil Young and the Chrome Hearts Announce New Live Album
+  #346  5     Sky Sports Football           De Zerbi: I don't want to put pressure on my players... but we have to win at Wolves
+  #347  5     Dexerto                       FIFA World Cup final tickets on sale for $2.3 million on official website
+  #348  5     Wired                         The Latest Push to Extend Key US Spy Powers Is Still a Mess
+  #349  5     Dexerto                       Nintendo releases classic soundtracks on Spotify but you have to be quick
+  #350  5     Defector                      Jaden McDaniels Will Fight You Every Step Of The Way
+  #351  5     TechCrunch                    Nuclear startup X-energy raises $1B in data center-driven IPO
+  #352  5     Ars Technica                  Man faces 5 years in prison for using AI to fake sighting of runaway wolf
+  #353  5     Stereogum                     Action Bronson – “Triceratops” (Feat. Lil Yachty & Paul Wall)
+  #354  5     Consequence                   Black Sabbath Get Early Earth Demos Back After Settlement with Ex-Manager
+  #355  5     NYT Arts                      ‘The Great Divide’ Review: Noah Kahan Is Caught in the In-Between
+  #356  5     Stereogum                     Daughn Gibson – “Quang Nam”
+  #357  5     The Guardian Culture          ‘I don’t need to see you naked’: Urzila Carlson on becoming a comedy superstar and fending off horny fans
+  #358  5     The Guardian Culture          The Price review – Henry Goodman leads another Arthur Miller revival that’s right on the money
+  #359  5     Business of Fashion           Retail Sales Rise in Britain After Iran War Prompted ‘Panic at the Pumps’
+  #360  5     NYT Arts                      Five Horror Movies to Stream Now
+  #361  5     IndieWire                     They’ve Seen the Same Movie 1,000 Times, and They’re Not Stopping
+  #362  5     Wired                         Apple's Next CEO Needs to Launch a Killer AI Product
+  #363  5     Inc.                          Bob Chapman Chose People Over Profit and Built a Billion-Dollar Company Anyway
+  #364  5     Business of Fashion           US Democratic Lawmakers Urge Retail, Shipper CEOs to Pass Trump Tariff Refunds to Consumers
+  #365  5     Semafor                       Banking on the Future Forum
+  #366  5     Business of Fashion           Opinion: Lululemon’s CEO Choice Is a Missed Chance to Pacify Elliott
+  #367  5     Dexerto                       Fortnite players demand D4vd is fully removed from the game
+  #368  5     Pitchfork                     Watch Michael Stipe Perform a New Song From His Debut Solo Album
+  #369  5     Ars Technica                  Well, this is embarrassing: The Lunar Gateway's primary modules are corroded
+  #370  5     Semafor                       Saudi sovereign wealth fund to partner again with Live Nation
+  #371  5     BBC Sport                     'I love winning when there is massive competition'
+  #372  5     The New Yorker                Daily Cartoon: Friday, April 24th
+  #373  5     Semafor                       The man who is paying to see the future
+  #374  5     The Atlantic                  Who Came Up With That?
+  #375  5     Stereogum                     Purelink & Rainy Miller – “Barrons Hotel (I, To, Thee.)” & “Yellow Bones”
+  #376  5     Stereogum                     Anthony Kiedis’ Girlfriend Pens Vogue Column About Dating Someone More Than Twice Her Age
+  #377  5     Hypebeast                     New Arrivals From HBX: Maison Mihara Yasuhiro
+  #378  5     IndieWire                     ‘Ricky’ Review: Stephan James Stars in a Deeply Affecting Drama About Life After Prison
+  #379  5     ESPN                          Poll: Oregon's Dante Moore the early QB favorite for 2027 draft
+  #380  5     Defector                      Lena Dunham Can’t Help Herself
+  #381  5     Know Your Meme                How The 'Butt Mogged These Zoomers Today' Meme Was Born
+  #382  5     TechCrunch                    Another spyware maker caught distributing fake Android snooping apps
+  #383  5     Fast Company                  Kellogg’s just dropped something inside cereal boxes you haven’t seen in years
+  #384  5     Dexerto                       Jacksepticeye explains why he won’t ask Markiplier for help on Bloodborne movie
+  #385  5     Stereogum                     Watch Wednesday Cover Big Star With Patterson Hood
+  #386  5     Futurism                      The Horrible Economics of AI Are Starting to Come Crashing Down
+  #387  5     Semafor                       Trump increasingly eyes critical minerals in trade policy strategy
+  #388  5     Hypebeast                     Three Creatives Turn the Daily Grind Into a New Source of Inspiration
+  #389  5     TechCrunch                    Uber CTO Praveen Neppalli Naga joins stacked StrictlyVC SF lineup for April 30 event
+  #390  5     Inc.                          Why Small Experiments Are the Secret to Faster Business Growth
+  #391  5     Fast Company                  AI startups are inflating a key revenue metric to win VC attention, says this founder
+  #392  4     Defector                      What’s Parenting Lily Yohannes Like? An Interview With Her Dad
+  #393  4     Business of Fashion           The Middle East War Is Squeezing Asia’s Polyester Suppliers
+  #394  4     Ars Technica                  As electric aspirations fade, Porsche sells its stake in Bugatti
+  #395  4     404 Media                     The AI Compute Crunch Is Here (and It's Affecting the Entire Economy)
+  #396  4     ESPN                          Will the real Pete Crow-Armstrong please stand up?
+  #397  4     Stereogum                     GENER8ION & Yung Lean’s “Storm” Video Is Incredible
+  #398  4     Puck                          ‘Rush Hour 4’s Production Scramble and a ‘Yellowstone’ Firing
+  #399  4     Stereogum                     Vines Shares Ambient “Teenage Dirtbag” Cover With Wheatus’ Brendan Brown
+  #400  4     The Guardian Culture          Backlash against ‘blatant’ Asian stereotype in The Devil Wears Prada 2
+  #401  4     Fast Company                  There’s no rogue McDonald’s AI bot, but ‘prompt injection’ is still a risk for companies
+  #402  4     TechCrunch                    Nothing introduces an AI-powered dictation tool
+  #403  4     Ars Technica                  Six things I'll remember when I think about Tim Cook's version of Apple
+  #404  4     Pitchfork                     11 New Albums You Should Listen to Now: Kehlani, Loukeman, and More
+  #405  4     TechCrunch                    DeepSeek previews new AI model that ‘closes the gap’ with frontier models
+  #406  4     Inc.                          Your Company Culture Is Being Built
+  #407  4     Fast Company                  700 Staples stores are bringing back Party City by opening shop-in-shops. Here’s the full list of locations in 34 states
+  #408  4     NYT Arts                      The Restaurant World Can Be Heated. ‘Top Chef’ Is Lowering the Temperature.
+  #409  4     Futurism                      Google Exec Says Your Favorite Video Games Are Secretly Made With AI
+  #410  4     Stereogum                     Lucy Dacus – “Planting Tomatoes”
+  #411  4     Ars Technica                  Trump administration attempt to gut Endangered Species Act hits roadblock
+  #412  4     Defector                      ‘The Rockford Files’ Remains One Of Television’s Greatest Hangs
+  #413  4     Dazed                         Rowan Blanchard: ‘Hollywood is an extremely fucked industry’
+  #414  4     Semafor                       Nigerian billionaire Dangote proposes new East Africa refinery
+  #415  4     Semafor                       Mozambique, Rwanda worst-hit by Iran war: ratings agency S&P
+  #416  4     Semafor                       US deports migrants to DR Congo, drawing ire over safety concerns
+  #417  4     Semafor                       US moves to normalize ties with Eritrea
+  #418  4     Semafor                       Ghana threatens sanctions on mining firms over local employment rules
+  #419  4     Semafor                       South Africa's clean energy push
+  #420  4     The Atlantic                  Photos of the Week: Fallen Robot, Scooter Waterfall, Sunrise Panorama
+  #421  4     Inc.                          AI Is Changing Growth, but These 5 Strategies Still Win
+  #422  4     Semafor                       How car spinning went mainstream in South Africa
+  #423  4     BBC Sport                     Benfica's Prestianni banned for homophobic conduct in Real Madrid tie
+  #424  4     Dexerto                       Ticketmaster resale prices capped after major rule change
+
+── ALL CANDIDATES (sorted by score) ─────────────────────────────────────────────────────────────────
+ ✓ #1    10    NME                           Helena Bonham Carter exits ‘The White Lotus’, role set to be “rewritten and recast”
+   #2    9     NME                           D4vd quietly dropped by record label while streaming sites face calls to remove his music
+   #3    9     Stereogum                     PARTYOF2 – “2 NIGHTS IN LA”
+   #4    8     Daily Mail                    Simple test can predict if a person will die within 24 hours - doctors claim it is 95 per cent accurate
+   #5    8     The Atlantic                  The U.K. Smoking Ban Is Illiberal
+   #6    8     Daily Mail                    I'm A Celeb's Craig Charles takes another swipe at ITV bosses for 'editing out laughs to focus on controversy' in parting blow following dramatic live final
+   #7    8     Ars Technica                  Artemis II broke Fred Haise's distance record, but he is happy to pass it on
+   #8    8     Dexerto                       Two men drive 3-wheeled car 14,000 miles across Africa to set world record
+   #9    8     Engadget                      Vampire Crawlers, Peter Molyneux's return and other new indie games worth checking out
+   #10   8     NME                           Lucy Dacus shares Record Store Day exclusive track ‘Planting Tomatoes’ on streaming services
+   #11   8     Business Insider              The most pressing questions on Berkshire watchers' minds ahead of Greg Abel's first annual meeting as CEO
+   #12   8     NYT Arts                      First-Timers Try Rooftop Roller Skating at a Children’s Museum
+   #13   8     NYT Arts                      Michael Jackson’s Music Was Too Big to Be Canceled
+   #14   8     Inc.                          Companies Are Rushing to Deploy AI Agents. The Smart Ones Are Doing Something Crucial First
+   #15   8     Business Insider              Now we know who paid $100,000 to unlock a Sam Altman podcast interview
+   #16   8     Sky Sports                    Korda sets 36-hole scoring record to increase Chevron lead
+   #17   8     BBC Sport                     Korda takes charge of first women's major of 2026
+   #18   8     Sky Sports                    Ipswich held, Boro cruise; Oxford relegated & MK promoted - EFL LIVE!
+   #19   7     Page Six                      ‘Wicked’ star Marissa Bode claims she was denied boarding flight over her wheelchair: ‘Do f—ing better’
+   #20   7     ESPN                          Mini NFL mock draft: Predicting the first 10 picks of Round 4
+   #21   7     NYT Arts                      Wayne Moss, Guitarist Who Helped Broaden Country Sound, Dies at 88
+   #22   7     Sky Sports                    Arteta: Arsenal ready to 'get job done' and win title after post-Man City recharge
+   #23   7     TechCrunch                    Lachy Groom to back India startup Pronto at a $200M valuation, sources say
+   #24   7     IGN                           Score $250 Off the ECOVACS DEEBOT X12 OmniCyclone Robot Vacuum and Mop for a Limited Time
+   #25   7     Page Six                      MrBeast denies former employee’s harassment claims, asks judge to toss lawsuit
+   #26   7     Page Six                      Siblings suing Michael Jackson’s estate claim they were ‘brainwashed’ to defend him from abuse allegations
+ ✓ #27   7     The Hollywood Reporter        Box Office Stunner: ‘Michael’ Now on Course to Near $90 Million in Record-Smashing Domestic Opening
+   #28   7     Rolling Stone                 Kim Kardashian Gets Trial Date for Defamation Lawsuit, But Ray J’s Claims Sent to Arbitration
+   #29   7     NYT Arts                      Ruth Slenczynska, 101, Dies; Piano Prodigy Overcame Father’s Abuse
+   #30   7     IGN                           Star Wars: Galactic Racer Release Date Seemingly Leaked on Steam
+   #31   7     Deadline                      ‘Searching For Drug Peace’ Trailer: Hot Docs Film Explores “Daring Reform Activist” Waging War On The War On Drugs
+   #32   7     The Hollywood Reporter        Ralph Gunderman, Voice Artist and Letterman Show Contributor, Dies at 77
+   #33   7     IGN                           The WD EasyStore 16TB External Hard Drive Drops to $279.99 Shipped at B&H Photo
+   #34   7     IGN                           Ellen DeGeneres Returns as Dory in New Finding Nemo Pixar Short
+   #35   7     Dexerto                       Disabled Twitch streamer returns after two years to beat Super Mario 64 using only his eyes
+   #36   7     NYT Arts                      $100 Million Award Made in Suit Over Unlicensed Robert Indiana Art
+   #37   7     Deadline                      More Molestation & Sexual Abuse Claims Against Michael Jackson Revealed As King Of Pop Biopic Debuts
+   #38   7     IGN                           The 65" Samsung U7900 4K Smart TV Drops to Just $329.99 with Free Delivery at Best Buy
+   #39   7     Ars Technica                  Europe—not US—first to authorize Moderna's combo mRNA flu-COVID vaccine
+   #40   7     Sky Sports Football           'Shockwaves' - Forest's first-half frenzy at Sunderland eases relegation worries
+   #41   7     NYT Arts                      Aldwyth, Ascetic Whose Artwork Reordered the World, Dies at 90
+   #42   7     TechCrunch                    X-energy stock pops 27% on first day of trading following upsized IPO
+   #43   7     Dexerto                       Viral Looksmaxxing trend is getting its own film with God of War star
+   #44   7     IGN                           The Top-Tier iBuypower Gaming PC With AMD Ryzen 9 9950X3D CPU and 5090 GPU Drops Below $5,000
+   #45   7     BBC Sport                     Furyk to return as US Ryder Cup captain in 2027
+   #46   7     TechCrunch                    ComfyUI hits $500M valuation as creators seek more control over AI-generated media
+   #47   7     The Verge                     The person who allegedly leaked Paramount’s new Avatar movie has been arrested
+   #48   7     Ars Technica                  FCC: Router ban includes portable hotspots, but not phones with hotspot features
+ ✓ #49   7     Inc.                          $34,000 From a Hairdryer? Police Are Investigating a Weather Sensor Hack at a Major Airport Linked to Crypto Bets
+   #50   7     Inc.                          Marc Jacobs Made a Social-First Series With Rachel Sennott. It Might Be the Future of Advertising
+   #51   7     Dexerto                       Man wins $500k after TikTok inspires him to play lottery
+   #52   7     NYT Arts                      Michael Harrison, 67, Dies; Inventive Composer Who Played With Tuning
+   #53   7     Sky Sports                    Papers: Maresca in Man City talks as Pep emerges as candidate for Italy job
+   #54   7     Vanity Fair                   Larry Gagosian Talks Duchamp, Sushi—and Gives a First Look at the Top Secret New Gagosian Gallery in New York
+   #55   7     NYT Arts                      $450 Million Worth of Newhouse Trophies Come to Christie’s
+   #56   7     Highsnobiety                  Lemaire’s First-Ever Scent Is a Lot Like Its Clothes
+   #57   7     Ars Technica                  Google will invest as much as $40 billion in Anthropic
+ ✓ #58   7     The Guardian Culture          Haruki Murakami to publish first novel to feature woman as lead character
+   #59   7     Dexerto                       Florida woman in lifted truck accidentally runs over $250k Lamborghini after not seeing it over hood
+   #60   7     Know Your Meme                'Monster House's Beloved Eating Scene Makes A Big Meme Comeback As A Reaction Image Format
+   #61   7     Ars Technica                  Soldier won $410K in Polymarket bets on timing of Maduro capture, US alleges
+   #62   7     BBC Sport                     Munoz dies from infection six days after crash
+   #63   7     BBC Sport                     Battling Norrie beats Machac to advance in Madrid
+   #64   7     Ars Technica                  Report: Samsung execs worried company could lose money on smartphones for the first time
+   #65   7     Dexerto                       Toy Story 5 Crocs collab turns Jessie’s cowboy boots into ridiculous $130 clogs
+   #66   7     Stereogum                     Pupil Slicer & Tayne – “W.N.”
+   #67   7     Engadget                      A Battlefield movie adaptation is on the way, possibly starring Michael B. Jordan
+   #68   7     Know Your Meme                Redditors Congratulate /r/WallstreetBets User Who Put Grandma's $700,000 Inheritance In Intel Stock In 2024 As Price Soars
+   #69   7     Dexerto                       AI text editor that purposely messes up your emails goes viral
+   #70   7     Inc.                          Polymarket Insider Trading Scandal: How a Special Forces Soldier Used Classified Intel to Net $400,000
+   #71   7     Inc.                          Elon Musk Quietly Took $500 Million From SpaceX. An IPO Could Change Everything
+   #72   7     The Guardian Culture          A star reborn: ‘America’s sweetheart’ Sandra Bullock returns to the spotlight
+   #73   7     Futurism                      Norway Approves Autonomous Buses for Public Roads
+   #74   7     Dexerto                       Man arrested for leaking Avatar Aang: The Last Airbender film faces up to 7 years in prison
+   #75   7     Pitchfork                     LCD Soundsystem Announce Even More North American Tour Dates
+   #76   7     Dexerto                       TikToker under fire for filming & mocking dead body after fatal accident outside fancy restaurant
+   #77   7     Dexerto                       Florida man goes viral for quitting college after student tells him it’s a “skill issue”
+   #78   7     Futurism                      Millionaire Big Game Hunter Trampled to Death by Elephants
+   #79   6     Dexerto                       Viral new baby robot is a Labubu rival that looks alive
+ ✓ #80   6     Stereogum                     Michael Stipe Debuts New Song “The Rest Of Ever” And Discusses First Solo Album On Colbert
+   #81   6     Sky Sports Football           Arsenal latest: Saka set to return in huge boost to Gunners
+   #82   6     Inc.                          Nike Is Reshaping Its Entire Business. 1,400 Jobs Just Got Cut
+   #83   6     Dexerto                       Invincible VS trailer has fans convinced it’s actually better than the show
+   #84   6     Sky Sports Football           Liverpool vs Crystal Palace LIVE!
+ ✓ #85   6     Daily Mail                    You're washing your clothes WRONG! Experts reveal how often you need to clean your jeans - and it turns out 79% of Brits are overdoing it
+   #86   6     Daily Mail                    America's tourism own goal? Why Canada - including the secret celebrity playground Justin and Hayley Bieber love - could be World Cup's big winner
+   #87   6     Daily Mail                    The rise of the bodyguard romances: Why so many stars have been swept into ill-fated relationships with their bouncer - as Holly Valance is spotted kissing her family's former minder
+   #88   6     Daily Mail                    Family of Brit, 72, 'falsely detained' in Dubai jail for 18 YEARS plead for his freedom as campaigners condemn 'weak' UK Government for failing him
+   #89   6     Futurism                      Astronomers Discover Major Clue About 3I/ATLAS’ Origins
+   #90   6     Daily Mail                    Deadline for missing scientists probe nears as congressman warns of sinister plot unfolding
+ ✓ #91   6     Daily Mail                    'How do these people do it?': MIC 'liggers' Ollie and Gareth Locke mysteriously land ANOTHER £4m home after being evicted from the last. But as OLIVIA KEMP reveals, their new well-heeled neighbours are less than impressed...
+ ✓ #92   6     Daily Mail                    Alex Scott vows to end Football Focus on a high amid criticism following BBC's decision to axe show after 52 years
+ ✓ #93   6     Daily Mail                    Britain and France should lead new European NATO without help from the US, says ex-chief
+ ✓ #94   6     Daily Mail                    Small boat gang rapist launched sex attack with two other gang rapists on Brighton Beach after he was turned down for asylum
+ ✓ #95   6     Vanity Fair                   How the Michael Costume Designer Recreated Jackson’s World Through Fashion
+   #96   6     Business Insider              My partner and I lived in a camper van for 3 years before I had an unexpected pregnancy. It changed everything for us.
+ ✓ #97   6     Page Six                      Jason Biggs reveals why he went public with sobriety journey
+ ✓ #98   6     Inc.                          81% of Small Businesses Are Excited About AI. So Why Aren’t They Using It Daily?
+ ✓ #99   6     Engadget                      Engadget review recap: DJI Osmo Pocket 4, Recteq X-Fire Pro and Alienware 27 QD-OLED
+ ✓ #100  6     The Verge                     The most exciting laptop I’ve seen in forever
+ ✓ #101  6     The Atlantic                  The Republican Who Outsmarted Trump
+ ✓ #102  6     Polygon                       Good Boy on streaming: This subversive 2025 horror movie just landed on Hulu
+ ✓ #103  6     The Guardian Culture          Tate at a turning point: new director must confront unwieldy ‘beast’ of an art institution
+ ✓ #104  6     BBC Sport                     Steelers draft QB with Rodgers future still unclear
+   #105  6     The Atlantic                  The Strange Comfort of a Rewatch
+   #106  6     The Verge                     Sho Miyake answers life’s greatest questions
+ ✓ #107  6     Business Insider              Crowded, costly, and complicated: 3 former Floridians explain why they left the state
+ ✓ #108  6     Daily Mail                    Off the tracks! Public transport 'crime wave' fears as robbery soars by 136% and sexual offences 17% since before Covid
+ ✓ #109  6     BBC Sport                     Allen sees off Wilson to reach Crucible quarters
+ ✓ #110  6     BBC Sport                     GB's Potter wins World Triathlon Series opener
+ ✓ #111  6     Daily Mail                    Revealed: The monster father who raped Nick Knowles's wife Katie for years... and her dark struggle to process and understand the man who stole her childhood
+ ✓ #112  6     Daily Mail                    Three young brothers vanished on Thanksgiving 2010... now investigators believe they have made a tragic break in the case
+ ✓ #113  6     Futurism                      GLP-1 Drugs Linked to Cognitive Impairment, Though the Reason Why Probably Isn’t What You Expect
+ ✓ #114  6     Polygon                       Sega Game Gear at 35: Switch and Steam Deck might not exist without this flop
+ ✓ #115  6     Variety                       ‘Fargo’ and ‘Alien: Earth’ Creator Noah Hawley Says YouTube Is His ‘Biggest Competition’: ‘You Are Losing Eyeballs to Things That Are Free’
+ ✓ #116  6     Daily Mail                    Beyonce and husband Jay Z 'set to splash out on a lavish 16th century French chateau after scrapping plans to relocate to the UK'
+ ✓ #117  6     Daily Mail                    Woman who married her own FATHER aged 20 then announced it on Facebook shares how she has moved on from incest grooming nightmare with new man... as her dad's latest disgrace is revealed
+ ✓ #118  6     Daily Mail                    Is lady of the manor Pippa Middleton more like TV star sister-in-law Vogue Williams than she'd care to admit? How the pair really get on - after Kate's sister was branded 'nouveau riche' in neighbour war near £15million home
+ ✓ #119  6     Variety                       Kunchacko Boban, Lijomol Jose Thriller Title Set as ‘Unmadham,’ Release Date Unveiled (EXCLUSIVE)
+ ✓ #120  6     Daily Mail                    BEL MOONEY: My stepdad abused me at 17... but it's Mum I can't forgive
+ ✓ #121  6     Business Insider              My parents pay my rent in New York City because I can't find a full-time job after college. I feel like I failed.
+ ✓ #122  6     Daily Mail                    'He's in constant fear his past will come back to haunt him': KATIE HIND reveals what's REALLY behind the reinvention of Chris Evans - and the age gap romance, disgusting sexual 'prank' and ditching of A-list friends that could torpedo him for good
+ ✓ #123  6     Daily Mail                    Awkward kiss cam encounters! Getting attacked by a mascot and the most painful rejection feature among hilarious clips
+ ✓ #124  6     The Atlantic                  Where Is Tulsi Gabbard?
+ ✓ #125  6     Daily Mail                    Moment Russell Brand fails to find Bible passage he read in court in excruciating 90 second clip - after admitting he fears going to prison
+ ✓ #126  6     Business Insider              What it's really like living abroad, from expats who made homes overseas
+ ✓ #127  6     Daily Mail                    Cruz Beckham, 21, wraps his arm around girlfriend Jackie Apostel, 30, as they enjoy a shopping trip in NYC
+ ✓ #128  6     NME                           Slam Dunk director to step down from festival operations amid allegations
+ ✓ #129  6     Inc.                          5 Night Shift Side Hustle Businesses You Can Run After 9 p.m.
+ ✓ #130  6     The Verge                     The US gets the worst phones
+ ✓ #131  6     The Atlantic                  Why Silicon Valley Is Turning to the Catholic Church
+ ✓ #132  6     Polygon                       Beef's Big Matthew Kim finally opens up on childhood before k-pop
+ ✓ #133  6     Daily Mail                    ITV accused of 'good editing' to 'protect golden boy' Adam Thomas after Jimmy Bullard blew up at Ant McPartlin - after I'm A Celeb all-stars final descended into utter chaos
+ ✓ #134  6     Dexerto                       Final Fantasy 14 is getting an entire raid series based on Neon Genesis Evangelion
+ ✓ #135  6     Sky Sports                    Women's Six Nations: Red Roses pulling clear of Wales LIVE!
+ ✓ #136  6     Daily Mail                    Gemma Collins says David Haye and Jimmy Bullard should be 'disgusted with themselves' in scathing rant after storming off I'm A Celeb set during chaotic finale
+ ✓ #137  6     Daily Mail                    Inside the gilded cage of MRS Kinahan: As her gangster husband Daniel languishes in jail, why ruthless 'Queen of the Molls' is full of regret, living in fear in Dubai and longing for her old life in Dublin
+ ✓ #138  6     Ars Technica                  Palantir employees are talking about company's "descent into fascism"
+ ✓ #139  6     Business Insider              I brought my 3-year-old and 6-year-old sons to work with me. Here's what I learned.
+ ✓ #140  6     BBC Sport                     Forest condemn Rhinos to eighth consecutive defeat
+ ✓ #141  6     Futurism                      Scientists Say They’ve Tested a Way to Get to Alpha Centauri in Just 20 Years
+ ✓ #142  6     Business Insider              I shopped Gap's new Victoria Beckham collection. It's one of the best fashion collaborations of the year — if you're tall enough to wear it.
+ ✓ #143  6     NME                           Kat Graham says her scenes as Diana Ross in Michael Jackson biopic were cut due to legal issues
+ ✓ #144  6     Wired                         Discord Sleuths Gained Unauthorized Access to Anthropic’s Mythos
+ ✓ #145  6     Wired                         ‘Saros’ Shows Off the PS5’s DualSense Tricks
+ ✓ #146  6     Business Insider              I'm self-employed, and family planning as a freelancer is scary. I don't have parental leave, and I don't know how much money to save.
+   #147  6     Hypebeast                     Bottega Veneta And Kwangho Lee Are a Match Made in Heaven
+ ✓ #148  6     Page Six                      ‘Fake Cartier heiress’ defends her lineage — and says ‘mean girls’ won’t stop her partying
+ ✓ #149  6     Inc.                          A New Study Finds Leadership Often Attracts ‘Dark’ Personality Traits
+ ✓ #150  6     Inc.                          The Hidden Guilt of Solo Entrepreneurship
+ ✓ #151  6     Inc.                          ‘No One Knew I Was in a Different Time Zone’: The Workers Who Travel, Play Tennis, and Do Chores on the Clock
+ ✓ #152  6     Futurism                      Elon Musk Fans Increasingly Disgusted by His Toxic Outbursts
+ ✓ #153  6     The New Yorker                With A.I., Anyone Can Be an Influencer
+ ✓ #154  6     The New Yorker                Inside the World-Conquering Rise of the Micro-Drama
+ ✓ #155  6     The New Yorker                A Chernobyl Widow’s Tragedy, Forty Years Later
+ ✓ #156  6     Wired                         The Online Civil War About ‘Michael’ Is a Battle Over Truth
+ ✓ #157  6     Vanity Fair                   A Complete Timeline of the Drama Surrounding ‘Michael’ Movie
+ ✓ #158  6     Business Insider              I visited Wayfair's new Atlanta store and found 18 Way Day deals worth shopping
+ ✓ #159  6     The Guardian Culture          Palermo ‘honoured’ by rumours Dua Lipa and Callum Turner might marry there in June
+ ✓ #160  6     Polygon                       5 sci-fi books like Pragmata for fans to read next
+ ✓ #161  6     Business Insider              Junior talent 'can see how to disrupt us': Goldman partner Kunal Shah on the next generation of bankers
+ ✓ #162  6     Business Insider              You can thank Tim Cook for the large iPhones
+ ✓ #163  6     Business Insider              4 people who pivoted into AI jobs — and how they did it
+ ✓ #164  6     Business Insider              Meet the single moms raising their kids together in a Manhattan 'mommune'
+ ✓ #165  6     Business Insider              A research firm says 4 signs show the AI trade could spark a 30% stock rally that echoes the dot-com era
+ ✓ #166  6     NYT Arts                      How Will BTS Endure a Grueling World Tour? We Asked Their Ex-Trainer.
+ ✓ #167  6     Wired                         Ace the Ping-Pong Robot Can Whup Your Ass
+ ✓ #168  6     NME                           Here’s what went down when Yungblud brought his ‘Idols’ world tour’ to London’s O2
+ ✓ #169  6     Business Insider              People are injecting DIY peptides for weight loss and longevity. Doctors are alarmed at the side effects.
+ ✓ #170  6     Inc.                          Caitlin Clark, Simone Biles and Ilia Malinin All Do 1 Thing That Every Great Leader Does Too
+ ✓ #171  6     Business Insider              I tried every trick to stand out in my job search. A tip I found on Reddit was the only strategy that got me an offer.
+ ✓ #172  6     Business Insider              This Ukrainian company is upgrading its battlefield robots like smartphones. Here's how it's chasing the edge in combat.
+ ✓ #173  6     NME                           ‘Leaving Neverland’ director says Michael Jackson was “worse than Jeffrey Epstein”
+ ✓ #174  6     Business Insider              Why the oil market hasn't seen the Iran war doomsday scenario that experts warned about
+ ✓ #175  6     Business Insider              I went to a kids' Pokémon event. I expected child's play, but got a trading floor.
+ ✓ #176  6     Business Insider              Andrew Yang says AI could swell economic inequality at an 'epic, unprecedented scale'
+ ✓ #177  6     Business Insider              'We're both from the same city': How Mamdani and Trump's relationship has evolved over time
+ ✓ #178  6     NYT Arts                      6 Podcasts About Classical Music
+ ✓ #179  6     NYT Arts                      The Long, Challenging Road to D4vd’s Arrest
+ ✓ #180  6     NYT Arts                      Shayok Misha Chowdhury’s ‘Rheology’ Asks: Can Physics Soften a Mother’s Death?
+ ✓ #181  6     NYT Arts                      Fact-Checking ‘Michael’: What the Biopic Gets Right and Wrong About Michael Jackson
+ ✓ #182  6     Business Insider              New tech status symbol alert: A Sequoia-engraved Mac Mini for your AI agent
+ ✓ #183  6     Business Insider              I'm a Gen Z Microsoft engineer. AI doesn't always save me time, but it's still made my job easier.
+ ✓ #184  6     Billboard                     Jimmy Barnes, INXS Lead Tributes to James Valentine Following Death at 64
+   #185  6     Highsnobiety                  New Balance's Techy GORE-TEX Trail Runner Looks Best Blacked-Out
+ ✓ #186  6     Inc.                          The Most Powerful Business Strategy Isn’t a Product or a Pitch. It’s a Person
+ ✓ #187  6     NYT Arts                      Jet Li Believes in Showing Up on Time, or Earlier
+ ✓ #188  6     NYT Arts                      Poetry Month Reading Recommendations
+ ✓ #189  6     Variety                       Javier Ambrossi and Javier Calvo and Movistar Plus+ Bow ‘I Always Sometime,’ A Vision of Breadline Motherhood in Gentrified Barcelona
+ ✓ #190  6     Business Insider              Meta employees face a slow-swinging axe and a tough choice: hustle or job hunt
+ ✓ #191  6     Variety                       Haitian Woman Judged by Bible Instead of Law Focus of Documentary ‘Job 1:21,’ Winner of Visions du Réel Award
+ ✓ #192  6     BBC Sport                     Fitzpatricks one shot off lead in PGA pairs event
+ ✓ #193  6     BBC Sport                     James leads Lakers to brink of play-off series win
+ ✓ #194  6     Rolling Stone                 Boyz II Men Join Cody Johnson for Surprise ‘On Bended Knee’ Performance at Stagecoach
+ ✓ #195  6     Variety                       ‘Boho’ Encourages Women of All Ages to Dream – and to Dance: ‘This Show Is Like a Warm Blanket in Hard Times’
+ ✓ #196  6     Page Six                      Jenna Bush Hager reveals she was banned from her daughter’s volleyball games
+ ✓ #197  6     The Guardian Culture          ‘I saw the backlash coming’: civil rights activist Kimberlé Crenshaw on America and race
+ ✓ #198  6     NME                           Black Sabbath regain ownership of “historically important” early Earth demos after legal battle
+ ✓ #199  6     BBC Sport                     FA Cup game: Answer our prompts for a Man City v Southampton prediction
+ ✓ #200  6     BBC Sport                     How Newcastle's 'bullies' became too nice
+ ✓ #201  6     Business Insider              How I taught myself to code, quit my consulting job, and started an AI robotics firm by age 25
+ ✓ #202  6     Dexerto                       What time is Euphoria Season 3 Episode 3 out?
+ ✓ #203  6     Business Insider              Best gardening tools for beginners: what to buy and what to skip
+ ✓ #204  6     NME                           Tom Rowley on how playing with Arctic Monkeys shaped his debut album: “You come across some fucking mad people”
+ ✓ #205  6     Rolling Stone                 Ashlee Simpson Brings the Y2K Nostalgia to Emo Nite at Stagecoach
+ ✓ #206  6     BBC Sport                     How Guardiola found his best Man City XI
+ ✓ #207  6     Billboard                     Xaviersobased Announces Debut Australia Tour With Vivid LIVE Date
+ ✓ #208  6     Sky Sports                    Itauma now looking to win world title 'as soon as possible'
+ ✓ #209  6     The Guardian Culture          This Is Not a Murder Mystery: cosy-crime meets art in an irresistibly surreal Belgian drama
+ ✓ #210  6     The Guardian Culture          When did northern soul get so southern?
+ ✓ #211  5     ESPN                          Which teams won -- and lost -- on Day 2 of the NFL draft? Kiper on the best values, biggest reaches
+ ✓ #212  5     BBC Sport                     Could Spurs fans take solace from a season in the Championship?
+ ✓ #213  5     BBC Sport                     Why is Kelly not an automatic starter for Arsenal or England?
+ ✓ #214  5     The Guardian Culture          TV tonight: another pandemic strikes in a special Casualty series
+ ✓ #215  5     BBC Sport                     Welsh fire, England captain - how Meg Jones became a dual-nation icon
+ ✓ #216  5     Rolling Stone                 BigXthaPlug Leads a Sing-a-Long to Ella Langley’s ‘Choosin’ Texas,’ Delivers the Hits to Stagecoach
+ ✓ #217  5     Sky Sports                    Seven Questions and Dyonisos go for Silver Trophy glory
+ ✓ #218  5     The Guardian Culture          From Mother Mary to Foo Fighters: your complete entertainment guide to the week ahead
+ ✓ #219  5     BBC Sport                     Ramsey's marathon in memory of 'amazing' young boy
+ ✓ #220  5     ESPN                          Drafted in drip: Looking at the best outfits from the 2026 NFL draft
+ ✓ #221  5     ESPN                          Open to work no more: Mendoza celebrates with a LinkedIn post after taken at No. 1
+   #222  5     Hypebeast                     'ICEMAN's Release Date Revealed: Everything We Loved in Music This Week
+ ✓ #223  5     Inc.                          Want to Raise Successful Kids? Harvard Research Says It All Comes Down to 1 Simple Word
+ ✓ #224  5     The Hollywood Reporter        David Ellison Held Dinner Party “Honoring” Trump Where President Gave Hour-Long Remarks
+ ✓ #225  5     Rolling Stone                 Noah Cyrus Makes It a Family Affair at Stagecoach With Billy Ray and Braison Cyrus
+ ✓ #226  5     The New Yorker                Donald Trump’s Economic Warfare Abroad Comes Home
+ ✓ #227  5     IndieWire                     Watch Michelle Yeoh, Maggie Cheung, and Anita Mui Save a Bunch of Floating Babies in ‘The Heroic Trio’
+ ✓ #228  5     Deadline                      Chris Meloni Has ‘Law & Order’ Reunion With Mariska Hargitay While “Freshly Unemployed” After ‘Organized Crime’ Cancellation
+ ✓ #229  5     Fast Company                  This ‘anti-Grammarly’ AI tool adds typos to your emails on purpose
+ ✓ #230  5     Fast Company                  What it’s like to stay in Ikea’s only hotel
+ ✓ #231  5     Fast Company                  Here’s how to learn from failure—without being consumed by it
+ ✓ #232  5     Rolling Stone                 Ella Langley Brings Out Theo Von for ‘You Look Like You Love Me’ Duet at Stagecoach
+ ✓ #233  5     Variety                       ‘Deep Water’ Review: Renny Harlin’s Double-Dip Disaster Movie — Plane Crash + Shark Thriller — Has His Signature Schlock Touch
+ ✓ #234  5     Fast Company                  What earnings for America’s largest homebuilder reveal about the housing market
+ ✓ #235  5     Fast Company                  Here’s how to decide when travel insurance is worth it
+ ✓ #236  5     Fast Company                  Independent Bookstore Day: Bookshop.org founder on how small retailers are taking on Amazon
+ ✓ #237  5     The Hollywood Reporter        What I Learned From Dean Tavoularis, the Legendary Production Designer of New Hollywood
+ ✓ #238  5     Ars Technica                  This is who's developing Golden Dome's orbital interceptors—if they're ever built
+ ✓ #239  5     The Hollywood Reporter        Nikki Glaser Roasts Katy Perry, Hailey Bieber, Victoria Beckham and More at Time 100 Gala
+ ✓ #240  5     The Hollywood Reporter        Margot Robbie and Jacob Elordi’s ‘Wuthering Heights’ Sets HBO Max Streaming Debut
+ ✓ #241  5     Page Six                      David Hasselhoff, 73, uses walker during rare outing with wife Hayley Roberts
+ ✓ #242  5     Fast Company                  Meet your favorite new way to watch YouTube
+ ✓ #243  5     Fast Company                  Most people can’t tell when a personal text message is written by AI. Here’s why it matters
+ ✓ #244  5     Variety                       Chase Infiniti Says It Was ‘Totally Surreal’ to Work With Morgan Freeman in New Audi Commercial
+ ✓ #245  5     Fast Company                  4 science-backed skills to start flourishing and change your life
+ ✓ #246  5     Page Six                      Kesha ditches her clothes to celebrate Earth Day in the ocean: ‘The divine feminine’
+ ✓ #247  5     Deadline                      iHeartMedia Shares Jump After Report Of Early Merger Talks With SiriusXM
+ ✓ #248  5     Billboard                     Otis Redding Center for the Arts Celebrates One-Year Anniversary: Ensuring the ‘Legacy Keeps Reaching Forward’
+ ✓ #249  5     Consequence                   Born-Again Christian Russell Brand Struggles to Find Bible Passage
+ ✓ #250  5     Deadline                      Melissa McCarthy Surprises Mariska Hargitay During ‘Law & Order: SVU’ Guest Role: “Mind Blown”
+ ✓ #251  5     The Hollywood Reporter        Noah Kahan Surprise Drops ‘The Great Divide’ Extended Version ‘The Last of the Bugs’
+ ✓ #252  5     Variety                       Stagecoach Livestream Schedule: When and Where to Catch Lainey Wilson, Ella Langley, Post Malone and Other Festival Stars Online
+ ✓ #253  5     Business Insider              This is the free Google online course in Python programming I wish I took before I started my master's degree
+ ✓ #254  5     Business Insider              Coursera and edX are two popular online learning platforms — here's how they compare in terms of price and programs offered
+ ✓ #255  5     Business Insider              Coursera is offering 90% of its online classes to college students for free until September 30, 2020 — here's how to enroll
+ ✓ #256  5     Business Insider              12 public health courses you can take online for free, offered by schools like Yale, Johns Hopkins, Duke, Emory, and more
+ ✓ #257  5     Business Insider              4 things I loved about Stanford's popular online nutrition and cooking class — and why it's worth signing up for
+ ✓ #258  5     Business Insider              Coursera's Workforce Recovery Initiative gives unemployed workers free access to 90% of its online course catalog — here's how it works
+ ✓ #259  5     TechCrunch                    Steve Ballmer blasts founder he backed who pleaded guilty to fraud: ‘I was duped and feel silly’
+ ✓ #260  5     Business Insider              Coursera has a free CME-eligible course that gives students an overview of COVID-19 in just 3 hours
+ ✓ #261  5     Business Insider              Coursera offers split-screen tutorials to gain new skills in a few hours. Despite some glitches, I learned the basics of Figma really fast.
+ ✓ #262  5     Business Insider              The 9 most popular online courses people are taking on Coursera from Stanford, Yale, and Princeton
+ ✓ #263  5     Puck                          Bari’s Post-WHCD Purge
+ ✓ #264  5     IGN                           The Official Shrek Retro TV Toaster Offers Up a Shrekfast Lifestyle
+ ✓ #265  5     Billboard                     Billboard’s Music Industry Events Calendar
+ ✓ #266  5     The Hollywood Reporter        SiriusXM, iHeartMedia Eye Merger, With Irving Azoff and Apollo in Mix
+   #267  5     Highsnobiety                  New Balance’s Tasteful Marathon-Themed Dad Shoe Is a Winner
+ ✓ #268  5     Highsnobiety                  New Balance's Vibram "Miu Miu" Sneaker Is Small But Mighty
+   #269  5     Highsnobiety                  With Italian Leather Weave, Converse’s Nike-Backed Chuck Taylor Goes Full Bottega
+   #270  5     Highsnobiety                  Isamaya Ffrench’s Extra-Thick Nike Sneaker Is Self-Care
+   #271  5     Highsnobiety                  Nike’s 30-Year-Old Air Max Looks Extra Clean in Its Tech Suit
+ ✓ #272  5     Deadline                      Comcast Co-CEO Mike Cavanagh Lands $72 Million Pay Package For 2025
+ ✓ #273  5     Deadline                      ‘Summer House’ Cast Reacts To Reunion Audio Leak: Kyle Cooke Says It’s “Unfortunate” & A “Bummer”
+ ✓ #274  5     IGN                           Bundle & Save 20% on Shirts, Pants, Jeans, and More at Men's Wearhouse Right Now for Spring Savings
+ ✓ #275  5     Highsnobiety                  Nike’s Oldest Sneaker Just Made It Back to Earth
+ ✓ #276  5     IGN                           For Earth Day, Get a Bonus $10 Gift Card on Top of Cash When Trading In Electronics at PayMore
+ ✓ #277  5     IGN                           The $14 Portable Neck Fan Is the Budget-Friendly Solution to Beating the Summer Heat
+ ✓ #278  5     IGN                           Expand Your Home Gym on the Cheap With the Yoleo Weight Bench for Just $54 Shipped
+ ✓ #279  5     Puck                          Salone, and Thanks for All the Fish
+ ✓ #280  5     Deadline                      Everything We Know About The Hulu Adaptation of ‘Count My Lies’ So Far
+ ✓ #281  5     Hypebeast                     New Era Fuses Heritage with Its Homegrown Roots at New NYC Flagship
+ ✓ #282  5     BBC Sport                     'Something special' - O'Sullivan & Higgins renew rivalry
+ ✓ #283  5     The Atlantic                  Sam Altman Wants to Know Whether You’re Human
+ ✓ #284  5     IndieWire                     Pete Ohs Wants Filmmaking to Be Fun — and for You to Edit His Movies
+ ✓ #285  5     Deadline                      Andrea Newman Leaving ‘Chicago Fire’ After 14 Seasons; Victor Teran Named New Showrunner
+ ✓ #286  5     Sky Sports Football           Sunderland latest: Le Bris reacts to Mukiele exchange with fans
+ ✓ #287  5     Sky Sports                    Lowry, Koepka miss cut at Zurich Classic with Fitzpatrick brothers in contention
+ ✓ #288  5     BBC Sport                     Rogers open to European move - Saturday's gossip
+ ✓ #289  5     TechCrunch                    Palantir is reportedly helping the IRS investigate financial crimes
+ ✓ #290  5     The Hollywood Reporter        As ‘Michael’ Opens, ‘Leaving Neverland’ Accuser James Safechuck Issues Message to Abuse Survivors
+ ✓ #291  5     IGN                           Best Gaming Earbuds 2026: Top (Mostly) Wireless In-Ear Headphones
+ ✓ #292  5     MIT Technology Review         Three reasons why DeepSeek’s new model matters
+ ✓ #293  5     NYT Arts                      Student Contest Based on Trump’s Garden of Heroes Downplays Darker History
+ ✓ #294  5     BBC Sport                     Forest stun Sunderland to boost survival hopes
+ ✓ #295  5     Engadget                      XChat, the standalone app for messaging on X, is available on iOS now
+ ✓ #296  5     IGN                           The Mummy 4 Moved Up to 2027 as Miami Vice '85 Is Pushed to 2028
+ ✓ #297  5     BBC Sport                     Dominant RB Leipzig see off Union Berlin
+ ✓ #298  5     TechCrunch                    Cohere acquires, merges with Germany-based startup to create a ‘transatlantic AI powerhouse’
+ ✓ #299  5     Deadline                      Ex-Paramount President Jeff Shell’s 2025 Pay Tops $60 Million
+ ✓ #300  5     IGN                           Prime Minister of South Korea Hails Crimson Desert, Say It Has 'Opened a New Chapter for K-Content'
+ ✓ #301  5     Futurism                      Three Years Ago Today, “Avengers” Director Joe Russo Predicted There Would Be a Fully AI-Generated Movie Within Two Years
+ ✓ #302  5     Sky Sports Football           Five-goal Forest take huge step towards safety with Sunderland thrashing
+ ✓ #303  5     Polygon                       Marty Supreme and every new movie on Netflix, HBO, and more this weekend
+ ✓ #304  5     IGN                           Final Fantasy XIV Is Coming to Nintendo Switch 2 in August With a Separate Subscription
+ ✓ #305  5     IndieWire                     WGA Members Ratify New 4-Year Deal with Film and TV Studios
+ ✓ #306  5     Billboard                     LE SSERAFIM’s ‘CELEBRATION’ Kicks Off a New & Personal Era | Billboard News
+ ✓ #307  5     Dexerto                       MrBeast lets fans from every country vote for Beast Games Season 3 contestants
+ ✓ #308  5     Billboard                     Allison Jones Named EVP of A&R at Big Machine Records/Nashville Harbor Records & Entertainment
+ ✓ #309  5     Engadget                      Maine governor vetoes bill temporarily banning large data centers in the state
+ ✓ #310  5     Stereogum                     Orphan Donor Announce New Album Ailments: Hear “Show Me The Way”
+ ✓ #311  5     TechCrunch                    Two college kids raise a $5.1 million pre-seed to build an AI social network in iMessage
+ ✓ #312  5     Sky Sports Football           Millwall go second with late equaliser at relegated Leicester
+ ✓ #313  5     TechCrunch                    Meta’s loss is Thinking Machines’ gain
+ ✓ #314  5     Dexerto                       Klaudiaglam’s mom starts GoFundMe as doctors “don’t believe she’ll survive” rival’s alleged attack
+ ✓ #315  5     Business of Fashion           Saks Settles Fight With Simon Property, Cuts Deal With Creditors
+ ✓ #316  5     Hypebeast                     Gagosian Runs Back Duchamp’s Greatest “Readymades”
+ ✓ #317  5     Business of Fashion           Brunello Cucinelli Tightens Controls on Sanctions Compliance After Allegations
+ ✓ #318  5     IGN                           Upcoming New Disney and Pixar Movies: 2026 Release Dates and Beyond
+ ✓ #319  5     IndieWire                     ‘Stranger Things: Tales from ’85’ Should Be More Like a Saturday Morning Cartoon
+ ✓ #320  5     The Guardian Culture          The Neighbourhood review – Graham Norton is the only good thing about this tired reality show
+ ✓ #321  5     IGN                           The Popular AstroAI S8 Cordless Car Jump Starter Drops Below $20 on Amazon
+ ✓ #322  5     The Verge                     Microsoft will let you pause Windows Updates indefinitely, 35 days at a time
+ ✓ #323  5     Hypebeast                     Gucci’s Contemporary Refresh Kickstarts with New Muses and a Campaign Shot by Demna
+ ✓ #324  5     IGN                           Tides Of Tomorrow Review
+ ✓ #325  5     Business of Fashion           Why Fashion Is Still Stuck on Sustainability Double Standards
+ ✓ #326  5     Billboard                     The Best Ticketing Sites to Find Affordable Tickets to Ariana Grande, Foo Fighters & ENHYPEN
+ ✓ #327  5     NYT Arts                      6 Shows Our Theater Critics Are Talking About
+ ✓ #328  5     Vanity Fair                   All of Kim Kardashian’s Met Gala Looks From 2013 to Now
+ ✓ #329  5     NYT Arts                      The World According to Aldwyth
+ ✓ #330  5     Business of Fashion           The Acts of Love Behind Milan Design Week
+ ✓ #331  5     Billboard                     BTS Is Selling Snacks & Energy Drinks at Walmart Now? Everything You Need to Know
+   #332  5     Billboard                     Who Are MGA, aka Mrs. GREEN APPLE? A Beginner’s Guide to Japan’s Monster Band
+ ✓ #333  5     Futurism                      Just 11 AI Data Centers Could Belch More Fumes Than Entire Countries
+ ✓ #334  5     IGN                           Invincible Creator Robert Kirkman Says Tech Jacket was Gender-Swapped to Address a Comic Book 'Shortcoming'
+ ✓ #335  5     Dexerto                       Police couldn’t find missing woman because she used filters on all her Instagram photos
+ ✓ #336  5     Engadget                      The DOJ is backing xAI in its lawsuit against Colorado
+ ✓ #337  5     Inc.                          Bed Bath & Beyond Is Returning to a State It Once Vowed to Avoid
+ ✓ #338  5     The Verge                     Alex Jones has uncovered another massive conspiracy
+ ✓ #339  5     Puck                          Sotheby’s $96M de Gunzburg Blockbuster
+ ✓ #340  5     Dexerto                       McDonald’s UK adds Frank’s RedHot breakfast items and new McCrispy burgers
+ ✓ #341  5     Inc.                          America Is Running Out of Primary Care Doctors. AI Is Filling the Gap
+ ✓ #342  5     IndieWire                     The Fight Sounds in ‘Beef’ Season 2 Bloom Like a Bruise
+ ✓ #343  5     Inc.                          New Gene Therapy Can Restore Hearing in Deaf Kids—And It Comes With an Unexpected Price Tag
+ ✓ #344  5     TechCrunch                    X launches stand-alone XChat app on iOS
+ ✓ #345  5     Consequence                   Heavy Song of the Week: Korn’s Artistic Renaissance Continues on “Reward the Scars”
+ ✓ #346  5     Consequence                   Alex Jones Loses What’s Left of His Mind After Discovering Tim Heidecker’s Old Adult Swim Clips
+ ✓ #347  5     Hypebeast                     Aimé Leon Dore Los Angeles Opens & SKYLRK Makes Coachella Merch History in This Week's Top Fashion News
+ ✓ #348  5     Business of Fashion           The BoF Podcast | Britt Moran on Why Atmosphere Is a Real Luxury Product
+ ✓ #349  5     NYT Arts                      Venice Biennale Bars Awards for Countries Facing Crimes Against Humanity Charges
+ ✓ #350  5     Know Your Meme                Missing Scientists Conspiracy Theory Explained
+ ✓ #351  5     Futurism                      Chinese Netflix Competitor Opens Floodgates to AI Slop
+ ✓ #352  5     Engadget                      What you need to know as Elon Musk's lawsuit against Sam Altman begins
+ ✓ #353  5     Inc.                          Want to Get AI and Cybersecurity Right? Consider Following the Pope’s Example
+ ✓ #354  5     Defector                      Don’t Make The Tiny Man Dribble While Everyone Else Stands Still
+ ✓ #355  5     Business of Fashion           As Brands Get Tariff Refunds, What Do They Owe Their Customers?
+ ✓ #356  5     IndieWire                     Movies You Won’t Want to Miss: Hear from John Early and IndieWire Staffers About CinemaCon, ‘The Mummy,’ and ‘Maddie’s Secret’
+ ✓ #357  5     The Guardian Culture          Conteh review – the dazzling rise and bruising fall of a 70s boxing great
+ ✓ #358  5     Ars Technica                  Why are top university websites serving porn? It comes down to shoddy housekeeping.
+ ✓ #359  5     Engadget                      Google plans to invest even more money into Anthropic
+ ✓ #360  5     Wired                         Give Mom Warm Coffee All Year Long With This Ember Smart Mug Deal
+ ✓ #361  5     Engadget                      Singapore police arrest alleged The Legend of Aang: The Last Airbender leaker
+ ✓ #362  5     Inc.                          Is Everyone an Introvert Now?
+ ✓ #363  5     Ars Technica                  In rare chickenpox case, itchy blisters mushroom into large, rubbery nodules
+ ✓ #364  5     Hypebeast                     New Balance & Dover Street Market's Head-to-Toe Running Capsule Is Ready to Race
+ ✓ #365  5     BBC Sport                     London Marathon is 'my Everest' - Hampson
+ ✓ #366  5     Inc.                          The New Ingredient for 2026’s Retail Recipe
+ ✓ #367  5     ESPN                          Answering big questions from Round 1 of the draft
+ ✓ #368  5     ESPN                          How Rams quietly zeroed in on Ty Simpson in the draft -- and kept it a secret
+ ✓ #369  5     Stereogum                     Bedouine Shares New Benefit Single “Canopies” For Armenian Genocide Remembrance Day
+ ✓ #370  5     The New Yorker                Why Senator Rand Paul Voted to Limit Donald Trump’s War Powers
+ ✓ #371  5     The New Yorker                “Fat Swim” and Literature’s Fatphobia Problem
+ ✓ #372  5     IndieWire                     ‘Gail Daughtry and the Celebrity Sex Pass’ Teaser: Zoey Deutch Is on a Mission to Sleep with Jon Hamm
+ ✓ #373  5     Defector                      Tony Dokoupil Is Still Eating Shit, Even If No One’s Watching
+ ✓ #374  5     The Guardian Culture          Michael B Jordan to take on big-screen adaptation of hit video game Battlefield
+ ✓ #375  5     Consequence                   Rob Reiner’s Son Jake Breaks Silence on “Living Nightmare” of Parents’ Deaths
+ ✓ #376  5     Inc.                          This ‘Analog’ Tractor Startup Is Winning Over Farmers—but Is It Too Good to Be True?
+ ✓ #377  5     Wired                         Beatbot Pool-Cleaning Robots Are on Sale for a Limited Time
+ ✓ #378  5     Stereogum                     Sugar World – “Terra Incognita”
+ ✓ #379  5     Dexerto                       Gardener reveals what happens when you bury Taco Bell under tomato plant
+ ✓ #380  5     BBC Sport                     Defending champion Alcaraz to miss French Open
+ ✓ #381  5     The Verge                     BMW is one step closer to selling you a color-changing car
+ ✓ #382  5     Ars Technica                  Meet the 19-meter Cretaceous kraken that swam with mosasaurs
+ ✓ #383  5     The Verge                     Google’s handsome Pixel Watch 4 is on sale for $40 off in both size configurations
+ ✓ #384  5     Stereogum                     Rosco P Coldchain & Nicholas Craven Share Collaborative Album Play With Something Safe
+ ✓ #385  5     Dazed                         Exclusive: New Balance and Lack of Guidance show football knows no borders
+ ✓ #386  5     Defector                      How Close To The Stanford Prison Experiment Can A Reality Show Get?
+ ✓ #387  5     Wired                         AI-Designed Drugs by a DeepMind Spinoff Are Headed to Human Trials
+ ✓ #388  5     Dazed                         New Balance heads to Amsterdam to launch collection with Lack of Guidance
+ ✓ #389  5     BBC Sport                     Why I stayed at 'struggling' Man Utd and didn't think we'd be third now - Fernandes
+ ✓ #390  5     Futurism                      Palantir’s Employees Are in Crisis
+ ✓ #391  5     Consequence                   RZA Makes Direct Pitch to Obama to Induct Wu-Tang Into Rock Hall
+ ✓ #392  5     Wired                         Designer Baby Companies Are in Turmoil
+ ✓ #393  5     404 Media                     Behind the Blog: Waiting in the Apple Store
+ ✓ #394  5     Vanity Fair                   The 2026 White House Correspondents’ Dinner Gossip Pack
+ ✓ #395  5     BBC Sport                     Staying this long at Man Utd isn't for everyone - Fernandes
+ ✓ #396  5     Vanity Fair                   Prince Louis Celebrated His Eighth Birthday With a Brand New Smiley Photo
+ ✓ #397  5     Hypebeast                     Artist Kazuhisa Uragami Builds a "Noble Outsider" From Kyushu’s Fire and Iron for Forza Horizon 6
+ ✓ #398  5     Inc.                          The Real Reason Your Content Isn’t Bringing in Clients
+ ✓ #399  5     Engadget                      The MacBook Neo is a glimpse into John Ternus's Apple
+ ✓ #400  5     The Atlantic                  How Short-Form Clips Took Over the Internet
+ ✓ #401  5     IndieWire                     ‘Cave of Forgotten Dreams’ Review: Werner Herzog’s Natural Museum in 3D
+ ✓ #402  5     Consequence                   Stream On This Week: Zach Galifianakis Connects with Nature, and an Animated Cat Speaks His Truth
+ ✓ #403  5     Consequence                   Coal Chamber Drummer Mikey “Bug” Cox Reveals Stage 3 Cancer Battle
+ ✓ #404  5     TechCrunch                    Marked-up Mac minis flood eBay amid shortages driven by AI
+ ✓ #405  5     BBC Sport                     Wales face arguably biggest task in sport - stopping England
+ ✓ #406  5     Semafor                       Musk pitches ‘universal high income’
+ ✓ #407  5     NYT Arts                      Saudis Withdraw Offer of Millions to Metropolitan Opera
+ ✓ #408  5     Inc.                          Workplace Stress and Bullying Are Linked to 840,000 Deaths a Year, New Study Finds
+ ✓ #409  5     Consequence                   Amaia Performs with a Chair Flute in New Tiny Desk Concert: Watch
+ ✓ #410  5     BBC Sport                     The remarkable rise of Chelsea's little-known interim boss
+ ✓ #411  5     NYT Arts                      How Ashley Padilla, Breakout ‘S.N.L.’ Star, Nails Comic Timing
+ ✓ #412  5     NYT Arts                      Review: Barbara Hannigan Is Conductor, Director and Star
+ ✓ #413  5     Stereogum                     Latto – “GOMF” (Feat. GloRilla)
+ ✓ #414  5     Consequence                   Kacey Musgraves Covers SZA’s “Kill Bill” on BBC 1 Live Lounge: Watch
+ ✓ #415  5     Dazed                         Ballet continues to thrive thanks to Saul Nash’s designs
+ ✓ #416  5     Semafor                       Expect more tech layoffs
+ ✓ #417  5     Inc.                          Why New Graduates Are Taking ‘Any Job’—and Planning to Leave Fast
+ ✓ #418  5     Consequence                   Jimmy Kimmel Performs Alternative White House Correspondents’ Dinner Monologue
+ ✓ #419  5     Semafor                       Google CEO says 75% of company's new code is AI-generated
+ ✓ #420  5     Stereogum                     Mina Tindle – “My Light” (Feat. Sufjan Stevens)
+ ✓ #421  5     Semafor                       AIs hunt for signs of intelligent life
+ ✓ #422  5     Pitchfork                     Stagecoach 2026 Livestream Schedule & Details
+ ✓ #423  5     Futurism                      Tech Companies Are Using Insidious Tactics to Build Data Centers on Indigenous Lands, Activists Say
+ ✓ #424  5     Inc.                          The Surprising Way Smart Leaders Turn Fear Into Progress
+ ✓ #425  5     Highsnobiety                  In an Insanely Rich Caramel, adidas' Handball Spezial Is Sickly Sweet
+ ✓ #426  5     Vanity Fair                   Charting the Limitless Allure of Zendaya, From Disney Youth to A-List Movie Star
+ ✓ #427  5     Inc.                          Jeff Bezos Just Made a $34 Million Bet to Replace Cotton and Polyester
+ ✓ #428  5     Dazed                         The story behind Mother Mary, the film even A24 thought was too weird
+ ✓ #429  5     Dazed                         In pictures: The intimate artefacts left behind in cruising spots
+ ✓ #430  5     Dazed                         Techno-fascist fashion: Why Silicon Valley is moving into menswear
+ ✓ #431  5     Sky Sports                    Leeds Rhinos thrash Catalans to remain top as Hull FC score 50 at Castleford
+ ✓ #432  5     Semafor                       Department of Justice drops criminal probe into Fed chair Powell
+ ✓ #433  5     Stereogum                     Love Remain – “Paris, Forever”
+ ✓ #434  5     Consequence                   Metallica Mourn Passing of “S&M2” Co-Conductor Michael Tilson Thomas
+ ✓ #435  5     Dexerto                       VTuber agency terminates streamers for falling in love
+ ✓ #436  5     Consequence                   Michael Stipe Thinks Billie Eilish Could Play Young Version of Him in R.E.M. Biopic
+ ✓ #437  5     IndieWire                     ‘The School Duel’ Review: A Dystopian Answer to Pointless Shootings Announces a Provocative New Film Talent
+ ✓ #438  5     Stereogum                     Skepta Is Making House Music Now
+ ✓ #439  5     Consequence                   Neil Young and the Chrome Hearts Announce New Live Album
+ ✓ #440  5     Vanity Fair                   Grindr Goes to Washington—But Will Washington Come to Grindr?
+ ✓ #441  5     TechCrunch                    Nuclear startup X-energy raises $1B in data center-driven IPO
+ ✓ #442  5     Defector                      Jaden McDaniels Will Fight You Every Step Of The Way
+ ✓ #443  5     Dexerto                       Nintendo releases classic soundtracks on Spotify but you have to be quick
+ ✓ #444  5     Wired                         The Latest Push to Extend Key US Spy Powers Is Still a Mess
+ ✓ #445  5     Dexerto                       FIFA World Cup final tickets on sale for $2.3 million on official website
+ ✓ #446  5     Sky Sports Football           De Zerbi: I don't want to put pressure on my players... but we have to win at Wolves
+ ✓ #447  5     Business of Fashion           US Democratic Lawmakers Urge Retail, Shipper CEOs to Pass Trump Tariff Refunds to Consumers
+ ✓ #448  5     Inc.                          Bob Chapman Chose People Over Profit and Built a Billion-Dollar Company Anyway
+ ✓ #449  5     Wired                         Apple's Next CEO Needs to Launch a Killer AI Product
+ ✓ #450  5     IndieWire                     They’ve Seen the Same Movie 1,000 Times, and They’re Not Stopping
+ ✓ #451  5     NYT Arts                      Five Horror Movies to Stream Now
+ ✓ #452  5     Business of Fashion           Retail Sales Rise in Britain After Iran War Prompted ‘Panic at the Pumps’
+ ✓ #453  5     The Guardian Culture          The Price review – Henry Goodman leads another Arthur Miller revival that’s right on the money
+ ✓ #454  5     The Guardian Culture          ‘I don’t need to see you naked’: Urzila Carlson on becoming a comedy superstar and fending off horny fans
+ ✓ #455  5     Stereogum                     Daughn Gibson – “Quang Nam”
+ ✓ #456  5     NYT Arts                      ‘The Great Divide’ Review: Noah Kahan Is Caught in the In-Between
+ ✓ #457  5     Consequence                   Black Sabbath Get Early Earth Demos Back After Settlement with Ex-Manager
+ ✓ #458  5     Stereogum                     Action Bronson – “Triceratops” (Feat. Lil Yachty & Paul Wall)
+ ✓ #459  5     Ars Technica                  Man faces 5 years in prison for using AI to fake sighting of runaway wolf
+ ✓ #460  5     Ars Technica                  Well, this is embarrassing: The Lunar Gateway's primary modules are corroded
+ ✓ #461  5     Pitchfork                     Watch Michael Stipe Perform a New Song From His Debut Solo Album
+ ✓ #462  5     Dexerto                       Fortnite players demand D4vd is fully removed from the game
+ ✓ #463  5     Business of Fashion           Opinion: Lululemon’s CEO Choice Is a Missed Chance to Pacify Elliott
+ ✓ #464  5     Semafor                       Banking on the Future Forum
+ ✓ #465  5     The Atlantic                  Who Came Up With That?
+ ✓ #466  5     Semafor                       The man who is paying to see the future
+ ✓ #467  5     The New Yorker                Daily Cartoon: Friday, April 24th
+ ✓ #468  5     BBC Sport                     'I love winning when there is massive competition'
+ ✓ #469  5     Semafor                       Saudi sovereign wealth fund to partner again with Live Nation
+ ✓ #470  5     ESPN                          Poll: Oregon's Dante Moore the early QB favorite for 2027 draft
+ ✓ #471  5     IndieWire                     ‘Ricky’ Review: Stephan James Stars in a Deeply Affecting Drama About Life After Prison
+ ✓ #472  5     Hypebeast                     New Arrivals From HBX: Maison Mihara Yasuhiro
+ ✓ #473  5     Stereogum                     Anthony Kiedis’ Girlfriend Pens Vogue Column About Dating Someone More Than Twice Her Age
+ ✓ #474  5     Stereogum                     Purelink & Rainy Miller – “Barrons Hotel (I, To, Thee.)” & “Yellow Bones”
+ ✓ #475  5     TechCrunch                    Another spyware maker caught distributing fake Android snooping apps
+ ✓ #476  5     Know Your Meme                How The 'Butt Mogged These Zoomers Today' Meme Was Born
+ ✓ #477  5     Defector                      Lena Dunham Can’t Help Herself
+ ✓ #478  5     Futurism                      The Horrible Economics of AI Are Starting to Come Crashing Down
+ ✓ #479  5     Stereogum                     Watch Wednesday Cover Big Star With Patterson Hood
+ ✓ #480  5     Dexerto                       Jacksepticeye explains why he won’t ask Markiplier for help on Bloodborne movie
+ ✓ #481  5     Fast Company                  Kellogg’s just dropped something inside cereal boxes you haven’t seen in years
+ ✓ #482  5     Fast Company                  AI startups are inflating a key revenue metric to win VC attention, says this founder
+ ✓ #483  5     Inc.                          Why Small Experiments Are the Secret to Faster Business Growth
+ ✓ #484  5     TechCrunch                    Uber CTO Praveen Neppalli Naga joins stacked StrictlyVC SF lineup for April 30 event
+ ✓ #485  5     Hypebeast                     Three Creatives Turn the Daily Grind Into a New Source of Inspiration
+ ✓ #486  5     Semafor                       Trump increasingly eyes critical minerals in trade policy strategy
+ ✓ #487  4     ESPN                          Will the real Pete Crow-Armstrong please stand up?
+ ✓ #488  4     404 Media                     The AI Compute Crunch Is Here (and It's Affecting the Entire Economy)
+ ✓ #489  4     Ars Technica                  As electric aspirations fade, Porsche sells its stake in Bugatti
+ ✓ #490  4     Business of Fashion           The Middle East War Is Squeezing Asia’s Polyester Suppliers
+ ✓ #491  4     Defector                      What’s Parenting Lily Yohannes Like? An Interview With Her Dad
+ ✓ #492  4     Ars Technica                  Six things I'll remember when I think about Tim Cook's version of Apple
+ ✓ #493  4     TechCrunch                    Nothing introduces an AI-powered dictation tool
+ ✓ #494  4     Fast Company                  There’s no rogue McDonald’s AI bot, but ‘prompt injection’ is still a risk for companies
+ ✓ #495  4     The Guardian Culture          Backlash against ‘blatant’ Asian stereotype in The Devil Wears Prada 2
+ ✓ #496  4     Stereogum                     Vines Shares Ambient “Teenage Dirtbag” Cover With Wheatus’ Brendan Brown
+ ✓ #497  4     Puck                          ‘Rush Hour 4’s Production Scramble and a ‘Yellowstone’ Firing
+ ✓ #498  4     Stereogum                     GENER8ION & Yung Lean’s “Storm” Video Is Incredible
+ ✓ #499  4     Fast Company                  700 Staples stores are bringing back Party City by opening shop-in-shops. Here’s the full list of locations in 34 states
+ ✓ #500  4     Inc.                          Your Company Culture Is Being Built
+ ✓ #501  4     TechCrunch                    DeepSeek previews new AI model that ‘closes the gap’ with frontier models
+ ✓ #502  4     Pitchfork                     11 New Albums You Should Listen to Now: Kehlani, Loukeman, and More
+ ✓ #503  4     Futurism                      Google Exec Says Your Favorite Video Games Are Secretly Made With AI
+ ✓ #504  4     NYT Arts                      The Restaurant World Can Be Heated. ‘Top Chef’ Is Lowering the Temperature.
+ ✓ #505  4     Ars Technica                  Trump administration attempt to gut Endangered Species Act hits roadblock
+ ✓ #506  4     Stereogum                     Lucy Dacus – “Planting Tomatoes”
+ ✓ #507  4     Semafor                       South Africa's clean energy push
+ ✓ #508  4     Semafor                       Ghana threatens sanctions on mining firms over local employment rules
+ ✓ #509  4     Semafor                       US moves to normalize ties with Eritrea
+ ✓ #510  4     Semafor                       US deports migrants to DR Congo, drawing ire over safety concerns
+ ✓ #511  4     Semafor                       Mozambique, Rwanda worst-hit by Iran war: ratings agency S&P
+ ✓ #512  4     Semafor                       Nigerian billionaire Dangote proposes new East Africa refinery
+ ✓ #513  4     Dazed                         Rowan Blanchard: ‘Hollywood is an extremely fucked industry’
+ ✓ #514  4     Defector                      ‘The Rockford Files’ Remains One Of Television’s Greatest Hangs
+ ✓ #515  4     BBC Sport                     Benfica's Prestianni banned for homophobic conduct in Real Madrid tie
+ ✓ #516  4     Semafor                       How car spinning went mainstream in South Africa
+ ✓ #517  4     Inc.                          AI Is Changing Growth, but These 5 Strategies Still Win
+ ✓ #518  4     The Atlantic                  Photos of the Week: Fallen Robot, Scooter Waterfall, Sunrise Panorama
+ ✓ #519  4     Dexerto                       Ticketmaster resale prices capped after major rule change
+
+── GROUPED DUPLICATES (excluded from candidate pool) ──────────────────────────────────────────────────
+   Variety                       Helena Bonham Carter Exits ‘The White Lotus’ Season 4; Role to Be Reca
+                                ↳ Grouped as duplicate of "Helena Bonham Carter exits ‘The White Lotus’, role set to be
+   The Hollywood Reporter        Helena Bonham Carter Exits ‘The White Lotus’ Season 4 Cast
+                                ↳ Grouped as duplicate of "Helena Bonham Carter exits ‘The White Lotus’, role set to be
+   Deadline                      Helena Bonham Carter Leaving ‘The White Lotus’ Season 4 As Role Is Bei
+                                ↳ Grouped as duplicate of "Helena Bonham Carter exits ‘The White Lotus’, role set to be
+   Rolling Stone                 D4vd Quietly Dropped by Label and Song Collabs Pulled Amid Calls for S
+                                ↳ Grouped as duplicate of "D4vd quietly dropped by record label while streaming sites f
+   Stereogum                     Rostam – “Back Of A Truck”
+                                ↳ Grouped as duplicate of "PARTYOF2 &#8211; &#8220;2 NIGHTS IN LA&#8221;" (Stereogum)
+   Stereogum                     The Homesick – “Esperanto”
+                                ↳ Grouped as duplicate of "PARTYOF2 &#8211; &#8220;2 NIGHTS IN LA&#8221;" (Stereogum)
+   Stereogum                     The Afghan Whigs – “Duvateen”
+                                ↳ Grouped as duplicate of "PARTYOF2 &#8211; &#8220;2 NIGHTS IN LA&#8221;" (Stereogum)
+   Sky Sports Football           Ipswich held, Boro cruise; Oxford relegated & MK promoted - EFL LIVE!
+                                ↳ Grouped as duplicate of "Ipswich held, Boro cruise; Oxford relegated & MK promoted - 
+   Sky Sports Football           Arteta: Arsenal ready to 'get job done' and win title after post-Man C
+                                ↳ Grouped as duplicate of "Arteta: Arsenal ready to 'get job done' and win title after 
+   Sky Sports Football           Papers: Maresca in Man City talks as Pep emerges as candidate for Ital
+                                ↳ Grouped as duplicate of "Papers: Maresca in Man City talks as Pep emerges as candidat
+   TechCrunch                    Google to invest up to $40B in Anthropic in cash and compute
+                                ↳ Grouped as duplicate of "Google will invest as much as $40 billion in Anthropic" (Ars
+   Sky Sports                    Norrie beats Machac to advance in Madrid as Boulter beaten by Pegula
+                                ↳ Grouped as duplicate of "Battling Norrie beats Machac to advance in Madrid" (BBC Spor
+   Stereogum                     Che – “Tell U Sum” & “Nosferatu”
+                                ↳ Grouped as duplicate of "Pupil Slicer &#038; Tayne &#8211; &#8220;W.N.&#8221;" (Stere
+   Dexerto                       Michael B. Jordan lines up Battlefield movie after Oscar win
+                                ↳ Grouped as duplicate of "A Battlefield movie adaptation is on the way, possibly starr
+   Consequence                   LCD Soundsystem Announce 2026 Summer Tour Dates
+                                ↳ Grouped as duplicate of "LCD Soundsystem Announce Even More North American Tour Dates
+   Dexerto                       Millionaire hunter trampled to death by 5 elephants while hunting in A
+                                ↳ Grouped as duplicate of "Millionaire Big Game Hunter Trampled to Death by Elephants" 
+   Business of Fashion           Nike to Cut Around 1,400 Jobs in Efficiency Push
+                                ↳ Grouped as duplicate of "Nike Is Reshaping Its Entire Business. 1,400 Jobs Just Got C

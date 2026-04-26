@@ -33,12 +33,27 @@ router.get("/news", (req, res) => {
     filtered = filtered.filter((a) => a.category === category);
   }
 
+  // Compute a feed signature so the mobile client can short-circuit unchanged
+  // requests (and so any in-place change — new article, image swap, title
+  // patch — automatically busts cache without manual coordination).
+  const sig = filtered.map((a) => `${a.id}:${a.title}:${a.imageUrl ?? ""}`).join("|");
+  const version = crypto.createHash("sha1").update(sig).digest("hex").slice(0, 12);
+  const etag = `"${version}-p${page}-l${limit}-c${category ?? "All"}"`;
+
+  res.setHeader("X-Popcorn-Live", getIsLive() ? "1" : "0");
+  res.setHeader("X-Popcorn-Feed-Version", version);
+  res.setHeader("ETag", etag);
+
+  if (req.headers["if-none-match"] === etag) {
+    res.status(304).end();
+    return;
+  }
+
   const offset = (page - 1) * limit;
   const slice = filtered.slice(offset, offset + limit + 1);
   const hasMore = slice.length > limit;
   if (hasMore) slice.pop();
 
-  res.setHeader("X-Popcorn-Live", getIsLive() ? "1" : "0");
   res.json({
     articles: slice,
     total: filtered.length,
@@ -46,6 +61,7 @@ router.get("/news", (req, res) => {
     limit,
     hasMore,
     isLive: getIsLive(),
+    feedVersion: version,
   });
 });
 
@@ -138,9 +154,10 @@ router.post("/publish", (req, res) => {
 });
 
 // POST /api/publish-raw — enrich and publish raw article data directly
-// Body: { "articles": [{ "title": "...", "source": "...", "description": "...", "link": "...", "imageUrl": "..." }] }
+// Body: { "articles": [{ "title": "...", "source": "...", "description": "...", "link": "...", "imageUrl": "..." }], "override": false }
+// Pass override=true to bypass the 7-day title dedup (e.g. intentional republish).
 router.post("/publish-raw", (req, res) => {
-  const { articles } = req.body as { articles?: any[] };
+  const { articles, override } = req.body as { articles?: any[]; override?: boolean };
   if (!Array.isArray(articles) || articles.length === 0) {
     res.status(400).json({ ok: false, error: "Provide a non-empty 'articles' array" });
     return;
@@ -153,8 +170,15 @@ router.post("/publish-raw", (req, res) => {
     pubDate: a.pubDate ?? new Date().toISOString(),
     imageUrl: a.imageUrl ?? undefined,
   }));
-  publishRawItems(rawItems, false, true)
-    .then((added) => res.json({ ok: true, added, message: `${added} articles published to the feed` }))
+  publishRawItems(rawItems, false, true, override === true)
+    .then(({ added, skipped }) =>
+      res.json({
+        ok: true,
+        added,
+        skipped,
+        message: `${added} articles published to the feed${skipped.length > 0 ? ` (${skipped.length} skipped as duplicates)` : ""}`,
+      }),
+    )
     .catch((err: Error) => res.status(500).json({ ok: false, error: err.message }));
 });
 
@@ -201,15 +225,26 @@ router.get("/audit", (req, res) => {
 });
 
 // POST /api/publish-raw — reset feed and enrich/publish raw article items directly
-// Body: { "reset": true, "publishToday": true, "items": [{ title, link, description, pubDate, source, imageUrl? }] }
+// Body: { "reset": true, "publishToday": true, "override": false, "items": [{ title, link, description, pubDate, source, imageUrl? }] }
+// Note: Express uses the FIRST matching handler, so this route is currently shadowed
+// by the "articles"-body handler above. Kept for reference / future refactor.
 router.post("/publish-raw", (req, res) => {
-  const { items, reset, publishToday } = req.body as { items?: any[]; reset?: boolean; publishToday?: boolean };
+  const { items, reset, publishToday, override } = req.body as {
+    items?: any[]; reset?: boolean; publishToday?: boolean; override?: boolean;
+  };
   if (!Array.isArray(items) || items.length === 0) {
     res.status(400).json({ ok: false, error: "Provide a non-empty 'items' array" });
     return;
   }
-  publishRawItems(items, reset === true, publishToday === true)
-    .then((added) => res.json({ ok: true, added, message: `${added} articles published to the feed` }))
+  publishRawItems(items, reset === true, publishToday === true, override === true)
+    .then(({ added, skipped }) =>
+      res.json({
+        ok: true,
+        added,
+        skipped,
+        message: `${added} articles published to the feed${skipped.length > 0 ? ` (${skipped.length} skipped as duplicates)` : ""}`,
+      }),
+    )
     .catch((err: Error) => res.status(500).json({ ok: false, error: err.message }));
 });
 

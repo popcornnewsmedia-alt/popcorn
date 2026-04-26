@@ -179,15 +179,16 @@ export function DayCompletionCard({
         </p>
 
         {/* Day-nav pair — stripped back to single-line editorial pills so the
-            closing moment stays quiet. Grid keeps column widths stable even
-            when only one direction is available. */}
+            closing moment stays quiet. Pills are content-width (auto-sized to
+            their weekday label) so they don't sprawl into empty space; the
+            row centres them as a pair, mirroring the divider's nav row. */}
         <div
           className="pn-comp-reveal pn-comp-reveal-4"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 8,
-            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 14,
             marginTop: 18,
           }}
         >

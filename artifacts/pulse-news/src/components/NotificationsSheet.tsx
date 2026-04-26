@@ -170,12 +170,12 @@ export function NotificationsSheet({ isOpen, items, loading, onClose, onSelect }
                 fontSize: 13,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: 'rgba(255,241,205,0.65)',
+                color: '#fff1cd',
                 marginBottom: 8,
               }}>
                 Quiet for now
               </p>
-              <p className="font-['Lora']" style={{ fontSize: 12.5, lineHeight: 1.6, color: 'rgba(255,241,205,0.45)' }}>
+              <p className="font-['Lora']" style={{ fontSize: 12.5, lineHeight: 1.6, color: '#fff1cd' }}>
                 When someone replies to one of your comments, you'll hear about it here.
               </p>
             </div>

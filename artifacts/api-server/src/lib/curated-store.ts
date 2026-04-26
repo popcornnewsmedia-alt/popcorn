@@ -86,9 +86,9 @@ function articleToRow(a: EnrichedArticle, feedDate: string, stage: 'dev' | 'prod
   };
 }
 
-function rowToArticle(row: Record<string, unknown>, id: number): EnrichedArticle {
+function rowToArticle(row: Record<string, unknown>): EnrichedArticle {
   return {
-    id,
+    id:               Number(row.id) || 0,
     title:            String(row.title ?? ""),
     summary:          String(row.summary ?? ""),
     content:          String(row.content ?? ""),
@@ -143,14 +143,20 @@ function committedFeedPath(date: string): string {
   return path.join(DATA_DIR, `feed-${date}.json`);
 }
 
+// schemaVersion 2 = articles[].id is the stable Supabase row id.
+// schemaVersion 1 (or missing) = legacy synthetic 1..N id, must NOT be trusted
+// for saved_articles / comments FK joins.
+const LOCAL_FILE_SCHEMA_VERSION = 2;
+
 function saveToLocalFiles(bucket: DailyFeed): void {
+  const payload = { schemaVersion: LOCAL_FILE_SCHEMA_VERSION, ...bucket };
   try {
-    fs.writeFileSync(feedPath(bucket.date), JSON.stringify(bucket, null, 2));
+    fs.writeFileSync(feedPath(bucket.date), JSON.stringify(payload, null, 2));
   } catch { /* ignore */ }
   try {
     fs.mkdirSync(DATA_DIR, { recursive: true });
     if (bucket.articles.length > 0) {
-      fs.writeFileSync(committedFeedPath(bucket.date), JSON.stringify(bucket, null, 2));
+      fs.writeFileSync(committedFeedPath(bucket.date), JSON.stringify(payload, null, 2));
     }
   } catch { /* ignore */ }
 }
@@ -250,28 +256,20 @@ async function upsertFeedToSupabase(
   targetStage: 'dev' | 'prod' = 'dev'
 ): Promise<void> {
   if (!process.env.SUPABASE_URL) return;
-
-  // SAFETY: Never touch stage='prod' rows. Only clear the dev-staged articles
-  // for this date so that a re-run of curation cannot demote manually promoted articles.
-  const { error: delErr } = await supabase
-    .from("articles")
-    .delete()
-    .eq("feed_date", feedDate)
-    .eq("stage", "dev");
-  if (delErr) { console.warn("[supabase] delete error:", delErr.message); return; }
-
   if (articles.length === 0) return;
 
-  // Skip any articles whose title already exists as stage='prod' for this date
-  // (i.e. a previously promoted article with the same story — don't re-add it as dev).
-  const { data: prodRows } = await supabase
+  // STABLE-ID: never DELETE existing rows (that recycles BIGSERIAL ids on every save).
+  // Skip-existing-by-title: only INSERT articles that don't already exist in this date.
+  // Removals are handled separately by removeArticlesBySupabaseId (DELETE by id).
+  const { data: existingRows } = await supabase
     .from("articles")
-    .select("title")
-    .eq("feed_date", feedDate)
-    .eq("stage", "prod");
-  const prodTitles = new Set((prodRows ?? []).map((r: { title: string }) => r.title));
+    .select("title, stage")
+    .eq("feed_date", feedDate);
+  const existingTitles = new Set(
+    (existingRows ?? []).map((r: { title: string }) => r.title),
+  );
 
-  const toInsert = articles.filter((a) => !prodTitles.has(a.title));
+  const toInsert = articles.filter((a) => !existingTitles.has(a.title));
 
   // ─── Image processing ───────────────────────────────────────────────────────
   // Run the download → resize → upload pipeline on just the new articles
@@ -307,12 +305,6 @@ async function upsertFeedToSupabase(
       console.warn("[supabase] insert error:", insErr.message);
     }
   }
-}
-
-async function deleteFromSupabase(titles: string[]): Promise<void> {
-  if (!process.env.SUPABASE_URL || titles.length === 0) return;
-  const { error } = await supabase.from("articles").delete().in("title", titles);
-  if (error) console.warn("[supabase] delete error:", error.message);
 }
 
 /**
@@ -432,13 +424,14 @@ export async function loadFromSupabase(): Promise<void> {
     for (const row of (rows ?? []) as Record<string, unknown>[]) {
       const date = String(row.feed_date ?? "").slice(0, 10);
       if (!_feeds.has(date)) _feeds.set(date, { date, articles: [] });
-      _feeds.get(date)!.articles.push(rowToArticle(row, 0)); // id reassigned by getPublishedFeed
+      _feeds.get(date)!.articles.push(rowToArticle(row));
     }
 
     let totalLoaded = 0;
     for (const [date, bucket] of _feeds.entries()) {
-      // Sort by score then interleave to avoid category clustering (same as mergeFeed)
-      bucket.articles = interleaveByCategory(bucket.articles).map((a, i) => ({ ...a, id: i + 1 }));
+      // Sort by score then interleave to avoid category clustering (same as mergeFeed).
+      // IDs are preserved from Supabase — no synthetic reassignment.
+      bucket.articles = interleaveByCategory(bucket.articles);
       totalLoaded += bucket.articles.length;
       console.log(`[curated] ✓ Loaded ${bucket.articles.length} articles from Supabase (${date})`);
     }
@@ -472,9 +465,18 @@ function _loadFromLocalFiles(): void {
     for (const fp of [feedPath(date), committedFeedPath(date)]) {
       if (!fs.existsSync(fp)) continue;
       try {
-        const parsed = JSON.parse(fs.readFileSync(fp, "utf-8")) as DailyFeed;
+        const parsed = JSON.parse(fs.readFileSync(fp, "utf-8")) as DailyFeed & { schemaVersion?: number };
         if (parsed.date === date && Array.isArray(parsed.articles) && parsed.articles.length > 0) {
-          _feeds.set(date, parsed);
+          // Guard against legacy files (schemaVersion < 2) whose ids are synthetic
+          // 1..N — using them would corrupt saved_articles / comments FKs.
+          if ((parsed.schemaVersion ?? 1) < LOCAL_FILE_SCHEMA_VERSION) {
+            console.warn(
+              `[curated] ⚠ Local file ${fp} is schemaVersion=${parsed.schemaVersion ?? 1} (legacy synthetic ids). ` +
+                `Setting article.id=0 — saves/comments will fail loudly until Supabase reload succeeds.`,
+            );
+            for (const a of parsed.articles) (a as EnrichedArticle).id = 0;
+          }
+          _feeds.set(date, { date: parsed.date, articles: parsed.articles });
           for (const a of parsed.articles) _allPublishedTitles.add(a.title);
           console.log(`[curated] ✓ Loaded ${parsed.articles.length} articles from local file (${date})`);
           break;
@@ -533,7 +535,10 @@ function interleaveByCategory(articles: EnrichedArticle[]): EnrichedArticle[] {
   return result;
 }
 
-export function mergeFeed(newArticles: EnrichedArticle[]): number {
+export async function mergeFeed(
+  newArticles: EnrichedArticle[],
+  options: { stage?: 'dev' | 'prod' } = {},
+): Promise<number> {
   resetIfNewDay();
   const today = dateStr(0);
   const existingTitles = new Set(
@@ -548,13 +553,37 @@ export function mergeFeed(newArticles: EnrichedArticle[]): number {
     console.log("[curated] No new articles to add — feed unchanged.");
     return 0;
   }
-  const bucket = _feeds.get(today)!;
-  const combined = [...bucket.articles, ...toAdd];
-  bucket.articles = interleaveByCategory(combined).map((a, i) => ({ ...a, id: i + 1 }));
-  // Update all-time title set
+
+  // STABLE-ID: persist to Supabase FIRST so the new rows get assigned BIGSERIAL ids.
+  // Then re-source the day from Supabase so in-memory copies carry the stable ids.
+  // No mid-state with id=0 is ever observable to /api/news.
+  await upsertFeedToSupabase(toAdd, today, options.stage ?? 'dev');
+  await reloadDayFromSupabase(today);
+
   for (const a of toAdd) _allPublishedTitles.add(a.title);
-  console.log(`[curated] Added ${toAdd.length} articles → today has ${bucket.articles.length} stories.`);
+  const bucket = _feeds.get(today);
+  console.log(`[curated] Added ${toAdd.length} articles → today has ${bucket?.articles.length ?? 0} stories.`);
   return toAdd.length;
+}
+
+/**
+ * Re-read a single day from Supabase into _feeds. Used after mergeFeed inserts
+ * new rows so the in-memory cache picks up the freshly-assigned BIGSERIAL ids.
+ */
+async function reloadDayFromSupabase(date: string): Promise<void> {
+  if (!process.env.SUPABASE_URL) return;
+  const { data: rows, error } = await supabase
+    .from("articles")
+    .select("*")
+    .eq("feed_date", date)
+    .order("id", { ascending: true });
+  if (error || !rows) {
+    console.warn("[curated] reloadDayFromSupabase failed:", error?.message);
+    return;
+  }
+  const articles = (rows as Record<string, unknown>[]).map(rowToArticle);
+  _feeds.set(date, { date, articles: interleaveByCategory(articles) });
+  saveToLocalFiles(_feeds.get(date)!);
 }
 
 export function getPublishedFeed(): EnrichedArticle[] {
@@ -571,33 +600,44 @@ export function getPublishedFeed(): EnrichedArticle[] {
     }
     ordered.push(...interleaved);
   }
-  return ordered.map((a, i) => ({ ...a, id: i + 1, imageUrl: cleanImageUrl(a.imageUrl) ?? a.imageUrl }));
+  // IDs are stable Supabase row ids — preserved across requests/restarts.
+  return ordered.map((a) => ({ ...a, imageUrl: cleanImageUrl(a.imageUrl) ?? a.imageUrl }));
 }
 
 export function removeArticles(ids: number[]): number {
-  const globalFeed = getPublishedFeed();
-  const titlesToRemove = new Set(
-    globalFeed.filter((a) => ids.includes(a.id)).map((a) => a.title)
-  );
-  if (titlesToRemove.size === 0) return 0;
+  if (ids.length === 0) return 0;
+  const idSet = new Set(ids);
 
+  // Capture titles of articles we are removing (for _allPublishedTitles cleanup
+  // and the legacy title-based Supabase delete fallback). Match by stable id —
+  // never by title — so we don't accidentally wipe yesterday's republished
+  // story that shares the same headline.
+  const removedTitles = new Set<string>();
   let removed = 0;
   for (const [, bucket] of _feeds.entries()) {
     const before = bucket.articles.length;
-    bucket.articles = bucket.articles
-      .filter((a) => !titlesToRemove.has(a.title))
-      .map((a, i) => ({ ...a, id: i + 1 }));
+    for (const a of bucket.articles) {
+      if (idSet.has(a.id)) removedTitles.add(a.title);
+    }
+    bucket.articles = bucket.articles.filter((a) => !idSet.has(a.id));
     removed += before - bucket.articles.length;
     saveToLocalFiles(bucket);
   }
 
-  // Remove from all-time titles set
-  for (const t of titlesToRemove) _allPublishedTitles.delete(t);
+  if (removed === 0) return 0;
 
-  // Persist removal to Supabase (fire-and-forget)
-  deleteFromSupabase([...titlesToRemove]).catch((e) =>
-    console.warn("[curated] Supabase delete failed:", (e as Error).message)
-  );
+  // Remove from all-time titles set
+  for (const t of removedTitles) _allPublishedTitles.delete(t);
+
+  // Persist removal to Supabase by id (fire-and-forget). Falls back to titles
+  // for callers that hit this path with synthetic ids (shouldn't happen post-
+  // stable-id, but keeps backwards compat for any stragglers).
+  if (process.env.SUPABASE_URL) {
+    void (async () => {
+      const { error } = await supabase.from("articles").delete().in("id", ids);
+      if (error) console.warn("[curated] Supabase delete by id failed:", error.message);
+    })();
+  }
 
   console.log(`[curated] ✓ Removed ${removed} articles.`);
   return removed;
@@ -627,13 +667,14 @@ export async function removeArticlesBySupabaseId(
     feedDate: String(r.feed_date),
   }));
 
-  // 2. Remove from in-memory feeds by title
+  // 2. Remove from in-memory feeds by stable Supabase id (no title fallback —
+  //    title matching can wipe yesterday's republished story sharing the same
+  //    headline). IDs are unique across days.
+  const idSet = new Set(supabaseIds);
   let removed = 0;
   for (const [, bucket] of _feeds.entries()) {
     const before = bucket.articles.length;
-    bucket.articles = bucket.articles
-      .filter((a) => !titlesToRemove.has(a.title))
-      .map((a, i) => ({ ...a, id: i + 1 }));
+    bucket.articles = bucket.articles.filter((a) => !idSet.has(a.id));
     removed += before - bucket.articles.length;
     saveToLocalFiles(bucket);
   }
@@ -669,31 +710,22 @@ export async function updateArticleImageInMemory(
     imageSafeH?: number | null;
   }
 ): Promise<void> {
-  // 1. Find title from Supabase
-  const { data: row } = await supabase
-    .from("articles")
-    .select("title, feed_date")
-    .eq("id", supabaseId)
-    .single();
-  if (!row) return;
-
-  const title = String(row.title);
-
-  // 2. Update in-memory
+  // 1. Update in-memory by stable Supabase id (no title lookup needed).
   for (const [, bucket] of _feeds.entries()) {
+    let mutated = false;
     for (const article of bucket.articles) {
-      if (article.title === title) {
-        article.imageUrl = updates.imageUrl;
-        article.imageWidth = updates.imageWidth;
-        article.imageHeight = updates.imageHeight;
-        if (updates.imageCredit != null) article.imageCredit = updates.imageCredit;
-        if (updates.imageFocalX != null) article.imageFocalX = updates.imageFocalX;
-        if (updates.imageFocalY != null) article.imageFocalY = updates.imageFocalY;
-        if (updates.imageSafeW != null) article.imageSafeW = updates.imageSafeW;
-        if (updates.imageSafeH != null) article.imageSafeH = updates.imageSafeH;
-      }
+      if (article.id !== supabaseId) continue;
+      article.imageUrl = updates.imageUrl;
+      article.imageWidth = updates.imageWidth;
+      article.imageHeight = updates.imageHeight;
+      if (updates.imageCredit != null) article.imageCredit = updates.imageCredit;
+      if (updates.imageFocalX != null) article.imageFocalX = updates.imageFocalX;
+      if (updates.imageFocalY != null) article.imageFocalY = updates.imageFocalY;
+      if (updates.imageSafeW != null) article.imageSafeW = updates.imageSafeW;
+      if (updates.imageSafeH != null) article.imageSafeH = updates.imageSafeH;
+      mutated = true;
     }
-    saveToLocalFiles(bucket);
+    if (mutated) saveToLocalFiles(bucket);
   }
 
   // 3. Update Supabase
@@ -718,6 +750,38 @@ export async function updateArticleImageInMemory(
       await supabase.from("articles").update(dbUpdates).eq("id", supabaseId);
     }
   }
+}
+
+/**
+ * Update an article's title in-memory + Supabase by stable Supabase id.
+ * Mirrors `updateArticleImageInMemory` so headline patches don't require a
+ * server restart to land in the mobile feed.
+ */
+export async function updateArticleTitleInMemory(
+  supabaseId: number,
+  newTitle: string
+): Promise<{ ok: boolean; previousTitle?: string }> {
+  let previousTitle: string | undefined;
+  for (const [, bucket] of _feeds.entries()) {
+    let mutated = false;
+    for (const article of bucket.articles) {
+      if (article.id !== supabaseId) continue;
+      if (previousTitle === undefined) previousTitle = article.title;
+      article.title = newTitle;
+      mutated = true;
+    }
+    if (mutated) saveToLocalFiles(bucket);
+  }
+
+  const { error } = await supabase
+    .from("articles")
+    .update({ title: newTitle })
+    .eq("id", supabaseId);
+  if (error) {
+    console.error(`[curated/set-title] supabase error: ${error.message}`);
+    return { ok: false, previousTitle };
+  }
+  return { ok: true, previousTitle };
 }
 
 /** Dedup refs for the current 7-day window (used in shortlist workflow). */
@@ -746,16 +810,11 @@ export async function updateArticleImage(
   imageWidth?: number,
   imageHeight?: number,
 ): Promise<EnrichedArticle | null> {
-  // Resolve global ID → title via the sorted global feed
-  const globalFeed = getPublishedFeed();
-  const target = globalFeed.find((a) => a.id === id);
-  if (!target) return null;
-
-  // Find the underlying mutable bucket article by title
+  // Find the mutable bucket article by stable Supabase id.
   let foundArticle: EnrichedArticle | null = null;
   let foundBucket: { date: string; articles: EnrichedArticle[] } | null = null;
   for (const [, bucket] of _feeds.entries()) {
-    const article = bucket.articles.find((a) => a.title === target.title);
+    const article = bucket.articles.find((a) => a.id === id);
     if (article) { foundArticle = article; foundBucket = bucket; break; }
   }
   if (!foundArticle || !foundBucket) return null;
@@ -768,13 +827,13 @@ export async function updateArticleImage(
   // Persist to local backup file
   saveToLocalFiles(foundBucket);
 
-  // Persist to Supabase (fire-and-forget, matched by title)
+  // Persist to Supabase by id (fire-and-forget).
   if (process.env.SUPABASE_URL) {
     void (async () => {
       const { error } = await supabase
         .from("articles")
         .update({ image_url: imageUrl, image_width: imageWidth ?? null, image_height: imageHeight ?? null })
-        .eq("title", foundArticle.title);
+        .eq("id", id);
       if (error) console.warn("[curated] updateArticleImage Supabase error:", error.message);
     })();
   }
@@ -955,18 +1014,17 @@ export function resetTodayFeed(): void {
   console.log("[curated] ✓ Today's feed reset.");
 }
 
-/** Persist today's feed to local files + Supabase. */
+/**
+ * Persist today's feed to local files. Supabase is already up-to-date because
+ * mergeFeed inserts new rows directly. Double-writing here would re-trigger
+ * the insert path and risk recycling stable ids.
+ */
 export function saveCommittedFeed(): void {
   resetIfNewDay();
   const today = dateStr(0);
   const bucket = _feeds.get(today)!;
-  // Local file backup
   saveToLocalFiles(bucket);
   console.log(`[curated] ✓ Local feed saved (${bucket.articles.length} articles)`);
-  // Supabase (fire-and-forget)
-  upsertFeedToSupabase(bucket.articles, today).catch((e) =>
-    console.warn("[curated] Supabase sync failed:", (e as Error).message)
-  );
 }
 
 /** @deprecated Use saveCommittedFeed() — kept for call-site compatibility. */
@@ -1009,8 +1067,9 @@ export async function promoteToProduction(feedDate?: string): Promise<number> {
 }
 
 /**
- * Persist today's feed directly as prod (skip dev staging).
- * Used when articles are manually curated via /api/curation/add.
+ * Persist today's feed locally. Supabase is already up-to-date — mergeFeed
+ * inserts new rows directly with the requested stage. Kept as the local-file
+ * sync entry point for /api/curation/add.
  */
 export function saveCommittedFeedAsProd(): void {
   resetIfNewDay();
@@ -1018,7 +1077,4 @@ export function saveCommittedFeedAsProd(): void {
   const bucket = _feeds.get(today)!;
   saveToLocalFiles(bucket);
   console.log(`[curated] ✓ Local feed saved (${bucket.articles.length} articles)`);
-  upsertFeedToSupabase(bucket.articles, today, 'prod').catch((e) =>
-    console.warn("[curated] Supabase prod sync failed:", (e as Error).message)
-  );
 }

@@ -383,6 +383,18 @@ export function FeedPageHorizontal() {
     return startOfDay(oldest);
   }, [allArticles]);
 
+  // Dynamic max date — newest feed day actually loaded. Used to clamp the
+  // TopBar forward chevron so users can't step past the latest published
+  // feed (e.g. before today's edition is out).
+  const maxDate = useMemo(() => {
+    if (allArticles.length === 0) return startOfDay(new Date());
+    const newest = allArticles.reduce((max, a) => {
+      const d = new Date((a as any).feedDate ?? a.publishedAt);
+      return d > max ? d : max;
+    }, new Date((allArticles[0] as any).feedDate ?? allArticles[0].publishedAt));
+    return startOfDay(newest);
+  }, [allArticles]);
+
   // ── Rail transition helper ──────────────────────────────────────────────
   // Called to land on a new day. Uses a CSS spring for smoothness, then
   // forces the target day's scroller to scrollTop=0 (always land on divider).
@@ -703,6 +715,7 @@ export function FeedPageHorizontal() {
           showDatePicker
           fillRef={feedBarFillRef}
           minDate={minDate}
+          maxDate={maxDate}
           pickerOpen={pickerOpen}
           onPickerOpenChange={setPickerOpen}
           onScrollToDayTop={handleScrollToDayTop}
@@ -866,6 +879,8 @@ export function FeedPageHorizontal() {
                       hasNextDay={dataIdx > 0}
                       dayIndex={dataIdx}
                       daysLoaded={dayGroups.length}
+                      prevDate={dataIdx < dayGroups.length - 1 ? dayGroups[dataIdx + 1].date : null}
+                      nextDate={dataIdx > 0 ? dayGroups[dataIdx - 1].date : null}
                       onPrev={dataIdx < dayGroups.length - 1 ? () => landOnDay(dataIdx + 1) : undefined}
                       onNext={dataIdx > 0 ? () => landOnDay(dataIdx - 1) : undefined}
                     />

@@ -330,7 +330,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                   {/* Headline */}
                   <h1
                     className="font-['Manrope']"
-                    style={{ fontWeight: 800, fontSize: 'clamp(26px, 6vw, 38px)', lineHeight: 1.06, letterSpacing: '-0.02em', color: '#1a1a1a', marginBottom: '20px' }}
+                    style={{ fontWeight: 800, fontSize: '20px', lineHeight: 1.06, letterSpacing: '-0.02em', color: '#1a1a1a', marginBottom: '20px' }}
                   >
                     {article.title}
                   </h1>

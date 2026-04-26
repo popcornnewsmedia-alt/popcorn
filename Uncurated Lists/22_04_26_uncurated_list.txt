@@ -1,0 +1,278 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  POPCORN CANDIDATES — 2026-04-22   (MAIN RUN)
+  182 articles fetched   178 unique stories   82 selected by Claude
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+── FIRST PASS — Claude's picks (82 selected) ────────────────────────────────────────────────────────────
+  #1    8     Hypebeast                     thisisneverthat x Starbucks Brew First-Ever Collaborative Collection
+  #2    8     Wired                         The Pope’s Warnings About AI Were AI-Generated, a Detection Tool Claims
+  #3    6     Inc.                          When Congress Pulled the Plug on Public Radio, A Billionaire Wrote an $80 Million Check
+  #4    6     IGN                           Daredevil: Showrunner Discusses Reveal of Key Marvel Character
+  #5    6     Engadget                      X finally adds custom timelines
+  #6    6     Wired                         New Gas-Powered Data Centers Could Emit More Greenhouse Gases Than Entire Nations
+  #7    6     IGN                           Helldivers 2 Exo Experts Warbond Revealed
+  #8    6     Business Insider              Red Lobster diners loved 'Endless Shrimp.' Just don't ask the waiters about it.
+  #9    6     Dexerto                       YouTube makes deepfakes easier to takedown, but not for everyone just yet
+  #10   6     Variety                       Shawna Thomas Jumps to MS NOW After Running ‘CBS Mornings’
+  #11   6     Dazed                         Zara Larsson: ‘The second I come home, all my clothes come off’
+  #12   6     MIT Technology Review         AI needs a strong data fabric to deliver business value
+  #13   6     Deadline                      Studio TF1 Launches Sales On Cannes-Bound ‘Forsaken’ About Killing Of Teacher Samuel Paty
+  #14   6     The Guardian Culture          Exit 8 review – Escher-esque subway station corridor leads to disquieting psychological mystery
+  #15   6     Vanity Fair                   The Mystery of the Missing Time Magazine Cocaine Cover
+  #16   6     Vanity Fair                   Gloria Steinem Invited Me Over to Her Brownstone for a Group Discussion on Sexual Desire. This Is How It Went.
+  #17   6     Wired                         Join Our Livestream: Musk v. Altman and the Future of OpenAI
+  #18   6     Wired                         Infinite Machine Olto Review: A Tremendously Fun Ride
+  #19   6     The New Yorker                That One Week Every Year You Forget You Have Allergies
+  #20   6     The New Yorker                The Kardashians Explain Everything (Because They Are Everything)
+  #21   6     The New Yorker                Gwendoline Riley’s New Novel Surveys the Wreckage of Middle Age
+  #22   6     MIT Technology Review         3 things Michelle Kim is into right now
+  #23   6     MIT Technology Review         One town’s scheme to get rid of its geese
+  #24   6     MIT Technology Review         There is no nature anymore
+  #25   6     MIT Technology Review         Los Angeles is finally going underground
+  #26   6     Inc.                          Please Don’t Talk to People Like You Talk to AI
+  #27   6     Inc.                          Macy’s Is Closing More Stores in 2026: See an Updated List of Locations That Will Shutter Soon
+  #28   6     Inc.                          5 Lessons From an AI Startup That’s Quietly Disrupting a $30 Billion Industry
+  #29   6     Inc.                          Make These 3 Changes to Your LinkedIn Posts to Improve Reach With the 360 Brew Algorithm
+  #30   6     Dexerto                       NHL fans rain glass on opposition coach after celebrating unbelivable playoffs save
+  #31   6     Business Insider              An Instacart founder shares his sneaker test for entrepreneurs
+  #32   6     Business Insider              5 stats that explain Apple's stock-market dominance during the Tim Cook era
+  #33   6     Business Insider              How a real estate investor shifted his strategy to boost property appreciation and attract tenants
+  #34   6     Dexerto                       Fallout: New Vegas 2 was real but plans “evaporated” according to lead dev
+  #35   6     IGN                           Marathon Changes Announced
+  #36   6     Inc.                          Google Research Shows Building a Great Team Requires Focusing on How, Not Who
+  #37   6     IGN                           Elden Ring Movie Set Photos Leak
+  #38   6     Business Insider              A top BlackRock strategist shares the 4 biggest market trends she's watching, and how to invest in each
+  #39   6     The Guardian Culture          Post your questions for Ian McKellen
+  #40   6     Wired                         Ranking the Best Red Light Therapy Mask and LED Devices of 2026
+  #41   6     The Verge                     Anker made its own chip to bring AI to all its products
+  #42   6     Hypebeast                     Karol G Announces Massive "Viajando Por El Mundo Tropitour" Global Stadium Tour
+  #43   6     NYT Arts                      Imagining the Manosphere as a Kinder, Gentler Place
+  #44   6     Dexerto                       What time is Stranger Things: Tales From ’85 on Netflix?
+  #45   6     Dexerto                       Dog walks herself to day care to play with “boyfriend” after escaping owner’s house
+  #46   6     The Verge                     Anthropic’s most dangerous AI model just fell into the wrong hands
+  #47   6     IGN                           Pokémon Doubles Down on Decision to Penalize Pro Player
+  #48   6     Business of Fashion           ‘An Element of Exploitation’: The World of TikTok Child Skincare Influencers
+  #49   6     Business Insider              A wealth management exec says AI could be putting your FIRE dreams at risk
+  #50   6     The Guardian Culture          ‘Nobody knows what works. There’s a lot of panic’: can African pop get back to global success?
+  #51   6     Page Six                      Pat Sajak’s daughter Maggie goes public with Savannah Bananas star Jackson Olson
+  #52   6     Engadget                      Anthropic is investigating 'unauthorized access' of its Mythos cybersecurity tool
+  #53   6     Business Insider              I applied to 2,000 jobs before getting offers at Target and a startup. Here's how I decided which to pick.
+  #54   6     Business Insider              The 3 prompts Mark Cuban recommends you plug into Claude
+  #55   6     Semafor                       Americans give Congress a thumbs down
+  #56   6     Semafor                       Barrasso argues Sanders, not Schumer, leads Democrats on Israel
+  #57   6     Semafor                       El-Sayed’s rise riles Democratic moderates, delights the left
+  #58   6     Business Insider              New York wants to tax empty second homes. Here's what happened in cities that tried it.
+  #59   6     Business Insider              Deciding between multiple job offers? Let us analyze them for you.
+  #60   6     Business Insider              Nobel Prize-winning economist isn't convinced by Anthropic CEO's warning of a white-collar jobs wipeout
+  #61   6     NYT Arts                      Vilma Jää’s Voice Is Unlike Anything in Opera
+  #62   6     NYT Arts                      4 Takeaways From ‘Lorne,’ the Movie About Lorne Michaels and ‘S.N.L.’
+  #63   6     Hypebeast                     Bob, The Newest Labubu, Takes a Seat in the New USM x Kasing Lung Capsule
+  #64   6     NYT Arts                      Inside LACMA’s Eye-Popping New Home, How Do You Find the Art?
+  #65   6     Business Insider              My husband won't help me manage our money, but he's full of opinions about how I spend it. Am I wrong to ignore him?
+  #66   6     NYT Arts                      École des Sables, Africa’s Premier Dance School, Faces a Precarious Future
+  #67   6     Semafor                       Warsh hearing puts Fed onus back on Trump
+  #68   6     Highsnobiety                  It Doesn't Get Much Crisper Than Jordan's Minimalist Baller
+  #69   6     Hypebeast                     Edison Chen Unveils the CLOT x adidas Originals Mundial Collection
+  #70   6     Business Insider              The AI boom won't last, a top VC warns, as he urges startups to cash out
+  #71   6     Inc.                          Amazon Just Put the Biggest Trade of the Decade on the Wrong Side—and Big Pharma Is Paying for It
+  #72   6     Inc.                          Deloitte Is Cutting Perks. Your Small Business Just Got More Competitive
+  #73   6     Inc.                          Duolingo’s AI U-turn Is a Warning for Other Companies
+  #74   6     ESPN                          📸 Drake trolls Bears' QB in rollout of new album
+  #75   6     ESPN                          Kentucky governor blasts decision-making at UK
+  #76   6     ESPN                          Bruins 'played to our identity' in Game 2 victory
+  #77   6     NYT Arts                      An Installation in Nature has Climate Lessons for Humans
+  #78   6     Variety                       Soccer Couple Rebekah and Jamie Vardy Set Reality Series at ITV Four Years After ‘Wagatha Christie’ Trial
+  #79   6     Deadline                      CMG Productions & ‘The Football Ramble’ Firm Stak To Co-Create Sport And Crime Podcasts
+  #80   6     Deadline                      Rebel Wilson Accused Of Making Life “Nightmarish” For ‘The Deb’ Co-Star Charlotte MacInnes
+  #81   6     Hypebeast                     101 Years of Lee, Reborn: The Feng Chen Wang Collab Makes Its Western Debut
+  #82   6     Highsnobiety                  New Balance's Popsicle-Flavored Dad Shoe Is A Tangerine Dream
+
+── ALL CANDIDATES (sorted by score) ─────────────────────────────────────────────────────────────────
+   #1    9     Billboard                     Man! I Feel Like a Host!: Shania Twain Set to Host 2026 Academy of Country Music Awards
+   #2    8     Page Six                      Brittany Cartwright spills on ‘The Valley’ drama and Amanda, West scandal with VRT
+   #3    8     Dexerto                       MrBeast’s company denies claims in former employee’s lawsuit
+   #4    8     Page Six                      Dave Mason, legendary Traffic co-founder, dead at 79
+   #5    8     NYT Arts                      Dave Mason, Songwriter Who Co-Founded Traffic, Dies at 79
+   #6    8     IGN                           Avengers: Doomsday Spoiler Leaked by Composer
+   #7    8     Semafor                       Why Saudi is weathering the war shock better than most
+   #8    8     The Verge                     First vacuums — then the world
+   #9    8     Dexerto                       First Loch Ness Monster sighting of 2026 reported after months of silence
+   #10   8     The Guardian Culture          Dave Mason, co-founder of Traffic who had a star-studded solo career, dies aged 79
+   #11   8     Dexerto                       Air Force responds after pilot’s bizarre flight patterns go viral
+   #12   8     Vanity Fair                   11 Scientists Are Dead or Missing. It Was Only a Matter of Time Before Conspiracy Theories Hit the White House.
+   #13   8     Deadline                      Netflix Reveals Details Of ‘Kylie’ & Drops First-Look Image Of Australian Pop Icon In “Intimate” Doc Series
+ ✓ #14   8     Hypebeast                     thisisneverthat x Starbucks Brew First-Ever Collaborative Collection
+ ✓ #15   8     Wired                         The Pope’s Warnings About AI Were AI-Generated, a Detection Tool Claims
+   #16   8     Business Insider              Sam Altman compares Anthropic's Mythos to dropping a bomb while selling a $100 billion bomb shelter
+   #17   8     Dexerto                       Logan Paul’s $550K One Piece and Dragon Ball manga purchase leaves fans furious
+   #18   8     The Guardian Culture          TikTok, an AI sitcom and clowns: how Hacks and The Comeback nail the humiliations of modern celebrity
+   #19   8     Deadline                      Ralph Fiennes, Viggo Mortensen, Charlotte Rampling, Katherine Langford & More Set For István Szabó’s ‘Embers’; Filming Underway & First Looks Revealed With Embankment Aboard For Cannes Market
+   #20   8     NYT Arts                      Krysten Ritter Returns as Jessica Jones in “Daredevil: Born Again”
+   #21   8     Inc.                          The 4 Rules Brands Must Follow to Win in a TikTok-First World
+   #22   8     IGN                           Japanese Website Owner Fined $6,300 for Posting Godzilla and Overlord Spoilers
+   #23   8     NME                           Becoming Michael: how Jaafar Jackson trained to portray his uncle
+   #24   8     Polygon                       Invincible season 4 ending explained and how it sets up season 5 and beyond
+   #25   6     Rolling Stone                 Trump’s Long, Strange Relationship With Faith
+   #26   6     The Hollywood Reporter        Al Gore Isn’t Worried Trump Is Killing the Climate
+   #27   6     Page Six                      The clues that made Jesse Solomon ‘suspicious’ of ‘Summer House’ co-stars Amanda Batula, West Wilson
+   #28   6     Rolling Stone                 Ne-Yo’s Nashville Experience Wasn’t What He Was Warned It Would Be
+   #29   6     Engadget                      Anker's 'Thus' chip brings AI to its headphones and other products
+   #30   6     The Hollywood Reporter        Can Fireproofing Be Climate-Friendly?
+   #31   6     Page Six                      Celebrity deaths 2026: Actors, singers and stars we lost this year
+   #32   6     Rolling Stone                 Noah Kahan Is a Rock Star Now, and a Good Dude Too, on ‘The Great Divide’
+   #33   6     Deadline                      Cannes Critics’ Week Jury Unveiled: Payal Kapadia Set As President
+   #34   6     Dexerto                       Buffed Warzone SMG with unreal TTK is new close-range meta
+   #35   6     MIT Technology Review         The Download: introducing the 10 Things That Matter in AI Right Now
+   #36   6     Business Insider              $8.5 billion consulting firm Grant Thornton is tying US partner bonuses to AI use
+   #37   6     Deadline                      Shawna Thomas To Join MS NOW As Political Director
+ ✓ #38   6     Inc.                          When Congress Pulled the Plug on Public Radio, A Billionaire Wrote an $80 Million Check
+   #39   6     Polygon                       Daredevil season 2 episode 6 finally reveals what Jessica Jones (and Luke Cage) have been up to since 2019
+   #40   6     Business Insider              Google's new chips are a shot at Nvidia — and a big hint at where AI goes next
+   #41   6     Rolling Stone                 Nas: What Miles Davis Means to Me
+   #42   6     The Verge                     Behind the unraveling of Dan Crenshaw
+   #43   6     TechCrunch                    The most interesting startups showcased at Google Cloud Next 2026
+   #44   6     TechCrunch                    Duolingo is now giving free users access to advanced learning content
+   #45   6     TechCrunch                    Google Maps is about to get a big dose of AI
+   #46   6     TechCrunch                    Exclusive: Google deepens Thinking Machines Lab ties with new multi-billion-dollar deal
+   #47   6     Deadline                      Audrey Diwan Teases ‘The Marriage Portrait’ & Talks Adapting Novels For Screen: “You Have To Define That Secret Place That Hurts But Is Fascinating” — Storyhouse
+   #48   6     Billboard                     Josh Groban Gets Engaged to Theater Actress Natalie McQueen at Disneyland: ‘MY BEST FRIEND SAID YES!!!’
+   #49   6     IGN                           Mark Ruffalo Just Dropped Another Big Marvel Spoiler
+   #50   6     Variety                       YouTube Inks Deal Making SiriusXM Exclusive Audio Advertising Rep in U.S.
+   #51   6     Business Insider              Duolingo dials back its 'unhinged' marketing
+   #52   6     Business Insider              Apple's incoming CEO faces a fresh set of marketing challenges
+   #53   6     Page Six                      Marie Osmond remembers ‘incredible’ brother Alan after his death at 76: ‘Always very protective of me’
+   #54   6     Deadline                      Sands: Artistic Director Ania Trzebiatowska On The Festival’s Milestone Fifth Edition & How The Event Has Cultivated A Dedicated Local Audience
+   #55   6     NME                           Labrinth comments further on ‘Euphoria’ “drama”, refuses to “reduce” his music to “online fodder”
+   #56   6     Billboard                     U.K.’s Official Charts Company Shares Leadership Update Following CEO’s Departure
+   #57   6     The Atlantic                  Is Cohabitation the Feminist Future?
+   #58   6     Wired                         Best Chromebooks (2026): Most Are Bad, but These Aren't
+   #59   6     NME                           The supporting cast of ‘Michael’ – and who they’re playing
+   #60   6     Dazed                         The haircare brand keeping my long, dyed hair healthy and happy
+   #61   6     Business Insider              SpaceX's IPO could be a real problem for Tesla
+   #62   6     Variety                       Shivendra Singh Dungarpur on Saving India’s Film Past: ‘There’s Not a Single Moment When I’m Not Thinking About Cinema’
+   #63   6     NME                           The stunning live performances in ‘Michael’
+   #64   6     Ars Technica                  Our favorite gear at Sea Otter Classic wasn't the bikes—it was the accessories
+   #65   6     NME                           ‘Michael’: ‘Off The Wall’ and the solo stardom that followed
+   #66   6     NME                           ‘Michael’: how The Jackson 5 and the early years are portrayed
+   #67   6     Dexerto                       Island with 20 residents will give you free home to move there, but there’s a catch
+   #68   6     Deadline                      British Stunt Performers Face Alleged Threats After Joining New Professional Guild
+   #69   6     Wired                         Dinnerly Meal Kit Review (2026): Hearty Meals on a Budget
+   #70   6     The Guardian Culture          This Is a Gardening Show review – Zach Galifianakis’ charming new series feels like perfect TV
+   #71   6     Ars Technica                  Investors lost billions on Trump’s memecoin. Another gala won’t fix that.
+   #72   6     Billboard                     WrestleMania 42 With John Cena, Liv Morgan, Shawn Michaels & More | All Access
+   #73   6     The Atlantic                  How Democrats Can Lose Michigan, Again
+   #74   6     The Atlantic                  A ‘Barbaric’ Problem in American Hospitals Is Only Getting Bigger
+   #75   6     Inc.                          Why U.S. Employers Are Putting Their Health Insurance Plans Up for Bid
+   #76   6     Inc.                          What Applebee’s, IHOP, and Formula 1 Get Right About Branding
+   #77   6     Semafor                       Safety fears could slow China's robotaxi rollout
+   #78   6     Semafor                       European carmakers lose premium brand status in China
+   #79   6     Semafor                       Gulf trade will be permanently reshaped
+   #80   6     Semafor                       Impact of rising fuel costs expands in real economy
+   #81   6     Business Insider              I worked 12-hour shifts on fishing boats. I used the money I made to start a business that's now worth millions.
+   #82   6     Business Insider              Elon Musk says government checks for all wouldn't spike inflation. Economist Steve Hanke says that's not guaranteed.
+   #83   6     Semafor                       Ukraine reopens Russian oil pipeline to get €90B EU loan
+   #84   6     Semafor                       Stalled Iran talks spark leave energy markets in the lurch
+   #85   6     Business Insider              Here's what CEOs and top execs are saying about how the Iran war is affecting business
+   #86   6     Dexerto                       MLB star admits he keeps trading cards that fans send him to sign
+ ✓ #87   6     IGN                           Helldivers 2 Exo Experts Warbond Revealed
+ ✓ #88   6     Wired                         New Gas-Powered Data Centers Could Emit More Greenhouse Gases Than Entire Nations
+ ✓ #89   6     Engadget                      X finally adds custom timelines
+ ✓ #90   6     IGN                           Daredevil: Showrunner Discusses Reveal of Key Marvel Character
+   #91   6     Wired                         Beatbot Sora 30 Review: Midrange Price, High-End Results
+ ✓ #92   6     Variety                       Shawna Thomas Jumps to MS NOW After Running ‘CBS Mornings’
+ ✓ #93   6     Dexerto                       YouTube makes deepfakes easier to takedown, but not for everyone just yet
+ ✓ #94   6     Business Insider              Red Lobster diners loved 'Endless Shrimp.' Just don't ask the waiters about it.
+ ✓ #95   6     Dazed                         Zara Larsson: ‘The second I come home, all my clothes come off’
+ ✓ #96   6     Inc.                          Make These 3 Changes to Your LinkedIn Posts to Improve Reach With the 360 Brew Algorithm
+ ✓ #97   6     Inc.                          5 Lessons From an AI Startup That’s Quietly Disrupting a $30 Billion Industry
+ ✓ #98   6     Inc.                          Macy’s Is Closing More Stores in 2026: See an Updated List of Locations That Will Shutter Soon
+ ✓ #99   6     Inc.                          Please Don’t Talk to People Like You Talk to AI
+ ✓ #100  6     MIT Technology Review         Los Angeles is finally going underground
+ ✓ #101  6     MIT Technology Review         There is no nature anymore
+ ✓ #102  6     MIT Technology Review         One town’s scheme to get rid of its geese
+ ✓ #103  6     MIT Technology Review         3 things Michelle Kim is into right now
+ ✓ #104  6     The New Yorker                Gwendoline Riley’s New Novel Surveys the Wreckage of Middle Age
+ ✓ #105  6     The New Yorker                The Kardashians Explain Everything (Because They Are Everything)
+ ✓ #106  6     The New Yorker                That One Week Every Year You Forget You Have Allergies
+ ✓ #107  6     Wired                         Infinite Machine Olto Review: A Tremendously Fun Ride
+ ✓ #108  6     Wired                         Join Our Livestream: Musk v. Altman and the Future of OpenAI
+ ✓ #109  6     Vanity Fair                   Gloria Steinem Invited Me Over to Her Brownstone for a Group Discussion on Sexual Desire. This Is How It Went.
+ ✓ #110  6     Vanity Fair                   The Mystery of the Missing Time Magazine Cocaine Cover
+ ✓ #111  6     The Guardian Culture          Exit 8 review – Escher-esque subway station corridor leads to disquieting psychological mystery
+ ✓ #112  6     Deadline                      Studio TF1 Launches Sales On Cannes-Bound ‘Forsaken’ About Killing Of Teacher Samuel Paty
+ ✓ #113  6     MIT Technology Review         AI needs a strong data fabric to deliver business value
+   #114  6     Highsnobiety                  The Fashion Brands That Don't Need Earth Day to Care
+ ✓ #115  6     Business Insider              How a real estate investor shifted his strategy to boost property appreciation and attract tenants
+ ✓ #116  6     Business Insider              5 stats that explain Apple's stock-market dominance during the Tim Cook era
+ ✓ #117  6     Business Insider              An Instacart founder shares his sneaker test for entrepreneurs
+ ✓ #118  6     Dexerto                       NHL fans rain glass on opposition coach after celebrating unbelivable playoffs save
+   #119  6     Highsnobiety                  How to Make ASICS' Dad Shoe Daddier? Make It a BBQ Sandal
+   #120  6     Highsnobiety                  HUGO Is Taking the Leap. Will You?
+ ✓ #121  6     Inc.                          Google Research Shows Building a Great Team Requires Focusing on How, Not Who
+ ✓ #122  6     IGN                           Marathon Changes Announced
+ ✓ #123  6     Dexerto                       Fallout: New Vegas 2 was real but plans “evaporated” according to lead dev
+   #124  6     Highsnobiety                  From Nike to Crocs, the Seven Best Sneakers to Cop Right Now
+ ✓ #125  6     The Guardian Culture          Post your questions for Ian McKellen
+ ✓ #126  6     Business Insider              A top BlackRock strategist shares the 4 biggest market trends she's watching, and how to invest in each
+ ✓ #127  6     IGN                           Elden Ring Movie Set Photos Leak
+   #128  6     Hypebeast                     LG Debuts Flagship OLED evo W6 Wallpaper TV
+ ✓ #129  6     Dexerto                       Dog walks herself to day care to play with “boyfriend” after escaping owner’s house
+ ✓ #130  6     Dexerto                       What time is Stranger Things: Tales From ’85 on Netflix?
+ ✓ #131  6     NYT Arts                      Imagining the Manosphere as a Kinder, Gentler Place
+ ✓ #132  6     Hypebeast                     Karol G Announces Massive "Viajando Por El Mundo Tropitour" Global Stadium Tour
+ ✓ #133  6     The Verge                     Anker made its own chip to bring AI to all its products
+ ✓ #134  6     Wired                         Ranking the Best Red Light Therapy Mask and LED Devices of 2026
+   #135  6     Hypebeast                     AELIZA’s “Case Study 4: Your Life” Reflects on Societal Archetypes
+ ✓ #136  6     Business Insider              A wealth management exec says AI could be putting your FIRE dreams at risk
+ ✓ #137  6     Business of Fashion           ‘An Element of Exploitation’: The World of TikTok Child Skincare Influencers
+ ✓ #138  6     IGN                           Pokémon Doubles Down on Decision to Penalize Pro Player
+ ✓ #139  6     The Verge                     Anthropic’s most dangerous AI model just fell into the wrong hands
+ ✓ #140  6     Business Insider              My husband won't help me manage our money, but he's full of opinions about how I spend it. Am I wrong to ignore him?
+ ✓ #141  6     NYT Arts                      Inside LACMA’s Eye-Popping New Home, How Do You Find the Art?
+ ✓ #142  6     Hypebeast                     Bob, The Newest Labubu, Takes a Seat in the New USM x Kasing Lung Capsule
+ ✓ #143  6     NYT Arts                      4 Takeaways From ‘Lorne,’ the Movie About Lorne Michaels and ‘S.N.L.’
+ ✓ #144  6     NYT Arts                      Vilma Jää’s Voice Is Unlike Anything in Opera
+ ✓ #145  6     Business Insider              Nobel Prize-winning economist isn't convinced by Anthropic CEO's warning of a white-collar jobs wipeout
+ ✓ #146  6     Business Insider              Deciding between multiple job offers? Let us analyze them for you.
+ ✓ #147  6     Business Insider              New York wants to tax empty second homes. Here's what happened in cities that tried it.
+ ✓ #148  6     Semafor                       El-Sayed’s rise riles Democratic moderates, delights the left
+ ✓ #149  6     Semafor                       Barrasso argues Sanders, not Schumer, leads Democrats on Israel
+ ✓ #150  6     Semafor                       Americans give Congress a thumbs down
+ ✓ #151  6     Business Insider              The 3 prompts Mark Cuban recommends you plug into Claude
+ ✓ #152  6     Business Insider              I applied to 2,000 jobs before getting offers at Target and a startup. Here's how I decided which to pick.
+ ✓ #153  6     Engadget                      Anthropic is investigating 'unauthorized access' of its Mythos cybersecurity tool
+ ✓ #154  6     Page Six                      Pat Sajak’s daughter Maggie goes public with Savannah Bananas star Jackson Olson
+ ✓ #155  6     The Guardian Culture          ‘Nobody knows what works. There’s a lot of panic’: can African pop get back to global success?
+   #156  6     ESPN                          Smart's defense on KD helps Lakers to 2-0 lead
+ ✓ #157  6     NYT Arts                      An Installation in Nature has Climate Lessons for Humans
+ ✓ #158  6     ESPN                          Bruins 'played to our identity' in Game 2 victory
+ ✓ #159  6     ESPN                          Kentucky governor blasts decision-making at UK
+ ✓ #160  6     ESPN                          📸 Drake trolls Bears' QB in rollout of new album
+ ✓ #161  6     Inc.                          Duolingo’s AI U-turn Is a Warning for Other Companies
+ ✓ #162  6     Inc.                          Deloitte Is Cutting Perks. Your Small Business Just Got More Competitive
+ ✓ #163  6     Inc.                          Amazon Just Put the Biggest Trade of the Decade on the Wrong Side—and Big Pharma Is Paying for It
+ ✓ #164  6     Business Insider              The AI boom won't last, a top VC warns, as he urges startups to cash out
+ ✓ #165  6     Hypebeast                     Edison Chen Unveils the CLOT x adidas Originals Mundial Collection
+ ✓ #166  6     Highsnobiety                  It Doesn't Get Much Crisper Than Jordan's Minimalist Baller
+ ✓ #167  6     Semafor                       Warsh hearing puts Fed onus back on Trump
+ ✓ #168  6     NYT Arts                      École des Sables, Africa’s Premier Dance School, Faces a Precarious Future
+   #169  6     ESPN                          Wemby concussed on hard fall in Spurs' G2 loss
+   #170  6     ESPN                          Edgecombe makes history with 30-10 to stun C's
+   #171  6     ESPN                          Splitter on Dundon reports: 'Trying to be a pro'
+   #172  6     ESPN                          Williams' collapse in 9th brings Mets' slide to 12
+   #173  6     ESPN                          Kings coach hit by shattered glass as panel breaks
+ ✓ #174  6     Deadline                      CMG Productions & ‘The Football Ramble’ Firm Stak To Co-Create Sport And Crime Podcasts
+ ✓ #175  6     Variety                       Soccer Couple Rebekah and Jamie Vardy Set Reality Series at ITV Four Years After ‘Wagatha Christie’ Trial
+ ✓ #176  6     Highsnobiety                  New Balance's Popsicle-Flavored Dad Shoe Is A Tangerine Dream
+ ✓ #177  6     Hypebeast                     101 Years of Lee, Reborn: The Feng Chen Wang Collab Makes Its Western Debut
+ ✓ #178  6     Deadline                      Rebel Wilson Accused Of Making Life “Nightmarish” For ‘The Deb’ Co-Star Charlotte MacInnes
+
+── GROUPED DUPLICATES (excluded from candidate pool) ──────────────────────────────────────────────────
+   Rolling Stone                 Shania Twain to Host the 2026 ACM Awards
+                                ↳ Grouped as duplicate of "Man! I Feel Like a Host!: Shania Twain Set to Host 2026 Acad
+   Deadline                      Shania Twain Set As Host Of Academy Of Country Music Awards 2026 On Pr
+                                ↳ Grouped as duplicate of "Man! I Feel Like a Host!: Shania Twain Set to Host 2026 Acad
+   NME                           Introducing Jaafar Jackson as Michael Jackson
+                                ↳ Grouped as duplicate of "Becoming Michael: how Jaafar Jackson trained to portray his 
+   Dexerto                       Invincible Season 4 ending explained: What is Thragg’s disturbing plan
+                                ↳ Grouped as duplicate of "Invincible season 4 ending explained and how it sets up seas

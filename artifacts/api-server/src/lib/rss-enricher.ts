@@ -1114,6 +1114,31 @@ function extractImage(block: string): string | undefined {
   return undefined;
 }
 
+// Node's Date parser only handles GMT/UTC/Z and ±HH:MM offsets. Some feeds
+// (notably Sky Sports) emit RFC-822 dates with legacy timezone abbreviations
+// like "BST", which produce NaN and get silently dropped by downstream
+// time-window filters. Swap the abbreviation for its numeric offset so the
+// rest of the pipeline can parse it.
+const RSS_TZ_OFFSETS: Record<string, string> = {
+  BST: "+0100", // British Summer Time
+  IST: "+0530", // India Standard Time
+  AEST: "+1000",
+  AEDT: "+1100",
+  CET: "+0100",
+  CEST: "+0200",
+  EST: "-0500",
+  EDT: "-0400",
+  PST: "-0800",
+  PDT: "-0700",
+  CST: "-0600",
+  CDT: "-0500",
+  MST: "-0700",
+  MDT: "-0600",
+};
+function normalizeRSSDate(raw: string): string {
+  return raw.replace(/\b(BST|IST|AEST|AEDT|CET|CEST|EST|EDT|PST|PDT|CST|CDT|MST|MDT)\b/, (tz) => RSS_TZ_OFFSETS[tz]);
+}
+
 export function parseRSSItems(xml: string, source: string): RawRSSItem[] {
   const isAtom = /<feed[\s>]/i.test(xml);
   const pattern = isAtom
@@ -1153,7 +1178,7 @@ export function parseRSSItems(xml: string, source: string): RawRSSItem[] {
       block.match(/<pubDate>([^<]+)<\/pubDate>/i) ||
       block.match(/<published>([^<]+)<\/published>/i) ||
       block.match(/<updated>([^<]+)<\/updated>/i);
-    if (dateM) pubDate = dateM[1].trim();
+    if (dateM) pubDate = normalizeRSSDate(dateM[1].trim());
 
     const imageUrl = extractImage(block);
     items.push({ title, description, link, pubDate, source, imageUrl });
@@ -1926,6 +1951,8 @@ const DOMAIN_BY_SOURCE: Partial<Record<string, SignalDomain>> = {
   "Futurism":         "AI_TECH",
   "ESPN":             "SPORTS",
   "Sky Sports":       "SPORTS",
+  "Sky Sports Football": "SPORTS",
+  "BBC Sport":        "SPORTS",
   "Know Your Meme":   "INTERNET",
   "Dexerto":          "INTERNET",
   "Semafor":          "CROSSDOMAIN",
@@ -2365,7 +2392,7 @@ ${articleList}
 
 For each article output a JSON object:
 {
-  "title": "Punchy headline — target 10 words, but extend to 14–16 words if needed to preserve the source's hook/twist/named-cause. MUST include the real name.",
+  "title": "Punchy headline — HARD TARGET 8–11 words / 50–70 characters, HARD CAP 12 words / 80 characters. NEVER exceed 80 characters: the mobile home feed clamps headlines to 4 lines at ~22px and anything longer gets cut off. Before submitting, count BOTH words AND characters (including spaces): if either exceeds the cap, tighten. Techniques: drop the trailing clause ('… and Dropping Exclusive Limited-Edition Vinyl' cut entirely), collapse filler verbs ('is raising'→'sparks', 'has a new deal to take over'→'takes over'), remove decorative adjectives ('historic', 'iconic', 'exclusive', 'limited-edition'), flatten stacked prepositional phrases. The body covers detail; the headline only needs to land the moment. Capture: real person/product/company name AND the hook/twist/named-cause. MUST include real names — no generics. If the only way to fit a quote hook is to exceed 80 chars, prefer a tighter paraphrase that keeps the named actor.",
   "summary": "2–3 sentences. First sentence names who/what and what happened. Second sentence says why it matters or gives key context. Optional third sentence for a striking detail, number, or quote that hooks the reader.",
   "content": "3–4 paragraphs for BREAKING/RELEASE, 5–6 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people and things throughout. Include brief backstory where needed. Weave in specific numbers, dates, quotes, or details from the source — readers want the full picture, not just the headline.",
   "keyPoints": ["3 to 5 short plain-English takeaways (no dashes, no jargon)"],
@@ -2741,6 +2768,8 @@ export const RSS_FEEDS: [string, string][] = [
   // Sports (cultural crossover only)
   ["https://www.espn.com/espn/rss/news",                             "ESPN"],
   ["https://www.skysports.com/rss/12040",                            "Sky Sports"],
+  ["https://www.skysports.com/rss/11095",                            "Sky Sports Football"],
+  ["https://feeds.bbci.co.uk/sport/rss.xml",                         "BBC Sport"],
   ["https://defector.com/feed",                                      "Defector"],
   // ── Supplementary sources ─────────────────────────────────────────────────
   // Internet & Emerging Culture — memes, trends, online discourse
@@ -2856,7 +2885,12 @@ export async function loadLiveArticles(
     const before = filteredItems.length;
     filteredItems = filteredItems.filter((item) => {
       const tokens = titleTokens(item.title);
-      return !pubTokenSets.some((pt) => jaccardSim(tokens, pt) >= 0.35);
+      // Threshold 0.28 (down from 0.35) — paraphrased headlines from
+      // different sources can drop token-overlap below 0.35 even when
+      // they're clearly the same story (e.g. Apr 20 Charlize/Chalamet
+      // variants). 0.28 catches those without false-positive collisions
+      // on common news words.
+      return !pubTokenSets.some((pt) => jaccardSim(tokens, pt) >= 0.28);
     });
     const titleFiltered = before - filteredItems.length;
     if (titleFiltered > 0) {
@@ -2888,7 +2922,7 @@ export async function loadLiveArticles(
     ECONOMIC:      8,
     FANDOM:        8,
     INTERNET:      6,
-    SPORTS:        6,
+    SPORTS:       12,
     CROSSDOMAIN:   5,
   };
   const ENTERTAINMENT_CAP = 40; // max entertainment slots
@@ -3031,7 +3065,12 @@ export async function generateShortlist(
     const before = filteredItems.length;
     filteredItems = filteredItems.filter((item) => {
       const tokens = titleTokens(item.title);
-      return !pubTokenSets.some((pt) => jaccardSim(tokens, pt) >= 0.35);
+      // Threshold 0.28 (down from 0.35) — paraphrased headlines from
+      // different sources can drop token-overlap below 0.35 even when
+      // they're clearly the same story (e.g. Apr 20 Charlize/Chalamet
+      // variants). 0.28 catches those without false-positive collisions
+      // on common news words.
+      return !pubTokenSets.some((pt) => jaccardSim(tokens, pt) >= 0.28);
     });
     const removed = before - filteredItems.length;
     if (removed > 0) console.log(`[shortlist] ${removed} items removed as already-published`);
@@ -3042,7 +3081,7 @@ export async function generateShortlist(
 
   // Domain-balanced pool — same slots as main pipeline
   const DOMAIN_SLOTS: Partial<Record<SignalDomain, number>> = {
-    AI_TECH: 10, ECONOMIC: 8, FANDOM: 8, INTERNET: 6, SPORTS: 6, CROSSDOMAIN: 5,
+    AI_TECH: 10, ECONOMIC: 8, FANDOM: 8, INTERNET: 6, SPORTS: 12, CROSSDOMAIN: 5,
   };
   const ENTERTAINMENT_CAP = 30; // raised from 13 — caps are guidelines, not hard limits
   const POOL_CAP = 100;         // raised from 50 — user reviews JSON so cost is free
@@ -3204,7 +3243,7 @@ ${articleList}
 
 For each article output a JSON object:
 {
-  "title": "Punchy headline — target 10 words, but extend to 14–16 words if needed to preserve the source's hook/twist/named-cause. MUST include the real name.",
+  "title": "Punchy headline — HARD TARGET 8–11 words / 50–70 characters, HARD CAP 12 words / 80 characters. NEVER exceed 80 characters: the mobile home feed clamps headlines to 4 lines at ~22px and anything longer gets cut off. Before submitting, count BOTH words AND characters (including spaces): if either exceeds the cap, tighten. Techniques: drop the trailing clause ('… and Dropping Exclusive Limited-Edition Vinyl' cut entirely), collapse filler verbs ('is raising'→'sparks', 'has a new deal to take over'→'takes over'), remove decorative adjectives ('historic', 'iconic', 'exclusive', 'limited-edition'), flatten stacked prepositional phrases. The body covers detail; the headline only needs to land the moment. Capture: real person/product/company name AND the hook/twist/named-cause. MUST include real names — no generics. If the only way to fit a quote hook is to exceed 80 chars, prefer a tighter paraphrase that keeps the named actor.",
   "summary": "2–3 sentences. First sentence names who/what and what happened. Second sentence says why it matters or gives key context. Optional third sentence for a striking detail, number, or quote that hooks the reader.",
   "content": "3–4 paragraphs for BREAKING/RELEASE, 5–6 for FEATURE/TREND/HOT TAKE/REVIEW/INTERVIEW. Separated by \\n\\n. Conversational tone. Simple words. No dashes as punctuation. Name real people, products and things throughout — never use vague substitutes. Weave in specific numbers, dates, quotes, or details from the source.",
   "keyPoints": ["3 to 5 short plain-English takeaways"],

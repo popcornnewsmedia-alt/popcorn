@@ -14,13 +14,18 @@ interface TopBarProps {
   /** Ref forwarded to the expanded "Today / weekday, date" span in the picker */
   expandedDateRef?: React.RefObject<HTMLSpanElement | null>;
   minDate?: Date;
+  /** When provided, the forward chevron is clamped to this date (the newest
+   *  loaded feed day). Without it, "today" (the literal calendar date) is
+   *  used — which can sit ahead of the newest feed day if today's feed
+   *  hasn't been published yet. */
+  maxDate?: Date;
   pickerOpen?: boolean;
   onPickerOpenChange?: (open: boolean) => void;
   /** Scroll the underlying feed to the top of the current day's section (the DateDivider) */
   onScrollToDayTop?: () => void;
 }
 
-export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, dateRef, expandedDateRef, minDate, pickerOpen: controlledPickerOpen, onPickerOpenChange, onScrollToDayTop }: TopBarProps) {
+export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, dateRef, expandedDateRef, minDate, maxDate, pickerOpen: controlledPickerOpen, onPickerOpenChange, onScrollToDayTop }: TopBarProps) {
   const [internalPickerOpen, setInternalPickerOpen] = useState(false);
   const isControlled = controlledPickerOpen !== undefined;
   const pickerOpen = isControlled ? controlledPickerOpen! : internalPickerOpen;
@@ -31,9 +36,15 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
   const today = startOfDay(new Date());
   const isAtToday = isSameDay(selectedDate, today);
   const isAtMin = minDate ? isSameDay(selectedDate, minDate) || selectedDate <= minDate : false;
+  // Forward clamp: when a maxDate is supplied, stop there (the newest feed
+  // day). Otherwise fall back to literal today so existing callers without
+  // maxDate behave as before.
+  const isAtMax = maxDate
+    ? isSameDay(selectedDate, maxDate) || selectedDate >= maxDate
+    : isAtToday;
 
   const goBack = () => { if (!isAtMin) onDateChange(subDays(selectedDate, 1)); };
-  const goForward = () => { if (!isAtToday) onDateChange(addDays(selectedDate, 1)); };
+  const goForward = () => { if (!isAtMax) onDateChange(addDays(selectedDate, 1)); };
 
   return (
     <>
@@ -210,8 +221,8 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
                 className="p-1.5 rounded-full transition-opacity active:opacity-50"
                 style={{
                   background: 'rgba(255,241,205,0.12)',
-                  opacity: isAtToday ? 0.25 : 1,
-                  cursor: isAtToday ? 'default' : 'pointer',
+                  opacity: isAtMax ? 0.25 : 1,
+                  cursor: isAtMax ? 'default' : 'pointer',
                 }}
               >
                 <ChevronRight className="w-4 h-4" style={{ color: '#fff1cd' }} />
