@@ -11,7 +11,10 @@ import { isStandalone } from "@/lib/utils";
 // split: portrait poster plate on the left, typography column on the
 // right. Below this, the existing mobile/iOS layout is preserved
 // untouched.
-const DESKTOP_BREAKPOINT = 1024;
+// Set artificially high — full-bleed mobile layout applies on all screen sizes.
+// The desktop-specific centred-card branch is disabled; text gets a max-width
+// constraint below for readability on wide viewports.
+const DESKTOP_BREAKPOINT = 99999;
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Music':        '#e879f9',  // fuchsia
@@ -718,7 +721,7 @@ export function ArticleCard({
               budget while still clearing the bottom-nav. */}
           <div
             className="relative z-20 px-5 sm:px-7 pr-24 sm:pr-28"
-            style={{ paddingTop: '14px', paddingBottom: '84px' }}
+            style={{ paddingTop: '14px', paddingBottom: '84px', maxWidth: '760px' }}
           >
             {/* Category pill + source pill — locked to a SINGLE ROW.
                 We previously used `flex-wrap` which let long source names
