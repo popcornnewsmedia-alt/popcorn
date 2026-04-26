@@ -9,9 +9,10 @@ const TABS: { id: Tab; Icon: typeof House; label: string }[] = [
   { id: "profile", Icon: User,     label: "YOU"   },
 ];
 
-const BTN_W = 68;
-const BTN_H = 54;
-const PAD   = 4;
+const BTN_W     = 68;
+const BTN_H     = isStandalone ? 54 : 38;
+const PAD       = isStandalone ? 4  : 3;
+const ICON_SIZE = isStandalone ? 19 : 15;
 
 export function BottomNav({
   activeTab,
@@ -31,7 +32,7 @@ export function BottomNav({
         // In standalone PWA, push the nav flush to the bottom safe area edge
         paddingBottom: isStandalone
           ? 'env(safe-area-inset-bottom)'
-          : 'max(18px, calc(env(safe-area-inset-bottom) + 8px))',
+          : '10px',
         transition: 'opacity 0.28s ease, transform 0.28s cubic-bezier(0.32,0.72,0,1)',
       }}
     >
@@ -73,11 +74,11 @@ export function BottomNav({
               className="relative z-10 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition-transform duration-100"
               style={{ width: BTN_W, height: BTN_H }}
             >
-              <div style={{ position: 'relative', width: 19, height: 19 }}>
+              <div style={{ position: 'relative', width: ICON_SIZE, height: ICON_SIZE }}>
                 <Icon
                   style={{
-                    width: 19,
-                    height: 19,
+                    width: ICON_SIZE,
+                    height: ICON_SIZE,
                     color: active ? '#fff1cd' : 'rgba(255,241,205,0.28)',
                     fill: active && id !== 'profile' ? '#fff1cd' : 'none',
                     strokeWidth: 1.6,
@@ -100,18 +101,20 @@ export function BottomNav({
                   />
                 )}
               </div>
-              <span
-                style={{
-                  fontFamily: "'Macabro', 'Anton', sans-serif",
-                  fontSize: '7.5px',
-                  color: active ? 'rgba(255,241,205,0.80)' : 'rgba(255,241,205,0.22)',
-                  letterSpacing: '0.09em',
-                  lineHeight: 1,
-                  transition: 'color 0.25s',
-                }}
-              >
-                {label}
-              </span>
+              {isStandalone && (
+                <span
+                  style={{
+                    fontFamily: "'Macabro', 'Anton', sans-serif",
+                    fontSize: '7.5px',
+                    color: active ? 'rgba(255,241,205,0.80)' : 'rgba(255,241,205,0.22)',
+                    letterSpacing: '0.09em',
+                    lineHeight: 1,
+                    transition: 'color 0.25s',
+                  }}
+                >
+                  {label}
+                </span>
+              )}
             </button>
           );
         })}

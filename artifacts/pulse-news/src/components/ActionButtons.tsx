@@ -8,9 +8,11 @@ import type { NewsArticle } from "@workspace/api-client-react";
 interface ActionButtonsProps {
   article: NewsArticle;
   onOpenComments: () => void;
+  /** When true, renders icons in a horizontal row (web desktop compact bar) */
+  horizontal?: boolean;
 }
 
-export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
+export function ActionButtons({ article, onOpenComments, horizontal = false }: ActionButtonsProps) {
   const [localLiked, setLocalLiked] = useState(false);
   const { mutate: likeMutation } = useLikeArticle();
   // Saves are now persisted per-user in Supabase (see use-saves.ts). We
@@ -50,6 +52,44 @@ export function ActionButtons({ article, onOpenComments }: ActionButtonsProps) {
   const likeCount = article.likes;
 
   const iconStyle = { filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.55))' };
+
+  if (horizontal) {
+    return (
+      <div className="flex items-center gap-4 shrink-0">
+        {/* Like */}
+        <button onClick={handleLike} className="flex items-center gap-1.5 transition-transform active:scale-90">
+          <Heart
+            className="w-5 h-5 transition-all"
+            style={{ color: isLiked ? '#e11d48' : 'white', fill: isLiked ? '#e11d48' : 'none', ...iconStyle }}
+          />
+          <span className="text-[11px] font-semibold font-['Inter'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
+            {likeCount >= 1000 ? `${(likeCount / 1000).toFixed(1)}k` : likeCount}
+          </span>
+        </button>
+
+        {/* Comment */}
+        <button onClick={handleComment} className="flex items-center gap-1.5 transition-transform active:scale-90">
+          <MessageCircle className="w-5 h-5" style={{ color: 'white', ...iconStyle }} />
+          {commentCount != null && commentCount > 0 && (
+            <span className="text-[11px] font-semibold font-['Inter'] text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>{commentCount}</span>
+          )}
+        </button>
+
+        {/* Save */}
+        <button onClick={handleBookmark} className="flex items-center transition-transform active:scale-90">
+          <Bookmark
+            className="w-5 h-5 transition-all"
+            style={{ color: 'white', fill: isSaved ? 'white' : 'none', ...iconStyle }}
+          />
+        </button>
+
+        {/* Share */}
+        <button onClick={handleShare} className="flex items-center transition-transform active:scale-90">
+          <Share2 className="w-5 h-5" style={{ color: 'white', ...iconStyle }} />
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center gap-5">

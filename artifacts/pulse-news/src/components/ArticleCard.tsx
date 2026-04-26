@@ -236,6 +236,10 @@ export function ArticleCard({
   const viewportW = vw || window.innerWidth;
   const viewportH = viewportHeight ?? window.innerHeight;
   const isDesktop = viewportW >= DESKTOP_BREAKPOINT;
+  // Web browser at tablet/desktop width — gets a compact horizontal bar
+  // instead of the tall mobile panel. Safe to use backdrop-filter here
+  // (Chrome/Firefox don't have the iOS WebKit stacking-context bug).
+  const isWebDesktop = !isStandalone && viewportW >= 768;
 
   // ── Hero plate geometry ──
   // The plate fills the available area between the progress rule and the
@@ -259,13 +263,15 @@ export function ArticleCard({
   // headline then sits centered beneath the pills. Unified across iOS
   // and mobile-web. (Desktop uses its own plate geometry below and is
   // unaffected by this value.)
-  // iOS standalone keeps 278px (comfortable for 4-line headlines + safe area).
-  // Web browser: scale proportionally so the plate is just large enough to
-  // hold pills + headline + READ MORE + bottom-nav clearance, leaving more
-  // of the viewport for the image. Clamp: min 220 (content floor) to 278.
-  const PLATE_BOTTOM_CAP  = isStandalone
-    ? 278
-    : Math.max(220, Math.round(viewportHeight * 0.30));
+  // iOS standalone: 278px (room for 4-line headline + safe area).
+  // Web desktop (≥768px): 168px — compact cinematic ledger, image gets
+  //   ~76% of the viewport. Headline clamped to 2 lines.
+  // Mobile web (<768px): proportional 30% of viewport, min 220px.
+  const PLATE_BOTTOM_CAP = isWebDesktop
+    ? 168
+    : isStandalone
+      ? 278
+      : Math.max(220, Math.round(viewportHeight * 0.30));
 
   // ── Plate geometry ──
   // Mobile / iOS / mobile-web (< DESKTOP_BREAKPOINT): full-bleed portrait
@@ -580,35 +586,17 @@ export function ArticleCard({
         </div>
       )}
 
-      {/* Vertical action buttons.
-          Mobile / iOS: hug the right viewport edge under the hairline.
-          Desktop: float as a side rail to the RIGHT of the hero image,
-          vertically centered against the image so it reads as a
-          companion column to the editorial composition. */}
-      <div
-        className={isDesktop ? 'absolute z-30' : 'absolute right-4 z-30'}
-        style={
-          isDesktop
-            ? {
-                // Sit in the gutter between the image's right edge and
-                // the viewport edge. Anchored at a fixed offset from
-                // the image so the rail tracks the composition on
-                // window resize.
-                left: `${Math.min(
-                  viewportW - 80,
-                  plateLeft + plateW + Math.max(28, (viewportW - (plateLeft + plateW)) / 2 - 32),
-                )}px`,
-                // Vertically center against the hero image. The
-                // ActionButtons column is ~213px tall so we offset by
-                // half its height to true-center it.
-                top: `${plateTop + Math.round(plateH / 2) - 106}px`,
-              }
-            : { top: `${plateTop + plateH + 8}px` }
-        }
-        onClick={(e) => e.stopPropagation()}
-      >
-        <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} />
-      </div>
+      {/* Vertical action buttons — mobile/iOS only.
+          Web desktop embeds horizontal actions inside the compact bar. */}
+      {!isWebDesktop && (
+        <div
+          className="absolute right-4 z-30"
+          style={{ top: `${plateTop + plateH + 8}px` }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} />
+        </div>
+      )}
 
       {/* Portal to document.body so the fixed backdrop/sheet escapes the
           snap-scroll container's stacking context and properly overlays
@@ -686,23 +674,31 @@ export function ArticleCard({
                 }}
               />
             )}
+            {/* Cream hairline at the top of the panel — web desktop only.
+                On mobile the image's bottom edge serves as the divider. */}
+            {isWebDesktop && (
+              <div aria-hidden style={{
+                position: 'absolute', top: 0, left: 16, right: 16, height: 1,
+                background: 'linear-gradient(to right, rgba(255,241,205,0) 0%, rgba(255,241,205,0.35) 30%, rgba(255,241,205,0.35) 70%, rgba(255,241,205,0) 100%)',
+                zIndex: 1,
+              }} />
+            )}
             {/* Frosted shared-tint veil — same dominant-color tint as
                 the z-0 atmosphere under the TopBar so both regions
                 read as the same frosted glass. Falls back to cream
-                on CORS-tainted canvas. backdrop-filter adds the
-                "glass depth" haze that makes the frosting feel real
-                rather than a flat color overlay. */}
+                on CORS-tainted canvas.
+                Web desktop: add backdrop-filter (Chrome/Firefox safe).
+                iOS/mobile: no backdrop-filter (WebKit blurs z-20 siblings). */}
             <div
               className="absolute inset-0"
               style={{
                 background: dominantColor
                   ? `rgba(${dominantColor},0.26)`
                   : 'rgba(255,241,205,0.14)',
-                // NOTE: backdrop-filter removed — on iOS WebKit it
-                // samples the z-20 headline sibling and blurs it on top
-                // of itself, hiding the headline behind the frosting.
-                // The 84px image blur on the layer below already
-                // provides the frosted-glass effect.
+                ...(isWebDesktop ? {
+                  backdropFilter: 'blur(24px)',
+                  WebkitBackdropFilter: 'blur(24px)',
+                } : {}),
               }}
             />
             {/* Bottom-only darkening — keeps headline + READ MORE
@@ -718,118 +714,160 @@ export function ArticleCard({
             />
           </div>
 
-          {/* ── Layer 2: type column (pills + headline UNCHANGED) ──
-              paddingTop reduced from 32 → 14 because the spacer
-              above no longer overlaps the image — pills sit
-              immediately below the image with a small breathing
-              gap. paddingBottom reduced from 92 → 84 to keep a
-              4-line headline fitting in the 278px below-image
-              budget while still clearing the bottom-nav. */}
-          <div
-            className="relative z-20 px-5 sm:px-7 pr-24 sm:pr-28"
-            style={{ paddingTop: '14px', paddingBottom: '84px', maxWidth: '760px' }}
-          >
-            {/* Category pill + source pill — locked to a SINGLE ROW.
-                We previously used `flex-wrap` which let long source names
-                ("The Hollywood Reporter") drop to a second row, adding ~28px
-                of pill height that pushed the headline down past the
-                bottom-nav. Now: category pill keeps its natural width,
-                source pill takes the remaining space and truncates with
-                an ellipsis if the combined width exceeds the column. */}
-            <div className="flex items-center gap-2 mb-4 min-w-0">
-              <span
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-                style={{
-                  background: 'rgba(255,255,255,0.12)',
-                  border: '1px solid rgba(255,255,255,0.22)',
-                  flexShrink: 0,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                <span
-                  style={{
-                    display: 'inline-block',
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    background: CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.5)',
-                    boxShadow: `0 0 5px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.4)'}`,
-                    flexShrink: 0,
-                  }}
-                />
-                <span
-                  className="uppercase tracking-widest"
-                  style={{ fontSize: '10px', color: 'rgba(255,255,255,0.90)', fontFamily: "'Macabro', 'Anton', sans-serif" }}
-                >
-                  {article.category}
-                </span>
-              </span>
-
-              <span
-                className="px-2.5 py-1 rounded-full tracking-wide"
-                style={{
-                  fontSize: '10px',
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  color: 'rgba(255,255,255,0.65)',
-                  fontFamily: "'Macabro', 'Anton', sans-serif",
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  minWidth: 0,
-                  flex: '0 1 auto',
-                }}
-              >
-                {article.source}
-              </span>
-            </div>
-
-            {/* Clamped to 4 lines — the spacer above lifts the
-                type column up by 52px from the image bottom, which
-                gives just enough room for a full 4-line 22px
-                headline above the 92px nav reserve. */}
-            {/* Headline — Suisse Int'l (Swiss Typefaces, paid).
-                Falls back to Geist (Vercel, free on Google Fonts)
-                which shares the Swiss-modern grotesque DNA:
-                neutral letterforms, clean terminals, no humanist
-                quirks. To use the actual Suisse Int'l, drop the
-                licensed woff2 files in /public/fonts/ and add a
-                @font-face block in index.css — the cascade picks
-                them up automatically. */}
-            <h2 className="text-[22px] mb-3 text-white overflow-hidden" style={{
-              display: '-webkit-box',
-              WebkitLineClamp: 4,
-              WebkitBoxOrient: 'vertical',
-              lineHeight: 1.2,
-              fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
-              fontWeight: 600,
-              letterSpacing: '-0.025em',
-            }}>
-              {article.title}
-            </h2>
-
-            {/* Floor lockup — discreet "read more" hint in muted
-                grey. Sized to whisper, not announce. mt-3 (was mt-2)
-                opens an extra 4px between headline descenders and
-                the lockup so the two never feel cramped. */}
+          {/* ── Layer 2: type column ──
+              Two layouts:
+              - Web desktop (≥768px in browser): compact horizontal bar
+                with pills + actions in one row, headline clamped to 2 lines.
+              - Mobile / iOS: existing tall layout, 4-line headline. */}
+          {isWebDesktop ? (
+            /* Web desktop compact bar */
             <div
-              className="flex items-center gap-1.5 mt-3"
-              style={{ color: 'rgba(255,255,255,0.38)' }}
+              className="relative z-20 px-6"
+              style={{ paddingTop: '16px', paddingBottom: '60px' }}
+              onClick={(e) => e.stopPropagation()}
             >
-              <span
-                className="uppercase"
-                style={{
+              {/* Top row: pills left · social actions right */}
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2 min-w-0 overflow-hidden">
+                  <span
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+                    style={{
+                      background: 'rgba(255,255,255,0.12)',
+                      border: '1px solid rgba(255,255,255,0.22)',
+                      flexShrink: 0,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    <span style={{
+                      display: 'inline-block', width: 6, height: 6, borderRadius: '50%',
+                      background: CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.5)',
+                      boxShadow: `0 0 5px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.4)'}`,
+                      flexShrink: 0,
+                    }} />
+                    <span className="uppercase tracking-widest" style={{
+                      fontSize: 10, color: 'rgba(255,255,255,0.90)',
+                      fontFamily: "'Macabro', 'Anton', sans-serif",
+                    }}>{article.category}</span>
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full tracking-wide" style={{
+                    fontSize: 10,
+                    background: 'rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    color: 'rgba(255,255,255,0.65)',
+                    fontFamily: "'Macabro', 'Anton', sans-serif",
+                    whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                    minWidth: 0, flex: '0 1 auto',
+                  }}>{article.source}</span>
+                </div>
+                <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} horizontal />
+              </div>
+
+              {/* Headline — 2 lines max on web desktop */}
+              <h2 className="text-white overflow-hidden mb-2" style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                lineHeight: 1.2,
+                fontSize: '24px',
+                fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
+                fontWeight: 600,
+                letterSpacing: '-0.025em',
+              }}>{article.title}</h2>
+
+              <div className="flex items-center gap-1.5 mt-2" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                <span className="uppercase" style={{
                   fontFamily: "'Macabro', 'Anton', sans-serif",
-                  fontSize: '8px',
-                  letterSpacing: '0.22em',
-                  fontWeight: 400,
-                }}
-              >
-                Read more
-              </span>
-              <ChevronUp className="w-2 h-2" strokeWidth={1.75} />
+                  fontSize: 8, letterSpacing: '0.22em', fontWeight: 400,
+                }}>Read more</span>
+                <ChevronUp className="w-2 h-2" strokeWidth={1.75} />
+              </div>
             </div>
-          </div>
+          ) : (
+            /* Mobile / iOS: existing tall layout */
+            <div
+              className="relative z-20 px-5 sm:px-7 pr-24 sm:pr-28"
+              style={{ paddingTop: '14px', paddingBottom: '84px', maxWidth: '760px' }}
+            >
+              {/* Category pill + source pill — locked to a SINGLE ROW */}
+              <div className="flex items-center gap-2 mb-4 min-w-0">
+                <span
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+                  style={{
+                    background: 'rgba(255,255,255,0.12)',
+                    border: '1px solid rgba(255,255,255,0.22)',
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.5)',
+                      boxShadow: `0 0 5px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.4)'}`,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span
+                    className="uppercase tracking-widest"
+                    style={{ fontSize: '10px', color: 'rgba(255,255,255,0.90)', fontFamily: "'Macabro', 'Anton', sans-serif" }}
+                  >
+                    {article.category}
+                  </span>
+                </span>
+
+                <span
+                  className="px-2.5 py-1 rounded-full tracking-wide"
+                  style={{
+                    fontSize: '10px',
+                    background: 'rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    color: 'rgba(255,255,255,0.65)',
+                    fontFamily: "'Macabro', 'Anton', sans-serif",
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    minWidth: 0,
+                    flex: '0 1 auto',
+                  }}
+                >
+                  {article.source}
+                </span>
+              </div>
+
+              <h2 className="text-[22px] mb-3 text-white overflow-hidden" style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 4,
+                WebkitBoxOrient: 'vertical',
+                lineHeight: 1.2,
+                fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
+                fontWeight: 600,
+                letterSpacing: '-0.025em',
+              }}>
+                {article.title}
+              </h2>
+
+              <div
+                className="flex items-center gap-1.5 mt-3"
+                style={{ color: 'rgba(255,255,255,0.38)' }}
+              >
+                <span
+                  className="uppercase"
+                  style={{
+                    fontFamily: "'Macabro', 'Anton', sans-serif",
+                    fontSize: '8px',
+                    letterSpacing: '0.22em',
+                    fontWeight: 400,
+                  }}
+                >
+                  Read more
+                </span>
+                <ChevronUp className="w-2 h-2" strokeWidth={1.75} />
+              </div>
+            </div>
+          )}
         </>
       )}
 
