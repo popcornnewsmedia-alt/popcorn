@@ -105,12 +105,17 @@ A well-composed day has, when the pool honestly offers it:
 - At least 1 **"wait, what?"** — absurdist, curiosity-driven, surreal-but-specific
 - At least 1 **internet-native** trend or behaviour with observable scale and a concrete hook
 - At least 1 **mass-brand / consumer internet** moment
+- At least 2 **music picks** — live events, festival sets, reunions, secret shows, debut performances, major collabs. Music is the heartbeat of Popcorn. If the pool has BTS, QOTSA, Beyoncé, Lainey Wilson, a secret show, or a reunion — these are near-automatic includes. Do not skip them for being "entertainment light."
+- At least 1 **Film & TV pick** — trailer from a major franchise or A-list cast, casting announcement, IP moment. A House of the Dragon trailer or a Nicolas Cage noir series is not optional on a day it exists in the pool.
+- 1-2 **fun/filler picks** — quirky, low-stakes, broadly shareable (world's largest snack store, NASA lighting a fire on the Moon, odd brand collab). These are the feed's texture. A feed without any delight reads like homework.
 - A **spine of substance** — structural shifts, debunking studies, AI-as-culture, deployment milestones — but no more than half the feed
 - 2-3 **wildcards** — unexpected, slightly niche, or potentially divisive picks that could become the day's most memorable stories
 
 Balance is guidance, not law. If the pool doesn't honestly offer one of these lanes, don't force it.
 
 **Weak-feed flex:** On light-signal days, accept lightweight mainstream fillers (major franchise trailer, A-list celebrity moment, high-recognition pop-culture filler) to maintain breadth and give general readers an entry point. Don't hold out for perfect when the pool is thin.
+
+**Axis coverage check:** Before finalising, confirm: do I have music? film/TV? internet culture? fun/filler? If any axis is missing and the pool had candidates for it, you dropped the ball — go back and rescue the best one.
 
 ## Dedup — hard rules
 

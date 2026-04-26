@@ -4,8 +4,8 @@
 // This is a LIVING DOCUMENT. Append new examples here as user feedback arrives.
 // The brief (curation-brief.ts) stays stable; this file grows.
 //
-// Last updated: 2026-04-19
-// Source: sets 1-4 of historical curation feedback (Apr 5 → Apr 19)
+// Last updated: 2026-04-26
+// Source: sets 1-5 of historical curation feedback (Apr 5 → Apr 26)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const CURATION_PATTERNS = `# POPCORN PATTERN LIBRARY
@@ -107,6 +107,13 @@ Concrete examples from past curation decisions. Use these to calibrate judgment 
 - Cannes 2026 lineup announced (Almodóvar, Kore-eda, Farhadi)
 - LACMA's $724M David Geffen Galleries finally opens in LA
 
+### Music live events (near-automatic includes — these have been missed before)
+- BTS first US show in 4 years, full Tampa setlist → K-pop global moment, massive fandom, star-power industry beat. DO NOT skip "just a setlist" — the cultural event IS the story.
+- Queens of the Stone Age reunite with Nick Oliveri on stage for first time in 12 years → legacy band reunion, dormant for 12 years, genuine moment
+- Lainey Wilson delivers masterful set after Stagecoach evacuated for high winds → drama-to-triumph arc, Human + Music axis
+- Olivia Rodrigo debuts new heartbreaking ballad with Weyes Blood at secret LA show → secret show + new collab = automatic keep
+- RULE: If any artist/band with global recognition performs for the first time in years, makes an unexpected appearance, or does something at a festival that's being talked about — it earns a spot. Do not treat live music events as "light entertainment filler."
+
 ### Major IP / franchise moments (real events, not generic trailers)
 - Avengers: Doomsday first trailer drops at CinemaCon 2026
 - Game of Thrones spin-off 'Aegon's Conquest' confirmed
@@ -115,6 +122,21 @@ Concrete examples from past curation decisions. Use these to calibrate judgment 
 - Netflix reveals first look at Peaky Blinders sequel series
 - Tom Cruise confirmed for Top Gun 3 → big franchise anchor
 - Lana Del Rey sings 007 First Light Bond theme
+- House of the Dragon S3 trailer — "More Brutal" season → GOT universe, marquee IP. A trailer from this franchise is not optional.
+- Spider-Noir trailer — Nicolas Cage as Spider-Man in 1930s noir, Prime Video → beloved casting + distinctive format = keep
+- RULE: Trailers from GOT universe, MCU/DCU, major A-list cast, or distinctive concept (noir Spider-Man, period piece, experimental format) are near-mandatory includes on the day they drop.
+
+### Internet subculture → mainstream crossover (always include when confirmed)
+- Backrooms: Kane Parsons turns YouTube viral video into A24 horror film → textbook internet-subculture-going-mainstream. The crossover IS the story.
+- TikTok's Scientology speedrun craze has fans mapping Church Hollywood facilities → internet absurdism with real-world physicality
+- RULE: When a niche internet phenomenon (backrooms, looksmaxxing, speedrunning, NPC streaming) gets a mainstream production deal or crosses into physical reality — that moment always earns a spot.
+
+### Fun/filler picks (quota: 1-2 per feed — these have been missed before)
+- World's largest snack store opens selling 30,000+ different snacks → quirky, globally relatable, shareable
+- NASA planning to set first-ever fire on the surface of the Moon → science with a "wait, what?" hook
+- Coca-Cola × G-SHOCK watch collab channels the iconic contour bottle → odd brand crossover, both sides recognisable
+- Turkish Grand Prix officially returning to Formula 1 from 2027 → F1 is culturally mainstream; venue return is conversation-worthy
+- RULE: Fun/filler picks don't need to be "important." They need to be shareable and bring texture to the feed. A feed without 1-2 of these feels like homework.
 
 ### A-list crossover / cultural moments
 - Tina Fey, Jonah Hill, Candice Bergen, Melissa McCarthy join Jack Black's SNL 5-Timers

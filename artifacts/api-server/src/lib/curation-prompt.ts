@@ -165,7 +165,7 @@ You are selecting from a pool of candidate articles for today's feed. Apply the 
 
 ${
   alreadyPublished.length === 0
-    ? `This is a FULL RESET RUN with no existing feed. Apply the full editorial bar across all domains. Do not pad with borderline entertainment content — if the strong stories only cover 3 domains, that is fine.`
+    ? `This is a FULL RESET RUN with no existing feed. Target 12-18 stories. Apply the editorial brief — including axis coverage (music, film/TV, internet culture, fun/filler). If you return fewer than 8 stories from a pool of 50+ candidates, you have almost certainly missed entire category axes — go back and rescue the best music, film/TV, and fun picks before returning.`
     : `This is an INCREMENTAL UPDATE. ${alreadyPublished.length} stories are already in today's feed (including cross-day historical dedup from all previously published editions). Only add stories clearly stronger than the weakest already published. Prefer 2 excellent new stories over 8 mediocre ones.`
 }
 
