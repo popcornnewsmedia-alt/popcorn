@@ -689,8 +689,11 @@ export function ArticleCard({
                 background: dominantColor
                   ? `rgba(${dominantColor},0.26)`
                   : 'rgba(255,241,205,0.14)',
-                backdropFilter: 'blur(3px)',
-                WebkitBackdropFilter: 'blur(3px)',
+                // NOTE: backdrop-filter removed — on iOS WebKit it
+                // samples the z-20 headline sibling and blurs it on top
+                // of itself, hiding the headline behind the frosting.
+                // The 84px image blur on the layer below already
+                // provides the frosted-glass effect.
               }}
             />
             {/* Bottom-only darkening — keeps headline + READ MORE
