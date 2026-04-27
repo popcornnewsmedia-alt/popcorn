@@ -17,20 +17,23 @@ import { isStandalone } from "@/lib/utils";
 const DESKTOP_BREAKPOINT = 99999;
 
 const CATEGORY_COLORS: Record<string, string> = {
-  'Music':        '#e879f9',  // fuchsia
-  'Film & TV':    '#60a5fa',  // sky blue
-  'Gaming':       '#a3e635',  // lime
-  'Fashion':      '#f472b6',  // hot pink
-  'Culture':      '#fb923c',  // orange
-  'Sports':       '#f87171',  // coral red
-  'Science':      '#22d3ee',  // cyan
-  'AI':           '#818cf8',  // indigo
-  'Social Media': '#fbbf24',  // amber
-  'Technology':   '#2dd4bf',  // teal
-  'Psychology':   '#c084fc',  // soft purple
-  'Philosophy':   '#94a3b8',  // slate
-  'Business':     '#f59e0b',  // gold
-  'World':        '#6ee7b7',  // mint green
+  // ── 13 canonical Popcorn categories ──────────────────────────────────────
+  'Sports':       '#f43f5e',  // vivid rose-red     — competition
+  'Culture':      '#fb923c',  // orange             — warmth, creativity
+  'Fashion':      '#fbbf24',  // amber-gold         — luxury (distinct from Music)
+  'Internet':     '#84cc16',  // lime               — viral, fresh energy
+  'Gaming':       '#22c55e',  // bright green       — level up
+  'World':        '#34d399',  // emerald            — global
+  'Science':      '#14b8a6',  // teal               — discovery
+  'Tech':         '#22d3ee',  // cyan               — digital circuits
+  'Film & TV':    '#60a5fa',  // sky blue           — cinematic
+  'AI':           '#818cf8',  // indigo             — neural, futuristic
+  'Books':        '#c084fc',  // lavender           — imagination
+  'Music':        '#e879f9',  // fuchsia            — sound, creativity
+  'Industry':     '#94a3b8',  // slate              — business, neutral
+  // ── Legacy / variant keys ─────────────────────────────────────────────
+  'Technology':   '#22d3ee',
+  'Social Media': '#84cc16',
 };
 
 interface ArticleCardProps {
@@ -657,20 +660,58 @@ export function ArticleCard({
                 zIndex: 1,
               }} />
             )}
-            {/* Frosted veil — IDENTICAL formula to the TopBar: pure
-                transparent background + backdropFilter blur(24px). The
-                dominant-color tint already lives on the z-0 atmosphere
-                behind both regions, so adding it again here would
-                double-tint the panel. Letting the z-0 tint show through
-                via backdrop-filter alone keeps both regions visually
-                identical. Applied inside overflow:hidden so iOS
-                backdrop-filter does not bleed into z-20 siblings. */}
+            {/* Replicate the z-0 atmosphere's TOP REGION inside the
+                panel so the panel reads as the same frosted glass
+                color as the TopBar. The TopBar backdrop-filters only
+                a narrow strip (~21–27%) of z-0's top, so previously
+                using backgroundSize: 'cover' here pulled in too much
+                of the image (e.g. HoD dragon armor for the bottom of
+                the card) and made the panel look mismatched.
+                Instead: render the image as an actual <img> at 175%
+                of the panel's WIDTH (matching z-0's 175% scaling) and
+                NATURAL ASPECT, anchored to top:0. The panel's
+                overflow:hidden then clips it to a narrow top strip —
+                visually matching what the TopBar sees behind it. */}
+            {article.imageUrl && (
+              <img
+                src={article.imageUrl}
+                alt=""
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  // Match z-0's exact img placement so the panel renders
+                  // the SAME image region the TopBar's backdrop-filter
+                  // sees. z-0 uses width:175%/height:175% of CARD dims,
+                  // centered with translate(-50%,-50%) → image-top in
+                  // card-coords = -0.375 × cardH. We re-create that
+                  // relative to the card here: img-top in panel coords
+                  // = -0.375 × cardH, sized to 1.75 × cardH tall. Panel
+                  // overflow:hidden clips it to the top 21–38% region
+                  // — same warm/cool family the TopBar pulls.
+                  top: -0.375 * viewportH,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: 1.75 * viewportW,
+                  height: 1.75 * viewportH,
+                  maxWidth: 'none', // override global `img { max-width: 100% }`
+                  objectFit: 'cover',
+                  filter: 'blur(84px) saturate(1.15) brightness(0.94)',
+                  opacity: 0.92,
+                }}
+              />
+            )}
             <div
               className="absolute inset-0"
               style={{
-                background: 'rgba(0,0,0,0)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
+                background: dominantColor
+                  ? `rgba(${dominantColor},0.32)`
+                  : 'rgba(255,241,205,0.16)',
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.10) 80%, rgba(0,0,0,0.18) 100%)',
               }}
             />
           </div>
