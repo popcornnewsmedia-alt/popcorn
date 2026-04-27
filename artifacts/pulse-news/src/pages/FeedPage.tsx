@@ -270,20 +270,21 @@ function PopcornRefreshAnim({ active, size = 80 }: { active: boolean; size?: num
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  'Music':        '#e879f9',
-  'Film & TV':    '#60a5fa',
-  'Gaming':       '#a3e635',
-  'Fashion':      '#f472b6',
+  'Sports':       '#f43f5e',
   'Culture':      '#fb923c',
-  'Sports':       '#f87171',
-  'Science':      '#22d3ee',
+  'Fashion':      '#fbbf24',
+  'Internet':     '#84cc16',
+  'Gaming':       '#22c55e',
+  'World':        '#34d399',
+  'Science':      '#14b8a6',
+  'Tech':         '#22d3ee',
+  'Film & TV':    '#60a5fa',
   'AI':           '#818cf8',
-  'Social Media': '#fbbf24',
-  'Technology':   '#2dd4bf',
-  'Internet':     '#60a5fa',
-  'World':        '#6ee7b7',
+  'Books':        '#c084fc',
+  'Music':        '#e879f9',
   'Industry':     '#94a3b8',
-  'Books':        '#f59e0b',
+  'Technology':   '#22d3ee',
+  'Social Media': '#84cc16',
 };
 
 function SavedScreen({

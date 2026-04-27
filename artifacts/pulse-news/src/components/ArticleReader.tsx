@@ -37,20 +37,21 @@ function focalToObjectPosition(
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  'Music':        '#e879f9',
-  'Film & TV':    '#60a5fa',
-  'Gaming':       '#a3e635',
-  'Fashion':      '#f472b6',
+  'Sports':       '#f43f5e',
   'Culture':      '#fb923c',
-  'Sports':       '#f87171',
-  'Science':      '#22d3ee',
+  'Fashion':      '#fbbf24',
+  'Internet':     '#84cc16',
+  'Gaming':       '#22c55e',
+  'World':        '#34d399',
+  'Science':      '#14b8a6',
+  'Tech':         '#22d3ee',
+  'Film & TV':    '#60a5fa',
   'AI':           '#818cf8',
-  'Social Media': '#fbbf24',
-  'Technology':   '#2dd4bf',
-  'Psychology':   '#c084fc',
-  'Philosophy':   '#94a3b8',
-  'Business':     '#f59e0b',
-  'World':        '#6ee7b7',
+  'Books':        '#c084fc',
+  'Music':        '#e879f9',
+  'Industry':     '#94a3b8',
+  'Technology':   '#22d3ee',
+  'Social Media': '#84cc16',
 };
 
 // Height of the hero image area (px). Content starts below this and scrolls
