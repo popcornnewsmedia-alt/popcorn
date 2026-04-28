@@ -40,8 +40,6 @@ export function BottomNav({
         className="relative flex items-center pointer-events-auto"
         style={{
           background: 'rgba(7,11,9,0.93)',
-          backdropFilter: 'blur(40px)',
-          WebkitBackdropFilter: 'blur(40px)',
           borderRadius: 999,
           border: '1px solid rgba(255,241,205,0.10)',
           boxShadow: '0 8px 40px rgba(0,0,0,0.50), 0 1px 0 rgba(255,241,205,0.07) inset',

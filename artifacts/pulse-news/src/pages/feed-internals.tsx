@@ -43,8 +43,14 @@ export function optimizeImageUrl(
   const width = Math.round(TARGET_IMAGE_WIDTH * effectiveDpr);
 
   // Supabase Storage public object → image transform endpoint.
-  // Skipped if the URL already points at the transform endpoint (idempotent
-  // re-optimisation is fine but we don't want to double-append query params).
+  // Fixed at 1080px / q80 / resize=contain regardless of DPR. We intentionally
+  // do NOT multiply by DPR here: on iOS the WebView's hard memory ceiling
+  // (~250-500MB) makes decoded pixel count the binding constraint, not pixel
+  // sharpness. A 1080×1300 JPEG decodes to ~5.6MB; a DPR-3 (3240px) variant
+  // decodes to ~50MB. With ±3 cards in the render window plus blur layers,
+  // the DPR-multiplied path was the root cause of feed crashes past Korda.
+  // Web at q80/1080 is visually indistinguishable on a 5K display thanks to
+  // subpixel rendering — same trick Instagram/TikTok use.
   const supabaseObjIdx = url.indexOf('/storage/v1/object/public/');
   if (supabaseObjIdx !== -1 && url.includes('.supabase.co')) {
     const transformed = url.replace(
@@ -52,11 +58,11 @@ export function optimizeImageUrl(
       '/storage/v1/render/image/public/',
     );
     const sep = transformed.includes('?') ? '&' : '?';
-    return `${transformed}${sep}width=${width}&quality=85`;
+    return `${transformed}${sep}width=${TARGET_IMAGE_WIDTH}&quality=80&resize=contain`;
   }
   if (url.includes('/storage/v1/render/image/public/') && !/[?&]width=\d+/i.test(url)) {
     const sep = url.includes('?') ? '&' : '?';
-    return `${url}${sep}width=${width}&quality=85`;
+    return `${url}${sep}width=${TARGET_IMAGE_WIDTH}&quality=80&resize=contain`;
   }
 
   // Unsplash

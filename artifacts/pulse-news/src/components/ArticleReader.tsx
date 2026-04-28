@@ -9,6 +9,7 @@ import { useSavedArticles } from "@/hooks/use-saves";
 import { CommentSheet } from "@/components/CommentSheet";
 import { useCommentCount } from "@/hooks/use-comment-count";
 import { GrainBackground } from "@/components/GrainBackground";
+import { readerImageUrl } from "@/lib/image-url";
 
 // Converts a normalised focal point (0–1) to the correct CSS object-position
 // percentage, taking the actual image and container dimensions into account.
@@ -187,7 +188,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                 }}
               >
                 <img
-                  src={article.imageUrl!}
+                  src={readerImageUrl(article.imageUrl!)}
                   alt={article.title}
                   style={{
                     width: '100%',

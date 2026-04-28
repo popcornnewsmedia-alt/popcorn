@@ -156,6 +156,26 @@ export function deriveImageCredit(sourceUrl: string): string {
 }
 
 /**
+ * Rewrites a raw Wikimedia upload URL to its `/thumb/` variant at the given
+ * pixel width. The thumb endpoint serves pre-resized JPEGs (often <500KB)
+ * instead of the multi-megabyte master — Wikimedia's master images can be
+ * 12000+px wide and time out our 10s fetch budget.
+ *
+ *   in:  https://upload.wikimedia.org/wikipedia/commons/d/de/Colosseo_2020.jpg
+ *   out: https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/2400px-Colosseo_2020.jpg
+ *
+ * Already-thumbnailed URLs and non-Wikimedia URLs pass through unchanged.
+ */
+function maybeRewriteWikimediaThumb(url: string, widthPx = 2400): string {
+  if (!url.includes("upload.wikimedia.org")) return url;
+  if (url.includes("/thumb/")) return url; // already a thumb
+  const m = url.match(/^(https:\/\/upload\.wikimedia\.org\/wikipedia\/[^/]+)\/([0-9a-f])\/([0-9a-f]{2})\/([^/?#]+)(\?.*)?$/i);
+  if (!m) return url;
+  const [, base, c1, c2, filename] = m;
+  return `${base}/thumb/${c1}/${c2}/${filename}/${widthPx}px-${filename}`;
+}
+
+/**
  * Fetch with an abort timeout. Returns the response body as a Buffer, or
  * throws if the fetch fails, times out, or returns a non-200.
  */
@@ -196,8 +216,12 @@ export async function processAndUploadImage(
   feedDate: string, // "YYYY-MM-DD"
 ): Promise<ProcessedImage | null> {
   try {
-    // 1. Download
-    const srcBytes = await fetchBytes(sourceUrl);
+    // 1. Download. For Wikimedia URLs, rewrite to a 2400px /thumb/ variant
+    // first — the masters can be 100MB+ and routinely time out our 10s
+    // fetch budget (e.g. Colosseo_2020.jpg = 12051×8442). The thumb endpoint
+    // serves a pre-resized JPEG that fits comfortably in the budget.
+    const fetchUrl = maybeRewriteWikimediaThumb(sourceUrl);
+    const srcBytes = await fetchBytes(fetchUrl);
 
     // 2. Resize + re-encode
     //    - `withoutEnlargement: true` skips upscaling for already-small images

@@ -5,6 +5,15 @@ import type { NewsArticle } from "@workspace/api-client-react";
 import { ActionButtons } from "./ActionButtons";
 import { CommentSheet } from "./CommentSheet";
 import { isStandalone } from "@/lib/utils";
+import { feedImageUrl, probeImageUrl } from "@/lib/image-url";
+
+// Module-level cache for the dominant-color probe result, keyed by the
+// final probe URL. The probe involves a network fetch (64px variant) +
+// canvas decode + 16×16 pixel sweep, all of which is wasted work the
+// second time we mount the same card (e.g. re-entering the feed tab,
+// scrolling a card back into the render window). Cache keys are URLs;
+// values are pre-formatted "r,g,b" strings ready for setState.
+const dominantColorCache = new Map<string, string>();
 
 // Desktop threshold — at and above this viewport width, we swap the
 // single-column mobile/iOS poster layout for an editorial side-by-side
@@ -45,11 +54,15 @@ interface ArticleCardProps {
   renderContent?: boolean;
   /** True only for the card at currentCardIndex — gets fetchpriority="high" */
   isActive?: boolean;
+  /** True for cards within ±1 of currentCardIndex — gates the blur-bleed layer
+   *  so off-screen cards don't carry a second decoded copy of the hero image
+   *  (halves peak decoded RAM on iOS WebView). */
+  isNearActive?: boolean;
 }
 
 export function ArticleCard({
   article, onReadMore, isRead = false, viewportHeight,
-  renderContent = true, isActive = false,
+  renderContent = true, isActive = false, isNearActive = true,
 }: ArticleCardProps) {
   const hasImage = !!article.imageUrl;
   const [commentsOpen, setCommentsOpen] = useState(false);
@@ -119,6 +132,19 @@ export function ArticleCard({
   const [dominantColor, setDominantColor] = useState<string | null>(null);
   useEffect(() => {
     if (!article.imageUrl || !renderContent) return;
+
+    // Use the 64px probe variant — we only sample a 16×16 grid anyway,
+    // so downloading a 2400px master here is wasted bandwidth + decode.
+    const probeUrl = probeImageUrl(article.imageUrl);
+
+    // Cache hit: skip the network + decode + pixel sweep, hand the
+    // pre-computed "r,g,b" string straight to state.
+    const cached = dominantColorCache.get(probeUrl);
+    if (cached) {
+      setDominantColor(cached);
+      return;
+    }
+
     let cancelled = false;
     const probe = new Image();
     probe.crossOrigin = 'anonymous';
@@ -151,13 +177,15 @@ export function ArticleCard({
           const avgR = Math.round(r / n);
           const avgG = Math.round(g / n);
           const avgB = Math.round(b / n);
-          setDominantColor(`${avgR},${avgG},${avgB}`);
+          const rgb = `${avgR},${avgG},${avgB}`;
+          dominantColorCache.set(probeUrl, rgb);
+          setDominantColor(rgb);
         }
       } catch {
         // CORS-tainted canvas — silently fall back to cream veil.
       }
     };
-    probe.src = article.imageUrl;
+    probe.src = probeUrl;
     return () => { cancelled = true; };
   }, [article.imageUrl, renderContent]);
 
@@ -231,9 +259,18 @@ export function ArticleCard({
     typeof window !== 'undefined' ? window.innerWidth : 0,
   );
   useEffect(() => {
-    const onResize = () => setVw(window.innerWidth);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    const mql = window.matchMedia(`(min-width: ${DESKTOP_BREAKPOINT}px)`);
+    const onBreakpointChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setVw(e.matches ? DESKTOP_BREAKPOINT : window.innerWidth);
+    };
+    if (mql.addEventListener) {
+      mql.addEventListener('change', onBreakpointChange);
+      return () => mql.removeEventListener('change', onBreakpointChange);
+    } else {
+      // Fallback for older browsers
+      mql.addListener(onBreakpointChange);
+      return () => mql.removeListener(onBreakpointChange);
+    }
   }, []);
 
   const viewportW = vw || window.innerWidth;
@@ -420,31 +457,40 @@ export function ArticleCard({
               Browsers cache the decode by URL so the bandwidth cost is one
               fetch per card; the GPU handles the blur compositing.            */}
           <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
-            <img
-              src={article.imageUrl}
-              alt=""
-              loading="eager"
-              decoding="async"
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                width: '175%',
-                height: '175%',
-                transform: 'translate(-50%, -50%)',
-                objectFit: 'cover',
-                // Aligned with the noir-plate treatment so the TopBar
-                // (which backdrop-filters this layer) and the headline
-                // panel show consistent, image-derived colors instead
-                // of a forced navy wash. Saturation kept low (1.15) so
-                // per-region differences (top of image vs center of
-                // image) are muted — both regions read as "frosted
-                // cream with hint of color" rather than vivid raw
-                // image color.
-                filter: 'blur(84px) saturate(1.15) brightness(0.94)',
-                opacity: 0.92,
-              }}
-            />
+            {/* Blur layer is the second decoded copy of the hero image
+                (different scale/filter, but a separate bitmap in RAM).
+                On iOS WebView at 1290px wide this means ~5MB extra per
+                card — gating it to active ± 1 cuts feed peak RAM in half
+                without any visible change to the user (off-screen cards
+                aren't seen). The dominantColor veil + readability shims
+                still render so the in-view edge cards don't pop. */}
+            {isNearActive && (
+              <img
+                src={feedImageUrl(article.imageUrl)}
+                alt=""
+                loading="eager"
+                decoding="async"
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: '175%',
+                  height: '175%',
+                  transform: 'translate(-50%, -50%)',
+                  objectFit: 'cover',
+                  // Aligned with the noir-plate treatment so the TopBar
+                  // (which backdrop-filters this layer) and the headline
+                  // panel show consistent, image-derived colors instead
+                  // of a forced navy wash. Saturation kept low (1.15) so
+                  // per-region differences (top of image vs center of
+                  // image) are muted — both regions read as "frosted
+                  // cream with hint of color" rather than vivid raw
+                  // image color.
+                  filter: 'blur(84px) saturate(1.15) brightness(0.94)',
+                  opacity: 0.92,
+                }}
+              />
+            )}
             {/* Frosted shared-tint veil — uses the image's dominant
                 color (sampled via canvas) so the TopBar zone reads
                 as the SAME frosted glass color as the headline panel
@@ -525,7 +571,7 @@ export function ArticleCard({
           >
             <img
               ref={imgRef}
-              src={article.imageUrl}
+              src={feedImageUrl(article.imageUrl)}
               alt={article.title}
               loading="eager"
               decoding="async"
@@ -547,26 +593,6 @@ export function ArticleCard({
             />
           </div>
 
-          {/* Section divider — single tapered cream hairline at the
-              top of the image plate. The bottom seam used to also
-              wear a hairline, but with the headline panel now bleeding
-              the image's own colours that hard line was fighting the
-              soft mask-feather. Removed to let the dissolve breathe. */}
-          {!isDesktop && (
-            <div
-              aria-hidden
-              className="absolute z-20 pointer-events-none"
-              style={{
-                top: plateTop,
-                left: 12,
-                right: 12,
-                height: 1,
-                background:
-                  'linear-gradient(to right, rgba(255,241,205,0) 0%, rgba(255,241,205,0.18) 18%, rgba(255,241,205,0.45) 50%, rgba(255,241,205,0.18) 82%, rgba(255,241,205,0) 100%)',
-                opacity: 0.55,
-              }}
-            />
-          )}
         </>
       ) : (
         <div className="absolute inset-0 ink-diffusion-bg" />
@@ -578,9 +604,7 @@ export function ArticleCard({
           className="absolute left-4 z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
           style={{
             top: `calc(env(safe-area-inset-top) + 60px)`,
-            background: 'rgba(27,122,74,0.85)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
+            background: 'rgba(27,122,74,0.92)',
           }}
         >
           <CheckCircle2 className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
@@ -630,12 +654,7 @@ export function ArticleCard({
             style={{ flex: '0 0 auto', height: `${PLATE_TOP_OFFSET + plateH}px` }}
           />
 
-          {/* ── Layer 1: frosted editorial plate ──
-              Matches the TopBar aesthetic exactly: transparent background
-              + backdropFilter blur(24px). Both the TopBar and this panel
-              blur the same z-0 atmosphere layer, so they read as the same
-              frosted glass color derived from the image. The darkening
-              gradient below keeps the white headline legible. */}
+          {/* ── Layer 1: editorial plate ── */}
           <div
             aria-hidden
             className="popcorn-noir-plate absolute left-0 right-0"
@@ -644,15 +663,10 @@ export function ArticleCard({
               bottom: 0,
               zIndex: 15,
               pointerEvents: 'none',
-              // Override the .popcorn-noir-plate top-edge fade — the
-              // plate now sits cleanly BELOW the image with a hard
-              // edge so the photo's bottom edge stays sharp.
               WebkitMaskImage: 'none',
               maskImage: 'none',
             }}
           >
-            {/* Cream hairline at the top of the panel — web desktop only.
-                On mobile the image's bottom edge serves as the divider. */}
             {isWebDesktop && (
               <div aria-hidden style={{
                 position: 'absolute', top: 0, left: 16, right: 16, height: 1,
@@ -660,18 +674,6 @@ export function ArticleCard({
                 zIndex: 1,
               }} />
             )}
-            {/* Replicate the z-0 atmosphere's TOP REGION inside the
-                panel so the panel reads as the same frosted glass
-                color as the TopBar. The TopBar backdrop-filters only
-                a narrow strip (~21–27%) of z-0's top, so previously
-                using backgroundSize: 'cover' here pulled in too much
-                of the image (e.g. HoD dragon armor for the bottom of
-                the card) and made the panel look mismatched.
-                Instead: render the image as an actual <img> at 175%
-                of the panel's WIDTH (matching z-0's 175% scaling) and
-                NATURAL ASPECT, anchored to top:0. The panel's
-                overflow:hidden then clips it to a narrow top strip —
-                visually matching what the TopBar sees behind it. */}
             {article.imageUrl && (
               <img
                 src={article.imageUrl}
@@ -679,21 +681,12 @@ export function ArticleCard({
                 aria-hidden
                 style={{
                   position: 'absolute',
-                  // Match z-0's exact img placement so the panel renders
-                  // the SAME image region the TopBar's backdrop-filter
-                  // sees. z-0 uses width:175%/height:175% of CARD dims,
-                  // centered with translate(-50%,-50%) → image-top in
-                  // card-coords = -0.375 × cardH. We re-create that
-                  // relative to the card here: img-top in panel coords
-                  // = -0.375 × cardH, sized to 1.75 × cardH tall. Panel
-                  // overflow:hidden clips it to the top 21–38% region
-                  // — same warm/cool family the TopBar pulls.
                   top: -0.375 * viewportH,
                   left: '50%',
                   transform: 'translateX(-50%)',
                   width: 1.75 * viewportW,
                   height: 1.75 * viewportH,
-                  maxWidth: 'none', // override global `img { max-width: 100% }`
+                  maxWidth: 'none',
                   objectFit: 'cover',
                   filter: 'blur(84px) saturate(1.15) brightness(0.94)',
                   opacity: 0.92,
@@ -892,10 +885,8 @@ export function ArticleCard({
             <span
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
               style={{
-                background: 'rgba(255,255,255,0.10)',
+                background: 'rgba(255,255,255,0.18)',
                 border: '1px solid rgba(255,241,205,0.22)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
               }}
             >
               <span
@@ -925,13 +916,11 @@ export function ArticleCard({
               className="px-3 py-1.5 rounded-full tracking-[0.14em]"
               style={{
                 fontSize: '11px',
-                background: 'rgba(255,255,255,0.06)',
+                background: 'rgba(255,255,255,0.12)',
                 border: '1px solid rgba(255,241,205,0.14)',
                 color: 'rgba(255,241,205,0.70)',
                 fontFamily: "'Macabro', 'Anton', sans-serif",
                 whiteSpace: 'nowrap',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
               }}
             >
               {article.source}

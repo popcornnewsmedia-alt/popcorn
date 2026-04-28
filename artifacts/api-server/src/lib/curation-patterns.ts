@@ -4,8 +4,8 @@
 // This is a LIVING DOCUMENT. Append new examples here as user feedback arrives.
 // The brief (curation-brief.ts) stays stable; this file grows.
 //
-// Last updated: 2026-04-26
-// Source: sets 1-5 of historical curation feedback (Apr 5 → Apr 26)
+// Last updated: 2026-04-27
+// Source: sets 1-6 of historical curation feedback (Apr 5 → Apr 27)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const CURATION_PATTERNS = `# POPCORN PATTERN LIBRARY
@@ -253,4 +253,78 @@ Concrete examples from past curation decisions. Use these to calibrate judgment 
 
 8. **Always-include patterns**: Ronaldo/Messi stories, major meme waves at global scale, Mamdani-level politics × culture crossovers, Cardi-B-level celebrity commerce, mass-brand moves. These have been missed before. Don't miss them again.
 
-9. **Always-exclude patterns**: Johnny Depp low-signal noise, concept albums without artist named in headline, senator-I've-never-heard-of predictions, process bills, abstract think pieces.`;
+9. **Always-exclude patterns**: Johnny Depp low-signal noise, concept albums without artist named in headline, senator-I've-never-heard-of predictions, process bills, abstract think pieces.
+
+---
+
+## RECENT REPEAT MISSES (Apr 25–27) — auto-flag these patterns
+
+The auto-selector has under-selected three days running (Apr 25: 5 from ~80; Apr 26: 3 from 100; Apr 27: 6 from 307). The same pattern types keep getting rescued in manual review. Treat the following as auto-flag triggers — if you see one of these in the pool and reject it, you almost certainly made a mistake.
+
+### Music obits for founding members of legacy acts
+- Nedra Talley Ross (last surviving Ronette) → MISSED Apr 27 (top-scoring item all day, rescued manually)
+- RULE: Death of a founding/core member of a globally-recognised legacy act (60s/70s/80s acts whose hits are universally known — Ronettes, Beach Boys, Beatles-adjacent, Motown, classic rock canon) = essential include. If the score is ≥ 9.0 and the deceased is a named founding member, it is an automatic keeper. Don't dismiss as "music industry trade".
+
+### Pop superstar new-album announcements
+- Olivia Rodrigo announces new album (post-GUTS) → MISSED Apr 27
+- RULE: First album / first single / first concrete details from a current Top-10 pop artist (Rodrigo, Billie Eilish, Sabrina Carpenter, Doja Cat, Beyoncé, SZA, Taylor, Ariana, Charli XCX, Chappell Roan) = always include, regardless of cycle stage. The first surfacing IS the keep — even if you'll see follow-ups in coming weeks.
+
+### Stalled-franchise positive updates
+- John Wick 5 first positive update in 12 months → MISSED Apr 27
+- RULE: After 6+ months of silence/limbo on a major franchise (John Wick, Avatar, Mission Impossible, Bond, Mad Max, GTA, Avengers post-Doomsday), a positive concrete update — greenlight, casting, release date, director attached — is a keeper even if score sits in the 6–7 range. The patience-rewarded angle drives clicks.
+
+### Top-tier TV-show spinoffs / revivals
+- Big Bang Theory spinoff (Stuart Fails to Save the Universe) first look → MISSED Apr 27
+- RULE: Any spinoff, revival, reboot, or successor announcement for a top-rated long-run sitcom (Friends, Seinfeld, Big Bang Theory, The Office, How I Met Your Mother, Modern Family, Cheers) = keeper even at score 7.x. Shared cultural memory drives mass clickability.
+
+### Legacy-act reunions 10+ years dormant (any language)
+- El Último de la Fila 30-year reunion → MISSED Apr 27 (Spanish-language was under-weighted)
+- Boards of Canada 13y return, Massive Attack 6y, Queens of the Stone Age 12y → all kept
+- RULE: Any band reuniting after a decade+ absence is a keeper, regardless of language/region. Spanish, K-pop, J-rock, French, Latin, Bollywood — Popcorn's audience cares about cultural longevity globally, not just Anglophone canon.
+
+### Food world records with absurd scale
+- 100 Italian chefs / 1,445-ft tiramisu → MISSED Apr 27
+- World's largest snack store (kept earlier)
+- RULE: Food/cooking world records measurable in absurd numbers (longest, largest, most chefs, most ingredients, most servings) are textbook fun/filler. They satisfy the "wait, what?" + shareability axes simultaneously. Don't park these as "food trade press".
+
+### Apps/games that subvert normal digital behaviour
+- Giant cat browser app physically blocks scrolling → MISSED Apr 27
+- Cat brushing browser game (kept earlier)
+- RULE: An app/tool/game whose mechanic *interferes with* normal phone or browser behaviour (blocks scrolling, hijacks notifications, forces a pause, breaks the fourth wall of the screen) = Internet culture keeper. The mechanic IS the story. Score should be raised for "novel interaction" hooks even when the app itself is small.
+
+### Award validations of already-dominant cultural moments
+- Adolescence + Celebrity Traitors BAFTA wins → MISSED Apr 27
+- RULE: When a show or film that *dominated cultural conversation* in the prior 4-12 weeks gets a major industry award (BAFTA, Emmy, Oscar, Golden Globe), include it as a bookend story. Skip nominations and lineups (those are commentary about culture). Winners + recognition = event = keeper.
+
+### AI defeating humans at physical / performance tasks
+- AI ping-pong robot beats humans → MISSED Apr 27
+- Ukraine: Russian soldiers surrendering to autonomous robots (kept earlier)
+- RULE: AI beating humans at physical sports, music performance, dance, cooking competitions, real-world games = dinner-table AI coverage. Prefer over abstract benchmark stories ("AI passes bar exam"). Concrete physical milestones travel further than score-on-eval improvements.
+
+### Women's golf majors (and women's-major rule generally)
+- Nelly Korda wins Chevron Championship → MISSED Apr 27
+- RULE: Women's golf majors (Chevron, US Women's Open, Women's British Open, Evian Championship), tennis Grand Slam women's finals, women's World Cup matches, women's basketball NCAA/WNBA finals = same editorial weight as men's majors. Lead with the winner's narrative + human angle, not just the scoreline. Treat as global-sports anchor, not as niche.
+
+### Globally-recognised landmark stories
+- Rome Colosseum revamp + hidden history reveal → MISSED Apr 27
+- LACMA $724M Geffen Galleries opens (kept earlier)
+- RULE: Stories about universally-known landmarks (Colosseum, Eiffel Tower, Taj Mahal, Machu Picchu, Stonehenge, Pyramids, Empire State, Statue of Liberty, Sagrada Família, Big Ben, Forbidden City, Christ the Redeemer) revealing new history or undergoing significant change = broadly relevant to nearly every reader. The landmark recognition itself drives appeal.
+
+### Solo luxury brand novelty (refines "brand × brand needs two real sides")
+- RIMOWA $1,850 aluminum jewelry case → MISSED Apr 27
+- RULE: A high-tier fashion/luxury brand (RIMOWA, Hermès, Bottega Veneta, Moncler, Loewe, Goyard, Prada, Dior) releasing a genuinely unusual *solo* product (not a standard bag drop, not a generic SKU) = valid Fashion filler. The "brand × brand needs two real sides" rule applies to collabs only — solo novelty drops from globally-known luxury houses earn a slot on their own.
+
+---
+
+## DON'T UNDER-SELECT — pool-size floor
+
+You have under-selected three days in a row. The pool is filtered before it reaches you — every item has already passed scoring. If the pool has 50+ items, the answer is rarely "5 stories". If it has 100+ items, the answer is rarely "6 stories".
+
+Approximate floor (rescue from the pool until you hit it):
+- Pool 30–60: aim for ≥ 10 picks
+- Pool 60–120: aim for ≥ 12 picks
+- Pool 120+: aim for ≥ 14 picks
+
+If you find yourself returning fewer, ask: am I missing music? am I missing film/TV? am I missing internet culture? am I missing fun/filler? am I missing a women's-sport major? am I missing a legacy-act reunion or obit? am I missing a food/landmark/solo-luxury filler? Go back and rescue.
+
+The cost of including a borderline pick is low. The cost of missing a near-essential pattern (music obit, pop-star album, women's major, franchise update) is high — those are the picks the editor manually rescues every single day.`;

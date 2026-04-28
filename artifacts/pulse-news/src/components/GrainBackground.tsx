@@ -1,5 +1,17 @@
 import { useEffect, useRef } from "react";
 
+// Module-level bitmap cache. The grain renderer does ~330k pixel iterations
+// of Math.exp + Math.random per mount (~800ms on iOS). Re-mounts at the
+// same (variant, W, H) produce *statistically identical* random noise —
+// two random noise fields are indistinguishable to the human eye — so
+// reusing the first generated bitmap is a free win for tab switches,
+// SignInSheet open/close, CommentSheet open/close, etc.
+//
+// Cache is unbounded by design: the keyspace is small (6 variants × a
+// handful of viewport sizes ≈ <20 entries × ~1.3MB each), and entries
+// only allocate when a new variant/size combo is actually used.
+const grainCache = new Map<string, ImageData>();
+
 export function GrainBackground({ variant = "light" }: { variant?: "light" | "dark" | "cream" | "pale" | "paper" | "white" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -15,6 +27,16 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
 
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
+
+    // Cache hit: paint the previously-generated bitmap and skip the
+    // expensive procedural pass. Same algorithm, same parameter ranges →
+    // visually equivalent noise to a fresh render.
+    const cacheKey = `${variant}_${W}_${H}`;
+    const cached = grainCache.get(cacheKey);
+    if (cached) {
+      ctx.putImageData(cached, 0, 0);
+      return;
+    }
 
     ctx.fillStyle = variant === "dark" ? '#b32b21' : variant === "cream" ? '#fff1cd' : variant === "pale" ? '#fbf8f2' : variant === "paper" ? '#fdf7e5' : variant === "white" ? '#ffffff' : '#053980';
     ctx.fillRect(0, 0, W, H);
@@ -98,6 +120,7 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
       }
     }
     ctx.putImageData(imgData, 0, 0);
+    grainCache.set(cacheKey, imgData);
   }, [variant]);
 
   return (

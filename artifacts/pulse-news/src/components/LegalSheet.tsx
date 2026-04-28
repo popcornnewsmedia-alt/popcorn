@@ -25,8 +25,10 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
   const handleClose = (e: React.MouseEvent) => { e.stopPropagation(); onClose(); };
 
-  // ── Drag-down-to-close (scroll-aware) ───────────────────────────────────
-  const scrollRef = useRef<HTMLDivElement>(null);
+  // ── Drag-down-to-close ──────────────────────────────────────────────────
+  // Handlers are attached to the header zone (handle + title block) only.
+  // That decouples drag-to-close from the scroll body so it works regardless
+  // of how far the user has scrolled into the article.
   const dragStartY = useRef<number | null>(null);
   const [dragOffset, setDragOffset] = useState(0);
   const isDragging = useRef(false);
@@ -39,9 +41,7 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (dragStartY.current === null) return;
     const delta = e.touches[0].clientY - dragStartY.current;
-    // Only start drag if scrolled to top
-    const scrollTop = scrollRef.current?.scrollTop ?? 0;
-    if (delta <= 0 || scrollTop > 2) { setDragOffset(0); return; }
+    if (delta <= 0) { setDragOffset(0); return; }
     if (!isDragging.current && delta < 10) return;
     isDragging.current = true;
     setDragOffset(delta);
@@ -81,14 +81,16 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
           boxShadow: isOpen ? '0 -24px 64px rgba(0,0,0,0.45)' : 'none',
         }}
         onClick={stopProp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
       >
         {isOpen && <GrainBackground />}
 
         {/* Handle */}
-        <div className="relative z-10 flex justify-center pt-3 pb-1 flex-shrink-0">
+        <div
+          className="relative z-10 flex justify-center pt-3 pb-1 flex-shrink-0"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <div className="w-9 h-1 rounded-full" style={{ background: 'rgba(255,241,205,0.30)' }} />
         </div>
 
@@ -105,7 +107,12 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
         {doc && (
           <>
             {/* Header */}
-            <div className="relative z-10 px-6 pt-6 pb-5 flex-shrink-0">
+            <div
+              className="relative z-10 px-6 pt-6 pb-5 flex-shrink-0"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               <p style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 700,
@@ -141,7 +148,7 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
             <div className="relative z-10 mx-6" style={{ height: '1px', background: 'rgba(255,241,205,0.14)' }} />
 
             {/* Scrollable body */}
-            <div ref={scrollRef} className="relative z-10 flex-1 overflow-y-auto overscroll-contain scrollbar-hide">
+            <div className="relative z-10 flex-1 overflow-y-auto overscroll-contain scrollbar-hide">
               <div className="px-6 py-7 pb-20 max-w-2xl mx-auto">
                 {doc.intro && (
                   <p

@@ -230,13 +230,13 @@ select:focus-visible {
   }
 
   .glass-panel {
-    background: rgba(255, 255, 255, 0.38);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
 
   .glass-nav {
-    background: rgba(236, 243, 239, 0.58);
+    background: rgba(236, 243, 239, 0.88);
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
   }

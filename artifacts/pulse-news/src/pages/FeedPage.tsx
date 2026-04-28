@@ -20,6 +20,7 @@ import { supabase } from "@/lib/supabase";
 import { AlertCircle, RefreshCw, Bookmark, User, LogOut, ChevronRight } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { isStandalone } from "@/lib/utils";
+import { feedImageUrl } from "@/lib/image-url";
 
 type Tab = "feed" | "saved" | "profile";
 
@@ -927,10 +928,12 @@ export function FeedPage() {
   // already-decoded pixel buffer and paints it to screen synchronously
   // (no fetch, no decode, no flash).
   //
-  // LRU-bounded at MAX_DECODED_IMAGES. On mobile each 1080px JPEG is ~2MB
-  // decoded, so a budget of 20 keeps image memory under ~40MB. We need at
-  // least (render window ±3 = 7) + (prefetch ahead 6) + (behind 2) ≈ 15,
-  // so 20 gives headroom for direction changes without evicting live cards.
+  // LRU-bounded at MAX_DECODED_IMAGES. On mobile each 1080px JPEG is ~5.6MB
+  // decoded (1080 × 1300 × 4 bytes); a budget of 20 keeps decoded image
+  // memory under ~110MB — well below the iOS WebView's 250-500MB ceiling.
+  // We need at least (render window ±3 = 7) + (prefetch ahead 6) + (behind 2)
+  // ≈ 15, so 20 gives headroom for direction changes without evicting live
+  // cards.
   const decodedImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
   const decodeOrderRef   = useRef<string[]>([]);
   const MAX_DECODED_IMAGES = 20;
@@ -939,30 +942,40 @@ export function FeedPage() {
   // is retained in the JS Map reference until the LRU evicts it. If decode
   // fails (CORS, unsupported format, network error), the entry is removed
   // so the normal <img> path can retry.
+  //
+  // The raw `url` is passed through `feedImageUrl()` so we prefetch the
+  // SAME viewport-sized variant that <ArticleCard> renders. If we prefetched
+  // the 2400px master and the card requested the 1080px variant, the
+  // browser would issue a second fetch + second decode and our entire
+  // prefetch pipeline would be wasted bandwidth. Map keys + browser HTTP
+  // cache + decoded bitmap cache all key off the FINAL URL, so they must
+  // match what <img src={...}> ultimately uses.
   const preloadImage = useCallback((url: string | null | undefined, priority: 'high' | 'auto' = 'auto') => {
-    if (!url || decodedImagesRef.current.has(url)) return;
+    if (!url) return;
+    const variantUrl = feedImageUrl(url);
+    if (!variantUrl || decodedImagesRef.current.has(variantUrl)) return;
 
     const img = new Image();
     // fetchPriority is a relatively new HTMLImageElement prop; TS lib doesn't
     // always know about it. Cast and assign for Chrome/Safari 17+ support.
     (img as unknown as { fetchPriority?: string }).fetchPriority = priority;
     img.decoding = 'async';
-    img.src = url;
+    img.src = variantUrl;
 
-    decodedImagesRef.current.set(url, img);
-    decodeOrderRef.current.push(url);
+    decodedImagesRef.current.set(variantUrl, img);
+    decodeOrderRef.current.push(variantUrl);
 
     // Force decode off the main thread. On success the decoded frame sits in
-    // the browser's memory cache and any later <img src={url}> paints it
-    // instantly. On failure we drop the entry so the normal path can retry.
+    // the browser's memory cache and any later <img src={variantUrl}> paints
+    // it instantly. On failure we drop the entry so the normal path can retry.
     img.decode().catch(() => {
-      decodedImagesRef.current.delete(url);
+      decodedImagesRef.current.delete(variantUrl);
     });
 
     // LRU eviction. Never evict the URL we just inserted.
     while (decodeOrderRef.current.length > MAX_DECODED_IMAGES) {
       const evict = decodeOrderRef.current.shift();
-      if (evict && evict !== url) decodedImagesRef.current.delete(evict);
+      if (evict && evict !== variantUrl) decodedImagesRef.current.delete(evict);
     }
   }, []);
 
@@ -1451,6 +1464,12 @@ export function FeedPage() {
             // the user reaches the card.
             const renderContent = Math.abs(index - currentCardIndex) <= 3;
             const isActive = index === currentCardIndex;
+            // Only the active card and its immediate neighbours render the
+            // expensive blur-bleed layer (a SECOND decoded copy of the hero
+            // image). On iOS WebView this halves peak decoded image RAM —
+            // the cards just outside ±1 still mount their hero img (so the
+            // ±3 prefetch window stays intact), they just skip the blur copy.
+            const isNearActive = Math.abs(index - currentCardIndex) <= 1;
             return item.kind === "divider" ? (
               <DateDividerCard
                 key={item.id}
@@ -1467,6 +1486,7 @@ export function FeedPage() {
                 viewportHeight={viewportHeight}
                 renderContent={renderContent}
                 isActive={isActive}
+                isNearActive={isNearActive}
               />
             );
           })

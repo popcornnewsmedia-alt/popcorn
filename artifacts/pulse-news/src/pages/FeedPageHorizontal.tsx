@@ -98,6 +98,7 @@ export function FeedPageHorizontal() {
   const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
 
   useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout | null = null;
     const measure = () => {
       const d = document.createElement('div');
       d.style.cssText = 'position:fixed;top:0;height:100dvh;pointer-events:none;visibility:hidden';
@@ -107,8 +108,15 @@ export function FeedPageHorizontal() {
       setViewportHeight(h > 0 ? h : window.innerHeight);
       setViewportWidth(window.innerWidth);
     };
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+    const throttledMeasure = () => {
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(measure, 200);
+    };
+    window.addEventListener('resize', throttledMeasure);
+    return () => {
+      window.removeEventListener('resize', throttledMeasure);
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+    };
   }, []);
 
   // ── Pull-to-refresh ─────────────────────────────────────────────────────
@@ -314,39 +322,56 @@ export function FeedPageHorizontal() {
   // In-day card tracking + prefetch. Within the active day, prefetch the
   // next 6 and previous 2 article images. Same algorithm as FeedPage but
   // scoped to the active day's scroller.
+  //
+  // Driven by a passive `scroll` listener on the active day's container,
+  // not a continuous rAF loop. The previous rAF version ran at 60 Hz even
+  // when the user was idle, doing two layout reads (scrollTop, clientHeight)
+  // + a transform write per frame; on iOS WebKit that pinned the main
+  // thread enough to make taps and the keyboard feel sticky. A passive
+  // scroll listener does the same DOM reads/writes ONLY when the user is
+  // actually scrolling — same behaviour during scroll, zero cost when idle.
+  // Re-attaches when the active day changes so it always points at the
+  // currently-scrollable container.
   const scrollIndexRef = useRef(-1);
   useEffect(() => {
-    let rafId: number;
-    const loop = () => {
+    const container = dayScrollRefs.current[currentDayIdx];
+    if (!container) return;
+
+    const onScroll = () => {
+      if (activeTabRef.current !== 'feed') return;
       const day = dayGroupsRef.current[currentDayIdxRef.current];
-      const container = dayScrollRefs.current[currentDayIdxRef.current];
-      if (day && container && activeTabRef.current === 'feed') {
-        const { scrollTop, clientHeight } = container;
-        const total = day.articles.length + 1;
-        if (clientHeight > 0) {
-          updateProgressBar();
-          const fractionalIdx = scrollTop / clientHeight;
-          const roundedIdx = Math.min(Math.max(0, Math.round(fractionalIdx)), total - 1);
-          if (roundedIdx !== scrollIndexRef.current) {
-            scrollIndexRef.current = roundedIdx;
-            // roundedIdx 0 = divider, 1..N = article (roundedIdx - 1)
-            const articleIdx = roundedIdx - 1;
-            for (let offset = 1; offset <= 6; offset++) {
-              const a = day.articles[articleIdx + offset];
-              if (a?.imageUrl) preloadImage(a.imageUrl, offset <= 2 ? 'high' : 'auto');
-            }
-            for (let offset = 1; offset <= 2; offset++) {
-              const a = day.articles[articleIdx - offset];
-              if (a?.imageUrl) preloadImage(a.imageUrl, 'auto');
-            }
-          }
+      if (!day) return;
+      const { scrollTop, clientHeight } = container;
+      if (clientHeight <= 0) return;
+
+      updateProgressBar();
+
+      const total = day.articles.length + 1;
+      const fractionalIdx = scrollTop / clientHeight;
+      const roundedIdx = Math.min(Math.max(0, Math.round(fractionalIdx)), total - 1);
+      if (roundedIdx !== scrollIndexRef.current) {
+        scrollIndexRef.current = roundedIdx;
+        // roundedIdx 0 = divider, 1..N = article (roundedIdx - 1)
+        const articleIdx = roundedIdx - 1;
+        for (let offset = 1; offset <= 6; offset++) {
+          const a = day.articles[articleIdx + offset];
+          if (a?.imageUrl) preloadImage(a.imageUrl, offset <= 2 ? 'high' : 'auto');
+        }
+        for (let offset = 1; offset <= 2; offset++) {
+          const a = day.articles[articleIdx - offset];
+          if (a?.imageUrl) preloadImage(a.imageUrl, 'auto');
         }
       }
-      rafId = requestAnimationFrame(loop);
     };
-    rafId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafId);
-  }, [preloadImage, updateProgressBar]);
+
+    // Sync once on mount / day-change so the progress bar reflects the
+    // initial scroll position and first prefetches kick off without
+    // having to wait for the first scroll event.
+    onScroll();
+
+    container.addEventListener('scroll', onScroll, { passive: true });
+    return () => container.removeEventListener('scroll', onScroll);
+  }, [currentDayIdx, dayGroups.length, preloadImage, updateProgressBar]);
 
   // Day-change side effects: reset active-day scroll tracking, prefetch
   // adjacent days' first images, sync selectedDate pill in the TopBar.

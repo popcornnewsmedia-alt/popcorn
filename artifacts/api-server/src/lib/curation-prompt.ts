@@ -153,6 +153,11 @@ ${alreadyPublished.map((a, i) => `${i + 1}. ${a.title}`).join("\n")}
 `
       : "";
 
+  // Estimate pool size from articleList — used for an explicit minimum-rescue floor
+  const approxPoolSize = (articleList.match(/\n\d+\./g) || []).length || 0;
+  const minFloor =
+    approxPoolSize >= 120 ? 14 : approxPoolSize >= 60 ? 12 : approxPoolSize >= 30 ? 10 : 8;
+
   return `${SHARED_CONTEXT}
 
 Today is ${today}.${alreadyPublishedBlock}
@@ -165,7 +170,11 @@ You are selecting from a pool of candidate articles for today's feed. Apply the 
 
 ${
   alreadyPublished.length === 0
-    ? `This is a FULL RESET RUN with no existing feed. Target 12-18 stories. Apply the editorial brief — including axis coverage (music, film/TV, internet culture, fun/filler). If you return fewer than 8 stories from a pool of 50+ candidates, you have almost certainly missed entire category axes — go back and rescue the best music, film/TV, and fun picks before returning.`
+    ? `This is a FULL RESET RUN with no existing feed. The pool has ~${approxPoolSize} candidates — every one already passed scoring. Target 12-18 stories.
+
+**Hard floor:** Aim for at least ${minFloor} picks from this pool. The auto-selector has under-selected three days running (Apr 25: 5 from 80; Apr 26: 3 from 100; Apr 27: 6 from 307) — every shortfall has been rescued by manual review with the same patterns: music obits, pop-star albums, franchise updates, women's-sport majors, legacy reunions, fun/filler. Do not repeat that mistake.
+
+**Axis coverage check before returning:** music (≥2)? film/TV (≥1)? internet culture (≥1)? fun/filler (≥1)? women's-sport major or globally-known landmark or legacy obit/reunion if the pool has one? If any axis is empty and the pool offered candidates, go back and rescue the best one.`
     : `This is an INCREMENTAL UPDATE. ${alreadyPublished.length} stories are already in today's feed (including cross-day historical dedup from all previously published editions). Only add stories clearly stronger than the weakest already published. Prefer 2 excellent new stories over 8 mediocre ones.`
 }
 
