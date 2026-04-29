@@ -205,7 +205,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 25%, rgba(255,255,255,0) 65%, rgba(255,255,255,0.85) 90%, rgba(255,255,255,1) 100%)',
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 25%, rgba(255,255,255,0) 78%, rgba(255,255,255,0.45) 92%, rgba(255,255,255,0.62) 100%)',
                   }}
                 />
               </div>

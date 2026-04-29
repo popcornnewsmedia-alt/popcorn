@@ -130,6 +130,13 @@ export function ArticleCard({
   // in which case both regions use a neutral cream veil — same as before
   // this effect existed.
   const [dominantColor, setDominantColor] = useState<string | null>(null);
+
+  // Category-derived fallback color used when the dominant-color probe fails
+  // (e.g. CORS-restricted external CDNs like Dexerto that don't send
+  // Access-Control-Allow-Origin). Gives each category a meaningful tint
+  // instead of always falling back to the app's generic dark blue.
+  const catHex = CATEGORY_COLORS[article.category] ?? '#053980';
+  const catRgb = `${parseInt(catHex.slice(1,3),16)},${parseInt(catHex.slice(3,5),16)},${parseInt(catHex.slice(5,7),16)}`;
   useEffect(() => {
     if (!article.imageUrl || !renderContent) return;
 
@@ -307,11 +314,19 @@ export function ArticleCard({
   // Web desktop (≥768px): 168px — compact cinematic ledger, image gets
   //   ~76% of the viewport. Headline clamped to 2 lines.
   // Mobile web (<768px): proportional 30% of viewport, min 220px.
-  const PLATE_BOTTOM_CAP = isWebDesktop
-    ? 168
-    : isStandalone
-      ? 278
-      : Math.max(220, Math.round(viewportHeight * 0.30));
+  // Web desktop bar: 168px for the compact ledger layout.
+  // Mobile/iOS: ~130px bottom cap — image ends before the content overlay
+  // zone. The lost area is covered by a cinematic dark-fade vignette
+  // inside the plate that dissolves the image into darkness.
+  const PLATE_BOTTOM_CAP = isWebDesktop ? 168 : 130;
+
+  // How far above the card's bottom edge the overlaid content should end.
+  // Must clear the BottomNav pill + its outer padding + breathing room.
+  //   Standalone iOS: pill ≈ 62px + env(safe-area-inset-bottom) (~34px on iPhone) + 12px gap
+  //   Mobile web    : pill ≈ 54px + 12px gap = 66px
+  const CONTENT_BOTTOM = isStandalone
+    ? 'calc(env(safe-area-inset-bottom) + 74px)'
+    : '66px';
 
   // ── Plate geometry ──
   // Mobile / iOS / mobile-web (< DESKTOP_BREAKPOINT): full-bleed portrait
@@ -402,9 +417,9 @@ export function ArticleCard({
     textColLeft  = rowLeft;
     textColWidth = rowWidth;
   } else {
-    plateW    = Math.max(1, viewportW - PLATE_SIDE_MARGIN * 2);
+    plateW    = viewportW;
     plateH    = Math.max(1, viewportH - PLATE_TOP_OFFSET - PLATE_BOTTOM_CAP);
-    plateLeft = PLATE_SIDE_MARGIN;
+    plateLeft = 0;
     plateTop  = PLATE_TOP_OFFSET;
   }
 
@@ -447,101 +462,9 @@ export function ArticleCard({
       }}
       onClick={() => onReadMore(article)}
     >
+      {/* ── HERO PLATE ── Full-bleed portrait on mobile/iOS; editorial centered
+          card on desktop. A cinematic scrim below provides text legibility. */}
       {hasImage ? (
-        <>
-          {/* ── BLUR BLEED ──
-              Second copy of the same URL at a heavy blur + mild saturation
-              boost, scaled ~175% and centred so the Gaussian doesn't vignette
-              at the edges. Acts as an atmospheric colour halo — the image's
-              palette bleeds into every area the inset hero doesn't cover.
-              Browsers cache the decode by URL so the bandwidth cost is one
-              fetch per card; the GPU handles the blur compositing.            */}
-          <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
-            {/* Blur layer is the second decoded copy of the hero image
-                (different scale/filter, but a separate bitmap in RAM).
-                On iOS WebView at 1290px wide this means ~5MB extra per
-                card — gating it to active ± 1 cuts feed peak RAM in half
-                without any visible change to the user (off-screen cards
-                aren't seen). The dominantColor veil + readability shims
-                still render so the in-view edge cards don't pop. */}
-            {isNearActive && (
-              <img
-                src={feedImageUrl(article.imageUrl)}
-                alt=""
-                loading="eager"
-                decoding="async"
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  width: '175%',
-                  height: '175%',
-                  transform: 'translate(-50%, -50%)',
-                  objectFit: 'cover',
-                  // Aligned with the noir-plate treatment so the TopBar
-                  // (which backdrop-filters this layer) and the headline
-                  // panel show consistent, image-derived colors instead
-                  // of a forced navy wash. Saturation kept low (1.15) so
-                  // per-region differences (top of image vs center of
-                  // image) are muted — both regions read as "frosted
-                  // cream with hint of color" rather than vivid raw
-                  // image color.
-                  filter: 'blur(84px) saturate(1.15) brightness(0.94)',
-                  opacity: 0.92,
-                }}
-              />
-            )}
-            {/* Frosted shared-tint veil — uses the image's dominant
-                color (sampled via canvas) so the TopBar zone reads
-                as the SAME frosted glass color as the headline panel
-                below. Falls back to cream when canvas is tainted by
-                CORS — same behavior as before this tint existed. */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: dominantColor
-                  ? `rgba(${dominantColor},0.32)`
-                  : 'rgba(255,241,205,0.16)',
-              }}
-            />
-            {/* Top-edge readability shim — a very subtle dark band only
-                in the top ~12% so the cream POPCORN/date chrome keeps
-                contrast against bright images (e.g. snow, white walls).
-                Kept much softer than the old navy vignette so it does
-                NOT recolor the image — it only deepens slightly. */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background:
-                  'linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.06) 8%, rgba(0,0,0,0) 14%)',
-              }}
-            />
-            {/* Reading gradient for the headline block at the bottom.
-                Kept subtle so the headline panel's backdrop-filter sees
-                the image-tinted atmosphere (like the TopBar does at the
-                top), not a dark wash. The headline panel adds its own
-                soft darkening on top for text readability. */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background:
-                  'linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.10) 80%, rgba(0,0,0,0.18) 100%)',
-              }}
-            />
-          </div>
-
-          {/* ── HERO PLATE ──
-              Mobile / iOS: full-bleed portrait, sharp side edges, vertical
-              feather mask at the top (connects with the progress rule) and
-              bottom — image ends sharply at the cream hairline.
-              Desktop: centered editorial hero — the plate is sized to the
-              image's natural aspect ratio so the WHOLE image is visible
-              (no crop). Soft rounded corners, layered drop-shadow, and a
-              hairline inner ring frame it as an editorial art object
-              floating in the blurred halo. */}
           <div
             className="absolute z-10"
             style={{
@@ -559,14 +482,16 @@ export function ArticleCard({
                     boxShadow:
                       '0 36px 72px -22px rgba(0,0,0,0.55), 0 12px 28px -10px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,241,205,0.08)',
                   }
-                : {
-                    // Top: keep a short 8px feather to soften the
-                    // seam against the progress rule.
+                : isWebDesktop
+                ? {
+                    // Web desktop: short 8px feather to soften the seam
+                    // against the progress rule.
                     WebkitMaskImage:
                       'linear-gradient(to bottom, transparent 0, black 8px, black 100%)',
                     maskImage:
                       'linear-gradient(to bottom, transparent 0, black 8px, black 100%)',
-                  }),
+                  }
+                : {}),
             }}
           >
             <img
@@ -591,9 +516,42 @@ export function ArticleCard({
                 transition: imgReady ? 'none' : 'opacity 0.18s ease',
               }}
             />
+            {/* ── Cinematic bottom-fade vignette (mobile/iOS only) ──
+                The image dissolves into darkness over its bottom 40%, giving
+                the impression the photo ends naturally rather than being
+                hard-cropped. Three-stop gradient: the image is fully
+                visible in the upper 60%, then a warm shadow midzone
+                (optionally tinted with the dominant color) leads into
+                near-opaque black at the bottom edge. No blur — purely
+                opacity + darkness, like a film frame burning out. */}
+            {!isDesktop && !isWebDesktop && (
+              <div
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  pointerEvents: 'none',
+                  background: dominantColor
+                    ? `linear-gradient(to bottom,
+                        transparent 0%,
+                        transparent 52%,
+                        rgba(${dominantColor},0.12) 64%,
+                        rgba(0,0,0,0.42) 76%,
+                        rgba(0,0,0,0.78) 88%,
+                        rgba(0,0,0,0.92) 100%
+                      )`
+                    : `linear-gradient(to bottom,
+                        transparent 0%,
+                        transparent 52%,
+                        rgba(0,0,0,0.15) 64%,
+                        rgba(0,0,0,0.46) 76%,
+                        rgba(0,0,0,0.80) 88%,
+                        rgba(0,0,0,0.94) 100%
+                      )`,
+                }}
+              />
+            )}
           </div>
-
-        </>
       ) : (
         <div className="absolute inset-0 ink-diffusion-bg" />
       )}
@@ -612,17 +570,6 @@ export function ArticleCard({
         </div>
       )}
 
-      {/* Vertical action buttons — mobile/iOS only.
-          Web desktop embeds horizontal actions inside the compact bar. */}
-      {!isWebDesktop && (
-        <div
-          className="absolute right-4 z-30"
-          style={{ top: `${plateTop + plateH + 8}px` }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} />
-        </div>
-      )}
 
       {/* Portal to document.body so the fixed backdrop/sheet escapes the
           snap-scroll container's stacking context and properly overlays
@@ -632,234 +579,259 @@ export function ArticleCard({
         document.body,
       )}
 
-      {/* Mobile / iOS: flex-spacer + bottom-anchored text block.
-          ────────────────────────────────────────────────────────
-          Editorial composition:
-            • z-15 noir ink plate (charcoal #0a0a0a + procedural
-              newsprint grain, feathered top edge dissolves UP into
-              the photo bottom) — replaces the implicit dark wash.
-            • z-20 type column — pills + headline UNCHANGED from
-              the original, with a refined editorial floor lockup
-              ("READ THE STORY" with a cream hairline) in place
-              of the old "Swipe ↑" hint.
-          No blue. Headline font/size/colour unchanged. */}
+      {/* Mobile / iOS: full-bleed cinema — image fills entire card,
+          text + actions overlay via a dark gradient scrim.
+          Web desktop (≥768px browser): compact ledger bar preserved as-is. */}
       {!isDesktop && (
         <>
-          {/* Spacer — fixed height equal to the image's bottom edge.
-              Type column starts EXACTLY at the image bottom (no
-              overlap onto the image), so the image stays fully
-              visible with a clean sharp bottom edge. */}
-          <div
-            className="relative z-20"
-            style={{ flex: '0 0 auto', height: `${PLATE_TOP_OFFSET + plateH}px` }}
-          />
-
-          {/* ── Layer 1: editorial plate ── */}
-          <div
-            aria-hidden
-            className="popcorn-noir-plate absolute left-0 right-0"
-            style={{
-              top: `${plateTop + plateH}px`,
-              bottom: 0,
-              zIndex: 15,
-              pointerEvents: 'none',
-              WebkitMaskImage: 'none',
-              maskImage: 'none',
-            }}
-          >
-            {isWebDesktop && (
-              <div aria-hidden style={{
-                position: 'absolute', top: 0, left: 16, right: 16, height: 1,
-                background: 'linear-gradient(to right, rgba(255,241,205,0) 0%, rgba(255,241,205,0.35) 30%, rgba(255,241,205,0.35) 70%, rgba(255,241,205,0) 100%)',
-                zIndex: 1,
-              }} />
-            )}
-            {article.imageUrl && (
-              <img
-                src={article.imageUrl}
-                alt=""
+          {isWebDesktop ? (
+            <>
+              {/* ── Web desktop: spacer + editorial plate + compact bar (unchanged) ── */}
+              <div
+                className="relative z-20"
+                style={{ flex: '0 0 auto', height: `${PLATE_TOP_OFFSET + plateH}px` }}
+              />
+              <div
                 aria-hidden
+                className="popcorn-noir-plate absolute left-0 right-0"
                 style={{
-                  position: 'absolute',
-                  top: -0.375 * viewportH,
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: 1.75 * viewportW,
-                  height: 1.75 * viewportH,
-                  maxWidth: 'none',
-                  objectFit: 'cover',
-                  filter: 'blur(84px) saturate(1.15) brightness(0.94)',
-                  opacity: 0.92,
+                  top: `${plateTop + plateH}px`,
+                  bottom: 0,
+                  zIndex: 15,
+                  pointerEvents: 'none',
+                  WebkitMaskImage: 'none',
+                  maskImage: 'none',
+                }}
+              >
+                <div aria-hidden style={{
+                  position: 'absolute', top: 0, left: 16, right: 16, height: 1,
+                  background: 'linear-gradient(to right, rgba(255,241,205,0) 0%, rgba(255,241,205,0.35) 30%, rgba(255,241,205,0.35) 70%, rgba(255,241,205,0) 100%)',
+                  zIndex: 1,
+                }} />
+                {article.imageUrl && (
+                  <img
+                    src={article.imageUrl}
+                    alt=""
+                    aria-hidden
+                    style={{
+                      position: 'absolute',
+                      top: -0.375 * viewportH,
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: 1.75 * viewportW,
+                      height: 1.75 * viewportH,
+                      maxWidth: 'none',
+                      objectFit: 'cover',
+                      filter: 'blur(84px) saturate(1.15) brightness(0.94)',
+                      opacity: 0.92,
+                    }}
+                  />
+                )}
+                <div className="absolute inset-0" style={{
+                  background: dominantColor
+                    ? [
+                        'radial-gradient(ellipse 50% 38% at 14% -22%, rgba(255,241,205,0.06) 0%, rgba(255,241,205,0) 65%)',
+                        `linear-gradient(to bottom, rgba(${dominantColor},0.24) 0%, rgba(${dominantColor},0.30) 45%, rgba(${dominantColor},0.38) 100%)`,
+                      ].join(', ')
+                    : 'linear-gradient(to bottom, rgba(255,241,205,0.18) 0%, rgba(255,241,205,0.10) 100%)',
+                }} />
+                <div className="absolute inset-0" style={{
+                  background: 'linear-gradient(to bottom, rgba(0,0,0,0) 65%, rgba(0,0,0,0.07) 82%, rgba(0,0,0,0.14) 100%)',
+                }} />
+              </div>
+              <div
+                className="relative z-20 px-6"
+                style={{ paddingTop: '16px', paddingBottom: '60px' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-2 min-w-0 overflow-hidden">
+                    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{
+                      background: 'rgba(255,255,255,0.12)',
+                      border: '1px solid rgba(255,255,255,0.22)',
+                      flexShrink: 0,
+                      whiteSpace: 'nowrap',
+                    }}>
+                      <span style={{
+                        display: 'inline-block', width: 6, height: 6, borderRadius: '50%',
+                        background: CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.5)',
+                        boxShadow: `0 0 5px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.4)'}`,
+                        flexShrink: 0,
+                      }} />
+                      <span className="uppercase tracking-widest" style={{
+                        fontSize: 10, color: 'rgba(255,255,255,0.90)',
+                        fontFamily: "'Macabro', 'Anton', sans-serif",
+                      }}>{article.category}</span>
+                    </span>
+                    <span className="px-2.5 py-1 rounded-full tracking-wide" style={{
+                      fontSize: 10,
+                      background: 'rgba(255,255,255,0.08)',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      color: 'rgba(255,255,255,0.65)',
+                      fontFamily: "'Macabro', 'Anton', sans-serif",
+                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                      minWidth: 0, flex: '0 1 auto',
+                    }}>{article.source}</span>
+                  </div>
+                  <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} horizontal />
+                </div>
+                <h2 className="text-white overflow-hidden mb-2" style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  lineHeight: 1.2,
+                  fontSize: '24px',
+                  fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
+                  fontWeight: 600,
+                  letterSpacing: '-0.025em',
+                }}>{article.title}</h2>
+                <div className="flex items-center gap-1.5 mt-2" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                  <span className="uppercase" style={{
+                    fontFamily: "'Macabro', 'Anton', sans-serif",
+                    fontSize: 8, letterSpacing: '0.22em', fontWeight: 400,
+                  }}>Read more</span>
+                  <ChevronUp className="w-2 h-2" strokeWidth={1.75} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* ── Mobile / iOS: cinematic full-bleed layout ── */}
+
+              {/* Atmosphere strip — TopBar-height band of image-derived color.
+                  The TopBar's backdrop-filter blurs over this, giving the
+                  same cinematic image-color bleed through the nav bar as
+                  before the full-bleed layout. No extra image fetch — the
+                  dominantColor probe gives a pixel-accurate tint at zero cost. */}
+              <div
+                aria-hidden
+                className="absolute left-0 right-0 pointer-events-none"
+                style={{
+                  top: 0,
+                  height: PLATE_TOP_OFFSET,
+                  zIndex: 12,
+                  background: dominantColor
+                    ? `linear-gradient(to bottom, rgba(${dominantColor},0.90) 0%, rgba(${dominantColor},0.72) 60%, rgba(${dominantColor},0.38) 100%)`
+                    : `linear-gradient(to bottom, rgba(${catRgb},0.82) 0%, rgba(${catRgb},0.60) 60%, rgba(${catRgb},0.28) 100%)`,
                 }}
               />
-            )}
-            <div
-              className="absolute inset-0"
-              style={{
-                background: dominantColor
-                  ? `rgba(${dominantColor},0.32)`
-                  : 'rgba(255,241,205,0.16)',
-              }}
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background: 'linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.10) 80%, rgba(0,0,0,0.18) 100%)',
-              }}
-            />
-          </div>
 
-          {/* ── Layer 2: type column ──
-              Two layouts:
-              - Web desktop (≥768px in browser): compact horizontal bar
-                with pills + actions in one row, headline clamped to 2 lines.
-              - Mobile / iOS: existing tall layout, 4-line headline. */}
-          {isWebDesktop ? (
-            /* Web desktop compact bar */
-            <div
-              className="relative z-20 px-6"
-              style={{ paddingTop: '16px', paddingBottom: '60px' }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Top row: pills left · social actions right */}
-              <div className="flex items-center justify-between gap-3 mb-3">
-                <div className="flex items-center gap-2 min-w-0 overflow-hidden">
+              {/* Scrim — image-tinted dark veil over the image zone only.
+                  Bottom opacity reduced to 0.55 (vs old 0.88) so the bleed
+                  layer at z-16 shows through and the image colors read warmly
+                  rather than drowning in near-black. */}
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  zIndex: 15,
+                  background: dominantColor
+                    ? `linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(${dominantColor},0.22) 56%, rgba(0,0,0,0.52) 74%, rgba(0,0,0,0.58) 100%)`
+                    : `linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(${catRgb},0.18) 56%, rgba(0,0,0,0.52) 74%, rgba(0,0,0,0.58) 100%)`,
+                }}
+              />
+
+              {/* TikTok-style action column — right side, anchored above BottomNav */}
+              <div
+                className="absolute right-4 z-20"
+                style={{ bottom: CONTENT_BOTTOM }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} />
+              </div>
+
+              {/* Bottom text overlay — left-anchored, right margin clears the action column */}
+              <div
+                className="absolute left-0 bottom-0 z-20"
+                style={{
+                  right: '72px',
+                  paddingLeft: '20px',
+                  paddingTop: '28px',
+                  paddingBottom: CONTENT_BOTTOM,
+                }}
+              >
+                {/* Pills row */}
+                <div className="flex items-center gap-2 mb-3.5 min-w-0 overflow-hidden">
                   <span
                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
                     style={{
-                      background: 'rgba(255,255,255,0.12)',
+                      background: 'rgba(255,255,255,0.13)',
                       border: '1px solid rgba(255,255,255,0.22)',
                       flexShrink: 0,
                       whiteSpace: 'nowrap',
                     }}
                   >
-                    <span style={{
-                      display: 'inline-block', width: 6, height: 6, borderRadius: '50%',
-                      background: CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.5)',
-                      boxShadow: `0 0 5px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.4)'}`,
-                      flexShrink: 0,
-                    }} />
-                    <span className="uppercase tracking-widest" style={{
-                      fontSize: 10, color: 'rgba(255,255,255,0.90)',
-                      fontFamily: "'Macabro', 'Anton', sans-serif",
-                    }}>{article.category}</span>
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.5)',
+                        boxShadow: `0 0 5px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.4)'}`,
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span
+                      className="uppercase tracking-widest"
+                      style={{ fontSize: '10px', color: 'rgba(255,255,255,0.90)', fontFamily: "'Macabro', 'Anton', sans-serif" }}
+                    >
+                      {article.category}
+                    </span>
                   </span>
-                  <span className="px-2.5 py-1 rounded-full tracking-wide" style={{
-                    fontSize: 10,
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    color: 'rgba(255,255,255,0.65)',
-                    fontFamily: "'Macabro', 'Anton', sans-serif",
-                    whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                    minWidth: 0, flex: '0 1 auto',
-                  }}>{article.source}</span>
-                </div>
-                <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} horizontal />
-              </div>
 
-              {/* Headline — 2 lines max on web desktop */}
-              <h2 className="text-white overflow-hidden mb-2" style={{
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                lineHeight: 1.2,
-                fontSize: '24px',
-                fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
-                fontWeight: 600,
-                letterSpacing: '-0.025em',
-              }}>{article.title}</h2>
-
-              <div className="flex items-center gap-1.5 mt-2" style={{ color: 'rgba(255,255,255,0.38)' }}>
-                <span className="uppercase" style={{
-                  fontFamily: "'Macabro', 'Anton', sans-serif",
-                  fontSize: 8, letterSpacing: '0.22em', fontWeight: 400,
-                }}>Read more</span>
-                <ChevronUp className="w-2 h-2" strokeWidth={1.75} />
-              </div>
-            </div>
-          ) : (
-            /* Mobile / iOS: existing tall layout */
-            <div
-              className="relative z-20 px-5 sm:px-7 pr-24 sm:pr-28"
-              style={{ paddingTop: '14px', paddingBottom: '84px', maxWidth: '760px' }}
-            >
-              {/* Category pill + source pill — locked to a SINGLE ROW */}
-              <div className="flex items-center gap-2 mb-4 min-w-0">
-                <span
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-                  style={{
-                    background: 'rgba(255,255,255,0.12)',
-                    border: '1px solid rgba(255,255,255,0.22)',
-                    flexShrink: 0,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
                   <span
+                    className="px-2.5 py-1 rounded-full tracking-wide"
                     style={{
-                      display: 'inline-block',
-                      width: '6px',
-                      height: '6px',
-                      borderRadius: '50%',
-                      background: CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.5)',
-                      boxShadow: `0 0 5px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,255,255,0.4)'}`,
-                      flexShrink: 0,
+                      fontSize: '10px',
+                      background: 'rgba(255,255,255,0.08)',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      color: 'rgba(255,255,255,0.65)',
+                      fontFamily: "'Macabro', 'Anton', sans-serif",
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      maxWidth: '130px',
                     }}
-                  />
-                  <span
-                    className="uppercase tracking-widest"
-                    style={{ fontSize: '10px', color: 'rgba(255,255,255,0.90)', fontFamily: "'Macabro', 'Anton', sans-serif" }}
                   >
-                    {article.category}
+                    {article.source}
                   </span>
-                </span>
+                </div>
 
-                <span
-                  className="px-2.5 py-1 rounded-full tracking-wide"
+                {/* Headline */}
+                <h2
+                  className="mb-3 text-white"
                   style={{
-                    fontSize: '10px',
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    color: 'rgba(255,255,255,0.65)',
-                    fontFamily: "'Macabro', 'Anton', sans-serif",
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    minWidth: 0,
-                    flex: '0 1 auto',
+                    fontSize: '22px',
+                    lineHeight: 1.22,
+                    fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
+                    fontWeight: 600,
+                    letterSpacing: '-0.025em',
+                    textShadow: '0 2px 16px rgba(0,0,0,0.55)',
                   }}
                 >
-                  {article.source}
-                </span>
-              </div>
+                  {article.title}
+                </h2>
 
-              <h2 className="mb-3 text-white" style={{
-                fontSize: '21.5px',
-                lineHeight: 1.2,
-                fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
-                fontWeight: 600,
-                letterSpacing: '-0.025em',
-              }}>
-                {article.title}
-              </h2>
-
-              <div
-                className="flex items-center gap-1.5 mt-3"
-                style={{ color: 'rgba(255,255,255,0.38)' }}
-              >
-                <span
-                  className="uppercase"
-                  style={{
-                    fontFamily: "'Macabro', 'Anton', sans-serif",
-                    fontSize: '8px',
-                    letterSpacing: '0.22em',
-                    fontWeight: 400,
-                  }}
+                <div
+                  className="flex items-center gap-1.5"
+                  style={{ color: 'rgba(255,255,255,0.40)' }}
                 >
-                  Read more
-                </span>
-                <ChevronUp className="w-2 h-2" strokeWidth={1.75} />
+                  <span
+                    className="uppercase"
+                    style={{
+                      fontFamily: "'Macabro', 'Anton', sans-serif",
+                      fontSize: '8px',
+                      letterSpacing: '0.22em',
+                      fontWeight: 400,
+                    }}
+                  >
+                    Read more
+                  </span>
+                  <ChevronUp className="w-2 h-2" strokeWidth={1.75} />
+                </div>
               </div>
-            </div>
+            </>
           )}
         </>
       )}

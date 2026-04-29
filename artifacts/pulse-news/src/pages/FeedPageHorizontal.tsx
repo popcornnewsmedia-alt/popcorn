@@ -269,10 +269,32 @@ export function FeedPageHorizontal() {
   // finger right reveals the older day sliding in from the left edge).
   const currentDomIdx = Math.max(0, dayGroups.length - 1 - currentDayIdx);
 
-  // ── Image preloader (copied structure from FeedPage) ────────────────────
+  // ── Image preloader ─────────────────────────────────────────────────────
+  // Aggressively-bounded decoded-image cache. The previous cap of 20 retained
+  // ~110MB of decoded bitmaps at peak (1080×~1100×4B per image), which on
+  // top of mounted <img> bitmaps + prefetched JS Image() instances pushed
+  // the iOS WebView (~250–500MB ceiling) close to OOM. New model:
+  //
+  //   - Cap at 6 (safety net only — typical occupancy is 3 entries:
+  //     current + next 2).
+  //   - Active eviction sweep on every card crossing keeps only the
+  //     URLs in the prefetch window; everything else is dropped AND its
+  //     src is cleared so WebKit releases the pinned decoded bitmap.
+  //   - On decode failure we also clear the orphaned Image's src.
+  //
+  // Mounted <img> in the active day's ArticleCards still holds its own
+  // decoded bitmap — that's deliberate (it's what the user is viewing).
+  // This cache only governs the lookahead pool.
   const decodedImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
   const decodeOrderRef = useRef<string[]>([]);
-  const MAX_DECODED_IMAGES = 20;
+  const MAX_DECODED_IMAGES = 6;
+
+  // Force release of an Image's decoded bitmap. iOS WebKit pins decoded
+  // pixels until the <img> element either gets GC'd (uncertain timing) or
+  // its src is reassigned. Clearing the attribute is the reliable trigger.
+  const releaseImage = (img: HTMLImageElement) => {
+    try { img.removeAttribute('src'); } catch { /* noop */ }
+  };
 
   const preloadImage = useCallback((url: string | null | undefined, priority: 'high' | 'auto' = 'auto') => {
     if (!url || decodedImagesRef.current.has(url)) return;
@@ -282,11 +304,34 @@ export function FeedPageHorizontal() {
     img.src = url;
     decodedImagesRef.current.set(url, img);
     decodeOrderRef.current.push(url);
-    img.decode().catch(() => { decodedImagesRef.current.delete(url); });
+    img.decode().catch(() => {
+      decodedImagesRef.current.delete(url);
+      decodeOrderRef.current = decodeOrderRef.current.filter(u => u !== url);
+      releaseImage(img);
+    });
+    // Safety-net cap (active eviction below normally keeps us well under).
     while (decodeOrderRef.current.length > MAX_DECODED_IMAGES) {
       const evict = decodeOrderRef.current.shift();
-      if (evict && evict !== url) decodedImagesRef.current.delete(evict);
+      if (evict && evict !== url) {
+        const evicted = decodedImagesRef.current.get(evict);
+        if (evicted) releaseImage(evicted);
+        decodedImagesRef.current.delete(evict);
+      }
     }
+  }, []);
+
+  // Active eviction: keep only the URLs in `wanted`, release everything
+  // else. Called after each prefetch tick so the cache aligns with the
+  // current + next 2 window — no historical retention.
+  const evictExceptUrls = useCallback((wanted: Set<string>) => {
+    const cache = decodedImagesRef.current;
+    for (const [url, img] of cache.entries()) {
+      if (!wanted.has(url)) {
+        releaseImage(img);
+        cache.delete(url);
+      }
+    }
+    decodeOrderRef.current = decodeOrderRef.current.filter(u => cache.has(u));
   }, []);
 
   // Progress bar fill ref (forwarded to TopBar).
@@ -319,9 +364,9 @@ export function FeedPageHorizontal() {
     }
   }, []);
 
-  // In-day card tracking + prefetch. Within the active day, prefetch the
-  // next 6 and previous 2 article images. Same algorithm as FeedPage but
-  // scoped to the active day's scroller.
+  // In-day card tracking + prefetch. Within the active day, prefetch only
+  // the NEXT 2 cards (no backwards prefetch — at cap=6, retaining
+  // historical entries just churns the cache and wastes decoded RAM).
   //
   // Driven by a passive `scroll` listener on the active day's container,
   // not a continuous rAF loop. The previous rAF version ran at 60 Hz even
@@ -353,14 +398,22 @@ export function FeedPageHorizontal() {
         scrollIndexRef.current = roundedIdx;
         // roundedIdx 0 = divider, 1..N = article (roundedIdx - 1)
         const articleIdx = roundedIdx - 1;
-        for (let offset = 1; offset <= 6; offset++) {
-          const a = day.articles[articleIdx + offset];
-          if (a?.imageUrl) preloadImage(a.imageUrl, offset <= 2 ? 'high' : 'auto');
-        }
+        // Prefetch window: current + next 2 cards. Cache eviction is
+        // pinned to this set so memory never grows beyond what's strictly
+        // needed for the immediate forward swipe.
+        const wanted = new Set<string>();
+        const current = day.articles[articleIdx]?.imageUrl;
+        if (current) wanted.add(current);
         for (let offset = 1; offset <= 2; offset++) {
-          const a = day.articles[articleIdx - offset];
-          if (a?.imageUrl) preloadImage(a.imageUrl, 'auto');
+          const a = day.articles[articleIdx + offset];
+          if (a?.imageUrl) {
+            wanted.add(a.imageUrl);
+            preloadImage(a.imageUrl, 'high');
+          }
         }
+        // Sweep: anything not in `wanted` gets its decoded bitmap released
+        // and its entry removed from the cache.
+        evictExceptUrls(wanted);
       }
     };
 
@@ -371,26 +424,36 @@ export function FeedPageHorizontal() {
 
     container.addEventListener('scroll', onScroll, { passive: true });
     return () => container.removeEventListener('scroll', onScroll);
-  }, [currentDayIdx, dayGroups.length, preloadImage, updateProgressBar]);
+  }, [currentDayIdx, dayGroups.length, preloadImage, evictExceptUrls, updateProgressBar]);
 
   // Day-change side effects: reset active-day scroll tracking, prefetch
-  // adjacent days' first images, sync selectedDate pill in the TopBar.
+  // current day's first 2 images, sync selectedDate pill in the TopBar.
+  //
+  // Adjacent-day prefetch (used to be ±1 day × first 3 images = 9 entries)
+  // was dropped: at MAX_DECODED_IMAGES=6 it would just thrash. The next
+  // day's first images get their own prefetch the moment the user lands
+  // there. The eviction sweep below also drops every URL that isn't
+  // wanted by the new day, so leaving an old day releases its cache.
   useEffect(() => {
     scrollIndexRef.current = -1;
     lastProgressRef.current = -1;
-    // Prefetch current + adjacent days' first 3 image URLs.
-    const nearby = [currentDayIdx - 1, currentDayIdx, currentDayIdx + 1];
-    for (const idx of nearby) {
-      const day = dayGroups[idx];
-      if (!day) continue;
-      for (let i = 0; i < Math.min(3, day.articles.length); i++) {
-        preloadImage(day.articles[i].imageUrl, idx === currentDayIdx && i < 2 ? 'high' : 'auto');
+    const day = dayGroups[currentDayIdx];
+    const wanted = new Set<string>();
+    if (day) {
+      for (let i = 0; i < Math.min(2, day.articles.length); i++) {
+        const url = day.articles[i].imageUrl;
+        if (url) {
+          wanted.add(url);
+          preloadImage(url, 'high');
+        }
       }
     }
+    // Sweep: drop any cached URL that isn't in the new day's prefetch
+    // window — guarantees no carry-over from the previous day.
+    evictExceptUrls(wanted);
     // Keep TopBar date pill in sync with the active day.
-    const day = dayGroups[currentDayIdx];
     if (day) setSelectedDate(prev => isSameDay(prev, day.date) ? prev : day.date);
-  }, [currentDayIdx, dayGroups, preloadImage]);
+  }, [currentDayIdx, dayGroups, preloadImage, evictExceptUrls]);
 
   // Pagination: load older days when near the end of the loaded range.
   useEffect(() => {
