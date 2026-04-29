@@ -509,12 +509,25 @@ export function FeedPageHorizontal() {
     // This lets the GPU-composited transform finish silky-smooth before
     // we do the expensive ArticleCard unmount/mount work.
     if (clamped !== currentDayIdx) {
+      // ── Early image prefetch ─────────────────────────────────────────
+      // Start fetching the destination day's first 4 images RIGHT NOW,
+      // during the 340ms animation. By the time setCurrentDayIdx fires
+      // and articles mount, these are already in-flight (or decoded).
+      // Without this, images don't start loading until AFTER the spring
+      // settles, so historical days always show a blank for 300-600ms.
+      const destDay = dayGroupsRef.current[clamped];
+      if (destDay) {
+        for (let i = 0; i < Math.min(4, destDay.articles.length); i++) {
+          const url = destDay.articles[i].imageUrl;
+          if (url) preloadImage(url, 'high');
+        }
+      }
       pendingDayFlipRef.current = window.setTimeout(() => {
         pendingDayFlipRef.current = null;
         setCurrentDayIdx(clamped);
       }, 360);
     }
-  }, [dayGroups.length, viewportWidth, currentDayIdx]);
+  }, [dayGroups.length, viewportWidth, currentDayIdx, preloadImage]);
 
   // Keep the rail's transform in sync with visualDayIdxRef whenever the
   // data shape or viewport width changes (e.g., a new day is appended by
