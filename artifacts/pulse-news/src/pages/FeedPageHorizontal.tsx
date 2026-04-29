@@ -86,6 +86,10 @@ export function FeedPageHorizontal() {
   // Horizontal paging state. Newest-first: idx 0 = today, idx N = oldest loaded.
   const [currentDayIdx, setCurrentDayIdx] = useState(0);
 
+  // Position restore — fire once when dayGroups first has data. Tracks
+  // whether we've attempted the restore so the effect doesn't re-run.
+  const didRestoreRef = useRef(false);
+
   // Measure the true full-viewport height (same trick as FeedPage).
   const [viewportHeight, setViewportHeight] = useState(() => {
     const d = document.createElement('div');
@@ -460,6 +464,48 @@ export function FeedPageHorizontal() {
     if (!hasNextPage || isFetchingNextPage) return;
     if (currentDayIdx >= dayGroups.length - 2) fetchNextPage();
   }, [currentDayIdx, dayGroups.length, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // ── Position save ────────────────────────────────────────────────────────
+  // Persist the active day's date to localStorage so we can jump back to it
+  // after an app reload or iOS WebView kill.
+  useEffect(() => {
+    const day = dayGroups[currentDayIdx];
+    if (!day) return;
+    try { localStorage.setItem('popcorn-feed-date', day.date.toISOString()); } catch {}
+  }, [currentDayIdx, dayGroups]);
+
+  // ── Position restore ─────────────────────────────────────────────────────
+  // On the first meaningful data load, find the saved date in dayGroups and
+  // snap the rail directly to it (no animation — instant, like a native app
+  // remembering your last position). If the saved day isn't loaded yet, keep
+  // triggering fetchNextPage until we find it or run out of pages.
+  useEffect(() => {
+    if (didRestoreRef.current || dayGroups.length === 0) return;
+    try {
+      const saved = localStorage.getItem('popcorn-feed-date');
+      if (!saved) { didRestoreRef.current = true; return; }
+      const savedDate = startOfDay(new Date(saved));
+      const idx = dayGroups.findIndex(g => isSameDay(g.date, savedDate));
+      if (idx > 0) {
+        // Found — snap the rail without animation, same as the sync effect.
+        didRestoreRef.current = true;
+        const rail = railRef.current;
+        if (rail) {
+          const domIdx = dayGroups.length - 1 - idx;
+          rail.style.transition = '';
+          rail.style.transform = `translateX(${-domIdx * viewportWidth}px)`;
+        }
+        visualDayIdxRef.current = idx;
+        setCurrentDayIdx(idx);
+      } else if (idx === -1 && hasNextPage && !isFetchingNextPage) {
+        // Saved day not in this page yet — load more.
+        fetchNextPage();
+      } else {
+        // idx === 0 (today, already correct) or no more pages — done.
+        didRestoreRef.current = true;
+      }
+    } catch { didRestoreRef.current = true; }
+  }, [dayGroups, hasNextPage, isFetchingNextPage, fetchNextPage, viewportWidth]);
 
   // Dynamic min date — mirrors FeedPage.
   const minDate = useMemo(() => {
@@ -934,14 +980,20 @@ export function FeedPageHorizontal() {
             {renderOrder.map((dataIdx) => {
               const day = dayGroups[dataIdx];
               const isActive = dataIdx === currentDayIdx;
-              // Mount articles ONLY for the active day. Each ArticleCard
-              // drags in a CommentSheet + GrainBackground + backdrop-filter,
-              // so mounting multiple days at once blows past iOS Safari's
-              // ~1GB tab memory budget and crashes the PWA with
-              // "A problem repeatedly occurred". Inactive days show just
-              // their divider — swipes still look right because you land
-              // on the new day's divider before its articles come into view.
-              const mountArticles = dataIdx === currentDayIdx;
+              const mountArticles = isActive;
+              // ── Virtual render window ─────────────────────────────────
+              // Only the active day ±1 get real DOM content. Days further
+              // out become empty width-placeholders. This caps compositor
+              // layers at 3 regardless of how many pages have been fetched,
+              // preventing the iOS WebView OOM crash when rapidly swiping
+              // through many historical days (each `transform:translateZ(0)`
+              // day column was an independent compositor layer — 10+ of them
+              // saturated the GPU memory budget).
+              // The ±1 window ensures the neighbour columns are always
+              // rendered during the 340ms swipe animation (the active day
+              // shifts AFTER the spring settles, so the incoming column is
+              // always within ±1 of the current `currentDayIdx`).
+              const renderContent = Math.abs(dataIdx - currentDayIdx) <= 1;
               return (
                 <div
                   key={day.id}
@@ -950,75 +1002,73 @@ export function FeedPageHorizontal() {
                     height: '100%',
                     flexShrink: 0,
                     position: 'relative',
-                    // Compositor isolation so swiping the rail never
-                    // re-rasterises neighbouring content.
-                    transform: 'translateZ(0)',
-                    contain: 'layout paint',
+                    // Only promote to compositor layer when the day has
+                    // content — empty placeholders don't need isolation.
+                    ...(renderContent ? {
+                      transform: 'translateZ(0)',
+                      contain: 'layout paint',
+                    } : {}),
                   }}
                 >
-                  <div
-                    ref={(el) => { dayScrollRefs.current[dataIdx] = el; }}
-                    className="snap-y snap-mandatory scrollbar-hide"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      // Only the active day is scroll-enabled. Non-active
-                      // days keep overflow:hidden to avoid accidental
-                      // vertical scroll leaks during horizontal gestures.
-                      overflowY: isActive ? 'auto' : 'hidden',
-                      overscrollBehavior: 'none',
-                      WebkitOverflowScrolling: 'touch',
-                      touchAction: 'pan-y',
-                    }}
-                  >
-                    <DateDividerCard
-                      date={day.date}
-                      dateId={day.id}
-                      viewportHeight={viewportHeight}
-                      showDayNav
-                      hasPrevDay={dataIdx < dayGroups.length - 1 || (dataIdx === dayGroups.length - 1 && hasNextPage)}
-                      hasNextDay={dataIdx > 0}
-                      dayIndex={dataIdx}
-                      daysLoaded={dayGroups.length}
-                      prevDate={dataIdx < dayGroups.length - 1 ? dayGroups[dataIdx + 1].date : null}
-                      nextDate={dataIdx > 0 ? dayGroups[dataIdx - 1].date : null}
-                      onPrev={dataIdx < dayGroups.length - 1 ? () => landOnDay(dataIdx + 1) : undefined}
-                      onNext={dataIdx > 0 ? () => landOnDay(dataIdx - 1) : undefined}
-                    />
-                    {mountArticles && day.articles.map((article) => (
-                      <ArticleCard
-                        key={article.id}
-                        article={article}
-                        onReadMore={setReadingArticle}
-                        isRead={readIds.has(article.id)}
+                  {renderContent && (
+                    <div
+                      ref={(el) => { dayScrollRefs.current[dataIdx] = el; }}
+                      className="snap-y snap-mandatory scrollbar-hide"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        overflowY: isActive ? 'auto' : 'hidden',
+                        overscrollBehavior: 'none',
+                        WebkitOverflowScrolling: 'touch',
+                        touchAction: 'pan-y',
+                      }}
+                    >
+                      <DateDividerCard
+                        date={day.date}
+                        dateId={day.id}
                         viewportHeight={viewportHeight}
-                        renderContent
-                        isActive={false}
+                        showDayNav
+                        hasPrevDay={dataIdx < dayGroups.length - 1 || (dataIdx === dayGroups.length - 1 && hasNextPage)}
+                        hasNextDay={dataIdx > 0}
+                        dayIndex={dataIdx}
+                        daysLoaded={dayGroups.length}
+                        prevDate={dataIdx < dayGroups.length - 1 ? dayGroups[dataIdx + 1].date : null}
+                        nextDate={dataIdx > 0 ? dayGroups[dataIdx - 1].date : null}
+                        onPrev={dataIdx < dayGroups.length - 1 ? () => landOnDay(dataIdx + 1) : undefined}
+                        onNext={dataIdx > 0 ? () => landOnDay(dataIdx - 1) : undefined}
                       />
-                    ))}
-                    {mountArticles && (() => {
-                      // Prev = chronologically older day = NEXT entry in the
-                      // newest-first dayGroups array.
-                      const prevIdx = dataIdx + 1;
-                      // Next = chronologically newer day = PREVIOUS entry.
-                      const nextIdx = dataIdx - 1;
-                      const prevAvailable = prevIdx < dayGroups.length;
-                      const nextAvailable = nextIdx >= 0;
-                      return (
-                        <DayCompletionCard
-                          date={day.date}
-                          id={`day-complete-${day.id}`}
+                      {mountArticles && day.articles.map((article) => (
+                        <ArticleCard
+                          key={article.id}
+                          article={article}
+                          onReadMore={setReadingArticle}
+                          isRead={readIds.has(article.id)}
                           viewportHeight={viewportHeight}
-                          hasPrevDay={prevAvailable}
-                          hasNextDay={nextAvailable}
-                          prevDate={prevAvailable ? dayGroups[prevIdx].date : null}
-                          nextDate={nextAvailable ? dayGroups[nextIdx].date : null}
-                          onGoToPrev={prevAvailable ? () => landOnDay(prevIdx) : undefined}
-                          onGoToNext={nextAvailable ? () => landOnDay(nextIdx) : undefined}
+                          renderContent
+                          isActive={false}
                         />
-                      );
-                    })()}
-                  </div>
+                      ))}
+                      {mountArticles && (() => {
+                        const prevIdx = dataIdx + 1;
+                        const nextIdx = dataIdx - 1;
+                        const prevAvailable = prevIdx < dayGroups.length;
+                        const nextAvailable = nextIdx >= 0;
+                        return (
+                          <DayCompletionCard
+                            date={day.date}
+                            id={`day-complete-${day.id}`}
+                            viewportHeight={viewportHeight}
+                            hasPrevDay={prevAvailable}
+                            hasNextDay={nextAvailable}
+                            prevDate={prevAvailable ? dayGroups[prevIdx].date : null}
+                            nextDate={nextAvailable ? dayGroups[nextIdx].date : null}
+                            onGoToPrev={prevAvailable ? () => landOnDay(prevIdx) : undefined}
+                            onGoToNext={nextAvailable ? () => landOnDay(nextIdx) : undefined}
+                          />
+                        );
+                      })()}
+                    </div>
+                  )}
                 </div>
               );
             })}
