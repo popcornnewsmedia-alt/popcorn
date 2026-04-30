@@ -40,9 +40,12 @@ type DayGroup = {
   articles: NewsArticle[];
 };
 
-// Spring curve used for committed horizontal transitions (lands softly on
-// the next divider without overshoot).
-const HORIZONTAL_SPRING = "transform 340ms cubic-bezier(0.22,1,0.36,1)";
+// Spring curve for committed horizontal transitions. Duration is velocity-
+// aware: fast flicks get a shorter spring so the rail lands before the user
+// lifts their attention. The default (260ms) is used for button-driven
+// navigation and for the post-settle cleanup reset.
+const horizontalSpring = (ms: number) => `transform ${ms}ms cubic-bezier(0.22,1,0.36,1)`;
+const HORIZONTAL_SPRING = horizontalSpring(260);
 
 // Re-show the intro animation after this much idle time (ms). 12 h aligns
 // with the morning/evening usage rhythm of a daily news app.
@@ -549,13 +552,19 @@ export function FeedPageHorizontal() {
   // ── Rail transition helper ──────────────────────────────────────────────
   // Called to land on a new day. Uses a CSS spring for smoothness, then
   // forces the target day's scroller to scrollTop=0 (always land on divider).
-  const landOnDay = useCallback((nextIdx: number) => {
+  // durationMs is velocity-aware: the gesture handler passes a shorter
+  // duration for fast flicks so the rail snaps home before attention drifts.
+  // All refs are used instead of closure state so this callback is stable
+  // across day flips — preventing the gesture useEffect from tearing down
+  // and re-attaching touch handlers on every currentDayIdx change.
+  const landOnDay = useCallback((nextIdx: number, durationMs = 260) => {
     const rail = railRef.current;
-    const clamped = Math.max(0, Math.min(dayGroups.length - 1, nextIdx));
-    const domIdx = dayGroups.length - 1 - clamped;
+    const N = dayGroupsRef.current.length;
+    const clamped = Math.max(0, Math.min(N - 1, nextIdx));
+    const domIdx = N - 1 - clamped;
     if (rail) {
-      rail.style.transition = HORIZONTAL_SPRING;
-      rail.style.transform = `translateX(${-domIdx * viewportWidth}px)`;
+      rail.style.transition = horizontalSpring(durationMs);
+      rail.style.transform = `translateX(${-domIdx * viewportWidthRef.current}px)`;
     }
     // Update the visual-position ref so the sync useEffect and the touch
     // handler's basePx() both reflect where the rail is (or will be).
@@ -571,13 +580,11 @@ export function FeedPageHorizontal() {
     // Defer the React state flip until the spring has fully settled.
     // This lets the GPU-composited transform finish silky-smooth before
     // we do the expensive ArticleCard unmount/mount work.
-    if (clamped !== currentDayIdx) {
+    if (clamped !== currentDayIdxRef.current) {
       // ── Early image prefetch ─────────────────────────────────────────
       // Start fetching the destination day's first 4 images RIGHT NOW,
-      // during the 340ms animation. By the time setCurrentDayIdx fires
-      // and articles mount, these are already in-flight (or decoded).
-      // Without this, images don't start loading until AFTER the spring
-      // settles, so historical days always show a blank for 300-600ms.
+      // during the animation. By the time setCurrentDayIdx fires and
+      // articles mount, these are already in-flight (or decoded).
       const destDay = dayGroupsRef.current[clamped];
       if (destDay) {
         for (let i = 0; i < Math.min(4, destDay.articles.length); i++) {
@@ -588,9 +595,9 @@ export function FeedPageHorizontal() {
       pendingDayFlipRef.current = window.setTimeout(() => {
         pendingDayFlipRef.current = null;
         setCurrentDayIdx(clamped);
-      }, 360);
+      }, durationMs + 15);
     }
-  }, [dayGroups.length, viewportWidth, currentDayIdx, preloadImage]);
+  }, [preloadImage]);
 
   // Keep the rail's transform in sync with visualDayIdxRef whenever the
   // data shape or viewport width changes (e.g., a new day is appended by
@@ -699,7 +706,10 @@ export function FeedPageHorizontal() {
         // Finger moved left (dx < 0) → reveal newer (next) day → idx-1 in data order.
         else if (dx < 0 && idx > 0) newIdx = idx - 1;
       }
-      landOnDay(newIdx);
+      // Velocity-aware spring: fast flick lands in 200ms, medium in 230ms,
+      // slow drag-commit stays at the default 260ms.
+      const duration = velocity > 1.0 ? 200 : velocity > 0.55 ? 230 : 260;
+      landOnDay(newIdx, newIdx !== idx ? duration : 260);
     };
 
     viewport.addEventListener('touchstart', onStart, { passive: true });
@@ -1010,7 +1020,14 @@ export function FeedPageHorizontal() {
               // rendered during the 340ms swipe animation (the active day
               // shifts AFTER the spring settles, so the incoming column is
               // always within ±1 of the current `currentDayIdx`).
-              const renderContent = Math.abs(dataIdx - currentDayIdx) <= 1;
+              // renderContent: ±2 from active day — ensures a rapid double-swipe
+              // always lands on a column that has at least its DateDivider rendered
+              // (rather than a blank placeholder). Articles still only mount for the
+              // active day (mountArticles = isActive) to cap memory.
+              // promoteLayer: ±1 only — keeps compositor layers at ≤3 to avoid
+              // GPU memory pressure on iOS WebKit.
+              const renderContent = Math.abs(dataIdx - currentDayIdx) <= 2;
+              const promoteLayer = Math.abs(dataIdx - currentDayIdx) <= 1;
               return (
                 <div
                   key={day.id}
@@ -1019,9 +1036,7 @@ export function FeedPageHorizontal() {
                     height: '100%',
                     flexShrink: 0,
                     position: 'relative',
-                    // Only promote to compositor layer when the day has
-                    // content — empty placeholders don't need isolation.
-                    ...(renderContent ? {
+                    ...(promoteLayer ? {
                       transform: 'translateZ(0)',
                       contain: 'layout paint',
                     } : {}),
