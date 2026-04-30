@@ -166,25 +166,33 @@ export function ArticleCard({
         if (!ctx) return;
         ctx.drawImage(probe, 0, 0, SIZE, SIZE);
         const data = ctx.getImageData(0, 0, SIZE, SIZE).data;
-        let r = 0, g = 0, b = 0, n = 0;
+        // Saturation-weighted average: vivid/colourful pixels dominate;
+        // neutral/grey pixels (skin against grey walls, shadows, etc.) are
+        // de-weighted so they can't drag the result toward muddy olive/grey.
+        // Fallback: if the image has no vivid pixels (e.g. true B&W photo),
+        // drop back to the unweighted average so we still emit something.
+        let r = 0, g = 0, b = 0, totalWeight = 0;
+        let fr = 0, fg = 0, fb = 0, fn = 0;
         for (let i = 0; i < data.length; i += 4) {
-          // Skip near-black and near-white pixels — these tend to be
-          // letterbox bars / blown highlights / shadows that don't
-          // represent the photo's true tonal palette. Without this
-          // filter, photos shot against pure-white backgrounds (studio
-          // press shots) would average toward grey instead of picking
-          // up the subject's color.
           const pr = data[i], pg = data[i + 1], pb = data[i + 2];
           const max = Math.max(pr, pg, pb);
           const min = Math.min(pr, pg, pb);
           if (max < 24 || min > 232) continue;
-          r += pr; g += pg; b += pb; n++;
+          fr += pr; fg += pg; fb += pb; fn++;
+          // HSV saturation = chroma / max (0–1)
+          const sat = max > 0 ? (max - min) / max : 0;
+          // Skip nearly-grey pixels (sat < 12%) — they contribute mud
+          if (sat < 0.12) continue;
+          // Weight by sat² so the most vivid colour wins decisively
+          const w = sat * sat;
+          r += pr * w; g += pg * w; b += pb * w; totalWeight += w;
         }
-        if (n > 0) {
-          const avgR = Math.round(r / n);
-          const avgG = Math.round(g / n);
-          const avgB = Math.round(b / n);
-          const rgb = `${avgR},${avgG},${avgB}`;
+        const useFallback = totalWeight < 0.5 && fn > 0;
+        if (useFallback || totalWeight >= 0.5) {
+          const outR = useFallback ? Math.round(fr / fn) : Math.round(r / totalWeight);
+          const outG = useFallback ? Math.round(fg / fn) : Math.round(g / totalWeight);
+          const outB = useFallback ? Math.round(fb / fn) : Math.round(b / totalWeight);
+          const rgb = `${outR},${outG},${outB}`;
           dominantColorCache.set(probeUrl, rgb);
           setDominantColor(rgb);
         }
@@ -710,16 +718,18 @@ export function ArticleCard({
                   top: 0,
                   height: PLATE_TOP_OFFSET,
                   zIndex: 12,
+                  // When dominantColor is available, tint the atmosphere with the
+                  // image-derived colour. When null (CORS-blocked CDNs like Dexerto),
+                  // leave it transparent so the TopBar's blur composites the raw
+                  // image pixels directly — avoids the category-colour bleeding into
+                  // an unrelated hue (e.g. lime + dark photo = olive green).
                   background: dominantColor
                     ? `linear-gradient(to bottom, rgba(${dominantColor},0.90) 0%, rgba(${dominantColor},0.72) 60%, rgba(${dominantColor},0.38) 100%)`
-                    : `linear-gradient(to bottom, rgba(${catRgb},0.82) 0%, rgba(${catRgb},0.60) 60%, rgba(${catRgb},0.28) 100%)`,
+                    : 'transparent',
                 }}
               />
 
-              {/* Scrim — image-tinted dark veil over the image zone only.
-                  Bottom opacity reduced to 0.55 (vs old 0.88) so the bleed
-                  layer at z-16 shows through and the image colors read warmly
-                  rather than drowning in near-black. */}
+              {/* Scrim — image-tinted dark veil over the image zone only. */}
               <div
                 aria-hidden
                 className="absolute inset-0 pointer-events-none"
@@ -727,7 +737,7 @@ export function ArticleCard({
                   zIndex: 15,
                   background: dominantColor
                     ? `linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(${dominantColor},0.22) 56%, rgba(0,0,0,0.52) 74%, rgba(0,0,0,0.58) 100%)`
-                    : `linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(${catRgb},0.18) 56%, rgba(0,0,0,0.52) 74%, rgba(0,0,0,0.58) 100%)`,
+                    : `linear-gradient(to bottom, transparent 0%, transparent 60%, rgba(0,0,0,0.52) 78%, rgba(0,0,0,0.60) 100%)`,
                 }}
               />
 
