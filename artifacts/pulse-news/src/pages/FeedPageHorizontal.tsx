@@ -44,6 +44,12 @@ type DayGroup = {
 // the next divider without overshoot).
 const HORIZONTAL_SPRING = "transform 340ms cubic-bezier(0.22,1,0.36,1)";
 
+// Re-show the intro animation after this much idle time (ms). 24 h feels
+// natural — one full day away from the app. Shorter (12 h) is also reasonable
+// but 24 h avoids showing it to people who close and re-open the same evening.
+const SPLASH_TS_KEY = 'popcorn_last_splash';
+const SPLASH_IDLE_MS = 24 * 60 * 60 * 1000;
+
 // Threshold: horizontal swipe is only recognised when the active day's
 // vertical scrollTop is at or below this (i.e., the user is parked on the
 // DateDividerCard — not mid-article).
@@ -142,7 +148,14 @@ export function FeedPageHorizontal() {
   //   • Email/password sign-in from the bottom CTA (splash dismisses as soon
   //     as the session materialises instead of waiting for its 7.6s fade)
   useEffect(() => {
-    if (!authLoading && user) setShowSplash(false);
+    if (!authLoading && user) {
+      // Only skip the splash if the user opened the app recently. After
+      // SPLASH_IDLE_MS of absence we show the intro animation again (it
+      // auto-fades because isAuthed=true — no login CTAs, just the popcorn).
+      const lastTs = localStorage.getItem(SPLASH_TS_KEY);
+      const isRecent = !!lastTs && Date.now() - parseInt(lastTs) < SPLASH_IDLE_MS;
+      if (isRecent) setShowSplash(false);
+    }
   }, [authLoading, user]);
 
   const isIntroScreen = showSplash || choiceOpen || signUpOpen || signInOpen;
@@ -155,7 +168,12 @@ export function FeedPageHorizontal() {
     document.documentElement.style.background = color;
   }, [readingArticle, activeTab, showSplash]);
 
-  const handleSplashDone = useCallback(() => setShowSplash(false), []);
+  const handleSplashDone = useCallback(() => {
+    // Stamp the moment the splash last completed so we can decide whether
+    // to show it again on the next cold launch.
+    localStorage.setItem(SPLASH_TS_KEY, Date.now().toString());
+    setShowSplash(false);
+  }, []);
 
   const openNotifications = useCallback(() => {
     setNotifOpen(true);
