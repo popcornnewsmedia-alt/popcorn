@@ -722,7 +722,11 @@ export function FeedPageHorizontal() {
       viewport.removeEventListener('touchend', onEnd);
       viewport.removeEventListener('touchcancel', onEnd);
     };
-  }, [landOnDay]);
+  // dayGroups.length is included so the effect re-runs when the rail div
+  // first mounts (it's only rendered once dayGroups is non-empty). Without
+  // it, if the effect fires before data loads and railRef is null, it
+  // returns early and gesture listeners are never attached.
+  }, [landOnDay, dayGroups.length]);
 
   // ── Pull-to-refresh ──────────────────────────────────────────────────────
   // Same handlers as FeedPage, but checking the ACTIVE day's scroller.
