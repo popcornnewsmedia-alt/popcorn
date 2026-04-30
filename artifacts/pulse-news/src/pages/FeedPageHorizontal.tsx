@@ -44,11 +44,10 @@ type DayGroup = {
 // the next divider without overshoot).
 const HORIZONTAL_SPRING = "transform 340ms cubic-bezier(0.22,1,0.36,1)";
 
-// Re-show the intro animation after this much idle time (ms). 24 h feels
-// natural — one full day away from the app. Shorter (12 h) is also reasonable
-// but 24 h avoids showing it to people who close and re-open the same evening.
+// Re-show the intro animation after this much idle time (ms). 12 h aligns
+// with the morning/evening usage rhythm of a daily news app.
 const SPLASH_TS_KEY = 'popcorn_last_splash';
-const SPLASH_IDLE_MS = 24 * 60 * 60 * 1000;
+const SPLASH_IDLE_MS = 12 * 60 * 60 * 1000;
 
 // Threshold: horizontal swipe is only recognised when the active day's
 // vertical scrollTop is at or below this (i.e., the user is parked on the
