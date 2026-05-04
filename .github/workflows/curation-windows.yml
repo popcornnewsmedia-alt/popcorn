@@ -1,28 +1,28 @@
 name: Popcorn Curation Windows
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Fires 5× daily aligned to Bangkok curation windows (UTC times):
+# 5 daily windows for Bangkok curation (all times BKK = UTC+7):
 #
-#   W1  UTC 12:30  →  BKK 7:30pm   (evening catch-up)
-#   W2  UTC 17:30  →  BKK 12:30am  (late night)
-#   W3  UTC 22:30  →  BKK 5:30am   (early morning)
-#   W4  UTC 03:30  →  BKK 10:30am  (morning)
-#   W5  UTC 08:30  →  BKK 3:30pm   (afternoon)
+#   W1  BKK 12:30am  (UTC 17:30 prev day)  pulls 7:30pm→12:30am
+#   W2  BKK  5:30am  (UTC 22:30 prev day)  pulls 12:30am→5:30am
+#   W3  BKK 10:30am  (UTC 03:30)           pulls 5:30am→10:30am
+#   W4  BKK  3:30pm  (UTC 08:30)           pulls 10:30am→3:30pm
+#   W5  BKK  7:30pm  (UTC 12:30) ← FINAL  pulls 3:30pm→7:30pm → full publish
 #
-# Each run fetches the last 5h 30min of RSS articles and triggers
-# Claude to select and publish to today's feed.
+# W1–W4: incremental fetch + select, publish to dev
+# W5:    final fetch + select, publish to dev (full day complete)
 #
 # Required GitHub secret: CURATION_API_URL
-#   (e.g. https://popcorn-production.up.railway.app)
+#   (e.g. https://workspaceapi-server-production-d088.up.railway.app)
 # ─────────────────────────────────────────────────────────────────────────────
 
 on:
   schedule:
-    - cron: "30 12 * * *"   # W1 — BKK 7:30pm
-    - cron: "30 17 * * *"   # W2 — BKK 12:30am
-    - cron: "30 22 * * *"   # W3 — BKK 5:30am
-    - cron: "30  3 * * *"   # W4 — BKK 10:30am
-    - cron: "30  8 * * *"   # W5 — BKK 3:30pm
+    - cron: "30 17 * * *"   # W1 — BKK 12:30am
+    - cron: "30 22 * * *"   # W2 — BKK  5:30am
+    - cron: "30  3 * * *"   # W3 — BKK 10:30am
+    - cron: "30  8 * * *"   # W4 — BKK  3:30pm
+    - cron: "30 12 * * *"   # W5 — BKK  7:30pm (final)
 
   # Manual trigger — useful for testing or ad-hoc re-runs
   workflow_dispatch:
