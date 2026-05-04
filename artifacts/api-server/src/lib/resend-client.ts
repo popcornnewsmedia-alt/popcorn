@@ -2,7 +2,11 @@ import { Resend } from "resend";
 import { VerifyEmail } from "../emails/VerifyEmail";
 import { WelcomeEmail } from "../emails/WelcomeEmail";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend: Resend | null = null;
+function getResend(): Resend {
+  if (!resend) resend = new Resend(process.env.RESEND_API_KEY);
+  return resend;
+}
 
 const FROM_EMAIL = "noreply@popcornmedia.org";
 
@@ -12,7 +16,7 @@ export async function sendVerificationEmail(
   confirmLink: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: "Verify your Popcorn account",
@@ -39,7 +43,7 @@ export async function sendWelcomeEmail(
   appLink?: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: "Welcome to Popcorn — Culture News Curated for You",
