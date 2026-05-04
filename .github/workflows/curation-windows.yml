@@ -1,0 +1,69 @@
+name: Popcorn Curation Windows
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Fires 5× daily aligned to Bangkok curation windows (UTC times):
+#
+#   W1  UTC 12:30  →  BKK 7:30pm   (evening catch-up)
+#   W2  UTC 17:30  →  BKK 12:30am  (late night)
+#   W3  UTC 22:30  →  BKK 5:30am   (early morning)
+#   W4  UTC 03:30  →  BKK 10:30am  (morning)
+#   W5  UTC 08:30  →  BKK 3:30pm   (afternoon)
+#
+# Each run fetches the last 5h 30min of RSS articles and triggers
+# Claude to select and publish to today's feed.
+#
+# Required GitHub secret: CURATION_API_URL
+#   (e.g. https://popcorn-production.up.railway.app)
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  schedule:
+    - cron: "30 12 * * *"   # W1 — BKK 7:30pm
+    - cron: "30 17 * * *"   # W2 — BKK 12:30am
+    - cron: "30 22 * * *"   # W3 — BKK 5:30am
+    - cron: "30  3 * * *"   # W4 — BKK 10:30am
+    - cron: "30  8 * * *"   # W5 — BKK 3:30pm
+
+  # Manual trigger — useful for testing or ad-hoc re-runs
+  workflow_dispatch:
+    inputs:
+      window_hours:
+        description: "Look-back window in hours"
+        required: false
+        default: "5"
+
+jobs:
+  curation-window:
+    name: Curation window
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Compute time window
+        run: |
+          WINDOW_END=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          HOURS="${{ inputs.window_hours || '5' }}"
+          # Add 30 min overlap so no articles fall between windows
+          OVERLAP_MINS=$(( ($HOURS * 60) + 30 ))
+          WINDOW_START=$(date -u -d "${OVERLAP_MINS} minutes ago" +"%Y-%m-%dT%H:%M:%SZ")
+          echo "WINDOW_START=$WINDOW_START" >> $GITHUB_ENV
+          echo "WINDOW_END=$WINDOW_END"     >> $GITHUB_ENV
+          echo "Window: $WINDOW_START → $WINDOW_END"
+
+      - name: Trigger curation refresh
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "${{ secrets.CURATION_API_URL }}/api/refresh" \
+            -H "Content-Type: application/json" \
+            -d "{\"windowStart\":\"$WINDOW_START\",\"windowEnd\":\"$WINDOW_END\",\"publishToday\":true}")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+
+          echo "HTTP $HTTP_CODE"
+          echo "$BODY"
+
+          if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
+            echo "::error::Curation refresh failed with HTTP $HTTP_CODE"
+            exit 1
+          fi

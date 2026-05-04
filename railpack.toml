@@ -7,3 +7,11 @@ cmds = [
   "pnpm add -g node-gyp",
   "pnpm install --no-frozen-lockfile --prefer-offline"
 ]
+
+[phases.build]
+cmds = [
+  "cd artifacts/api-server && pnpm run build"
+]
+
+[start]
+cmd = "cd artifacts/api-server && pnpm run start:cloud"
