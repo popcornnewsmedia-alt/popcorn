@@ -52,7 +52,7 @@ jobs:
 
       - name: Trigger curation refresh
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+          RESPONSE=$(curl -sL -w "\n%{http_code}" -X POST \
             "${{ secrets.CURATION_API_URL }}/api/refresh" \
             -H "Content-Type: application/json" \
             -d "{\"windowStart\":\"$WINDOW_START\",\"windowEnd\":\"$WINDOW_END\",\"publishToday\":true}")
