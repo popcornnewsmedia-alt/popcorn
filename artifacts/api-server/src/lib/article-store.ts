@@ -28,6 +28,7 @@ import {
   getPublishedFeed,
   getPublishedRefs,
   getAllPublishedRefs,
+  getTodayPublishedRefs,
   resetIfNewDay,
   resetTodayFeed,
   removeArticles,
@@ -212,13 +213,15 @@ function scheduleNextRefresh(): void {
 }
 
 function runCurationCycle(attempt: number, windowStart?: Date, publishToday = false, windowEnd?: Date): void {
-  // Use full historical refs so stories already covered on previous days are excluded
+  // Historical refs used for title-dedup (cross-day dedup, prevents re-publishing)
   const alreadyPublished = getAllPublishedRefs();
+  // Today-only refs used for the curation prompt (determines INCREMENTAL vs FULL RESET)
+  const todayPublished = getTodayPublishedRefs();
   console.log(
-    `[api] Curation run (attempt ${attempt}) — ${alreadyPublished.length} stories already in today's feed.`
+    `[api] Curation run (attempt ${attempt}) — ${todayPublished.length} in today's feed, ${alreadyPublished.length} historical dedup refs.`
   );
 
-  loadLiveArticles(alreadyPublished, windowStart, publishToday, windowEnd)
+  loadLiveArticles(alreadyPublished, windowStart, publishToday, windowEnd, todayPublished)
     .then(async (enriched) => {
       const added = await mergeFeed(enriched);
       saveCommittedFeed();

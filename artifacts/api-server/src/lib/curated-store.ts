@@ -799,6 +799,16 @@ export function getAllPublishedRefs(): { title: string; link: string }[] {
 }
 
 /**
+ * Today's published articles only — used to determine INCREMENTAL vs FULL RESET
+ * mode in the curation prompt. Returns [] when today's feed has no articles yet.
+ */
+export function getTodayPublishedRefs(): { title: string; link: string }[] {
+  resetIfNewDay();
+  const today = dateStr(0);
+  return (_feeds.get(today)?.articles ?? []).map((a) => ({ title: a.title, link: "" }));
+}
+
+/**
  * Update the imageUrl (and optionally dimensions) for a single article identified
  * by its global feed ID. Mutates in-memory cache, saves to local file, and
  * fire-and-forgets a Supabase update (matched by title).

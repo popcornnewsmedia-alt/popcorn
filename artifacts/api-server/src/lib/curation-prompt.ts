@@ -106,7 +106,7 @@ ${recentTitles.map((t) => `  - ${t}`).join("\n")}
 
 You are picking the final feed from the day's accumulated pool. The pool has already been pre-filtered by per-fetch scoring — everything here passed the initial bar, but many still don't belong in the final cut.
 
-Pick approximately ${target} stories (flex 12-20 based on what genuinely earns a spot). Do NOT pad to hit a number.
+Pick approximately ${target} stories (flex 18-25 based on what the pool honestly offers). The pool has already been scored — every item here passed the initial bar. Err toward inclusion; a missed story is worse than a borderline one that made the cut.
 
 **Before returning, run the final check:**
 1. Would I forward at least 5 of these to a friend?
@@ -138,6 +138,7 @@ export function buildRefreshPrompt(
   articleList: string,
   alreadyPublished: AlreadyPublished[],
   today: string,
+  recentTitles: string[] = [],
 ): string {
   const alreadyPublishedBlock =
     alreadyPublished.length > 0
@@ -153,14 +154,35 @@ ${alreadyPublished.map((a, i) => `${i + 1}. ${a.title}`).join("\n")}
 `
       : "";
 
+  const recentBlock = recentTitles.length > 0
+    ? `
+
+---
+
+## PUBLISHED IN THE LAST 7 DAYS — DO NOT RE-RUN
+
+The following stories have been published in recent days. Even if today's source, headline, or angle is different — if you recognise the named entity AND the triggering event, SKIP IT. This is the single most trust-breaking failure mode.
+
+${recentTitles.map((t) => `  - ${t}`).join("\n")}
+`
+    : "";
+
   // Estimate pool size from articleList — used for an explicit minimum-rescue floor
   const approxPoolSize = (articleList.match(/\n\d+\./g) || []).length || 0;
   const minFloor =
-    approxPoolSize >= 120 ? 14 : approxPoolSize >= 60 ? 12 : approxPoolSize >= 30 ? 10 : 8;
+    approxPoolSize >= 120 ? 18 : approxPoolSize >= 60 ? 16 : approxPoolSize >= 30 ? 13 : 10;
+
+  const currentFeedCount = alreadyPublished.length;
+  const incrementalCeiling =
+    currentFeedCount >= 23
+      ? `Today's feed already has ${currentFeedCount} stories — we are at the ceiling. Only add a story if it is genuinely exceptional and clearly stronger than the weakest thing already published. If in doubt, do not add it.`
+      : currentFeedCount >= 18
+      ? `Today's feed has ${currentFeedCount} stories — approaching the 20-25 target. Add only the strongest 2-4 picks. Do not pad. Quality over quantity.`
+      : `This is an INCREMENTAL UPDATE. ${currentFeedCount} stories are already in today's feed. Only add stories clearly stronger than the weakest already published. Prefer 2 excellent new stories over 8 mediocre ones.`;
 
   return `${SHARED_CONTEXT}
 
-Today is ${today}.${alreadyPublishedBlock}
+Today is ${today}.${recentBlock}${alreadyPublishedBlock}
 
 ---
 
@@ -170,12 +192,12 @@ You are selecting from a pool of candidate articles for today's feed. Apply the 
 
 ${
   alreadyPublished.length === 0
-    ? `This is a FULL RESET RUN with no existing feed. The pool has ~${approxPoolSize} candidates — every one already passed scoring. Target 12-18 stories.
+    ? `This is a FULL RESET RUN with no existing feed. The pool has ~${approxPoolSize} candidates — every one already passed scoring. Target 18-22 stories. Do not exceed 25 under any circumstances — above 25 the feed starts including noise and garbage.
 
-**Hard floor:** Aim for at least ${minFloor} picks from this pool. The auto-selector has under-selected three days running (Apr 25: 5 from 80; Apr 26: 3 from 100; Apr 27: 6 from 307) — every shortfall has been rescued by manual review with the same patterns: music obits, pop-star albums, franchise updates, women's-sport majors, legacy reunions, fun/filler. Do not repeat that mistake.
+**Hard floor:** You MUST select at least ${minFloor} picks from this pool. The auto-selector has consistently under-selected: Apr 25 (5 from 80), Apr 26 (3 from 100), Apr 27 (6 from 307), May 1 (12 from 553), May 2 (11 from 472). Every shortfall has required 10-15 manual rescues covering the same missed patterns: music live events, Film & TV trailers, internet culture, sports with cultural angle, fun/filler, fashion collabs. Do not repeat that mistake. If you are at ${minFloor - 2} picks and feel "done," you are not done — go back into the pool and rescue the next best story in each missed axis.
 
-**Axis coverage check before returning:** music (≥2)? film/TV (≥1)? internet culture (≥1)? fun/filler (≥1)? women's-sport major or globally-known landmark or legacy obit/reunion if the pool has one? If any axis is empty and the pool offered candidates, go back and rescue the best one.`
-    : `This is an INCREMENTAL UPDATE. ${alreadyPublished.length} stories are already in today's feed (including cross-day historical dedup from all previously published editions). Only add stories clearly stronger than the weakest already published. Prefer 2 excellent new stories over 8 mediocre ones.`
+**Axis coverage check before returning:** music (≥2)? film/TV (≥1)? internet culture (≥1)? fun/filler (≥1)? sports/fashion/culture wildcard (≥1)? If any axis is empty and the pool offered candidates, go back and rescue the best one. Do this check explicitly before outputting.`
+    : incrementalCeiling
 }
 
 Output ONLY a compact JSON array — one object per selected article:

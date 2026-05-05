@@ -2262,7 +2262,8 @@ function applyEntityDedup(
 async function enrichWithClaude(
   rawItems: RawRSSItem[],
   alreadyPublished: { title: string; link: string }[] = [],
-  publishToday = false
+  publishToday = false,
+  promptAlreadyPublished?: { title: string; link?: string }[],
 ): Promise<{ articles: EnrichedArticle[]; decisions: ClaudeDecision[] }> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error("ANTHROPIC_API_KEY not set");
@@ -2334,7 +2335,13 @@ async function enrichWithClaude(
     });
 
   // ── Call 1: Selection ────────────────────────────────────────────────────────
-  const selectionPrompt = buildRefreshPrompt(articleList, alreadyPublished, today);
+  // Pass 7-day history as recentTitles for cross-day dedup in the prompt.
+  // Exclude titles already shown in promptAlreadyPublished (today's feed) to avoid duplication.
+  const todayTitleSet = new Set((promptAlreadyPublished ?? []).map((a) => a.title));
+  const recentTitles = alreadyPublished
+    .map((a) => a.title)
+    .filter((t) => !todayTitleSet.has(t));
+  const selectionPrompt = buildRefreshPrompt(articleList, promptAlreadyPublished ?? alreadyPublished, today, recentTitles);
 
   console.log("[rss] Call 1/2 — selecting articles...");
   const selectionText = await callClaude(selectionPrompt, 2000);
@@ -2622,11 +2629,39 @@ function _writeAuditFile(
     fs.writeFileSync(committedPath, auditPayload);
     console.log(`[rss] ✓ Committed uncurated list → ${committedPath}`);
 
+    // Persist to Supabase so candidates survive Railway redeploys
+    _saveShortlistToSupabase(auditEntries, dateStr).catch((e) =>
+      console.warn("[rss] Failed to save candidates to Supabase:", e)
+    );
+
     // Write human-readable .txt to Uncurated Lists/ folder (matches manual format)
     _writeUncuratedTxt(auditEntries, dateStr);
   } catch (e) {
     console.warn("[rss] Could not write audit file:", e);
   }
+}
+
+async function _saveShortlistToSupabase(
+  auditEntries: { title: string; source: string; pubDate: string; link: string; dedupRank: number; dedupScore: number; stage: string; reason: string; _raw?: { description?: string; imageUrl?: string } }[],
+  dateStr: string
+): Promise<void> {
+  const rows = auditEntries.map((entry, i) => ({
+    feed_date: dateStr,
+    idx: i + 1,
+    title: entry.title,
+    source: entry.source,
+    description: entry._raw?.description ?? null,
+    pub_date: entry.pubDate,
+    link: entry.link,
+    image_url: entry._raw?.imageUrl ?? null,
+    stage: entry.stage,
+    reason: entry.reason ?? null,
+    raw_data: entry._raw ?? null,
+  }));
+  await supabase.from("shortlist_candidates").delete().eq("feed_date", dateStr);
+  const { error } = await supabase.from("shortlist_candidates").insert(rows);
+  if (error) throw new Error(error.message);
+  console.log(`[rss] ✓ Saved ${rows.length} candidates to Supabase shortlist_candidates`);
 }
 
 function _writeUncuratedTxt(
@@ -2797,12 +2832,13 @@ export async function loadLiveArticles(
   windowStart?: Date,
   publishToday = false,
   windowEnd?: Date,
+  promptAlreadyPublished?: { title: string; link?: string }[],
 ): Promise<EnrichedArticle[]> {
   // If a previous attempt already fetched + deduped the RSS items, skip straight
   // to Claude — re-fetching would re-saturate undici's connection pool.
   if (_pendingRawItems && _pendingDedupAudit) {
     console.log(`[rss] Re-using ${_pendingRawItems.length} cached candidates — skipping RSS fetch.`);
-    const { articles: enriched, decisions } = await enrichWithClaude(_pendingRawItems, alreadyPublished, publishToday);
+    const { articles: enriched, decisions } = await enrichWithClaude(_pendingRawItems, alreadyPublished, publishToday, promptAlreadyPublished);
     _writeAuditFile(_pendingRawItems, _pendingDedupAudit, decisions);
     _pendingRawItems = null;
     _pendingDedupAudit = null;
@@ -2974,7 +3010,7 @@ export async function loadLiveArticles(
   _pendingRawItems = toEnrich;
   _pendingDedupAudit = dedupAudit;
 
-  const { articles: enriched, decisions } = await enrichWithClaude(toEnrich, alreadyPublished, publishToday);
+  const { articles: enriched, decisions } = await enrichWithClaude(toEnrich, alreadyPublished, publishToday, promptAlreadyPublished);
 
   _writeAuditFile(toEnrich, dedupAudit, decisions);
   _pendingRawItems = null;

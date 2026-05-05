@@ -7,6 +7,7 @@
  * POST   /api/curation/reset-image  — re-select image for one article
  * PATCH  /api/curation/set-image    — set a specific image URL (through Sharp pipeline)
  * GET    /api/curation/feed         — list feed with stable Supabase IDs
+ * GET    /api/curation/candidates   — list shortlist candidates for a date (from Supabase or local file)
  */
 
 import fs from "node:fs";
@@ -43,10 +44,10 @@ router.post("/curation/add", async (req, res) => {
     let rawItems: { title: string; description: string; link: string; pubDate: string; source: string; imageUrl?: string }[];
 
     if (Array.isArray(indices) && indices.length > 0) {
-      // Variant A: by sequence number from uncurated file
-      const uncurated = loadUncuratedArticles(feedDate);
+      // Variant A: by sequence number from uncurated file (falls back to Supabase)
+      const uncurated = await loadUncuratedArticles(feedDate);
       if (uncurated.length === 0) {
-        res.status(404).json({ ok: false, error: `No uncurated file found for ${feedDate}` });
+        res.status(404).json({ ok: false, error: `No uncurated candidates found for ${feedDate}` });
         return;
       }
 
@@ -364,6 +365,19 @@ router.post("/curation/promote", async (req, res) => {
   }
 });
 
+// ─── GET /api/curation/candidates ────────────────────────────────────────────
+
+router.get("/curation/candidates", async (req, res) => {
+  try {
+    const feedDate = (req.query.feedDate as string) ?? new Date().toISOString().slice(0, 10);
+    const candidates = await loadUncuratedArticles(feedDate);
+    res.json({ ok: true, feedDate, count: candidates.length, candidates });
+  } catch (err) {
+    console.error("[curation/candidates] error:", (err as Error).message);
+    res.status(500).json({ ok: false, error: (err as Error).message });
+  }
+});
+
 // ─── GET /api/curation/feed ──────────────────────────────────────────────────
 
 router.get("/curation/feed", async (req, res) => {
@@ -450,9 +464,9 @@ router.post("/curation/batch", async (req, res) => {
       let rawItems: { title: string; description: string; link: string; pubDate: string; source: string; imageUrl?: string }[] = [];
 
       if (Array.isArray(add.indices) && add.indices.length > 0) {
-        const uncurated = loadUncuratedArticles(feedDate);
+        const uncurated = await loadUncuratedArticles(feedDate);
         if (uncurated.length === 0) {
-          res.status(404).json({ ok: false, error: `No uncurated file found for ${feedDate}` });
+          res.status(404).json({ ok: false, error: `No uncurated candidates found for ${feedDate}` });
           return;
         }
         const matched = add.indices

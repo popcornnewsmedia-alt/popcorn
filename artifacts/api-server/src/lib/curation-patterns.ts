@@ -4,8 +4,8 @@
 // This is a LIVING DOCUMENT. Append new examples here as user feedback arrives.
 // The brief (curation-brief.ts) stays stable; this file grows.
 //
-// Last updated: 2026-04-27
-// Source: sets 1-6 of historical curation feedback (Apr 5 → Apr 27)
+// Last updated: 2026-05-04
+// Source: sets 1-6 of historical curation feedback (Apr 5 → Apr 27) + May 4 manual review
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const CURATION_PATTERNS = `# POPCORN PATTERN LIBRARY
@@ -187,6 +187,43 @@ Concrete examples from past curation decisions. Use these to calibrate judgment 
 - "Friends star Erik Per Sullivan turned down money to return" (later accepted as nostalgia moment — borderline)
 - Atlantic-style abstract think pieces ("If You Want a Better World, Act Like You Live in It")
 - Netflix reality TV boss explains casting issues
+- Mitski says writing excites her more than touring → minor artist thought, not cultural news
+- "[Celebrity] responds to [other celebrity]'s jab" → only keep if the underlying exchange itself is culturally significant, not just another tabloid back-and-forth
+
+### Minor celebrity updates (no real news)
+- Jason Newsted reveals throat cancer battle → minor celebrity health update, low cultural resonance
+- Princess Eugenie announces pregnancy → tabloid, no cultural crossover beyond royals-adjacent gossip
+- Cameron Diaz and Benji Madden welcome third child → tabloid, routine celebrity baby news
+- Jake Paul fires back after Olivia Rodrigo SNL jab → celebrities responding to each other = tabloid noise unless the exchange itself is a major cultural moment
+- RULE: "[Celebrity] says/thinks/feels/responds" without a triggering event of actual cultural consequence = reject. An artist sharing a personal update or opinion isn't news unless it reveals something about culture.
+
+### Cross-day duplicates that slipped through (May 4 — hard examples)
+- Shakira Copacabana free concert: published May 3 (Page Six) AND May 4 (Pitchfork) → same event, different source, different headline = same story = REJECT
+- Ask.com shutdown: published May 3 (TechCrunch) AND May 4 (Engadget) → same event, different angle, different source = same story = REJECT
+- RULE: Check the 7-day history list before committing any pick. If you recognise the named entity AND the triggering event, it's a reject even if the framing is completely different.
+
+### Noisy follow-ups to already-covered stories
+- GameStop buying eBay would hurt Pokémon TCG collectors → follow-up to GameStop/eBay story already in feed (we ran the acquisition story; this commentary angle adds no new event)
+- Michael Jackson biopic box office milestone → MJ biopic had been covered in recent days; box office movement alone isn't a new event
+- GTA 6 crunch claims → unsubstantiated insider rumour, no concrete new development
+- The Crown prequel in development → follow-up to Crown return story already covered days before
+- RULE: If the underlying entity + story arc was already covered in the last 3-7 days, a follow-up angle only qualifies if it contains a genuinely major new development (arrest, death, release date, cancellation, verdict, lawsuit filed).
+
+### Reviews (reinforced — these keep slipping through)
+- Netflix's Lord of the Flies review → a review is commentary about culture, not culture happening. We do not run reviews, even for prestige properties.
+- RULE: Reviews = reject, always. Even a glowing review of a prestige show by a major outlet. The event (release, cancellation, renewal, casting) earns a spot; the critic's take does not.
+
+### Minor sports results (non-majors)
+- Nelly Korda wins Riviera Maya LPGA event → we run women's golf majors (Chevron, US Women's Open, etc.), not regular tour stops. This was not a major.
+- RULE: Sports results qualify only for globally-significant events (majors, Grand Slams, World Cups, Champions League finals, record-breaking performances). Regular tour wins, mid-season league matches, non-final rounds = reject unless there's a specific cultural narrative.
+
+### Funding rounds without cultural hook (reinforced)
+- Suno AI raises Series D → financing story, no cultural crossover. Suno's product and its impact on music culture is the story; the capital raise is not.
+- RULE: Funding rounds (Series A/B/C/D, IPO filings) = reject unless the company or its product has an immediate, concrete cultural impact story attached. The round itself is never the story.
+
+### Reviews and minor sports (pattern)
+- The Crown prequel → pre-production rumour with no concrete new event; IP follow-up to a story already run
+- Swan Beauty sponsoring bachelorette → brand marketing story dressed as culture; too inside-marketing to be interesting to a general reader
 
 ### Industry-only (no cultural hook)
 - WGA tentative deal
