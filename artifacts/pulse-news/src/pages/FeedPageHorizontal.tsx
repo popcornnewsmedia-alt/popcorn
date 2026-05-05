@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { isSameDay, startOfDay, subDays } from "date-fns";
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from "react";
+import { format, isSameDay, startOfDay, subDays } from "date-fns";
 import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
 import { ArticleCard } from "@/components/ArticleCard";
@@ -42,10 +42,12 @@ type DayGroup = {
 
 // Spring curve for committed horizontal transitions. Duration is velocity-
 // aware: fast flicks get a shorter spring so the rail lands before the user
-// lifts their attention. The default (260ms) is used for button-driven
+// lifts their attention. The default (360ms) is used for button-driven
 // navigation and for the post-settle cleanup reset.
-const horizontalSpring = (ms: number) => `transform ${ms}ms cubic-bezier(0.22,1,0.36,1)`;
-const HORIZONTAL_SPRING = horizontalSpring(260);
+// Curve (0.23,1,0.32,1): gentle ease-out — starts briskly to match finger
+// momentum then decelerates into a soft landing, like native iOS paging.
+const horizontalSpring = (ms: number) => `transform ${ms}ms cubic-bezier(0.23,1,0.32,1)`;
+const HORIZONTAL_SPRING = horizontalSpring(360);
 
 // Re-show the intro animation after this much idle time (ms). 12 h aligns
 // with the morning/evening usage rhythm of a daily news app.
@@ -93,6 +95,11 @@ export function FeedPageHorizontal() {
 
   // Horizontal paging state. Newest-first: idx 0 = today, idx N = oldest loaded.
   const [currentDayIdx, setCurrentDayIdx] = useState(0);
+
+  // Vertical snap position within the active day. 0 = DateDivider, 1 = article 0,
+  // 2 = article 1, … Used to give renderContent={true} only to ±1 cards around
+  // the current position, capping live image decodes to 2-3 instead of 10+.
+  const [activeViewIdx, setActiveViewIdx] = useState(0);
 
   // Position restore — fire once when dayGroups first has data. Tracks
   // whether we've attempted the restore so the effect doesn't re-run.
@@ -286,6 +293,10 @@ export function FeedPageHorizontal() {
   // work happens AFTER the animation, not during it).
   const visualDayIdxRef = useRef(currentDayIdx);
   const pendingDayFlipRef = useRef<number | null>(null);
+  // True while a finger is actively dragging the rail. Used by the sync
+  // effect to avoid snapping the rail mid-swipe when a fetchNextPage
+  // response arrives and changes dayGroups.length.
+  const isDraggingRef = useRef(false);
 
   // ── Rail transform ───────────────────────────────────────────────────────
   // Reverse render order: oldest day on the LEFT, today on the RIGHT. This
@@ -360,6 +371,11 @@ export function FeedPageHorizontal() {
 
   // Progress bar fill ref (forwarded to TopBar).
   const feedBarFillRef = useRef<HTMLDivElement>(null);
+  // Imperative refs for the TopBar date spans — updated synchronously in
+  // landOnDay so the date label flips at the exact moment the day slide
+  // starts, with zero React render-cycle lag (same pattern as fillRef).
+  const feedDateRef = useRef<HTMLSpanElement>(null);
+  const feedExpandedDateRef = useRef<HTMLSpanElement>(null);
   const lastProgressRef = useRef(-1);
 
   const updateProgressBar = useCallback(() => {
@@ -420,6 +436,7 @@ export function FeedPageHorizontal() {
       const roundedIdx = Math.min(Math.max(0, Math.round(fractionalIdx)), total - 1);
       if (roundedIdx !== scrollIndexRef.current) {
         scrollIndexRef.current = roundedIdx;
+        setActiveViewIdx(roundedIdx);
         // roundedIdx 0 = divider, 1..N = article (roundedIdx - 1)
         const articleIdx = roundedIdx - 1;
         // Prefetch window: current + next 2 cards. Cache eviction is
@@ -461,6 +478,7 @@ export function FeedPageHorizontal() {
   useEffect(() => {
     scrollIndexRef.current = -1;
     lastProgressRef.current = -1;
+    setActiveViewIdx(0);
     const day = dayGroups[currentDayIdx];
     const wanted = new Set<string>();
     if (day) {
@@ -557,7 +575,7 @@ export function FeedPageHorizontal() {
   // All refs are used instead of closure state so this callback is stable
   // across day flips — preventing the gesture useEffect from tearing down
   // and re-attaching touch handlers on every currentDayIdx change.
-  const landOnDay = useCallback((nextIdx: number, durationMs = 260) => {
+  const landOnDay = useCallback((nextIdx: number, durationMs = 360) => {
     const rail = railRef.current;
     const N = dayGroupsRef.current.length;
     const clamped = Math.max(0, Math.min(N - 1, nextIdx));
@@ -581,11 +599,26 @@ export function FeedPageHorizontal() {
     // This lets the GPU-composited transform finish silky-smooth before
     // we do the expensive ArticleCard unmount/mount work.
     if (clamped !== currentDayIdxRef.current) {
+        // ── Instant date label update ────────────────────────────────────
+      // Update the TopBar date text imperatively so it flips the moment
+      // the slide animation starts — no React render-cycle lag.
+      const destDay = dayGroupsRef.current[clamped];
+      if (destDay) {
+        const today = startOfDay(new Date());
+        if (feedDateRef.current) {
+          feedDateRef.current.textContent = format(destDay.date, 'do MMMM').toUpperCase();
+        }
+        if (feedExpandedDateRef.current) {
+          feedExpandedDateRef.current.textContent = isSameDay(destDay.date, today)
+            ? 'Today'
+            : format(destDay.date, 'EEEE, do MMMM');
+        }
+      }
+
       // ── Early image prefetch ─────────────────────────────────────────
       // Start fetching the destination day's first 4 images RIGHT NOW,
       // during the animation. By the time setCurrentDayIdx fires and
       // articles mount, these are already in-flight (or decoded).
-      const destDay = dayGroupsRef.current[clamped];
       if (destDay) {
         for (let i = 0; i < Math.min(4, destDay.articles.length); i++) {
           const url = destDay.articles[i].imageUrl;
@@ -594,7 +627,11 @@ export function FeedPageHorizontal() {
       }
       pendingDayFlipRef.current = window.setTimeout(() => {
         pendingDayFlipRef.current = null;
+        // Batch both updates so the new day's articles mount with
+        // activeViewIdx=0 already set — prevents stale idx from giving
+        // renderContent=true to wrong cards for one render cycle.
         setCurrentDayIdx(clamped);
+        setActiveViewIdx(0);
       }, durationMs + 15);
     }
   }, [preloadImage]);
@@ -603,14 +640,22 @@ export function FeedPageHorizontal() {
   // data shape or viewport width changes (e.g., a new day is appended by
   // fetchNextPage, or the window resizes). We do this imperatively so a
   // re-render mid-animation never resets a live transition.
-  useEffect(() => {
+  //
+  // useLayoutEffect (not useEffect) so the correction runs synchronously
+  // BEFORE the browser paints. When fetchNextPage prepends a new day div to
+  // the left of the rail, the existing transform becomes wrong by one
+  // viewport width. useEffect would apply the fix after a painted frame,
+  // producing a visible flash / jump. useLayoutEffect eliminates that frame.
+  useLayoutEffect(() => {
     const rail = railRef.current;
     if (!rail) return;
     const N = dayGroups.length;
     if (N === 0) return;
-    // Only snap if no transition is in flight. If a pending flip is queued,
-    // landOnDay already set the target transform — don't stomp it.
+    // Only snap if no transition is in flight and no drag is active.
+    // pendingDayFlipRef guards the post-swipe spring; isDraggingRef guards
+    // the live finger drag (where pendingDayFlipRef is still null).
     if (pendingDayFlipRef.current != null) return;
+    if (isDraggingRef.current) return;
     const idx = Math.min(visualDayIdxRef.current, N - 1);
     const domIdx = N - 1 - idx;
     rail.style.transition = "";
@@ -656,6 +701,7 @@ export function FeedPageHorizontal() {
       startScrollTop = activeDay.scrollTop;
       startTime = Date.now();
       dragging = true;
+      isDraggingRef.current = true;
       axis = null;
       canSwipeHorizontal = startScrollTop <= DIVIDER_EPS;
       // Kill any residual transition so live drag is immediate.
@@ -691,6 +737,7 @@ export function FeedPageHorizontal() {
     const onEnd = (e: TouchEvent) => {
       if (!dragging) return;
       dragging = false;
+      isDraggingRef.current = false;
       if (axis !== 'x') return;
       const endX = (e.changedTouches[0]?.clientX ?? startX);
       const dx = endX - startX;
@@ -706,10 +753,10 @@ export function FeedPageHorizontal() {
         // Finger moved left (dx < 0) → reveal newer (next) day → idx-1 in data order.
         else if (dx < 0 && idx > 0) newIdx = idx - 1;
       }
-      // Velocity-aware spring: fast flick lands in 200ms, medium in 230ms,
-      // slow drag-commit stays at the default 260ms.
-      const duration = velocity > 1.0 ? 200 : velocity > 0.55 ? 230 : 260;
-      landOnDay(newIdx, newIdx !== idx ? duration : 260);
+      // Velocity-aware spring: fast flick lands in 230ms, medium in 290ms,
+      // slow drag-commit stays at the default 360ms.
+      const duration = velocity > 1.0 ? 230 : velocity > 0.55 ? 290 : 360;
+      landOnDay(newIdx, newIdx !== idx ? duration : 360);
     };
 
     viewport.addEventListener('touchstart', onStart, { passive: true });
@@ -722,11 +769,11 @@ export function FeedPageHorizontal() {
       viewport.removeEventListener('touchend', onEnd);
       viewport.removeEventListener('touchcancel', onEnd);
     };
-  // dayGroups.length is included so the effect re-runs when the rail div
-  // first mounts (it's only rendered once dayGroups is non-empty). Without
-  // it, if the effect fires before data loads and railRef is null, it
-  // returns early and gesture listeners are never attached.
-  }, [landOnDay, dayGroups.length]);
+  // Only re-register when the rail first appears (dayGroups goes from empty
+  // to non-empty). Using a boolean prevents re-registration on every
+  // fetchNextPage call, which was snapping the rail mid-swipe.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [landOnDay, dayGroups.length > 0]);
 
   // ── Pull-to-refresh ──────────────────────────────────────────────────────
   // Same handlers as FeedPage, but checking the ACTIVE day's scroller.
@@ -763,6 +810,17 @@ export function FeedPageHorizontal() {
       setPullOffset(96);
       const minDelay = new Promise(r => setTimeout(r, 1800));
       Promise.all([refetch(), minDelay]).finally(() => {
+        // Reset the active day's vertical scroll to the top. Pull-to-refresh
+        // should always bring the user back to the start of the fresh feed.
+        // This also fixes a renderContent mismatch: the day-change effect
+        // resets activeViewIdx=0 when new data arrives, but the scroll
+        // container keeps its old position — cards at the old position have
+        // renderContent=false and show blank placeholders until the user
+        // manually scrolls. Resetting to 0 ensures position and activeViewIdx
+        // are in sync from the moment the refresh completes.
+        const container = dayScrollRefs.current[currentDayIdxRef.current];
+        if (container) container.scrollTop = 0;
+
         setRefreshFinishing(true);
         window.setTimeout(() => {
           setIsRefreshing(false);
@@ -892,11 +950,14 @@ export function FeedPageHorizontal() {
           onDateChange={handleDatePick}
           showDatePicker
           fillRef={feedBarFillRef}
+          dateRef={feedDateRef}
+          expandedDateRef={feedExpandedDateRef}
           minDate={minDate}
           maxDate={maxDate}
           pickerOpen={pickerOpen}
           onPickerOpenChange={setPickerOpen}
           onScrollToDayTop={handleScrollToDayTop}
+          onDivider={activeViewIdx === 0}
         />
       )}
 
@@ -1073,14 +1134,14 @@ export function FeedPageHorizontal() {
                         onPrev={dataIdx < dayGroups.length - 1 ? () => landOnDay(dataIdx + 1) : undefined}
                         onNext={dataIdx > 0 ? () => landOnDay(dataIdx - 1) : undefined}
                       />
-                      {mountArticles && day.articles.map((article) => (
+                      {mountArticles && day.articles.map((article, i) => (
                         <ArticleCard
                           key={article.id}
                           article={article}
                           onReadMore={setReadingArticle}
                           isRead={readIds.has(article.id)}
                           viewportHeight={viewportHeight}
-                          renderContent
+                          renderContent={Math.abs((i + 1) - activeViewIdx) <= 1}
                           isActive={false}
                         />
                       ))}

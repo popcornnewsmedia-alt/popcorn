@@ -23,9 +23,11 @@ interface TopBarProps {
   onPickerOpenChange?: (open: boolean) => void;
   /** Scroll the underlying feed to the top of the current day's section (the DateDivider) */
   onScrollToDayTop?: () => void;
+  /** When true (user is on the DateDivider card), suppress the image-colour backdrop so the grain BG bleeds through */
+  onDivider?: boolean;
 }
 
-export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, dateRef, expandedDateRef, minDate, maxDate, pickerOpen: controlledPickerOpen, onPickerOpenChange, onScrollToDayTop }: TopBarProps) {
+export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, dateRef, expandedDateRef, minDate, maxDate, pickerOpen: controlledPickerOpen, onPickerOpenChange, onScrollToDayTop, onDivider = false }: TopBarProps) {
   const [internalPickerOpen, setInternalPickerOpen] = useState(false);
   const isControlled = controlledPickerOpen !== undefined;
   const pickerOpen = isControlled ? controlledPickerOpen! : internalPickerOpen;
@@ -78,9 +80,9 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
         style={{
           top: isStandalone ? 0 : 'env(safe-area-inset-top)',
           paddingTop: isStandalone ? 'env(safe-area-inset-top)' : undefined,
-          background: 'rgba(0,0,0,0.12)',
-          backdropFilter: 'blur(18px) saturate(2.2) brightness(0.58)',
-          WebkitBackdropFilter: 'blur(18px) saturate(2.2) brightness(0.58)',
+          background: onDivider ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.12)',
+          backdropFilter: onDivider ? 'none' : 'blur(18px) saturate(2.2) brightness(0.58)',
+          WebkitBackdropFilter: onDivider ? 'none' : 'blur(18px) saturate(2.2) brightness(0.58)',
           boxShadow: pickerOpen ? 'none' : '0 1px 0 rgba(26,68,48,0.08)',
         }}
       >
