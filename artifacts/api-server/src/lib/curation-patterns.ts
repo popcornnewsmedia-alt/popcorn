@@ -4,8 +4,8 @@
 // This is a LIVING DOCUMENT. Append new examples here as user feedback arrives.
 // The brief (curation-brief.ts) stays stable; this file grows.
 //
-// Last updated: 2026-05-04
-// Source: sets 1-6 of historical curation feedback (Apr 5 → Apr 27) + May 4 manual review
+// Last updated: 2026-05-05
+// Source: sets 1-6 of historical curation feedback (Apr 5 → Apr 27) + May 4–5 manual review
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const CURATION_PATTERNS = `# POPCORN PATTERN LIBRARY
@@ -79,6 +79,22 @@ Concrete examples from past curation decisions. Use these to calibrate judgment 
 ### Prestige creator follow-ups
 - Richard Gadd's Half Man (follow-up to Baby Reindeer) — prestige creator, strong hook
 - Euphoria S3 dedicated to those lost → emotional + cultural relevance
+
+### Sports paradox narratives (high shareability)
+- Mourinho's Benfica go entire season unbeaten but still lose the title → the tension IS the story: "how did they not win?" drives curiosity
+- RULE: When an athlete/team achieves something statistically impressive but paradoxically fails (unbeaten but lost title, broke a record but still lost, perfect regular season but early knockout) — the contradiction is the hook. Always include; the narrative arc does the work.
+
+### Broadway / major venue emergency closures
+- Electrical fire closes Book of Mormon at Eugene O'Neill Theater indefinitely → major long-running show, unexpected closure, broad cultural footprint
+- RULE: Physical emergency closures (fire, flooding, structural damage) of widely-known long-running Broadway shows or major venues = automatic include. The show's cultural recognition + the unexpected nature = strong story.
+
+### Live music controversies (artist behaviour on stage or tour)
+- M.I.A. kicked off Kid Cudi tour for onstage political rants → conflict between artists, public-facing controversy during a live event
+- RULE: Artist kicked off a tour, booed off stage, or publicly removed mid-run = always include. The live-event stakes + interpersonal drama make it more concrete than a "feud" article.
+
+### Workplace culture with concrete employer action
+- Employers banning smartphones during the workday → concrete corporate policy, broad cultural debate, affects nearly every reader
+- RULE: Workplace culture stories where employers take a concrete measurable action (full phone ban, 4-day week rollout, mandatory in-office) = include. Must be concrete implementation, not a think piece about whether they should.
 
 ### Global sports anchors (automatic inclusion)
 - Ronaldo / Messi stories → always, they are global attention anchors
@@ -212,6 +228,16 @@ Concrete examples from past curation decisions. Use these to calibrate judgment 
 ### Reviews (reinforced — these keep slipping through)
 - Netflix's Lord of the Flies review → a review is commentary about culture, not culture happening. We do not run reviews, even for prestige properties.
 - RULE: Reviews = reject, always. Even a glowing review of a prestige show by a major outlet. The event (release, cancellation, renewal, casting) earns a spot; the critic's take does not.
+
+### Recurring celebrity legal sagas without final resolution
+- Britney Spears DUI arrest/plea → ongoing legal story the audience is fatigued by; no verdict, no acquittal, no prison time = no new event
+- Blake Lively / Justin Baldoni lawsuit → ran for months; settlement IS a new development but if the story has run too long and readers are worn down, still borderline
+- RULE: Celebrity legal sagas (DUI, divorce, lawsuit) only qualify if the story reaches a definitive endpoint (guilty verdict, acquittal, prison sentence, final settlement signed). A new court date, a new filing, a new hearing = NOT a new event. Test: "Does this change the story's outcome?" If no, reject.
+
+### Standalone sneaker / shoe releases with no cultural hook
+- Air Jordan 3 'Brazil' → standard colourway drop, no broader cultural story
+- New Balance 1890 Boysenberry → product SKU, not a cultural talking point
+- RULE: Sneaker drops and shoe releases are product roundup content. Only include when there's a specific cultural hook: a collab with a named artist/franchise, a record auction price, or a release that caused a cultural incident (violence, sellout frenzy with real-world consequences). Colour or material novelty alone is never enough.
 
 ### Minor sports results (non-majors)
 - Nelly Korda wins Riviera Maya LPGA event → we run women's golf majors (Chevron, US Women's Open, etc.), not regular tour stops. This was not a major.

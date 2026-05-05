@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { format, subDays, addDays, isSameDay, startOfDay } from "date-fns";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
 import { isStandalone } from "@/lib/utils";
@@ -33,6 +33,24 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
     if (!isControlled) setInternalPickerOpen(v);
     onPickerOpenChange?.(v);
   };
+  const barRef = useRef<HTMLDivElement>(null);
+  // Keep --pn-topbar-h CSS custom property up-to-date with the TopBar's
+  // exact bottom edge (viewport-relative). ArticleCard reads this to
+  // position the hero image flush with the progress bar on every device,
+  // including when the hover-media-query button vs hint changes the height.
+  useLayoutEffect(() => {
+    const update = () => {
+      const bottom = barRef.current?.getBoundingClientRect().bottom ?? 0;
+      if (bottom > 0) {
+        document.documentElement.style.setProperty('--pn-topbar-h', `${bottom}px`);
+      }
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    if (barRef.current) ro.observe(barRef.current);
+    return () => ro.disconnect();
+  }, []);
+
   const today = startOfDay(new Date());
   const isAtToday = isSameDay(selectedDate, today);
   const isAtMin = minDate ? isSameDay(selectedDate, minDate) || selectedDate <= minDate : false;
@@ -55,13 +73,14 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
       )}
 
       <div
+        ref={barRef}
         className="fixed inset-x-0 z-40 flex flex-col"
         style={{
           top: isStandalone ? 0 : 'env(safe-area-inset-top)',
           paddingTop: isStandalone ? 'env(safe-area-inset-top)' : undefined,
-          background: 'rgba(0,0,0,0)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
+          background: 'rgba(0,0,0,0.12)',
+          backdropFilter: 'blur(18px) saturate(2.2) brightness(0.58)',
+          WebkitBackdropFilter: 'blur(18px) saturate(2.2) brightness(0.58)',
           boxShadow: pickerOpen ? 'none' : '0 1px 0 rgba(26,68,48,0.08)',
         }}
       >
