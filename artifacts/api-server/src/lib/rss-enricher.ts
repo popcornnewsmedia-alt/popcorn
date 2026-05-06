@@ -2649,24 +2649,60 @@ function _writeAuditFile(
       articles: auditEntries,
     }, null, 2);
 
-    // Write to /tmp (ephemeral)
+    // Write to /tmp (ephemeral) — this window's data only
     fs.writeFileSync(auditPath, auditPayload);
     console.log(`[rss] ✓ Wrote full audit to ${auditPath} (${dedupAudit.length} raw → ${toEnrich.length} to Claude → ${selectedCount} selected)`);
 
-    // Write to data/uncurated/ (git-tracked, survives deploys)
     const dataDir = path.resolve(process.cwd(), "data", "uncurated");
     fs.mkdirSync(dataDir, { recursive: true });
-    const committedPath = path.join(dataDir, `uncurated-${dateStr}.json`);
-    fs.writeFileSync(committedPath, auditPayload);
-    console.log(`[rss] ✓ Committed uncurated list → ${committedPath}`);
 
-    // Persist to Supabase so candidates survive Railway redeploys
-    _saveShortlistToSupabase(auditEntries, dateStr).catch((e) =>
+    // Save per-fetch snapshot (never overwritten)
+    const existingFetches = fs.readdirSync(dataDir)
+      .filter((f) => new RegExp(`^uncurated-${dateStr}-fetch\\d+\\.json$`).test(f)).length;
+    const fetchN = existingFetches + 1;
+    const fetchPath = path.join(dataDir, `uncurated-${dateStr}-fetch${fetchN}.json`);
+    fs.writeFileSync(fetchPath, auditPayload);
+    console.log(`[rss] ✓ Saved fetch #${fetchN} snapshot → ${fetchPath}`);
+
+    // Merge with existing combined file (append across windows, dedup by link)
+    const committedPath = path.join(dataDir, `uncurated-${dateStr}.json`);
+    let existingArticles: typeof auditEntries = [];
+    if (fs.existsSync(committedPath)) {
+      try {
+        const existing = JSON.parse(fs.readFileSync(committedPath, "utf-8"));
+        existingArticles = existing.articles ?? [];
+      } catch { /* start fresh */ }
+    }
+
+    // New window's entry wins if same link appears in both (fresher stage/reason)
+    const byLink = new Map(existingArticles.map((a) => [a.link, a]));
+    for (const entry of auditEntries) byLink.set(entry.link, entry);
+    const merged = Array.from(byLink.values())
+      .sort((a, b) => (b.dedupScore ?? 0) - (a.dedupScore ?? 0));
+
+    const combinedPayload = JSON.stringify({
+      fetchedAt: new Date().toISOString(),
+      fetchCount: fetchN,
+      totalRawItems: merged.length,
+      uniqueStories: merged.filter((e) => e.stage !== "deduplicated").length,
+      sentToClaude: merged.filter((e) => e.stage !== "deduplicated" && e.stage !== "ranked_out").length,
+      selectedCount: merged.filter((e) => e.stage === "selected").length,
+      rejectedCount: merged.filter((e) => e.stage === "rejected_by_claude").length,
+      rankedOutCount: merged.filter((e) => e.stage === "ranked_out").length,
+      dedupedCount: merged.filter((e) => e.stage === "deduplicated").length,
+      articles: merged,
+    }, null, 2);
+
+    fs.writeFileSync(committedPath, combinedPayload);
+    console.log(`[rss] ✓ Combined uncurated list → ${committedPath} (${merged.length} total across ${fetchN} window(s))`);
+
+    // Persist combined data to Supabase (delete+re-insert since idx positions change after merge)
+    _saveShortlistToSupabase(merged as typeof auditEntries, dateStr).catch((e) =>
       console.warn("[rss] Failed to save candidates to Supabase:", e)
     );
 
-    // Write human-readable .txt to Uncurated Lists/ folder (matches manual format)
-    _writeUncuratedTxt(auditEntries, dateStr);
+    // Regenerate human-readable .txt from combined data
+    _writeUncuratedTxt(merged as typeof auditEntries, dateStr, fetchN);
   } catch (e) {
     console.warn("[rss] Could not write audit file:", e);
   }
@@ -2697,7 +2733,8 @@ async function _saveShortlistToSupabase(
 
 function _writeUncuratedTxt(
   auditEntries: { title: string; source: string; pubDate: string; link: string; dedupRank: number; dedupScore: number; stage: string; reason: string }[],
-  dateStr: string
+  dateStr: string,
+  fetchCount = 1
 ): void {
   try {
     const [year, month, day] = dateStr.split("-");
@@ -2719,7 +2756,7 @@ function _writeUncuratedTxt(
 
     const lines: string[] = [];
     lines.push(BORDER);
-    lines.push(`  POPCORN CANDIDATES — ${dateStr}   (MAIN RUN)`);
+    lines.push(`  POPCORN CANDIDATES — ${dateStr}   (${fetchCount} window${fetchCount === 1 ? "" : "s"} merged)`);
     lines.push(`  ${total} articles fetched   ${unique} unique stories   ${selected.length} selected by Claude`);
     lines.push(BORDER);
     lines.push("");
