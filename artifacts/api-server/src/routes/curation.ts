@@ -446,18 +446,22 @@ router.get("/curation/candidates", async (req, res) => {
     }
     const windowNums = Array.from(byWindow.keys()).sort((a, b) => a - b);
 
-    const totalRejected    = candidates.filter((c) => !publishedLinks.has(c.link ?? "") && c.stage !== "deduplicated").length;
-    const totalShortlisted = candidates.filter((c) => c.stage === "shortlisted").length;
+    const totalConsidered  = candidates.filter((c) => c.stage === "considered").length;
+    const totalShortlisted = candidates.filter((c) => c.stage === "shortlisted").length; // legacy
     const totalDupes       = candidates.filter((c) => c.stage === "deduplicated").length;
     const windowCount      = windowNums.filter((w) => w > 0).length;
     const isFinalWindow    = published.length > 0 || candidates.some((c) => c.stage === "selected" || c.stage === "rejected_by_claude");
+    const hasConsideration = totalConsidered > 0 || totalShortlisted > 0;
 
     const lines: string[] = [];
     lines.push(BORDER);
     lines.push(`  POPCORN CANDIDATES — ${feedDate}`);
+    const pendingConsidered = totalConsidered + totalShortlisted;
     const statusLine = isFinalWindow
-      ? `${windowCount} window${windowCount !== 1 ? "s" : ""} · ${candidates.length} total · ${published.length} published · ${totalRejected} available to add · ${totalDupes} dupes`
-      : `${windowCount} window${windowCount !== 1 ? "s" : ""} · ${candidates.length} total · ${totalShortlisted} shortlisted (pending Run 6) · ${totalDupes} dupes — Run 6 not yet complete`;
+      ? `${windowCount} window${windowCount !== 1 ? "s" : ""} · ${candidates.length} total · ${published.length} published · ${totalDupes} dupes`
+      : hasConsideration
+      ? `${windowCount} window${windowCount !== 1 ? "s" : ""} · ${candidates.length} total · ${pendingConsidered} considered (pending W6 final selection) · ${totalDupes} dupes — W6 not yet complete`
+      : `${windowCount} window${windowCount !== 1 ? "s" : ""} · ${candidates.length} total · ${totalDupes} dupes`;
     lines.push(`  ${statusLine}`);
     lines.push(`  To add: POST /api/curation/add  { "feedDate": "${feedDate}", "indices": [N, N, ...] }`);
     lines.push(BORDER);
@@ -480,25 +484,32 @@ router.get("/curation/candidates", async (req, res) => {
     for (const w of windowNums) {
       const windowArticles = byWindow.get(w)!;
       const label = w === 0 ? "untagged (pre-window-tracking)" : (WINDOW_LABELS[w] ?? `Window ${w}`);
-      const rejected = windowArticles.filter((a) => a.stage !== "deduplicated" && !publishedLinks.has(a.link ?? ""));
-      const dupes    = windowArticles.filter((a) => a.stage === "deduplicated");
+      const nonDupes  = windowArticles.filter((a) => a.stage !== "deduplicated" && !publishedLinks.has(a.link ?? ""));
+      const considered    = nonDupes.filter((a) => a.stage === "considered");
+      const notConsidered = nonDupes.filter((a) => a.stage === "not_considered" || a.stage === "ranked_out" || a.stage === "shortlisted" || a.stage === "rejected_by_claude");
+      const dupes         = windowArticles.filter((a) => a.stage === "deduplicated");
 
-      lines.push(`── WINDOW ${w === 0 ? "?" : w} — ${label} (${rejected.length} rejected · ${dupes.length} dupes) ${"─".repeat(Math.max(0, 40 - label.length))}`);
-      lines.push(`   idx   score  stage        source                        title`);
-      lines.push(`   ${"─".repeat(95)}`);
+      const windowSummary = isFinalWindow
+        ? `${nonDupes.length} articles · ${dupes.length} dupes`
+        : `${considered.length} considered · ${notConsidered.length} not considered · ${dupes.length} dupes`;
+      lines.push(`── WINDOW ${w === 0 ? "?" : w} — ${label} (${windowSummary}) ${"─".repeat(Math.max(0, 30 - label.length))}`);
+      lines.push(`   idx   score  stage          source                        title`);
+      lines.push(`   ${"─".repeat(97)}`);
 
-      for (const a of rejected) {
+      for (const a of nonDupes) {
         const idx   = String(candidates.indexOf(a) + 1).padEnd(5);
         const score = String(Math.round(a.dedupScore ?? 0)).padEnd(6);
         const stageLabel =
-          a.stage === "ranked_out"   ? "ranked_out " :
-          a.stage === "shortlisted"  ? "shortlisted" :
-                                       "rejected   ";
-        const stage = stageLabel.padEnd(11);
-        const src   = (a.source ?? "").slice(0, 28).padEnd(28);
-        lines.push(`   ${idx} ${score} ${stage}  ${src}  ${decodeHtml(a.title)}`);
+          a.stage === "considered"     ? "✓ considered  " :
+          a.stage === "not_considered" ? "  not_consdr  " :
+          a.stage === "ranked_out"     ? "  ranked_out  " :
+          a.stage === "shortlisted"    ? "  shortlisted " :
+          a.stage === "selected"       ? "✓ selected    " :
+                                         "  rejected    ";
+        const src = (a.source ?? "").slice(0, 28).padEnd(28);
+        lines.push(`   ${idx} ${score} ${stageLabel}  ${src}  ${decodeHtml(a.title)}`);
         if (a.stage === "rejected_by_claude" && a.reason) {
-          lines.push(`${"".padStart(72)}↳ ${a.reason.slice(0, 80)}`);
+          lines.push(`${"".padStart(74)}↳ ${a.reason.slice(0, 80)}`);
         }
       }
 
