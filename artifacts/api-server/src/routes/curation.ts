@@ -385,48 +385,93 @@ router.get("/curation/candidates", async (req, res) => {
        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
        .replace(/&quot;/g, '"').replace(/&apos;/g, "'");
 
-    const selected   = candidates.filter((a) => a.stage === "selected");
-    const addable    = candidates.filter((a) => a.stage === "rejected_by_claude" || a.stage === "ranked_out");
-    const deduped    = candidates.filter((a) => a.stage === "deduplicated");
+    // Window labels for the 6-run schedule (BKK times)
+    const WINDOW_LABELS: Record<number, string> = {
+      1: "BKK 11:00pm → 3:00am",
+      2: "BKK  3:00am → 7:00am",
+      3: "BKK  7:00am → 11:00am",
+      4: "BKK 11:00am → 3:00pm",
+      5: "BKK  3:00pm → 7:00pm",
+      6: "BKK  7:00pm (final)",
+    };
+
+    // ── Section 1: PUBLISHED — query Supabase for articles actually published ──
+    const { data: publishedRows } = await supabase
+      .from("articles")
+      .select("id, title, source, source_link, category, tag, stage")
+      .eq("feed_date", feedDate)
+      .order("id", { ascending: true });
+    const published = publishedRows ?? [];
+    const publishedLinks = new Set(published.map((a) => (a.source_link as string | null) ?? "").filter(Boolean));
+
+    // ── Section 2: Rejected — group remaining candidates by window (fetchN) ───
+    // Candidates with no fetchN (legacy data) go into window 0
+    const byWindow = new Map<number, typeof candidates>();
+    for (const c of candidates) {
+      const w = c.fetchN ?? 0;
+      if (!byWindow.has(w)) byWindow.set(w, []);
+      byWindow.get(w)!.push(c);
+    }
+    const windowNums = Array.from(byWindow.keys()).sort((a, b) => a - b);
+
+    const totalRejected = candidates.filter((c) => !publishedLinks.has(c.link ?? "")).length;
+    const totalDupes    = candidates.filter((c) => c.stage === "deduplicated").length;
+    const windowCount   = windowNums.filter((w) => w > 0).length;
 
     const lines: string[] = [];
     lines.push(BORDER);
     lines.push(`  POPCORN CANDIDATES — ${feedDate}`);
-    lines.push(`  ${candidates.length} total   ${selected.length} selected   ${addable.length} available to add   ${deduped.length} grouped as duplicates`);
+    lines.push(`  ${windowCount} window${windowCount !== 1 ? "s" : ""} · ${candidates.length} total candidates · ${published.length} published · ${totalRejected} rejected / available to add · ${totalDupes} duplicates`);
     lines.push(`  To add: POST /api/curation/add  { "feedDate": "${feedDate}", "indices": [N, N, ...] }`);
     lines.push(BORDER);
     lines.push("");
 
-    lines.push(`── SELECTED BY CLAUDE (${selected.length}) ${"─".repeat(68)}`);
-    selected.forEach((a, i) => {
-      const score = Math.round(a.dedupScore ?? 0);
-      const src   = (a.source ?? "").slice(0, 28).padEnd(28);
-      lines.push(`  #${String(i + 1).padEnd(4)} score:${String(score).padEnd(4)} ${src}  ${decodeHtml(a.title)}`);
-    });
-    lines.push("");
-
-    lines.push(`── AVAILABLE TO ADD — rejected or ranked-out (${addable.length}) ${"─".repeat(40)}`);
-    lines.push(`   idx   score  source                        stage                title`);
-    lines.push(`   ${"─".repeat(95)}`);
-    addable.forEach((a) => {
-      const idx   = String(candidates.indexOf(a) + 1).padEnd(5);
-      const score = String(Math.round(a.dedupScore ?? 0)).padEnd(6);
-      const src   = (a.source ?? "").slice(0, 28).padEnd(28);
-      const stage = a.stage === "ranked_out" ? "ranked_out  " : "rejected    ";
-      lines.push(`   ${idx} ${score} ${src}  ${stage}  ${decodeHtml(a.title)}`);
-      if (a.stage === "rejected_by_claude" && a.reason) {
-        lines.push(`${"".padEnd(72)}↳ ${a.reason.slice(0, 80)}`);
-      }
-    });
-    lines.push("");
-
-    if (deduped.length > 0) {
-      lines.push(`── GROUPED AS DUPLICATES (${deduped.length}) ${"─".repeat(68)}`);
-      deduped.forEach((a) => {
-        const src = (a.source ?? "").slice(0, 28).padEnd(28);
-        lines.push(`   ${src}  ${decodeHtml(a.title).slice(0, 65)}`);
-        if (a.reason) lines.push(`${"".padEnd(32)}↳ ${a.reason.slice(0, 85)}`);
+    // ── PUBLISHED section ─────────────────────────────────────────────────────
+    lines.push(`── PUBLISHED BY CLAUDE (${published.length}) ${"─".repeat(70)}`);
+    if (published.length === 0) {
+      lines.push("   (none yet)");
+    } else {
+      published.forEach((a, i) => {
+        const cat  = ((a.tag ?? a.category ?? "") as string).slice(0, 14).padEnd(14);
+        const src  = ((a.source ?? "") as string).slice(0, 24).padEnd(24);
+        lines.push(`  #${String(i + 1).padEnd(3)} [${cat}] ${src}  ${decodeHtml((a.title ?? "") as string)}`);
       });
+    }
+    lines.push("");
+
+    // ── Per-window REJECTED sections ──────────────────────────────────────────
+    for (const w of windowNums) {
+      const windowArticles = byWindow.get(w)!;
+      const label = w === 0 ? "untagged (pre-window-tracking)" : (WINDOW_LABELS[w] ?? `Window ${w}`);
+      const rejected = windowArticles.filter((a) => a.stage !== "deduplicated" && !publishedLinks.has(a.link ?? ""));
+      const dupes    = windowArticles.filter((a) => a.stage === "deduplicated");
+
+      lines.push(`── WINDOW ${w === 0 ? "?" : w} — ${label} (${rejected.length} rejected · ${dupes.length} dupes) ${"─".repeat(Math.max(0, 40 - label.length))}`);
+      lines.push(`   idx   score  stage        source                        title`);
+      lines.push(`   ${"─".repeat(95)}`);
+
+      for (const a of rejected) {
+        const idx   = String(candidates.indexOf(a) + 1).padEnd(5);
+        const score = String(Math.round(a.dedupScore ?? 0)).padEnd(6);
+        const stage = (a.stage === "ranked_out" ? "ranked_out" : "rejected  ").padEnd(11);
+        const src   = (a.source ?? "").slice(0, 28).padEnd(28);
+        lines.push(`   ${idx} ${score} ${stage}  ${src}  ${decodeHtml(a.title)}`);
+        if (a.stage === "rejected_by_claude" && a.reason) {
+          lines.push(`${"".padStart(72)}↳ ${a.reason.slice(0, 80)}`);
+        }
+      }
+
+      if (dupes.length > 0) {
+        lines.push(`   ${"·".repeat(95)}`);
+        lines.push(`   DUPLICATES (${dupes.length}) — grouped out before Claude review`);
+        for (const a of dupes) {
+          const src = (a.source ?? "").slice(0, 28).padEnd(28);
+          lines.push(`   ${"".padEnd(5)} ${"".padEnd(6)} ${"dupe".padEnd(11)}  ${src}  ${decodeHtml(a.title).slice(0, 60)}`);
+          if (a.reason) lines.push(`${"".padStart(72)}↳ ${a.reason.slice(0, 85)}`);
+        }
+      }
+
+      lines.push("");
     }
 
     res.setHeader("Content-Type", "text/plain; charset=utf-8");

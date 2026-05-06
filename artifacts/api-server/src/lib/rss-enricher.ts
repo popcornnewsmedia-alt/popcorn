@@ -2627,10 +2627,10 @@ function _writeAuditFile(
       }
       const claudeIdx = claudeIndexByTitle.get(item.title);
       const decision = claudeIdx !== undefined ? decisionByIdx.get(claudeIdx) : undefined;
-      if (!decision || decision.selected) {
+      if (decision?.selected) {
         return { ...base, stage: "selected", reason: "Selected by editorial AI" };
       }
-      return { ...base, stage: "rejected_by_claude", reason: decision.rejectionReason ?? "(no reason given)", _raw: item };
+      return { ...base, stage: "rejected_by_claude", reason: decision?.rejectionReason ?? "(no reason given)", _raw: item };
     });
 
     const selectedCount  = auditEntries.filter((e) => e.stage === "selected").length;
@@ -2661,6 +2661,10 @@ function _writeAuditFile(
     const existingFetches = fs.readdirSync(dataDir)
       .filter((f) => new RegExp(`^uncurated-${dateStr}-fetch\\d+\\.json$`).test(f)).length;
     const fetchN = existingFetches + 1;
+
+    // Tag every entry with the window number it came from
+    const taggedEntries = auditEntries.map((e) => ({ ...e, fetchN }));
+
     const fetchPath = path.join(dataDir, `uncurated-${dateStr}-fetch${fetchN}.json`);
     fs.writeFileSync(fetchPath, auditPayload);
     console.log(`[rss] ✓ Saved fetch #${fetchN} snapshot → ${fetchPath}`);
@@ -2675,9 +2679,9 @@ function _writeAuditFile(
       } catch { /* start fresh */ }
     }
 
-    // New window's entry wins if same link appears in both (fresher stage/reason)
+    // New window's entry wins if same link appears in both (fresher stage/reason/fetchN)
     const byLink = new Map(existingArticles.map((a) => [a.link, a]));
-    for (const entry of auditEntries) byLink.set(entry.link, entry);
+    for (const entry of taggedEntries) byLink.set(entry.link, entry);
     const merged = Array.from(byLink.values())
       .sort((a, b) => (b.dedupScore ?? 0) - (a.dedupScore ?? 0));
 
@@ -2710,7 +2714,7 @@ function _writeAuditFile(
 }
 
 async function _saveShortlistToSupabase(
-  auditEntries: { title: string; source: string; pubDate: string; link: string; dedupRank: number; dedupScore: number; stage: string; reason: string; _raw?: { description?: string; imageUrl?: string } }[],
+  auditEntries: { title: string; source: string; pubDate: string; link: string; dedupRank: number; dedupScore: number; stage: string; reason: string; fetchN?: number; _raw?: { description?: string; imageUrl?: string } }[],
   dateStr: string
 ): Promise<void> {
   const rows = auditEntries.map((entry, i) => ({
@@ -2724,7 +2728,8 @@ async function _saveShortlistToSupabase(
     image_url: entry._raw?.imageUrl ?? null,
     stage: entry.stage,
     reason: entry.reason ?? null,
-    raw_data: entry._raw ?? null,
+    // Store fetchN (window number) inside raw_data JSONB — no schema change needed
+    raw_data: { ...(entry._raw ?? {}), fetchN: entry.fetchN ?? null },
   }));
   await supabase.from("shortlist_candidates").delete().eq("feed_date", dateStr);
   const { error } = await supabase.from("shortlist_candidates").insert(rows);

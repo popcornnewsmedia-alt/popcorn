@@ -18,8 +18,9 @@ export interface UncuratedArticle {
   link: string;
   dedupRank?: number;
   dedupScore?: number;
-  stage: string; // "selected" | "rejected_by_claude" | "deduplicated"
+  stage: string; // "selected" | "rejected_by_claude" | "ranked_out" | "deduplicated"
   reason?: string;
+  fetchN?: number; // which curation window (1–6) this article came from
   _raw?: { description?: string; imageUrl?: string };
 }
 
@@ -50,8 +51,9 @@ export async function loadUncuratedArticles(feedDate: string): Promise<Uncurated
     link: row.link,
     stage: row.stage,
     reason: row.reason ?? undefined,
+    fetchN: (row.raw_data as Record<string, unknown> | null)?.fetchN as number | undefined,
     _raw: row.raw_data
-      ? { description: row.raw_data.description, imageUrl: row.raw_data.imageUrl }
+      ? { description: (row.raw_data as Record<string, unknown>).description as string | undefined, imageUrl: (row.raw_data as Record<string, unknown>).imageUrl as string | undefined }
       : undefined,
   })) as UncuratedArticle[];
 }
