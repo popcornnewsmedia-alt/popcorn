@@ -114,15 +114,16 @@ router.get("/status", (_req, res) => {
 // windowStart: earliest RSS pub date to include (defaults to last 25h)
 // publishToday: stamp all new articles with today's date (use when pulling a wider window)
 router.post("/refresh", (req, res) => {
-  const { windowStart, windowEnd, publishToday } = req.body as {
+  const { windowStart, windowEnd, publishToday, shortlistOnly } = req.body as {
     windowStart?: string;
     windowEnd?: string;
     publishToday?: boolean;
+    shortlistOnly?: boolean;
   };
   const wsDate = windowStart ? new Date(windowStart) : undefined;
   const weDate = windowEnd ? new Date(windowEnd) : undefined;
-  triggerRefresh(wsDate, publishToday === true, weDate);
-  res.json({ ok: true, message: "Curation refresh triggered" });
+  triggerRefresh(wsDate, publishToday === true, weDate, shortlistOnly === true);
+  res.json({ ok: true, message: shortlistOnly ? "Shortlist window triggered" : "Curation refresh triggered" });
 });
 
 // POST /api/shortlist — fetch + rank today's candidates, return numbered list (no Claude)

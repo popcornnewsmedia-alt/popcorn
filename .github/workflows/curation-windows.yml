@@ -12,6 +12,8 @@ name: Popcorn Curation Windows
 #   Run 5  BKK  3:00pm           (UTC 08:00)           pulls 11:00am-3:00pm
 #   Run 6  BKK  7:00pm  ← FINAL  (UTC 12:00)           pulls 3:00pm-7:00pm
 #
+# Runs 1-5: shortlist-only — fetch + dedup + save candidates, NO Claude, NO publishing.
+# Run 6:    final window — Claude selects from full 24h pool, enriches, publishes.
 # Manual review at ~7:30pm BKK after Run 6 finishes.
 #
 # Window boundaries are computed by FLOORING current UTC to the nearest 4-hour
@@ -71,8 +73,23 @@ jobs:
 
           DELAY_MINS=$(( (NOW_EPOCH - WINDOW_END_EPOCH) / 60 ))
 
-          echo "WINDOW_START=$WINDOW_START" >> $GITHUB_ENV
-          echo "WINDOW_END=$WINDOW_END"     >> $GITHUB_ENV
+          # Run 6 is the final window — UTC boundary 12:00 (BKK 7:00pm).
+          # All other runs are shortlist-only: fetch + accumulate, no Claude, no publishing.
+          # Manual workflow_dispatch always acts as the final window for testing.
+          WINDOW_END_HOUR=$(date -u -d "@$WINDOW_END_EPOCH" +%H)
+          if [ "$WINDOW_END_HOUR" = "12" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            IS_FINAL=true
+            SHORTLIST_ONLY=false
+            echo "Run 6 (FINAL) — full Claude selection + publish"
+          else
+            IS_FINAL=false
+            SHORTLIST_ONLY=true
+            echo "Runs 1-5 (SHORTLIST) — accumulating candidates, skipping Claude"
+          fi
+
+          echo "WINDOW_START=$WINDOW_START"   >> $GITHUB_ENV
+          echo "WINDOW_END=$WINDOW_END"       >> $GITHUB_ENV
+          echo "SHORTLIST_ONLY=$SHORTLIST_ONLY" >> $GITHUB_ENV
           echo "Window:    $WINDOW_START → $WINDOW_END"
           echo "Cron delay: ${DELAY_MINS} min"
 
@@ -81,7 +98,7 @@ jobs:
           RESPONSE=$(curl -sL -w "\n%{http_code}" -X POST \
             "${{ secrets.CURATION_API_URL }}/api/refresh" \
             -H "Content-Type: application/json" \
-            -d "{\"windowStart\":\"$WINDOW_START\",\"windowEnd\":\"$WINDOW_END\",\"publishToday\":true}")
+            -d "{\"windowStart\":\"$WINDOW_START\",\"windowEnd\":\"$WINDOW_END\",\"publishToday\":true,\"shortlistOnly\":$SHORTLIST_ONLY}")
 
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | head -n -1)

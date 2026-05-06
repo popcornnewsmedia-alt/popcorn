@@ -212,23 +212,26 @@ function scheduleNextRefresh(): void {
   }, REFRESH_INTERVAL_MS);
 }
 
-function runCurationCycle(attempt: number, windowStart?: Date, publishToday = false, windowEnd?: Date): void {
+function runCurationCycle(attempt: number, windowStart?: Date, publishToday = false, windowEnd?: Date, shortlistOnly = false): void {
   // Historical refs used for title-dedup (cross-day dedup, prevents re-publishing)
   const alreadyPublished = getAllPublishedRefs();
   // Today-only refs used for the curation prompt (determines INCREMENTAL vs FULL RESET)
   const todayPublished = getTodayPublishedRefs();
   console.log(
-    `[api] Curation run (attempt ${attempt}) — ${todayPublished.length} in today's feed, ${alreadyPublished.length} historical dedup refs.`
+    `[api] Curation run (attempt ${attempt}) — ${todayPublished.length} in today's feed, ${alreadyPublished.length} historical dedup refs.${shortlistOnly ? " [shortlist-only]" : ""}`
   );
 
-  loadLiveArticles(alreadyPublished, windowStart, publishToday, windowEnd, todayPublished)
+  loadLiveArticles(alreadyPublished, windowStart, publishToday, windowEnd, todayPublished, shortlistOnly)
     .then(async (enriched) => {
-      const added = await mergeFeed(enriched);
-      saveCommittedFeed();
-      _isLive = true;
-      const total = getPublishedFeed().length;
-      console.log(`[api] ✓ Curation run complete — +${added} new stories (${total} total in today's feed).`);
-      // Schedule next run in 3 hours
+      if (!shortlistOnly) {
+        const added = await mergeFeed(enriched);
+        saveCommittedFeed();
+        _isLive = true;
+        const total = getPublishedFeed().length;
+        console.log(`[api] ✓ Curation run complete — +${added} new stories (${total} total in today's feed).`);
+      } else {
+        console.log(`[api] ✓ Shortlist window complete — candidates saved to Supabase.`);
+      }
       scheduleNextRefresh();
     })
     .catch((err: Error) => {
@@ -239,7 +242,7 @@ function runCurationCycle(attempt: number, windowStart?: Date, publishToday = fa
       if (attempt < 3) {
         const delay = attempt * 8_000;
         console.log(`[api] Retrying in ${delay / 1000}s…`);
-        setTimeout(() => runCurationCycle(attempt + 1, windowStart, publishToday, windowEnd), delay);
+        setTimeout(() => runCurationCycle(attempt + 1, windowStart, publishToday, windowEnd, shortlistOnly), delay);
       } else {
         console.error("[api] All retries exhausted — keeping current feed. Will retry at next 3h window.");
         scheduleNextRefresh();
@@ -251,20 +254,19 @@ function runCurationCycle(attempt: number, windowStart?: Date, publishToday = fa
  * Kick off the curation pipeline immediately (e.g. from POST /api/refresh).
  * Safe to call at any time — resets the 3h timer after the run completes.
  *
- * @param windowStart  Optional earliest publish date to include from RSS feeds.
- *                     If omitted, defaults to the last 25 hours.
- * @param publishToday If true, all enriched articles get today's date as
- *                     publishedAt regardless of their original RSS pub date.
- *                     Use when pulling a wider window so yesterday's articles
- *                     still appear in today's section of the feed.
+ * @param windowStart   Optional earliest publish date to include from RSS feeds.
+ * @param publishToday  If true, enriched articles get today's date as publishedAt.
+ * @param windowEnd     Optional upper bound for RSS fetch window.
+ * @param shortlistOnly If true, skip Claude — just accumulate candidates in Supabase.
+ *                      Used for Runs 1-5; Run 6 passes false for full selection.
  */
-export function triggerRefresh(windowStart?: Date, publishToday = false, windowEnd?: Date): void {
-  console.log("[api] Manual refresh triggered.");
+export function triggerRefresh(windowStart?: Date, publishToday = false, windowEnd?: Date, shortlistOnly = false): void {
+  console.log(`[api] Manual refresh triggered.${shortlistOnly ? " [shortlist-only]" : ""}`);
   if (_refreshTimer) {
     clearTimeout(_refreshTimer);
     _refreshTimer = null;
   }
-  runCurationCycle(1, windowStart, publishToday, windowEnd);
+  runCurationCycle(1, windowStart, publishToday, windowEnd, shortlistOnly);
 }
 
 // ─── New shortlist + publish workflow ─────────────────────────────────────────

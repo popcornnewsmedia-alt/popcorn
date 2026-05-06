@@ -2602,7 +2602,8 @@ function loadTodayRejectedLinks(): Set<string> {
 function _writeAuditFile(
   toEnrich: RawRSSItem[],
   dedupAudit: DedupeAuditEntry[],
-  decisions: ClaudeDecision[]
+  decisions: ClaudeDecision[],
+  shortlistOnly = false
 ): void {
   try {
     const dateStr = bkkFeedDate();
@@ -2624,6 +2625,10 @@ function _writeAuditFile(
       }
       if (status === "ranked_out") {
         return { ...base, stage: "ranked_out", reason: `Unique story but ranked #${rank} — outside top 25 sent to Claude`, _raw: item };
+      }
+      // Shortlist-only runs accumulate candidates without Claude review
+      if (shortlistOnly) {
+        return { ...base, stage: "shortlisted", reason: "Pending final Claude review (Run 6)", _raw: item };
       }
       const claudeIdx = claudeIndexByTitle.get(item.title);
       const decision = claudeIdx !== undefined ? decisionByIdx.get(claudeIdx) : undefined;
@@ -2907,6 +2912,7 @@ export async function loadLiveArticles(
   publishToday = false,
   windowEnd?: Date,
   promptAlreadyPublished?: { title: string; link?: string }[],
+  shortlistOnly = false,
 ): Promise<EnrichedArticle[]> {
   // If a previous attempt already fetched + deduped the RSS items, skip straight
   // to Claude — re-fetching would re-saturate undici's connection pool.
@@ -3083,6 +3089,15 @@ export async function loadLiveArticles(
   );
   _pendingRawItems = toEnrich;
   _pendingDedupAudit = dedupAudit;
+
+  if (shortlistOnly) {
+    // Accumulate candidates without calling Claude — Run 6 will do the full selection.
+    console.log(`[rss] shortlist-only window — skipping Claude, saving ${toEnrich.length} candidates`);
+    _writeAuditFile(toEnrich, dedupAudit, [], true);
+    _pendingRawItems = null;
+    _pendingDedupAudit = null;
+    return [];
+  }
 
   const { articles: enriched, decisions } = await enrichWithClaude(toEnrich, alreadyPublished, publishToday, promptAlreadyPublished);
 

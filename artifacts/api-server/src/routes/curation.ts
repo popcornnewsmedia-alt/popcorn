@@ -414,14 +414,19 @@ router.get("/curation/candidates", async (req, res) => {
     }
     const windowNums = Array.from(byWindow.keys()).sort((a, b) => a - b);
 
-    const totalRejected = candidates.filter((c) => !publishedLinks.has(c.link ?? "")).length;
-    const totalDupes    = candidates.filter((c) => c.stage === "deduplicated").length;
-    const windowCount   = windowNums.filter((w) => w > 0).length;
+    const totalRejected    = candidates.filter((c) => !publishedLinks.has(c.link ?? "") && c.stage !== "deduplicated").length;
+    const totalShortlisted = candidates.filter((c) => c.stage === "shortlisted").length;
+    const totalDupes       = candidates.filter((c) => c.stage === "deduplicated").length;
+    const windowCount      = windowNums.filter((w) => w > 0).length;
+    const isFinalWindow    = published.length > 0 || candidates.some((c) => c.stage === "selected" || c.stage === "rejected_by_claude");
 
     const lines: string[] = [];
     lines.push(BORDER);
     lines.push(`  POPCORN CANDIDATES — ${feedDate}`);
-    lines.push(`  ${windowCount} window${windowCount !== 1 ? "s" : ""} · ${candidates.length} total candidates · ${published.length} published · ${totalRejected} rejected / available to add · ${totalDupes} duplicates`);
+    const statusLine = isFinalWindow
+      ? `${windowCount} window${windowCount !== 1 ? "s" : ""} · ${candidates.length} total · ${published.length} published · ${totalRejected} available to add · ${totalDupes} dupes`
+      : `${windowCount} window${windowCount !== 1 ? "s" : ""} · ${candidates.length} total · ${totalShortlisted} shortlisted (pending Run 6) · ${totalDupes} dupes — Run 6 not yet complete`;
+    lines.push(`  ${statusLine}`);
     lines.push(`  To add: POST /api/curation/add  { "feedDate": "${feedDate}", "indices": [N, N, ...] }`);
     lines.push(BORDER);
     lines.push("");
@@ -453,7 +458,11 @@ router.get("/curation/candidates", async (req, res) => {
       for (const a of rejected) {
         const idx   = String(candidates.indexOf(a) + 1).padEnd(5);
         const score = String(Math.round(a.dedupScore ?? 0)).padEnd(6);
-        const stage = (a.stage === "ranked_out" ? "ranked_out" : "rejected  ").padEnd(11);
+        const stageLabel =
+          a.stage === "ranked_out"   ? "ranked_out " :
+          a.stage === "shortlisted"  ? "shortlisted" :
+                                       "rejected   ";
+        const stage = stageLabel.padEnd(11);
         const src   = (a.source ?? "").slice(0, 28).padEnd(28);
         lines.push(`   ${idx} ${score} ${stage}  ${src}  ${decodeHtml(a.title)}`);
         if (a.stage === "rejected_by_claude" && a.reason) {
