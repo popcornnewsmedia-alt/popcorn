@@ -121,6 +121,20 @@ router.post("/curation/add", async (req, res) => {
     saveCommittedFeedAsProd();
     markLive();
 
+    // Capture feedback for future learning (fire-and-forget — don't block response)
+    supabase.from("curation_feedback").insert(
+      enriched.map((a) => ({
+        feed_date: feedDate,
+        action: "manual_add",
+        title: a.title,
+        source: a.source ?? null,
+        tag: a.tag ?? null,
+        link: a.link ?? null,
+      }))
+    ).then(({ error }) => {
+      if (error) console.warn("[curation/add] Failed to save feedback:", error.message);
+    });
+
     res.json({
       ok: true,
       added,
@@ -149,6 +163,24 @@ router.delete("/curation/remove", async (req, res) => {
     }
 
     const result = await removeArticlesBySupabaseId(ids);
+
+    // Capture feedback for future learning (fire-and-forget)
+    if (result.articles.length > 0) {
+      const today = new Date().toISOString().slice(0, 10);
+      supabase.from("curation_feedback").insert(
+        result.articles.map((a: { id: number; title: string }) => ({
+          feed_date: today,
+          action: "manual_remove",
+          title: a.title ?? "Unknown",
+          source: null,
+          tag: null,
+          link: null,
+        }))
+      ).then(({ error }) => {
+        if (error) console.warn("[curation/remove] Failed to save feedback:", error.message);
+      });
+    }
+
     res.json({
       ok: true,
       removed: result.removed,
@@ -522,6 +554,26 @@ router.delete("/curation/candidates", async (req, res) => {
     res.json({ ok: true, feedDate, filesRemoved: removed });
   } catch (err) {
     console.error("[curation/candidates DELETE] error:", (err as Error).message);
+    res.status(500).json({ ok: false, error: (err as Error).message });
+  }
+});
+
+// ─── POST /api/curation/context ──────────────────────────────────────────────
+// Inject a freeform editorial rule that Claude will see on every curation window.
+// Usage: POST /api/curation/context { "rule": "Always include at least one music live event." }
+
+router.post("/curation/context", async (req, res) => {
+  try {
+    const { rule } = req.body as { rule?: string };
+    if (!rule?.trim()) {
+      res.status(400).json({ ok: false, error: 'Provide "rule" (non-empty string)' });
+      return;
+    }
+    const { error } = await supabase.from("curation_context").insert({ rule: rule.trim() });
+    if (error) throw new Error(error.message);
+    res.json({ ok: true, rule: rule.trim(), message: "Rule saved — will be included in all future curation windows" });
+  } catch (err) {
+    console.error("[curation/context] error:", (err as Error).message);
     res.status(500).json({ ok: false, error: (err as Error).message });
   }
 });

@@ -9,10 +9,11 @@
  *   Run 3  BKK  7:00am  (UTC 00:00)  pulls 3:00am–7:00am
  *   Run 4  BKK 11:00am  (UTC 04:00)  pulls 7:00am–11:00am
  *   Run 5  BKK  3:00pm  (UTC 08:00)  pulls 11:00am–3:00pm
- *   Run 6  BKK  7:00pm  (UTC 12:00)  pulls 3:00pm–7:00pm  ← FINAL (Claude publishes)
+ *   Run 6  BKK  7:00pm  (UTC 12:00)  pulls full 24h BKK day  ← FINAL (Claude publishes)
  *
  * Runs 1-5: shortlistOnly — accumulate candidates in Supabase, skip Claude.
- * Run 6: full Claude selection + enrich + publish.
+ * Run 6: window expands to full 24h BKK feed day so Claude sees ALL articles, not just
+ *        the last 4h. RSS feeds keep 24-48h of articles so this reliably covers W1-W5.
  */
 
 import cron from "node-cron";
@@ -31,14 +32,20 @@ function computeWindow(): { windowStart: Date; windowEnd: Date; shortlistOnly: b
   const boundaryMs = WINDOW_HOURS * 3600 * 1000;
 
   const windowEndMs = Math.floor(nowMs / boundaryMs) * boundaryMs;
-  const windowStartMs = windowEndMs - boundaryMs - OVERLAP_SECONDS * 1000;
-
   const windowEnd = new Date(windowEndMs);
-  const windowStart = new Date(windowStartMs);
 
   // Run 6 is the final window — UTC boundary 12:00 (BKK 7:00pm).
   const windowEndHour = windowEnd.getUTCHours();
   const shortlistOnly = windowEndHour !== 12;
+
+  // Final window (Run 6): expand to the full 24h BKK feed day so Claude sees ALL
+  // articles from the day, not just the last 4h slice.
+  // Shortlist windows (Runs 1-5): standard 4h + 30min overlap.
+  const windowStartMs = shortlistOnly
+    ? windowEndMs - boundaryMs - OVERLAP_SECONDS * 1000
+    : windowEndMs - 24 * 3600 * 1000;
+
+  const windowStart = new Date(windowStartMs);
 
   return { windowStart, windowEnd, shortlistOnly };
 }

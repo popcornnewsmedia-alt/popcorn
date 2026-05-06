@@ -10,7 +10,7 @@ import https from "node:https";
 import fs from "node:fs";
 import path from "node:path";
 import { supabase } from "./supabase-client.js";
-import { buildRefreshPrompt } from "./curation-prompt.js";
+import { buildRefreshPrompt, buildConsiderationPrompt } from "./curation-prompt.js";
 import { bkkFeedDate } from "./curated-store.js";
 
 // ─── Image pool ────────────────────────────────────────────────────────────
@@ -2599,11 +2599,150 @@ function loadTodayRejectedLinks(): Set<string> {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Per-window editorial consideration (Claude Haiku — cheap pre-filter)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Load the last 14 days of manual add/remove actions + injected rules for feedback injection. */
+async function loadCurationFeedback(): Promise<string> {
+  try {
+    const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 3600 * 1000)
+      .toISOString().slice(0, 10);
+    const [feedbackResult, contextResult] = await Promise.all([
+      supabase
+        .from("curation_feedback")
+        .select("feed_date, action, title, source, tag")
+        .gte("feed_date", fourteenDaysAgo)
+        .order("created_at", { ascending: false })
+        .limit(100),
+      supabase
+        .from("curation_context")
+        .select("rule")
+        .order("created_at", { ascending: false })
+        .limit(20),
+    ]);
+
+    const feedback = feedbackResult.data ?? [];
+    const rules = contextResult.data ?? [];
+    if (feedback.length === 0 && rules.length === 0) return "";
+
+    const added   = feedback.filter((f) => f.action === "manual_add");
+    const removed = feedback.filter((f) => f.action === "manual_remove");
+    const lines: string[] = [];
+
+    if (added.length > 0) {
+      lines.push("MANUALLY ADDED (editor rescued these — pick similar stories):");
+      for (const a of added) {
+        lines.push(`  + [${a.tag ?? "?"}] ${a.title} (${a.source ?? "?"}) — ${a.feed_date}`);
+      }
+    }
+    if (removed.length > 0) {
+      lines.push("MANUALLY REMOVED (editor rejected these — avoid similar):");
+      for (const a of removed) {
+        lines.push(`  - [${a.tag ?? "?"}] ${a.title} (${a.source ?? "?"}) — ${a.feed_date}`);
+      }
+    }
+    if (rules.length > 0) {
+      lines.push("EDITORIAL RULES (always apply):");
+      for (const r of rules) {
+        lines.push(`  • ${r.rule}`);
+      }
+    }
+    return lines.join("\n");
+  } catch (e) {
+    console.warn("[rss] Could not load curation feedback:", e);
+    return "";
+  }
+}
+
+/**
+ * Lightweight Claude Haiku call to pre-filter a window's candidates.
+ * Returns a Set of 1-based indices that Claude considers worth keeping.
+ * Falls back to the first 15 items if the call fails.
+ */
+async function callClaudeForConsideration(
+  items: RawRSSItem[],
+  feedbackContext: string,
+): Promise<Set<number>> {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey || items.length === 0) {
+    return new Set(items.slice(0, 15).map((_, i) => i + 1));
+  }
+
+  const prompt = buildConsiderationPrompt(
+    items.map((it) => ({ title: it.title, source: it.source, description: it.description ?? "" })),
+    feedbackContext,
+  );
+
+  const body = JSON.stringify({
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 600,
+    messages: [{ role: "user", content: prompt }],
+  });
+  const bodyBuf = Buffer.from(body, "utf-8");
+
+  try {
+    const text = await new Promise<string>((resolve, reject) => {
+      const req = https.request(
+        {
+          hostname: "api.anthropic.com",
+          path: "/v1/messages",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+            "anthropic-version": "2023-06-01",
+            "Content-Length": bodyBuf.byteLength,
+          },
+          agent: new https.Agent({ keepAlive: false }),
+          timeout: 90_000,
+        },
+        (res) => {
+          let data = "";
+          res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
+          res.on("end", () => {
+            try {
+              const json = JSON.parse(data);
+              if (json.error) reject(new Error(`Anthropic API error: ${JSON.stringify(json.error)}`));
+              else {
+                const content = json?.content?.[0];
+                resolve(content?.type === "text" ? content.text : "");
+              }
+            } catch { reject(new Error(`Failed to parse response: ${data.slice(0, 200)}`)); }
+          });
+        }
+      );
+      req.on("timeout", () => req.destroy(new Error("Consideration call timed out after 90s")));
+      req.on("error", reject);
+      req.write(bodyBuf);
+      req.end();
+    });
+
+    // Extract JSON array of indices
+    const match = text.match(/\[[\d\s,]+\]/);
+    if (!match) {
+      console.warn("[rss] Consideration: no valid index array in response — falling back to first 15");
+      return new Set(items.slice(0, 15).map((_, i) => i + 1));
+    }
+    const indices: number[] = JSON.parse(match[0])
+      .filter((n: unknown) => typeof n === "number" && n >= 1 && n <= items.length);
+    console.log(`[rss] Consideration: ${indices.length}/${items.length} articles selected`);
+    return new Set(indices);
+  } catch (e) {
+    console.warn("[rss] Consideration call failed — falling back to first 15:", (e as Error).message);
+    return new Set(items.slice(0, 15).map((_, i) => i + 1));
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 function _writeAuditFile(
   toEnrich: RawRSSItem[],
   dedupAudit: DedupeAuditEntry[],
   decisions: ClaudeDecision[],
-  shortlistOnly = false
+  shortlistOnly = false,
+  /** 1-based indices of items Claude considered in this window (W1-W5 consideration pass) */
+  consideredIndices?: Set<number>,
 ): void {
   try {
     const dateStr = bkkFeedDate();
@@ -2626,8 +2765,19 @@ function _writeAuditFile(
       if (status === "ranked_out") {
         return { ...base, stage: "ranked_out", reason: `Unique story but ranked #${rank} — outside top 25 sent to Claude`, _raw: item };
       }
-      // Shortlist-only runs accumulate candidates without Claude review
+      // Shortlist/consideration windows (W1-W5)
       if (shortlistOnly) {
+        if (consideredIndices !== undefined) {
+          // Per-window Claude consideration has run — assign considered/not_considered
+          const claudeIdx = claudeIndexByTitle.get(item.title);
+          const isConsidered = claudeIdx !== undefined && consideredIndices.has(claudeIdx);
+          return {
+            ...base,
+            stage: isConsidered ? "considered" : "not_considered",
+            reason: isConsidered ? "Selected for consideration by Claude" : "Not selected in this window",
+            _raw: item,
+          };
+        }
         return { ...base, stage: "shortlisted", reason: "Pending final Claude review (Run 6)", _raw: item };
       }
       const claudeIdx = claudeIndexByTitle.get(item.title);
@@ -2684,9 +2834,22 @@ function _writeAuditFile(
       } catch { /* start fresh */ }
     }
 
-    // New window's entry wins if same link appears in both (fresher stage/reason/fetchN)
+    // New window's entry wins if same link appears in both (fresher stage/reason/fetchN),
+    // EXCEPT: once an article is "considered" by any window it stays "considered" —
+    // a later window marking it "not_considered" should not downgrade it.
     const byLink = new Map(existingArticles.map((a) => [a.link, a]));
-    for (const entry of taggedEntries) byLink.set(entry.link, entry);
+    for (const entry of taggedEntries) {
+      const existing = byLink.get(entry.link as string ?? "");
+      if (
+        existing?.stage === "considered" &&
+        (entry.stage === "not_considered" || entry.stage === "shortlisted")
+      ) {
+        // Preserve consideration from previous window; update fetchN/metadata but keep stage
+        byLink.set(entry.link, { ...entry, stage: "considered", reason: existing.reason });
+      } else {
+        byLink.set(entry.link, entry);
+      }
+    }
     const merged = Array.from(byLink.values())
       .sort((a, b) => (b.dedupScore ?? 0) - (a.dedupScore ?? 0));
 
@@ -3090,20 +3253,69 @@ export async function loadLiveArticles(
   _pendingRawItems = toEnrich;
   _pendingDedupAudit = dedupAudit;
 
+  // ── Stage 3: Per-window Claude consideration (all windows W1-W6) ────────────
+  // Load editorial feedback from last 14 days to inform Claude's choices.
+  const feedbackContext = await loadCurationFeedback();
+  console.log(`[rss] Running per-window consideration on ${toEnrich.length} candidates...`);
+  const consideredIndices = await callClaudeForConsideration(toEnrich, feedbackContext);
+
+  // Save this window's consideration results (considered/not_considered) to disk + Supabase.
+  // The sticky-merge logic in _writeAuditFile ensures "considered" status is never downgraded.
+  _writeAuditFile(toEnrich, dedupAudit, [], true, consideredIndices);
+  _pendingRawItems = null;
+  _pendingDedupAudit = null;
+
   if (shortlistOnly) {
-    // Accumulate candidates without calling Claude — Run 6 will do the full selection.
-    console.log(`[rss] shortlist-only window — skipping Claude, saving ${toEnrich.length} candidates`);
-    _writeAuditFile(toEnrich, dedupAudit, [], true);
-    _pendingRawItems = null;
-    _pendingDedupAudit = null;
+    // W1-W5: consideration done — final selection deferred to W6.
     return [];
   }
 
-  const { articles: enriched, decisions } = await enrichWithClaude(toEnrich, alreadyPublished, publishToday, promptAlreadyPublished);
+  // ── Stage 4: W6 final selection — load ALL considered candidates from all windows ──
+  const dateStr = bkkFeedDate();
+  const { data: consideredRows } = await supabase
+    .from("shortlist_candidates")
+    .select("title, source, description, pub_date, link, image_url, stage, reason, raw_data")
+    .eq("feed_date", dateStr)
+    .eq("stage", "considered")
+    .order("idx", { ascending: true });
 
-  _writeAuditFile(toEnrich, dedupAudit, decisions);
-  _pendingRawItems = null;
-  _pendingDedupAudit = null;
+  const consideredPool: RawRSSItem[] = (consideredRows ?? []).map((row) => ({
+    title: row.title as string,
+    description: ((row.raw_data as Record<string, unknown> | null)?.description as string) ?? "",
+    link: row.link as string,
+    pubDate: row.pub_date as string,
+    source: row.source as string,
+    imageUrl: (row.raw_data as Record<string, unknown> | null)?.imageUrl as string | undefined,
+  }));
+
+  console.log(`[rss] W6 final selection: ${consideredPool.length} considered candidates from all windows`);
+
+  if (consideredPool.length === 0) {
+    console.warn("[rss] W6: no considered candidates found — falling back to this window's toEnrich");
+    const { articles: enriched, decisions } = await enrichWithClaude(toEnrich, alreadyPublished, publishToday, promptAlreadyPublished);
+    return enriched;
+  }
+
+  const { articles: enriched, decisions } = await enrichWithClaude(consideredPool, alreadyPublished, publishToday, promptAlreadyPublished);
+
+  // Mark the selected articles in shortlist_candidates for the candidates review page
+  const selectedLinks = new Set(
+    decisions
+      .filter((d) => d.selected)
+      .map((d) => consideredPool[d.sourceIndex - 1]?.link)
+      .filter(Boolean)
+  );
+  if (selectedLinks.size > 0) {
+    supabase
+      .from("shortlist_candidates")
+      .update({ stage: "selected", reason: "Selected for publication by Claude" })
+      .eq("feed_date", dateStr)
+      .in("link", Array.from(selectedLinks))
+      .then(({ error }) => {
+        if (error) console.warn("[rss] Failed to mark selected candidates in Supabase:", error.message);
+        else console.log(`[rss] ✓ Marked ${selectedLinks.size} candidates as selected in Supabase`);
+      });
+  }
 
   return enriched;
 }

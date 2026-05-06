@@ -209,3 +209,43 @@ Respond with ONLY the JSON array — no markdown, no code fences, no rejected en
 ARTICLES:
 ${articleList}`;
 }
+
+// ── Per-window Consideration (Haiku — lightweight pre-filter) ────────────────
+
+export interface ConsiderationItem {
+  title: string;
+  source: string;
+  description: string;
+}
+
+export function buildConsiderationPrompt(
+  items: ConsiderationItem[],
+  feedbackContext: string,
+): string {
+  const numbered = items
+    .map((it, i) => `${i + 1}. [${it.source}] "${it.title}"${it.description ? ` — ${it.description.slice(0, 150)}` : ""}`)
+    .join("\n");
+
+  const feedbackBlock = feedbackContext
+    ? `\n---\n\n## EDITORIAL FEEDBACK (last 14 days — learn from these patterns)\n\n${feedbackContext}\n`
+    : "";
+
+  return `${CURATION_BRIEF}${feedbackBlock}
+---
+
+## YOUR TASK — WINDOW SHORTLISTING
+
+You are screening a batch of RSS articles for potential inclusion in the Popcorn daily feed. This is a pre-filter, not the final decision — err toward inclusion.
+
+Pick 8-15 articles that have genuine Popcorn potential. A borderline story included now can be dropped later; a missed story cannot be recovered without manual work.
+
+**Include:** music events/releases/tours, Film & TV trailers/IP moments, internet culture, sports with cultural angle, fashion/design collabs, fun/quirky/shareable stories, surprising celebrity moments, tech with mass-cultural impact.
+
+**Exclude:** political process news (senators, bills, votes), crime without celebrity hook, incremental product updates, inside-baseball industry news, low-signal viral-of-the-day.
+
+Return ONLY a JSON array of 1-based indices, e.g.: [1, 5, 12, 23, 31]
+No explanation. No prose. Just the array.
+
+Articles (${items.length} total):
+${numbered}`;
+}
