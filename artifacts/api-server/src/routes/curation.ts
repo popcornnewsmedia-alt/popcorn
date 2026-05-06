@@ -437,6 +437,41 @@ router.get("/curation/candidates", async (req, res) => {
   }
 });
 
+// ─── DELETE /api/curation/candidates ─────────────────────────────────────────
+// Wipes all candidate data for a feedDate: shortlist_candidates rows in Supabase
+// AND the local uncurated JSON files on disk. Used to reset a day mid-curation.
+
+router.delete("/curation/candidates", async (req, res) => {
+  try {
+    const feedDate = (req.query.feedDate as string) ?? "";
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(feedDate)) {
+      res.status(400).json({ ok: false, error: "Provide ?feedDate=YYYY-MM-DD" });
+      return;
+    }
+
+    const { error } = await supabase
+      .from("shortlist_candidates")
+      .delete()
+      .eq("feed_date", feedDate);
+    if (error) throw error;
+
+    const dir = path.resolve(process.cwd(), "data", "uncurated");
+    let removed = 0;
+    if (fs.existsSync(dir)) {
+      for (const f of fs.readdirSync(dir)) {
+        if (f.includes(feedDate)) {
+          fs.unlinkSync(path.join(dir, f));
+          removed += 1;
+        }
+      }
+    }
+    res.json({ ok: true, feedDate, filesRemoved: removed });
+  } catch (err) {
+    console.error("[curation/candidates DELETE] error:", (err as Error).message);
+    res.status(500).json({ ok: false, error: (err as Error).message });
+  }
+});
+
 // ─── GET /api/curation/feed ──────────────────────────────────────────────────
 
 router.get("/curation/feed", async (req, res) => {
