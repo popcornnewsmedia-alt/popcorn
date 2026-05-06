@@ -9,7 +9,6 @@
 import https from "node:https";
 import fs from "node:fs";
 import path from "node:path";
-import { spawn } from "node:child_process";
 import { supabase } from "./supabase-client.js";
 import { buildRefreshPrompt } from "./curation-prompt.js";
 
@@ -2282,10 +2281,10 @@ async function enrichWithClaude(
     )
     .join("\n\n---\n\n");
 
-  // ── Helper: call Anthropic API via curl subprocess ──────────────────────────
-  // Node.js networking (both undici fetch and node:https) becomes unreliable
-  // after batch RSS fetches. Spawning curl as a subprocess completely isolates
-  // the Claude API call from any in-process networking state.
+  // ── Helper: call Anthropic API via node:https ────────────────────────────────
+  // Uses a fresh https.Agent (keepAlive: false) per request so each Claude call
+  // gets its own TCP connection, fully isolated from the undici pool used by
+  // the RSS batch fetches above.
   const callClaude = (userPrompt: string, maxTokens: number): Promise<string> =>
     new Promise<string>((resolve, reject) => {
       const body = JSON.stringify({
@@ -2293,45 +2292,43 @@ async function enrichWithClaude(
         max_tokens: maxTokens,
         messages: [{ role: "user", content: userPrompt }],
       });
-      const tmpFile = `/tmp/claude-req-${Date.now()}-${Math.random().toString(36).slice(2)}.json`;
-      fs.writeFileSync(tmpFile, body);
-
-      const curl = spawn("curl", [
-        "-s", "--http1.1", "--max-time", "180",
-        "-X", "POST",
-        "https://api.anthropic.com/v1/messages",
-        "-H", "Content-Type: application/json",
-        "-H", `x-api-key: ${apiKey}`,
-        "-H", "anthropic-version: 2023-06-01",
-        "-d", `@${tmpFile}`,
-      ]);
-
-      let stdout = "";
-      let stderr = "";
-      curl.stdout.on("data", (chunk: Buffer) => { stdout += chunk.toString(); });
-      curl.stderr.on("data", (chunk: Buffer) => { stderr += chunk.toString(); });
-      curl.on("close", (code) => {
-        try { fs.unlinkSync(tmpFile); } catch {}
-        if (code !== 0) {
-          reject(new Error(`curl exited with code ${code}: ${stderr.slice(0, 300)}`));
-        } else {
-          try {
-            const json = JSON.parse(stdout);
-            if (json.error) {
-              reject(new Error(`Anthropic API error: ${JSON.stringify(json.error).slice(0, 300)}`));
-            } else {
-              const content = json?.content?.[0];
-              resolve(content?.type === "text" ? content.text : "");
+      const bodyBuf = Buffer.from(body, "utf-8");
+      const req = https.request(
+        {
+          hostname: "api.anthropic.com",
+          path: "/v1/messages",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+            "anthropic-version": "2023-06-01",
+            "Content-Length": bodyBuf.byteLength,
+          },
+          agent: new https.Agent({ keepAlive: false }),
+          timeout: 180_000,
+        },
+        (res) => {
+          let data = "";
+          res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
+          res.on("end", () => {
+            try {
+              const json = JSON.parse(data);
+              if (json.error) {
+                reject(new Error(`Anthropic API error: ${JSON.stringify(json.error).slice(0, 300)}`));
+              } else {
+                const content = json?.content?.[0];
+                resolve(content?.type === "text" ? content.text : "");
+              }
+            } catch {
+              reject(new Error(`Failed to parse Anthropic response: ${data.slice(0, 200)}`));
             }
-          } catch {
-            reject(new Error(`Failed to parse Anthropic response: ${stdout.slice(0, 200)}`));
-          }
+          });
         }
-      });
-      curl.on("error", (err) => {
-        try { fs.unlinkSync(tmpFile); } catch {}
-        reject(err);
-      });
+      );
+      req.on("timeout", () => req.destroy(new Error("Claude API request timed out after 180s")));
+      req.on("error", reject);
+      req.write(bodyBuf);
+      req.end();
     });
 
   // ── Call 1: Selection ────────────────────────────────────────────────────────
@@ -3206,45 +3203,43 @@ export async function enrichSelectedItems(items: RawRSSItem[], publishToday = fa
         max_tokens: maxTokens,
         messages: [{ role: "user", content: userPrompt }],
       });
-      const tmpFile = `/tmp/claude-req-${Date.now()}-${Math.random().toString(36).slice(2)}.json`;
-      fs.writeFileSync(tmpFile, body);
-
-      const curl = spawn("curl", [
-        "-s", "--http1.1", "--max-time", "180",
-        "-X", "POST",
-        "https://api.anthropic.com/v1/messages",
-        "-H", "Content-Type: application/json",
-        "-H", `x-api-key: ${apiKey}`,
-        "-H", "anthropic-version: 2023-06-01",
-        "-d", `@${tmpFile}`,
-      ]);
-
-      let stdout = "";
-      let stderr = "";
-      curl.stdout.on("data", (chunk: Buffer) => { stdout += chunk.toString(); });
-      curl.stderr.on("data", (chunk: Buffer) => { stderr += chunk.toString(); });
-      curl.on("close", (code) => {
-        try { fs.unlinkSync(tmpFile); } catch {}
-        if (code !== 0) {
-          reject(new Error(`curl exited with code ${code}: ${stderr.slice(0, 300)}`));
-        } else {
-          try {
-            const json = JSON.parse(stdout);
-            if (json.error) {
-              reject(new Error(`Anthropic API error: ${JSON.stringify(json.error).slice(0, 300)}`));
-            } else {
-              const content = json?.content?.[0];
-              resolve(content?.type === "text" ? content.text : "");
+      const bodyBuf = Buffer.from(body, "utf-8");
+      const req = https.request(
+        {
+          hostname: "api.anthropic.com",
+          path: "/v1/messages",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+            "anthropic-version": "2023-06-01",
+            "Content-Length": bodyBuf.byteLength,
+          },
+          agent: new https.Agent({ keepAlive: false }),
+          timeout: 180_000,
+        },
+        (res) => {
+          let data = "";
+          res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
+          res.on("end", () => {
+            try {
+              const json = JSON.parse(data);
+              if (json.error) {
+                reject(new Error(`Anthropic API error: ${JSON.stringify(json.error).slice(0, 300)}`));
+              } else {
+                const content = json?.content?.[0];
+                resolve(content?.type === "text" ? content.text : "");
+              }
+            } catch {
+              reject(new Error(`Failed to parse Anthropic response: ${data.slice(0, 200)}`));
             }
-          } catch {
-            reject(new Error(`Failed to parse Anthropic response: ${stdout.slice(0, 200)}`));
-          }
+          });
         }
-      });
-      curl.on("error", (err) => {
-        try { fs.unlinkSync(tmpFile); } catch {}
-        reject(err);
-      });
+      );
+      req.on("timeout", () => req.destroy(new Error("Claude API request timed out after 180s")));
+      req.on("error", reject);
+      req.write(bodyBuf);
+      req.end();
     });
 
   const today = new Date().toLocaleDateString("en-US", {
