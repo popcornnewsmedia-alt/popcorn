@@ -1,40 +1,16 @@
 name: Popcorn Curation Windows
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 6 daily windows for Bangkok curation (BKK = UTC+7).
-# Each window covers a fixed 4-hour slice of the BKK feed day.
-# Feed day: 7:00pm BKK → 7:00pm BKK next day (UTC 12:00 → UTC 12:00).
+# SCHEDULE MOVED TO RAILWAY (node-cron inside the api-server process).
+# The scheduled triggers below are DISABLED — curation now runs on-time from
+# within the Railway container, eliminating GitHub Actions cron delays.
 #
-#   Run 1  BKK 11:00pm prev day  (UTC 16:00 prev day)  pulls 7:00pm-11:00pm
-#   Run 2  BKK  3:00am           (UTC 20:00 prev day)  pulls 11:00pm-3:00am
-#   Run 3  BKK  7:00am           (UTC 00:00)           pulls 3:00am-7:00am
-#   Run 4  BKK 11:00am           (UTC 04:00)           pulls 7:00am-11:00am
-#   Run 5  BKK  3:00pm           (UTC 08:00)           pulls 11:00am-3:00pm
-#   Run 6  BKK  7:00pm  ← FINAL  (UTC 12:00)           pulls 3:00pm-7:00pm
-#
-# Runs 1-5: shortlist-only — fetch + dedup + save candidates, NO Claude, NO publishing.
-# Run 6:    final window — Claude selects from full 24h pool, enriches, publishes.
-# Manual review at ~7:30pm BKK after Run 6 finishes.
-#
-# Window boundaries are computed by FLOORING current UTC to the nearest 4-hour
-# boundary at minute :00. This way GitHub Actions cron delays (typically 5-15min)
-# don't shift the window — Run 1 always pulls 12:00-16:00 UTC even if it actually
-# fires at 16:08 UTC.
-#
-# Required GitHub secret: CURATION_API_URL
-#   (e.g. https://workspaceapi-server-production-d088.up.railway.app)
+# This workflow is kept for MANUAL TRIGGERS ONLY (workflow_dispatch).
+# Use it to force a final-window run (ad-hoc publish or testing).
 # ─────────────────────────────────────────────────────────────────────────────
 
 on:
-  schedule:
-    - cron: "0 16 * * *"   # Run 1 — BKK 11:00pm
-    - cron: "0 20 * * *"   # Run 2 — BKK  3:00am
-    - cron: "0  0 * * *"   # Run 3 — BKK  7:00am
-    - cron: "0  4 * * *"   # Run 4 — BKK 11:00am
-    - cron: "0  8 * * *"   # Run 5 — BKK  3:00pm
-    - cron: "0 12 * * *"   # Run 6 — BKK  7:00pm (final)
-
-  # Manual trigger — useful for testing or ad-hoc re-runs
+  # Manual trigger only — scheduled crons run inside Railway via node-cron
   workflow_dispatch:
     inputs:
       window_hours:

@@ -5,6 +5,7 @@ import router from "./routes";
 import { logger } from "./lib/logger";
 import { startEnrichment } from "./lib/article-store.js";
 import { loadFromSupabase } from "./lib/curated-store.js";
+import { startCurationScheduler } from "./lib/curation-scheduler.js";
 
 const app: Express = express();
 
@@ -53,6 +54,12 @@ loadFromSupabase().catch((e) => console.error("[api] loadFromSupabase failed:", 
 // Only run the enrichment/curation pipeline when explicitly enabled.
 if (process.env.ENABLE_ENRICHMENT === "true") {
   startEnrichment().catch((e) => console.error("[api] startEnrichment failed:", e));
+}
+
+// Start the internal curation scheduler in production.
+// This replaces the GitHub Actions cron workflow — no external delays.
+if (process.env.NODE_ENV !== "development") {
+  startCurationScheduler();
 }
 
 export default app;
