@@ -135,6 +135,26 @@ function dateStr(daysAgo = 0): string {
   return d.toISOString().slice(0, 10);
 }
 
+/**
+ * The "BKK feed day" — the date label used for bucketing articles in the feed.
+ *
+ * Feed days run 7:00pm BKK → 7:00pm BKK (UTC 12:00 → UTC 12:00 next day).
+ * Run 1 fires at 11:00pm BKK May 6 (16:00 UTC May 6) — articles belong to May 7's feed.
+ * Run 6 fires at  7:00pm BKK May 7 (12:00 UTC May 7) — articles still belong to May 7.
+ *
+ * Practical UTC cutoff: 14:00 UTC. Anything fetched at-or-after gets routed to next UTC day.
+ * The 2-hour buffer between Run 6 (12:00 UTC) and Run 1 (16:00 UTC) tolerates
+ * any reasonable GitHub Actions cron delay.
+ */
+export function bkkFeedDate(now: Date = new Date()): string {
+  const utcMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+  const d = new Date(now.getTime());
+  if (utcMinutes >= 14 * 60) {
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+  return d.toISOString().slice(0, 10);
+}
+
 function feedPath(date: string): string {
   return path.join("/tmp", `popcorn-curated-${date}.json`);
 }
@@ -501,7 +521,7 @@ function _loadFromLocalFiles(): void {
 }
 
 export function resetIfNewDay(): void {
-  const today = dateStr(0);
+  const today = bkkFeedDate();
   if (!_feeds.has(today)) _feeds.set(today, { date: today, articles: [] });
   for (const key of _feeds.keys()) {
     const age = Math.round((Date.now() - new Date(key).getTime()) / 86_400_000);
@@ -540,7 +560,7 @@ export async function mergeFeed(
   options: { stage?: 'dev' | 'prod' } = {},
 ): Promise<number> {
   resetIfNewDay();
-  const today = dateStr(0);
+  const today = bkkFeedDate();
   const existingTitles = new Set(
     [..._feeds.values()]
       .flatMap((f) => f.articles)

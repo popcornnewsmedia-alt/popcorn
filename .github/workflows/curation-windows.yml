@@ -1,16 +1,23 @@
 name: Popcorn Curation Windows
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 5 daily windows for Bangkok curation (all times BKK = UTC+7):
+# 6 daily windows for Bangkok curation (BKK = UTC+7).
+# Each window covers a fixed 4-hour slice of the BKK feed day.
+# Feed day: 7:00pm BKK → 7:00pm BKK next day (UTC 12:00 → UTC 12:00).
 #
-#   W1  BKK 12:30am  (UTC 17:30 prev day)  pulls 7:30pm→12:30am
-#   W2  BKK  5:30am  (UTC 22:30 prev day)  pulls 12:30am→5:30am
-#   W3  BKK 10:30am  (UTC 03:30)           pulls 5:30am→10:30am
-#   W4  BKK  3:30pm  (UTC 08:30)           pulls 10:30am→3:30pm
-#   W5  BKK  7:30pm  (UTC 12:30) ← FINAL  pulls 3:30pm→7:30pm → full publish
+#   Run 1  BKK 11:00pm prev day  (UTC 16:00 prev day)  pulls 7:00pm-11:00pm
+#   Run 2  BKK  3:00am           (UTC 20:00 prev day)  pulls 11:00pm-3:00am
+#   Run 3  BKK  7:00am           (UTC 00:00)           pulls 3:00am-7:00am
+#   Run 4  BKK 11:00am           (UTC 04:00)           pulls 7:00am-11:00am
+#   Run 5  BKK  3:00pm           (UTC 08:00)           pulls 11:00am-3:00pm
+#   Run 6  BKK  7:00pm  ← FINAL  (UTC 12:00)           pulls 3:00pm-7:00pm
 #
-# W1–W4: incremental fetch + select, publish to dev
-# W5:    final fetch + select, publish to dev (full day complete)
+# Manual review at ~7:30pm BKK after Run 6 finishes.
+#
+# Window boundaries are computed by FLOORING current UTC to the nearest 4-hour
+# boundary at minute :00. This way GitHub Actions cron delays (typically 5-15min)
+# don't shift the window — Run 1 always pulls 12:00-16:00 UTC even if it actually
+# fires at 16:08 UTC.
 #
 # Required GitHub secret: CURATION_API_URL
 #   (e.g. https://workspaceapi-server-production-d088.up.railway.app)
@@ -18,37 +25,56 @@ name: Popcorn Curation Windows
 
 on:
   schedule:
-    - cron: "30 17 * * *"   # W1 — BKK 12:30am
-    - cron: "30 22 * * *"   # W2 — BKK  5:30am
-    - cron: "30  3 * * *"   # W3 — BKK 10:30am
-    - cron: "30  8 * * *"   # W4 — BKK  3:30pm
-    - cron: "30 12 * * *"   # W5 — BKK  7:30pm (final)
+    - cron: "0 16 * * *"   # Run 1 — BKK 11:00pm
+    - cron: "0 20 * * *"   # Run 2 — BKK  3:00am
+    - cron: "0  0 * * *"   # Run 3 — BKK  7:00am
+    - cron: "0  4 * * *"   # Run 4 — BKK 11:00am
+    - cron: "0  8 * * *"   # Run 5 — BKK  3:00pm
+    - cron: "0 12 * * *"   # Run 6 — BKK  7:00pm (final)
 
   # Manual trigger — useful for testing or ad-hoc re-runs
   workflow_dispatch:
     inputs:
       window_hours:
-        description: "Look-back window in hours"
+        description: "Window size in hours (default 4)"
         required: false
-        default: "5"
+        default: "4"
 
 jobs:
   curation-window:
     name: Curation window
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     steps:
       - name: Compute time window
         run: |
-          WINDOW_END=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          HOURS="${{ inputs.window_hours || '5' }}"
-          # Add 30 min overlap so no articles fall between windows
-          OVERLAP_MINS=$(( ($HOURS * 60) + 30 ))
-          WINDOW_START=$(date -u -d "${OVERLAP_MINS} minutes ago" +"%Y-%m-%dT%H:%M:%SZ")
+          # Floor current UTC to the nearest 4-hour boundary so cron delays
+          # don't shift the window. 14400 seconds = 4 hours.
+          NOW_EPOCH=$(date -u +%s)
+          WINDOW_HOURS="${{ inputs.window_hours || '4' }}"
+          WINDOW_SECONDS=$(( WINDOW_HOURS * 3600 ))
+          OVERLAP_SECONDS=1800   # 30-minute backward overlap to catch boundary articles
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Manual run: use current time as window end (no flooring)
+            WINDOW_END_EPOCH=$NOW_EPOCH
+          else
+            # Scheduled run: floor to nearest 4-hour boundary
+            WINDOW_END_EPOCH=$(( (NOW_EPOCH / 14400) * 14400 ))
+          fi
+
+          WINDOW_START_EPOCH=$(( WINDOW_END_EPOCH - WINDOW_SECONDS - OVERLAP_SECONDS ))
+
+          WINDOW_END=$(date -u -d "@$WINDOW_END_EPOCH" +"%Y-%m-%dT%H:%M:%SZ")
+          WINDOW_START=$(date -u -d "@$WINDOW_START_EPOCH" +"%Y-%m-%dT%H:%M:%SZ")
+
+          DELAY_MINS=$(( (NOW_EPOCH - WINDOW_END_EPOCH) / 60 ))
+
           echo "WINDOW_START=$WINDOW_START" >> $GITHUB_ENV
           echo "WINDOW_END=$WINDOW_END"     >> $GITHUB_ENV
-          echo "Window: $WINDOW_START → $WINDOW_END"
+          echo "Window:    $WINDOW_START → $WINDOW_END"
+          echo "Cron delay: ${DELAY_MINS} min"
 
       - name: Trigger curation refresh
         run: |

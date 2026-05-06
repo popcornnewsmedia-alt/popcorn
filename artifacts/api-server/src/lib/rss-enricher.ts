@@ -11,6 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { supabase } from "./supabase-client.js";
 import { buildRefreshPrompt } from "./curation-prompt.js";
+import { bkkFeedDate } from "./curated-store.js";
 
 // ─── Image pool ────────────────────────────────────────────────────────────
 // Curated Unsplash photos that work well as article hero images.
@@ -2582,7 +2583,7 @@ function cachePath(): string {
 /** Returns the set of article links Claude already rejected in today's runs. */
 function loadTodayRejectedLinks(): Set<string> {
   try {
-    const dateStr = new Date().toISOString().slice(0, 10);
+    const dateStr = bkkFeedDate();
     const auditPath = `/tmp/popcorn-audit-${dateStr}.json`;
     if (!fs.existsSync(auditPath)) return new Set();
     const data = JSON.parse(fs.readFileSync(auditPath, "utf-8"));
@@ -2604,7 +2605,7 @@ function _writeAuditFile(
   decisions: ClaudeDecision[]
 ): void {
   try {
-    const dateStr = new Date().toISOString().slice(0, 10);
+    const dateStr = bkkFeedDate();
     const auditPath = `/tmp/popcorn-audit-${dateStr}.json`;
     const decisionByIdx = new Map(decisions.map((d) => [d.sourceIndex, d]));
     const claudeIndexByTitle = new Map(toEnrich.map((item, i) => [item.title, i + 1]));
