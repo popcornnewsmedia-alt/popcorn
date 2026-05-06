@@ -2192,6 +2192,40 @@ interface ClaudeDecision {
  * Fixes literal newlines/tabs inside JSON string values — a common Claude output issue.
  * Iterates character-by-character to stay inside string boundaries correctly.
  */
+/**
+ * Extracts the first complete JSON array of objects (or empty array []) from
+ * a string that may contain a reasoning preamble before the actual JSON.
+ * Uses bracket counting to avoid the greedy-regex trap where [n] references
+ * in Claude's reasoning preamble get merged with the real array.
+ */
+function extractJsonArray(text: string): string | null {
+  let searchFrom = 0;
+  while (searchFrom < text.length) {
+    const startIdx = text.indexOf("[", searchFrom);
+    if (startIdx === -1) return null;
+    // Walk forward counting brackets to find the matching ]
+    let depth = 0;
+    let inStr = false;
+    let esc = false;
+    let endIdx = -1;
+    for (let i = startIdx; i < text.length; i++) {
+      const c = text[i];
+      if (esc) { esc = false; continue; }
+      if (c === "\\" && inStr) { esc = true; continue; }
+      if (c === '"') { inStr = !inStr; continue; }
+      if (inStr) continue;
+      if (c === "[") depth++;
+      else if (c === "]") { depth--; if (depth === 0) { endIdx = i; break; } }
+    }
+    if (endIdx === -1) return null;
+    const candidate = text.slice(startIdx, endIdx + 1);
+    // Accept arrays of objects [{ ... }] or empty arrays []
+    if (/^\[\s*(\{|])/.test(candidate)) return candidate;
+    searchFrom = startIdx + 1;
+  }
+  return null;
+}
+
 function sanitizeClaudeJson(raw: string): string {
   let out = "";
   let inString = false;
@@ -2343,9 +2377,9 @@ async function enrichWithClaude(
   console.log("[rss] Call 1/2 — selecting articles...");
   const selectionText = await callClaude(selectionPrompt, 2000);
 
-  const selectionMatch = selectionText.match(/\[[\s\S]*\]/);
-  if (!selectionMatch) throw new Error("Call 1: Claude did not return a JSON array");
-  const selectionParsed: any[] = JSON.parse(sanitizeClaudeJson(selectionMatch[0]));
+  const selectionArray = extractJsonArray(selectionText);
+  if (!selectionArray) throw new Error("Call 1: Claude did not return a JSON array");
+  const selectionParsed: any[] = JSON.parse(sanitizeClaudeJson(selectionArray));
 
   const selectedIndices = selectionParsed.map((x: any) => x.sourceIndex as number).filter(Boolean);
   const selectedRawItems = selectedIndices.map((idx) => rawItems[idx - 1]).filter(Boolean);
@@ -2425,9 +2459,9 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
       .join("\n\n---\n\n");
 
     const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 10000);
-    const batchMatch = batchText.match(/\[[\s\S]*\]/);
-    if (!batchMatch) throw new Error(`Call 2 batch ${b + 1}: Claude did not return a JSON array`);
-    selectedItems.push(...JSON.parse(sanitizeClaudeJson(batchMatch[0])));
+    const batchArray = extractJsonArray(batchText);
+    if (!batchArray) throw new Error(`Call 2 batch ${b + 1}: Claude did not return a JSON array`);
+    selectedItems.push(...JSON.parse(sanitizeClaudeJson(batchArray)));
   }
 
   // sourceIndex from each batch is globally numbered (offset + i + 1),
@@ -3305,9 +3339,9 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
       .join("\n\n---\n\n");
 
     const raw = await callClaude(makePrompt(articleList, batchItems.length), 10000);
-    const match = raw.match(/\[[\s\S]*\]/);
-    if (!match) throw new Error(`Enrichment batch ${b + 1}: no JSON array in response`);
-    const parsed = JSON.parse(sanitizeClaudeJson(match[0]));
+    const arrayStr = extractJsonArray(raw);
+    if (!arrayStr) throw new Error(`Enrichment batch ${b + 1}: no JSON array in response`);
+    const parsed = JSON.parse(sanitizeClaudeJson(arrayStr));
     for (const p of parsed) {
       p._rawItem = batchItems[(p.sourceIndex - 1) - offset] ?? batchItems[p.sourceIndex - 1];
     }
