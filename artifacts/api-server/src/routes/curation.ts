@@ -370,8 +370,67 @@ router.post("/curation/promote", async (req, res) => {
 router.get("/curation/candidates", async (req, res) => {
   try {
     const feedDate = (req.query.feedDate as string) ?? new Date().toISOString().slice(0, 10);
+    const format   = (req.query.format  as string) ?? "json";
     const candidates = await loadUncuratedArticles(feedDate);
-    res.json({ ok: true, feedDate, count: candidates.length, candidates });
+
+    if (format !== "txt") {
+      res.json({ ok: true, feedDate, count: candidates.length, candidates });
+      return;
+    }
+
+    // ── Plain-text view for browser review ───────────────────────────────────
+    const BORDER = "═".repeat(100);
+    const decodeHtml = (s: string) =>
+      s.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+       .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+       .replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+
+    const selected   = candidates.filter((a) => a.stage === "selected");
+    const addable    = candidates.filter((a) => a.stage === "rejected_by_claude" || a.stage === "ranked_out");
+    const deduped    = candidates.filter((a) => a.stage === "deduplicated");
+
+    const lines: string[] = [];
+    lines.push(BORDER);
+    lines.push(`  POPCORN CANDIDATES — ${feedDate}`);
+    lines.push(`  ${candidates.length} total   ${selected.length} selected   ${addable.length} available to add   ${deduped.length} grouped as duplicates`);
+    lines.push(`  To add: POST /api/curation/add  { "feedDate": "${feedDate}", "indices": [N, N, ...] }`);
+    lines.push(BORDER);
+    lines.push("");
+
+    lines.push(`── SELECTED BY CLAUDE (${selected.length}) ${"─".repeat(68)}`);
+    selected.forEach((a, i) => {
+      const score = Math.round(a.dedupScore ?? 0);
+      const src   = (a.source ?? "").slice(0, 28).padEnd(28);
+      lines.push(`  #${String(i + 1).padEnd(4)} score:${String(score).padEnd(4)} ${src}  ${decodeHtml(a.title)}`);
+    });
+    lines.push("");
+
+    lines.push(`── AVAILABLE TO ADD — rejected or ranked-out (${addable.length}) ${"─".repeat(40)}`);
+    lines.push(`   idx   score  source                        stage                title`);
+    lines.push(`   ${"─".repeat(95)}`);
+    addable.forEach((a) => {
+      const idx   = String(candidates.indexOf(a) + 1).padEnd(5);
+      const score = String(Math.round(a.dedupScore ?? 0)).padEnd(6);
+      const src   = (a.source ?? "").slice(0, 28).padEnd(28);
+      const stage = a.stage === "ranked_out" ? "ranked_out  " : "rejected    ";
+      lines.push(`   ${idx} ${score} ${src}  ${stage}  ${decodeHtml(a.title)}`);
+      if (a.stage === "rejected_by_claude" && a.reason) {
+        lines.push(`${"".padEnd(72)}↳ ${a.reason.slice(0, 80)}`);
+      }
+    });
+    lines.push("");
+
+    if (deduped.length > 0) {
+      lines.push(`── GROUPED AS DUPLICATES (${deduped.length}) ${"─".repeat(68)}`);
+      deduped.forEach((a) => {
+        const src = (a.source ?? "").slice(0, 28).padEnd(28);
+        lines.push(`   ${src}  ${decodeHtml(a.title).slice(0, 65)}`);
+        if (a.reason) lines.push(`${"".padEnd(32)}↳ ${a.reason.slice(0, 85)}`);
+      });
+    }
+
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.send(lines.join("\n"));
   } catch (err) {
     console.error("[curation/candidates] error:", (err as Error).message);
     res.status(500).json({ ok: false, error: (err as Error).message });
