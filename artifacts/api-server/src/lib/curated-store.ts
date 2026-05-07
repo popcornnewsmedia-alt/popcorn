@@ -259,6 +259,17 @@ async function processImagesForArticles(
           article.imageCredit = result.credit;
           processed++;
         } else {
+          // Don't ship a broken external URL. Unsplash photos can be deleted
+          // (404), Wikipedia CDN drops connections from some networks (Saka
+          // article May 7). Better to publish without an image than with a
+          // dead one — manual review can patch via /api/curation/set-image.
+          console.warn(
+            `[image-processor] dropping broken URL for "${article.title?.slice(0, 60) ?? "?"}": ${originalUrl.slice(0, 80)}`,
+          );
+          article.sourceImageUrl = originalUrl;
+          article.imageUrl = "";
+          article.imageWidth = undefined;
+          article.imageHeight = undefined;
           failed++;
         }
       }),
@@ -557,10 +568,13 @@ function interleaveByCategory(articles: EnrichedArticle[]): EnrichedArticle[] {
 
 export async function mergeFeed(
   newArticles: EnrichedArticle[],
-  options: { stage?: 'dev' | 'prod' } = {},
+  options: { stage?: 'dev' | 'prod'; feedDate?: string } = {},
 ): Promise<number> {
   resetIfNewDay();
-  const today = bkkFeedDate();
+  // Honour an explicit feedDate (e.g. manual /api/curation/add for "today" when
+  // the BKK feed-day cutoff has already rolled over to tomorrow). Falls back to
+  // the auto-derived BKK feed date for the standard scheduled flow.
+  const today = options.feedDate ?? bkkFeedDate();
   const existingTitles = new Set(
     [..._feeds.values()]
       .flatMap((f) => f.articles)
@@ -582,7 +596,7 @@ export async function mergeFeed(
 
   for (const a of toAdd) _allPublishedTitles.add(a.title);
   const bucket = _feeds.get(today);
-  console.log(`[curated] Added ${toAdd.length} articles → today has ${bucket?.articles.length ?? 0} stories.`);
+  console.log(`[curated] Added ${toAdd.length} articles to ${today} → that day has ${bucket?.articles.length ?? 0} stories.`);
   return toAdd.length;
 }
 

@@ -232,6 +232,10 @@ Concrete examples from past curation decisions. Use these to calibrate judgment 
 ### Recurring celebrity legal sagas without final resolution
 - Britney Spears DUI arrest/plea → ongoing legal story the audience is fatigued by; no verdict, no acquittal, no prison time = no new event
 - Blake Lively / Justin Baldoni lawsuit → ran for months; settlement IS a new development but if the story has run too long and readers are worn down, still borderline
+
+### Mid-tier celebrity vs small-name creator disputes
+- KJ Apa publicly accuses small-name creator "Mr. Fantasy" of stealing his likeness → neither side carries Popcorn-level cultural reach; dispute is parochial; no platform/policy angle
+- RULE: "C/D-list celebrity calls out micro-influencer or online-personality" = SKIP. Skip unless ONE side is genuinely A-list, OR the dispute opens a real platform/legal/policy angle (deepfakes legislation, platform moderation, label-rights). Image-theft beef alone is not enough — it's a parochial spat dressed up as news.
 - RULE: Celebrity legal sagas (DUI, divorce, lawsuit) only qualify if the story reaches a definitive endpoint (guilty verdict, acquittal, prison sentence, final settlement signed). A new court date, a new filing, a new hearing = NOT a new event. Test: "Does this change the story's outcome?" If no, reject.
 
 ### Standalone sneaker / shoe releases with no cultural hook

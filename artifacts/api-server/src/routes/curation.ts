@@ -117,7 +117,9 @@ router.post("/curation/add", async (req, res) => {
     }
 
     // Manual curation additions go straight to prod — they're already reviewed.
-    const added = await mergeFeed(enriched, { stage: 'prod' });
+    // Pass through the explicit feedDate so a late-evening add (after the BKK
+    // feed-day cutoff at 14:00 UTC) lands in the day the user named, not "tomorrow".
+    const added = await mergeFeed(enriched, { stage: 'prod', feedDate });
     saveCommittedFeedAsProd();
     markLive();
 
