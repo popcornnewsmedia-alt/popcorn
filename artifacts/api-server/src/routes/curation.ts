@@ -116,10 +116,11 @@ router.post("/curation/add", async (req, res) => {
       console.log(`[curation/add] Preserved original image for ${preservedCount} re-added article(s).`);
     }
 
-    // Manual curation additions go straight to prod — they're already reviewed.
-    // Pass through the explicit feedDate so a late-evening add (after the BKK
-    // feed-day cutoff at 14:00 UTC) lands in the day the user named, not "tomorrow".
-    const added = await mergeFeed(enriched, { stage: 'prod', feedDate });
+    // Manual curation additions land as `dev` — user reviews and explicitly
+    // calls /api/curation/promote to push the day to prod. Pass through the
+    // explicit feedDate so a late-evening add (after the BKK feed-day cutoff
+    // at 14:00 UTC) lands in the day the user named, not "tomorrow".
+    const added = await mergeFeed(enriched, { stage: 'dev', feedDate });
     saveCommittedFeedAsProd();
     markLive();
 
@@ -705,7 +706,8 @@ router.post("/curation/batch", async (req, res) => {
       if (rawItems.length > 0) {
         console.log(`[curation/batch] Enriching ${rawItems.length} articles...`);
         const enriched = await enrichSelectedItems(rawItems, true);
-        const addedCount = await mergeFeed(enriched, { stage: 'prod' });
+        // Manual additions land as `dev` — user reviews then promotes via /api/curation/promote.
+        const addedCount = await mergeFeed(enriched, { stage: 'dev' });
         saveCommittedFeedAsProd();
         markLive();
         result.added = {
