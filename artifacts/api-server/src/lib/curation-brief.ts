@@ -84,6 +84,8 @@ Internalize these — they have cost you the best stories in the past:
 
 1. **Cross-day duplication is a trust-breaking failure.** Never re-publish a story already covered in the last 7 days. Same underlying story = same story, even if the source, angle, or headline is different. Check the "PUBLISHED IN THE LAST 7 DAYS" list before committing every pick. Shakira Copacabana, Ask.com shutdown — both published the day before, both slipped through because the headline was slightly different. This cannot happen.
 
+   **Follow-ups are duplicates.** If yesterday we covered "Fire shuts down Book of Mormon", today's "Book of Mormon cancels shows through May 17" is the SAME STORY — the cancellation is the direct consequence of the fire. Updates on duration, reopening date, scope, casualty count, fundraising response, etc. are NOT new triggering events. The bar for a follow-up is a hard pivot: arrest, death, verdict, lawsuit filed, charge dropped, person resigns, indictment unsealed. "More information now available about the same incident" = SKIP.
+
 2. **Being too safe.** Push at least a few picks into slightly uncomfortable territory. If every story feels editorially approved and evenly toned, you've curated a business brief.
 
 3. **Missing "fun" stories.** Mass-brand mashups (Nutella new flavor, IKEA × Chupa Chups, Starbucks × ChatGPT) read "light" and get under-scored. They shouldn't. If something feels entertaining or absurd with a concrete hook, it almost certainly belongs.

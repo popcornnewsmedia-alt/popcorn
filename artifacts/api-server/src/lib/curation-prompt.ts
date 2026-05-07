@@ -106,7 +106,7 @@ ${recentTitles.map((t) => `  - ${t}`).join("\n")}
 
 You are picking the final feed from the day's accumulated pool. The pool has already been pre-filtered by per-fetch scoring — everything here passed the initial bar, but many still don't belong in the final cut.
 
-Pick approximately ${target} stories (flex 18-25 based on what the pool honestly offers). The pool has already been scored — every item here passed the initial bar. Err toward inclusion; a missed story is worse than a borderline one that made the cut.
+Pick approximately ${target} stories (target 23-27 based on what the pool honestly offers). The pool has already been scored — every item here passed the initial bar. Err toward inclusion; a missed story is worse than a borderline one that made the cut. Aim for the upper end of this range when the pool is rich — under-cutting is the more common failure mode.
 
 **Before returning, run the final check:**
 1. Would I forward at least 5 of these to a friend?
@@ -174,11 +174,11 @@ ${recentTitles.map((t) => `  - ${t}`).join("\n")}
 
   const currentFeedCount = alreadyPublished.length;
   const incrementalCeiling =
-    currentFeedCount >= 23
+    currentFeedCount >= 27
       ? `Today's feed already has ${currentFeedCount} stories — we are at the ceiling. Only add a story if it is genuinely exceptional and clearly stronger than the weakest thing already published. If in doubt, do not add it.`
-      : currentFeedCount >= 18
-      ? `Today's feed has ${currentFeedCount} stories — approaching the 20-25 target. Add only the strongest 2-4 picks. Do not pad. Quality over quantity.`
-      : `This is an INCREMENTAL UPDATE. ${currentFeedCount} stories are already in today's feed. Only add stories clearly stronger than the weakest already published. Prefer 2 excellent new stories over 8 mediocre ones.`;
+      : currentFeedCount >= 23
+      ? `Today's feed has ${currentFeedCount} stories — inside the 23-27 target band. Add only the strongest 2-4 picks. Do not pad. Quality over quantity.`
+      : `This is an INCREMENTAL UPDATE. ${currentFeedCount} stories are already in today's feed (target band 23-27). Add stories clearly stronger than the weakest already published. Prefer 3 excellent new stories over 8 mediocre ones.`;
 
   return `${SHARED_CONTEXT}
 

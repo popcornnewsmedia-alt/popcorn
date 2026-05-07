@@ -9,7 +9,7 @@
  *   cd artifacts/api-server
  *   node --env-file=../../.env --import tsx scripts/pool-finalize.ts \
  *     [--feed-date=2026-04-18]   # defaults to today's BKK date
- *     [--target=12]              # target selection count (default 12, range 10-15)
+ *     [--target=25]              # target selection count (default 25, range 20-30)
  *     [--dry-run]                # skip enrichment + Supabase write; still writes review doc stub
  */
 
@@ -74,7 +74,7 @@ function arg(name: string): string | undefined {
   return hit ? hit.slice(name.length + 3) : undefined;
 }
 const dryRun = args.includes("--dry-run");
-const target = Math.max(10, Math.min(15, parseInt(arg("target") ?? "12", 10)));
+const target = Math.max(20, Math.min(30, parseInt(arg("target") ?? "25", 10)));
 
 function bkkDateString(d: Date): string {
   const shifted = new Date(d.getTime() + 7 * 60 * 60 * 1000);

@@ -384,9 +384,9 @@ The auto-selector has under-selected three days running (Apr 25: 5 from ~80; Apr
 You have under-selected three days in a row. The pool is filtered before it reaches you — every item has already passed scoring. If the pool has 50+ items, the answer is rarely "5 stories". If it has 100+ items, the answer is rarely "6 stories".
 
 Approximate floor (rescue from the pool until you hit it):
-- Pool 30–60: aim for ≥ 10 picks
-- Pool 60–120: aim for ≥ 12 picks
-- Pool 120+: aim for ≥ 14 picks
+- Pool 30–60: aim for ≥ 18 picks
+- Pool 60–120: aim for ≥ 22 picks
+- Pool 120+: aim for ≥ 25 picks (target band 23-27)
 
 If you find yourself returning fewer, ask: am I missing music? am I missing film/TV? am I missing internet culture? am I missing fun/filler? am I missing a women's-sport major? am I missing a legacy-act reunion or obit? am I missing a food/landmark/solo-luxury filler? Go back and rescue.
 
