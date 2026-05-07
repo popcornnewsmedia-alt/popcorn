@@ -371,6 +371,9 @@ export function FeedPageHorizontal() {
 
   // Progress bar fill ref (forwarded to TopBar).
   const feedBarFillRef = useRef<HTMLDivElement>(null);
+  // Dim overlay ref (forwarded to TopBar) — opacity driven imperatively in
+  // scroll handler for frame-accurate fade between divider↔article states.
+  const topBarDimRef = useRef<HTMLDivElement>(null);
   // Imperative refs for the TopBar date spans — updated synchronously in
   // landOnDay so the date label flips at the exact moment the day slide
   // starts, with zero React render-cycle lag (same pattern as fillRef).
@@ -433,6 +436,18 @@ export function FeedPageHorizontal() {
 
       const total = day.articles.length + 1;
       const fractionalIdx = scrollTop / clientHeight;
+
+      // Drive TopBar dim overlay imperatively — smooth 0→1 fade as user
+      // scrolls from the DateDivider (idx 0) into the first article (idx 1),
+      // and 1→0 fade when scrolling out of the last article into the
+      // DayCompletionCard (idx L+1). No React state → no re-render lag.
+      {
+        const L = day.articles.length;
+        const fadeIn = Math.max(0, Math.min(1, (fractionalIdx - 0.5) / 0.5));
+        const fadeOut = L > 0 ? Math.max(0, Math.min(1, (fractionalIdx - L) / 0.5)) : 0;
+        const dimOpacity = Math.max(0, fadeIn - fadeOut);
+        if (topBarDimRef.current) topBarDimRef.current.style.opacity = String(dimOpacity);
+      }
       const roundedIdx = Math.min(Math.max(0, Math.round(fractionalIdx)), total - 1);
       if (roundedIdx !== scrollIndexRef.current) {
         scrollIndexRef.current = roundedIdx;
@@ -957,7 +972,7 @@ export function FeedPageHorizontal() {
           pickerOpen={pickerOpen}
           onPickerOpenChange={setPickerOpen}
           onScrollToDayTop={handleScrollToDayTop}
-          onDivider={activeViewIdx === 0}
+          dimRef={topBarDimRef}
         />
       )}
 

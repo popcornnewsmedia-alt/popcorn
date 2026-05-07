@@ -309,9 +309,19 @@ export function ArticleCard({
   // the subject stays centred and the crop only trims neutral edges.
   const PLATE_SIDE_MARGIN = 0;                         // flush with viewport edge
   // Flush with the progress rule at the bottom of the TopBar.
-  // Standalone (iOS PWA / Capacitor): safe-area ~47 + brand row ~41 + progress 3 ≈ 91.
-  // Non-standalone (web): no safe-area padding inside the bar + brand row ~41 + progress 3 ≈ 47.
-  const PLATE_TOP_OFFSET  = isStandalone ? 91 : 47;
+  // TopBar bottom is always env(safe-area-inset-top) + 44px from the viewport top,
+  // on both standalone (top:0 + paddingTop:safe-area) and non-standalone (top:safe-area).
+  // brand row (py-3=12+12 + text 17px = 41px) + progress bar (3px) = 44px.
+  // Keep a numeric estimate for JS calculations (plateH / focal point math).
+  // Standalone (iOS PWA / Capacitor): safe-area ~47 + 44 ≈ 91.
+  // Non-standalone (web): safe-area ~0 + 44 ≈ 44 (old value of 47 was slightly off).
+  const PLATE_TOP_OFFSET  = isStandalone ? 91 : 44;
+  // CSS value reads --pn-topbar-h set by TopBar's ResizeObserver, which
+  // measures getBoundingClientRect().bottom — the true pixel distance from
+  // viewport top to the bottom of the progress bar, on every device and
+  // media-query state (desktop button vs mobile hint differ by ~8px).
+  // Fallback 53px covers the desktop browser case if the var isn't set yet.
+  const PLATE_TOP_CSS = 'var(--pn-topbar-h, 53px)';
   // Bottom of the plate — the image extends down until its bottom edge
   // lands JUST under the category/source pill row, so the pills read as
   // the first beat below the photo with no dead space between. The
@@ -326,15 +336,15 @@ export function ArticleCard({
   // Mobile/iOS: ~130px bottom cap — image ends before the content overlay
   // zone. The lost area is covered by a cinematic dark-fade vignette
   // inside the plate that dissolves the image into darkness.
-  const PLATE_BOTTOM_CAP = isWebDesktop ? 168 : 130;
+  const PLATE_BOTTOM_CAP = isWebDesktop ? 168 : 238;
 
   // How far above the card's bottom edge the overlaid content should end.
   // Must clear the BottomNav pill + its outer padding + breathing room.
   //   Standalone iOS: pill ≈ 62px + env(safe-area-inset-bottom) (~34px on iPhone) + 12px gap
   //   Mobile web    : pill ≈ 54px + 12px gap = 66px
   const CONTENT_BOTTOM = isStandalone
-    ? 'calc(env(safe-area-inset-bottom) + 74px)'
-    : '66px';
+    ? 'calc(env(safe-area-inset-bottom) + 94px)'
+    : '86px';
 
   // ── Plate geometry ──
   // Mobile / iOS / mobile-web (< DESKTOP_BREAKPOINT): full-bleed portrait
@@ -352,7 +362,7 @@ export function ArticleCard({
   let plateW: number;
   let plateH: number;
   let plateLeft: number;
-  let plateTop:  number;
+  let plateTop:  number | string;
 
   // Desktop content-row bookkeeping (only meaningful when isDesktop).
   // `rowLeft` is the left edge of the centered content row; `rowWidth`
@@ -428,7 +438,7 @@ export function ArticleCard({
     plateW    = viewportW;
     plateH    = Math.max(1, viewportH - PLATE_TOP_OFFSET - PLATE_BOTTOM_CAP);
     plateLeft = 0;
-    plateTop  = PLATE_TOP_OFFSET;
+    plateTop  = PLATE_TOP_CSS;
   }
 
   // The plate is portrait-leaning (narrower than tall), so almost every
@@ -470,6 +480,36 @@ export function ArticleCard({
       }}
       onClick={() => onReadMore(article)}
     >
+      {/* ── TOP COLOUR BLEED ── Fills y=0 → PLATE_TOP_CSS (the TopBar area)
+          with a heavily-blurred wash derived from the top of the hero image.
+          The filter:blur(56px) renders it as pure soft colour — no texture,
+          no recognisable image. The TopBar's own blur(24px) then samples
+          those soft colours so the nav bar picks up the image's colour mood
+          rather than just the grain background.
+          z=8: behind the image plate (z-10) and behind the TopBar (z-40),
+          never directly visible to the user. */}
+      {hasImage && !isDesktop && !isWebDesktop && isNearActive && imgReady && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            // Extend 50px beyond all edges so blur(36px) edge-fade is hidden
+            // by the parent's overflow:hidden — the topbar area (y=0→topbarH)
+            // maps to the middle of this element, well clear of fade zones.
+            top: -50,
+            left: -50,
+            right: -50,
+            height: `calc(${PLATE_TOP_CSS} + 100px)`,
+            backgroundImage: `url(${feedImageUrl(article.imageUrl)})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            backgroundRepeat: 'no-repeat',
+            filter: 'blur(36px) saturate(0.9) brightness(0.82)',
+            zIndex: 8,
+          }}
+        />
+      )}
+
       {/* ── HERO PLATE ── Full-bleed portrait on mobile/iOS; editorial centered
           card on desktop. A cinematic scrim below provides text legibility. */}
       {hasImage ? (
@@ -492,14 +532,19 @@ export function ArticleCard({
                   }
                 : isWebDesktop
                 ? {
-                    // Web desktop: short 8px feather to soften the seam
-                    // against the progress rule.
                     WebkitMaskImage:
                       'linear-gradient(to bottom, transparent 0, black 8px, black 100%)',
                     maskImage:
                       'linear-gradient(to bottom, transparent 0, black 8px, black 100%)',
                   }
-                : {}),
+                : {
+                    // Mobile/iOS: subtle bottom feather so the image edge
+                    // dissolves rather than hard-cuts into the dark panel.
+                    WebkitMaskImage:
+                      'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
+                    maskImage:
+                      'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
+                  }),
             }}
           >
             <img
@@ -508,7 +553,7 @@ export function ArticleCard({
               alt={article.title}
               loading="eager"
               decoding="async"
-              fetchPriority={isActive ? 'high' : 'low'}
+              fetchPriority={isActive ? 'high' : 'auto'}
               style={{
                 position: 'absolute',
                 inset: 0,
@@ -671,15 +716,6 @@ export function ArticleCard({
                         fontFamily: "'Macabro', 'Anton', sans-serif",
                       }}>{article.category}</span>
                     </span>
-                    <span className="px-2.5 py-1 rounded-full tracking-wide" style={{
-                      fontSize: 10,
-                      background: 'rgba(255,255,255,0.08)',
-                      border: '1px solid rgba(255,255,255,0.15)',
-                      color: 'rgba(255,255,255,0.65)',
-                      fontFamily: "'Macabro', 'Anton', sans-serif",
-                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                      minWidth: 0, flex: '0 1 auto',
-                    }}>{article.source}</span>
                   </div>
                   <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} horizontal />
                 </div>
@@ -706,28 +742,10 @@ export function ArticleCard({
             <>
               {/* ── Mobile / iOS: cinematic full-bleed layout ── */}
 
-              {/* Atmosphere strip — TopBar-height band of image-derived color.
-                  The TopBar's backdrop-filter blurs over this, giving the
-                  same cinematic image-color bleed through the nav bar as
-                  before the full-bleed layout. No extra image fetch — the
-                  dominantColor probe gives a pixel-accurate tint at zero cost. */}
-              <div
-                aria-hidden
-                className="absolute left-0 right-0 pointer-events-none"
-                style={{
-                  top: 0,
-                  height: PLATE_TOP_OFFSET,
-                  zIndex: 12,
-                  // When dominantColor is available, tint the atmosphere with the
-                  // image-derived colour. When null (CORS-blocked CDNs like Dexerto),
-                  // leave it transparent so the TopBar's blur composites the raw
-                  // image pixels directly — avoids the category-colour bleeding into
-                  // an unrelated hue (e.g. lime + dark photo = olive green).
-                  background: dominantColor
-                    ? `linear-gradient(to bottom, rgba(${dominantColor},0.90) 0%, rgba(${dominantColor},0.72) 60%, rgba(${dominantColor},0.38) 100%)`
-                    : 'transparent',
-                }}
-              />
+              {/* Atmosphere strip removed — replaced by the TOP COLOUR BLEED div
+                  above the hero plate, which samples the actual top of the image
+                  (not the whole-image dominant colour average) so the TopBar
+                  always reflects the true top-of-image colour mood. */}
 
               {/* Scrim — image-tinted dark veil over the image zone only. */}
               <div
@@ -757,11 +775,11 @@ export function ArticleCard({
                   right: '72px',
                   paddingLeft: '20px',
                   paddingTop: '28px',
-                  paddingBottom: CONTENT_BOTTOM,
+                  paddingBottom: isStandalone ? 'calc(env(safe-area-inset-bottom) + 86px)' : '86px',
                 }}
               >
                 {/* Pills row */}
-                <div className="flex items-center gap-2 mb-3.5 min-w-0 overflow-hidden">
+                <div className="flex items-center gap-2 mb-2 min-w-0 overflow-hidden">
                   <span
                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
                     style={{
@@ -790,33 +808,17 @@ export function ArticleCard({
                     </span>
                   </span>
 
-                  <span
-                    className="px-2.5 py-1 rounded-full tracking-wide"
-                    style={{
-                      fontSize: '10px',
-                      background: 'rgba(255,255,255,0.08)',
-                      border: '1px solid rgba(255,255,255,0.15)',
-                      color: 'rgba(255,255,255,0.65)',
-                      fontFamily: "'Macabro', 'Anton', sans-serif",
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      maxWidth: '130px',
-                    }}
-                  >
-                    {article.source}
-                  </span>
                 </div>
 
                 {/* Headline */}
                 <h2
                   className="mb-3 text-white"
                   style={{
-                    fontSize: '22px',
-                    lineHeight: 1.22,
+                    fontSize: '25px',
+                    lineHeight: 1.2,
                     fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
                     fontWeight: 600,
-                    letterSpacing: '-0.025em',
+                    letterSpacing: '-0.028em',
                     textShadow: '0 2px 16px rgba(0,0,0,0.55)',
                   }}
                 >
@@ -894,19 +896,6 @@ export function ArticleCard({
               </span>
             </span>
 
-            <span
-              className="px-3 py-1.5 rounded-full tracking-[0.14em]"
-              style={{
-                fontSize: '11px',
-                background: 'rgba(255,255,255,0.12)',
-                border: '1px solid rgba(255,241,205,0.14)',
-                color: 'rgba(255,241,205,0.70)',
-                fontFamily: "'Macabro', 'Anton', sans-serif",
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {article.source}
-            </span>
           </div>
 
           {/* Tapered cream hairline — mirrors the mobile divider so the

@@ -317,12 +317,6 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                         {article.category}
                       </span>
                     </span>
-                    <span
-                      className="px-2 py-1 rounded-full"
-                      style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)', fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', color: 'rgba(0,0,0,0.50)', letterSpacing: '0.08em' }}
-                    >
-                      {article.source}
-                    </span>
                     <span className="flex items-center gap-1" style={{ fontSize: '11px', color: 'rgba(0,0,0,0.38)', fontFamily: "'Inter', sans-serif" }}>
                       <Calendar className="w-3 h-3" />
                       {format(new Date(article.publishedAt), 'MMM d, yyyy')}
@@ -397,6 +391,11 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                       ))}
                     </div>
                   </div>
+
+                  {/* Source footnote */}
+                  <p style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)', fontFamily: "'Inter', sans-serif", marginTop: '32px', marginBottom: '0' }}>
+                    via {article.source}
+                  </p>
 
                   {/* Footer CTA */}
                   <div className="mt-16 pt-8 flex items-center justify-center" style={{ borderTop: '1px solid rgba(5,57,128,0.12)' }}>

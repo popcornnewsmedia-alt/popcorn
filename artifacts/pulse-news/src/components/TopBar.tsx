@@ -23,11 +23,11 @@ interface TopBarProps {
   onPickerOpenChange?: (open: boolean) => void;
   /** Scroll the underlying feed to the top of the current day's section (the DateDivider) */
   onScrollToDayTop?: () => void;
-  /** When true (user is on the DateDivider card), suppress the image-colour backdrop so the grain BG bleeds through */
-  onDivider?: boolean;
+  /** Ref forwarded to the dark dim overlay div — caller updates style.opacity (0–1) imperatively for smooth scroll-driven fade */
+  dimRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, dateRef, expandedDateRef, minDate, maxDate, pickerOpen: controlledPickerOpen, onPickerOpenChange, onScrollToDayTop, onDivider = false }: TopBarProps) {
+export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fillRef, dateRef, expandedDateRef, minDate, maxDate, pickerOpen: controlledPickerOpen, onPickerOpenChange, onScrollToDayTop, dimRef }: TopBarProps) {
   const [internalPickerOpen, setInternalPickerOpen] = useState(false);
   const isControlled = controlledPickerOpen !== undefined;
   const pickerOpen = isControlled ? controlledPickerOpen! : internalPickerOpen;
@@ -80,12 +80,25 @@ export function TopBar({ selectedDate, onDateChange, showDatePicker = true, fill
         style={{
           top: isStandalone ? 0 : 'env(safe-area-inset-top)',
           paddingTop: isStandalone ? 'env(safe-area-inset-top)' : undefined,
-          background: onDivider ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.12)',
-          backdropFilter: onDivider ? 'none' : 'blur(18px) saturate(2.2) brightness(0.58)',
-          WebkitBackdropFilter: onDivider ? 'none' : 'blur(18px) saturate(2.2) brightness(0.58)',
+          background: 'rgba(0,0,0,0)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
           boxShadow: pickerOpen ? 'none' : '0 1px 0 rgba(26,68,48,0.08)',
         }}
       >
+        {/* Dim overlay — opacity driven imperatively by scroll handler (0 on divider/completion, 1 over articles) */}
+        <div
+          ref={dimRef}
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
+            background: 'rgba(0,0,0,0.18)',
+            opacity: 0,
+            willChange: 'opacity',
+          }}
+        />
         {/* Brand + date row.
             Mobile: the whole row is a tap zone for onScrollToDayTop (matches
               iOS "tap status bar to scroll to top" convention — no visible
