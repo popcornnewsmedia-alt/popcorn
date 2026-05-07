@@ -425,7 +425,22 @@ export function FeedPageHorizontal() {
     const container = dayScrollRefs.current[currentDayIdx];
     if (!container) return;
 
-    const onScroll = () => {
+    // rAF coalescing: collapse multiple scroll events that fire within a
+    // single frame down to one update aligned with the browser's paint
+    // cycle. iOS Safari can fire scroll faster than 60Hz during fast
+    // momentum decel; without coalescing we issue 1 transform write +
+    // 1 opacity write per event, each invalidating the TopBar's
+    // backdrop-filter region. Coalescing pins it to one update per frame.
+    //
+    // This is NOT the previously-rejected continuous rAF loop — we only
+    // schedule rAF when a scroll event arrives, and clear the pending
+    // flag inside the callback. Zero cost when idle.
+    let rafId = 0;
+    let pending = false;
+
+    const tick = () => {
+      pending = false;
+      rafId = 0;
       if (activeTabRef.current !== 'feed') return;
       const day = dayGroupsRef.current[currentDayIdxRef.current];
       if (!day) return;
@@ -473,13 +488,22 @@ export function FeedPageHorizontal() {
       }
     };
 
+    const onScroll = () => {
+      if (pending) return;
+      pending = true;
+      rafId = requestAnimationFrame(tick);
+    };
+
     // Sync once on mount / day-change so the progress bar reflects the
     // initial scroll position and first prefetches kick off without
     // having to wait for the first scroll event.
-    onScroll();
+    tick();
 
     container.addEventListener('scroll', onScroll, { passive: true });
-    return () => container.removeEventListener('scroll', onScroll);
+    return () => {
+      container.removeEventListener('scroll', onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [currentDayIdx, dayGroups.length, preloadImage, evictExceptUrls, updateProgressBar]);
 
   // Day-change side effects: reset active-day scroll tracking, prefetch
