@@ -13,6 +13,27 @@ import { supabase } from "./supabase-client.js";
 import { buildRefreshPrompt, buildConsiderationPrompt } from "./curation-prompt.js";
 import { bkkFeedDate } from "./curated-store.js";
 
+// ─── Web search tool (Anthropic server-side) ───────────────────────────────
+// Enables Claude to autonomously search the web during enrichment to fill in
+// specifics missing from RSS descriptions: confirmed dates, exact cities,
+// setlists, deal terms, named people, etc. Server-side execution — Anthropic
+// runs the searches and returns the model's final response with citations.
+const WEB_SEARCH_TOOL = {
+  type: "web_search_20250305",
+  name: "web_search",
+  max_uses: 8, // up to ~8 searches per batch (3 articles); plenty for spec gap-fills
+} as const;
+
+// Extract the FINAL text block from a (possibly multi-block) Claude response.
+// With web_search enabled, the response interleaves text blocks with
+// web_search_tool_result blocks; the answer we want is always the last text block.
+function extractFinalText(content: any): string {
+  if (!Array.isArray(content)) return "";
+  const textBlocks = content.filter((b: any) => b?.type === "text");
+  if (textBlocks.length === 0) return "";
+  return String(textBlocks[textBlocks.length - 1].text ?? "");
+}
+
 // ─── Image pool ────────────────────────────────────────────────────────────
 // Curated Unsplash photos that work well as article hero images.
 // Claude picks an index from this list for each article.
@@ -2319,15 +2340,19 @@ async function enrichWithClaude(
   // ── Helper: call Anthropic API via node:https ────────────────────────────────
   // Uses a fresh https.Agent (keepAlive: false) per request so each Claude call
   // gets its own TCP connection, fully isolated from the undici pool used by
-  // the RSS batch fetches above.
-  const callClaude = (userPrompt: string, maxTokens: number): Promise<string> =>
+  // the RSS batch fetches above. Optional `tools` enables server-side
+  // web_search; when present, timeout is bumped (each search adds 5–15s).
+  const callClaude = (userPrompt: string, maxTokens: number, tools?: any[]): Promise<string> =>
     new Promise<string>((resolve, reject) => {
-      const body = JSON.stringify({
+      const requestBody: Record<string, unknown> = {
         model: "claude-sonnet-4-6",
         max_tokens: maxTokens,
         messages: [{ role: "user", content: userPrompt }],
-      });
+      };
+      if (tools && tools.length > 0) requestBody.tools = tools;
+      const body = JSON.stringify(requestBody);
       const bodyBuf = Buffer.from(body, "utf-8");
+      const timeoutMs = tools && tools.length > 0 ? 360_000 : 180_000;
       const req = https.request(
         {
           hostname: "api.anthropic.com",
@@ -2340,7 +2365,7 @@ async function enrichWithClaude(
             "Content-Length": bodyBuf.byteLength,
           },
           agent: new https.Agent({ keepAlive: false }),
-          timeout: 180_000,
+          timeout: timeoutMs,
         },
         (res) => {
           let data = "";
@@ -2351,8 +2376,7 @@ async function enrichWithClaude(
               if (json.error) {
                 reject(new Error(`Anthropic API error: ${JSON.stringify(json.error).slice(0, 300)}`));
               } else {
-                const content = json?.content?.[0];
-                resolve(content?.type === "text" ? content.text : "");
+                resolve(extractFinalText(json?.content));
               }
             } catch {
               reject(new Error(`Failed to parse Anthropic response: ${data.slice(0, 200)}`));
@@ -2360,7 +2384,7 @@ async function enrichWithClaude(
           });
         }
       );
-      req.on("timeout", () => req.destroy(new Error("Claude API request timed out after 180s")));
+      req.on("timeout", () => req.destroy(new Error(`Claude API request timed out after ${timeoutMs / 1000}s`)));
       req.on("error", reject);
       req.write(bodyBuf);
       req.end();
@@ -2376,6 +2400,7 @@ async function enrichWithClaude(
   const selectionPrompt = buildRefreshPrompt(articleList, promptAlreadyPublished ?? alreadyPublished, today, recentTitles);
 
   console.log("[rss] Call 1/2 — selecting articles...");
+  // Selection is pure judgment over RSS metadata — no web_search needed.
   const selectionText = await callClaude(selectionPrompt, 2000);
 
   const selectionArray = extractJsonArray(selectionText);
@@ -2414,6 +2439,7 @@ Write full articles for each of the ${count} stories below.
 WRITING RULES:
 - ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show, app, platform or company — never "the app", "the platform", "the company", "the service", "the brand", "the artist" or any other generic substitute. If a product or brand is central to the story, name it every time it is referenced, not just on first mention.
 - PRESERVE KEY SPECIFICS. If the source names a specific model, product, feature, track, award, or proper noun (e.g. a model name like "Muse Spark", a song title, an award name), you MUST include it in the article. Never replace a specific name with a vague description like "a new model" or "a new feature".
+- USE WEB_SEARCH FOR MISSING SPECIFICS. The source RSS description often omits exactly the detail the headline implies. When the story implies a confirmed date, an exact city or venue, a setlist, named people involved, deal terms, ticket numbers, an exact quote, or any other specific fact the reader will expect — and that fact is NOT in the description provided — call the web_search tool to find it BEFORE writing the article. Examples that MUST trigger a search: "trailer date confirmed" → search the actual date. "tour opens in major US city" → search the city. "surprise setlist included classics" → search the setlist. "deal struck for nine figures" → search the actual amount. "fans spot cameo" → search who. Search up to 2–3 queries per article when needed. Do NOT make up details. If a search returns no clear answer, omit the detail rather than invent one — but do exhaust web_search before giving up. Cite numbers, dates, locations, and quotes only when they appear in the source description, in your search results, or both.
 - NEVER LEAVE THE READER HANGING. If a mystery was solved, say what the answer was. If someone was caught cheating, say how. If a deal was struck, name the terms. If evidence was found, say what it showed. If something was revealed, say what it is. The substance IS the story. The reader should never finish the article thinking "okay but what actually happened?"
 - PRESERVE THE HOOK IN THE HEADLINE. If the source headline already contains the story's genuine twist, surprise, reversal, or hidden fact (signal words: "doesn't know", "unknowingly", "secretly", "turns out", "while actually", "without realising", "revealed to be", named quote, unexpected cause, etc.), that element MUST survive in your headline. Do not paraphrase it away in the name of brevity — a 14–16 word headline that lands the hook is better than a 10-word headline that strips it. Example: source "Mother Doesn't Know Her Son Died Because She's Been Talking to an AI Version of Him" → your headline keeps the "doesn't know / still talking to AI version" tension. It does NOT become "Mom Talks to AI Clone of Dead Son" (which implies she knows, and kills the story).
 - HEADLINES NAME THE CAUSE / TRIGGER when it is what makes the story interesting. If a policy was signed because of a celebrity text, name the celebrity. If a quote is the whole point of the story, put the quote (or its essence) in the headline. If the triggering event is a surprise, it goes in the headline, not buried in paragraph two.
@@ -2459,7 +2485,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
       )
       .join("\n\n---\n\n");
 
-    const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 10000);
+    const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 10000, [WEB_SEARCH_TOOL]);
     const batchArray = extractJsonArray(batchText);
     if (!batchArray) throw new Error(`Call 2 batch ${b + 1}: Claude did not return a JSON array`);
     selectedItems.push(...JSON.parse(sanitizeClaudeJson(batchArray)));
@@ -3500,14 +3526,17 @@ export async function enrichSelectedItems(items: RawRSSItem[], publishToday = fa
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error("ANTHROPIC_API_KEY not set");
 
-  const callClaude = (userPrompt: string, maxTokens: number): Promise<string> =>
+  const callClaude = (userPrompt: string, maxTokens: number, tools?: any[]): Promise<string> =>
     new Promise<string>((resolve, reject) => {
-      const body = JSON.stringify({
+      const requestBody: Record<string, unknown> = {
         model: "claude-sonnet-4-6",
         max_tokens: maxTokens,
         messages: [{ role: "user", content: userPrompt }],
-      });
+      };
+      if (tools && tools.length > 0) requestBody.tools = tools;
+      const body = JSON.stringify(requestBody);
       const bodyBuf = Buffer.from(body, "utf-8");
+      const timeoutMs = tools && tools.length > 0 ? 360_000 : 180_000;
       const req = https.request(
         {
           hostname: "api.anthropic.com",
@@ -3520,7 +3549,7 @@ export async function enrichSelectedItems(items: RawRSSItem[], publishToday = fa
             "Content-Length": bodyBuf.byteLength,
           },
           agent: new https.Agent({ keepAlive: false }),
-          timeout: 180_000,
+          timeout: timeoutMs,
         },
         (res) => {
           let data = "";
@@ -3531,8 +3560,7 @@ export async function enrichSelectedItems(items: RawRSSItem[], publishToday = fa
               if (json.error) {
                 reject(new Error(`Anthropic API error: ${JSON.stringify(json.error).slice(0, 300)}`));
               } else {
-                const content = json?.content?.[0];
-                resolve(content?.type === "text" ? content.text : "");
+                resolve(extractFinalText(json?.content));
               }
             } catch {
               reject(new Error(`Failed to parse Anthropic response: ${data.slice(0, 200)}`));
@@ -3540,7 +3568,7 @@ export async function enrichSelectedItems(items: RawRSSItem[], publishToday = fa
           });
         }
       );
-      req.on("timeout", () => req.destroy(new Error("Claude API request timed out after 180s")));
+      req.on("timeout", () => req.destroy(new Error(`Claude API request timed out after ${timeoutMs / 1000}s`)));
       req.on("error", reject);
       req.write(bodyBuf);
       req.end();
@@ -3561,6 +3589,7 @@ Write full articles for each of the ${count} stories below.
 WRITING RULES:
 - ALWAYS use real names. Every headline and the first sentence MUST name the actual person, album, film, show, app, platform or company — never "the app", "the platform", "the company", "the service", "the brand", "the artist" or any other generic substitute. If a product or brand is central to the story, name it every time it is referenced, not just on first mention.
 - PRESERVE KEY SPECIFICS. If the source names a specific model, product, feature, track, award, or proper noun (e.g. a model name like "Muse Spark", a song title, an award name), you MUST include it in the article. Never replace a specific name with a vague description like "a new model" or "a new feature".
+- USE WEB_SEARCH FOR MISSING SPECIFICS. The source RSS description often omits exactly the detail the headline implies. When the story implies a confirmed date, an exact city or venue, a setlist, named people involved, deal terms, ticket numbers, an exact quote, or any other specific fact the reader will expect — and that fact is NOT in the description provided — call the web_search tool to find it BEFORE writing the article. Examples that MUST trigger a search: "trailer date confirmed" → search the actual date. "tour opens in major US city" → search the city. "surprise setlist included classics" → search the setlist. "deal struck for nine figures" → search the actual amount. "fans spot cameo" → search who. Search up to 2–3 queries per article when needed. Do NOT make up details. If a search returns no clear answer, omit the detail rather than invent one — but do exhaust web_search before giving up. Cite numbers, dates, locations, and quotes only when they appear in the source description, in your search results, or both.
 - NEVER LEAVE THE READER HANGING. If a mystery was solved, say what the answer was. If someone was caught cheating, say how. If a deal was struck, name the terms. If evidence was found, say what it showed. If something was revealed, say what it is. The substance IS the story. The reader should never finish the article thinking "okay but what actually happened?"
 - PRESERVE THE HOOK IN THE HEADLINE. If the source headline already contains the story's genuine twist, surprise, reversal, or hidden fact (signal words: "doesn't know", "unknowingly", "secretly", "turns out", "while actually", "without realising", "revealed to be", named quote, unexpected cause, etc.), that element MUST survive in your headline. Do not paraphrase it away in the name of brevity — a 14–16 word headline that lands the hook is better than a 10-word headline that strips it. Example: source "Mother Doesn't Know Her Son Died Because She's Been Talking to an AI Version of Him" → your headline keeps the "doesn't know / still talking to AI version" tension. It does NOT become "Mom Talks to AI Clone of Dead Son" (which implies she knows, and kills the story).
 - HEADLINES NAME THE CAUSE / TRIGGER when it is what makes the story interesting. If a policy was signed because of a celebrity text, name the celebrity. If a quote is the whole point of the story, put the quote (or its essence) in the headline. If the triggering event is a surprise, it goes in the headline, not buried in paragraph two.
@@ -3608,7 +3637,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
       )
       .join("\n\n---\n\n");
 
-    const raw = await callClaude(makePrompt(articleList, batchItems.length), 10000);
+    const raw = await callClaude(makePrompt(articleList, batchItems.length), 10000, [WEB_SEARCH_TOOL]);
     const arrayStr = extractJsonArray(raw);
     if (!arrayStr) throw new Error(`Enrichment batch ${b + 1}: no JSON array in response`);
     const parsed = JSON.parse(sanitizeClaudeJson(arrayStr));
