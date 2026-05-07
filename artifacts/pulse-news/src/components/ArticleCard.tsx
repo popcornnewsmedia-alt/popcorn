@@ -209,14 +209,16 @@ export function ArticleCard({
           setDominantColor(rgb);
         }
 
-        // ── TOP-STRIP GRADIENT ──
-        // Sample only the top ~25% of the probe image into a 6×1 strip,
-        // then build a horizontal `linear-gradient` from those 6 colour
-        // stops. The result captures the image's top colour mood without
-        // preserving its shape/composition, and renders as a flat CSS
-        // gradient (zero blur filter cost per scroll frame). Slight
-        // 0.85 multiplier matches the prior brightness(0.82) feel.
-        const COLS = 6;
+        // ── TOP-STRIP COLOUR PALETTE → ATMOSPHERIC GRADIENT ──
+        // Sample 4 colours from the top ~25% of the probe image, then
+        // compose them as overlapping radial gradients with scrambled
+        // anchor positions. We use the image's TOP colour palette but
+        // throw away its left-to-right ordering, so the strip never
+        // reads as a stripe of the image — no centred subject showing
+        // through, no horizontal subject-vs-background mapping.
+        // Renders as pure CSS gradients (no blur filter, no image),
+        // so cost per scroll frame stays zero.
+        const COLS = 4;
         const stripCanvas = document.createElement('canvas');
         stripCanvas.width = COLS;
         stripCanvas.height = 1;
@@ -229,21 +231,38 @@ export function ArticleCard({
             0, 0, COLS, 1,
           );
           const sd = stripCtx.getImageData(0, 0, COLS, 1).data;
-          const stops: string[] = [];
+          const palette: string[] = [];
           for (let i = 0; i < COLS; i++) {
             const o = i * 4;
             const sr = Math.round(sd[o] * 0.85);
             const sg = Math.round(sd[o + 1] * 0.85);
             const sb = Math.round(sd[o + 2] * 0.85);
-            stops.push(`rgb(${sr},${sg},${sb})`);
+            palette.push(`rgb(${sr},${sg},${sb})`);
           }
-          const gradient = `linear-gradient(to right, ${stops.join(', ')})`;
+          // Scrambled anchors — palette colours are placed at points that
+          // don't correspond to where they came from in the source image.
+          const gradient = [
+            `radial-gradient(ellipse 80% 220% at 22% 35%, ${palette[2]} 0%, transparent 65%)`,
+            `radial-gradient(ellipse 80% 220% at 78% 65%, ${palette[0]} 0%, transparent 65%)`,
+            `radial-gradient(ellipse 60% 180% at 52% 50%, ${palette[3]} 0%, transparent 55%)`,
+            `linear-gradient(${palette[1]}, ${palette[1]})`,
+          ].join(', ');
           topStripGradientCache.set(probeUrl, gradient);
           setTopStripGradient(gradient);
         }
       } catch {
         // CORS-tainted canvas — silently fall back to cream veil.
       }
+    };
+    // CORS-blocked CDN (e.g. Sky Sports, Getty mirrors) → image fetch with
+    // crossOrigin='anonymous' fails entirely (onerror, not onload). Fall
+    // back to a flat black strip so the TopBar stays consistent and there's
+    // no abrupt switch to the article's underlying background.
+    probe.onerror = () => {
+      if (cancelled) return;
+      const fallback = 'linear-gradient(rgb(0,0,0), rgb(0,0,0))';
+      topStripGradientCache.set(probeUrl, fallback);
+      setTopStripGradient(fallback);
     };
     probe.src = probeUrl;
     return () => { cancelled = true; };
