@@ -15,6 +15,13 @@ import { feedImageUrl, probeImageUrl } from "@/lib/image-url";
 // values are pre-formatted "r,g,b" strings ready for setState.
 const dominantColorCache = new Map<string, string>();
 
+// Module-level cache for the top-strip gradient — a horizontal CSS
+// linear-gradient string sampled from the top ~25% of the image. Used
+// by the TOP COLOUR BLEED div (behind the TopBar) so the nav bar picks
+// up the image's colour mood WITHOUT replicating image shape and
+// WITHOUT a CSS blur filter on every card.
+const topStripGradientCache = new Map<string, string>();
+
 // Desktop threshold — at and above this viewport width, we swap the
 // single-column mobile/iOS poster layout for an editorial side-by-side
 // split: portrait poster plate on the left, typography column on the
@@ -130,6 +137,11 @@ export function ArticleCard({
   // in which case both regions use a neutral cream veil — same as before
   // this effect existed.
   const [dominantColor, setDominantColor] = useState<string | null>(null);
+  // Horizontal gradient sampled from the top ~25% of the image — drives
+  // the TOP COLOUR BLEED strip behind the TopBar. Pure CSS gradient at
+  // paint time (no image, no blur filter), so the strip costs nothing
+  // per scroll frame.
+  const [topStripGradient, setTopStripGradient] = useState<string | null>(null);
 
   // Category-derived fallback color used when the dominant-color probe fails
   // (e.g. CORS-restricted external CDNs like Dexerto that don't send
@@ -147,10 +159,10 @@ export function ArticleCard({
     // Cache hit: skip the network + decode + pixel sweep, hand the
     // pre-computed "r,g,b" string straight to state.
     const cached = dominantColorCache.get(probeUrl);
-    if (cached) {
-      setDominantColor(cached);
-      return;
-    }
+    const cachedTopStrip = topStripGradientCache.get(probeUrl);
+    if (cached) setDominantColor(cached);
+    if (cachedTopStrip) setTopStripGradient(cachedTopStrip);
+    if (cached && cachedTopStrip) return;
 
     let cancelled = false;
     const probe = new Image();
@@ -195,6 +207,39 @@ export function ArticleCard({
           const rgb = `${outR},${outG},${outB}`;
           dominantColorCache.set(probeUrl, rgb);
           setDominantColor(rgb);
+        }
+
+        // ── TOP-STRIP GRADIENT ──
+        // Sample only the top ~25% of the probe image into a 6×1 strip,
+        // then build a horizontal `linear-gradient` from those 6 colour
+        // stops. The result captures the image's top colour mood without
+        // preserving its shape/composition, and renders as a flat CSS
+        // gradient (zero blur filter cost per scroll frame). Slight
+        // 0.85 multiplier matches the prior brightness(0.82) feel.
+        const COLS = 6;
+        const stripCanvas = document.createElement('canvas');
+        stripCanvas.width = COLS;
+        stripCanvas.height = 1;
+        const stripCtx = stripCanvas.getContext('2d', { willReadFrequently: false });
+        if (stripCtx) {
+          const sourceTopH = Math.max(1, Math.floor(probe.naturalHeight * 0.25));
+          stripCtx.drawImage(
+            probe,
+            0, 0, probe.naturalWidth, sourceTopH,
+            0, 0, COLS, 1,
+          );
+          const sd = stripCtx.getImageData(0, 0, COLS, 1).data;
+          const stops: string[] = [];
+          for (let i = 0; i < COLS; i++) {
+            const o = i * 4;
+            const sr = Math.round(sd[o] * 0.85);
+            const sg = Math.round(sd[o + 1] * 0.85);
+            const sb = Math.round(sd[o + 2] * 0.85);
+            stops.push(`rgb(${sr},${sg},${sb})`);
+          }
+          const gradient = `linear-gradient(to right, ${stops.join(', ')})`;
+          topStripGradientCache.set(probeUrl, gradient);
+          setTopStripGradient(gradient);
         }
       } catch {
         // CORS-tainted canvas — silently fall back to cream veil.
@@ -481,30 +526,24 @@ export function ArticleCard({
       onClick={() => onReadMore(article)}
     >
       {/* ── TOP COLOUR BLEED ── Fills y=0 → PLATE_TOP_CSS (the TopBar area)
-          with a heavily-blurred wash derived from the top of the hero image.
-          The filter:blur(56px) renders it as pure soft colour — no texture,
-          no recognisable image. The TopBar's own blur(24px) then samples
-          those soft colours so the nav bar picks up the image's colour mood
-          rather than just the grain background.
-          z=8: behind the image plate (z-10) and behind the TopBar (z-40),
-          never directly visible to the user. */}
-      {hasImage && !isDesktop && !isWebDesktop && isNearActive && imgReady && (
+          with a JS-extracted horizontal gradient sampled from the top
+          ~25% of the hero image (see the canvas onload above). The
+          gradient is a flat CSS `linear-gradient` — NO image background,
+          NO `filter: blur()` — so the strip costs nothing per scroll
+          frame and never replicates the image's shape/composition.
+          The TopBar's own blur(24px) still samples these colours so the
+          nav bar picks up the image's colour mood.
+          z=8: behind the image plate (z-10) and behind the TopBar (z-40). */}
+      {hasImage && !isDesktop && !isWebDesktop && isNearActive && topStripGradient && (
         <div
           aria-hidden="true"
           style={{
             position: 'absolute',
-            // Extend 50px beyond all edges so blur(36px) edge-fade is hidden
-            // by the parent's overflow:hidden — the topbar area (y=0→topbarH)
-            // maps to the middle of this element, well clear of fade zones.
-            top: -50,
-            left: -50,
-            right: -50,
-            height: `calc(${PLATE_TOP_CSS} + 100px)`,
-            backgroundImage: `url(${feedImageUrl(article.imageUrl)})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            backgroundRepeat: 'no-repeat',
-            filter: 'blur(36px) saturate(0.9) brightness(0.82)',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: PLATE_TOP_CSS,
+            background: topStripGradient,
             zIndex: 8,
           }}
         />
