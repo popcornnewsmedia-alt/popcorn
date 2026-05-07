@@ -21,7 +21,7 @@ import { bkkFeedDate } from "./curated-store.js";
 const WEB_SEARCH_TOOL = {
   type: "web_search_20250305",
   name: "web_search",
-  max_uses: 2, // hard ceiling per batch — most articles should use 0; only fill explicit headline-promised gaps
+  max_uses: 8, // ceiling per batch (3 articles) — prompt rule keeps usage rare; most articles should use 0
 } as const;
 
 // Extract the FINAL text block from a (possibly multi-block) Claude response.
