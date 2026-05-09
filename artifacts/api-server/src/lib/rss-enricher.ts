@@ -2421,8 +2421,38 @@ async function enrichWithClaude(
   const selectionText = await callClaude(selectionPrompt, 2000);
 
   const selectionArray = extractJsonArray(selectionText);
-  if (!selectionArray) throw new Error("Call 1: Claude did not return a JSON array");
-  const selectionParsed: any[] = JSON.parse(sanitizeClaudeJson(selectionArray));
+  if (!selectionArray) {
+    console.error(
+      `[rss] Call 1 — no JSON array found in response. Raw response (first 1500 chars):\n${selectionText.slice(0, 1500)}`,
+    );
+    throw new Error("Call 1: Claude did not return a JSON array");
+  }
+  let selectionParsed: any[];
+  try {
+    selectionParsed = JSON.parse(sanitizeClaudeJson(selectionArray));
+  } catch (parseErr) {
+    // Last-resort repair: strip a trailing partial element if the array looks truncated,
+    // or trim to the last known-good closing brace.
+    console.error(
+      `[rss] Call 1 — JSON.parse failed: ${(parseErr as Error).message}. ` +
+      `Extracted array (first 1500 chars):\n${selectionArray.slice(0, 1500)}`,
+    );
+    const sanitized = sanitizeClaudeJson(selectionArray);
+    const lastClose = sanitized.lastIndexOf("}");
+    if (lastClose > 0) {
+      const repaired = sanitized.slice(0, lastClose + 1) + "]";
+      try {
+        selectionParsed = JSON.parse(repaired);
+        console.warn(
+          `[rss] Call 1 — recovered ${selectionParsed.length} entries via truncation repair`,
+        );
+      } catch {
+        throw new Error(`Call 1: Claude returned malformed JSON: ${(parseErr as Error).message}`);
+      }
+    } else {
+      throw new Error(`Call 1: Claude returned malformed JSON: ${(parseErr as Error).message}`);
+    }
+  }
 
   const selectedIndices = selectionParsed.map((x: any) => x.sourceIndex as number).filter(Boolean);
   const selectedRawItems = selectedIndices.map((idx) => rawItems[idx - 1]).filter(Boolean);
@@ -2780,14 +2810,14 @@ async function callClaudeForConsideration(
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-function _writeAuditFile(
+async function _writeAuditFile(
   toEnrich: RawRSSItem[],
   dedupAudit: DedupeAuditEntry[],
   decisions: ClaudeDecision[],
   shortlistOnly = false,
   /** 1-based indices of items Claude considered in this window (W1-W5 consideration pass) */
   consideredIndices?: Set<number>,
-): void {
+): Promise<void> {
   try {
     const dateStr = bkkFeedDate();
     const auditPath = `/tmp/popcorn-audit-${dateStr}.json`;
@@ -2868,14 +2898,43 @@ function _writeAuditFile(
     fs.writeFileSync(fetchPath, auditPayload);
     console.log(`[rss] ✓ Saved fetch #${fetchN} snapshot → ${fetchPath}`);
 
-    // Merge with existing combined file (append across windows, dedup by link)
+    // Merge with existing entries (append across windows, dedup by link).
+    // Source of truth = Supabase, NOT local FS — Railway container restarts wipe
+    // /tmp + working dir, but Supabase persists. Reading from local FS here meant
+    // a redeploy mid-day silently dropped prior windows' "considered" entries.
     const committedPath = path.join(dataDir, `uncurated-${dateStr}.json`);
     let existingArticles: typeof auditEntries = [];
-    if (fs.existsSync(committedPath)) {
-      try {
-        const existing = JSON.parse(fs.readFileSync(committedPath, "utf-8"));
-        existingArticles = existing.articles ?? [];
-      } catch { /* start fresh */ }
+    try {
+      const { data: existingRows, error: existingErr } = await supabase
+        .from("shortlist_candidates")
+        .select("title, source, description, pub_date, link, image_url, stage, reason, raw_data")
+        .eq("feed_date", dateStr)
+        .order("idx", { ascending: true });
+      if (existingErr) throw new Error(existingErr.message);
+      existingArticles = (existingRows ?? []).map((row) => {
+        const raw = (row.raw_data as Record<string, unknown> | null) ?? {};
+        return {
+          title: row.title as string,
+          source: row.source as string,
+          pubDate: row.pub_date as string,
+          link: row.link as string,
+          dedupRank: (raw.dedupRank as number) ?? 0,
+          dedupScore: (raw.dedupScore as number) ?? 0,
+          stage: row.stage as string,
+          reason: (row.reason as string) ?? "",
+          fetchN: (raw.fetchN as number) ?? null,
+          _raw: { description: (row.description as string) ?? "", imageUrl: (row.image_url as string) ?? undefined },
+        } as any;
+      });
+      console.log(`[rss] Loaded ${existingArticles.length} existing candidates from Supabase for cross-window merge`);
+    } catch (e) {
+      console.warn("[rss] Could not load prior candidates from Supabase — falling back to local file:", (e as Error).message);
+      if (fs.existsSync(committedPath)) {
+        try {
+          const existing = JSON.parse(fs.readFileSync(committedPath, "utf-8"));
+          existingArticles = existing.articles ?? [];
+        } catch { /* start fresh */ }
+      }
     }
 
     // New window's entry wins if same link appears in both (fresher stage/reason/fetchN),
@@ -2913,10 +2972,14 @@ function _writeAuditFile(
     fs.writeFileSync(committedPath, combinedPayload);
     console.log(`[rss] ✓ Combined uncurated list → ${committedPath} (${merged.length} total across ${fetchN} window(s))`);
 
-    // Persist combined data to Supabase (delete+re-insert since idx positions change after merge)
-    _saveShortlistToSupabase(merged as typeof auditEntries, dateStr).catch((e) =>
-      console.warn("[rss] Failed to save candidates to Supabase:", e)
-    );
+    // Persist combined data to Supabase (delete+re-insert since idx positions change after merge).
+    // Awaited so the next window's read sees this window's writes — under Railway redeploys,
+    // this is the only durable cross-window state.
+    try {
+      await _saveShortlistToSupabase(merged as typeof auditEntries, dateStr);
+    } catch (e) {
+      console.warn("[rss] Failed to save candidates to Supabase:", e);
+    }
 
     // Regenerate human-readable .txt from combined data
     _writeUncuratedTxt(merged as typeof auditEntries, dateStr, fetchN);
@@ -2941,7 +3004,12 @@ async function _saveShortlistToSupabase(
     stage: entry.stage,
     reason: entry.reason ?? null,
     // Store fetchN (window number) inside raw_data JSONB — no schema change needed
-    raw_data: { ...(entry._raw ?? {}), fetchN: entry.fetchN ?? null },
+    raw_data: {
+      ...(entry._raw ?? {}),
+      fetchN: entry.fetchN ?? null,
+      dedupRank: entry.dedupRank,
+      dedupScore: entry.dedupScore,
+    },
   }));
   await supabase.from("shortlist_candidates").delete().eq("feed_date", dateStr);
   const { error } = await supabase.from("shortlist_candidates").insert(rows);
@@ -3126,7 +3194,7 @@ export async function loadLiveArticles(
   if (_pendingRawItems && _pendingDedupAudit) {
     console.log(`[rss] Re-using ${_pendingRawItems.length} cached candidates — skipping RSS fetch.`);
     const { articles: enriched, decisions } = await enrichWithClaude(_pendingRawItems, alreadyPublished, publishToday, promptAlreadyPublished);
-    _writeAuditFile(_pendingRawItems, _pendingDedupAudit, decisions);
+    await _writeAuditFile(_pendingRawItems, _pendingDedupAudit, decisions);
     _pendingRawItems = null;
     _pendingDedupAudit = null;
     return enriched;
@@ -3305,7 +3373,8 @@ export async function loadLiveArticles(
 
   // Save this window's consideration results (considered/not_considered) to disk + Supabase.
   // The sticky-merge logic in _writeAuditFile ensures "considered" status is never downgraded.
-  _writeAuditFile(toEnrich, dedupAudit, [], true, consideredIndices);
+  // Awaited because subsequent steps (and W6) depend on these writes being durable.
+  await _writeAuditFile(toEnrich, dedupAudit, [], true, consideredIndices);
   _pendingRawItems = null;
   _pendingDedupAudit = null;
 
@@ -3316,12 +3385,15 @@ export async function loadLiveArticles(
 
   // ── Stage 4: W6 final selection — load ALL considered candidates from all windows ──
   const dateStr = bkkFeedDate();
-  const { data: consideredRows } = await supabase
+  const { data: consideredRows, error: consideredErr } = await supabase
     .from("shortlist_candidates")
     .select("title, source, description, pub_date, link, image_url, stage, reason, raw_data")
     .eq("feed_date", dateStr)
     .eq("stage", "considered")
     .order("idx", { ascending: true });
+  if (consideredErr) {
+    console.error(`[rss] W6: Supabase query for considered candidates failed: ${consideredErr.message}`);
+  }
 
   const consideredPool: RawRSSItem[] = (consideredRows ?? []).map((row) => ({
     title: row.title as string,
