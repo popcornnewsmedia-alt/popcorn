@@ -426,7 +426,7 @@
       "imageFocalY": 0.45,
       "imageSafeW": 0.65,
       "imageSafeH": 0.65,
-      "imageCredit": "Wikimedia Commons",
+      "imageCredit": null,
       "keyPoints": [
         "The Colosseum in Rome has completed a major revamp that revealed long-hidden parts of its history",
         "The restoration uncovered elements of the original structure obscured for centuries",

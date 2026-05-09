@@ -15,13 +15,6 @@ import { feedImageUrl, probeImageUrl } from "@/lib/image-url";
 // values are pre-formatted "r,g,b" strings ready for setState.
 const dominantColorCache = new Map<string, string>();
 
-// Module-level cache for the top-strip gradient — a horizontal CSS
-// linear-gradient string sampled from the top ~25% of the image. Used
-// by the TOP COLOUR BLEED div (behind the TopBar) so the nav bar picks
-// up the image's colour mood WITHOUT replicating image shape and
-// WITHOUT a CSS blur filter on every card.
-const topStripGradientCache = new Map<string, string>();
-
 // Desktop threshold — at and above this viewport width, we swap the
 // single-column mobile/iOS poster layout for an editorial side-by-side
 // split: portrait poster plate on the left, typography column on the
@@ -137,11 +130,6 @@ export function ArticleCard({
   // in which case both regions use a neutral cream veil — same as before
   // this effect existed.
   const [dominantColor, setDominantColor] = useState<string | null>(null);
-  // Horizontal gradient sampled from the top ~25% of the image — drives
-  // the TOP COLOUR BLEED strip behind the TopBar. Pure CSS gradient at
-  // paint time (no image, no blur filter), so the strip costs nothing
-  // per scroll frame.
-  const [topStripGradient, setTopStripGradient] = useState<string | null>(null);
 
   // Category-derived fallback color used when the dominant-color probe fails
   // (e.g. CORS-restricted external CDNs like Dexerto that don't send
@@ -159,10 +147,10 @@ export function ArticleCard({
     // Cache hit: skip the network + decode + pixel sweep, hand the
     // pre-computed "r,g,b" string straight to state.
     const cached = dominantColorCache.get(probeUrl);
-    const cachedTopStrip = topStripGradientCache.get(probeUrl);
-    if (cached) setDominantColor(cached);
-    if (cachedTopStrip) setTopStripGradient(cachedTopStrip);
-    if (cached && cachedTopStrip) return;
+    if (cached) {
+      setDominantColor(cached);
+      return;
+    }
 
     let cancelled = false;
     const probe = new Image();
@@ -208,61 +196,9 @@ export function ArticleCard({
           dominantColorCache.set(probeUrl, rgb);
           setDominantColor(rgb);
         }
-
-        // ── TOP-STRIP COLOUR PALETTE → ATMOSPHERIC GRADIENT ──
-        // Sample 4 colours from the top ~25% of the probe image, then
-        // compose them as overlapping radial gradients with scrambled
-        // anchor positions. We use the image's TOP colour palette but
-        // throw away its left-to-right ordering, so the strip never
-        // reads as a stripe of the image — no centred subject showing
-        // through, no horizontal subject-vs-background mapping.
-        // Renders as pure CSS gradients (no blur filter, no image),
-        // so cost per scroll frame stays zero.
-        const COLS = 4;
-        const stripCanvas = document.createElement('canvas');
-        stripCanvas.width = COLS;
-        stripCanvas.height = 1;
-        const stripCtx = stripCanvas.getContext('2d', { willReadFrequently: false });
-        if (stripCtx) {
-          const sourceTopH = Math.max(1, Math.floor(probe.naturalHeight * 0.25));
-          stripCtx.drawImage(
-            probe,
-            0, 0, probe.naturalWidth, sourceTopH,
-            0, 0, COLS, 1,
-          );
-          const sd = stripCtx.getImageData(0, 0, COLS, 1).data;
-          const palette: string[] = [];
-          for (let i = 0; i < COLS; i++) {
-            const o = i * 4;
-            const sr = Math.round(sd[o] * 0.85);
-            const sg = Math.round(sd[o + 1] * 0.85);
-            const sb = Math.round(sd[o + 2] * 0.85);
-            palette.push(`rgb(${sr},${sg},${sb})`);
-          }
-          // Scrambled anchors — palette colours are placed at points that
-          // don't correspond to where they came from in the source image.
-          const gradient = [
-            `radial-gradient(ellipse 80% 220% at 22% 35%, ${palette[2]} 0%, transparent 65%)`,
-            `radial-gradient(ellipse 80% 220% at 78% 65%, ${palette[0]} 0%, transparent 65%)`,
-            `radial-gradient(ellipse 60% 180% at 52% 50%, ${palette[3]} 0%, transparent 55%)`,
-            `linear-gradient(${palette[1]}, ${palette[1]})`,
-          ].join(', ');
-          topStripGradientCache.set(probeUrl, gradient);
-          setTopStripGradient(gradient);
-        }
       } catch {
         // CORS-tainted canvas — silently fall back to cream veil.
       }
-    };
-    // CORS-blocked CDN (e.g. Sky Sports, Getty mirrors) → image fetch with
-    // crossOrigin='anonymous' fails entirely (onerror, not onload). Fall
-    // back to a flat black strip so the TopBar stays consistent and there's
-    // no abrupt switch to the article's underlying background.
-    probe.onerror = () => {
-      if (cancelled) return;
-      const fallback = 'linear-gradient(rgb(0,0,0), rgb(0,0,0))';
-      topStripGradientCache.set(probeUrl, fallback);
-      setTopStripGradient(fallback);
     };
     probe.src = probeUrl;
     return () => { cancelled = true; };
@@ -373,19 +309,9 @@ export function ArticleCard({
   // the subject stays centred and the crop only trims neutral edges.
   const PLATE_SIDE_MARGIN = 0;                         // flush with viewport edge
   // Flush with the progress rule at the bottom of the TopBar.
-  // TopBar bottom is always env(safe-area-inset-top) + 44px from the viewport top,
-  // on both standalone (top:0 + paddingTop:safe-area) and non-standalone (top:safe-area).
-  // brand row (py-3=12+12 + text 17px = 41px) + progress bar (3px) = 44px.
-  // Keep a numeric estimate for JS calculations (plateH / focal point math).
-  // Standalone (iOS PWA / Capacitor): safe-area ~47 + 44 ≈ 91.
-  // Non-standalone (web): safe-area ~0 + 44 ≈ 44 (old value of 47 was slightly off).
-  const PLATE_TOP_OFFSET  = isStandalone ? 91 : 44;
-  // CSS value reads --pn-topbar-h set by TopBar's ResizeObserver, which
-  // measures getBoundingClientRect().bottom — the true pixel distance from
-  // viewport top to the bottom of the progress bar, on every device and
-  // media-query state (desktop button vs mobile hint differ by ~8px).
-  // Fallback 53px covers the desktop browser case if the var isn't set yet.
-  const PLATE_TOP_CSS = 'var(--pn-topbar-h, 53px)';
+  // Standalone (iOS PWA / Capacitor): safe-area ~47 + brand row ~41 + progress 3 ≈ 91.
+  // Non-standalone (web): no safe-area padding inside the bar + brand row ~41 + progress 3 ≈ 47.
+  const PLATE_TOP_OFFSET  = isStandalone ? 91 : 47;
   // Bottom of the plate — the image extends down until its bottom edge
   // lands JUST under the category/source pill row, so the pills read as
   // the first beat below the photo with no dead space between. The
@@ -400,15 +326,15 @@ export function ArticleCard({
   // Mobile/iOS: ~130px bottom cap — image ends before the content overlay
   // zone. The lost area is covered by a cinematic dark-fade vignette
   // inside the plate that dissolves the image into darkness.
-  const PLATE_BOTTOM_CAP = isWebDesktop ? 168 : 200;
+  const PLATE_BOTTOM_CAP = isWebDesktop ? 168 : 130;
 
   // How far above the card's bottom edge the overlaid content should end.
   // Must clear the BottomNav pill + its outer padding + breathing room.
   //   Standalone iOS: pill ≈ 62px + env(safe-area-inset-bottom) (~34px on iPhone) + 12px gap
   //   Mobile web    : pill ≈ 54px + 12px gap = 66px
   const CONTENT_BOTTOM = isStandalone
-    ? 'calc(env(safe-area-inset-bottom) + 94px)'
-    : '86px';
+    ? 'calc(env(safe-area-inset-bottom) + 74px)'
+    : '66px';
 
   // ── Plate geometry ──
   // Mobile / iOS / mobile-web (< DESKTOP_BREAKPOINT): full-bleed portrait
@@ -426,7 +352,7 @@ export function ArticleCard({
   let plateW: number;
   let plateH: number;
   let plateLeft: number;
-  let plateTop:  number | string;
+  let plateTop:  number;
 
   // Desktop content-row bookkeeping (only meaningful when isDesktop).
   // `rowLeft` is the left edge of the centered content row; `rowWidth`
@@ -502,7 +428,7 @@ export function ArticleCard({
     plateW    = viewportW;
     plateH    = Math.max(1, viewportH - PLATE_TOP_OFFSET - PLATE_BOTTOM_CAP);
     plateLeft = 0;
-    plateTop  = PLATE_TOP_CSS;
+    plateTop  = PLATE_TOP_OFFSET;
   }
 
   // The plate is portrait-leaning (narrower than tall), so almost every
@@ -544,30 +470,6 @@ export function ArticleCard({
       }}
       onClick={() => onReadMore(article)}
     >
-      {/* ── TOP COLOUR BLEED ── Fills y=0 → PLATE_TOP_CSS (the TopBar area)
-          with a JS-extracted horizontal gradient sampled from the top
-          ~25% of the hero image (see the canvas onload above). The
-          gradient is a flat CSS `linear-gradient` — NO image background,
-          NO `filter: blur()` — so the strip costs nothing per scroll
-          frame and never replicates the image's shape/composition.
-          The TopBar's own blur(24px) still samples these colours so the
-          nav bar picks up the image's colour mood.
-          z=8: behind the image plate (z-10) and behind the TopBar (z-40). */}
-      {hasImage && !isDesktop && !isWebDesktop && isNearActive && topStripGradient && (
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: PLATE_TOP_CSS,
-            background: topStripGradient,
-            zIndex: 8,
-          }}
-        />
-      )}
-
       {/* ── HERO PLATE ── Full-bleed portrait on mobile/iOS; editorial centered
           card on desktop. A cinematic scrim below provides text legibility. */}
       {hasImage ? (
@@ -590,19 +492,14 @@ export function ArticleCard({
                   }
                 : isWebDesktop
                 ? {
+                    // Web desktop: short 8px feather to soften the seam
+                    // against the progress rule.
                     WebkitMaskImage:
                       'linear-gradient(to bottom, transparent 0, black 8px, black 100%)',
                     maskImage:
                       'linear-gradient(to bottom, transparent 0, black 8px, black 100%)',
                   }
-                : {
-                    // Mobile/iOS: subtle bottom feather so the image edge
-                    // dissolves rather than hard-cuts into the dark panel.
-                    WebkitMaskImage:
-                      'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
-                    maskImage:
-                      'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
-                  }),
+                : {}),
             }}
           >
             <img
@@ -774,6 +671,15 @@ export function ArticleCard({
                         fontFamily: "'Macabro', 'Anton', sans-serif",
                       }}>{article.category}</span>
                     </span>
+                    <span className="px-2.5 py-1 rounded-full tracking-wide" style={{
+                      fontSize: 10,
+                      background: 'rgba(255,255,255,0.08)',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      color: 'rgba(255,255,255,0.65)',
+                      fontFamily: "'Macabro', 'Anton', sans-serif",
+                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                      minWidth: 0, flex: '0 1 auto',
+                    }}>{article.source}</span>
                   </div>
                   <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} horizontal />
                 </div>
@@ -800,10 +706,28 @@ export function ArticleCard({
             <>
               {/* ── Mobile / iOS: cinematic full-bleed layout ── */}
 
-              {/* Atmosphere strip removed — replaced by the TOP COLOUR BLEED div
-                  above the hero plate, which samples the actual top of the image
-                  (not the whole-image dominant colour average) so the TopBar
-                  always reflects the true top-of-image colour mood. */}
+              {/* Atmosphere strip — TopBar-height band of image-derived color.
+                  The TopBar's backdrop-filter blurs over this, giving the
+                  same cinematic image-color bleed through the nav bar as
+                  before the full-bleed layout. No extra image fetch — the
+                  dominantColor probe gives a pixel-accurate tint at zero cost. */}
+              <div
+                aria-hidden
+                className="absolute left-0 right-0 pointer-events-none"
+                style={{
+                  top: 0,
+                  height: PLATE_TOP_OFFSET,
+                  zIndex: 12,
+                  // When dominantColor is available, tint the atmosphere with the
+                  // image-derived colour. When null (CORS-blocked CDNs like Dexerto),
+                  // leave it transparent so the TopBar's blur composites the raw
+                  // image pixels directly — avoids the category-colour bleeding into
+                  // an unrelated hue (e.g. lime + dark photo = olive green).
+                  background: dominantColor
+                    ? `linear-gradient(to bottom, rgba(${dominantColor},0.90) 0%, rgba(${dominantColor},0.72) 60%, rgba(${dominantColor},0.38) 100%)`
+                    : 'transparent',
+                }}
+              />
 
               {/* Scrim — image-tinted dark veil over the image zone only. */}
               <div
@@ -833,11 +757,11 @@ export function ArticleCard({
                   right: '72px',
                   paddingLeft: '20px',
                   paddingTop: '28px',
-                  paddingBottom: isStandalone ? 'calc(env(safe-area-inset-bottom) + 86px)' : '86px',
+                  paddingBottom: CONTENT_BOTTOM,
                 }}
               >
                 {/* Pills row */}
-                <div className="flex items-center gap-2 mb-2 min-w-0 overflow-hidden">
+                <div className="flex items-center gap-2 mb-3.5 min-w-0 overflow-hidden">
                   <span
                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
                     style={{
@@ -866,17 +790,33 @@ export function ArticleCard({
                     </span>
                   </span>
 
+                  <span
+                    className="px-2.5 py-1 rounded-full tracking-wide"
+                    style={{
+                      fontSize: '10px',
+                      background: 'rgba(255,255,255,0.08)',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      color: 'rgba(255,255,255,0.65)',
+                      fontFamily: "'Macabro', 'Anton', sans-serif",
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      maxWidth: '130px',
+                    }}
+                  >
+                    {article.source}
+                  </span>
                 </div>
 
                 {/* Headline */}
                 <h2
                   className="mb-3 text-white"
                   style={{
-                    fontSize: '25px',
-                    lineHeight: 1.2,
+                    fontSize: '22px',
+                    lineHeight: 1.22,
                     fontFamily: "'Suisse Int\\'l', 'Geist', 'Inter', system-ui, sans-serif",
                     fontWeight: 600,
-                    letterSpacing: '-0.028em',
+                    letterSpacing: '-0.025em',
                     textShadow: '0 2px 16px rgba(0,0,0,0.55)',
                   }}
                 >
@@ -954,6 +894,19 @@ export function ArticleCard({
               </span>
             </span>
 
+            <span
+              className="px-3 py-1.5 rounded-full tracking-[0.14em]"
+              style={{
+                fontSize: '11px',
+                background: 'rgba(255,255,255,0.12)',
+                border: '1px solid rgba(255,241,205,0.14)',
+                color: 'rgba(255,241,205,0.70)',
+                fontFamily: "'Macabro', 'Anton', sans-serif",
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {article.source}
+            </span>
           </div>
 
           {/* Tapered cream hairline — mirrors the mobile divider so the

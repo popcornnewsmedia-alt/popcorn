@@ -1,0 +1,354 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  POPCORN CANDIDATES — 2026-05-07   (2 windows merged)
+  220 articles fetched   209 unique stories   3 selected by Claude
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+── FIRST PASS — Claude's picks (3 selected) ────────────────────────────────────────────────────────────
+  #1    9     Variety                       ‘The Bear’ to End With Season 5; Final Season Sets June Premiere
+  #2    6     Engadget                      Chrome downloads a 4GB AI file without user consent, researcher alleges
+  #3    6     BBC Sport                     Injury row, yacht trip & petition - what's going on with Mbappe?
+
+── ALL CANDIDATES (sorted by score) ─────────────────────────────────────────────────────────────────
+ ✓ #1    9     Variety                       ‘The Bear’ to End With Season 5; Final Season Sets June Premiere
+   #2    9     Stereogum                     Spacemoth – “Internet Fantasy”
+   #3    9     Wired                         ReMarkable Paper Pure Tablet Review: Back to Basics
+   #4    8     The Hollywood Reporter        Griffin Gaming Partners Launches $100 Million Fund for Indie Titles With Hollywood Potential (Exclusive)
+   #5    8     Dexerto                       Pokemon fan trades supercar for $140k card collection
+   #6    8     Billboard                     Savan Kotecha on Co-Writing Justin Bieber’s ‘Beauty and a Beat’ & What Its Post-Coachella Comeback Means: ‘My Kids Think It’s a New Song’
+   #7    8     BBC Sport                     Raducanu targets WTA Tour return in Strasbourg
+   #8    8     TechCrunch                    Apple to pay $250M to settle lawsuit over Siri’s delayed AI features
+   #9    8     BBC Sport                     McIlroy 'more motivated than ever' before return
+   #10   8     Dexerto                       1980s text-to-speech app goes viral after fans turn it into Hatsune Mike and Daft Punk machine
+   #11   8     The Guardian Culture          Shostakovich’s First at 100 – how prodigious genius sounded before Stalin set about silencing it
+   #12   8     NYT Arts                      María Nieves Rego, Who Helped Spark a Tango Renaissance, Dies at 91
+   #13   8     Page Six                      Ryan Reynolds shares carefree selfie with Blake Lively after actress’s shocking settlement
+   #14   8     NME                           ‘Iron Maiden: Burning Ambition’ review: shock and roll with metal’s new wave pioneers
+   #15   8     Business Insider              8 things I learned when I sailed solo on my first cruise, from how to meet people to having to pay a 'single supplement'
+   #16   8     BBC Sport                     Cooper tops two classes in first NW200 qualifying
+   #17   8     Dexerto                       Apple settles $250M “Enhanced Siri” lawsuit after selling iPhone without promised features
+   #18   8     IndieWire                     Nicolas Winding Refn on the ‘Pusher’ Re-Release, Cannes Comeback, and His First Film in 10 Years
+   #19   8     BBC Sport                     Football Australia wants World Cup venue ban lifted
+   #20   8     Semafor                       Saudi non-oil econmy returns to growth in April, PMI shows
+   #21   8     Dexerto                       Lawsuit claims Mark Zuckerberg “encouraged” copyright infringement to train AI at Meta
+   #22   8     Semafor                       Saudi quarterly deficit highest since 2018
+   #23   8     Stereogum                     REZN Announce New Album Cycles In The Infinite Dream: Hear “Cloudfall”
+   #24   8     Inc.                          The Radical Legacy of Ted Turner: Why the Founder of CNN Was Often Underestimated
+   #25   8     Page Six                      Blake Lively and Justin Baldoni’s legal battle isn’t over just yet — despite settlement
+   #26   6     Billboard                     SEVENTEEN’s JOSHUA Talks Solo Music, Signing With K-Pop Group Over Korean Seafood | Takes Us Out
+   #27   6     Billboard                     SEVENTEEN’s JOSHUA Takes Us Out and Reveals How John Mayer Inspired Him, Love for Justin Bieber
+   #28   6     Variety                       ‘Daredevil’ Boss on Matt’s Finale Reveal, the Defenders Reunion in Season 3 and When ‘Punisher: One Last Kill’ Takes Place
+   #29   6     Variety                       John Singleton’s ‘Hood Trilogy’ Gets a Criterion Collection Release: Here’s Where to Buy the Box Set Online
+   #30   6     Variety                       Telemundo, U.S. Soccer Extend Rights Deal Through 2030
+   #31   6     Variety                       Josh Johnson’s HBO Special Sets May Debut
+   #32   6     The Hollywood Reporter        Noah Wyle to Host MPTF’s NextGen Summer Party
+   #33   6     The Hollywood Reporter        Obamas’ Higher Ground Sets ‘Stories of a Stranger’ Companion Podcast (Exclusive)
+   #34   6     The Hollywood Reporter        ‘Mortal Kombat II’ Review: Karl Urban in a Tacky Sequel That’s Strictly for the Fans
+   #35   6     IndieWire                     ‘Mortal Kombat II’ Review: Not Even Kitana Can Save This Doomed IP from Another Film Fatality
+   #36   6     Deadline                      Isla Fisher Signs With Anonymous Content
+   #37   6     Defector                      It’s A Strange Time To Be A LIV Golf Fella
+   #38   6     Deadline                      Read David Zaslav’s Memo To WBD On Ted Turner’s Death: “He Did Not Just Disrupt Media. He Transformed It”
+   #39   6     Dexerto                       Heston James arrest footage revealed as TikToker now faces up to 20 years in prison for pranks
+   #40   6     The Atlantic                  Why People Are Actually So Anxious About Attention
+   #41   6     Dexerto                       How much jail time is Clavicular facing after Florida alligator shooting? Charges explained
+   #42   6     The New Yorker                A Father’s Newfound Feminism
+   #43   6     The Hollywood Reporter        Ted Turner Remembered as “Visionary” by Fellow Media Moguls
+   #44   6     Polygon                       Netflix's One Piece anime remake has a baffling episode count that doesn't bode well
+   #45   6     TechCrunch                    Chrome on Android now supports approximate instead of precise location sharing
+   #46   6     Billboard                     Billboard’s Music Industry Events Calendar
+   #47   6     Inc.                          Defying Alcohol Slump: How Corona’s Parent Company Hit New Heights
+   #48   6     Deadline                      Disney Brass Says Soaring Gas Prices Not Hit Parks Yet But “Mindful Of Macro Uncertainty Consumers Are Facing”
+   #49   6     Highsnobiety                  Orange Is the New Brown
+   #50   6     The New Yorker                Adam Scott Enters the Caption Contest
+   #51   6     Vanity Fair                   June 2026 U.S. Credits
+   #52   6     The New Yorker                Abbi Jacobson and Zach Woods Enter the Caption Contest
+   #53   6     NME                           Steven Drozd on Wayne Coyne sacking him from Flaming Lips: “I went back to treatment, and he just stopped communicating with me”
+   #54   6     Polygon                       Halo Infinite update adds new mode six months after development ended
+   #55   6     TechCrunch                    Google updates AI search to include ‘expert advice’ from Reddit and other web forums
+   #56   6     Wired                         Cybercriminals Are Complaining About AI Slop Flooding Their Forums
+   #57   6     Billboard                     Big Loud CEO Talks the Changing Nashville Music Business, Building Creative Trust With Morgan Wallen
+   #58   6     Billboard                     FLO Announces New Album ‘Therapy at the Club’ & Its Release Date: ‘It’s Been a Labor of Love’
+   #59   6     Business Insider              I bought a 54-acre ranch to teach my kids self-reliance. Then I lost millions overnight and learned another lesson.
+   #60   6     TechCrunch                    Khosla-backed robotics startup Genesis AI has gone full-stack, demo shows
+   #61   6     Variety                       High Tea and Dish With Directors: Six Top Emmy Contenders Talk About Their Craft, Wearing Multiple Hats and Embracing the Best Idea
+   #62   6     Billboard                     The Poetry & Chaos of Draco Rosa in ‘Olas de Luz’: ‘It Perfectly Reflects Where My Heart Is’
+   #63   6     Consequence                   Paul Bettany and Will Sharpe on Amadeus, Genius, and the Burden of Talent: Podcast
+   #64   6     Dexerto                       Pokemon scalpers steal Target displays to resell for thousands of dollars
+   #65   6     Consequence                   Best AirPods Deals for May 2026
+   #66   6     Defector                      The Colorado Avalanche Don’t Need Luck
+   #67   6     BBC Sport                     Birmingham City to host Barcelona in pre-season friendly
+   #68   6     The Verge                     Xbox changes continue with new console boot animation
+   #69   6     Business Insider              The spike in gas prices is worsening the K-shaped economy
+   #70   6     Business Insider              These airlines have cut the most flights this summer as jet fuel prices skyrocket
+   #71   6     BBC Sport                     Crystal Palace fans want honey again - Glasner
+   #72   6     Dexerto                       YouTuber facing felony charges after allegedly pepper spraying man for views
+   #73   6     Business Insider              Celebrity deaths 2026: Remembering the famous people we lost this year
+   #74   6     Consequence                   Iceage Release New Single “The Weak: Stream
+   #75   6     The Verge                     Here are the fitness trackers I actually recommend
+   #76   6     Polygon                       All Far Far West Far West grave locations
+   #77   6     Pitchfork                     Flo Announce New Album Therapy at the Club
+   #78   6     TechCrunch                    Tinder owner Match Group is slowing hiring to pay for its increased use of AI tools
+   #79   6     Consequence                   David Letterman on CBS Owners Canceling Colbert: “They’re Lying Weasels”
+   #80   6     Page Six                      Kylie Jenner describes ‘crazy’ mushrooms trip that left her in tears
+   #81   6     Page Six                      Lena Dunham’s Met Gala 2026 dress was inspired by blood spatter
+   #82   6     Business Insider              Walmart changes cart rules for workers filling pick-up orders after safety concerns
+   #83   6     Business Insider              Best fresh dog food, tested with 5 pups
+ ✓ #84   6     Engadget                      Chrome downloads a 4GB AI file without user consent, researcher alleges
+   #85   6     Page Six                      All the details on Dwayne ‘The Rock’ Johnson’s $3.3M Met Gala watch
+   #86   6     Billboard                     ‘Survivor’ Superfan Billie Eilish Describes How Season 50 ‘Boomerang Idol’ Came to Be, Doubts Her Ability to Compete: ‘So Bad With the Math Part’
+   #87   6     Deadline                      Wyncor & OuiDo! Productions Form Content Distribution Business & Team On Two Animated Series
+   #88   6     Billboard                     Travis Kelce Reveals How He’s ‘More of a Man’ Whenever He’s Around Taylor Swift
+   #89   6     Futurism                      Gamers Cheer as Microsoft Pulls Copilot AI Out of Xbox Entirely
+   #90   6     Highsnobiety                  How to Eye-dentify Great Sunnies
+   #91   6     404 Media                     Podcast: Flock Used Cameras at a Children’s Gymnastics Center for a Sales Pitch
+   #92   6     Business Insider              My life after college looks nothing like I expected. I wonder if I made the right choices.
+   #93   6     Deadline                      ‘Grange Hill’ Creator Phil Redmond: Finding Great TV Is Like Searching For A Gem In “Torrent Of Pebbles”
+   #94   6     Consequence                   Blood Incantation and Alamo Drafthouse Team Up for One-Night Screening of Documentary
+   #95   6     Deadline                      Disney’s Recent Layoffs May Not Be One-Offs As Company Touts “Culture Of Efficiency”
+   #96   6     Semafor                       Ryan Cohen’s incoherent bid for eBay, and confidence at Milken
+                                           ↳ (no reason given)
+   #97   6     Inc.                          This Startup Reimagined the Landline for Kids—and It’s Selling So Fast It Just Launched a New Way to Buy in Bulk
+                                           ↳ (no reason given)
+   #98   6     The Hollywood Reporter        Maury Povich Just Rebooted His TV Show for An AI Ad
+                                           ↳ (no reason given)
+   #99   6     The Atlantic                  A Dangerous New Attack on Press Freedom
+                                           ↳ (no reason given)
+   #100  6     NYT Arts                      ‘The Other Bennet Sister’ Celebrates Jane Austen’s Awkward, Lovable Middle Sister
+                                           ↳ (no reason given)
+   #101  6     BBC Sport                     Scheffler confirms Scottish Open participation
+   #102  6     Polygon                       Edge of Eternities was never a Star Trek test run, Magic designer says
+                                           ↳ (no reason given)
+   #103  6     The Hollywood Reporter        American Film Market Refocuses on “New Global Screen Economy” For 2026 Edition
+                                           ↳ (no reason given)
+   #104  6     IndieWire                     What ‘SNL UK’ Is Doing Differently (and What Lorne Michaels Has to Say About It)
+                                           ↳ (no reason given)
+   #105  6     Deadline                      Andy Serkis Narrating Animated Short ‘Pigeons’ From Director Amos Sussigan; Film To Premiere At Animayo Fest
+                                           ↳ (no reason given)
+   #106  6     The New Yorker                The Best Books of 2026 So Far
+                                           ↳ (no reason given)
+   #107  6     The Verge                     The Litter-Robot 4 bundle is back down to its best price of the year
+                                           ↳ (no reason given)
+   #108  6     TechCrunch                    Ethos raises $22.75M from a16z for its expert network with voice onboarding
+                                           ↳ (no reason given)
+   #109  6     Vanity Fair                   Anna Konkle of PEN15 Revisits Her Complicated Childhood In Debut Memoir, The Sane One
+                                           ↳ (no reason given)
+   #110  6     TechCrunch                    Aurora lands McLane deal to run driverless truck routes in Texas
+                                           ↳ (no reason given)
+   #111  6     Page Six                      All the ugly details from Kylie Jenner’s new housekeeper abuse lawsuit
+                                           ↳ (no reason given)
+   #112  6     Polygon                       Hades 2 receives new mod that stuff a whole other game inside it
+                                           ↳ (no reason given)
+   #113  6     Pitchfork                     Tasha Launches Album With New Song Featuring L’Rain and Jamila Woods
+                                           ↳ (no reason given)
+   #114  6     The Atlantic                  The FBI Is Reportedly Investigating a Leak to an <em>Atlantic</em> Writer
+                                           ↳ (no reason given)
+   #115  6     Rolling Stone                 ‘Un-American’: Dems Dig in as Southern States Try to Eliminate Black Representation
+                                           ↳ (no reason given)
+   #116  6     Deadline                      Sophie Thatcher Joins Jennifer Kent’s ‘The Girl Who Was Plugged In’ As Goodfellas Launches Sales – Cannes Market
+                                           ↳ (no reason given)
+   #117  6     Consequence                   Barack Obama Declines to Endorse Stephen Colbert for President
+                                           ↳ (no reason given)
+   #118  6     Business Insider              Here's what Disney CEO Josh D'Amaro told employees after beating Wall Street's earnings expectations
+                                           ↳ (no reason given)
+   #119  6     Business Insider              At 50, I moved from Texas to a village in Tuscany. The locals welcomed me with open hearts and now treat me like family.
+                                           ↳ (no reason given)
+   #120  6     NME                           Olivia Rodrigo adds extra London shows to 2027 UK tour due to demand
+                                           ↳ (no reason given)
+   #121  6     Stereogum                     Ebbb Announce Debut Album Shallow Hits: Hear “Now You Know”
+                                           ↳ (no reason given)
+   #122  6     Consequence                   The Menzingers Announce 2026 North American Tour
+                                           ↳ (no reason given)
+   #123  6     The New Yorker                Daily Cartoon: Wednesday, May 6th
+                                           ↳ (no reason given)
+   #124  6     Dexerto                       You can now watch YouTube on Switch 2 but only if you download this random game
+                                           ↳ (no reason given)
+   #125  6     Pitchfork                     Lambchop Line Up Tour and Justin Vernon-Assisted Album Punching the Clown
+                                           ↳ (no reason given)
+   #126  6     Dexerto                       Assassin’s Creed is getting a live stage spin-off with parkour and choreographed fights
+                                           ↳ (no reason given)
+   #127  6     Dexerto                       Where is Should I Marry a Murderer’s Sandy McKellar now? Netflix documentary explained
+                                           ↳ (no reason given)
+   #128  6     NYT Arts                      ‘Fill the Stage!’ Tiler Peck Says It’s Time for Ballet to Go Big
+                                           ↳ (no reason given)
+   #129  6     Business Insider              Oil plunges and stocks soar: The 5 most notable market moves as hopes for an Iran peace deal grow
+                                           ↳ (no reason given)
+   #130  6     TechCrunch                    At TechCrunch Disrupt 2026, all your M&A questions will be answered
+                                           ↳ (no reason given)
+   #131  6     IGN                           Karl Urban Explains Why Mortal Kombat 2’s Johnny Cage is Different from the Games
+                                           ↳ (no reason given)
+   #132  6     Business Insider              I've been to all 50 states. If I only had one day in Colorado, here's how I'd spend it.
+                                           ↳ (no reason given)
+   #133  6     IGN                           Get Diablo IV, Shin Megami Tensei V, and 6 More PC Games in Humble Choice May 2026
+                                           ↳ (no reason given)
+   #134  6     Polygon                       28 Years Later 3 looks doomed after Bone Temple's failed Netflix run
+                                           ↳ (no reason given)
+ ✓ #135  6     BBC Sport                     Injury row, yacht trip & petition - what's going on with Mbappe?
+   #136  6     Consequence                   Underoath Announce Summer 2026 US “Van Tour” of Independent Venues
+                                           ↳ (no reason given)
+   #137  6     Rolling Stone                 Sting Won’t Fund His Kids’ Careers With an Inheritance: ‘Go to Work’
+                                           ↳ (no reason given)
+   #138  6     Business Insider              The most beautiful college campus in every US state
+                                           ↳ (no reason given)
+   #139  6     Rolling Stone                 Ace Frehley’s ‘Budokan’ Guitar, Kirk Hammett’s ‘Black Album’ Ouija Guitar Go to Auction
+                                           ↳ (no reason given)
+   #140  6     Page Six                      Hayden Panettiere comes out as bisexual, details ‘scary’ experience dating women: ‘Better late than never’
+                                           ↳ (no reason given)
+   #141  6     Wired                         Best Carry-On Suitcases (2026): Away, Rimowa, Tumi
+                                           ↳ (no reason given)
+   #142  6     Highsnobiety                  Haider Ackermann Made the World's Fanciest Sunglasses Even Fancier (EXCLUSIVE)
+   #143  6     Business Insider              'The Skinny Confidential' founder Lauryn Bosstick said strength training changed her life, with 4 keys for building muscle and burning fat
+                                           ↳ (no reason given)
+   #144  6     Consequence                   Graham Nash Announces 2026 Fall Tour Dates
+                                           ↳ (no reason given)
+   #145  6     The Hollywood Reporter        Vice News Is Being Resuscitated With Fresh Ambitions
+                                           ↳ (no reason given)
+   #146  6     Inc.                          There Are Only 2 U.S. Host Cities Beating World Cup Hotel Forecasts
+                                           ↳ (no reason given)
+   #147  6     Defector                      Lesbians And Legalized Gambling Are Vying To Save The American Sports Bar
+                                           ↳ (no reason given)
+   #148  6     Consequence                   DragonForce Announce Alissa White-Gluz as New Singer
+                                           ↳ (no reason given)
+   #149  6     Polygon                       Rahul Kohli's Saros performance is terrific, but his character is the worst
+                                           ↳ (no reason given)
+   #150  6     The Verge                     Blink bumps its budget buzzer to 2K
+                                           ↳ (no reason given)
+   #151  6     Inc.                          Is a French Open Boycott Looming? Aryna Sabalenka and Jannik Sinner Express ‘Deep Disappointment’ Over Prize Money
+                                           ↳ (no reason given)
+   #152  6     The Guardian Culture          A ‘bird of Mexico City’ strikes a revolutionary pose: Pieter Henket’s best photograph
+                                           ↳ (no reason given)
+   #153  6     Futurism                      Marc Andreessen Mocked for Accidentally Revealing That He Seems to Have a Deep Misunderstanding of How AI Actually Works
+                                           ↳ (no reason given)
+   #154  6     TechCrunch                    AI boom pushes Samsung to $1T
+                                           ↳ (no reason given)
+   #155  6     The Guardian Culture          Peter Grimes review – beauty and terror in Warner’s topical staging
+                                           ↳ (no reason given)
+   #156  6     IGN                           Ubisoft Announces Assassin's Creed Stage Show
+                                           ↳ (no reason given)
+   #157  6     TechCrunch                    Some kids are bypassing age verification checks with a fake mustache
+                                           ↳ (no reason given)
+   #158  6     Business Insider              I tried vanilla ice cream from Costco, Whole Foods, Wegmans, and Trader Joe's. The tastiest one is also a great value.
+                                           ↳ (no reason given)
+   #159  6     Business Insider              32 Disney movies have hit $1 billion at the box office — here they all are
+                                           ↳ (no reason given)
+   #160  6     Business Insider              Corning stock rockets 17% on major AI manufacturing deal with Nvidia
+                                           ↳ (no reason given)
+   #161  6     Business Insider              Uber CEO says the company is slowing hiring as it invests in AI
+                                           ↳ (no reason given)
+   #162  6     Inc.                          How Xbox CEO Asha Sharma Is Reshaping the Company’s Leadership
+                                           ↳ (no reason given)
+   #163  6     Stereogum                     “It’s Strange To Be Talking About the Flaming Lips In The Past Tense”: An Interview With Steven Drozd
+                                           ↳ (no reason given)
+   #164  6     The Atlantic                  The Perverse Tyranny of a Perfect Transcript
+                                           ↳ (no reason given)
+   #165  6     Ars Technica                  Ars Asks: Share your shell and show us your tricked-out terminals!
+                                           ↳ (no reason given)
+   #166  6     Consequence                   The Psychedelic Furs Announce US Summer Tour with Living Colour
+                                           ↳ (no reason given)
+   #167  6     Business Insider              I visited a historic city 30 minutes outside Washington, DC. I think it's one of the most charming destinations in the US.
+                                           ↳ (no reason given)
+   #168  6     Wired                         A Library Dedicated Solely to the Epstein Files Is Opening in New York
+                                           ↳ (no reason given)
+   #169  6     The Guardian Culture          The best show on TV again (for one glorious scene): The Bear’s surprise new prequel
+                                           ↳ (no reason given)
+   #170  6     Defector                      The Leafs Fell Ass-Backward Into Gavin McKenna
+                                           ↳ (no reason given)
+   #171  6     Business Insider              Long-term elder care in the US can cost 5-figures a month. These families are moving to Mexico for cheaper options.
+                                           ↳ (no reason given)
+   #172  6     404 Media                     Man Finds $1 Million Worth of Yu-Gi-Oh Cards in a Dumpster
+                                           ↳ (no reason given)
+   #173  6     Business Insider              The most scenic road to drive in every state
+                                           ↳ (no reason given)
+   #174  6     Consequence                   Ohio Radio Station Embraces the LOLZ, Changes Name to WKRP in Cincinnati
+                                           ↳ (no reason given)
+   #175  6     Stereogum                     Kurt Vile – “Zoom 97”
+                                           ↳ (no reason given)
+   #176  6     Polygon                       Critical Role officially reveals when Campaign 4 tables will reunite
+                                           ↳ (no reason given)
+   #177  6     The Guardian Culture          Magic review – spellbinding standoff between Houdini and Conan Doyle
+                                           ↳ (no reason given)
+   #178  6     Business of Fashion           Edgewell Results Beat Estimates, Warn of Inflation Pressure
+                                           ↳ (no reason given)
+   #179  6     Futurism                      Ordinary People Fear AI, While the Tech Leaders Working to Create a Permanent Underclass Say They’re Extremely Psyched About It
+                                           ↳ (no reason given)
+   #180  6     The Verge                     Google’s AI search summaries will now quote Reddit
+                                           ↳ (no reason given)
+   #181  6     Defector                      The Pistons Are Getting Down To Business
+                                           ↳ (no reason given)
+   #182  6     Business Insider              Take a look at these hands: Genesis AI says it taught a robot to cook and play piano close to human-level performance
+                                           ↳ (no reason given)
+   #183  6     Vanity Fair                   The 15 Films We Can’t Wait to See at the Cannes Film Festival
+                                           ↳ (no reason given)
+   #184  6     IGN                           10 Years Later, Captain America: Civil War Is Still Impossibly Overstuffed With Characters, Plot, Action... and Awesomeness
+                                           ↳ (no reason given)
+   #185  6     Business of Fashion           Old Navy Appoints Retail Veteran Michael Francis as Chief Customer Officer
+                                           ↳ (no reason given)
+   #186  6     Wired                         Zest Maps Is the AI-Powered ‘Spiritual Successor to Foursquare’
+                                           ↳ (no reason given)
+   #187  6     The Verge                     It’s time to let my iPhone Mini go
+                                           ↳ (no reason given)
+   #188  6     Dexerto                       FIFA World Cup final job pays $90K for only 90 minutes of work
+                                           ↳ (no reason given)
+   #189  6     Inc.                          Want to Live a Little Longer? A Huge New Harvard Study Says You Should Make This Tweak to Your Exercise Routine
+                                           ↳ (no reason given)
+   #190  6     Business Insider              We now have a price tag for Elon Musk's ambitious Texas chip project
+                                           ↳ (no reason given)
+   #191  6     Ars Technica                  More than just an SUV? Rivian is working on more R2 variants.
+                                           ↳ (no reason given)
+   #192  6     Semafor                       Ugandan pop star-turned-opposition figure Bobi Wine outlines artistic influences
+                                           ↳ (no reason given)
+   #193  6     Semafor                       Nearly 8 million South Africans use crypto: report
+                                           ↳ (no reason given)
+   #194  6     Semafor                       Leading hedge fund manager opens Abu Dhabi office
+                                           ↳ (no reason given)
+   #195  6     Semafor                       UAE visa rules exclude stablecoin salaries despite crypto push
+                                           ↳ (no reason given)
+   #196  6     Semafor                       US plans to reopen ties with Eritrea
+                                           ↳ (no reason given)
+   #197  6     Semafor                       Canal+ faces test in South Africa following $2B Multichoice acquisition
+                                           ↳ (no reason given)
+   #198  6     Business Insider              Tech leaders pushing for player-coaches could learn something from Major League Baseball
+                                           ↳ (no reason given)
+   #199  6     BBC Sport                     Wait to name England selector ridiculous - Vaughan
+   #200  6     Business Insider              Oil prices plunge on reports that the US and Iran are close to a peace deal
+                                           ↳ (no reason given)
+   #201  6     Business Insider              I was scared to let my kids bike alone or go to sleepovers. Giving my 10-year-old more independence has helped me be more confident, too.
+                                           ↳ (no reason given)
+   #202  6     Business Insider              4 of Warren Buffett's Berkshire CEOs told us how they're harnessing AI in their businesses
+                                           ↳ (no reason given)
+   #203  6     MIT Technology Review         The Download: seafloor science and military chatbots
+                                           ↳ (no reason given)
+   #204  6     Inc.                          Wall Street Just Broke a 20-Year Seasonal Habit—and It’s a Massive Signal for the Economy
+                                           ↳ (no reason given)
+   #205  6     Business of Fashion           The Influencers That Make Men Shop for Beauty
+                                           ↳ (no reason given)
+   #206  6     The Verge                     The Remarkable Paper Pure is the best digital notepad I’ve ever used
+                                           ↳ (no reason given)
+   #207  6     The Verge                     Remarkable’s next E Ink digital notepad skips the color screen
+                                           ↳ (no reason given)
+   #208  6     Engadget                      reMarkable's Paper Pure is its new entry-level slate
+                                           ↳ (no reason given)
+   #209  6     Inc.                          AI May Be Driving a Renaissance of Gut Feeling in Business
+                                           ↳ (no reason given)
+
+── GROUPED DUPLICATES (excluded from candidate pool) ──────────────────────────────────────────────────
+   Page Six                      Ted Turner, media mogul who founded CNN, dead at 87
+                                ↳ Grouped as duplicate of "Ted Turner, media mogul who founded CNN, dead at 87" (Page S
+   The Hollywood Reporter        Ted Turner, Maverick Mogul and CNN Founder, Dies at 87
+                                ↳ Grouped as duplicate of "Ted Turner, media mogul who founded CNN, dead at 87" (Page S
+   The Hollywood Reporter        ‘The Bear’ Gets Premiere Date for Fifth — and Last — Season on FX and 
+                                ↳ Grouped as duplicate of "&#8216;The Bear&#8217; to End With Season 5; Final Season Se
+   Deadline                      ‘The Bear’: FX Sets Premiere Date For Fifth & Final Season
+                                ↳ Grouped as duplicate of "&#8216;The Bear&#8217; to End With Season 5; Final Season Se
+   Stereogum                     Iceage – “The Weak”
+                                ↳ Grouped as duplicate of "Spacemoth &#8211; &#8220;Internet Fantasy&#8221;" (Stereogum
+   Stereogum                     Jawdropped – “Monday”
+                                ↳ Grouped as duplicate of "Spacemoth &#8211; &#8220;Internet Fantasy&#8221;" (Stereogum
+   TechCrunch                    reMarkable’s new Paper Pure tablet goes back to basics with a monochro
+                                ↳ Grouped as duplicate of "ReMarkable Paper Pure Tablet Review: Back to Basics" (Wired)
+   Engadget                      reMarkable Paper Pure Review: Great hardware held back by bad philosop
+                                ↳ Grouped as duplicate of "ReMarkable Paper Pure Tablet Review: Back to Basics" (Wired)
+   Stereogum                     Lambchop Announce New Album Punching The Clown: Hear “Weakened”
+                                ↳ Grouped as duplicate of "REZN Announce New Album Cycles In The Infinite Dream: Hear &
+   Consequence                   Ted Turner, CNN Founder and Cable TV Trailblazer, Dead at 87
+                                ↳ Grouped as duplicate of "The Radical Legacy of Ted Turner: Why the Founder of CNN Was
+   Page Six                      Why Blake Lively settlement was ‘huge victory’ for Justin Baldoni: law
+                                ↳ Grouped as duplicate of "Blake Lively and Justin Baldoni&#8217;s legal battle isn&#82

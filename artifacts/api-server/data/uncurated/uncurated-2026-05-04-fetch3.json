@@ -1,0 +1,792 @@
+{
+  "fetchedAt": "2026-05-04T13:25:58.671Z",
+  "totalRawItems": 46,
+  "uniqueStories": 44,
+  "sentToClaude": 44,
+  "selectedCount": 3,
+  "rejectedCount": 41,
+  "rankedOutCount": 0,
+  "dedupedCount": 2,
+  "articles": [
+    {
+      "title": "‘The Comeback’ Season 3, Episode 7 Recap: Anywhere Else",
+      "source": "NYT Arts",
+      "pubDate": "Mon, 04 May 2026 03:10:04 +0000",
+      "link": "https://www.nytimes.com/2026/05/03/arts/television/the-comeback-recap-season-3-episode-7.html",
+      "dedupRank": 1,
+      "dedupScore": 7.36,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "‘The Comeback’ Season 3, Episode 7 Recap: Anywhere Else",
+        "description": "Valerie gets answers about the leak. Mark gets a troubling tattoo.",
+        "link": "https://www.nytimes.com/2026/05/03/arts/television/the-comeback-recap-season-3-episode-7.html",
+        "pubDate": "Mon, 04 May 2026 03:10:04 +0000",
+        "source": "NYT Arts",
+        "imageUrl": "https://static01.nyt.com/images/2026/05/03/arts/03cul-comeback-recap/03cul-comeback-recap-mediumSquareAt3X.jpg"
+      }
+    },
+    {
+      "title": "The Devil Wears Prada 2 struts to stunning $233m opening weekend at box office",
+      "source": "The Guardian Culture",
+      "pubDate": "Mon, 04 May 2026 00:42:35 GMT",
+      "link": "https://www.theguardian.com/film/2026/may/04/the-devil-wears-prada-2-box-office-opening-weekend",
+      "dedupRank": 2,
+      "dedupScore": 7.21,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Whitney Leavitt Departing &#8216;The Secret Lives of Mormon Wives,&#8217; Broadway Star Says During Final &#8216;Chicago&#8217; Performance",
+      "source": "Deadline",
+      "pubDate": "Mon, 04 May 2026 02:50:15 +0000",
+      "link": "https://deadline.com/2026/05/whitney-leavitt-secret-lives-of-mormon-wives-exit-hulu-1236879529/",
+      "dedupRank": 3,
+      "dedupScore": 7.09,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Whitney Leavitt Departing &#8216;The Secret Lives of Mormon Wives,&#8217; Broadway Star Says During Final &#8216;Chicago&#8217; Performance",
+        "description": "Whitney Leavitt is departing Hulu&#8217;s The Secret Lives of Mormon Wives, the reality television actress-turned-Broadway starlet announced during her final performance in Chicago on Sunday. Her representative confirmed the departure to Deadline. Le",
+        "link": "https://deadline.com/2026/05/whitney-leavitt-secret-lives-of-mormon-wives-exit-hulu-1236879529/",
+        "pubDate": "Mon, 04 May 2026 02:50:15 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2025/12/Whitney-Leavitt.jpg"
+      }
+    },
+    {
+      "title": "Whitney Leavitt Exiting &#8216;The Secret Lives of Mormon Wives&#8217; Cast",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Mon, 04 May 2026 02:06:40 +0000",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/whitney-leavitt-leaving-secret-lives-mormon-wives-cast-1236584517/",
+      "dedupRank": 3,
+      "dedupScore": 7.09,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Whitney Leavitt Departing &#8216;The Secret Lives of Mormon Wives,&#8217; Broadway Star Says During Final &#8216;Chicago&#8217; Performance\" (Deadline)"
+    },
+    {
+      "title": "Zoom’s $150,000 Bet on Solo Founders",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 18:32:45 -0400",
+      "link": "https://www.inc.com/kevin-haynes/zooms-150000-bet-on-solo-founders/91339771",
+      "dedupRank": 4,
+      "dedupScore": 7.07,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Zoom’s $150,000 Bet on Solo Founders",
+        "description": "The video conference titan is giving unconditional cash grants to 5 of the innovative one-person companies on its first list of the Zoom Soloprenuer 50.",
+        "link": "https://www.inc.com/kevin-haynes/zooms-150000-bet-on-solo-founders/91339771",
+        "pubDate": "Sun, 03 May 2026 18:32:45 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/ZOOM-1.jpg"
+      }
+    },
+    {
+      "title": "Rudy Giuliani In &#8220;Critical But Stable Condition&#8221; In Florida Hospital",
+      "source": "Deadline",
+      "pubDate": "Mon, 04 May 2026 00:37:01 +0000",
+      "link": "https://deadline.com/2026/05/rudy-giuliani-critical-but-stable-condition-hospital-1236879506/",
+      "dedupRank": 5,
+      "dedupScore": 6.95,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Rudy Giuliani In &#8220;Critical But Stable Condition&#8221; In Florida Hospital",
+        "description": "Former New York City mayor Rudy Giuliani is currently in a Florida hospital in &#8220;critical but stable condition,&#8221; per reporting from The New York Times. It&#8217;s unclear what ailment led Giuliani to the hospital, nor when he was transport",
+        "link": "https://deadline.com/2026/05/rudy-giuliani-critical-but-stable-condition-hospital-1236879506/",
+        "pubDate": "Mon, 04 May 2026 00:37:01 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/05/rudy.jpg"
+      }
+    },
+    {
+      "title": "Rudy Giuliani, Former NYC Mayor and Onetime &#8216;Masked Singer&#8217; Competitor, in &#8220;Critical Condition&#8221; at a Hospital",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Mon, 04 May 2026 00:23:34 +0000",
+      "link": "https://www.hollywoodreporter.com/news/general-news/rudy-giuliani-critical-condition-hospital-former-nyc-mayor-1236584499/",
+      "dedupRank": 5,
+      "dedupScore": 6.95,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Rudy Giuliani In &#8220;Critical But Stable Condition&#8221; In Florida Hospital\" (Deadline)"
+    },
+    {
+      "title": "&#8216;Watson&#8217; Finale: Creator Craig Sweeny Reflects On How Series Ended, Its 2-Season Run And What Could&#8217;ve Been For John &#038; Sherlock In Season 3",
+      "source": "Deadline",
+      "pubDate": "Mon, 04 May 2026 03:00:00 +0000",
+      "link": "https://deadline.com/2026/05/watson-season-2-finale-interview-season-3-plans-sherlock-1236878870/",
+      "dedupRank": 6,
+      "dedupScore": 5.35,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "&#8216;Watson&#8217; Finale: Creator Craig Sweeny Reflects On How Series Ended, Its 2-Season Run And What Could&#8217;ve Been For John &#038; Sherlock In Season 3",
+        "description": "SPOILER ALERT: The story includes a few details about the Season 2 finale of CBS&#8217; Watson. John Watson and Sherlock Holmes&#8217; fates intertwined one last time in the Season 2 finale of Watson, which serves as a series finale as the CBS medica",
+        "link": "https://deadline.com/2026/05/watson-season-2-finale-interview-season-3-plans-sherlock-1236878870/",
+        "pubDate": "Mon, 04 May 2026 03:00:00 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/05/3169194_0134b.jpg"
+      }
+    },
+    {
+      "title": "How Whatnot goes beyond dogfooding to instill a consumer focus",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T11:00:00",
+      "link": "https://www.fastcompany.com/91534161/how-whatnot-goes-beyond-dogfooding-to-instill-a-consumer-focus",
+      "dedupRank": 7,
+      "dedupScore": 5.35,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "How Whatnot goes beyond dogfooding to instill a consumer focus",
+        "description": "Hello and welcome to Modern CEO ! I’m Stephanie Mehta, CEO and chief content officer of Mansueto Ventures. Each week this newsletter explores inclusive approaches to leadership drawn from conversations with executives and entrepreneurs, and from the ",
+        "link": "https://www.fastcompany.com/91534161/how-whatnot-goes-beyond-dogfooding-to-instill-a-consumer-focus",
+        "pubDate": "2026-05-04T11:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/p-1-91534161-modern-ceo-whatnot.jpg"
+      }
+    },
+    {
+      "title": "Paul Allen’s bioscience institute gets a refreshingly playful new brand",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T11:00:00",
+      "link": "https://www.fastcompany.com/91534221/allen-institute-rebranding-neville-brody",
+      "dedupRank": 8,
+      "dedupScore": 5.35,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Paul Allen’s bioscience institute gets a refreshingly playful new brand",
+        "description": "To rebrand the Allen Institute, designers thought horizontally instead of vertically. The nonprofit bioscience research institute, founded by Microsoft cofounder Paul Allen to map the human brain, had a perfectly sufficient logo that designer Neville",
+        "link": "https://www.fastcompany.com/91534221/allen-institute-rebranding-neville-brody",
+        "pubDate": "2026-05-04T11:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/p-1-91534221-allen-institute-logo.png"
+      }
+    },
+    {
+      "title": "AI is wiping out entry-level jobs. Here’s how to surf the wave and not get crushed by it",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T10:43:00",
+      "link": "https://www.fastcompany.com/91521334/ai-is-wiping-out-entry-level-jobs-7-tips-to-ride-the-wave-instead-of-getting-knocked-down-by-it-ai-technology-entry-level-jobs",
+      "dedupRank": 9,
+      "dedupScore": 5.33,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "AI is wiping out entry-level jobs. Here’s how to surf the wave and not get crushed by it",
+        "description": "Not long ago, I was speaking at an event when a recent college graduate approached me. He’d studied neuroscience and, like a lot of STEM generalists, had set his sights on consulting—firms, like Deloitte or Accenture, that have long hired armies of j",
+        "link": "https://www.fastcompany.com/91521334/ai-is-wiping-out-entry-level-jobs-7-tips-to-ride-the-wave-instead-of-getting-knocked-down-by-it-ai-technology-entry-level-jobs",
+        "pubDate": "2026-05-04T10:43:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/p-91521334-how-to-survive-the-wave-of-ai-replacing-entry-level-jobs.jpg"
+      }
+    },
+    {
+      "title": "A waterfront glow-up is transforming Brooklyn’s polluted Gowanus Canal",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T10:30:00",
+      "link": "https://www.fastcompany.com/91535727/a-waterfront-glow-up-is-transforming-brooklyns-polluted-gowanus-canal",
+      "dedupRank": 10,
+      "dedupScore": 5.32,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A waterfront glow-up is transforming Brooklyn’s polluted Gowanus Canal",
+        "description": "For a Superfund site, the Gowanus Canal is looking surprisingly nice these days. Long an industrial dumping site, the Brooklyn waterway has undergone decades of interventions to undo that damage. Now, after years of planning and community outreach, r",
+        "link": "https://www.fastcompany.com/91535727/a-waterfront-glow-up-is-transforming-brooklyns-polluted-gowanus-canal",
+        "pubDate": "2026-05-04T10:30:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/08-91535727-gowanus-glow-up.jpg"
+      }
+    },
+    {
+      "title": "‘Y’all are pissin’ me off’: The Pitt star Isa Briones tells ‘disrespectful’ fans to stop shouting at her during Broadway show",
+      "source": "The Guardian Culture",
+      "pubDate": "Mon, 04 May 2026 02:29:17 GMT",
+      "link": "https://www.theguardian.com/tv-and-radio/2026/may/04/pitt-star-isa-briones-broadway-fans-disrespectful",
+      "dedupRank": 11,
+      "dedupScore": 5.32,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "‘Y’all are pissin’ me off’: The Pitt star Isa Briones tells ‘disrespectful’ fans to stop shouting at her during Broadway show",
+        "description": "<p>Actor who plays Dr Trinity Santos in popular TV series is starring in musical Just in Time in New York</p><p>The Pitt star Isa Briones has issued a strong message to fans who have taken to shouting references to the medical drama at her while she ",
+        "link": "https://www.theguardian.com/tv-and-radio/2026/may/04/pitt-star-isa-briones-broadway-fans-disrespectful",
+        "pubDate": "Mon, 04 May 2026 02:29:17 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/af85eb4533c704e3436bc3bd7ffdeee6dfc61a8e/469_40_5963_4772/master/5963.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=37abbd78238ba7bba756a4881bdfb380"
+      }
+    },
+    {
+      "title": "Far East Film Festival: Taichi Kimura&#8217;s &#8216;Fujiko&#8217; Wins Top Prize",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Mon, 04 May 2026 02:23:31 +0000",
+      "link": "https://www.hollywoodreporter.com/movies/movie-news/far-east-film-festival-2026-winners-list-1236584519/",
+      "dedupRank": 12,
+      "dedupScore": 5.31,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Far East Film Festival: Taichi Kimura&#8217;s &#8216;Fujiko&#8217; Wins Top Prize",
+        "description": "Kim Jong-woo, Kim Shin-wan and Cho Chul-young's searing documentary 'The Seoul Guardians' took the Silver Mulberry Award.",
+        "link": "https://www.hollywoodreporter.com/movies/movie-news/far-east-film-festival-2026-winners-list-1236584519/",
+        "pubDate": "Mon, 04 May 2026 02:23:31 +0000",
+        "source": "The Hollywood Reporter"
+      }
+    },
+    {
+      "title": "&#8216;The Audacity&#8217; Star Billy Magnussen Breaks Down His &#8220;Crazy&#8221; Silicon Valley Fight Club Scene",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Mon, 04 May 2026 02:15:00 +0000",
+      "link": "https://www.hollywoodreporter.com/tv/tv-features/the-audacity-billy-magnussen-fight-club-episode-4-1236582195/",
+      "dedupRank": 13,
+      "dedupScore": 5.3,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "&#8216;The Audacity&#8217; Star Billy Magnussen Breaks Down His &#8220;Crazy&#8221; Silicon Valley Fight Club Scene",
+        "description": "The AMC series hits the halfway mark of its first season with a seemingly hard-won victory for its lead character.",
+        "link": "https://www.hollywoodreporter.com/tv/tv-features/the-audacity-billy-magnussen-fight-club-episode-4-1236582195/",
+        "pubDate": "Mon, 04 May 2026 02:15:00 +0000",
+        "source": "The Hollywood Reporter"
+      }
+    },
+    {
+      "title": "How the Fox News hawks got back in Trump’s good graces",
+      "source": "Semafor",
+      "pubDate": "Mon, 04 May 2026 02:10:06 +0000",
+      "link": "https://www.semafor.com/article/05/03/2026/how-the-fox-news-hawks-got-back-in-trumps-good-graces",
+      "dedupRank": 14,
+      "dedupScore": 5.3,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "How the Fox News hawks got back in Trump’s good graces",
+        "description": "And how Marc Thiessen saved Ukraine.",
+        "link": "https://www.semafor.com/article/05/03/2026/how-the-fox-news-hawks-got-back-in-trumps-good-graces",
+        "pubDate": "Mon, 04 May 2026 02:10:06 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/c99dc83e74c53a5c34708c56b0519d00c5076051-1440x1080.png"
+      }
+    },
+    {
+      "title": "Olivia Rodrigo&#8217;s Debut as &#8216;SNL&#8217; Host: All 7 Sketches&#160;Ranked",
+      "source": "Billboard",
+      "pubDate": "Mon, 04 May 2026 02:04:05 +0000",
+      "link": "https://www.billboard.com/lists/olivia-rodrigo-snl-sketches-ranked-2026-episode/",
+      "dedupRank": 15,
+      "dedupScore": 5.29,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Olivia Rodrigo&#8217;s Debut as &#8216;SNL&#8217; Host: All 7 Sketches&#160;Ranked",
+        "description": "Here's a breakdown of every 'SNL' sketch with Rodrigo on May 2.",
+        "link": "https://www.billboard.com/lists/olivia-rodrigo-snl-sketches-ranked-2026-episode/",
+        "pubDate": "Mon, 04 May 2026 02:04:05 +0000",
+        "source": "Billboard",
+        "imageUrl": "https://www.billboard.com/wp-content/uploads/2026/05/olivia-rodrigo-snl-monologue-2025-billboard-1800.jpg?w=237&#038;h=147&#038;crop=1"
+      }
+    },
+    {
+      "title": "We&#8217;ll take it: a TikToker rallies pledges to buy Spirit Airlines after its abrupt weekend collapse",
+      "source": "TechCrunch",
+      "pubDate": "Mon, 04 May 2026 02:02:25 +0000",
+      "link": "https://techcrunch.com/2026/05/03/well-take-it-a-tiktoker-rallies-pledges-to-buy-spirit-airlines-after-its-abrupt-weekend-collapse/",
+      "dedupRank": 16,
+      "dedupScore": 5.29,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "We&#8217;ll take it: a TikToker rallies pledges to buy Spirit Airlines after its abrupt weekend collapse",
+        "description": "Within hours he'd thrown up a website — a janky, one-hour job, by his own admission — and by Sunday, 36,000 \"founding patrons\" had pledged nearly $23 million, crashing his servers in the process.",
+        "link": "https://techcrunch.com/2026/05/03/well-take-it-a-tiktoker-rallies-pledges-to-buy-spirit-airlines-after-its-abrupt-weekend-collapse/",
+        "pubDate": "Mon, 04 May 2026 02:02:25 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "Data centers are breaking the electric grid. Meet the $6 billion startup and its visionary CEO solving the problem",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T10:00:00",
+      "link": "https://www.fastcompany.com/91534619/data-centers-are-breaking-the-electric-grid-meet-the-6-billion-startup-and-its-genius-ceo-solving-the-problem",
+      "dedupRank": 17,
+      "dedupScore": 5.29,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Data centers are breaking the electric grid. Meet the $6 billion startup and its visionary CEO solving the problem",
+        "description": "In the rolling hills near Reno, Nevada, in a field filled with solar panels, something unexpected is nestled into the landscape: a data center that isn&#8217;t blowing up its neighbors&#8217; electric bills. In fact, the modular data center, built by",
+        "link": "https://www.fastcompany.com/91534619/data-centers-are-breaking-the-electric-grid-meet-the-6-billion-startup-and-its-genius-ceo-solving-the-problem",
+        "pubDate": "2026-05-04T10:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/p-1-91534619-adele-redwood-premium.jpg"
+      }
+    },
+    {
+      "title": "This website takes the cacophony of NYC’s subway and turns it into jazz music",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T10:00:00",
+      "link": "https://www.fastcompany.com/91534877/this-website-takes-the-cacophony-of-nycs-subway-and-turns-it-into-jazz-music",
+      "dedupRank": 18,
+      "dedupScore": 5.29,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "This website takes the cacophony of NYC’s subway and turns it into jazz music",
+        "description": "New York City is notoriously loud. Cabs honking everywhere, thousands of people flocking to the streets at all hours, and cars blasting music for all to hear. But while some of us hear only noise, others hear music. Joshua Wolk is one of those people",
+        "link": "https://www.fastcompany.com/91534877/this-website-takes-the-cacophony-of-nycs-subway-and-turns-it-into-jazz-music",
+        "pubDate": "2026-05-04T10:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/p-1-91534877-train-jazz.jpg"
+      }
+    },
+    {
+      "title": "‘Grand Theft Auto’ maker Take-Two plots its next move in a consolidating gaming industry",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T10:00:00",
+      "link": "https://www.fastcompany.com/91534908/grand-theft-auto-take-two-next-move-consolidating-gaming-industry",
+      "dedupRank": 19,
+      "dedupScore": 5.29,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "‘Grand Theft Auto’ maker Take-Two plots its next move in a consolidating gaming industry",
+        "description": "Consolidation is all the rage in the video game world these days. In the past year, Ubisoft created a new gaming subsidiary with Chinese tech giant Tencent, while Electronic Arts announced a $55 billion deal led by Saudi Arabia’s Public Investment Fu",
+        "link": "https://www.fastcompany.com/91534908/grand-theft-auto-take-two-next-move-consolidating-gaming-industry",
+        "pubDate": "2026-05-04T10:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/p-91534908-take-two-interactive.jpg"
+      }
+    },
+    {
+      "title": "Why you should stop asking what jobs are coming next",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T10:00:00",
+      "link": "https://www.fastcompany.com/91535327/why-you-should-stop-asking-what-jobs-are-coming-next",
+      "dedupRank": 20,
+      "dedupScore": 5.29,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Why you should stop asking what jobs are coming next",
+        "description": "Every few months, we find ourselves circling back to the same question. What skills will matter next? Every time, the answers feel urgent, confident, and somehow incomplete. A new technology dominates the conversation. Or there’s a new ‘essential’ ca",
+        "link": "https://www.fastcompany.com/91535327/why-you-should-stop-asking-what-jobs-are-coming-next",
+        "pubDate": "2026-05-04T10:00:00",
+        "source": "Fast Company"
+      }
+    },
+    {
+      "title": "Mark Cuban shares the ‘crucial’ career advice he gave his daughter",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T10:00:00",
+      "link": "https://www.fastcompany.com/91535657/mark-cuban-shares-the-crucial-career-advice-he-gave-his-daughter",
+      "dedupRank": 21,
+      "dedupScore": 5.29,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Mark Cuban shares the ‘crucial’ career advice he gave his daughter",
+        "description": "In a recent episode of the Big Technology Podcast , Mark Cuban shared what he would do if he was a soon-to-be college grad on the job hunt in the current turbulent market. Cuban said young professionals shouldn’t look to big companies—which have alre",
+        "link": "https://www.fastcompany.com/91535657/mark-cuban-shares-the-crucial-career-advice-he-gave-his-daughter",
+        "pubDate": "2026-05-04T10:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/p-2-91535657-mark-cuban-on-ai.jpg"
+      }
+    },
+    {
+      "title": "OPEC+ Set to Agree Third Oil Output Quota Hike Since Hormuz Closure",
+      "source": "Business of Fashion",
+      "pubDate": "Mon, 04 May 2026 01:45:51 +0000",
+      "link": "https://www.businessoffashion.com/news/global-markets/opec-set-to-agree-third-oil-output-quota-hike-since-hormuz-closure/",
+      "dedupRank": 22,
+      "dedupScore": 5.27,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "OPEC+ Set to Agree Third Oil Output Quota Hike Since Hormuz Closure",
+        "description": "OPEC+ is set to agree on Sunday to a modest oil output hike, but the increase will remain largely on paper as long as the US-Iran war continues to disrupt Gulf oil supplies, sources told Reuters.",
+        "link": "https://www.businessoffashion.com/news/global-markets/opec-set-to-agree-third-oil-output-quota-hike-since-hormuz-closure/",
+        "pubDate": "Mon, 04 May 2026 01:45:51 +0000",
+        "source": "Business of Fashion",
+        "imageUrl": "https://img.businessoffashion.com/resizer/v2/VYAW7KZETNFVFKV6SLQBO54EJM.jpg?auth=866c3d8087da72fbf40497eee618e2bd91fbe65bb2467ab15bc96c87e188ec9b&amp;smart=true&amp;width=5162&amp;height=2900"
+      }
+    },
+    {
+      "title": "In Antonelli, Russell might have met his match -- ...",
+      "source": "ESPN",
+      "pubDate": "Sun, 3 May 2026 20:06:21 -0500",
+      "link": "",
+      "dedupRank": 23,
+      "dedupScore": 5.23,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "In Antonelli, Russell might have met his match -- ...",
+        "description": "Kimi Antonelli is on a roll, and not even preseason F1 favourite George Russell can stop him right now. ESPN's Nate Saunders delves into another impressive performance by Antonelli, this time in Miami.",
+        "link": "",
+        "pubDate": "Sun, 3 May 2026 20:06:21 -0500",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "Inside the chaotic morning Spirit workers learned they were out of a job: &#39;Take your uniform off&#39;",
+      "source": "Business Insider",
+      "pubDate": "Mon, 04 May 2026 00:50:16 +0000",
+      "link": "https://www.businessinsider.com/spirit-airlines-collapse-employees-jobs-workers-flight-attendant-2026-5",
+      "dedupRank": 24,
+      "dedupScore": 5.21,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Antonelli steps up his level in dramatic fashion",
+      "source": "BBC Sport",
+      "pubDate": "Mon, 04 May 2026 00:33:36 GMT",
+      "link": "https://www.bbc.com/sport/formula1/articles/cyv2354ldmlo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 25,
+      "dedupScore": 5.2,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Antonelli steps up his level in dramatic fashion",
+        "description": "Kimi Antonelli's first season in F1 showed occasional promise, but nothing that suggested this was going to come next, writes Andrew Benson.",
+        "link": "https://www.bbc.com/sport/formula1/articles/cyv2354ldmlo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Mon, 04 May 2026 00:33:36 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/3751/live/0493d5c0-474c-11f1-870d-6595eb74dd4c.jpg"
+      }
+    },
+    {
+      "title": "I started a side hustle making stickers and art prints to escape from work — now I earn more than my old day job",
+      "source": "Business Insider",
+      "pubDate": "Mon, 04 May 2026 00:08:01 +0000",
+      "link": "https://www.businessinsider.com/millennial-art-side-hustle-escape-from-corporate-grind-income-2026-5",
+      "dedupRank": 26,
+      "dedupScore": 5.17,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I started a side hustle making stickers and art prints to escape from work — now I earn more than my old day job",
+        "description": "The things Gwen Lee had to draw as an animator made her crave a more wholesome creative outlet. Her art side hustle, Curious Pots, was born.",
+        "link": "https://www.businessinsider.com/millennial-art-side-hustle-escape-from-corporate-grind-income-2026-5",
+        "pubDate": "Mon, 04 May 2026 00:08:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69d758eacc468aeec524d300?format=jpeg"
+      }
+    },
+    {
+      "title": "30 years later, The Craft is still the best witch movie of all time",
+      "source": "Polygon",
+      "pubDate": "Mon, 04 May 2026 00:00:19 GMT",
+      "link": "https://www.polygon.com/the-craft-retrospective/",
+      "dedupRank": 27,
+      "dedupScore": 5.16,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "30 years later, The Craft is still the best witch movie of all time",
+        "description": "The Craft remains undefeated. Here's why.",
+        "link": "https://www.polygon.com/the-craft-retrospective/",
+        "pubDate": "Mon, 04 May 2026 00:00:19 GMT",
+        "source": "Polygon",
+        "imageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/05/msdcraf_ec019-2.jpg"
+      }
+    },
+    {
+      "title": "Bozoma Saint John doesn’t believe in imposter syndrome—and here’s why you shouldn’t either",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T08:00:00",
+      "link": "https://www.fastcompany.com/91533692/bozoma-saint-john-doesnt-believe-in-imposter-syndrome-and-heres-why-you-shouldnt-either",
+      "dedupRank": 28,
+      "dedupScore": 5.16,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Bozoma Saint John doesn’t believe in imposter syndrome—and here’s why you shouldn’t either",
+        "description": "Bozoma Saint John shares her approach to leadership, emphasizing curiosity as a driving force behind growth, confidence, and long-term success",
+        "link": "https://www.fastcompany.com/91533692/bozoma-saint-john-doesnt-believe-in-imposter-syndrome-and-heres-why-you-shouldnt-either",
+        "pubDate": "2026-05-04T08:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/04/BOZOMA.jpg"
+      }
+    },
+    {
+      "title": "Treating DEI as a marketing strategy undermines its purpose and impact",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T08:00:00",
+      "link": "https://www.fastcompany.com/91533725/treating-dei-as-a-marketing-strategy-undermines-its-purpose-and-impact",
+      "dedupRank": 29,
+      "dedupScore": 5.16,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Treating DEI as a marketing strategy undermines its purpose and impact",
+        "description": "CEO of Black Girls Code, Cristina Mancini shares her perspective on leaders treating DEI as a brand strategy rather than a true commitment.",
+        "link": "https://www.fastcompany.com/91533725/treating-dei-as-a-marketing-strategy-undermines-its-purpose-and-impact",
+        "pubDate": "2026-05-04T08:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/04/CHRISTINA.jpg"
+      }
+    },
+    {
+      "title": "Are leaders born or made?",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T08:00:00",
+      "link": "https://www.fastcompany.com/91533773/are-leaders-born-or-made",
+      "dedupRank": 30,
+      "dedupScore": 5.16,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Are leaders born or made?",
+        "description": "Chriselle Lim didn’t come from a perfume background, but she didn’t let that stop her. She realized there is always room for new brands that bring a different perspective.",
+        "link": "https://www.fastcompany.com/91533773/are-leaders-born-or-made",
+        "pubDate": "2026-05-04T08:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/LIM.jpg"
+      }
+    },
+    {
+      "title": "The Thune-Johnson Trust Deficit",
+      "source": "Puck",
+      "pubDate": "Sun, 03 May 2026 23:29:05 +0000",
+      "link": "https://puck.news/house-gop-vs-senate-gop-the-johnson-thune-beef-intensifies/",
+      "dedupRank": 31,
+      "dedupScore": 5.13,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Thune-Johnson Trust Deficit",
+        "description": "It was an exhausting week for House Republicans. They scrambled to end the 76-day Homeland Security shutdown, move a contentious farm bill, and avert a midnight expiration of the government’s key surveillance authority—ultimately managing to do all t",
+        "link": "https://puck.news/house-gop-vs-senate-gop-the-johnson-thune-beef-intensifies/",
+        "pubDate": "Sun, 03 May 2026 23:29:05 +0000",
+        "source": "Puck"
+      }
+    },
+    {
+      "title": "An American couple left Texas to retire in Thailand. They focus on getting &#39;one thing done a day.&#39;",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 23:14:01 +0000",
+      "link": "https://www.businessinsider.com/retirees-left-america-moved-to-chiang-mai-slower-affordable-life-2026-5",
+      "dedupRank": 32,
+      "dedupScore": 5.11,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "An American couple left Texas to retire in Thailand. They focus on getting &#39;one thing done a day.&#39;",
+        "description": "These days, as retirees, the only things Tye and Chip Pierpont schedule and adhere to are doctor appointments.",
+        "link": "https://www.businessinsider.com/retirees-left-america-moved-to-chiang-mai-slower-affordable-life-2026-5",
+        "pubDate": "Sun, 03 May 2026 23:14:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69ce1f976a864f6fcd7bc9d0?format=jpeg"
+      }
+    },
+    {
+      "title": "Vinicius scores twice as Madrid win to keep Barcelona waiting for title",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 23:11:12 GMT",
+      "link": "https://www.bbc.com/sport/football/videos/cvgznj2678wo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 33,
+      "dedupScore": 5.11,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Vinicius scores twice as Madrid win to keep Barcelona waiting for title",
+        "description": "Vinicius Jr scores twice as Real Madrid beat Espanyol 2-0 to keep Barcelona waiting to win the La Liga title ahead of next week's El Clasico.",
+        "link": "https://www.bbc.com/sport/football/videos/cvgznj2678wo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 23:11:12 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/feb2/live/793ac2e0-473c-11f1-ac78-2112837ce2aa.jpg"
+      }
+    },
+    {
+      "title": "Should Sesko goal have been ruled out?",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 23:03:24 GMT",
+      "link": "https://www.bbc.com/sport/football/videos/c0e2wr4pxv3o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 34,
+      "dedupScore": 5.1,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Should Sesko goal have been ruled out?",
+        "description": "Match of the Day pundits Alan Shearer and Micah Richards believe Benjamin Sesko's goal against Liverpool should not have stood after it brushed his fingers, saying under the laws of the game it should have been a handball.",
+        "link": "https://www.bbc.com/sport/football/videos/c0e2wr4pxv3o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 23:03:24 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/4ef9/live/19a5f1d0-4744-11f1-ac78-2112837ce2aa.jpg"
+      }
+    },
+    {
+      "title": "'It's all on me!' - Distraught Leclerc blames himself for demotion",
+      "source": "Sky Sports",
+      "pubDate": "Mon, 04 May 2026 00:00:00 +0100",
+      "link": "https://www.skysports.com/f1/news/12040/13539722/charles-leclerc-demoted-behind-lewis-hamilton-franco-colapinto-in-miami-gp-results-after-chaotic-finish-that-was-all-on-me",
+      "dedupRank": 35,
+      "dedupScore": 5.1,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "'It's all on me!' - Distraught Leclerc blames himself for demotion",
+        "description": "Charles Leclerc said it was \"all on me\" after he \"put a very strong race in the bin\" in a torrid, chaotic end to his Miami Grand Prix which later saw the Ferrari driver demoted to eighth place by a stewards' penalty.",
+        "link": "https://www.skysports.com/f1/news/12040/13539722/charles-leclerc-demoted-behind-lewis-hamilton-franco-colapinto-in-miami-gp-results-after-chaotic-finish-that-was-all-on-me",
+        "pubDate": "Mon, 04 May 2026 00:00:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e0.365dm.com/26/05/1920x1080/skysports-charles-leclerc-ferrari_7238728.jpg?20260504000214"
+      }
+    },
+    {
+      "title": "Hull FC 4-12 Toulouse",
+      "source": "Sky Sports",
+      "pubDate": "Mon, 04 May 2026 00:00:00 +0100",
+      "link": "https://www.skysports.com/watch/video/13539832/hull-fc-4-12-toulouse-super-league-highlights",
+      "dedupRank": 36,
+      "dedupScore": 5.1,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Hull FC 4-12 Toulouse",
+        "description": "Highlights of the Super League game between Hull FC and Toulouse.",
+        "link": "https://www.skysports.com/watch/video/13539832/hull-fc-4-12-toulouse-super-league-highlights",
+        "pubDate": "Mon, 04 May 2026 00:00:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e0.365dm.com/26/05/1920x1080/skysports-rugby-toulouse_7238358.jpg?20260503182250"
+      }
+    },
+    {
+      "title": "Carrick 'deserves chance' to continue at Man Utd - Shearer",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 22:57:02 GMT",
+      "link": "https://www.bbc.com/sport/football/videos/c3w2ezejpd1o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 37,
+      "dedupScore": 5.1,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Carrick 'deserves chance' to continue at Man Utd - Shearer",
+        "description": "Match of the Day pundit Alan Shearer says Michael Carrick \"deserves a chance\" as Manchester United's manager next season after securing a Champions League spot.",
+        "link": "https://www.bbc.com/sport/football/videos/c3w2ezejpd1o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 22:57:02 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/7f48/live/2aec14f0-4740-11f1-b55d-0f258dce1735.jpg"
+      }
+    },
+    {
+      "title": "&#8216;Devil Wears Prada&#8217; Characters Shrink Down to Miniature Form for New Collectible Release",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 03 May 2026 22:45:37 +0000",
+      "link": "https://www.rollingstone.com/product-recommendations/lifestyle/devil-wears-prada-fisher-price-little-people-collector-set-1235557068/",
+      "dedupRank": 38,
+      "dedupScore": 5.08,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "&#8216;Devil Wears Prada&#8217; Characters Shrink Down to Miniature Form for New Collectible Release",
+        "description": "The mini figurines come in a movie-inspired display box that deserves to be seen, not tossed onto a pile of stuff",
+        "link": "https://www.rollingstone.com/product-recommendations/lifestyle/devil-wears-prada-fisher-price-little-people-collector-set-1235557068/",
+        "pubDate": "Sun, 03 May 2026 22:45:37 +0000",
+        "source": "Rolling Stone"
+      }
+    },
+    {
+      "title": "Kenneth Branagh &#8220;Would Love&#8221; To Direct Another &#8216;Thor&#8217; Film In The Vein Of 2017&#8217;s &#8216;Logan&#8217;",
+      "source": "Deadline",
+      "pubDate": "Sun, 03 May 2026 22:40:29 +0000",
+      "link": "https://deadline.com/2026/05/kenneth-branagh-would-love-direct-another-thor-1236879480/",
+      "dedupRank": 39,
+      "dedupScore": 5.08,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Kenneth Branagh &#8220;Would Love&#8221; To Direct Another &#8216;Thor&#8217; Film In The Vein Of 2017&#8217;s &#8216;Logan&#8217;",
+        "description": "After 15 years, Kenneth Branagh has considered returning to the MCU for another cinematic outing with the Avengers&#8217; favorite Norse god. The Oscar winner, who directed 2011&#8217;s Thor, recently confessed that he &#8220;would love to finish my ",
+        "link": "https://deadline.com/2026/05/kenneth-branagh-would-love-direct-another-thor-1236879480/",
+        "pubDate": "Sun, 03 May 2026 22:40:29 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/05/Thor-Kenneth-Branagh-2-shot.jpg"
+      }
+    },
+    {
+      "title": "S.B.F. Is Out of Options",
+      "source": "Puck",
+      "pubDate": "Sun, 03 May 2026 22:39:22 +0000",
+      "link": "https://puck.news/sbfs-bid-for-a-new-trial-was-denied-what-are-his-options/",
+      "dedupRank": 40,
+      "dedupScore": 5.08,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "'Exceptional' Mainoo is proving his worth - Richards",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 22:38:44 GMT",
+      "link": "https://www.bbc.com/sport/football/videos/c1j209j0g0yo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 41,
+      "dedupScore": 5.08,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "'Exceptional' Mainoo is proving his worth - Richards",
+        "description": "Match of the Day pundit Micah Richards says Manchester United's Kobbie Mainoo is \"exceptional\" after scoring the winning goal in their match against Liverpool in the Premier League.",
+        "link": "https://www.bbc.com/sport/football/videos/c1j209j0g0yo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 22:38:44 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/8434/live/ca71f880-473d-11f1-bd52-e755d604ece4.jpg"
+      }
+    },
+    {
+      "title": "Spike Lee Defends &#8216;Michael&#8217; From Criticism Over Child Sexual Abuse Allegations Being Excluded",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Sun, 03 May 2026 22:33:55 +0000",
+      "link": "https://www.hollywoodreporter.com/movies/movie-news/spike-lee-defends-michael-critics-abuse-allegations-excluded-1236584425/",
+      "dedupRank": 42,
+      "dedupScore": 5.07,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Spike Lee Defends &#8216;Michael&#8217; From Criticism Over Child Sexual Abuse Allegations Being Excluded",
+        "description": "\"You’re critiquing the film on something that you want in, but it doesn’t work in the timeline of the film,\" the filmmaker said.",
+        "link": "https://www.hollywoodreporter.com/movies/movie-news/spike-lee-defends-michael-critics-abuse-allegations-excluded-1236584425/",
+        "pubDate": "Sun, 03 May 2026 22:33:55 +0000",
+        "source": "The Hollywood Reporter"
+      }
+    },
+    {
+      "title": "Antonelli 'stupendous' and Leclerc's 'lairy final lap' - driver ratings",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 22:33:26 GMT",
+      "link": "https://www.bbc.com/sport/formula1/articles/c0m20k4xp4no?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 43,
+      "dedupScore": 5.07,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Antonelli 'stupendous' and Leclerc's 'lairy final lap' - driver ratings",
+        "description": "BBC Radio 5 Live F1 commentator Harry Benjamin rates how the drivers performed during the Miami Grand Prix.",
+        "link": "https://www.bbc.com/sport/formula1/articles/c0m20k4xp4no?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 22:33:26 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/de38/live/958ef460-4747-11f1-b55d-0f258dce1735.png"
+      }
+    },
+    {
+      "title": "Resident Evil Requiem Players Miss the Merchant from RE4 So Much That Someone Made a Mod to Add Him to the Game",
+      "source": "IGN",
+      "pubDate": "Sun, 3 May 2026 22:32:20 +0000",
+      "link": "https://www.ign.com/articles/resident-evil-requiem-players-miss-the-merchant-from-re4-so-much-that-someone-made-a-mod-to-add-him-to-the-game",
+      "dedupRank": 44,
+      "dedupScore": 5.07,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Resident Evil Requiem Players Miss the Merchant from RE4 So Much That Someone Made a Mod to Add Him to the Game",
+        "description": "Resident Evil Requiem players were sad to see the Merchant left out of Leon's latest mission, but there's a new mod that should help those who miss running into Capcom's beloved, gravelly voiced vendor.",
+        "link": "https://www.ign.com/articles/resident-evil-requiem-players-miss-the-merchant-from-re4-so-much-that-someone-made-a-mod-to-add-him-to-the-game",
+        "pubDate": "Sun, 3 May 2026 22:32:20 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/05/03/resident-evil-requiem-merchant-mod-1777847339273.png"
+      }
+    }
+  ]
+}

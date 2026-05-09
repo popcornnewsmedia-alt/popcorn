@@ -1,0 +1,1160 @@
+{
+  "fetchedAt": "2026-05-04T13:20:16.328Z",
+  "totalRawItems": 68,
+  "uniqueStories": 66,
+  "sentToClaude": 66,
+  "selectedCount": 7,
+  "rejectedCount": 59,
+  "rankedOutCount": 0,
+  "dedupedCount": 2,
+  "articles": [
+    {
+      "title": "A viral outbreak on a cruise ship in the Atlantic has killed 3 people, the WHO says",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 21:27:42 +0000",
+      "link": "https://www.businessinsider.com/cruise-ship-atlantic-viral-outbreak-deaths-hantavirus-world-health-organization-2026-5",
+      "dedupRank": 1,
+      "dedupScore": 7.01,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A viral outbreak on a cruise ship in the Atlantic has killed 3 people, the WHO says",
+        "description": "The World Health Organization said that one case of hantavirus infection had been confirmed.",
+        "link": "https://www.businessinsider.com/cruise-ship-atlantic-viral-outbreak-deaths-hantavirus-world-health-organization-2026-5",
+        "pubDate": "Sun, 03 May 2026 21:27:42 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f7b690ab24bc0b23a18da6?format=jpeg"
+      }
+    },
+    {
+      "title": "BBC &#8220;Buried&#8221; Footage of Banksy at New York City Mural Site, Former Reporter Claims",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Sun, 03 May 2026 20:43:50 +0000",
+      "link": "https://www.hollywoodreporter.com/lifestyle/arts/bbc-buried-footage-banksy-nyc-mural-site-former-reporter-1236584379/",
+      "dedupRank": 2,
+      "dedupScore": 6.96,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Seymour Bernstein Dies at 99; Stage Fright Cut Short His Piano Career",
+      "source": "NYT Arts",
+      "pubDate": "Sun, 03 May 2026 20:15:57 +0000",
+      "link": "https://www.nytimes.com/2026/05/01/arts/music/seymour-bernstein-dead.html",
+      "dedupRank": 3,
+      "dedupScore": 6.94,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Seymour Bernstein Dies at 99; Stage Fright Cut Short His Piano Career",
+        "description": "After giving his last public concert in 1977, he moved into teaching. A 2014 documentary directed by Ethan Hawke put him in the spotlight once more.",
+        "link": "https://www.nytimes.com/2026/05/01/arts/music/seymour-bernstein-dead.html",
+        "pubDate": "Sun, 03 May 2026 20:15:57 +0000",
+        "source": "NYT Arts",
+        "imageUrl": "https://static01.nyt.com/images/2026/05/01/multimedia/01Bernstein--vwkj/01Bernstein--vwkj-mediumSquareAt3X.jpg"
+      }
+    },
+    {
+      "title": "Donald Trump Credits His &#8216;Y.M.C.A.&#8217; Viral Dance Moves for Disco Hit&#8217;s Rise on Billboard&#160;Charts",
+      "source": "Billboard",
+      "pubDate": "Sun, 03 May 2026 20:11:54 +0000",
+      "link": "https://www.billboard.com/music/music-news/donald-trump-ymca-dance-billboard-chart-rise-1236237932/",
+      "dedupRank": 4,
+      "dedupScore": 6.93,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Donald Trump Credits His &#8216;Y.M.C.A.&#8217; Viral Dance Moves for Disco Hit&#8217;s Rise on Billboard&#160;Charts",
+        "description": "The president also said that his wife Melania “hates” his reaction to the classic Village People track.",
+        "link": "https://www.billboard.com/music/music-news/donald-trump-ymca-dance-billboard-chart-rise-1236237932/",
+        "pubDate": "Sun, 03 May 2026 20:11:54 +0000",
+        "source": "Billboard",
+        "imageUrl": "https://www.billboard.com/wp-content/uploads/2024/12/Village-People-Victor-Willis-2024-billboard-1548.jpg?w=237&#038;h=147&#038;crop=1"
+      }
+    },
+    {
+      "title": "Michael Jackson Film Moves Up Our List of Highest-Grossing Music Biopics Worldwide: See Where It&#160;Ranks",
+      "source": "Billboard",
+      "pubDate": "Sun, 03 May 2026 19:38:47 +0000",
+      "link": "https://www.billboard.com/lists/top-grossing-music-biopics-movies/",
+      "dedupRank": 5,
+      "dedupScore": 6.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Michael Jackson Film Moves Up Our List of Highest-Grossing Music Biopics Worldwide: See Where It&#160;Ranks",
+        "description": "The films on this list cover a wide range of genres, including rap, classical, country, Latin and contemporary Christian.",
+        "link": "https://www.billboard.com/lists/top-grossing-music-biopics-movies/",
+        "pubDate": "Sun, 03 May 2026 19:38:47 +0000",
+        "source": "Billboard"
+      }
+    },
+    {
+      "title": "Bruce Springsteen&#8217;s Philadelphia Concert Postponed by 76ers, Flyers&#8217; Playoff Victories",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 03 May 2026 19:35:00 +0000",
+      "link": "https://www.rollingstone.com/music/music-news/springsteen-philadelphia-postponed-76ers-flyers-playoffs-1235557053/",
+      "dedupRank": 6,
+      "dedupScore": 6.89,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Bruce Springsteen&#8217;s Philadelphia Concert Postponed by 76ers, Flyers&#8217; Playoff Victories",
+        "description": "The City of Brotherly Love enjoys first round success in NBA and NHL playoffs, but it forces the E Street Band to reroute their Land of Hope and Dreams Tour",
+        "link": "https://www.rollingstone.com/music/music-news/springsteen-philadelphia-postponed-76ers-flyers-playoffs-1235557053/",
+        "pubDate": "Sun, 03 May 2026 19:35:00 +0000",
+        "source": "Rolling Stone"
+      }
+    },
+    {
+      "title": "Spike Lee Defends &#8216;Michael&#8217; For Not Including Child Abuse Claims: &#8220;People Showed Up&#8221;",
+      "source": "Deadline",
+      "pubDate": "Sun, 03 May 2026 19:26:36 +0000",
+      "link": "https://deadline.com/2026/05/spike-lee-defends-michael-not-including-child-abuse-claims-1236879388/",
+      "dedupRank": 7,
+      "dedupScore": 6.88,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Spike Lee Defends &#8216;Michael&#8217; For Not Including Child Abuse Claims: &#8220;People Showed Up&#8221;",
+        "description": "As Michael enjoys a busy second weekend at the box office, Spike Lee is singing the biopic&#8217;s praises amid controversy. The 3x Oscar winner defended the Antoine Fuqua-helmed film for not including the 1993 child sexual abuse claims against Jacks",
+        "link": "https://deadline.com/2026/05/spike-lee-defends-michael-not-including-child-abuse-claims-1236879388/",
+        "pubDate": "Sun, 03 May 2026 19:26:36 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/05/Michael-Spike-Lee-2-shot.jpg"
+      }
+    },
+    {
+      "title": "My Spirit Airlines flight was canceled at 2 a.m. I paid $800 extra to get my mom and me home.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 19:19:44 +0000",
+      "link": "https://www.businessinsider.com/spirit-ariline-flight-canceled-overnight-stranded-rebooking-2026-5",
+      "dedupRank": 8,
+      "dedupScore": 6.88,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "My Spirit Airlines flight was canceled at 2 a.m. I paid $800 extra to get my mom and me home.",
+        "description": "Jessica Stanton says her Spirit flight was canceled overnight, forcing her to spend $800 on last-minute tickets to get home.",
+        "link": "https://www.businessinsider.com/spirit-ariline-flight-canceled-overnight-stranded-rebooking-2026-5",
+        "pubDate": "Sun, 03 May 2026 19:19:44 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f79a63ab24bc0b23a18d80?format=jpeg"
+      }
+    },
+    {
+      "title": "The Resume Isn’t Dead. AI Is Just Rewriting It",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 15:00:00 -0400",
+      "link": "https://www.inc.com/byron-slosar/the-resume-isnt-dead-but-its-being-rewritten-by-ai/91333871",
+      "dedupRank": 9,
+      "dedupScore": 6.86,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Resume Isn’t Dead. AI Is Just Rewriting It",
+        "description": "The hiring revolution is real, but it has a blind spot.",
+        "link": "https://www.inc.com/byron-slosar/the-resume-isnt-dead-but-its-being-rewritten-by-ai/91333871",
+        "pubDate": "Sun, 03 May 2026 15:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/GettyImages-2197359482.jpg"
+      }
+    },
+    {
+      "title": "Man Says His Waymo Ditched Him at the Airport Before He Could Get His Luggage Out of the Trunk, Refused to Return",
+      "source": "Futurism",
+      "pubDate": "Sun, 03 May 2026 14:01:00 -0400",
+      "link": "https://futurism.com/advanced-transport/waymo-luggage-airport",
+      "dedupRank": 10,
+      "dedupScore": 6.79,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Spurs out of relegation zone with Villa win",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 20:30:37 GMT",
+      "link": "https://www.bbc.com/sport/football/videos/c78qdd1v9nyo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 11,
+      "dedupScore": 6.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Spurs out of relegation zone with Villa win",
+        "description": "Tottenham Hotspur propel themselves out of the relegation zone with a commanding 2-1 win over Aston Villa in the Premier League.",
+        "link": "https://www.bbc.com/sport/football/videos/c78qdd1v9nyo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 20:30:37 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/b803/live/68ddc940-472a-11f1-b55d-0f258dce1735.jpg"
+      }
+    },
+    {
+      "title": "Spurs move out of relegation zone with crucial victory at Villa",
+      "source": "Sky Sports",
+      "pubDate": "Sun, 03 May 2026 20:58:00 +0100",
+      "link": "https://www.skysports.com/football/aston-villa-vs-tottenham-hotspur/report/531470",
+      "dedupRank": 11,
+      "dedupScore": 6.71,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Spurs out of relegation zone with Villa win\" (BBC Sport)"
+    },
+    {
+      "title": "Carra 'worried' about Liverpool as Slot rages against decisions",
+      "source": "Sky Sports",
+      "pubDate": "Sun, 03 May 2026 20:30:00 +0100",
+      "link": "https://www.skysports.com/football/news/12040/13539865/liverpool-jamie-carragher-is-worried-for-where-arne-slots-side-are-heading",
+      "dedupRank": 12,
+      "dedupScore": 6.64,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Carra 'worried' about Liverpool as Slot rages against decisions",
+        "description": "Jamie Carragher is worried about where Liverpool are heading under Arne Slot, questioning what the identity of his team is, while the Reds' boss said his side have had a \"whole season\" of decisions going against them.",
+        "link": "https://www.skysports.com/football/news/12040/13539865/liverpool-jamie-carragher-is-worried-for-where-arne-slots-side-are-heading",
+        "pubDate": "Sun, 03 May 2026 20:30:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e2.365dm.com/26/05/1920x1080/skysports-liverpool-jamie-carragher_7238507.jpg?20260503200436"
+      }
+    },
+    {
+      "title": "Carra 'worried' about Liverpool as Slot rages against decisions",
+      "source": "Sky Sports Football",
+      "pubDate": "Sun, 03 May 2026 20:30:00 +0100",
+      "link": "https://www.skysports.com/football/news/11095/13539865/liverpool-jamie-carragher-is-worried-for-where-arne-slots-side-are-heading",
+      "dedupRank": 12,
+      "dedupScore": 6.64,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"Carra 'worried' about Liverpool as Slot rages against decisions\" (Sky Sports)"
+    },
+    {
+      "title": "A huge night for Spurs - but who are favourites to go down?",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 22:26:30 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/cpdpnjjlp18o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 13,
+      "dedupScore": 5.07,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A huge night for Spurs - but who are favourites to go down?",
+        "description": "Tottenham's 2-1 win at Aston Villa moved them out of the Premier League relegation zone - but who are now the favourites to go down?",
+        "link": "https://www.bbc.com/sport/football/articles/cpdpnjjlp18o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 22:26:30 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/ac77/live/5d14fbc0-472e-11f1-ac78-2112837ce2aa.png"
+      }
+    },
+    {
+      "title": "Adam Scott Recalls Auditioning For &#8216;Hellraiser VI&#8217; When He Needed A Job — Despite Being Killed Off In Earlier Film: &#8220;Maybe They Won’t Notice&#8221;",
+      "source": "Deadline",
+      "pubDate": "Sun, 03 May 2026 22:17:41 +0000",
+      "link": "https://deadline.com/2026/05/adam-scott-hellraiser-killed-off-auditioned-franchise-1236879456/",
+      "dedupRank": 14,
+      "dedupScore": 5.06,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Adam Scott Recalls Auditioning For &#8216;Hellraiser VI&#8217; When He Needed A Job — Despite Being Killed Off In Earlier Film: &#8220;Maybe They Won’t Notice&#8221;",
+        "description": "Before Adam Scott booked Parks and Recreation and Severance, he was a working actor like anyone else — so much so that he auditioned for 2002&#8217;s Hellraiser VI: Hellseeker despite being killed off earlier in the franchise&#8217;s history. The fou",
+        "link": "https://deadline.com/2026/05/adam-scott-hellraiser-killed-off-auditioned-franchise-1236879456/",
+        "pubDate": "Sun, 03 May 2026 22:17:41 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/05/MV5BMTUzNzUzMjUxMV5BMl5BanBnXkFtZTgwMzM3MDIwNDI@._V1_.jpg"
+      }
+    },
+    {
+      "title": "Spirit closure reflects airlines’ woes",
+      "source": "Semafor",
+      "pubDate": "Sun, 03 May 2026 22:16:34 +0000",
+      "link": "https://www.semafor.com/article/05/03/2026/spirit-closure-reflects-airlines-woes",
+      "dedupRank": 15,
+      "dedupScore": 5.06,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Spirit closure reflects airlines’ woes",
+        "description": "The demise of American budget carrier Spirit Airlines reflects how the jet fuel crisis stemming from the Iran war is imperiling the global travel industry.",
+        "link": "https://www.semafor.com/article/05/03/2026/spirit-closure-reflects-airlines-woes",
+        "pubDate": "Sun, 03 May 2026 22:16:34 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/b8c9dc3639f04347e85baa5ce78c43dfc4090afd-6000x4000.jpg"
+      }
+    },
+    {
+      "title": "Kyiv grows its global security might",
+      "source": "Semafor",
+      "pubDate": "Sun, 03 May 2026 22:15:19 +0000",
+      "link": "https://www.semafor.com/article/05/03/2026/kyiv-grows-its-global-security-might",
+      "dedupRank": 16,
+      "dedupScore": 5.06,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Kyiv grows its global security might",
+        "description": "Ukraine is increasingly playing the role of global security provider — rather than recipient — as US allies question the extent of Washington’s security guarantees, experts said.",
+        "link": "https://www.semafor.com/article/05/03/2026/kyiv-grows-its-global-security-might",
+        "pubDate": "Sun, 03 May 2026 22:15:19 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/cbd1fd6539e5d5efb10553795d27d9390edfa92c-3613x2409.jpg"
+      }
+    },
+    {
+      "title": "Has tide turned for troubled Spurs under De Zerbi?",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 22:14:33 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/c1e2l4g106go?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 17,
+      "dedupScore": 5.06,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Has tide turned for troubled Spurs under De Zerbi?",
+        "description": "Is Tottenham Hotspur's superb win at Aston Villa the moment the tide turned in their fight against Premier League relegation, asks chief football writer Phil McNulty?",
+        "link": "https://www.bbc.com/sport/football/articles/c1e2l4g106go?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 22:14:33 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/6d30/live/eb28c2d0-4732-11f1-8b61-b5fb73673e40.jpg"
+      }
+    },
+    {
+      "title": "Chinese court says AI displacement is no excuse for firings",
+      "source": "Semafor",
+      "pubDate": "Sun, 03 May 2026 22:14:01 +0000",
+      "link": "https://www.semafor.com/article/05/03/2026/chinese-court-says-ai-no-excuse-for-firings",
+      "dedupRank": 18,
+      "dedupScore": 5.06,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "US troop drawdown from Germany poses dilemma for Europe",
+      "source": "Semafor",
+      "pubDate": "Sun, 03 May 2026 22:13:05 +0000",
+      "link": "https://www.semafor.com/article/05/03/2026/us-troop-cuts-pose-dilemma-for-europe",
+      "dedupRank": 19,
+      "dedupScore": 5.06,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "US troop drawdown from Germany poses dilemma for Europe",
+        "description": "The US’ withdrawal of 5,000 troops from Germany is symptomatic of a widening transatlantic rift that risks leaving Europe with drastic security gaps.",
+        "link": "https://www.semafor.com/article/05/03/2026/us-troop-cuts-pose-dilemma-for-europe",
+        "pubDate": "Sun, 03 May 2026 22:13:05 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/5e82b3d105d9693cab05bef1beefab57859ab44e-2503x1698.jpg"
+      }
+    },
+    {
+      "title": "Taiwan’s president makes it to Eswatini, in spite of Beijing",
+      "source": "Semafor",
+      "pubDate": "Sun, 03 May 2026 22:12:42 +0000",
+      "link": "https://www.semafor.com/article/05/03/2026/taiwans-president-makes-it-to-eswatini-in-spite-of-beijing",
+      "dedupRank": 20,
+      "dedupScore": 5.06,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Taiwan’s president makes it to Eswatini, in spite of Beijing",
+        "description": "Taiwan’s president traveled to Eswatini despite Beijing’s alleged attempts to keep him from getting there.",
+        "link": "https://www.semafor.com/article/05/03/2026/taiwans-president-makes-it-to-eswatini-in-spite-of-beijing",
+        "pubDate": "Sun, 03 May 2026 22:12:42 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/dd51401b75a5758f0b21ac46fc9b80852524a205-3000x1928.jpg"
+      }
+    },
+    {
+      "title": "Trump says US to escort 'neutral' ships through the Strait of Hormuz",
+      "source": "Semafor",
+      "pubDate": "Sun, 03 May 2026 22:11:31 +0000",
+      "link": "https://www.semafor.com/article/05/03/2026/trump-says-us-to-escort-neutral-ships",
+      "dedupRank": 21,
+      "dedupScore": 5.06,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Trump says US to escort 'neutral' ships through the Strait of Hormuz",
+        "description": "US President Donald Trump on Sunday announced a new operation to escort neutral ships that are stuck in the Strait of Hormuz.",
+        "link": "https://www.semafor.com/article/05/03/2026/trump-says-us-to-escort-neutral-ships",
+        "pubDate": "Sun, 03 May 2026 22:11:31 +0000",
+        "source": "Semafor",
+        "imageUrl": "https://img.semafor.com/9e0b08bcbc092df0328a11c3fbbb96e6ff847b77-5500x3095.jpg"
+      }
+    },
+    {
+      "title": "Trump says he is reviewing Iran&#39;s latest plan for peace, but &#39;can&#39;t imagine it would be acceptable&#39;",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 21:53:48 +0000",
+      "link": "https://www.businessinsider.com/iran-war-peace-deal-donald-trump-oil-prices-2026-5",
+      "dedupRank": 22,
+      "dedupScore": 5.04,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Trump says he is reviewing Iran&#39;s latest plan for peace, but &#39;can&#39;t imagine it would be acceptable&#39;",
+        "description": "Donald Trump says he will review a 14-point proposal to end the US-Iran war after Tehran sent it via mediators in Pakistan.",
+        "link": "https://www.businessinsider.com/iran-war-peace-deal-donald-trump-oil-prices-2026-5",
+        "pubDate": "Sun, 03 May 2026 21:53:48 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f72b543022d9b19bbfff2c?format=jpeg"
+      }
+    },
+    {
+      "title": "Juventus target Man City's Reijnders - Monday's gossip",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 21:51:31 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/cvgzpnzv997o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 23,
+      "dedupScore": 5.03,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Juventus target Man City's Reijnders - Monday's gossip",
+        "description": "Juventus target Man City's Tijjani Reijnders, Newcastle hope to retain striker Will Osula, Crystal Palace and Chelsea eye Bournemouth boss Andoni Iraola, plus more.",
+        "link": "https://www.bbc.com/sport/football/articles/cvgzpnzv997o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 21:51:31 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/32f4/live/0fe50010-4739-11f1-ac78-2112837ce2aa.png"
+      }
+    },
+    {
+      "title": "'How did we not win?' - Norris says McLaren strategy cost him chance of Miami victory",
+      "source": "Sky Sports",
+      "pubDate": "Sun, 03 May 2026 22:50:00 +0100",
+      "link": "https://www.skysports.com/f1/news/12040/13539721/miami-gp-lando-norris-rues-mclaren-strategy-after-losing-out-to-kimi-antonelli-in-battle-for-victory",
+      "dedupRank": 24,
+      "dedupScore": 5.03,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "'How did we not win?' - Norris says McLaren strategy cost him chance of Miami victory",
+        "description": "Lando Norris believes McLaren missed an opportunity to win their first Grand Prix of 2026 after he was beaten by Kimi Antonelli.",
+        "link": "https://www.skysports.com/f1/news/12040/13539721/miami-gp-lando-norris-rues-mclaren-strategy-after-losing-out-to-kimi-antonelli-in-battle-for-victory",
+        "pubDate": "Sun, 03 May 2026 22:50:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e1.365dm.com/26/05/1920x1080/skysports-f1-lando-norris_7238697.jpg?20260503223500"
+      }
+    },
+    {
+      "title": "Jake Paul Responds To Olivia Rodrigo&#8217;s &#8216;SNL&#8217; Monologue Jab About How They Both Achieved Their Career Dreams",
+      "source": "Deadline",
+      "pubDate": "Sun, 03 May 2026 21:49:32 +0000",
+      "link": "https://deadline.com/2026/05/jake-paul-olivia-rodrigo-snl-monologue-joke-achieved-dreams-1236879457/",
+      "dedupRank": 25,
+      "dedupScore": 5.03,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Jake Paul Responds To Olivia Rodrigo&#8217;s &#8216;SNL&#8217; Monologue Jab About How They Both Achieved Their Career Dreams",
+        "description": "Like Olivia Rodrigo during her Saturday Night Live monologue, Bizaardvark co-star Jake Paul is reminiscing on the &#8220;good ole days.&#8221; The internet personality and boxer recently responded to a teasing rib the three-time Grammy winner made du",
+        "link": "https://deadline.com/2026/05/jake-paul-olivia-rodrigo-snl-monologue-joke-achieved-dreams-1236879457/",
+        "pubDate": "Sun, 03 May 2026 21:49:32 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/05/snl-jake-paul.jpg"
+      }
+    },
+    {
+      "title": "The Vanity Fair Guide to The Met Gala Afterparty Circuit",
+      "source": "Vanity Fair",
+      "pubDate": "Sun, 03 May 2026 21:47:57 +0000",
+      "link": "https://www.vanityfair.com/style/story/the-vanity-fair-guide-to-the-met-gala-afterparty-circuit",
+      "dedupRank": 26,
+      "dedupScore": 5.03,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Vanity Fair Guide to The Met Gala Afterparty Circuit",
+        "description": "You may not be able to go to the gala, but your chances are better at the after parties.",
+        "link": "https://www.vanityfair.com/style/story/the-vanity-fair-guide-to-the-met-gala-afterparty-circuit",
+        "pubDate": "Sun, 03 May 2026 21:47:57 +0000",
+        "source": "Vanity Fair",
+        "imageUrl": "https://media.vanityfair.com/photos/69f52b3b3908ed096bbb69e0/master/pass/1486984145"
+      }
+    },
+    {
+      "title": "Rose ties for 65th with new McLaren clubs",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 21:45:09 GMT",
+      "link": "https://www.bbc.com/sport/golf/articles/c62d3l99ezqo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 27,
+      "dedupScore": 5.03,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Rose ties for 65th with new McLaren clubs",
+        "description": "England's Justin Rose finishes two over par in his first tournament since switching to McLaren clubs.",
+        "link": "https://www.bbc.com/sport/golf/articles/c62d3l99ezqo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 21:45:09 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/1ab2/live/5ede2630-4732-11f1-8b61-b5fb73673e40.jpg"
+      }
+    },
+    {
+      "title": "You Are Here review: Danny Boyle’s postwar pop-culture tribute lets it all hang out",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 03 May 2026 21:42:22 GMT",
+      "link": "https://www.theguardian.com/stage/2026/may/03/you-are-here-review-danny-boyles-postwar-pop-culture-tribute-lets-it-all-hang-out",
+      "dedupRank": 28,
+      "dedupScore": 5.03,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "You Are Here review: Danny Boyle’s postwar pop-culture tribute lets it all hang out",
+        "description": "<p>The director’s immersive Southbank Centre takeover has vim and ardour in spades, if not complete coherence</p><p>You Are Here is an undertaking on an impressive scale: a self-styled “epic, one-off pop-cultural spectacular” involving immersive thea",
+        "link": "https://www.theguardian.com/stage/2026/may/03/you-are-here-review-danny-boyles-postwar-pop-culture-tribute-lets-it-all-hang-out",
+        "pubDate": "Sun, 03 May 2026 21:42:22 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/f6d5766607f0067162cd4322c049b4935ab6e31c/156_0_3333_2667/master/3333.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=a956d6c860610938d2a486789cee4dfd"
+      }
+    },
+    {
+      "title": "'His share price is going up' - Wolff praises 'astounding' Antonelli",
+      "source": "Sky Sports",
+      "pubDate": "Sun, 03 May 2026 22:30:00 +0100",
+      "link": "https://www.skysports.com/f1/news/12040/13539964/kimi-antonelli-toto-wolff-says-mercedes-drivers-share-price-is-going-up-after-miami-gp-victory",
+      "dedupRank": 29,
+      "dedupScore": 5.01,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "'His share price is going up' - Wolff praises 'astounding' Antonelli",
+        "description": "Mercedes boss Toto Wolff says the performances that have earned Kimi Antonelli his first three Formula 1 victories in successive races have been \"astounding\" and that the world championship leader's Miami Grand Prix win on Sunday was his best drive t",
+        "link": "https://www.skysports.com/f1/news/12040/13539964/kimi-antonelli-toto-wolff-says-mercedes-drivers-share-price-is-going-up-after-miami-gp-victory",
+        "pubDate": "Sun, 03 May 2026 22:30:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e2.365dm.com/26/05/1920x1080/skysports-kimi-antonelli-mercedes_7238691.jpg?20260503223031"
+      }
+    },
+    {
+      "title": "De Zerbi proud of Spurs win but warns: 'Don't forget situation we were in'",
+      "source": "Sky Sports Football",
+      "pubDate": "Sun, 03 May 2026 22:30:00 +0100",
+      "link": "https://www.skysports.com/football/news/11095/13539892/spurs",
+      "dedupRank": 30,
+      "dedupScore": 5.01,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "De Zerbi proud of Spurs win but warns: 'Don't forget situation we were in'",
+        "description": "Roberto De Zerbi has spoken of his pride at seeing his Tottenham team beat Aston Villa, but warned against forgetting the situation his side were in just a matter of weeks ago.",
+        "link": "https://www.skysports.com/football/news/11095/13539892/spurs",
+        "pubDate": "Sun, 03 May 2026 22:30:00 +0100",
+        "source": "Sky Sports Football",
+        "imageUrl": "https://e2.365dm.com/26/05/1920x1080/skysports-roberto-de-zerbi_7238686.jpg?20260503222203"
+      }
+    },
+    {
+      "title": "Bungie Confirms It Has Marathon Story Plans for 'the Next Few Years' But Nothing Is Completely 'Locked in' Yet",
+      "source": "IGN",
+      "pubDate": "Sun, 3 May 2026 21:11:08 +0000",
+      "link": "https://www.ign.com/articles/bungie-confirms-it-has-marathon-story-plans-for-the-next-few-years-but-nothing-is-completely-locked-in-yet",
+      "dedupRank": 31,
+      "dedupScore": 4.99,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Bungie Confirms It Has Marathon Story Plans for 'the Next Few Years' But Nothing Is Completely 'Locked in' Yet",
+        "description": "It looks like Marathon won’t be left behind anytime soon, as Bungie has confirmed it has plans to evolve its story over at least \"the next few years.\"",
+        "link": "https://www.ign.com/articles/bungie-confirms-it-has-marathon-story-plans-for-the-next-few-years-but-nothing-is-completely-locked-in-yet",
+        "pubDate": "Sun, 3 May 2026 21:11:08 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2023/05/25/marathonthumb-1685022943759.jpg"
+      }
+    },
+    {
+      "title": "How to step back when your company outgrows you",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T05:00:00",
+      "link": "https://www.fastcompany.com/91533620/how-to-step-back-when-your-company-outgrows-you",
+      "dedupRank": 32,
+      "dedupScore": 4.98,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "How to step back when your company outgrows you",
+        "description": "Most founders believe their job is to stay deeply involved as their company grows. But that instinct often becomes the very thing that holds the business back. As companies scale, what once made them successful—founder-led decision-making, strong cre",
+        "link": "https://www.fastcompany.com/91533620/how-to-step-back-when-your-company-outgrows-you",
+        "pubDate": "2026-05-04T05:00:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/p-2-91533620-buisiness-outgrows.jpg"
+      }
+    },
+    {
+      "title": "The Only Thing Worse Than Spirit Airlines",
+      "source": "The Atlantic",
+      "pubDate": "Sun, 03 May 2026 16:46:00 -0400",
+      "link": "https://www.theatlantic.com/technology/2026/05/spirit-airlines-cancellation-closure/687047/?utm_source=feed",
+      "dedupRank": 33,
+      "dedupScore": 4.97,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Only Thing Worse Than Spirit Airlines",
+        "description": "… is a world without Spirit Airlines.",
+        "link": "https://www.theatlantic.com/technology/2026/05/spirit-airlines-cancellation-closure/687047/?utm_source=feed",
+        "pubDate": "Sun, 03 May 2026 16:46:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/DhGHQnTuTvwW85XK4k_gj66SXR8=/media/img/mt/2026/05/2026_05_03_Spirit/original.jpg"
+      }
+    },
+    {
+      "title": "A Rust Belt Biennale",
+      "source": "Puck",
+      "pubDate": "Sun, 03 May 2026 20:34:15 +0000",
+      "link": "https://puck.news/rust-belt-biennale-carnegie-internationals-200-million-dollar-pivot/",
+      "dedupRank": 34,
+      "dedupScore": 4.95,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A Rust Belt Biennale",
+        "description": "The first Carnegie International was presented in 1896, directly inspired by the Venice Biennale, and now takes place every four years. The 59th edition, which opened in Pittsburgh yesterday, features the work of 61 artists and collectives, including",
+        "link": "https://puck.news/rust-belt-biennale-carnegie-internationals-200-million-dollar-pivot/",
+        "pubDate": "Sun, 03 May 2026 20:34:15 +0000",
+        "source": "Puck"
+      }
+    },
+    {
+      "title": "Bournemouth up to sixth with win over poor Palace",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 20:30:57 GMT",
+      "link": "https://www.bbc.com/sport/football/videos/cp8peez33ndo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 35,
+      "dedupScore": 4.95,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Bournemouth up to sixth with win over poor Palace",
+        "description": "Bournemouth move up to sixth place to boost their hopes of finishing in a European spot after beating Crystal Palace 3-0 at the Vitality Stadium.",
+        "link": "https://www.bbc.com/sport/football/videos/cp8peez33ndo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 20:30:57 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/faf4/live/b9f76290-471c-11f1-ac78-2112837ce2aa.jpg"
+      }
+    },
+    {
+      "title": "4 ChatGPT ‘Custom Instructions’ that’ll cut your busywork in half",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T04:30:00",
+      "link": "https://www.fastcompany.com/91516278/best-chatgpt-custom-instructions",
+      "dedupRank": 36,
+      "dedupScore": 4.95,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "4 ChatGPT ‘Custom Instructions’ that’ll cut your busywork in half",
+        "description": "If you&#8217;re still copy-pasting the same formatting requests or resorting to &#8220;write this like a professional&#8221; prompts every single time you open ChatGPT , you&#8217;re working too hard. There&#8217;s an essential feature buried in the ",
+        "link": "https://www.fastcompany.com/91516278/best-chatgpt-custom-instructions",
+        "pubDate": "2026-05-04T04:30:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/03/p-1-91516278-4-chatgpt-custom-instructions-thatll-cut-your-busywork-in-half.jpg"
+      }
+    },
+    {
+      "title": "‘This is fine’ creator says AI startup stole his art",
+      "source": "TechCrunch",
+      "pubDate": "Sun, 03 May 2026 20:16:51 +0000",
+      "link": "https://techcrunch.com/2026/05/03/this-is-fine-creator-says-ai-startup-stole-his-art/",
+      "dedupRank": 37,
+      "dedupScore": 4.94,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Gallagher and Richarlison on target to help Spurs move from drop zone",
+      "source": "Sky Sports Football",
+      "pubDate": "Sun, 03 May 2026 21:15:00 +0100",
+      "link": "https://www.skysports.com/watch/video/13539932/aston-villa-1-2-tottenham-hotspur-premier-league-highlights",
+      "dedupRank": 38,
+      "dedupScore": 4.93,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Gallagher and Richarlison on target to help Spurs move from drop zone",
+        "description": "Highlights from the Premier League match between Aston Villa and Tottenham Hotspur.",
+        "link": "https://www.skysports.com/watch/video/13539932/aston-villa-1-2-tottenham-hotspur-premier-league-highlights",
+        "pubDate": "Sun, 03 May 2026 21:15:00 +0100",
+        "source": "Sky Sports Football",
+        "imageUrl": "https://e2.365dm.com/26/05/1920x1080/skysports-aston-villa-spurs_7238602.jpg?20260503210336"
+      }
+    },
+    {
+      "title": "The Best Deals Today: Yakuza Kiwami 3 & Dark Ties, Superman 4K Steelbook Collection, Suzume Blu-ray, and More",
+      "source": "IGN",
+      "pubDate": "Sun, 3 May 2026 20:10:46 +0000",
+      "link": "https://www.ign.com/articles/best-deals-for-may-3-2026",
+      "dedupRank": 39,
+      "dedupScore": 4.93,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Best Deals Today: Yakuza Kiwami 3 & Dark Ties, Superman 4K Steelbook Collection, Suzume Blu-ray, and More",
+        "description": "A new weekend has arrived, and today, you can save big on Yakuza Kiwami 3 & Dark Ties, Dragon Quest VII Reimagined, 86: Eighty-Six Blu-ray, Yoshi and the Mysterious Book, and more. Check out our top picks for Sunday, May 3, below. Yakuza Kiwami 3 & D",
+        "link": "https://www.ign.com/articles/best-deals-for-may-3-2026",
+        "pubDate": "Sun, 3 May 2026 20:10:46 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/02/19/yakuzathumb-1771527142938.png"
+      }
+    },
+    {
+      "title": "Making Life on Earth: Attenborough’s Greatest Adventure review – the anecdotes are just amazing",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 03 May 2026 20:00:02 GMT",
+      "link": "https://www.theguardian.com/tv-and-radio/2026/may/03/making-life-on-earth-attenboroughs-greatest-adventure-review-the-anecdotes-are-just-amazing",
+      "dedupRank": 40,
+      "dedupScore": 4.92,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Making Life on Earth: Attenborough’s Greatest Adventure review – the anecdotes are just amazing",
+        "description": "<p>From tales of giant tortoises trampling tents to almost getting shot, this is a relentlessly entertaining documentary about one of David Attenborough’s greatest pieces of TV</p><p>Life on Earth has a good claim for the top spot in any list of the ",
+        "link": "https://www.theguardian.com/tv-and-radio/2026/may/03/making-life-on-earth-attenboroughs-greatest-adventure-review-the-anecdotes-are-just-amazing",
+        "pubDate": "Sun, 03 May 2026 20:00:02 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/68b608321093b4ae8234b1bc70e0be0d25f57520/134_0_3692_2954/master/3692.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=8f0ea7e76b54716b5b6b69e61cfe5332"
+      }
+    },
+    {
+      "title": "Isa Briones Warns &#8216;Just in Time&#8217; Theatergoers Not To &#8220;Yell Whatever You Want&#8221; At Her: &#8220;Y&#8217;all Are Pissin&#8217; Me Off&#8221;",
+      "source": "Deadline",
+      "pubDate": "Sun, 03 May 2026 19:46:31 +0000",
+      "link": "https://deadline.com/2026/05/isa-briones-warns-just-in-time-theatergoers-not-yell-her-1236879405/",
+      "dedupRank": 41,
+      "dedupScore": 4.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Isa Briones Warns &#8216;Just in Time&#8217; Theatergoers Not To &#8220;Yell Whatever You Want&#8221; At Her: &#8220;Y&#8217;all Are Pissin&#8217; Me Off&#8221;",
+        "description": "As Isa Briones returns to Broadway following her latest season on The Pitt, she&#8217;s had to remind theatergoers that she isn&#8217;t actually Dr. Trinity Santos. The actress, who&#8217;s currently taking over the part of Connie Francis in Broadway",
+        "link": "https://deadline.com/2026/05/isa-briones-warns-just-in-time-theatergoers-not-yell-her-1236879405/",
+        "pubDate": "Sun, 03 May 2026 19:46:31 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/05/P104ETRO-e1777836671727.jpg"
+      }
+    },
+    {
+      "title": "All-rounder Hardie stars as Peshawar win PSL",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 19:46:22 GMT",
+      "link": "https://www.bbc.com/sport/cricket/articles/cy523qwv9vpo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 42,
+      "dedupScore": 4.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "All-rounder Hardie stars as Peshawar win PSL",
+        "description": "Australia all-rounder Aaron Hardie stars with bat and ball as Peshawar Zalmi beat Hyderabad Kingsmen to win their second Pakistan Super League title.",
+        "link": "https://www.bbc.com/sport/cricket/articles/cy523qwv9vpo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 19:46:22 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/7b5c/live/34fb89c0-4728-11f1-9e9f-7d9f8b883bf5.jpg"
+      }
+    },
+    {
+      "title": "Japanese Coast Guard rescue a “lone flamingo” that was lost at sea",
+      "source": "Dexerto",
+      "pubDate": "Sun, 03 May 2026 19:41:58 GMT",
+      "link": "https://www.dexerto.com/entertainment/japanese-coast-guard-rescue-a-lone-flamingo-that-was-lost-at-sea-3360415/",
+      "dedupRank": 43,
+      "dedupScore": 4.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Japanese Coast Guard rescue a “lone flamingo” that was lost at sea",
+        "description": "Japan’s Coast Guard has gone viral after posting about the rescue of a “lone flamingo” that had drifted into one of the country’s most dangerous shipping channels.",
+        "link": "https://www.dexerto.com/entertainment/japanese-coast-guard-rescue-a-lone-flamingo-that-was-lost-at-sea-3360415/",
+        "pubDate": "Sun, 03 May 2026 19:41:58 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/05/03/japan-coast-guard-flamingo.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "A Spirit Airlines fan has launched Spirit 2.0, a crowdsourcing effort to buy the airline: &#39;The people can own it&#39;",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 19:40:10 +0000",
+      "link": "https://www.businessinsider.com/save-spirit-airlines-crowdfunding-effort-hunter-peterson-private-equity-2026-5",
+      "dedupRank": 44,
+      "dedupScore": 4.9,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A Spirit Airlines fan has launched Spirit 2.0, a crowdsourcing effort to buy the airline: &#39;The people can own it&#39;",
+        "description": "The movement, dubbed Spirit 2.0, is encouraging regular people to come together and purchase the airline before private equity can.",
+        "link": "https://www.businessinsider.com/save-spirit-airlines-crowdfunding-effort-hunter-peterson-private-equity-2026-5",
+        "pubDate": "Sun, 03 May 2026 19:40:10 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f7a47dab24bc0b23a18d92?format=jpeg"
+      }
+    },
+    {
+      "title": "Marvel Tokon: Fighting Souls Confirms Savage Hulk and Shuri Black Panther as Playable Fighters as Fans Spot Hidden Carnage Tease",
+      "source": "IGN",
+      "pubDate": "Sun, 3 May 2026 19:28:57 +0000",
+      "link": "https://www.ign.com/articles/marvel-tokon-fighting-souls-confirms-savage-hulk-and-shuri-black-panther-as-playable-fighters-as-fans-spot-hidden-carnage-tease",
+      "dedupRank": 45,
+      "dedupScore": 4.89,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Marvel Tokon: Fighting Souls Confirms Savage Hulk and Shuri Black Panther as Playable Fighters as Fans Spot Hidden Carnage Tease",
+        "description": "Arc System Works has confirmed that Hulk and Black Panther have joined the roster of playable fighters in Marvel Tokon: Fighting Souls – and some fans think Carnage might be close behind.",
+        "link": "https://www.ign.com/articles/marvel-tokon-fighting-souls-confirms-savage-hulk-and-shuri-black-panther-as-playable-fighters-as-fans-spot-hidden-carnage-tease",
+        "pubDate": "Sun, 3 May 2026 19:28:57 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/05/03/marvel-tokon-fighting-souls-savage-hulk-1777835933419.png"
+      }
+    },
+    {
+      "title": "Trump’s Vision for D.C. ‘Garden of Heroes’ Statues Grows in Size and Cost",
+      "source": "NYT Arts",
+      "pubDate": "Sun, 03 May 2026 19:22:04 +0000",
+      "link": "https://www.nytimes.com/2026/05/02/us/politics/trump-garden-of-heroes-statues.html",
+      "dedupRank": 46,
+      "dedupScore": 4.88,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Trump’s Vision for D.C. ‘Garden of Heroes’ Statues Grows in Size and Cost",
+        "description": "Plans for the project include formal gardens, reflecting pools and plazas alongside the statues of 250 notable Americans, according to documents obtained by The New York Times.",
+        "link": "https://www.nytimes.com/2026/05/02/us/politics/trump-garden-of-heroes-statues.html",
+        "pubDate": "Sun, 03 May 2026 19:22:04 +0000",
+        "source": "NYT Arts",
+        "imageUrl": "https://static01.nyt.com/images/2026/05/02/multimedia/02dc-trump-garden-TOP-vkph/02dc-trump-garden-TOP-vkph-mediumSquareAt3X-v2.jpg"
+      }
+    },
+    {
+      "title": "Sony will soon settle a PlayStation Store class action lawsuit for $7.8 million",
+      "source": "Engadget",
+      "pubDate": "Sun, 03 May 2026 19:18:40 +0000",
+      "link": "https://www.engadget.com/2163227/sony-will-soon-settle-playstation-store-class-action-lawsuit/",
+      "dedupRank": 47,
+      "dedupScore": 4.88,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Sony will soon settle a PlayStation Store class action lawsuit for $7.8 million",
+        "description": "Those affected will see their PlayStation Network accounts automatically credited.",
+        "link": "https://www.engadget.com/2163227/sony-will-soon-settle-playstation-store-class-action-lawsuit/",
+        "pubDate": "Sun, 03 May 2026 19:18:40 +0000",
+        "source": "Engadget",
+        "imageUrl": "https://www.engadget.com/img/gallery/sony-will-soon-settle-a-playstation-store-class-action-lawsuit-for-7-8-million/l-intro-1777835034.jpg"
+      }
+    },
+    {
+      "title": "Spectator ejected after jumping Crucible barrier in final",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 19:17:55 GMT",
+      "link": "https://www.bbc.com/sport/snooker/articles/cg4pz357wygo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 48,
+      "dedupScore": 4.87,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Spectator ejected after jumping Crucible barrier in final",
+        "description": "A female spectator is ejected from the Crucible Theatre after jumping over the barrier during the World Snooker Championship final in Sheffield.",
+        "link": "https://www.bbc.com/sport/snooker/articles/cg4pz357wygo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 19:17:55 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/33fd/live/ba6e1500-4723-11f1-a221-793710661889.jpg"
+      }
+    },
+    {
+      "title": "It&#8217;s Ildemaro Vargas Time In Major League Baseball",
+      "source": "Defector",
+      "pubDate": "Sun, 03 May 2026 19:13:26 +0000",
+      "link": "https://defector.com/its-ildemaro-vargas-time-in-major-league-baseball",
+      "dedupRank": 49,
+      "dedupScore": 4.87,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "It&#8217;s Ildemaro Vargas Time In Major League Baseball",
+        "description": "\"I’ve been trying to avoid writing about Vargas in this space,\" Baseball Prospectus fantasy baseball writer Michael Waterloo wrote last week . \"He’s 34 years old, and the vast majority of fantasy players have never heard of him before the last two we",
+        "link": "https://defector.com/its-ildemaro-vargas-time-in-major-league-baseball",
+        "pubDate": "Sun, 03 May 2026 19:13:26 +0000",
+        "source": "Defector",
+        "imageUrl": "https://lede-admin.defector.com/wp-content/uploads/sites/28/2026/05/GettyImages-2273287679.jpg?w=564"
+      }
+    },
+    {
+      "title": "Horror ‘Hokum’ Leads Indie Weekend With $6.4 Million, No. 5 Spot &#8212; Specialty Box Office",
+      "source": "Deadline",
+      "pubDate": "Sun, 03 May 2026 19:10:41 +0000",
+      "link": "https://deadline.com/2026/05/indie-film-box-office-hokum-neon-horror-starring-adam-scott-1236879393/",
+      "dedupRank": 50,
+      "dedupScore": 4.87,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Horror ‘Hokum’ Leads Indie Weekend With $6.4 Million, No. 5 Spot &#8212; Specialty Box Office",
+        "description": "Neon’s Adam Scott-starring Hokum by Damian McCarthy (Oddity) debuted with $6.4 million on 1,885 screens, a nice start for the witchy tale with a $5-million budget set in a creepy Irish inn. It pulls in at no. 5 in North America behind the likes of Th",
+        "link": "https://deadline.com/2026/05/indie-film-box-office-hokum-neon-horror-starring-adam-scott-1236879393/",
+        "pubDate": "Sun, 03 May 2026 19:10:41 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/03/Hokum_AdamScott_01_1769652637237001Pzvm.jpg"
+      }
+    },
+    {
+      "title": "Exclusive: Images From Teyana Taylor’s Spectacular Burlesque Show",
+      "source": "Vanity Fair",
+      "pubDate": "Sun, 03 May 2026 19:08:11 +0000",
+      "link": "https://www.vanityfair.com/style/photos/teyana-taylor-met-gala-burlesque-show",
+      "dedupRank": 51,
+      "dedupScore": 4.86,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Exclusive: Images From Teyana Taylor’s Spectacular Burlesque Show",
+        "description": "Alex Consani, Naomi Watts, Baz Luhrmann and more turned out for Teyana Taylor’s exclusive Met Gala 2026 weekend burlesque event.",
+        "link": "https://www.vanityfair.com/style/photos/teyana-taylor-met-gala-burlesque-show",
+        "pubDate": "Sun, 03 May 2026 19:08:11 +0000",
+        "source": "Vanity Fair",
+        "imageUrl": "https://media.vanityfair.com/photos/69f77a8eeeb4cc00c2ad47de/master/pass/052026_Teyana_Burlesque_opener.jpg"
+      }
+    },
+    {
+      "title": "Slot's VAR fury but loss highlights Liverpool issues",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 19:07:15 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/c242nrvy17vo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 52,
+      "dedupScore": 4.86,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Slot's VAR fury but loss highlights Liverpool issues",
+        "description": "Liverpool manager Arne Slot was furious that Manchester United's second goal was allowed, but also highlighted issues with his own side after the 3-2 defeat.",
+        "link": "https://www.bbc.com/sport/football/articles/c242nrvy17vo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 19:07:15 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/a2cc/live/043e8240-472a-11f1-bd4d-e9da5e2b6722.jpg"
+      }
+    },
+    {
+      "title": "Solateria proves Soulslikes can have difficulty options and still be challenging",
+      "source": "Polygon",
+      "pubDate": "Sun, 03 May 2026 19:01:20 GMT",
+      "link": "https://www.polygon.com/solataria-metroidvania-soulslike-hidden-gem/",
+      "dedupRank": 53,
+      "dedupScore": 4.86,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Solateria proves Soulslikes can have difficulty options and still be challenging",
+        "description": "Solateria is an approachable Soulslike that helps players learn without sacrificing unique combat encounters and challenging mechanics",
+        "link": "https://www.polygon.com/solataria-metroidvania-soulslike-hidden-gem/",
+        "pubDate": "Sun, 03 May 2026 19:01:20 GMT",
+        "source": "Polygon",
+        "imageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/05/solateria-rec-essay.jpg"
+      }
+    },
+    {
+      "title": "This Subtle Leadership Mistake Is More Damaging Than Failure",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 15:00:00 -0400",
+      "link": "https://www.inc.com/jerry-colonna/decision-making-this-subtle-leadership-mistake-is-more-damaging-than-failure/91334609",
+      "dedupRank": 54,
+      "dedupScore": 4.86,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "This Subtle Leadership Mistake Is More Damaging Than Failure",
+        "description": "Indecision feels safe until it quietly becomes your leadership brand.",
+        "link": "https://www.inc.com/jerry-colonna/decision-making-this-subtle-leadership-mistake-is-more-damaging-than-failure/91334609",
+        "pubDate": "Sun, 03 May 2026 15:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/GettyImages-2270610027.jpg"
+      }
+    },
+    {
+      "title": "Why GameStop buying eBay would be horrendous for Pokémon TCG collectors",
+      "source": "Polygon",
+      "pubDate": "Sun, 03 May 2026 18:50:10 GMT",
+      "link": "https://www.polygon.com/gamestop-ebay-acquisition-opinion/",
+      "dedupRank": 55,
+      "dedupScore": 4.85,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "'Scott's ears will be bleeding!' - Scheffler fumes at caddie after tap in struggle",
+      "source": "Sky Sports",
+      "pubDate": "Sun, 03 May 2026 19:39:00 +0100",
+      "link": "https://www.skysports.com/watch/video/13539879/scottie-scheffler-fumes-at-caddie-after-tap-in-struggle-ted-scotts-ears-will-be-bleeding-at-the-end-of-the-day",
+      "dedupRank": 56,
+      "dedupScore": 4.83,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "'Scott's ears will be bleeding!' - Scheffler fumes at caddie after tap in struggle",
+        "description": "Scottie Scheffler's caddie, Ted Scott, received the brunt of complaints after the world No 1 failed to tap in during the final day of the Cadillac Championship.",
+        "link": "https://www.skysports.com/watch/video/13539879/scottie-scheffler-fumes-at-caddie-after-tap-in-struggle-ted-scotts-ears-will-be-bleeding-at-the-end-of-the-day",
+        "pubDate": "Sun, 03 May 2026 19:39:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e1.365dm.com/26/05/1920x1080/skysports-golf-scheffler_7238482.jpg?20260503194700"
+      }
+    },
+    {
+      "title": "Islands&#8217; Nick Thorburn and Ratata&#8217;s Mike Stroud Join Forces as The Creem, Unveil Debut Songs: Stream",
+      "source": "Consequence",
+      "pubDate": "Sun, 03 May 2026 18:25:39 +0000",
+      "link": "https://consequence.net/2026/05/islands-ratatat-form-the-creem-new-songs/",
+      "dedupRank": 57,
+      "dedupScore": 4.82,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Islands&#8217; Nick Thorburn and Ratata&#8217;s Mike Stroud Join Forces as The Creem, Unveil Debut Songs: Stream",
+        "description": "The duo's debut album, A Taste of Cherry, arrives in June. Islands&#8217; Nick Thorburn and Ratata&#8217;s Mike Stroud Join Forces as The Creem, Unveil Debut Songs: Stream Chris Coplan",
+        "link": "https://consequence.net/2026/05/islands-ratatat-form-the-creem-new-songs/",
+        "pubDate": "Sun, 03 May 2026 18:25:39 +0000",
+        "source": "Consequence",
+        "imageUrl": "https://consequence.net/wp-content/uploads/2026/05/The-Creem.jpeg?quality=80"
+      }
+    },
+    {
+      "title": "Liverpool latest: Unacceptable season cannot be repeated, says Van Dijk",
+      "source": "Sky Sports Football",
+      "pubDate": "Sun, 03 May 2026 19:21:00 +0100",
+      "link": "https://www.skysports.com/football/live-blog/11095/13025501/liverpool-transfer-news-rumours-and-gossip-live-updates-and-latest-on-deals-signings-loans-and-contracts",
+      "dedupRank": 58,
+      "dedupScore": 4.82,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Liverpool latest: Unacceptable season cannot be repeated, says Van Dijk",
+        "description": "",
+        "link": "https://www.skysports.com/football/live-blog/11095/13025501/liverpool-transfer-news-rumours-and-gossip-live-updates-and-latest-on-deals-signings-loans-and-contracts",
+        "pubDate": "Sun, 03 May 2026 19:21:00 +0100",
+        "source": "Sky Sports Football",
+        "imageUrl": "https://e1.365dm.com/25/10/1920x1080/skysports-liverpool-news-club_7039258.jpg?20251002160409"
+      }
+    },
+    {
+      "title": "'I Made a Mistake' — Seasoned Magic Artist Dan Frazier Admits He 'Painted Over' The One Ring Art After Fans Raise Plagiarism Concerns",
+      "source": "IGN",
+      "pubDate": "Sun, 3 May 2026 18:11:28 +0000",
+      "link": "https://www.ign.com/articles/i-made-a-mistake-seasoned-magic-artist-dan-frazier-admits-he-painted-over-the-one-ring-art-after-fans-raise-plagiarism-concerns",
+      "dedupRank": 59,
+      "dedupScore": 4.81,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "'I Made a Mistake' — Seasoned Magic Artist Dan Frazier Admits He 'Painted Over' The One Ring Art After Fans Raise Plagiarism Concerns",
+        "description": "Magic: The Gathering artist Dan Frazier has admitted he \"painted over\" the work of Marta Nael when creating a new version of The One Ring card for Wizards of the Coast's upcoming The Hobbit set.",
+        "link": "https://www.ign.com/articles/i-made-a-mistake-seasoned-magic-artist-dan-frazier-admits-he-painted-over-the-one-ring-art-after-fans-raise-plagiarism-concerns",
+        "pubDate": "Sun, 3 May 2026 18:11:28 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2023/07/13/mtg-lotr-1689261089706.png"
+      }
+    },
+    {
+      "title": "GB win mixed 4x400m bronze as five teams make Worlds",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 18:05:46 GMT",
+      "link": "https://www.bbc.com/sport/athletics/articles/c332d61gyp6o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 60,
+      "dedupScore": 4.8,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "GB win mixed 4x400m bronze as five teams make Worlds",
+        "description": "GB & NI's mixed 4x400m team win bronze at the World Athletics Relays, while four other GB teams also qualify automatically for the 2027 World Athletics Championships.",
+        "link": "https://www.bbc.com/sport/athletics/articles/c332d61gyp6o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 18:05:46 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/a668/live/28fbb340-4717-11f1-973f-3fcb874893eb.jpg"
+      }
+    },
+    {
+      "title": "A Hundred Scenes of Awajima is the most beautiful anime you’re not watching",
+      "source": "Polygon",
+      "pubDate": "Sun, 03 May 2026 18:00:19 GMT",
+      "link": "https://www.polygon.com/a-hundred-scenes-of-awajimi-is-the-most-beautiful-anime-youre-not-watching-this-season/",
+      "dedupRank": 61,
+      "dedupScore": 4.79,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A Hundred Scenes of Awajima is the most beautiful anime you’re not watching",
+        "description": "Like a watercolor painting forced into motion, Awajima is oozing in emotional weight and class",
+        "link": "https://www.polygon.com/a-hundred-scenes-of-awajimi-is-the-most-beautiful-anime-youre-not-watching-this-season/",
+        "pubDate": "Sun, 03 May 2026 18:00:19 GMT",
+        "source": "Polygon",
+        "imageUrl": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/05/a-hundred-scenes-of-awajima-episode-1-screenshot-4.png"
+      }
+    },
+    {
+      "title": "In Harvard study, AI offered more accurate emergency room diagnoses than two human doctors",
+      "source": "TechCrunch",
+      "pubDate": "Sun, 03 May 2026 18:00:09 +0000",
+      "link": "https://techcrunch.com/2026/05/03/in-harvard-study-ai-offered-more-accurate-diagnoses-than-emergency-room-doctors/",
+      "dedupRank": 62,
+      "dedupScore": 4.79,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The Hidden Reason Some Businesses Scale and Others Don’t",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 14:00:00 -0400",
+      "link": "https://www.inc.com/tony-manganiello/systems-strategy-the-hidden-reason-some-businesses-scale-and-others-dont/91334529",
+      "dedupRank": 63,
+      "dedupScore": 4.79,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Hidden Reason Some Businesses Scale and Others Don’t",
+        "description": "Ideas are easy. Systems are what scale.",
+        "link": "https://www.inc.com/tony-manganiello/systems-strategy-the-hidden-reason-some-businesses-scale-and-others-dont/91334529",
+        "pubDate": "Sun, 03 May 2026 14:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/GettyImages-2267385895.jpg"
+      }
+    },
+    {
+      "title": "‘The Devil Wears Prada 2’ Lobs a Shot at Corporate Media",
+      "source": "NYT Arts",
+      "pubDate": "Sun, 03 May 2026 17:44:01 +0000",
+      "link": "https://www.nytimes.com/video/movies/100000010852423/devil-wears-prada-2-review.html",
+      "dedupRank": 64,
+      "dedupScore": 4.78,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "‘The Devil Wears Prada 2’ Lobs a Shot at Corporate Media",
+        "description": "The New York Times film critic Alissa Wilkinson reviews “The Devil Wears Prada 2.”",
+        "link": "https://www.nytimes.com/video/movies/100000010852423/devil-wears-prada-2-review.html",
+        "pubDate": "Sun, 03 May 2026 17:44:01 +0000",
+        "source": "NYT Arts"
+      }
+    },
+    {
+      "title": "Savannah Bananas pack Kyle Field with 102,000 fans...",
+      "source": "ESPN",
+      "pubDate": "Sun, 3 May 2026 12:42:33 -0500",
+      "link": "",
+      "dedupRank": 65,
+      "dedupScore": 4.78,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The San Francisco Giants Have Never Cast A Smaller Shadow",
+      "source": "Defector",
+      "pubDate": "Sun, 03 May 2026 17:33:31 +0000",
+      "link": "https://defector.com/the-san-francisco-giants-have-never-cast-a-smaller-shadow",
+      "dedupRank": 66,
+      "dedupScore": 4.77,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The San Francisco Giants Have Never Cast A Smaller Shadow",
+        "description": "We have shared with you the ongoing travails of such baseball meh factories as the Mets , Phillies , Angels , Red Sox , and Nationals , but as in the new-style NBA, where if you're not winning, you can at least convince yourselves that you're winning",
+        "link": "https://defector.com/the-san-francisco-giants-have-never-cast-a-smaller-shadow",
+        "pubDate": "Sun, 03 May 2026 17:33:31 +0000",
+        "source": "Defector",
+        "imageUrl": "https://lede-admin.defector.com/wp-content/uploads/sites/28/2026/05/GettyImages-2274225717.jpg?w=564"
+      }
+    }
+  ]
+}

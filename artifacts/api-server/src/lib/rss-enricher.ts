@@ -1102,6 +1102,23 @@ function stripHtml(html: string): string {
     .trim();
 }
 
+// Like stripHtml but preserves \n\n paragraph breaks — used to sanitize
+// article body text that may contain HTML leaked from web_search results.
+function stripHtmlBody(text: string): string {
+  return text
+    .replace(/<[^>]+>/g, "")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 function extractTag(block: string, tag: string): string {
   // Handles CDATA and plain content
   const re = new RegExp(
@@ -2446,6 +2463,7 @@ WRITING RULES:
 - Write like you are talking to a friend. Short sentences. Simple words. No jargon.
 - No dashes or hyphens used as pauses in sentences. Use plain punctuation.
 - No bullet points inside the story content.
+- No HTML tags in any field. Plain text only.
 - Keep it upbeat and engaging. Tell people why they should care.
 - Paragraphs MUST be separated by a blank line (\\n\\n). Never run paragraphs together.
 - If a story references something unfamiliar (an award, a franchise, a past incident), briefly explain it in plain English. Do not assume the reader already knows.
@@ -2521,7 +2539,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
       id: i + 1,
       title: String(item.title ?? ""),
       summary: String(item.summary ?? ""),
-      content: String(item.content ?? ""),
+      content: stripHtmlBody(String(item.content ?? "")),
       category: cat,
       source: String(item.source ?? "Unknown"),
       readTimeMinutes: Number(item.readTimeMinutes) || 5,
@@ -3596,6 +3614,7 @@ WRITING RULES:
 - Write like you are talking to a friend. Short sentences. Simple words. No jargon.
 - No dashes or hyphens used as pauses in sentences. Use plain punctuation.
 - No bullet points inside the story content.
+- No HTML tags in any field. Plain text only.
 - Keep it upbeat and engaging. Tell people why they should care.
 - Paragraphs MUST be separated by a blank line (\\n\\n). Never run paragraphs together.
 - If a story references something unfamiliar (an award, a franchise, a past incident), briefly explain it in plain English.
@@ -3676,7 +3695,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
       id: i + 1,
       title: String(item.title ?? ""),
       summary: String(item.summary ?? ""),
-      content: String(item.content ?? ""),
+      content: stripHtmlBody(String(item.content ?? "")),
       category: cat,
       source: String(item.source ?? "Unknown"),
       readTimeMinutes: Number(item.readTimeMinutes) || 5,

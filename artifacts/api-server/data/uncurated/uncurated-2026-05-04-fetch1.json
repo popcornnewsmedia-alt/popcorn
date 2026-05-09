@@ -1,0 +1,1037 @@
+{
+  "fetchedAt": "2026-05-04T13:15:45.388Z",
+  "totalRawItems": 67,
+  "uniqueStories": 67,
+  "sentToClaude": 67,
+  "selectedCount": 22,
+  "rejectedCount": 45,
+  "rankedOutCount": 0,
+  "dedupedCount": 0,
+  "articles": [
+    {
+      "title": "Sinner wins in Madrid to set Masters title record",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 16:34:30 GMT",
+      "link": "https://www.bbc.com/sport/tennis/articles/c78k11e85zgo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 1,
+      "dedupScore": 6.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "I sold my childhood home in Miami to buy an apartment in Sicily. We paid under $600,000 and did $98,000 in renovations.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 16:03:01 +0000",
+      "link": "https://www.businessinsider.com/sold-family-home-bought-property-sicily-2026-5",
+      "dedupRank": 2,
+      "dedupScore": 6.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I sold my childhood home in Miami to buy an apartment in Sicily. We paid under $600,000 and did $98,000 in renovations.",
+        "description": "Kat Moore sold her family home in Miami to buy and renovate a flat in Sicily, where she plans to move in a few years.",
+        "link": "https://www.businessinsider.com/sold-family-home-bought-property-sicily-2026-5",
+        "pubDate": "Sun, 03 May 2026 16:03:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e26fe7367066d7c296e0d4?format=jpeg"
+      }
+    },
+    {
+      "title": "The Sixers And Flyers Claim Home Court Over Bruce Springsteen",
+      "source": "Defector",
+      "pubDate": "Sun, 03 May 2026 15:54:24 +0000",
+      "link": "https://defector.com/the-sixers-and-flyers-claim-home-court-over-bruce-springsteen",
+      "dedupRank": 3,
+      "dedupScore": 6.67,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Sixers And Flyers Claim Home Court Over Bruce Springsteen",
+        "description": "We can presume by now that every Philadelphia 76er and Flyer who wants to do so has mouthed the empty sports platitude, \"Nobody believed in us.\" It's just what you say, and more to the point it's what you say when you've given no indication that anyb",
+        "link": "https://defector.com/the-sixers-and-flyers-claim-home-court-over-bruce-springsteen",
+        "pubDate": "Sun, 03 May 2026 15:54:24 +0000",
+        "source": "Defector",
+        "imageUrl": "https://lede-admin.defector.com/wp-content/uploads/sites/28/2026/05/GettyImages-2273949904.jpg?w=564"
+      }
+    },
+    {
+      "title": "The Crown Might Return For A Seventh Season",
+      "source": "Vanity Fair",
+      "pubDate": "Sun, 03 May 2026 15:37:30 +0000",
+      "link": "https://www.vanityfair.com/hollywood/story/the-crown-season-7-everything-we-know",
+      "dedupRank": 4,
+      "dedupScore": 6.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Crown Might Return For A Seventh Season",
+        "description": "Netflix smash The Crown ended its run in 2023, but rumors are flying that the royal family-focused drama will be back for at least one more season.",
+        "link": "https://www.vanityfair.com/hollywood/story/the-crown-season-7-everything-we-know",
+        "pubDate": "Sun, 03 May 2026 15:37:30 +0000",
+        "source": "Vanity Fair",
+        "imageUrl": "https://media.vanityfair.com/photos/65660042aef7791033d4e67b/master/pass/TheCrown_PartTwo_FirstLooks8.jpg"
+      }
+    },
+    {
+      "title": "Watch Sugar Reunite For First Show In 31 Years",
+      "source": "Stereogum",
+      "pubDate": "Sun, 03 May 2026 14:58:38 +0000",
+      "link": "https://stereogum.com/2497728/watch-sugar-reunite-for-first-show-in-31-years/news/",
+      "dedupRank": 5,
+      "dedupScore": 6.61,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Is 2026 the comeback year for running backs? Insid...",
+      "source": "ESPN",
+      "pubDate": "Sun, 3 May 2026 09:47:20 -0500",
+      "link": "",
+      "dedupRank": 6,
+      "dedupScore": 6.6,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Is 2026 the comeback year for running backs? Insid...",
+        "description": "Running backs went early as 10 ESPN fantasy analysts made their first fantasy draft picks of the year",
+        "link": "",
+        "pubDate": "Sun, 3 May 2026 09:47:20 -0500",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "Meta Had the Worst Possible Response When Its Workers Were Watching Naked Footage of Its Ray-Ban AI Glasses Users",
+      "source": "Futurism",
+      "pubDate": "Sun, 03 May 2026 10:30:00 -0400",
+      "link": "https://futurism.com/artificial-intelligence/meta-response-naked-footage-smart-glasses",
+      "dedupRank": 7,
+      "dedupScore": 6.58,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "I&#39;ve visited Northern Ireland several times a year for the past decade. First-time tourists often make these 4 mistakes.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 13:55:01 +0000",
+      "link": "https://www.businessinsider.com/north-ireland-mistakes-first-time-tourists-from-regular-visitor-itinerary-2026-5",
+      "dedupRank": 8,
+      "dedupScore": 6.55,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I&#39;ve visited Northern Ireland several times a year for the past decade. First-time tourists often make these 4 mistakes.",
+        "description": "I often visit Northern Ireland and see tourists making the same common mistakes, like only visiting crowded sites and not learning about the Troubles.",
+        "link": "https://www.businessinsider.com/north-ireland-mistakes-first-time-tourists-from-regular-visitor-itinerary-2026-5",
+        "pubDate": "Sun, 03 May 2026 13:55:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f38886df248c6fe51720e6?format=jpeg"
+      }
+    },
+    {
+      "title": "I flew to Berkshire Hathaway&#39;s first big bash without Warren Buffett as host. I found an event with an uncertain future.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 12:31:21 +0000",
+      "link": "https://www.businessinsider.com/omaha-trip-warren-buffett-berkshire-shareholder-meeting-weekend-abel-future-2026-5",
+      "dedupRank": 9,
+      "dedupScore": 6.46,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I flew to Berkshire Hathaway&#39;s first big bash without Warren Buffett as host. I found an event with an uncertain future.",
+        "description": "I spoke to more than 20 attendees, and many said that without Buffett as the main event, the meeting could lose its sparkle.",
+        "link": "https://www.businessinsider.com/omaha-trip-warren-buffett-berkshire-shareholder-meeting-weekend-abel-future-2026-5",
+        "pubDate": "Sun, 03 May 2026 12:31:21 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f6dea33022d9b19bbffeb0?format=jpeg"
+      }
+    },
+    {
+      "title": "Frontier AI Models Giving Specific, Actionable Instructions to Perpetrate Bioterror Attack",
+      "source": "Futurism",
+      "pubDate": "Sun, 03 May 2026 13:30:00 -0400",
+      "link": "https://futurism.com/artificial-intelligence/ai-bioterror-pathogens",
+      "dedupRank": 10,
+      "dedupScore": 4.77,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Pokemon Pop-Tarts scalped for 10x price after chaotic Target launch",
+      "source": "Dexerto",
+      "pubDate": "Sun, 03 May 2026 17:10:38 GMT",
+      "link": "https://www.dexerto.com/pokemon/pokemon-pop-tarts-scalped-for-10x-price-after-chaotic-target-launch-3360405/",
+      "dedupRank": 11,
+      "dedupScore": 4.75,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Manchester City snatch late win over Liverpool to extend WSL title lead",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 17:05:24 GMT",
+      "link": "https://www.bbc.com/sport/football/videos/cz72qlv88g1o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 12,
+      "dedupScore": 4.75,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Manchester City snatch late win over Liverpool to extend WSL title lead",
+        "description": "Watch highlights as Manchester City's Rebecca Knaak scores a late winner against Liverpool to extend their title lead in the Women's Super League.",
+        "link": "https://www.bbc.com/sport/football/videos/cz72qlv88g1o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 17:05:24 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/defe/live/b3240f20-46f6-11f1-bd52-e755d604ece4.jpg"
+      }
+    },
+    {
+      "title": "Find a Nice Surprise for Your Mom With These Mother's Day Gift Ideas",
+      "source": "IGN",
+      "pubDate": "Sun, 3 May 2026 17:00:00 +0000",
+      "link": "https://www.ign.com/articles/mothers-day-gift-ideas-2026",
+      "dedupRank": 13,
+      "dedupScore": 4.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Find a Nice Surprise for Your Mom With These Mother's Day Gift Ideas",
+        "description": "Here are some of our top picks for Mother's Day gifts, from Apple products to LEGO flowers.",
+        "link": "https://www.ign.com/articles/mothers-day-gift-ideas-2026",
+        "pubDate": "Sun, 3 May 2026 17:00:00 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/29/mothers-day-gift-ideas-2026-1777446472075.jpg"
+      }
+    },
+    {
+      "title": "Premier League predictions: Over to you, Man City...",
+      "source": "Sky Sports Football",
+      "pubDate": "Sun, 03 May 2026 18:00:00 +0100",
+      "link": "https://www.skysports.com/football/news/11095/13538615/premier-league-predictions-and-best-bets-another-1-0-to-the-arsenal",
+      "dedupRank": 14,
+      "dedupScore": 4.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Premier League predictions: Over to you, Man City...",
+        "description": "Our football betting expert Jones Knows offers his insight ahead of the two games on Bank Holiday Monday in the Premier League.",
+        "link": "https://www.skysports.com/football/news/11095/13538615/premier-league-predictions-and-best-bets-another-1-0-to-the-arsenal",
+        "pubDate": "Sun, 03 May 2026 18:00:00 +0100",
+        "source": "Sky Sports Football",
+        "imageUrl": "https://e2.365dm.com/26/04/1920x1080/skysports-premier-league-premier-league-prediction_7223294.jpg?20260418114637"
+      }
+    },
+    {
+      "title": "Your Leadership Style Might Be Helping or Holding Your Team Back",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 13:00:00 -0400",
+      "link": "https://www.inc.com/moshe-engelberg/constraints-vs-trust-how-leadership-affects-team-performance/91333937",
+      "dedupRank": 15,
+      "dedupScore": 4.74,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Your Leadership Style Might Be Helping or Holding Your Team Back",
+        "description": "Fear builds rules. Love builds culture. Only one scales.",
+        "link": "https://www.inc.com/moshe-engelberg/constraints-vs-trust-how-leadership-affects-team-performance/91333937",
+        "pubDate": "Sun, 03 May 2026 13:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/different-leadership-styles-inc.jpg"
+      }
+    },
+    {
+      "title": "YouTuber crowdfunds $22m in attempt to buy Spirit Airlines after it shut down overnight",
+      "source": "Dexerto",
+      "pubDate": "Sun, 03 May 2026 16:58:22 GMT",
+      "link": "https://www.dexerto.com/entertainment/youtuber-crowdfunds-22m-in-attempt-to-buy-spirit-airlines-after-it-shut-down-overnight-3360391/",
+      "dedupRank": 16,
+      "dedupScore": 4.74,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "AI Slop YouTube Channel Glitches Out in a Way So Bizarre That It’s Vaguely Disturbing",
+      "source": "Futurism",
+      "pubDate": "Sun, 03 May 2026 12:45:00 -0400",
+      "link": "https://futurism.com/artificial-intelligence/ai-slop-youtube-channel-glitches-bizarre",
+      "dedupRank": 17,
+      "dedupScore": 4.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "AI Slop YouTube Channel Glitches Out in a Way So Bizarre That It’s Vaguely Disturbing",
+        "description": "This is deranged. The post AI Slop YouTube Channel Glitches Out in a Way So Bizarre That It&#8217;s Vaguely Disturbing appeared first on Futurism .",
+        "link": "https://futurism.com/artificial-intelligence/ai-slop-youtube-channel-glitches-bizarre",
+        "pubDate": "Sun, 03 May 2026 12:45:00 -0400",
+        "source": "Futurism",
+        "imageUrl": "https://futurism.com/wp-content/uploads/2026/04/ai-slop-youtube-channel-glitches-bizarre.jpg?quality=85"
+      }
+    },
+    {
+      "title": "The Hurricanes Aim To Keep It Boring",
+      "source": "Defector",
+      "pubDate": "Sun, 03 May 2026 16:42:53 +0000",
+      "link": "https://defector.com/the-hurricanes-aim-to-keep-it-boring",
+      "dedupRank": 18,
+      "dedupScore": 4.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Hurricanes Aim To Keep It Boring",
+        "description": "Here's what happened in hockey on Saturday night: Much ass was kicked, all of it by the same foot. But for those of you who prefer 10 minutes of video to eight words of exposition, there's this: https://www.youtube.com/watch?v=rNQbYTCYDQc",
+        "link": "https://defector.com/the-hurricanes-aim-to-keep-it-boring",
+        "pubDate": "Sun, 03 May 2026 16:42:53 +0000",
+        "source": "Defector",
+        "imageUrl": "https://lede-admin.defector.com/wp-content/uploads/sites/28/2026/05/GettyImages-2273742292.jpg?w=564"
+      }
+    },
+    {
+      "title": "Shakira Brings Her Biggest Hits To Free Rio de Janeiro Show",
+      "source": "Pitchfork",
+      "pubDate": "Sun, 03 May 2026 16:41:35 +0000",
+      "link": "https://pitchfork.com/news/shakira-brings-her-biggest-hits-to-free-rio-de-janeiro-show/",
+      "dedupRank": 19,
+      "dedupScore": 4.72,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Relief for Celtic... now does O'Neill want Rangers to win?",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 16:40:55 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/c78q6n3z8e5o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 20,
+      "dedupScore": 4.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Relief for Celtic... now does O'Neill want Rangers to win?",
+        "description": "Celtic interim manager Martin O'Neill recognises there is still \"little margin for error\" after his side beat 10-man Hibernian to draw level with Hearts at the top of the Scottish Premiership.",
+        "link": "https://www.bbc.com/sport/football/articles/c78q6n3z8e5o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 16:40:55 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/ad25/live/ce136d90-470e-11f1-8bd0-c9ca96b627c7.jpg"
+      }
+    },
+    {
+      "title": "The battle for sixth... and why teams might need to lose on final day",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 16:39:51 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/cpqp9eqwe72o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 21,
+      "dedupScore": 4.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The battle for sixth... and why teams might need to lose on final day",
+        "description": "As the Premier League's battle for European places hots up, BBC Sport assesses the situation - and some very strange potential quirks in the race.",
+        "link": "https://www.bbc.com/sport/football/articles/cpqp9eqwe72o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 16:39:51 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/7127/live/21045890-46f9-11f1-9217-a5b6a670d3f7.jpg"
+      }
+    },
+    {
+      "title": "Van Graan criticises TV replay 'consistency' after Bath lose semi-final",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 16:36:45 GMT",
+      "link": "https://www.bbc.com/sport/rugby-union/articles/cpwp2zpdd7yo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 22,
+      "dedupScore": 4.72,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Van Graan criticises TV replay 'consistency' after Bath lose semi-final",
+        "description": "Bath boss Johann van Graan calls for more \"consistency\" with who supplies the television match official footage after he felt foul play incidents were missed in his side's Investec Champions Cup semi-final loss to Bordeaux.",
+        "link": "https://www.bbc.com/sport/rugby-union/articles/cpwp2zpdd7yo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 16:36:45 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/6f45/live/399db810-471c-11f1-973f-3fcb874893eb.jpg"
+      }
+    },
+    {
+      "title": "Dramatic Mainoo strike helps Man Utd beat Liverpool in five-goal thriller to seal CL spot",
+      "source": "Sky Sports Football",
+      "pubDate": "Sun, 03 May 2026 17:36:00 +0100",
+      "link": "https://www.skysports.com/watch/video/13539805/manchester-united-3-2-liverpool-premier-league-highlights",
+      "dedupRank": 23,
+      "dedupScore": 4.71,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "I&#39;m not worried about AI taking my job. Guests and clients still want a real person to make them feel special.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 16:31:01 +0000",
+      "link": "https://www.businessinsider.com/not-worried-ai-will-take-my-job-aiproof-career-security-2026-5",
+      "dedupRank": 24,
+      "dedupScore": 4.71,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I&#39;m not worried about AI taking my job. Guests and clients still want a real person to make them feel special.",
+        "description": "I&#39;ve worked in the hospitality industry for decades. I know AI can&#39;t take away the part of my job that matters most to clients.",
+        "link": "https://www.businessinsider.com/not-worried-ai-will-take-my-job-aiproof-career-security-2026-5",
+        "pubDate": "Sun, 03 May 2026 16:31:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f4d7403022d9b19bbff935?format=jpeg"
+      }
+    },
+    {
+      "title": "Sony Expected to Pay $7.8 Million in PlayStation Refunds After PSN Lawsuit Settlement Gets Preliminary Approval from California Judge",
+      "source": "IGN",
+      "pubDate": "Sun, 3 May 2026 16:25:18 +0000",
+      "link": "https://www.ign.com/articles/sony-expected-to-pay-78-million-in-playstation-refunds-after-psn-lawsuit-settlement-gets-preliminary-approval-from-california-judge",
+      "dedupRank": 25,
+      "dedupScore": 4.7,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Sony Expected to Pay $7.8 Million in PlayStation Refunds After PSN Lawsuit Settlement Gets Preliminary Approval from California Judge",
+        "description": "Select PlayStation users may be eligible for refunds tied to digital PSN purchases after a judge offered preliminary approval for a class action lawsuit settlement.",
+        "link": "https://www.ign.com/articles/sony-expected-to-pay-78-million-in-playstation-refunds-after-psn-lawsuit-settlement-gets-preliminary-approval-from-california-judge",
+        "pubDate": "Sun, 3 May 2026 16:25:18 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2024/09/25/ps5-pro-handsonpreview-blogroll-1727223976585.jpg"
+      }
+    },
+    {
+      "title": "Ask.com has shut down, marking the official farewell to the Internet's favorite butler",
+      "source": "Engadget",
+      "pubDate": "Sun, 03 May 2026 16:17:29 +0000",
+      "link": "https://www.engadget.com/2163129/ask-com-has-shut-down-marking-official-farewell-to-internet-favorite-butler/",
+      "dedupRank": 26,
+      "dedupScore": 4.7,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Billions of beetles blanket the coastlines of Scotland",
+      "source": "Dexerto",
+      "pubDate": "Sun, 03 May 2026 16:11:40 GMT",
+      "link": "https://www.dexerto.com/entertainment/billions-of-beetles-blanket-the-coastlines-of-scotland-3360375/",
+      "dedupRank": 27,
+      "dedupScore": 4.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Billions of beetles blanket the coastlines of Scotland",
+        "description": "A Scottish coastline has been overrun with billions of dead beetles that are washing up on the shoreline, blanketing the beach.",
+        "link": "https://www.dexerto.com/entertainment/billions-of-beetles-blanket-the-coastlines-of-scotland-3360375/",
+        "pubDate": "Sun, 03 May 2026 16:11:40 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/05/03/IMG_4676-2.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "TechCrunch Mobility: How do you issue a ticket to a robotaxi?",
+      "source": "TechCrunch",
+      "pubDate": "Sun, 03 May 2026 16:05:00 +0000",
+      "link": "https://techcrunch.com/2026/05/03/techcrunch-mobility-how-do-you-issue-a-ticket-to-a-robotaxi/",
+      "dedupRank": 28,
+      "dedupScore": 4.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "TechCrunch Mobility: How do you issue a ticket to a robotaxi?",
+        "description": "Welcome back to TechCrunch Mobility — your central hub for news and insights on the future of transportation.",
+        "link": "https://techcrunch.com/2026/05/03/techcrunch-mobility-how-do-you-issue-a-ticket-to-a-robotaxi/",
+        "pubDate": "Sun, 03 May 2026 16:05:00 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "A Hilarious <em>SNL</em> Sketch About Heartbreak Goggles",
+      "source": "The Atlantic",
+      "pubDate": "Sun, 03 May 2026 12:03:00 -0400",
+      "link": "https://www.theatlantic.com/culture/2026/05/snl-my-ex-break-up-sketch-olivia-rodrigo-ashley-padilla/687046/?utm_source=feed",
+      "dedupRank": 29,
+      "dedupScore": 4.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A Hilarious <em>SNL</em> Sketch About Heartbreak Goggles",
+        "description": "It shrewdly illustrated all the ways that breakups can distort reality.",
+        "link": "https://www.theatlantic.com/culture/2026/05/snl-my-ex-break-up-sketch-olivia-rodrigo-ashley-padilla/687046/?utm_source=feed",
+        "pubDate": "Sun, 03 May 2026 12:03:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/KAzRYKOuDnYQCwSP8sU6k_MyA8Q=/1x0:1000x561/media/img/mt/2026/05/2026_05_03_SNL/original.jpg"
+      }
+    },
+    {
+      "title": "She Survived the FLDS Cult. Now, She&#8217;s Healing Through Music",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 03 May 2026 16:00:00 +0000",
+      "link": "https://www.rollingstone.com/culture/culture-features/false-prophet-flds-cult-nomz-bistline-1235556870/",
+      "dedupRank": 30,
+      "dedupScore": 4.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "She Survived the FLDS Cult. Now, She&#8217;s Healing Through Music",
+        "description": "Naomi “Nomz” Bistline was one of Samuel Bateman’s 23 “spiritual wives” — but after a stint in prison, she’s coping with her past, one song at a time",
+        "link": "https://www.rollingstone.com/culture/culture-features/false-prophet-flds-cult-nomz-bistline-1235556870/",
+        "pubDate": "Sun, 03 May 2026 16:00:00 +0000",
+        "source": "Rolling Stone"
+      }
+    },
+    {
+      "title": "Reflections in the Door of a School Bus and Other Doors",
+      "source": "The Atlantic",
+      "pubDate": "Sun, 03 May 2026 12:00:00 -0400",
+      "link": "https://www.theatlantic.com/books/2026/05/poem-athena-nassar-reflections/687028/?utm_source=feed",
+      "dedupRank": 31,
+      "dedupScore": 4.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Reflections in the Door of a School Bus and Other Doors",
+        "description": "A poem",
+        "link": "https://www.theatlantic.com/books/2026/05/poem-athena-nassar-reflections/687028/?utm_source=feed",
+        "pubDate": "Sun, 03 May 2026 12:00:00 -0400",
+        "source": "The Atlantic",
+        "imageUrl": "https://cdn.theatlantic.com/thumbor/Vhnqkp7CPYcCD9pwCKRvzifdO8I=/11x1404:2143x2604/media/img/mt/2026/05/2026_05_ReflectionPoem/original.jpg"
+      }
+    },
+    {
+      "title": "Climate Change Is Getting So Bad That It’s Making Food Less Nutritious",
+      "source": "Futurism",
+      "pubDate": "Sun, 03 May 2026 12:00:00 -0400",
+      "link": "https://futurism.com/science-energy/climate-change-food-less-nutritious",
+      "dedupRank": 32,
+      "dedupScore": 4.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Climate Change Is Getting So Bad That It’s Making Food Less Nutritious",
+        "description": "\"The diets we eat today have less nutritional density than what our grandparents ate.\" The post Climate Change Is Getting So Bad That It&#8217;s Making Food Less Nutritious appeared first on Futurism .",
+        "link": "https://futurism.com/science-energy/climate-change-food-less-nutritious",
+        "pubDate": "Sun, 03 May 2026 12:00:00 -0400",
+        "source": "Futurism",
+        "imageUrl": "https://futurism.com/wp-content/uploads/2026/04/climate-change-food-less-nutritious.jpg?quality=85"
+      }
+    },
+    {
+      "title": "I Run a Business While Traveling the World. These 4 Metrics Keep It Growing",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 12:00:00 -0400",
+      "link": "https://www.inc.com/kimanzi-constable/i-run-a-business-while-traveling-the-world-these-key-metrics-keep-it-growing/91331910",
+      "dedupRank": 33,
+      "dedupScore": 4.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I Run a Business While Traveling the World. These 4 Metrics Keep It Growing",
+        "description": "Travel more and stress less if you keep your eye on these key numbers.",
+        "link": "https://www.inc.com/kimanzi-constable/i-run-a-business-while-traveling-the-world-these-key-metrics-keep-it-growing/91331910",
+        "pubDate": "Sun, 03 May 2026 12:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/business-metrics-nomadic-founder-ing.jpg"
+      }
+    },
+    {
+      "title": "True Love hands O'Brien eighth 1,000 Guineas win",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 15:45:47 GMT",
+      "link": "https://www.bbc.com/sport/horse-racing/articles/cgep9qex1n1o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 34,
+      "dedupScore": 4.66,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "True Love hands O'Brien eighth 1,000 Guineas win",
+        "description": "True Love storms to victory in the 1,000 Guineas at Newmarket to hand legendary Irish trainer Aidan O'Brien an eighth winner in the fillies' Classic.",
+        "link": "https://www.bbc.com/sport/horse-racing/articles/cgep9qex1n1o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 15:45:47 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/2da7/live/efa1b6b0-4704-11f1-bd52-e755d604ece4.jpg"
+      }
+    },
+    {
+      "title": "Lego is releasing a Sega Genesis set complete with little controllers",
+      "source": "Engadget",
+      "pubDate": "Sun, 03 May 2026 15:41:35 +0000",
+      "link": "https://www.engadget.com/2163108/lego-is-releasing-a-sega-genesis-set-complete-with-little-controllers/",
+      "dedupRank": 35,
+      "dedupScore": 4.66,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "What is Omoggle? The AI face-rating platform taking over Twitch",
+      "source": "Dexerto",
+      "pubDate": "Sun, 03 May 2026 15:39:44 GMT",
+      "link": "https://www.dexerto.com/twitch/what-is-omoggle-the-ai-face-rating-platform-taking-over-twitch-3360363/",
+      "dedupRank": 36,
+      "dedupScore": 4.66,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Howe set to stay in charge of Newcastle after summit",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 15:37:10 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/c362exz0p98o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 37,
+      "dedupScore": 4.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Howe set to stay in charge of Newcastle after summit",
+        "description": "Head coach Eddie Howe looks set to lead Newcastle into next season after talks with the club's Saudi Arabian leadership.",
+        "link": "https://www.bbc.com/sport/football/articles/c362exz0p98o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 15:37:10 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/207b/live/776a5930-46fb-11f1-9217-a5b6a670d3f7.jpg"
+      }
+    },
+    {
+      "title": "My grandma is 91 and has had the same friends for 60 years. Here are 3 things she taught me.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 15:34:01 +0000",
+      "link": "https://www.businessinsider.com/long-term-friendships-lessons-from-grandmother-2026-5",
+      "dedupRank": 38,
+      "dedupScore": 4.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "My grandma is 91 and has had the same friends for 60 years. Here are 3 things she taught me.",
+        "description": "I&#39;ve struggled with friendships fading over time. My grandmother&#39;s 60-year friendships showed me what I was missing.",
+        "link": "https://www.businessinsider.com/long-term-friendships-lessons-from-grandmother-2026-5",
+        "pubDate": "Sun, 03 May 2026 15:34:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69e1021fcb96e245212aedbf?format=jpeg"
+      }
+    },
+    {
+      "title": "Ex-Metallica Bassist Jason Newsted Reveals Throat Cancer Battle",
+      "source": "Consequence",
+      "pubDate": "Sun, 03 May 2026 15:27:31 +0000",
+      "link": "https://consequence.net/2026/05/jason-newsted-throat-cancer-battle/",
+      "dedupRank": 39,
+      "dedupScore": 4.64,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Reggie Fils-Aimé says Amazon once asked Nintendo to break the law",
+      "source": "The Verge",
+      "pubDate": "2026-05-03T11:24:27-04:00",
+      "link": "https://www.theverge.com/games/922840/reggie-fils-aime-amazon-nintendo-illegal",
+      "dedupRank": 40,
+      "dedupScore": 4.64,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "What is the newest iPad? Here are the latest models you can buy.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 15:18:57 +0000",
+      "link": "https://www.businessinsider.com/guides/tech/what-is-the-newest-ipad",
+      "dedupRank": 41,
+      "dedupScore": 4.63,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "What is the newest iPad? Here are the latest models you can buy.",
+        "description": "Apple&#39;s newest iPads are the 2026 iPad Air (M4), the 2025 iPad Pro (M5), the 2025 standard iPad (A16), and the 2024 iPad Mini (A17 Pro).",
+        "link": "https://www.businessinsider.com/guides/tech/what-is-the-newest-ipad",
+        "pubDate": "Sun, 03 May 2026 15:18:57 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/6814ca2dc6ad288d147fd14d?format=jpeg"
+      }
+    },
+    {
+      "title": "Double Murder Suspect Asked ChatGPT How to Hide Body in Dumpster",
+      "source": "Futurism",
+      "pubDate": "Sun, 03 May 2026 11:15:00 -0400",
+      "link": "https://futurism.com/artificial-intelligence/double-murder-suspect-chatgpt-hide-body-dumpster",
+      "dedupRank": 42,
+      "dedupScore": 4.63,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "I&#39;ve been on over 50 cruises as an employee and passenger. Here are 8 things you should know before booking a trip.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 15:12:01 +0000",
+      "link": "https://www.businessinsider.com/tips-before-booking-cruise-ship-employee-travel-advice-2026-5",
+      "dedupRank": 43,
+      "dedupScore": 4.63,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I&#39;ve been on over 50 cruises as an employee and passenger. Here are 8 things you should know before booking a trip.",
+        "description": "After going on many cruises as a ship employee and passenger, here are some of my best travel tips for booking, choosing rooms, and saving money.",
+        "link": "https://www.businessinsider.com/tips-before-booking-cruise-ship-employee-travel-advice-2026-5",
+        "pubDate": "Sun, 03 May 2026 15:12:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69ea3a1e3fecbb42897a331e?format=jpeg"
+      }
+    },
+    {
+      "title": "CORE boys swatted live on stream during day 1 at new content house",
+      "source": "Dexerto",
+      "pubDate": "Sun, 03 May 2026 15:03:14 GMT",
+      "link": "https://www.dexerto.com/twitch/core-boys-swatted-live-on-stream-during-day-1-at-new-content-house-3360374/",
+      "dedupRank": 44,
+      "dedupScore": 4.62,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "CORE boys swatted live on stream during day 1 at new content house",
+        "description": "CORE’s first full day streaming from its new content house was interrupted live on air after police responded to a false report at the property.",
+        "link": "https://www.dexerto.com/twitch/core-boys-swatted-live-on-stream-during-day-1-at-new-content-house-3360374/",
+        "pubDate": "Sun, 03 May 2026 15:03:14 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/05/03/core-boys-swatted.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Shokz’s bassy OpenRun Pro 2 are $40 off thanks to a new Mother’s Day promo",
+      "source": "The Verge",
+      "pubDate": "2026-05-03T11:00:00-04:00",
+      "link": "https://www.theverge.com/gadgets/922616/shokz-openrun-pro-2-bone-conduction-headphones-mothers-day-deal-sale",
+      "dedupRank": 45,
+      "dedupScore": 4.61,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Shokz’s bassy OpenRun Pro 2 are $40 off thanks to a new Mother’s Day promo",
+        "description": "If you’re looking to pick up a pair of open-ear headphones for yourself — or your mom — Shokz is running a Mother’s Day sale. Now through May 10th, the company’s best pair of bone conduction headphones, the OpenRun Pro 2, are available from Amazon, B",
+        "link": "https://www.theverge.com/gadgets/922616/shokz-openrun-pro-2-bone-conduction-headphones-mothers-day-deal-sale",
+        "pubDate": "2026-05-03T11:00:00-04:00",
+        "source": "The Verge",
+        "imageUrl": "https://platform.theverge.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/25591706/shokzopenrunpro2_1.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
+      }
+    },
+    {
+      "title": "The Leadership Lesson Behind Melinda French Gates’ Bold Career Move",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 11:00:00 -0400",
+      "link": "https://www.inc.com/jennifer-knowles/the-leadership-lesson-women-founders-can-learn-from-melinda-french-gates-bold-career-move/91333863",
+      "dedupRank": 46,
+      "dedupScore": 4.61,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Leadership Lesson Behind Melinda French Gates’ Bold Career Move",
+        "description": "When the system moves slowly, women don’t stall. They pivot.",
+        "link": "https://www.inc.com/jennifer-knowles/the-leadership-lesson-women-founders-can-learn-from-melinda-french-gates-bold-career-move/91333863",
+        "pubDate": "Sun, 03 May 2026 11:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/melinda-gates-leadership-lesson-change-inc.jpg"
+      }
+    },
+    {
+      "title": "Ex-Turnstile Guitarist Facing Life in Prison After Attempted Murder Charge Upgraded",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 03 May 2026 14:46:00 +0000",
+      "link": "https://www.rollingstone.com/music/music-news/ex-turnstile-guitarist-life-prison-murder-charge-upgraded-1235557033/",
+      "dedupRank": 47,
+      "dedupScore": 4.6,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "I quit my full-time job at 26. Now I work remotely 10 to 20 hours a week while traveling with my partner.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 14:19:01 +0000",
+      "link": "https://www.businessinsider.com/quit-job-20s-work-remote-slow-fire-enjoying-days-2026-5",
+      "dedupRank": 48,
+      "dedupScore": 4.57,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I quit my full-time job at 26. Now I work remotely 10 to 20 hours a week while traveling with my partner.",
+        "description": "My version of financial freedom is working less and having time to enjoy each day.",
+        "link": "https://www.businessinsider.com/quit-job-20s-work-remote-slow-fire-enjoying-days-2026-5",
+        "pubDate": "Sun, 03 May 2026 14:19:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f4bd4fab24bc0b23a18640?format=jpeg"
+      }
+    },
+    {
+      "title": "Where to Watch the 2026 F1 Miami Grand Prix Online",
+      "source": "Rolling Stone",
+      "pubDate": "Sun, 03 May 2026 14:08:00 +0000",
+      "link": "https://www.rollingstone.com/product-recommendations/streaming/where-to-watch-f1-miami-race-2026-livestream-online-1235556520/",
+      "dedupRank": 49,
+      "dedupScore": 4.56,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Where to Watch the 2026 F1 Miami Grand Prix Online",
+        "description": "Formula 1 is back this weekend for the Miami Grand Prix. Here’s how to stream the race online",
+        "link": "https://www.rollingstone.com/product-recommendations/streaming/where-to-watch-f1-miami-race-2026-livestream-online-1235556520/",
+        "pubDate": "Sun, 03 May 2026 14:08:00 +0000",
+        "source": "Rolling Stone"
+      }
+    },
+    {
+      "title": "‘Ozempic Breath’ Is Fueling an Unexpected Boom in Snack Sales",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 10:05:35 -0400",
+      "link": "https://www.inc.com/kevin-haynes/ozempic-breath-is-fueling-an-unexpected-boom-in-snack-sales/91339756",
+      "dedupRank": 50,
+      "dedupScore": 4.56,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "When a Manager Says ‘Executive Presence,’ Here’s What They Really Mean",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 10:00:00 -0400",
+      "link": "https://www.inc.com/netta-jenkins/when-a-manager-says-executive-presence-heres-what-they-really-mean/91335722",
+      "dedupRank": 51,
+      "dedupScore": 4.55,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "When a Manager Says ‘Executive Presence,’ Here’s What They Really Mean",
+        "description": "It’s not how you look in the boardroom. It’s how your decisions land in it.",
+        "link": "https://www.inc.com/netta-jenkins/when-a-manager-says-executive-presence-heres-what-they-really-mean/91335722",
+        "pubDate": "Sun, 03 May 2026 10:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/GettyImages-2217611728.jpg"
+      }
+    },
+    {
+      "title": "Teen caught smuggling 30 tortoises under their clothes at Thai airport",
+      "source": "Dexerto",
+      "pubDate": "Sun, 03 May 2026 13:47:30 GMT",
+      "link": "https://www.dexerto.com/entertainment/teen-caught-smuggling-30-tortoises-under-their-clothes-at-thai-airport-3360362/",
+      "dedupRank": 52,
+      "dedupScore": 4.54,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "An Elegant Solution to AI Slop: Tax It, and Use the Resulting Billions of Dollars to Fund Cultural Institutions, Artists, and Researchers",
+      "source": "Futurism",
+      "pubDate": "Sun, 03 May 2026 09:45:00 -0400",
+      "link": "https://futurism.com/artificial-intelligence/tax-ai-slop",
+      "dedupRank": 53,
+      "dedupScore": 4.54,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Woman blocked by DMV discovers she has a doppelgänger and tracks her down",
+      "source": "Dexerto",
+      "pubDate": "Sun, 03 May 2026 13:25:18 GMT",
+      "link": "https://www.dexerto.com/entertainment/woman-blocked-by-dmv-discovers-she-has-a-doppelganger-and-tracks-her-down-3360346/",
+      "dedupRank": 54,
+      "dedupScore": 4.52,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Who is snooker's new superstar Wu?",
+      "source": "BBC Sport",
+      "pubDate": "Sun, 03 May 2026 13:21:19 GMT",
+      "link": "https://www.bbc.com/sport/snooker/articles/c62d3ve98zzo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 55,
+      "dedupScore": 4.51,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Who is snooker's new superstar Wu?",
+        "description": "Wu Yize's dramatic victory over Mark Allen late on Saturday evening means China have a World Championship finalist for the second successive year.",
+        "link": "https://www.bbc.com/sport/snooker/articles/c62d3ve98zzo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Sun, 03 May 2026 13:21:19 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/7dd6/live/eae365f0-46f1-11f1-9217-a5b6a670d3f7.jpg"
+      }
+    },
+    {
+      "title": "Saturday Night Live: Olivia Rodrigo pulls double duty while Aziz Ansari aces Kash Patel",
+      "source": "The Guardian Culture",
+      "pubDate": "Sun, 03 May 2026 13:20:15 GMT",
+      "link": "https://www.theguardian.com/tv-and-radio/2026/may/03/saturday-night-live-olivia-rodrigo-aziz-ansari",
+      "dedupRank": 56,
+      "dedupScore": 4.51,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Saturday Night Live: Olivia Rodrigo pulls double duty while Aziz Ansari aces Kash Patel",
+        "description": "<p>The singer made for a solid host of a mostly amusing episode that poked fun at influencers and featured cameos by Debbie Harry and Connor Storrie</p><p><a href=\"https://www.theguardian.com/tv-and-radio/saturday-night-live\">Saturday Night Live</a> ",
+        "link": "https://www.theguardian.com/tv-and-radio/2026/may/03/saturday-night-live-olivia-rodrigo-aziz-ansari",
+        "pubDate": "Sun, 03 May 2026 13:20:15 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/57a5a6193b8c006ba20c1e07e75896a812d88952/321_0_2500_2000/master/2500.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=2768a354f0c419f7189141bc6cd178da"
+      }
+    },
+    {
+      "title": "At the Met Gala, It’s All Eyes on the Bezoses",
+      "source": "Business of Fashion",
+      "pubDate": "Sun, 03 May 2026 13:00:21 +0000",
+      "link": "https://www.businessoffashion.com/briefings/luxury/at-the-met-gala-its-all-eyes-on-the-bezoses/",
+      "dedupRank": 57,
+      "dedupScore": 4.49,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "The Target x Pokémon 30th Anniversary Collection Is Now Available Online",
+      "source": "IGN",
+      "pubDate": "Sun, 3 May 2026 13:00:00 +0000",
+      "link": "https://www.ign.com/articles/where-to-buy-target-x-pokemon-collection",
+      "dedupRank": 58,
+      "dedupScore": 4.49,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Target x Pokémon 30th Anniversary Collection Is Now Available Online",
+        "description": "After releasing Wave 1 in stores, Target's massive Pokémon collection is now available online.",
+        "link": "https://www.ign.com/articles/where-to-buy-target-x-pokemon-collection",
+        "pubDate": "Sun, 3 May 2026 13:00:00 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/04/15/poketarget-2-1776268114659.jpg"
+      }
+    },
+    {
+      "title": "These reusable digital Polaroids are a clever way to cover a fridge in memories",
+      "source": "The Verge",
+      "pubDate": "2026-05-03T09:00:00-04:00",
+      "link": "https://www.theverge.com/tech/917067/vidabay-snap-nfc-e-ink-paper-fridge-magnet-photo-hands-on",
+      "dedupRank": 59,
+      "dedupScore": 4.49,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "These reusable digital Polaroids are a clever way to cover a fridge in memories",
+        "description": "I love when my friends have their fridges covered in Polaroids. It’s often a visual crash course of what’s been going on in their lives chronicling recent adventures, get-togethers, and other fun moments. But I don’t love the idea of schlepping aroun",
+        "link": "https://www.theverge.com/tech/917067/vidabay-snap-nfc-e-ink-paper-fridge-magnet-photo-hands-on",
+        "pubDate": "2026-05-03T09:00:00-04:00",
+        "source": "The Verge",
+        "imageUrl": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/eink_snap_magnet1.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100"
+      }
+    },
+    {
+      "title": "How the internet’s favorite squirrel dad made the hottest camera app of 2026",
+      "source": "The Verge",
+      "pubDate": "2026-05-03T09:00:00-04:00",
+      "link": "https://www.theverge.com/tech/921690/dualshot-recorder-iphone-camera-app-derrick-downey-jr",
+      "dedupRank": 60,
+      "dedupScore": 4.49,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "This tiny, magnetic e-reader could stop you from doomscrolling",
+      "source": "TechCrunch",
+      "pubDate": "Sun, 03 May 2026 13:00:00 +0000",
+      "link": "https://techcrunch.com/2026/05/03/xteink-x3-review-tiny-magnetic-ereader/",
+      "dedupRank": 61,
+      "dedupScore": 4.49,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "This tiny, magnetic e-reader could stop you from doomscrolling",
+        "description": "The Xteink X3 is a delightfully tiny, MagSafe-compatible e-ink reader that attaches to the back of your phone like a Pop Socket.",
+        "link": "https://techcrunch.com/2026/05/03/xteink-x3-review-tiny-magnetic-ereader/",
+        "pubDate": "Sun, 03 May 2026 13:00:00 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "The “Pentastack” of Illegal Drugs That Looksmaxxers Like Clavicular Are Taking to Enjoy a Night Out Sounds Like a One-Way Trip to the Hospital",
+      "source": "Futurism",
+      "pubDate": "Sun, 03 May 2026 09:00:00 -0400",
+      "link": "https://futurism.com/health-medicine/pentastack-drugs-looksmaxxing",
+      "dedupRank": 62,
+      "dedupScore": 4.49,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Scientists Link Coffee to a Key Anti-Aging Protein—Here’s What That Means for You",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 09:00:00 -0400",
+      "link": "https://www.inc.com/leila-sheridan/scientists-link-coffee-to-a-key-anti-aging-protein-heres-what-that-means-for-you/91339144",
+      "dedupRank": 63,
+      "dedupScore": 4.49,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Scientists Link Coffee to a Key Anti-Aging Protein—Here’s What That Means for You",
+        "description": "A new study finds compounds in coffee activate a receptor tied to aging and disease protection.",
+        "link": "https://www.inc.com/leila-sheridan/scientists-link-coffee-to-a-key-anti-aging-protein-heres-what-that-means-for-you/91339144",
+        "pubDate": "Sun, 03 May 2026 09:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/coffee-anti-aging-inc.jpg"
+      }
+    },
+    {
+      "title": "The Small Interview Mistake That Quietly Costs Founders Big Media",
+      "source": "Inc.",
+      "pubDate": "Sun, 03 May 2026 09:00:00 -0400",
+      "link": "https://www.inc.com/kachelle-pratcher/the-small-interview-mistake-that-quietly-costs-founders-big-media/91336367",
+      "dedupRank": 64,
+      "dedupScore": 4.49,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Small Interview Mistake That Quietly Costs Founders Big Media",
+        "description": "The fastest way to ruin an interview? Trying too hard to win it.",
+        "link": "https://www.inc.com/kachelle-pratcher/the-small-interview-mistake-that-quietly-costs-founders-big-media/91336367",
+        "pubDate": "Sun, 03 May 2026 09:00:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2026/05/bad-founder-interview-inc.jpg"
+      }
+    },
+    {
+      "title": "Woman born without arms reveals how she uses feet to eat and perform other everyday tasks",
+      "source": "Dexerto",
+      "pubDate": "Sun, 03 May 2026 12:54:22 GMT",
+      "link": "https://www.dexerto.com/entertainment/woman-born-without-arms-goes-viral-after-revealing-how-she-uses-feet-to-eat-3360348/",
+      "dedupRank": 65,
+      "dedupScore": 4.48,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Woman born without arms reveals how she uses feet to eat and perform other everyday tasks",
+        "description": "An Instagram creator has been sharing how she carries out everyday routines using her feet, having been born without arms.",
+        "link": "https://www.dexerto.com/entertainment/woman-born-without-arms-goes-viral-after-revealing-how-she-uses-feet-to-eat-3360348/",
+        "pubDate": "Sun, 03 May 2026 12:54:22 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/05/03/anna-and-teresa.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "I took my 8-year-old to the Miami Grand Prix. We enjoyed all the events, but the heat was unbearable.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 12:45:01 +0000",
+      "link": "https://www.businessinsider.com/miami-grand-prix-f1-with-kids-tips-what-to-know-2026-5",
+      "dedupRank": 66,
+      "dedupScore": 4.47,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I took my 8-year-old to the Miami Grand Prix. We enjoyed all the events, but the heat was unbearable.",
+        "description": "From ticket prices to noise levels, here&#39;s what it&#39;s really like taking a child to an F1 race — and what I&#39;d change next time.",
+        "link": "https://www.businessinsider.com/miami-grand-prix-f1-with-kids-tips-what-to-know-2026-5",
+        "pubDate": "Sun, 03 May 2026 12:45:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f68c703022d9b19bbffe77?format=jpeg"
+      }
+    },
+    {
+      "title": "My kids are 5, 3, and 1, and we live in the suburbs. We walk whenever possible instead of taking our minivan.",
+      "source": "Business Insider",
+      "pubDate": "Sun, 03 May 2026 12:42:01 +0000",
+      "link": "https://www.businessinsider.com/mom-kids-suburbs-walking-vs-minivan-2026-5",
+      "dedupRank": 67,
+      "dedupScore": 4.47,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "My kids are 5, 3, and 1, and we live in the suburbs. We walk whenever possible instead of taking our minivan.",
+        "description": "I&#39;m a mom of three kids, ages 5, 3, and 1, and though we live in the suburbs, we walk whenever possible. They love it — for the most part.",
+        "link": "https://www.businessinsider.com/mom-kids-suburbs-walking-vs-minivan-2026-5",
+        "pubDate": "Sun, 03 May 2026 12:42:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f4aed59a23d20d291b55d9?format=jpeg"
+      }
+    }
+  ]
+}

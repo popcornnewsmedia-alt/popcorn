@@ -1,0 +1,1026 @@
+{
+  "fetchedAt": "2026-05-04T13:31:08.043Z",
+  "totalRawItems": 61,
+  "uniqueStories": 59,
+  "sentToClaude": 59,
+  "selectedCount": 7,
+  "rejectedCount": 52,
+  "rankedOutCount": 0,
+  "dedupedCount": 2,
+  "articles": [
+    {
+      "title": "BAPE’s First Ever Loafer Injects Streetwear Hardware Into a Tailored Classic",
+      "source": "Hypebeast",
+      "pubDate": "Mon, 04 May 2026 08:25:29 +0000",
+      "link": "https://hypebeast.com/2026/5/bape-loafer-sta-black-beige-release-info",
+      "dedupRank": 1,
+      "dedupScore": 7.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "BAPE’s First Ever Loafer Injects Streetwear Hardware Into a Tailored Classic",
+        "description": "Name: BAPE LOAFER STAColorway: Black, BeigeSKU: TBCMSRP: ¥36,300 JPY (approx. $230 USD)Release Date: Available nowWhere to Buy: BAPEA BATHING APE has officially debuted the BAPE LOAFER STA, introducing the brand's first-ever loafer silhouette. Built ",
+        "link": "https://hypebeast.com/2026/5/bape-loafer-sta-black-beige-release-info",
+        "pubDate": "Mon, 04 May 2026 08:25:29 +0000",
+        "source": "Hypebeast",
+        "imageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F05%2F04%2FBAPE-LOAFER-STA-black-beige-Release-Info-0.jpg?w=800&cbr=1&q=90&fit=max"
+      }
+    },
+    {
+      "title": "30-year-old dog rescued after owner dies – and it could be world’s oldest dog ever",
+      "source": "Dexerto",
+      "pubDate": "Mon, 04 May 2026 08:08:28 GMT",
+      "link": "https://www.dexerto.com/entertainment/30-year-old-dog-rescued-after-owner-dies-and-it-could-be-worlds-oldest-dog-ever-3360435/",
+      "dedupRank": 2,
+      "dedupScore": 7.67,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "30-year-old dog rescued after owner dies – and it could be world’s oldest dog ever",
+        "description": "A dog that is at least 30 years old, and could be a Guinness World Record holder, has been rescued in France after its previous owner died.",
+        "link": "https://www.dexerto.com/entertainment/30-year-old-dog-rescued-after-owner-dies-and-it-could-be-worlds-oldest-dog-ever-3360435/",
+        "pubDate": "Mon, 04 May 2026 08:08:28 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/05/04/30-year-old-dog-rescued-after-owner-dies-and-it-could-be-worlds-oldest-dog-ever.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Pavan optimistic of return after lift shaft fall",
+      "source": "BBC Sport",
+      "pubDate": "Mon, 04 May 2026 07:56:02 GMT",
+      "link": "https://www.bbc.com/sport/golf/articles/c78q5v8y939o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 3,
+      "dedupScore": 7.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Pavan optimistic of return after lift shaft fall",
+        "description": "Italian golfer Andrea Pavan says he is \"optimistic\" about a return to playing after he fell down an open lift shaft in February.",
+        "link": "https://www.bbc.com/sport/golf/articles/c78q5v8y939o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Mon, 04 May 2026 07:56:02 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/a77b/live/8e34f3d0-4347-11f1-92c0-150b8e44bb63.jpg"
+      }
+    },
+    {
+      "title": "GTA 6 insider responds to claims devs are working until 3 AM as crunch starts",
+      "source": "Dexerto",
+      "pubDate": "Mon, 04 May 2026 07:27:02 GMT",
+      "link": "https://www.dexerto.com/gta/gta-6-insider-responds-to-claims-devs-are-working-until-3-am-as-crunch-starts-3360431/",
+      "dedupRank": 4,
+      "dedupScore": 7.62,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "GTA 6 insider responds to claims devs are working until 3 AM as crunch starts",
+        "description": "A Rockstar Games insider has responded to claims that developers on GTA 6 are working “until 3 am” to get the game out on time.",
+        "link": "https://www.dexerto.com/gta/gta-6-insider-responds-to-claims-devs-are-working-until-3-am-as-crunch-starts-3360431/",
+        "pubDate": "Mon, 04 May 2026 07:27:02 GMT",
+        "source": "Dexerto",
+        "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2025/11/14/gta-6-rockstar-developer-20-years.jpg?width=1080&amp;quality=75&amp;format=auto"
+      }
+    },
+    {
+      "title": "Spirit Airlines shut down during my first trip to the US. I treated it like another tourist experience.",
+      "source": "Business Insider",
+      "pubDate": "Mon, 04 May 2026 05:21:08 +0000",
+      "link": "https://www.businessinsider.com/spirit-airlines-traveler-influencer-us-trip-disrupted-after-shut-down-2026-5",
+      "dedupRank": 5,
+      "dedupScore": 7.49,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Spirit Airlines shut down during my first trip to the US. I treated it like another tourist experience.",
+        "description": "Nicole Liel&#39;s Spirit flight from Chicago to NYC was canceled after the airline failed to secure a bailout from the Trump administration.",
+        "link": "https://www.businessinsider.com/spirit-airlines-traveler-influencer-us-trip-disrupted-after-shut-down-2026-5",
+        "pubDate": "Mon, 04 May 2026 05:21:08 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f82ca49a23d20d291b5e98?format=jpeg"
+      }
+    },
+    {
+      "title": "'You can't wait 22 minutes!' | Should Sesko's goal have been disallowed for handball?",
+      "source": "Sky Sports",
+      "pubDate": "Mon, 04 May 2026 09:06:00 +0100",
+      "link": "https://www.skysports.com/watch/video/13540010/ref-watch-should-benjamin-seskos-goal-have-been-disallowed-for-handball",
+      "dedupRank": 6,
+      "dedupScore": 7.42,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "'You can't wait 22 minutes!' | Should Sesko's goal have been disallowed for handball?",
+        "description": "Ex-Premier League referee Dermot Gallagher and Jay Bothroyd debate whether Benjamin Sesko's goal, which put Manchester United 2-0 up against Liverpool, should have been disallowed for handball.",
+        "link": "https://www.skysports.com/watch/video/13540010/ref-watch-should-benjamin-seskos-goal-have-been-disallowed-for-handball",
+        "pubDate": "Mon, 04 May 2026 09:06:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e1.365dm.com/26/05/1920x1080/skysports-football-pl-united_7238810.jpg?20260504091129"
+      }
+    },
+    {
+      "title": "'You can't wait 22 minutes!' | Should Sesko's goal have been disallowed for handball?",
+      "source": "Sky Sports Football",
+      "pubDate": "Mon, 04 May 2026 09:06:00 +0100",
+      "link": "https://www.skysports.com/watch/video/13540010/ref-watch-should-benjamin-seskos-goal-have-been-disallowed-for-handball",
+      "dedupRank": 6,
+      "dedupScore": 7.42,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"'You can't wait 22 minutes!' | Should Sesko's goal have been disallowed for handball?\" (Sky Sports)"
+    },
+    {
+      "title": "West Ham's relegation chances DOUBLE after swing weekend",
+      "source": "Sky Sports",
+      "pubDate": "Mon, 04 May 2026 08:50:00 +0100",
+      "link": "https://www.skysports.com/football/news/12040/13509977/premier-league-relegation-battle-2025-26-odds-table-fixtures-and-predictions",
+      "dedupRank": 7,
+      "dedupScore": 7.4,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "West Ham's relegation chances DOUBLE after swing weekend",
+        "description": "West Ham's chances of relegation to the Championship have doubled in the space of 48 hours after a swing weekend in the battle for the final survival spot.",
+        "link": "https://www.skysports.com/football/news/12040/13509977/premier-league-relegation-battle-2025-26-odds-table-fixtures-and-predictions",
+        "pubDate": "Mon, 04 May 2026 08:50:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e2.365dm.com/26/04/1920x1080/skysports-relegation-premier-league_7219783.jpg?20260504083422"
+      }
+    },
+    {
+      "title": "West Ham's relegation chances DOUBLE after swing weekend",
+      "source": "Sky Sports Football",
+      "pubDate": "Mon, 04 May 2026 08:50:00 +0100",
+      "link": "https://www.skysports.com/football/news/11095/13509977/premier-league-relegation-battle-2025-26-odds-table-fixtures-and-predictions",
+      "dedupRank": 7,
+      "dedupScore": 7.4,
+      "stage": "deduplicated",
+      "reason": "Grouped as duplicate of \"West Ham's relegation chances DOUBLE after swing weekend\" (Sky Sports)"
+    },
+    {
+      "title": "The Best Star Wars Gifts for Everyone, From Padawans to Jedi Masters (2026)",
+      "source": "Wired",
+      "pubDate": "Mon, 04 May 2026 08:30:00 +0000",
+      "link": "https://www.wired.com/gallery/best-star-wars-gifts/",
+      "dedupRank": 8,
+      "dedupScore": 5.69,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The Best Star Wars Gifts for Everyone, From Padawans to Jedi Masters (2026)",
+        "description": "These are the best Star Wars gifts in the galaxy for everyone, from Padawan fans to Jedi masters.",
+        "link": "https://www.wired.com/gallery/best-star-wars-gifts/",
+        "pubDate": "Mon, 04 May 2026 08:30:00 +0000",
+        "source": "Wired",
+        "imageUrl": "https://media.wired.com/photos/69f4ebb0670176ac727e711d/master/pass/The-Best-Star-Wars-Gifts.jpg"
+      }
+    },
+    {
+      "title": "The worst way to make money off Trump: invest in his company",
+      "source": "Business Insider",
+      "pubDate": "Mon, 04 May 2026 08:24:01 +0000",
+      "link": "https://www.businessinsider.com/trump-media-stock-down-truth-social-what-went-wrong-2026-5",
+      "dedupRank": 9,
+      "dedupScore": 5.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The worst way to make money off Trump: invest in his company",
+        "description": "Trump Media stock is down nearly 90% since its peak. Here&#39;s why the company behind Truth Social hasn&#39;t lived up to expectations.",
+        "link": "https://www.businessinsider.com/trump-media-stock-down-truth-social-what-went-wrong-2026-5",
+        "pubDate": "Mon, 04 May 2026 08:24:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f3a40f9a23d20d291b511e?format=jpeg"
+      }
+    },
+    {
+      "title": "Spike Lee defends ‘Michael’ film following criticism over omission of child sexual abuse allegations",
+      "source": "NME",
+      "pubDate": "Mon, 04 May 2026 08:21:51 +0000",
+      "link": "https://www.nme.com/news/film/spike-lee-defends-michael-film-following-criticism-over-omission-of-child-sexual-abuse-allegations-3943893?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=spike-lee-defends-michael-film-following-criticism-over-omission-of-child-sexual-abuse-allegations",
+      "dedupRank": 10,
+      "dedupScore": 5.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Spike Lee defends ‘Michael’ film following criticism over omission of child sexual abuse allegations",
+        "description": "\"It doesn’t work in the timeline of the film\" The post Spike Lee defends ‘Michael’ film following criticism over omission of child sexual abuse allegations appeared first on NME .",
+        "link": "https://www.nme.com/news/film/spike-lee-defends-michael-film-following-criticism-over-omission-of-child-sexual-abuse-allegations-3943893?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=spike-lee-defends-michael-film-following-criticism-over-omission-of-child-sexual-abuse-allegations",
+        "pubDate": "Mon, 04 May 2026 08:21:51 +0000",
+        "source": "NME",
+        "imageUrl": "https://www.nme.com/wp-content/uploads/2026/05/live-spike-lee.jpg"
+      }
+    },
+    {
+      "title": "New Harvard Study Shows How Optimism Helps Your Brain Stay Healthy",
+      "source": "Inc.",
+      "pubDate": "Mon, 04 May 2026 04:20:00 -0400",
+      "link": "https://www.inc.com/bill-murphy-jr/new-harvard-study-how-optimism-helps-your-brain-stay-healthy/91339803",
+      "dedupRank": 11,
+      "dedupScore": 5.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "New Harvard Study Shows How Optimism Helps Your Brain Stay Healthy",
+        "description": "I didn’t know I was doing exactly what Harvard researchers say makes your brain a lot healthier.",
+        "link": "https://www.inc.com/bill-murphy-jr/new-harvard-study-how-optimism-helps-your-brain-stay-healthy/91339803",
+        "pubDate": "Mon, 04 May 2026 04:20:00 -0400",
+        "source": "Inc.",
+        "imageUrl": "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/vip/2025/08/brain-health-inc-1133618377.jpg"
+      }
+    },
+    {
+      "title": "Vans Put Pretty Pleats on Its Flattest Mary Jane Sneaker",
+      "source": "Highsnobiety",
+      "pubDate": "Mon, 04 May 2026 08:18:38 GMT",
+      "link": "https://www.highsnobiety.com/p/vans-mary-jane-super-lowpro-pleats/",
+      "dedupRank": 12,
+      "dedupScore": 5.68,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Vans Put Pretty Pleats on Its Flattest Mary Jane Sneaker",
+        "description": "Vans' newest Mary Jane Super Lowpro sneakers feature pleated uppers. It's easily the most stylish versions of the flat model yet.",
+        "link": "https://www.highsnobiety.com/p/vans-mary-jane-super-lowpro-pleats/",
+        "pubDate": "Mon, 04 May 2026 08:18:38 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "Big money is betting the self-driving future belongs to a small club",
+      "source": "Business Insider",
+      "pubDate": "Mon, 04 May 2026 08:11:01 +0000",
+      "link": "https://www.businessinsider.com/autonomous-vehicle-industry-funding-cycles-vc-deals-waymo-robotaxis-2026-5",
+      "dedupRank": 13,
+      "dedupScore": 5.67,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Big money is betting the self-driving future belongs to a small club",
+        "description": "The Autonomous Vehicle sector saw the largest capital backing its seen in more than 10 years, but the money concentrated toward fewer companies.",
+        "link": "https://www.businessinsider.com/autonomous-vehicle-industry-funding-cycles-vc-deals-waymo-robotaxis-2026-5",
+        "pubDate": "Mon, 04 May 2026 08:11:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f28d8045d547f1b7ed378a?format=jpeg"
+      }
+    },
+    {
+      "title": "I&#39;m 18 and graduating in Dubai. Missile interceptions didn&#39;t scare me — I&#39;d still come back to work after college.",
+      "source": "Business Insider",
+      "pubDate": "Mon, 04 May 2026 08:06:05 +0000",
+      "link": "https://www.businessinsider.com/dubai-expat-high-school-student-exams-canceled-college-family-graduation-2026-5",
+      "dedupRank": 14,
+      "dedupScore": 5.66,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "I&#39;m 18 and graduating in Dubai. Missile interceptions didn&#39;t scare me — I&#39;d still come back to work after college.",
+        "description": "William Harper, 18, says bigger events like graduation and prom at his school in Dubai are still expected to go ahead as planned.",
+        "link": "https://www.businessinsider.com/dubai-expat-high-school-student-exams-canceled-college-family-graduation-2026-5",
+        "pubDate": "Mon, 04 May 2026 08:06:05 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f848969a23d20d291b5ebd?format=jpeg"
+      }
+    },
+    {
+      "title": "Tender review – modern masculinity laid bare in pumped-up strip club drama",
+      "source": "The Guardian Culture",
+      "pubDate": "Mon, 04 May 2026 08:00:18 GMT",
+      "link": "https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
+      "dedupRank": 15,
+      "dedupScore": 5.66,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Tender review – modern masculinity laid bare in pumped-up strip club drama",
+        "description": "<p><strong>Soho theatre, London<br></strong>Directed with swagger and finesse by Matthew Xia, Dave Harris’s play explores sex, pleasure, parenthood and what makes a man</p><p>There are two kinds of people in the world – those who, given a paddle to s",
+        "link": "https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
+        "pubDate": "Mon, 04 May 2026 08:00:18 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/eed74f1bdc3a48a26b91beed72a9139adbf7ed42/323_0_3495_2797/master/3495.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=1e5e7fc6a355e2d5e7e4461c631acf1b"
+      }
+    },
+    {
+      "title": "One Leg on Earth by ’Pemi Aguda review – a powerfully eerie portrait of Lagos",
+      "source": "The Guardian Culture",
+      "pubDate": "Mon, 04 May 2026 08:00:18 GMT",
+      "link": "https://www.theguardian.com/books/2026/may/04/one-leg-on-earth-by-pemi-aguda-review-a-powerfully-eerie-portrait-of-lagos",
+      "dedupRank": 16,
+      "dedupScore": 5.66,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "One Leg on Earth by ’Pemi Aguda review – a powerfully eerie portrait of Lagos",
+        "description": "<p>A young pregnant woman is assailed by dark visions of sisterhood in a novel splicing eco-horror, cosmic distress and ideas of the monstrous feminine</p><p>Realism, contrary to appearances, isn’t a form closed off to horror. The stories in ’Pemi Ag",
+        "link": "https://www.theguardian.com/books/2026/may/04/one-leg-on-earth-by-pemi-aguda-review-a-powerfully-eerie-portrait-of-lagos",
+        "pubDate": "Mon, 04 May 2026 08:00:18 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/774eda850b142d003b349b8be6c6f0a16817fe6a/208_360_2080_1664/master/2080.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=f10aef716f3b2a493ce7df67d6368858"
+      }
+    },
+    {
+      "title": "Star Wars Video Games Are On Sale for May the 4th, Here's the Best Deals",
+      "source": "IGN",
+      "pubDate": "Mon, 4 May 2026 08:00:00 +0000",
+      "link": "https://www.ign.com/articles/star-wars-video-games-are-on-sale-for-may-the-4th-heres-the-best-deals",
+      "dedupRank": 17,
+      "dedupScore": 5.66,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Star Wars Video Games Are On Sale for May the 4th, Here's the Best Deals",
+        "description": "\"Hello there!\" - Star Wars games are on sale as part of May the 4th celebrations. Star Wars Day comes around every so often (you know the date and the pun already), and brings with it a tidy collection of games that you can score at a discount rate, ",
+        "link": "https://www.ign.com/articles/star-wars-video-games-are-on-sale-for-may-the-4th-heres-the-best-deals",
+        "pubDate": "Mon, 4 May 2026 08:00:00 +0000",
+        "source": "IGN",
+        "imageUrl": "https://assets-prd.ignimgs.com/2026/05/01/star-wars-day-game-deals-2026-1777650465547.png"
+      }
+    },
+    {
+      "title": "Homeownership is now a video game genre",
+      "source": "Dazed",
+      "pubDate": "2026-05-04T08:00:00Z",
+      "link": "https://www.dazeddigital.com/life-culture/article/70190/1/homeownership-is-now-a-video-game-genre-animal-crossing-new-horizons-home?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=homeownership-is-now-a-video-game-genre",
+      "dedupRank": 18,
+      "dedupScore": 5.66,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "With Alcaraz out of the French Open is it now Sinner vs the rest of the world?",
+      "source": "Sky Sports",
+      "pubDate": "Mon, 04 May 2026 09:00:00 +0100",
+      "link": "https://www.skysports.com/tennis/news/12040/13539129/jannik-sinner-with-carlos-alcaraz-out-of-french-open-is-it-now-the-tennis-no-1-vs-the-rest-of-the-world",
+      "dedupRank": 19,
+      "dedupScore": 5.66,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "With Alcaraz out of the French Open is it now Sinner vs the rest of the world?",
+        "description": "\"It's Jannik Sinner vs the rest of the world.\" With Carlos Alcaraz out of French Open through injury, what does it mean for tennis?",
+        "link": "https://www.skysports.com/tennis/news/12040/13539129/jannik-sinner-with-carlos-alcaraz-out-of-french-open-is-it-now-the-tennis-no-1-vs-the-rest-of-the-world",
+        "pubDate": "Mon, 04 May 2026 09:00:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e2.365dm.com/26/04/1920x1080/skysports-tennis-french-open_7233249.jpg?20260428144338"
+      }
+    },
+    {
+      "title": "Pluto Film Boards ‘Summer War,’ From &#8216;Il Futuro&#8217; Director Alicia Scherson, Ahead of Cannes, Tribeca",
+      "source": "Variety",
+      "pubDate": "Mon, 04 May 2026 07:49:06 +0000",
+      "link": "https://variety.com/2026/film/global/pluto-film-alicia-scherson-summer-war-roberto-bolano-cannes-1236735975/",
+      "dedupRank": 20,
+      "dedupScore": 5.65,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Pluto Film Boards ‘Summer War,’ From &#8216;Il Futuro&#8217; Director Alicia Scherson, Ahead of Cannes, Tribeca",
+        "description": "Berlin-based Pluto Film has pounced on worldwide sales rights to Chilean psychological thriller “Summer War” (“Guerra de Verano”) ahead of its market debut at Cannes’ Marché du Film and its world premiere at the 25th Tribeca Film Festival in June. Th",
+        "link": "https://variety.com/2026/film/global/pluto-film-alicia-scherson-summer-war-roberto-bolano-cannes-1236735975/",
+        "pubDate": "Mon, 04 May 2026 07:49:06 +0000",
+        "source": "Variety",
+        "imageUrl": "https://variety.com/wp-content/uploads/2026/05/SummerWar.PlutoFilmMainStill.jpg"
+      }
+    },
+    {
+      "title": "Every Item From Palace's Summer 2026 Collection",
+      "source": "Hypebeast",
+      "pubDate": "Mon, 04 May 2026 07:34:00 +0000",
+      "link": "https://hypebeast.com/2026/5/palace-skateboards-summer-2026-full-range-collection-release-info",
+      "dedupRank": 21,
+      "dedupScore": 5.63,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Every Item From Palace's Summer 2026 Collection",
+        "description": "Palace Skateboards officially returns with its highly anticipated Summer 2026 collection, delivering a masterclass in London skate culture, irreverent humor, and elevated sportswear. As the summer heat and the FIFA World Cup approach, the brand offer",
+        "link": "https://hypebeast.com/2026/5/palace-skateboards-summer-2026-full-range-collection-release-info",
+        "pubDate": "Mon, 04 May 2026 07:34:00 +0000",
+        "source": "Hypebeast",
+        "imageUrl": "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2026%2F05%2F03%2Fftpalace-skateboards-summer-2026-full-range-collection-release-info.jpg?w=800&cbr=1&q=90&fit=max"
+      }
+    },
+    {
+      "title": "Dubai&#39;s main airport is ramping up flights after traffic slumped 66% in March",
+      "source": "Business Insider",
+      "pubDate": "Mon, 04 May 2026 07:16:01 +0000",
+      "link": "https://www.businessinsider.com/dubai-airport-ramping-flights-march-traffic-slumped-war-2026-5",
+      "dedupRank": 22,
+      "dedupScore": 5.61,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Dubai&#39;s main airport is ramping up flights after traffic slumped 66% in March",
+        "description": "Dubai Airports said it was scaling up operations now that the UAE airspace is \"fully restored.\"",
+        "link": "https://www.businessinsider.com/dubai-airport-ramping-flights-march-traffic-slumped-war-2026-5",
+        "pubDate": "Mon, 04 May 2026 07:16:01 +0000",
+        "source": "Business Insider",
+        "imageUrl": "https://i.insider.com/69f830739a23d20d291b5e9d?format=jpeg"
+      }
+    },
+    {
+      "title": "No scars and a reset - how Ulster's fortunes changed",
+      "source": "BBC Sport",
+      "pubDate": "Mon, 04 May 2026 07:15:20 GMT",
+      "link": "https://www.bbc.com/sport/rugby-union/articles/c99lr9x4341o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 23,
+      "dedupScore": 5.61,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "No scars and a reset - how Ulster's fortunes changed",
+        "description": "Ulster back row Nick Timoney says a reset and having young players with \"no scars\" have helped change the fortunes of the Irish province.",
+        "link": "https://www.bbc.com/sport/rugby-union/articles/c99lr9x4341o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Mon, 04 May 2026 07:15:20 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/b27f/live/820ca650-466e-11f1-aba0-8570dd7f4fe5.jpg"
+      }
+    },
+    {
+      "title": "David Benavidez isn't just winning -- he's taking ...",
+      "source": "ESPN",
+      "pubDate": "Mon, 4 May 2026 02:14:02 -0500",
+      "link": "",
+      "dedupRank": 24,
+      "dedupScore": 5.61,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "David Benavidez isn't just winning -- he's taking ...",
+        "description": "David Benavidez overwhelms again, and with his KO of Gilberto \"Zurdo\" Ramirez, proves he's boxing's most relentless force.",
+        "link": "",
+        "pubDate": "Mon, 4 May 2026 02:14:02 -0500",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "Benavidez stops Ramirez, becomes three-division ch...",
+      "source": "ESPN",
+      "pubDate": "Mon, 4 May 2026 02:14:02 -0500",
+      "link": "",
+      "dedupRank": 25,
+      "dedupScore": 5.61,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Benavidez stops Ramirez, becomes three-division ch...",
+        "description": "David Benavidez dominated Gilberto Ramirez to win the WBA and WBO cruiserweight titles on Saturday.",
+        "link": "",
+        "pubDate": "Mon, 4 May 2026 02:14:02 -0500",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "Dominant Korda cruises to victory in Mexico",
+      "source": "BBC Sport",
+      "pubDate": "Mon, 04 May 2026 07:11:17 GMT",
+      "link": "https://www.bbc.com/sport/golf/articles/cg5p23el119o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 26,
+      "dedupScore": 5.61,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Nicolas Sauvage is betting on the boring parts of AI",
+      "source": "TechCrunch",
+      "pubDate": "Mon, 04 May 2026 07:10:18 +0000",
+      "link": "https://techcrunch.com/2026/05/04/nicolas-sauvage-is-betting-on-the-boring-parts-of-ai/",
+      "dedupRank": 27,
+      "dedupScore": 5.61,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Nicolas Sauvage is betting on the boring parts of AI",
+        "description": "The portfolio he has assembled since 2019 is dotted with technologies that have become more widely interesting to VCs over the last year:",
+        "link": "https://techcrunch.com/2026/05/04/nicolas-sauvage-is-betting-on-the-boring-parts-of-ai/",
+        "pubDate": "Mon, 04 May 2026 07:10:18 +0000",
+        "source": "TechCrunch"
+      }
+    },
+    {
+      "title": "&#8216;Lord of the Flies&#8217; Review: The Kids Are Not Alright, but Netflix&#8217;s Sumptuous, Haunting William Golding Adaptation Is Pretty Great",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Mon, 04 May 2026 07:01:00 +0000",
+      "link": "https://www.hollywoodreporter.com/tv/tv-reviews/lord-of-the-flies-review-netflix-jack-thorne-1236582276/",
+      "dedupRank": 28,
+      "dedupScore": 5.6,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "&#8216;Lord of the Flies&#8217; Review: &#8216;Adolescence&#8217; Echoes Through Netflix&#8217;s Vivid, Eerie Adaptation",
+      "source": "IndieWire",
+      "pubDate": "Mon, 04 May 2026 07:01:00 +0000",
+      "link": "https://www.indiewire.com/criticism/shows/lord-of-the-flies-review-netflix-series-adolescence-writer-1235191542/",
+      "dedupRank": 29,
+      "dedupScore": 5.6,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "&#8216;Lord of the Flies&#8217; Review: &#8216;Adolescence&#8217; Echoes Through Netflix&#8217;s Vivid, Eerie Adaptation",
+        "description": "The four-part series, inspired by William Golding's 1954 novel and adapted by \"Adolescence\" co-creator Jack Thorne, frames childhood's lost innocence as more nurture than nature, when a bunch of boys trapped on an island witness their would-be utopia",
+        "link": "https://www.indiewire.com/criticism/shows/lord-of-the-flies-review-netflix-series-adolescence-writer-1235191542/",
+        "pubDate": "Mon, 04 May 2026 07:01:00 +0000",
+        "source": "IndieWire"
+      }
+    },
+    {
+      "title": "‘My generation have deluded themselves’: ex-Vampire Weekender Rostam on pop, protest and life as an Iranian-American",
+      "source": "The Guardian Culture",
+      "pubDate": "Mon, 04 May 2026 07:00:16 GMT",
+      "link": "https://www.theguardian.com/music/2026/may/04/vampire-weekender-rostam-batmanglij-american-iranian",
+      "dedupRank": 30,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "‘My generation have deluded themselves’: ex-Vampire Weekender Rostam on pop, protest and life as an Iranian-American",
+        "description": "<p>Inspired in part by Zohran Mamdani’s NY mayorship, Rostam Batmanglij’s gorgeous new album fuses Americana with sounds of the Middle East. So why isn’t his mum happy?</p><p>The first song Rostam Batmanglij ever learned to play on guitar was Chuck B",
+        "link": "https://www.theguardian.com/music/2026/may/04/vampire-weekender-rostam-batmanglij-american-iranian",
+        "pubDate": "Mon, 04 May 2026 07:00:16 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/9cffe0a42ac657fe7a9c7a60965ab8e4eb79aab6/206_0_2560_2048/master/2560.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=d6da399211382d3e9afac34f512d4a33"
+      }
+    },
+    {
+      "title": "Meet the photographer behind Olivia Rodrigo’s new era",
+      "source": "Dazed",
+      "pubDate": "2026-05-04T07:00:00Z",
+      "link": "https://www.dazeddigital.com/art-photography/article/70186/1/chad-moore-photo-book-eyes-skies-olivia-rodrigo-pretty-sad-album?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=meet-the-photographer-behind-olivia-rodrigo-s-new-era",
+      "dedupRank": 31,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Meet the photographer behind Olivia Rodrigo’s new era",
+        "description": "Chad Moore’s latest book, Eyes and Skies, pairs close-up portraits of friends and lovers with expansive celestial landscapes",
+        "link": "https://www.dazeddigital.com/art-photography/article/70186/1/chad-moore-photo-book-eyes-skies-olivia-rodrigo-pretty-sad-album?utm_source=Link&amp;utm_medium=Link&amp;utm_campaign=RSSFeed&amp;utm_term=meet-the-photographer-behind-olivia-rodrigo-s-new-era",
+        "pubDate": "2026-05-04T07:00:00Z",
+        "source": "Dazed",
+        "imageUrl": "https://images-prod.dazeddigital.com/786/azure/dazed-prod/1440/4/1444320.jpg"
+      }
+    },
+    {
+      "title": "Ref Watch: Should Sesko's goal for Man Utd have been disallowed vs Liverpool?",
+      "source": "Sky Sports Football",
+      "pubDate": "Mon, 04 May 2026 08:00:00 +0100",
+      "link": "https://www.skysports.com/football/live-blog/11095/13539996/ref-watch-live-benjamin-seskos-goal-for-man-utd-against-liverpool-and-more-analysed-by-former-referee-dermot-gallagher",
+      "dedupRank": 32,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Ref Watch: Should Sesko's goal for Man Utd have been disallowed vs Liverpool?",
+        "description": "",
+        "link": "https://www.skysports.com/football/live-blog/11095/13539996/ref-watch-live-benjamin-seskos-goal-for-man-utd-against-liverpool-and-more-analysed-by-former-referee-dermot-gallagher",
+        "pubDate": "Mon, 04 May 2026 08:00:00 +0100",
+        "source": "Sky Sports Football",
+        "imageUrl": "https://e0.365dm.com/26/05/1920x1080/skysports-benjamin-sesko-manchester-united_7238090.jpg?20260503155454"
+      }
+    },
+    {
+      "title": "&#8216;Viva&#8217;: Aina Clotet Is a 40-Year-Old Consumed by the Need to Feel Alive in Her Feature Directorial Debut (Exclusive Cannes Critics&#8217; Week Clips)",
+      "source": "The Hollywood Reporter",
+      "pubDate": "Mon, 04 May 2026 06:59:00 +0000",
+      "link": "https://www.hollywoodreporter.com/movies/movie-news/cannes-critics-week-2026-viva-alive-film-clips-aina-clotet-1236577872/",
+      "dedupRank": 33,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "&#8216;Viva&#8217;: Aina Clotet Is a 40-Year-Old Consumed by the Need to Feel Alive in Her Feature Directorial Debut (Exclusive Cannes Critics&#8217; Week Clips)",
+        "description": "The Catalan actress, screenwriter and director plays Nora, who dives headfirst into passionate relationships with two very different men after coming face-to-face with death.",
+        "link": "https://www.hollywoodreporter.com/movies/movie-news/cannes-critics-week-2026-viva-alive-film-clips-aina-clotet-1236577872/",
+        "pubDate": "Mon, 04 May 2026 06:59:00 +0000",
+        "source": "The Hollywood Reporter"
+      }
+    },
+    {
+      "title": "China Box Office: ‘Vanishing Point’ and ‘Cold War 1994’ Lead Rebounding May Day Weekend as &#8216;The Devil Wears Prada 2&#8217; Debuts in Third",
+      "source": "Variety",
+      "pubDate": "Mon, 04 May 2026 06:56:38 +0000",
+      "link": "https://variety.com/2026/film/box-office/china-box-office-vanishing-point-the-devil-wears-prada-2-1236736555/",
+      "dedupRank": 34,
+      "dedupScore": 5.59,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "China Box Office: ‘Vanishing Point’ and ‘Cold War 1994’ Lead Rebounding May Day Weekend as &#8216;The Devil Wears Prada 2&#8217; Debuts in Third",
+        "description": "Zhonghe Qiancheng’s suspense thriller “Vanishing Point” claimed the number one position at the China box office in its opening weekend, earning RMB164.7 million ($24.2 million). Written and directed by Cheng Wei-hao and starring Zheng Kai and Liu Hao",
+        "link": "https://variety.com/2026/film/box-office/china-box-office-vanishing-point-the-devil-wears-prada-2-1236736555/",
+        "pubDate": "Mon, 04 May 2026 06:56:38 +0000",
+        "source": "Variety",
+        "imageUrl": "https://variety.com/wp-content/uploads/2026/05/Vanishing-Point-poster.jpg"
+      }
+    },
+    {
+      "title": "Davide Ancelotti: My dad, my tactics and Brazil's World Cup prospects",
+      "source": "BBC Sport",
+      "pubDate": "Mon, 04 May 2026 06:31:07 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/clyp3y9lwjdo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 35,
+      "dedupScore": 5.56,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Davide Ancelotti: My dad, my tactics and Brazil's World Cup prospects",
+        "description": "Brazil assistant manager Davide Ancelotti sits down with BBC Sport's tactics expert Umir Irfan to discuss his coaching philosophy, inspirations and ideals.",
+        "link": "https://www.bbc.com/sport/football/articles/clyp3y9lwjdo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Mon, 04 May 2026 06:31:07 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/d558/live/95fecbe0-43d3-11f1-bd52-e755d604ece4.png"
+      }
+    },
+    {
+      "title": "Dave Franco Joins Sophie Wilde In Alien Invasion Thriller &#8216;Soon You Will Be Gone And Possibly Eaten&#8217; &#8212; Cannes Market",
+      "source": "Deadline",
+      "pubDate": "Mon, 04 May 2026 06:30:00 +0000",
+      "link": "https://deadline.com/2026/05/dave-franco-joins-sophie-wilde-in-alien-invasion-thriller-1236879100/",
+      "dedupRank": 36,
+      "dedupScore": 5.56,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Dave Franco Joins Sophie Wilde In Alien Invasion Thriller &#8216;Soon You Will Be Gone And Possibly Eaten&#8217; &#8212; Cannes Market",
+        "description": "EXCLUSIVE: Now You See Me and Together star Dave Franco is joining Talk To Me&#160;and&#160;Babygirl&#160;actress Sophie Wilde in alien invasion thriller, Soon You Will Be Gone And Possibly Eaten. As we told you earlier this year, Egor Abramenko, the",
+        "link": "https://deadline.com/2026/05/dave-franco-joins-sophie-wilde-in-alien-invasion-thriller-1236879100/",
+        "pubDate": "Mon, 04 May 2026 06:30:00 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/05/Dave-Franco-Sophie-Wilde.jpg"
+      }
+    },
+    {
+      "title": "Foo Fighters Changed the Name of Their New Album To Avoid Conflict With &#8216;Wicked: For Good&#8217;",
+      "source": "Rolling Stone",
+      "pubDate": "Mon, 04 May 2026 06:27:47 +0000",
+      "link": "https://www.rollingstone.com/music/music-news/dave-grohl-foo-fighters-album-name-wicked-for-good-1235557080/",
+      "dedupRank": 37,
+      "dedupScore": 5.56,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Allen leads Cavs into semi-finals for third straight season as Pistons make history",
+      "source": "Sky Sports",
+      "pubDate": "Mon, 04 May 2026 07:20:00 +0100",
+      "link": "https://www.skysports.com/nba/news/12040/13539991/jarrett-allen-leads-cleveland-cavaliers-into-semi-finals-as-detroit-pistons-win-first-playoff-series-in-18-years",
+      "dedupRank": 38,
+      "dedupScore": 5.55,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Allen leads Cavs into semi-finals for third straight season as Pistons make history",
+        "description": "Jarrett Allen sent the Cleveland Cavaliers into the Eastern Conference semi-finals for the third straight season as the Detroit Pistons won their first playoff series in 18 years.",
+        "link": "https://www.skysports.com/nba/news/12040/13539991/jarrett-allen-leads-cleveland-cavaliers-into-semi-finals-as-detroit-pistons-win-first-playoff-series-in-18-years",
+        "pubDate": "Mon, 04 May 2026 07:20:00 +0100",
+        "source": "Sky Sports",
+        "imageUrl": "https://e2.365dm.com/26/05/1920x1080/skysports-cleveland-cavaliers_7238763.jpg?20260504071438"
+      }
+    },
+    {
+      "title": "What happened to Everton's £40m signing Dibling?",
+      "source": "BBC Sport",
+      "pubDate": "Mon, 04 May 2026 06:04:52 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/cn5pz1d5432o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 39,
+      "dedupScore": 5.54,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "What happened to Everton's £40m signing Dibling?",
+        "description": "The curious case of Tyler Dibling - BBC Sport chief football writers asks what has happened to Everton's £40m youngster and what does the future hold?",
+        "link": "https://www.bbc.com/sport/football/articles/cn5pz1d5432o?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Mon, 04 May 2026 06:04:52 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/4e47/live/e5d677a0-447b-11f1-b545-b533bcf4cad2.jpg"
+      }
+    },
+    {
+      "title": "Iran and the Revolution by Homa Katouzian review – how the Islamic Republic was born",
+      "source": "The Guardian Culture",
+      "pubDate": "Mon, 04 May 2026 06:00:17 GMT",
+      "link": "https://www.theguardian.com/books/2026/may/04/iran-and-the-revolution-by-homa-katouzian-review-how-the-islamic-republic-was-born",
+      "dedupRank": 40,
+      "dedupScore": 5.53,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Iran and the Revolution by Homa Katouzian review – how the Islamic Republic was born",
+        "description": "<p>A landmark new account of the 1979 revolution sets current events in context</p><p>As Wordsworth found in Paris after 1789, revolutions are deeply enthralling. There is nothing so bold, so self-sacrificing, so brave, so cruel as a revolutionary cr",
+        "link": "https://www.theguardian.com/books/2026/may/04/iran-and-the-revolution-by-homa-katouzian-review-how-the-islamic-republic-was-born",
+        "pubDate": "Mon, 04 May 2026 06:00:17 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/2e108a1fdc368f4cc139108d757b3f73bd39a880/310_0_4064_3251/master/4064.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=2ac6e9ed7b15aeba0ebe38b5ac6e38e9"
+      }
+    },
+    {
+      "title": "Ready for their close-ups: celebrity passport photos",
+      "source": "The Guardian Culture",
+      "pubDate": "Mon, 04 May 2026 06:00:15 GMT",
+      "link": "https://www.theguardian.com/artanddesign/gallery/2026/may/04/ready-for-their-close-ups-celebrity-passport-photos",
+      "dedupRank": 41,
+      "dedupScore": 5.53,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Ready for their close-ups: celebrity passport photos",
+        "description": "<p>In 1953, Dave Sharkey, a former professional boxer, and his wife, Ann, founded a photographic studio in Oxford Street, London. The studio promised prints ‘ready in 10 minutes’ long before anyone else in the city could provide such a quick turnarou",
+        "link": "https://www.theguardian.com/artanddesign/gallery/2026/may/04/ready-for-their-close-ups-celebrity-passport-photos",
+        "pubDate": "Mon, 04 May 2026 06:00:15 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/f909400283ae4da55dd57c4fc3d440e38e9b103d/0_0_3937_3150/master/3937.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=4e0415e8fbb7c0dee8acacb3d7b88bf7"
+      }
+    },
+    {
+      "title": "North Korean side to make rare trip to South Korea",
+      "source": "BBC Sport",
+      "pubDate": "Mon, 04 May 2026 05:58:28 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/cx216122kv1o?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 42,
+      "dedupScore": 5.53,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Pistons and Cavaliers advance in NBA play-offs",
+      "source": "BBC Sport",
+      "pubDate": "Mon, 04 May 2026 05:54:59 GMT",
+      "link": "https://www.bbc.com/sport/basketball/articles/cm2pepjv8vmo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 43,
+      "dedupScore": 5.53,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Pistons and Cavaliers advance in NBA play-offs",
+        "description": "Detroit Pistons and Cleveland Cavaliers will face one another in a best-of-seven series in the Eastern Conference semi-finals of the NBA play-offs.",
+        "link": "https://www.bbc.com/sport/basketball/articles/cm2pepjv8vmo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Mon, 04 May 2026 05:54:59 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/d04f/live/a90d8840-4778-11f1-8974-416488edfc45.jpg"
+      }
+    },
+    {
+      "title": "A miracle allows Kentucky Derby's most remarkable ...",
+      "source": "ESPN",
+      "pubDate": "Mon, 4 May 2026 00:40:32 -0500",
+      "link": "",
+      "dedupRank": 44,
+      "dedupScore": 5.51,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A miracle allows Kentucky Derby's most remarkable ...",
+        "description": "Bob Weihe attended 79 straight Kentucky Derbys. This is the miraculous story of how he made his 80th.",
+        "link": "",
+        "pubDate": "Mon, 4 May 2026 00:40:32 -0500",
+        "source": "ESPN"
+      }
+    },
+    {
+      "title": "'Premflix' and tourist fans - future of football predictions",
+      "source": "BBC Sport",
+      "pubDate": "Mon, 04 May 2026 05:37:01 GMT",
+      "link": "https://www.bbc.com/sport/football/articles/cn4vpezd2jpo?at_medium=RSS&amp;at_campaign=rss",
+      "dedupRank": 45,
+      "dedupScore": 5.51,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "'Premflix' and tourist fans - future of football predictions",
+        "description": "Former broadcasting executive Neil Duncanson and author Alex Fynn, who made remarkably accurate predictions about football's future in 1994, discuss what the game will look like in 10 years' time.",
+        "link": "https://www.bbc.com/sport/football/articles/cn4vpezd2jpo?at_medium=RSS&amp;at_campaign=rss",
+        "pubDate": "Mon, 04 May 2026 05:37:01 GMT",
+        "source": "BBC Sport",
+        "imageUrl": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/1ac3/live/a1ca17e0-4473-11f1-b545-b533bcf4cad2.jpg"
+      }
+    },
+    {
+      "title": "TV tonight: a stalker thriller with soft, soapy edges",
+      "source": "The Guardian Culture",
+      "pubDate": "Mon, 04 May 2026 05:20:14 GMT",
+      "link": "https://www.theguardian.com/tv-and-radio/2026/may/04/tv-tonight-number-one-fan-virgin-island",
+      "dedupRank": 46,
+      "dedupScore": 5.49,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "TV tonight: a stalker thriller with soft, soapy edges",
+        "description": "<p>Jill Halfpenny and Sally Lindsay star in the watchable four-parter, Number One Fan. Plus practice makes perfect in Virgin Island. Here’s what to watch this evening</p><p><strong>9pm, Channel 5</strong><strong><br></strong>Jill Halfpenny and Sally ",
+        "link": "https://www.theguardian.com/tv-and-radio/2026/may/04/tv-tonight-number-one-fan-virgin-island",
+        "pubDate": "Mon, 04 May 2026 05:20:14 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/e8443f9549d63c8f50b7b7a04dc052d725419e4a/569_0_3750_3000/master/3750.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=92a32f3e2d3829c1f9bb284f89832791"
+      }
+    },
+    {
+      "title": "Self-Serve Soda Is Disappearing From McDonald’s Menu",
+      "source": "Inc.",
+      "pubDate": "Mon, 04 May 2026 01:10:57 -0400",
+      "link": "https://www.inc.com/kevin-haynes/self-serve-soda-is-disappearing-from-mcdonalds-menu/91339806",
+      "dedupRank": 47,
+      "dedupScore": 5.48,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "‘Lord of the Flies,’ and 7 More Things to Watch on TV This Week",
+      "source": "NYT Arts",
+      "pubDate": "Mon, 04 May 2026 05:00:04 +0000",
+      "link": "https://www.nytimes.com/2026/05/04/arts/television/lord-of-the-flies-7-things-to-watch-on-tv-this-week.html",
+      "dedupRank": 48,
+      "dedupScore": 5.47,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "‘Lord of the Flies,’ and 7 More Things to Watch on TV This Week",
+        "description": "A new adaptation of the 1954 novel comes to Netflix, and “Outlander” wraps up its eight-season run.",
+        "link": "https://www.nytimes.com/2026/05/04/arts/television/lord-of-the-flies-7-things-to-watch-on-tv-this-week.html",
+        "pubDate": "Mon, 04 May 2026 05:00:04 +0000",
+        "source": "NYT Arts",
+        "imageUrl": "https://static01.nyt.com/images/2026/05/04/arts/04cul-tvcol-flies/04cul-tvcol-flies-mediumSquareAt3X.jpg"
+      }
+    },
+    {
+      "title": "How to Sell Aspiration in 2026",
+      "source": "Business of Fashion",
+      "pubDate": "Mon, 04 May 2026 04:30:00 +0000",
+      "link": "https://www.businessoffashion.com/articles/marketing-pr/fashion-exclusivity-problem/",
+      "dedupRank": 49,
+      "dedupScore": 5.44,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "How to Sell Aspiration in 2026",
+        "description": "From Nike’s controversial Boston Marathon ad to the Met Gala, brands are grappling with how to sell aspiration without alienating people in a politically charged US market. ‘Exclusivity shouldn’t be about shutting people out, but calling the right pe",
+        "link": "https://www.businessoffashion.com/articles/marketing-pr/fashion-exclusivity-problem/",
+        "pubDate": "Mon, 04 May 2026 04:30:00 +0000",
+        "source": "Business of Fashion",
+        "imageUrl": "https://img.businessoffashion.com/resizer/v2/52JV3XSDTFB6RKDOETYEGA3E6A.png?auth=98f471b858346d889fd8e52aa28826f1c3a4aa1bd9b49ddb94eb40ac34681d39&amp;smart=true&amp;width=1800&amp;height=1013"
+      }
+    },
+    {
+      "title": "What Makes a Beauty Experience Last Forever?",
+      "source": "Business of Fashion",
+      "pubDate": "Mon, 04 May 2026 04:28:00 +0000",
+      "link": "https://www.businessoffashion.com/articles/beauty/engaging-beauty-experiences-activations-events-glossier-rhode/",
+      "dedupRank": 50,
+      "dedupScore": 5.44,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "What Makes a Beauty Experience Last Forever?",
+        "description": "In an age of content oversaturation, brands are spending more to make their events and environments stand out — even if these moments are more fleeting than ever.",
+        "link": "https://www.businessoffashion.com/articles/beauty/engaging-beauty-experiences-activations-events-glossier-rhode/",
+        "pubDate": "Mon, 04 May 2026 04:28:00 +0000",
+        "source": "Business of Fashion",
+        "imageUrl": "https://img.businessoffashion.com/resizer/v2/WQD4VTJW55BYXAAUNKYO5TILDQ.jpg?auth=649499dec886f07cce60b731f96de7f75ec144bd1c5746e3b55fd51887d9cd0f&amp;smart=true&amp;width=667&amp;height=1000"
+      }
+    },
+    {
+      "title": "What should I do if I have a Spirit Airlines flight? Refunds, points, and everything to know after the shutdown",
+      "source": "Fast Company",
+      "pubDate": "2026-05-04T12:22:00",
+      "link": "https://www.fastcompany.com/91536018/spirit-airlines-shut-down-refunds-rebook-points-baggage-more",
+      "dedupRank": 51,
+      "dedupScore": 5.43,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "What should I do if I have a Spirit Airlines flight? Refunds, points, and everything to know after the shutdown",
+        "description": "After months of uncertainty, the long-struggling Spirit Airlines has permanently ceased operations. Now the low-cost U.S. carrier will begin liquidating its assets to repay its creditors as much as possible—a process that is expected to take months. ",
+        "link": "https://www.fastcompany.com/91536018/spirit-airlines-shut-down-refunds-rebook-points-baggage-more",
+        "pubDate": "2026-05-04T12:22:00",
+        "source": "Fast Company",
+        "imageUrl": "https://images.fastcompany.com/image/upload/w_1280,q_auto,f_auto,fl_lossy/f_webp,q_auto,c_fit/wp-cms-2/2026/05/p-1-91536018-spirit-airlines-refunds-lost-baggage-rebookings-points.jpg"
+      }
+    },
+    {
+      "title": "GameStop&#39;s CEO unleashed a flood of good memes with his eBay offer",
+      "source": "Business Insider",
+      "pubDate": "Mon, 04 May 2026 04:18:23 +0000",
+      "link": "https://www.businessinsider.com/gamestop-ceo-ebay-takeover-offer-ryan-cohen-memes-wsb-reactions-2026-5",
+      "dedupRank": 52,
+      "dedupScore": 5.43,
+      "stage": "selected",
+      "reason": "Selected by editorial AI"
+    },
+    {
+      "title": "Next stop – infinity! My transcendental experience on Japan’s ‘art island’ guided by its master Lee Ufan",
+      "source": "The Guardian Culture",
+      "pubDate": "Mon, 04 May 2026 04:00:12 GMT",
+      "link": "https://www.theguardian.com/artanddesign/2026/may/04/infinity-transcendental-japan-naoshima-art-island-lee-ufan",
+      "dedupRank": 53,
+      "dedupScore": 5.41,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Next stop – infinity! My transcendental experience on Japan’s ‘art island’ guided by its master Lee Ufan",
+        "description": "<p>Is this the ultimate location for contemplative art? Our writer travels to the legendary island of Naoshima – and meets the great creator of its most spellbinding works. Will he step through the arch and find nirvana?</p><p></p><p>The island of Na",
+        "link": "https://www.theguardian.com/artanddesign/2026/may/04/infinity-transcendental-japan-naoshima-art-island-lee-ufan",
+        "pubDate": "Mon, 04 May 2026 04:00:12 GMT",
+        "source": "The Guardian Culture",
+        "imageUrl": "https://i.guim.co.uk/img/media/1ed9abf886ccbf3c1c47b0ce6d9c3e427fb47058/870_0_3150_2520/master/3150.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=fe91536797bf37763aafa7c5354bc0ef"
+      }
+    },
+    {
+      "title": "HOKA’s Cushiest Trail Runner Gets a Laceless Summer Spin-off",
+      "source": "Highsnobiety",
+      "pubDate": "Mon, 04 May 2026 03:58:49 GMT",
+      "link": "https://www.highsnobiety.com/p/hoka-stinson-breeze-sneaker/",
+      "dedupRank": 54,
+      "dedupScore": 5.41,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "HOKA’s Cushiest Trail Runner Gets a Laceless Summer Spin-off",
+        "description": "HOKA's Stinson Breeze brings all the qualities of the comfy trail runner to a summer-ready sandal style.",
+        "link": "https://www.highsnobiety.com/p/hoka-stinson-breeze-sneaker/",
+        "pubDate": "Mon, 04 May 2026 03:58:49 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "Yahya Abdul-Mateen II On Stepping Away From &#8216;Furiosa&#8217; Role: &#8220;I Knew Deep Down Inside That It Was Too Much And That I Needed To Rest&#8221;",
+      "source": "Deadline",
+      "pubDate": "Mon, 04 May 2026 03:36:50 +0000",
+      "link": "https://deadline.com/2026/05/yahya-abdul-mateen-ii-furiosa-exit-burnout-rest-1236879522/",
+      "dedupRank": 55,
+      "dedupScore": 5.38,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Yahya Abdul-Mateen II On Stepping Away From &#8216;Furiosa&#8217; Role: &#8220;I Knew Deep Down Inside That It Was Too Much And That I Needed To Rest&#8221;",
+        "description": "Emmy winner Yahya Abdul-Mateen II knew he had to be &#8220;honest&#8221; and true to himself as he stepped away from George Miller&#8217;s Mad Max followup Furiosa. In a recent interview with Josh Horowitz&#8217;s Happy Sad Confused, the Wonder Man s",
+        "link": "https://deadline.com/2026/05/yahya-abdul-mateen-ii-furiosa-exit-burnout-rest-1236879522/",
+        "pubDate": "Mon, 04 May 2026 03:36:50 +0000",
+        "source": "Deadline",
+        "imageUrl": "https://deadline.com/wp-content/uploads/2026/05/GettyImages-2272494370-1.jpg"
+      }
+    },
+    {
+      "title": "A Pink Nike Air Max So Good, It Shines on Its Own",
+      "source": "Highsnobiety",
+      "pubDate": "Mon, 04 May 2026 03:36:29 GMT",
+      "link": "https://www.highsnobiety.com/p/nike-air-max-95-pink-glow/",
+      "dedupRank": 56,
+      "dedupScore": 5.38,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "A Pink Nike Air Max So Good, It Shines on Its Own",
+        "description": "Nike releases a new Air Max 95 Big Bubble sneaker featuring a \"Pink Glow\" colorway & reflective details.",
+        "link": "https://www.highsnobiety.com/p/nike-air-max-95-pink-glow/",
+        "pubDate": "Mon, 04 May 2026 03:36:29 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "Nike's New Crisp Skate Shoe Is Too Clean for the Skate Park",
+      "source": "Highsnobiety",
+      "pubDate": "Mon, 04 May 2026 03:34:14 GMT",
+      "link": "https://www.highsnobiety.com/p/nike-react-leo-sneaker-white/",
+      "dedupRank": 57,
+      "dedupScore": 5.38,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Nike's New Crisp Skate Shoe Is Too Clean for the Skate Park",
+        "description": "Nike's React Leo skate shoe is a super sturdy thrasher that defies all skating convention.",
+        "link": "https://www.highsnobiety.com/p/nike-react-leo-sneaker-white/",
+        "pubDate": "Mon, 04 May 2026 03:34:14 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "The World's Best Dad Shoe Is a Crispy-Clean Air Jordan",
+      "source": "Highsnobiety",
+      "pubDate": "Mon, 04 May 2026 03:32:50 GMT",
+      "link": "https://www.highsnobiety.com/p/jordan-3-worlds-best-dad/",
+      "dedupRank": 58,
+      "dedupScore": 5.38,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "The World's Best Dad Shoe Is a Crispy-Clean Air Jordan",
+        "description": "The Air Jordan 3 just became the \"World's Best Dad\" sneaker in a clean \"Sail\" colorway. Here's everything on the release.",
+        "link": "https://www.highsnobiety.com/p/jordan-3-worlds-best-dad/",
+        "pubDate": "Mon, 04 May 2026 03:32:50 GMT",
+        "source": "Highsnobiety"
+      }
+    },
+    {
+      "title": "Nike’s Craziest Flyknit Sneaker Helps You Lock In",
+      "source": "Highsnobiety",
+      "pubDate": "Mon, 04 May 2026 03:30:18 GMT",
+      "link": "https://www.highsnobiety.com/p/nike-mind-002-flyknit/",
+      "dedupRank": 59,
+      "dedupScore": 5.38,
+      "stage": "rejected_by_claude",
+      "reason": "Not selected by Claude",
+      "_raw": {
+        "title": "Nike’s Craziest Flyknit Sneaker Helps You Lock In",
+        "description": "Nike's science-backed Mind 002 Flyknit sneaker gets an in-line release in a \"Barely Volt\" colorway, following the Fragment collaboration.",
+        "link": "https://www.highsnobiety.com/p/nike-mind-002-flyknit/",
+        "pubDate": "Mon, 04 May 2026 03:30:18 GMT",
+        "source": "Highsnobiety"
+      }
+    }
+  ]
+}
