@@ -2524,6 +2524,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
   console.log(`[rss] Call 2/2 — writing ${dedupedRawItems.length} articles in ${batchCount} batch(es)...`);
 
   const selectedItems: any[] = [];
+  let failedBatchCount = 0;
   for (let b = 0; b < batchCount; b++) {
     const batchItems = dedupedRawItems.slice(b * ENRICH_BATCH, (b + 1) * ENRICH_BATCH);
     const offset = b * ENRICH_BATCH;
@@ -2533,42 +2534,60 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
       )
       .join("\n\n---\n\n");
 
-    const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 10000, [WEB_SEARCH_TOOL]);
-    const batchArray = extractJsonArray(batchText);
-    if (!batchArray) {
-      console.error(
-        `[rss] Call 2 batch ${b + 1} — no JSON array found. Raw response (first 1500 chars):\n${batchText.slice(0, 1500)}`,
-      );
-      throw new Error(`Call 2 batch ${b + 1}: Claude did not return a JSON array`);
-    }
-    let batchParsed: any[];
+    // Per-batch resilience: if a batch fails (no JSON, malformed JSON, network),
+    // log loudly and continue with the next batch. Partial publish > zero publish.
+    // The whole-pipeline retry would re-run RSS+Call1 for nothing; better to keep
+    // whatever batches succeeded and surface the partial result.
+    let batchParsed: any[] | null = null;
     try {
-      batchParsed = JSON.parse(sanitizeClaudeJson(batchArray));
-    } catch (parseErr) {
-      // Mid-array truncation repair: trim to the last complete object and close the array.
-      // Long enrichment responses with web_search frequently truncate mid-string.
-      console.error(
-        `[rss] Call 2 batch ${b + 1} — JSON.parse failed: ${(parseErr as Error).message}. ` +
-        `Extracted array (length=${batchArray.length}, last 800 chars):\n${batchArray.slice(-800)}`,
-      );
-      const sanitized = sanitizeClaudeJson(batchArray);
-      const lastClose = sanitized.lastIndexOf("}");
-      let recovered = false;
-      if (lastClose > 0) {
-        const repaired = sanitized.slice(0, lastClose + 1) + "]";
-        try {
-          batchParsed = JSON.parse(repaired);
+      const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 10000, [WEB_SEARCH_TOOL]);
+      const batchArray = extractJsonArray(batchText);
+      if (!batchArray) {
+        console.error(
+          `[rss] Call 2 batch ${b + 1}/${batchCount} — no JSON array found. Raw response (first 1500 chars):\n${batchText.slice(0, 1500)}`,
+        );
+        throw new Error(`no JSON array`);
+      }
+      try {
+        batchParsed = JSON.parse(sanitizeClaudeJson(batchArray));
+      } catch (parseErr) {
+        // Mid-array truncation repair: trim to the last complete object and close the array.
+        // Long enrichment responses with web_search frequently truncate mid-string.
+        console.error(
+          `[rss] Call 2 batch ${b + 1}/${batchCount} — JSON.parse failed: ${(parseErr as Error).message}. ` +
+          `Extracted array (length=${batchArray.length}, last 800 chars):\n${batchArray.slice(-800)}`,
+        );
+        const sanitized = sanitizeClaudeJson(batchArray);
+        const lastClose = sanitized.lastIndexOf("}");
+        if (lastClose > 0) {
+          const repaired = sanitized.slice(0, lastClose + 1) + "]";
+          const recovered = JSON.parse(repaired) as any[];
+          batchParsed = recovered;
           console.warn(
-            `[rss] Call 2 batch ${b + 1} — recovered ${batchParsed.length}/${batchItems.length} entries via truncation repair`,
+            `[rss] Call 2 batch ${b + 1}/${batchCount} — recovered ${recovered.length}/${batchItems.length} entries via truncation repair`,
           );
-          recovered = true;
-        } catch { /* fall through to throw */ }
+        } else {
+          throw parseErr;
+        }
       }
-      if (!recovered) {
-        throw new Error(`Call 2 batch ${b + 1}: Claude returned malformed JSON: ${(parseErr as Error).message}`);
-      }
+    } catch (batchErr) {
+      failedBatchCount++;
+      console.error(
+        `[rss] ⚠ Call 2 batch ${b + 1}/${batchCount} FAILED — skipping this batch's ${batchItems.length} items. ` +
+        `Continuing with other batches. Error: ${(batchErr as Error).message}`,
+      );
+      continue;
     }
-    selectedItems.push(...batchParsed!);
+    if (batchParsed) selectedItems.push(...batchParsed);
+  }
+  if (failedBatchCount > 0) {
+    console.warn(
+      `[rss] ⚠ Call 2 finished with ${failedBatchCount}/${batchCount} batches failed. ` +
+      `Publishing ${selectedItems.length} successfully enriched articles.`,
+    );
+  }
+  if (selectedItems.length === 0) {
+    throw new Error(`Call 2: all ${batchCount} batches failed — nothing to publish`);
   }
 
   // sourceIndex from each batch is globally numbered (offset + i + 1),
@@ -2918,10 +2937,29 @@ async function _writeAuditFile(
     const dataDir = path.resolve(process.cwd(), "data", "uncurated");
     fs.mkdirSync(dataDir, { recursive: true });
 
-    // Save per-fetch snapshot (never overwritten)
-    const existingFetches = fs.readdirSync(dataDir)
-      .filter((f) => new RegExp(`^uncurated-${dateStr}-fetch\\d+\\.json$`).test(f)).length;
-    const fetchN = existingFetches + 1;
+    // Derive fetchN from Supabase (durable, restart-safe), with local FS as
+    // fallback. Counting files in data/uncurated/ used to be the source of
+    // truth — but Railway redeploys wipe the working dir, so the counter
+    // would silently reset to 1 mid-day, leading to confusing audit data.
+    let fetchN = 1;
+    try {
+      const { data: existingFetchRows } = await supabase
+        .from("shortlist_candidates")
+        .select("raw_data")
+        .eq("feed_date", dateStr);
+      const seen = new Set<number>();
+      for (const row of existingFetchRows ?? []) {
+        const fn = (row.raw_data as Record<string, unknown> | null)?.fetchN;
+        if (typeof fn === "number" && Number.isFinite(fn)) seen.add(fn);
+      }
+      if (seen.size > 0) fetchN = Math.max(...seen) + 1;
+    } catch (e) {
+      // Fallback to local FS counter if Supabase unreachable
+      const existingFetches = fs.readdirSync(dataDir)
+        .filter((f) => new RegExp(`^uncurated-${dateStr}-fetch\\d+\\.json$`).test(f)).length;
+      fetchN = existingFetches + 1;
+      console.warn(`[rss] fetchN derivation: Supabase unavailable, fell back to local FS count → fetchN=${fetchN}`, e);
+    }
 
     // Tag every entry with the window number it came from
     const taggedEntries = auditEntries.map((e) => ({ ...e, fetchN }));
