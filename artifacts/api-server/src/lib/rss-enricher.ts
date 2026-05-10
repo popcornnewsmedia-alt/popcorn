@@ -2535,8 +2535,40 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
 
     const batchText = await callClaude(makeEnrichmentPrompt(batchList, batchItems.length), 10000, [WEB_SEARCH_TOOL]);
     const batchArray = extractJsonArray(batchText);
-    if (!batchArray) throw new Error(`Call 2 batch ${b + 1}: Claude did not return a JSON array`);
-    selectedItems.push(...JSON.parse(sanitizeClaudeJson(batchArray)));
+    if (!batchArray) {
+      console.error(
+        `[rss] Call 2 batch ${b + 1} — no JSON array found. Raw response (first 1500 chars):\n${batchText.slice(0, 1500)}`,
+      );
+      throw new Error(`Call 2 batch ${b + 1}: Claude did not return a JSON array`);
+    }
+    let batchParsed: any[];
+    try {
+      batchParsed = JSON.parse(sanitizeClaudeJson(batchArray));
+    } catch (parseErr) {
+      // Mid-array truncation repair: trim to the last complete object and close the array.
+      // Long enrichment responses with web_search frequently truncate mid-string.
+      console.error(
+        `[rss] Call 2 batch ${b + 1} — JSON.parse failed: ${(parseErr as Error).message}. ` +
+        `Extracted array (length=${batchArray.length}, last 800 chars):\n${batchArray.slice(-800)}`,
+      );
+      const sanitized = sanitizeClaudeJson(batchArray);
+      const lastClose = sanitized.lastIndexOf("}");
+      let recovered = false;
+      if (lastClose > 0) {
+        const repaired = sanitized.slice(0, lastClose + 1) + "]";
+        try {
+          batchParsed = JSON.parse(repaired);
+          console.warn(
+            `[rss] Call 2 batch ${b + 1} — recovered ${batchParsed.length}/${batchItems.length} entries via truncation repair`,
+          );
+          recovered = true;
+        } catch { /* fall through to throw */ }
+      }
+      if (!recovered) {
+        throw new Error(`Call 2 batch ${b + 1}: Claude returned malformed JSON: ${(parseErr as Error).message}`);
+      }
+    }
+    selectedItems.push(...batchParsed!);
   }
 
   // sourceIndex from each batch is globally numbered (offset + i + 1),
