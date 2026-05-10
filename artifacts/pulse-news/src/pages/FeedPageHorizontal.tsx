@@ -858,7 +858,30 @@ export function FeedPageHorizontal() {
         // manually scrolls. Resetting to 0 ensures position and activeViewIdx
         // are in sync from the moment the refresh completes.
         const container = dayScrollRefs.current[currentDayIdxRef.current];
-        if (container) container.scrollTop = 0;
+        if (container) {
+          container.scrollTop = 0;
+
+          // iOS WKWebView fix: when refetch causes mass child unmount/remount
+          // (every ArticleCard gets a new key when article IDs change), the
+          // native momentum scroller bound to `WebkitOverflowScrolling: touch`
+          // can lose its scroll-event subscription. The container still scrolls
+          // visually but our listener stays silent → activeViewIdx is stuck at
+          // 0 → only the first article passes `|i+1 - activeViewIdx| <= 1` →
+          // every subsequent card renders as the blue placeholder shell.
+          //
+          // Forcing the property off-then-on tears down and re-creates the
+          // native scroller, restoring scroll-event delivery. Then we reset
+          // the index ref and dispatch a synthetic scroll so the listener
+          // immediately re-aligns activeViewIdx with scrollTop=0.
+          const el = container as HTMLDivElement & { style: CSSStyleDeclaration & { webkitOverflowScrolling?: string } };
+          const prev = el.style.webkitOverflowScrolling;
+          el.style.webkitOverflowScrolling = 'auto';
+          requestAnimationFrame(() => {
+            el.style.webkitOverflowScrolling = prev || 'touch';
+            scrollIndexRef.current = -1;
+            container.dispatchEvent(new Event('scroll'));
+          });
+        }
 
         setRefreshFinishing(true);
         window.setTimeout(() => {
