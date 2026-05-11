@@ -200,14 +200,24 @@ ${
     : incrementalCeiling
 }
 
-Output ONLY a compact JSON array — one object per selected article:
+## OUTPUT FORMAT — STRICT
+
+Your ENTIRE response must be a single JSON array. Nothing else.
+
+- NO preamble, NO "Looking at the pool...", NO "I'll work through this systematically", NO axis-coverage walkthrough, NO per-item analysis, NO DEDUP CHECK narration.
+- NO markdown, NO code fences, NO commentary before or after.
+- Do the axis-coverage and dedup checks SILENTLY in your head. The user sees only the final array.
+- If you start writing prose, STOP and emit the array.
+
+Schema — one object per selected article:
 {"sourceIndex":N,"score":N,"bucket":"CULTURE|INTERNET|CREATOR ECONOMY|CULTURAL SPILLOVER"}
 
-If nothing qualifies, output [].
-Respond with ONLY the JSON array — no markdown, no code fences, no rejected entries.
+If nothing qualifies, output exactly: []
 
 ARTICLES:
-${articleList}`;
+${articleList}
+
+REMEMBER: respond with ONLY the JSON array. First character of your response must be '[' and last character must be ']'.`;
 }
 
 // ── Per-window Consideration (Haiku — lightweight pre-filter) ────────────────

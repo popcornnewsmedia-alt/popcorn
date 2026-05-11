@@ -2418,7 +2418,10 @@ async function enrichWithClaude(
 
   console.log("[rss] Call 1/2 — selecting articles...");
   // Selection is pure judgment over RSS metadata — no web_search needed.
-  const selectionText = await callClaude(selectionPrompt, 2000);
+  // max_tokens=8000 (was 2000) — the prompt invites axis-coverage reasoning across 75+
+  // candidates, so a 2000-token cap deterministically truncates the response mid-prose
+  // BEFORE the JSON array is emitted. Observed on 2026-05-11 W6 (3 retries, all truncated).
+  const selectionText = await callClaude(selectionPrompt, 8000);
 
   const selectionArray = extractJsonArray(selectionText);
   if (!selectionArray) {
