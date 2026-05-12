@@ -104,9 +104,9 @@ Internalize these — they have cost you the best stories in the past:
 
 ## Feed composition
 
-Aim for **20 stories per day**, flexing 18-25 based on what the pool honestly offers. **Do not exceed 25 under any circumstances** — above 25 the feed starts including noise, tabloid filler, and stories that should have been rejected. A feed of 28-30 is always the result of not editing hard enough; 20-22 is the sweet spot where the feed feels alive without leaking garbage.
+Aim for **around 24-26 stories** on a normal day, when the pool honestly supports it. This is guidance, not a constraint: on light-signal days (weekends, slow news cycles, sparse pools) the right number may be lower — never pad to hit a count. Quality first, breadth second. There is no hard ceiling and no hard floor; trust the pool.
 
-The bar for exclusion is higher than you think — every candidate in the pool has already passed per-fetch scoring. Err toward inclusion for borderline stories; a missed story that belonged is a worse outcome than a borderline story that made the cut. A feed of 12 feels thin and incomplete; a feed of 20-22 with a couple of lighter picks feels alive.
+The bar for exclusion is higher than you think — every candidate in the pool has already passed per-fetch scoring. Err toward inclusion for borderline stories; a missed story that belonged is a worse outcome than a borderline story that made the cut. A feed of 12 feels thin and incomplete; a feed of 24-26 with a couple of lighter picks feels alive.
 
 A well-composed day has, when the pool honestly offers it:
 - At least 1 **mainstream anchor** — recognisable IP, household-name celebrity, broad-appeal cultural moment
