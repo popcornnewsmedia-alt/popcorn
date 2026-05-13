@@ -176,6 +176,14 @@ function upscaleImageUrl(url: string, widthPx = TARGET_WIDTH): string {
     const u = new URL(url);
     const host = u.hostname.toLowerCase();
 
+    // Skip rewrites on signed URLs — many CDNs (Guardian, Imgix, etc.) sign
+    // the query string with an HMAC and will return 401/403 if any param is
+    // changed. Detected by an `s=<32+ hex>` signature param.
+    const sigParam = u.searchParams.get("s") || "";
+    if (sigParam && /^[a-f0-9]{16,}$/i.test(sigParam)) {
+      return url;
+    }
+
     // 1. Condé Nast — media.{wired,newyorker,vogue,gq,vanityfair,pitchfork,…}.com
     //    The "master" path segment has size variants like
     //    /master/w_400,c_limit/ or /master/w_400,h_300,c_limit/.
@@ -198,22 +206,30 @@ function upscaleImageUrl(url: string, widthPx = TARGET_WIDTH): string {
     // 2. The Guardian — i.guim.co.uk uses /width/NNN/ as a path segment OR
     //    ?width=NNN as a query param. Bump to TARGET_WIDTH only if currently
     //    smaller (never shrink an already-large request).
+    //
+    //    IMPORTANT: Guardian RSS thumbnails are signed with `&s=<hmac>`.
+    //    Any param change invalidates the signature and the CDN returns 401.
+    //    We can only safely rewrite UNSIGNED Guardian URLs (the path-based
+    //    `/width/NNN/` form is unsigned; the `?width=NNN&s=...` query form is
+    //    signed and must be left alone).
     if (host === "i.guim.co.uk" || host === "media.guim.co.uk") {
-      const pathMatch = u.pathname.match(/\/width\/(\d+)\//);
-      if (pathMatch && parseInt(pathMatch[1], 10) < widthPx) {
-        u.pathname = u.pathname.replace(/\/width\/\d+\//, `/width/${widthPx}/`);
-        return u.toString();
-      }
-      const widthParam = parseInt(u.searchParams.get("width") || "", 10);
-      if (Number.isFinite(widthParam) && widthParam > 0 && widthParam < widthPx) {
-        u.searchParams.set("width", String(widthPx));
-        // Optional quality bump: only if the param exists and is below 90.
-        const qParam = parseInt(u.searchParams.get("quality") || "", 10);
-        if (Number.isFinite(qParam) && qParam > 0 && qParam < 90) {
-          u.searchParams.set("quality", "90");
+      if (!u.searchParams.has("s")) {
+        const pathMatch = u.pathname.match(/\/width\/(\d+)\//);
+        if (pathMatch && parseInt(pathMatch[1], 10) < widthPx) {
+          u.pathname = u.pathname.replace(/\/width\/\d+\//, `/width/${widthPx}/`);
+          return u.toString();
         }
-        return u.toString();
+        const widthParam = parseInt(u.searchParams.get("width") || "", 10);
+        if (Number.isFinite(widthParam) && widthParam > 0 && widthParam < widthPx) {
+          u.searchParams.set("width", String(widthPx));
+          const qParam = parseInt(u.searchParams.get("quality") || "", 10);
+          if (Number.isFinite(qParam) && qParam > 0 && qParam < 90) {
+            u.searchParams.set("quality", "90");
+          }
+          return u.toString();
+        }
       }
+      return url;
     }
 
     // 3. BBC — ichef.bbci.co.uk uses /news/NNN/ or /sport/NNN/ as a path
