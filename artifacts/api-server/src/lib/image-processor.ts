@@ -156,6 +156,119 @@ export function deriveImageCredit(sourceUrl: string): string {
 }
 
 /**
+ * Rewrites a source image URL to request the largest sensible variant from
+ * common image CDNs. Many publishers' RSS feeds embed thumbnail-sized URLs
+ * (e.g. Hypebeast `?w=800`, Variety `?resize=400,300`, Condé Nast
+ * `/master/w_400,c_limit/`) even though the underlying CDN can serve the
+ * 2400px version for the same image. This rewrites those size hints up
+ * before we fetch — no extra request, just asks for the larger variant
+ * the website itself is using.
+ *
+ * Behaviour:
+ *   - Only ever requests a LARGER variant. Never makes a URL smaller.
+ *   - Returns the original URL unchanged if no known pattern matches.
+ *   - Safe on non-image URLs (the URL parse falls through).
+ *   - Storage key in `processAndUploadImage` is hashed from the ORIGINAL
+ *     sourceUrl, so deterministic upsert behaviour is preserved.
+ */
+function upscaleImageUrl(url: string, widthPx = TARGET_WIDTH): string {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+
+    // 1. Condé Nast — media.{wired,newyorker,vogue,gq,vanityfair,pitchfork,…}.com
+    //    The "master" path segment has size variants like
+    //    /master/w_400,c_limit/ or /master/w_400,h_300,c_limit/.
+    //    /master/pass/ returns the original-resolution image.
+    if (
+      /^media\.(wired|newyorker|vogue|gq|vanityfair|pitchfork|bonappetit|architecturaldigest|cntraveler|allure|glamour|self|wmagazine|epicurious|them)\.com$/i.test(
+        host,
+      )
+    ) {
+      const rewritten = u.pathname.replace(
+        /\/master\/[^/]*w_\d+[^/]*\//,
+        "/master/pass/",
+      );
+      if (rewritten !== u.pathname) {
+        u.pathname = rewritten;
+        return u.toString();
+      }
+    }
+
+    // 2. The Guardian — i.guim.co.uk uses /width/NNN/ as a path segment OR
+    //    ?width=NNN as a query param. Bump to TARGET_WIDTH only if currently
+    //    smaller (never shrink an already-large request).
+    if (host === "i.guim.co.uk" || host === "media.guim.co.uk") {
+      const pathMatch = u.pathname.match(/\/width\/(\d+)\//);
+      if (pathMatch && parseInt(pathMatch[1], 10) < widthPx) {
+        u.pathname = u.pathname.replace(/\/width\/\d+\//, `/width/${widthPx}/`);
+        return u.toString();
+      }
+      const widthParam = parseInt(u.searchParams.get("width") || "", 10);
+      if (Number.isFinite(widthParam) && widthParam > 0 && widthParam < widthPx) {
+        u.searchParams.set("width", String(widthPx));
+        // Optional quality bump: only if the param exists and is below 90.
+        const qParam = parseInt(u.searchParams.get("quality") || "", 10);
+        if (Number.isFinite(qParam) && qParam > 0 && qParam < 90) {
+          u.searchParams.set("quality", "90");
+        }
+        return u.toString();
+      }
+    }
+
+    // 3. BBC — ichef.bbci.co.uk uses /news/NNN/ or /sport/NNN/ as a path
+    //    segment indicating the rendered width. Bump to 2048 (BBC's largest
+    //    rendition tier) if currently smaller.
+    if (host === "ichef.bbci.co.uk") {
+      const m = u.pathname.match(/\/(news|sport)\/(\d+)\//);
+      if (m && parseInt(m[2], 10) < 2048) {
+        u.pathname = u.pathname.replace(
+          /\/(news|sport)\/\d+\//,
+          `/${m[1]}/2048/`,
+        );
+        return u.toString();
+      }
+    }
+
+    // 4. Penske Media (Variety, THR, Deadline, Rolling Stone, Billboard,
+    //    IndieWire, Sportico, Robb Report) — wp-content image URLs come
+    //    with a ?resize=W,H query that forces a small render. Dropping
+    //    the resize param entirely returns the full-resolution upload.
+    if (u.searchParams.has("resize")) {
+      u.searchParams.delete("resize");
+      u.searchParams.delete("w");
+      u.searchParams.delete("h");
+      // Penske also sometimes sets quality=N — bump if low.
+      const qParam = parseInt(u.searchParams.get("quality") || "", 10);
+      if (Number.isFinite(qParam) && qParam > 0 && qParam < 90) {
+        u.searchParams.set("quality", "90");
+      }
+      return u.toString();
+    }
+
+    // 5. WordPress / Jetpack family + Hypebeast (image-cdn.hypb.st) +
+    //    Vox Media (cdn.vox-cdn.com / Imgix) + most other Imgix-backed
+    //    publishers — the `?w=NNN` query controls render width. Bump to
+    //    TARGET_WIDTH only if currently smaller. Drop `?h=` so aspect is
+    //    preserved by the CDN's `fit=max` default. Quality bump if low.
+    const wParam = parseInt(u.searchParams.get("w") || "", 10);
+    if (Number.isFinite(wParam) && wParam > 0 && wParam < widthPx) {
+      u.searchParams.set("w", String(widthPx));
+      u.searchParams.delete("h");
+      const qParam = parseInt(u.searchParams.get("q") || "", 10);
+      if (Number.isFinite(qParam) && qParam > 0 && qParam < 90) {
+        u.searchParams.set("q", "90");
+      }
+      return u.toString();
+    }
+
+    return url;
+  } catch {
+    return url;
+  }
+}
+
+/**
  * Rewrites a raw Wikimedia upload URL to its `/thumb/` variant at the given
  * pixel width. The thumb endpoint serves pre-resized JPEGs (often <500KB)
  * instead of the multi-megabyte master — Wikimedia's master images can be
@@ -216,11 +329,19 @@ export async function processAndUploadImage(
   feedDate: string, // "YYYY-MM-DD"
 ): Promise<ProcessedImage | null> {
   try {
-    // 1. Download. For Wikimedia URLs, rewrite to a 2400px /thumb/ variant
-    // first — the masters can be 100MB+ and routinely time out our 10s
-    // fetch budget (e.g. Colosseo_2020.jpg = 12051×8442). The thumb endpoint
-    // serves a pre-resized JPEG that fits comfortably in the budget.
-    const fetchUrl = maybeRewriteWikimediaThumb(sourceUrl);
+    // 1. Rewrite the URL to request the largest sensible CDN variant
+    //    (Hypebeast / WordPress / Penske / Condé Nast / Guardian / BBC).
+    //    Many RSS feeds embed thumbnail-sized URLs even though the CDN
+    //    serves the 2400px version for the same image. Then layer on
+    //    the Wikimedia /thumb/ rewrite — the masters can be 100MB+ and
+    //    routinely time out our 10s fetch budget.
+    const upscaledUrl = upscaleImageUrl(sourceUrl);
+    const fetchUrl = maybeRewriteWikimediaThumb(upscaledUrl);
+    if (fetchUrl !== sourceUrl) {
+      console.log(
+        `[image-processor] upscaled ${sourceUrl.slice(0, 80)} → ${fetchUrl.slice(0, 100)}`,
+      );
+    }
     const srcBytes = await fetchBytes(fetchUrl);
 
     // 2. Resize + re-encode
