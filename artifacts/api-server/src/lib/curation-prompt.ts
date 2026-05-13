@@ -15,7 +15,10 @@
 import { CURATION_BRIEF } from "./curation-brief.js";
 import { CURATION_PATTERNS } from "./curation-patterns.js";
 
-const SHARED_CONTEXT = `${CURATION_BRIEF}\n\n${CURATION_PATTERNS}`;
+// Exported so callers can pass it as the cached prefix to Anthropic prompt-caching.
+// All prompt builders below start their output with this exact string, so the
+// caller can do `userPrompt.startsWith(SHARED_CONTEXT)` to split safely.
+export const SHARED_CONTEXT = `${CURATION_BRIEF}\n\n${CURATION_PATTERNS}`;
 
 // ── Scorer (per-fetch RSS batches) ──────────────────────────────────────────
 

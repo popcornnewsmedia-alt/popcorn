@@ -10,7 +10,8 @@ import https from "node:https";
 import fs from "node:fs";
 import path from "node:path";
 import { supabase } from "./supabase-client.js";
-import { buildRefreshPrompt, buildConsiderationPrompt } from "./curation-prompt.js";
+import { buildRefreshPrompt, buildConsiderationPrompt, SHARED_CONTEXT } from "./curation-prompt.js";
+import { CURATION_BRIEF } from "./curation-brief.js";
 import { bkkFeedDate } from "./curated-store.js";
 
 // ─── Web search tool (Anthropic server-side) ───────────────────────────────
@@ -2359,12 +2360,34 @@ async function enrichWithClaude(
   // gets its own TCP connection, fully isolated from the undici pool used by
   // the RSS batch fetches above. Optional `tools` enables server-side
   // web_search; when present, timeout is bumped (each search adds 5–15s).
-  const callClaude = (userPrompt: string, maxTokens: number, tools?: any[]): Promise<string> =>
+  //
+  // `cachedPrefix`: optional static prefix (e.g. SHARED_CONTEXT) that the
+  // userPrompt starts with. When provided, the prompt is split into two
+  // content blocks and the prefix is marked with `cache_control: ephemeral`
+  // for Anthropic prompt caching — 90% input-token discount on cache hits
+  // within the 5-minute TTL. Behaviorally identical to sending the prompt
+  // as a single string; quality and decisions are unchanged.
+  const callClaude = (
+    userPrompt: string,
+    maxTokens: number,
+    tools?: any[],
+    cachedPrefix?: string,
+  ): Promise<string> =>
     new Promise<string>((resolve, reject) => {
+      let messagesContent: unknown;
+      if (cachedPrefix && userPrompt.startsWith(cachedPrefix)) {
+        const dynamic = userPrompt.slice(cachedPrefix.length);
+        messagesContent = [
+          { type: "text", text: cachedPrefix, cache_control: { type: "ephemeral" } },
+          { type: "text", text: dynamic },
+        ];
+      } else {
+        messagesContent = userPrompt;
+      }
       const requestBody: Record<string, unknown> = {
         model: "claude-sonnet-4-6",
         max_tokens: maxTokens,
-        messages: [{ role: "user", content: userPrompt }],
+        messages: [{ role: "user", content: messagesContent }],
       };
       if (tools && tools.length > 0) requestBody.tools = tools;
       const body = JSON.stringify(requestBody);
@@ -2421,7 +2444,9 @@ async function enrichWithClaude(
   // max_tokens=8000 (was 2000) — the prompt invites axis-coverage reasoning across 75+
   // candidates, so a 2000-token cap deterministically truncates the response mid-prose
   // BEFORE the JSON array is emitted. Observed on 2026-05-11 W6 (3 retries, all truncated).
-  const selectionText = await callClaude(selectionPrompt, 8000);
+  // Pass SHARED_CONTEXT as cachedPrefix — Anthropic prompt caching gives
+  // ~90% discount on this prefix when other calls within 5 minutes share it.
+  const selectionText = await callClaude(selectionPrompt, 8000, undefined, SHARED_CONTEXT);
 
   const selectionArray = extractJsonArray(selectionText);
   if (!selectionArray) {
@@ -2802,10 +2827,21 @@ async function callClaudeForConsideration(
     feedbackContext,
   );
 
+  // Build messages content. buildConsiderationPrompt's output always starts
+  // with CURATION_BRIEF — split it into a cached block + dynamic tail for
+  // Anthropic prompt caching (~90% discount on the brief within the 5-min
+  // TTL window). Behaviorally identical to the single-string form.
+  const messagesContent = prompt.startsWith(CURATION_BRIEF)
+    ? [
+        { type: "text", text: CURATION_BRIEF, cache_control: { type: "ephemeral" } },
+        { type: "text", text: prompt.slice(CURATION_BRIEF.length) },
+      ]
+    : prompt;
+
   const body = JSON.stringify({
     model: "claude-sonnet-4-6",
     max_tokens: 600,
-    messages: [{ role: "user", content: prompt }],
+    messages: [{ role: "user", content: messagesContent }],
   });
   const bodyBuf = Buffer.from(body, "utf-8");
 
