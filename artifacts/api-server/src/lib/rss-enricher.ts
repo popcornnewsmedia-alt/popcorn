@@ -461,7 +461,9 @@ function scoreCandidate(
       else if (width >= 1200) score +=  5;
       else                    score -= 10;  // probably stock portrait, not wire
     } else {
-      if      (width >= 2000) score += 25;
+      if      (width >= 3500) score += 35;  // premium-API tier (TMDb posters, Spotify, large Unsplash)
+      else if (width >= 2500) score += 30;
+      else if (width >= 2000) score += 25;
       else if (width >= 1600) score += 20;
       else if (width >= 1200) score += 15;
       else if (width >= 1000) score +=  5;
@@ -509,7 +511,15 @@ function scoreCandidate(
   // resolves to a top-tier editorial CDN. Stacks with source base scores so
   // an RSS image from variety.com scores higher than an RSS image from a
   // no-name publisher.
-  if (isEditorialUrl(c.url)) score += 20;
+  //
+  // Editorial + high-res synergy: when an editorial CDN ALSO delivers a
+  // ≥2000px image, give it an extra +10 so it clearly beats publisher-CDN
+  // mid-res alternatives. This is the "Phase 1 #3" stack uncap — we want
+  // premium-quality publisher images to dominate when both attributes line up.
+  if (isEditorialUrl(c.url)) {
+    score += 20;
+    if (width !== undefined && width >= 2000) score += 10;
+  }
 
   // Non-editorial OG penalty for PERSON/MUSIC_ARTIST — generic OG images are
   // often blurry headshots or social media crops. Editorial OG is still rewarded
@@ -528,7 +538,10 @@ function scoreCandidate(
   // Diversity penalty
   score -= getDiversityPenalty(c.url);
 
-  return Math.max(-50, Math.min(100, score));
+  // Cap raised from 100 → 150 so high-res editorial + intent bonuses
+  // (e.g. TMDb FILM_TV poster at 3500px + editorial CDN) can stack fully
+  // without being silently truncated.
+  return Math.max(-50, Math.min(150, score));
 }
 
 // ── Source priority map ───────────────────────────────────────────────────────
