@@ -400,10 +400,7 @@ export function ArticleCard({
   // Mobile/iOS: ~130px bottom cap — image ends before the content overlay
   // zone. The lost area is covered by a cinematic dark-fade vignette
   // inside the plate that dissolves the image into darkness.
-  // Mobile cap reduced from 200 → 120 (2026-05-15) to extend the hero
-  // image ~80px further down. The dark-fade vignette below still dissolves
-  // the image into black, so the content overlay stays legible.
-  const PLATE_BOTTOM_CAP = isWebDesktop ? 168 : 120;
+  const PLATE_BOTTOM_CAP = isWebDesktop ? 168 : 200;
 
   // How far above the card's bottom edge the overlaid content should end.
   // Must clear the BottomNav pill + its outer padding + breathing room.
@@ -502,16 +499,10 @@ export function ArticleCard({
     textColLeft  = rowLeft;
     textColWidth = rowWidth;
   } else {
-    // Mobile/iOS image-bleed layout (2026-05-15): the image now extends
-    // from y=0 all the way down (minus the bottom cap), bleeding behind
-    // the frosted TopBar instead of starting below it. The TopBar's own
-    // blur(24px) frosts whatever pixels sit beneath it — same pattern as
-    // iOS Music / Apple Maps. The old `topStripGradient` colour strip
-    // (sampled from the image's top 25%) is no longer rendered.
     plateW    = viewportW;
-    plateH    = Math.max(1, viewportH - PLATE_BOTTOM_CAP);
+    plateH    = Math.max(1, viewportH - PLATE_TOP_OFFSET - PLATE_BOTTOM_CAP);
     plateLeft = 0;
-    plateTop  = 0;
+    plateTop  = PLATE_TOP_CSS;
   }
 
   // The plate is portrait-leaning (narrower than tall), so almost every
@@ -553,13 +544,29 @@ export function ArticleCard({
       }}
       onClick={() => onReadMore(article)}
     >
-      {/* ── TOP COLOUR BLEED removed 2026-05-15 ──
-          The hero image now extends from y=0 (bleeding behind the
-          frosted TopBar) so we no longer need a sampled colour strip
-          to fill the area above the image. The TopBar's blur(24px)
-          frosts the image pixels directly. The canvas-based
-          `topStripGradient` extraction below still runs but its value
-          is unused — left in place for now to make revert trivial. */}
+      {/* ── TOP COLOUR BLEED ── Fills y=0 → PLATE_TOP_CSS (the TopBar area)
+          with a JS-extracted horizontal gradient sampled from the top
+          ~25% of the hero image (see the canvas onload above). The
+          gradient is a flat CSS `linear-gradient` — NO image background,
+          NO `filter: blur()` — so the strip costs nothing per scroll
+          frame and never replicates the image's shape/composition.
+          The TopBar's own blur(24px) still samples these colours so the
+          nav bar picks up the image's colour mood.
+          z=8: behind the image plate (z-10) and behind the TopBar (z-40). */}
+      {hasImage && !isDesktop && !isWebDesktop && isNearActive && topStripGradient && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: PLATE_TOP_CSS,
+            background: topStripGradient,
+            zIndex: 8,
+          }}
+        />
+      )}
 
       {/* ── HERO PLATE ── Full-bleed portrait on mobile/iOS; editorial centered
           card on desktop. A cinematic scrim below provides text legibility. */}
@@ -638,18 +645,18 @@ export function ArticleCard({
                   background: dominantColor
                     ? `linear-gradient(to bottom,
                         transparent 0%,
-                        transparent 80%,
-                        rgba(${dominantColor},0.12) 86%,
-                        rgba(0,0,0,0.42) 91%,
-                        rgba(0,0,0,0.78) 96%,
+                        transparent 52%,
+                        rgba(${dominantColor},0.12) 64%,
+                        rgba(0,0,0,0.42) 76%,
+                        rgba(0,0,0,0.78) 88%,
                         rgba(0,0,0,0.92) 100%
                       )`
                     : `linear-gradient(to bottom,
                         transparent 0%,
-                        transparent 80%,
-                        rgba(0,0,0,0.15) 86%,
-                        rgba(0,0,0,0.46) 91%,
-                        rgba(0,0,0,0.80) 96%,
+                        transparent 52%,
+                        rgba(0,0,0,0.15) 64%,
+                        rgba(0,0,0,0.46) 76%,
+                        rgba(0,0,0,0.80) 88%,
                         rgba(0,0,0,0.94) 100%
                       )`,
                 }}
