@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 // Horizontal day-paginated feed (new). To revert to the legacy vertical feed,
 // swap this line back to: import { FeedPage } from "@/pages/FeedPage";
 import { FeedPageHorizontal as FeedPage } from "@/pages/FeedPageHorizontal";
+import { DesktopHome } from "@/pages/DesktopHome";
+import { useIsDesktopWeb } from "@/hooks/use-is-desktop-web";
 import NotFound from "@/pages/not-found";
 import { EmailConfirmedScreen } from "@/components/EmailConfirmedScreen";
 import { UsernameSheet } from "@/components/UsernameSheet";
@@ -20,13 +22,23 @@ const queryClient = new QueryClient({
   }
 });
 
+function HomeRoute() {
+  // Desktop web (≥1024px AND not Capacitor / installed PWA) gets the
+  // editorial publication layout. Everything else — mobile web, iPad
+  // PWA, Capacitor iOS — gets the existing full-bleed FeedPage. The
+  // viewport hook re-evaluates on resize so dev-tools width changes
+  // hot-swap layouts.
+  const isDesktop = useIsDesktopWeb();
+  return isDesktop ? <DesktopHome /> : <FeedPage />;
+}
+
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={FeedPage} />
+      <Route path="/" component={HomeRoute} />
       {/* Supabase redirects here after email verification — just render the feed.
           App.tsx's onAuthStateChange will detect the session and show EmailConfirmedScreen. */}
-      <Route path="/auth/callback" component={FeedPage} />
+      <Route path="/auth/callback" component={HomeRoute} />
       <Route component={NotFound} />
     </Switch>
   );

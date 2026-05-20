@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
 // only allocate when a new variant/size combo is actually used.
 const grainCache = new Map<string, ImageData>();
 
-export function GrainBackground({ variant = "light" }: { variant?: "light" | "dark" | "cream" | "pale" | "paper" | "white" }) {
+export function GrainBackground({ variant = "light" }: { variant?: "light" | "dark" | "cream" | "pale" | "paper" | "white" | "popcorn-cream" | "popcorn-blue" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
       return;
     }
 
-    ctx.fillStyle = variant === "dark" ? '#b32b21' : variant === "cream" ? '#fff1cd' : variant === "pale" ? '#fbf8f2' : variant === "paper" ? '#fdf7e5' : variant === "white" ? '#ffffff' : '#053980';
+    ctx.fillStyle = variant === "dark" ? '#b32b21' : variant === "cream" ? '#fff1cd' : variant === "pale" ? '#fbf8f2' : variant === "paper" ? '#fdf7e5' : variant === "white" ? '#ffffff' : variant === "popcorn-cream" ? '#FDF1E0' : variant === "popcorn-blue" ? '#053980' : '#053980';
     ctx.fillRect(0, 0, W, H);
 
     const DS = 4;
@@ -80,10 +80,10 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
         const d = (dmap[y0*DW+x0]*(1-tx) + dmap[y0*DW+x0+1]*tx)*(1-ty)
                 + (dmap[(y0+1)*DW+x0]*(1-tx) + dmap[(y0+1)*DW+x0+1]*tx)*ty;
         const density = Math.min(1, d / p90);
-        if (variant !== "pale" && variant !== "paper" && variant !== "white" && density < 0.06) continue;
+        if (variant !== "pale" && variant !== "paper" && variant !== "white" && variant !== "popcorn-cream" && density < 0.06) continue;
 
-        // pale/paper/white use flat intensity so blobs don't create visible bright/dark patches
-        const effective = variant === "pale" ? 0.45 : variant === "paper" ? 0.40 : variant === "white" ? 0.32 : (0.1152 + density * 0.5248);
+        // pale/paper/white/popcorn-cream use flat intensity so blobs don't create visible bright/dark patches
+        const effective = variant === "pale" ? 0.45 : variant === "paper" ? 0.40 : variant === "white" ? 0.32 : variant === "popcorn-cream" ? 0.42 : (0.1152 + density * 0.5248);
         const gi = effective * (13 + Math.random() * 9);
         const grain = Math.random() * gi - gi * 0.6;
 
@@ -111,6 +111,16 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
           data[idx]   = Math.max(203, Math.min(255, 253 + Math.round(grain * 2.683 - 4.022)));
           data[idx+1] = Math.max(197, Math.min(255, 247 + Math.round(grain * 1.928 - 2.010)));
           data[idx+2] = Math.max(179, Math.min(255, 229 + Math.round(grain * 1.928 - 2.010)));
+        } else if (variant === "popcorn-cream") {
+          // #FDF1E0 — R=253,G=241,B=224 — warm peachy cream (popcorn brand), R dominant
+          data[idx]   = Math.max(203, Math.min(255, 253 + Math.round(grain * 2.048 - 2.56)));
+          data[idx+1] = Math.max(191, Math.min(255, 241 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+2] = Math.max(174, Math.min(255, 224 + Math.round(grain * 1.472 - 1.28)));
+        } else if (variant === "popcorn-blue") {
+          // #053980 — R=5,G=57,B=128 — B dominant, same as default light but explicit
+          data[idx]   = Math.max(0,  Math.min(55,   5 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+1] = Math.max(7,  Math.min(107, 57 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+2] = Math.max(78, Math.min(178, 128 + Math.round(grain * 2.048 - 2.56)));
         } else {
           // #053980 — R=5,G=57,B=128 — B dominant
           data[idx]   = Math.max(0,  Math.min(55,   5 + Math.round(grain * 1.472 - 1.28)));
