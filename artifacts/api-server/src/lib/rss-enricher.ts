@@ -2509,9 +2509,30 @@ async function enrichWithClaude(
   console.log(`[rss] Call 1 complete — ${selectedRawItems.length} selected, ${rawItems.length - selectedRawItems.length} rejected`);
 
   // ── Post-selection entity dedup ───────────────────────────────────────────
-  const { items: dedupedRawItems, indices: dedupedIndices } = applyEntityDedup(selectedRawItems, selectedIndices);
-  if (dedupedRawItems.length < selectedRawItems.length) {
-    console.log(`[rss] Entity dedup removed ${selectedRawItems.length - dedupedRawItems.length} duplicate(s) → ${dedupedRawItems.length} to enrich`);
+  const { items: postDedupRawItems, indices: postDedupIndices } = applyEntityDedup(selectedRawItems, selectedIndices);
+  if (postDedupRawItems.length < selectedRawItems.length) {
+    console.log(`[rss] Entity dedup removed ${selectedRawItems.length - postDedupRawItems.length} duplicate(s) → ${postDedupRawItems.length} to enrich`);
+  }
+
+  // ── [TEMP TESTING CAP — remove before launch, see MEMORY.md] ──────────────
+  // Hard cap of 15 articles per cycle to control Anthropic enrichment cost
+  // during testing. Selection comes back ordered by prominence, so slicing
+  // the top N keeps the strongest picks. Remove this block + revert the
+  // prompt copy in curation-brief.ts + curation-prompt.ts before launch.
+  const TESTING_HARD_CAP = 15;
+  const totalAfterAddingThisRun =
+    (alreadyPublished.length ?? 0) + postDedupRawItems.length;
+  let dedupedRawItems = postDedupRawItems;
+  let dedupedIndices = postDedupIndices;
+  if (totalAfterAddingThisRun > TESTING_HARD_CAP) {
+    const roomLeft = Math.max(0, TESTING_HARD_CAP - (alreadyPublished.length ?? 0));
+    if (roomLeft < postDedupRawItems.length) {
+      console.warn(
+        `[rss] ⚠ TESTING CAP — already-published=${alreadyPublished.length ?? 0}, selected=${postDedupRawItems.length}, cap=${TESTING_HARD_CAP}. Trimming to top ${roomLeft}.`,
+      );
+      dedupedRawItems = postDedupRawItems.slice(0, roomLeft);
+      dedupedIndices = postDedupIndices.slice(0, roomLeft);
+    }
   }
 
   // ── Call 2: Enrichment — batched in groups of 5 to prevent socket timeouts ──

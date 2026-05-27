@@ -109,7 +109,7 @@ ${recentTitles.map((t) => `  - ${t}`).join("\n")}
 
 You are picking the final feed from the day's accumulated pool. The pool has already been pre-filtered by per-fetch scoring — everything here passed the initial bar, but many still don't belong in the final cut.
 
-Pick approximately ${target} stories — ideal is **around 24-26 when the pool honestly supports it**. On light-signal days (weekends, slow news cycles, sparse pools) the right number may be lower; never pad to hit a count. The pool has already been scored — every item here passed the initial bar. Err toward inclusion for borderline stories; a missed story is worse than a borderline one that made the cut. Under-cutting is the more common failure mode — if you are at ~20 and the pool is rich, go back and rescue.
+Pick **at most 15 stories** — this is a hard testing-phase cap (TEMP: remove before launch, see MEMORY.md). The pool has already been scored — every item here passed the initial bar. Within the 15-cap, err toward inclusion for borderline stories. On light-signal days (weekends, slow news cycles, sparse pools) the right number may be lower; never pad to hit the cap.
 
 **Before returning, run the final check:**
 1. Would I forward at least 5 of these to a friend?
@@ -173,13 +173,15 @@ ${recentTitles.map((t) => `  - ${t}`).join("\n")}
   // Estimate pool size from articleList — used only for context in the prompt
   const approxPoolSize = (articleList.match(/\n\d+\./g) || []).length || 0;
 
+  // [TEMP TESTING CAP — remove before launch, see MEMORY.md]
+  // Hard cap: never exceed 15 articles in today's feed during testing phase.
   const currentFeedCount = alreadyPublished.length;
+  const TESTING_CAP = 15;
+  const remaining = Math.max(0, TESTING_CAP - currentFeedCount);
   const incrementalCeiling =
-    currentFeedCount >= 26
-      ? `Today's feed already has ${currentFeedCount} stories — at or above the ideal band. Only add a story if it is genuinely exceptional and clearly stronger than the weakest thing already published. If in doubt, do not add it.`
-      : currentFeedCount >= 22
-      ? `Today's feed has ${currentFeedCount} stories — inside the ~24-26 ideal band. Add only the strongest 2-4 picks. Do not pad. Quality over quantity.`
-      : `This is an INCREMENTAL UPDATE. ${currentFeedCount} stories are already in today's feed (ideal is around 24-26 when the pool supports it). Add stories clearly stronger than the weakest already published. Prefer 3 excellent new stories over 8 mediocre ones.`;
+    remaining === 0
+      ? `Today's feed already has ${currentFeedCount} stories — at the testing-phase cap of ${TESTING_CAP}. Do NOT add any new stories. Return an empty array.`
+      : `This is an INCREMENTAL UPDATE under a TESTING-PHASE HARD CAP of ${TESTING_CAP} stories per day. ${currentFeedCount} are already published, leaving room for at most ${remaining} more. Add the strongest 0-${remaining} picks — never exceed ${remaining}. Prefer 0 picks over weak ones.`;
 
   return `${SHARED_CONTEXT}
 
@@ -195,11 +197,9 @@ ${
   alreadyPublished.length === 0
     ? `This is a FULL RESET RUN with no existing feed. The pool has ~${approxPoolSize} candidates — every one already passed scoring.
 
-**Ideal target: around 24-26 stories when the pool honestly supports it.** This is guidance, not a constraint. On light-signal days (weekends, slow news cycles, sparse pools) the right number may be lower — never pad to hit a count. There is no hard floor and no hard ceiling. Quality first, breadth second.
+**TESTING-PHASE HARD CAP: at most 15 stories.** (TEMP — remove before launch, see MEMORY.md.) Pick only the top 15 by editorial fit. On light-signal days (weekends, slow news cycles, sparse pools) the right number may be lower — never pad to hit 15.
 
-**Soft framing on under-cutting:** the auto-selector has historically under-cut on rich pools (Apr 25: 5 from 80; Apr 26: 3 from 100; May 12: 16 from 96), requiring 10-15 manual rescues across the same missed patterns: music live events, Film & TV trailers, internet culture, sports with cultural angle, fun/filler, fashion collabs. If the pool is rich and you are at <22, go back and rescue. If the pool is genuinely light, fewer picks is the right answer.
-
-**Axis coverage check before returning (guidance, not floor):** music, film/TV, internet culture, fun/filler, sports/fashion/culture wildcard. If any axis is empty and the pool offered candidates worth rescuing, go back for them. If the pool truly didn't offer one, leave it empty — don't force coverage with a weak pick.`
+**Axis coverage check before returning (guidance, not floor):** within the 15-cap, try to cover music, film/TV, internet culture, fun/filler, and a sports/fashion/culture wildcard when the pool honestly offers candidates. If an axis is empty and the pool truly didn't offer one, leave it empty — don't force coverage with a weak pick.`
     : incrementalCeiling
 }
 
