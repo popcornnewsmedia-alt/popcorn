@@ -420,13 +420,15 @@ router.get("/curation/candidates", async (req, res) => {
        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
        .replace(/&quot;/g, '"').replace(/&apos;/g, "'");
 
-    // Window labels for the 6-run schedule (BKK times)
+    // Window labels for the 6-run schedule (BKK times).
+    // Each window covers the 4h PRECEDING the cron fire (windowStart = windowEnd - 4h).
+    // W1 fires at BKK 11pm and scores articles published BKK 7pm-11pm, etc.
     const WINDOW_LABELS: Record<number, string> = {
-      1: "BKK 11:00pm → 3:00am",
-      2: "BKK  3:00am → 7:00am",
-      3: "BKK  7:00am → 11:00am",
-      4: "BKK 11:00am → 3:00pm",
-      5: "BKK  3:00pm → 7:00pm",
+      1: "BKK  7:00pm → 11:00pm",
+      2: "BKK 11:00pm → 3:00am",
+      3: "BKK  3:00am → 7:00am",
+      4: "BKK  7:00am → 11:00am",
+      5: "BKK 11:00am → 3:00pm",
       6: "BKK  7:00pm (final)",
     };
 
