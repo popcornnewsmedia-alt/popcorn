@@ -2519,16 +2519,22 @@ async function enrichWithClaude(
   // during testing. Selection comes back ordered by prominence, so slicing
   // the top N keeps the strongest picks. Remove this block + revert the
   // prompt copy in curation-brief.ts + curation-prompt.ts before launch.
+  //
+  // BUG FIX 2026-05-28: must compare against TODAY's published count
+  // (promptAlreadyPublished), not the ALL-HISTORY dedup refs
+  // (alreadyPublished, which is ~895). The previous version trimmed every
+  // selection to 0 because (15 - 895) clamps to 0.
   const TESTING_HARD_CAP = 15;
+  const todayPublishedCount = promptAlreadyPublished?.length ?? 0;
   const totalAfterAddingThisRun =
-    (alreadyPublished.length ?? 0) + postDedupRawItems.length;
+    todayPublishedCount + postDedupRawItems.length;
   let dedupedRawItems = postDedupRawItems;
   let dedupedIndices = postDedupIndices;
   if (totalAfterAddingThisRun > TESTING_HARD_CAP) {
-    const roomLeft = Math.max(0, TESTING_HARD_CAP - (alreadyPublished.length ?? 0));
+    const roomLeft = Math.max(0, TESTING_HARD_CAP - todayPublishedCount);
     if (roomLeft < postDedupRawItems.length) {
       console.warn(
-        `[rss] ⚠ TESTING CAP — already-published=${alreadyPublished.length ?? 0}, selected=${postDedupRawItems.length}, cap=${TESTING_HARD_CAP}. Trimming to top ${roomLeft}.`,
+        `[rss] ⚠ TESTING CAP — today-published=${todayPublishedCount}, selected=${postDedupRawItems.length}, cap=${TESTING_HARD_CAP}. Trimming to top ${roomLeft}.`,
       );
       dedupedRawItems = postDedupRawItems.slice(0, roomLeft);
       dedupedIndices = postDedupIndices.slice(0, roomLeft);
