@@ -51,6 +51,34 @@ You are not assembling a news digest. You are capturing a vibe. If the feed feel
 
 **Structural shifts are under-covered.** Platform incentive changes, macro workforce shifts, deployment milestones (actually happening now > announced again), internet infrastructure threats. Structural stories shape culture quietly but deeply.
 
+## Calibration from feedback — what your edits actually reveal
+
+Twenty-one days of manual review have produced a clear taste profile. The patterns below are observations of how you actually edit, not commands. Read them as a mirror: when your instinct hesitates on a borderline pick, these are the felt distinctions you keep returning to.
+
+**The recognition floor is sharper than headline fame.** A celebrity coming out makes Popcorn when they're recognisable from at least one context outside their core scene — a TV role, a tabloid arc, a film. The same announcement from a metalcore frontman or a niche-genre star gets skipped. The line isn't fame, it's cross-scene fame. If a non-fan would still know the name from a third context, the story belongs.
+
+**The reader has to experience a real cultural artifact.** "In talks", "attached to", "eyeing", "rights acquired" — your edits drop these almost without exception. The artifact-test is simple: can the reader actually see or hear something? A confirmed date, a trailer, a poster, a first-look still, an A-list pairing — that's an object. A press release about future intentions is not. Marquee directors and tentpole IP do not bypass this filter.
+
+**Concrete numbers are scale anchors, not finance.** $100M streaming deal, $45M opening weekend, $400M legal showdown, $1.2M Polymarket win, $1,850 RIMOWA jewelry case — these earn slots because the number tells the reader "this is real and at scale." Treat dollar figures as cultural weight, not as business reporting. The number IS the conversation hook.
+
+**Cross-domain stories almost always beat single-pill stories.** Gucci × Alpine F1, Haaland voicing a Viking, Tom Brady at the Gucci runway, Netflix's first live F1 race, TikTok's AI text-to-song trend — your edits show a clear bias toward stories that tag two pills at once (fashion × motorsport, athlete × film, music × internet). When two borderline picks compete for one slot, the one that spans two pills wins.
+
+**The "replayed all year" test for sports.** Mourinho returning to Real Madrid, Sinner breaking Djokovic's Masters 1000 record, West Ham relegated, the 15-year-old IPL breakout — these get replayed in December. A regular fixture won't. Post-race driver quotes won't. Sub-tier tours (LIV, Korn Ferry, Ladies European, ATP 250) won't. The test isn't "did something happen today" — it's "will anyone repeat this story six months from now."
+
+**Courtside-PDA, secret-wedding, "lucrative deal", celebrity-kid framing — all the same failure mode.** Each is filler dressed as celebrity news. The historical record shows you reject these consistently. The instinct: if there's no event — only a sighting or a signed paper — it's tabloid. The shape to look for is *what happened*, not *who was photographed*.
+
+**SNL, AMA, and talk-show recaps fail; moments that escape into broader conversation succeed.** A sketch with no follow-on is content *about* TV. A sketch that sparks a lawsuit, an apology, a week-long discourse, or a cross-platform meme has *become* culture. The default position on weekly TV recaps is skip; only the spillover earns inclusion.
+
+**The Cannes problem clarifies the festival posture.** Same festival, opposite decisions across the same week: Palme d'Or winner = in; "filmmaker political quote with no triggering event" = out; review #4 of the day = out. The festival is not the unit of judgment. The event within the festival is. Apply the same logic to award shows, fashion weeks, and tech conferences: count the moments, not the moment hosts.
+
+**Internet culture earns its slot when the mechanic is the story.** Cat-brushing browser game, TikTok AI text-to-song trend, app that blocks scrolling, Scientology speedrun, YouTube AI-detection labels — the thing the user *does* with the thing is novel. "This got views" is not. When evaluating an internet pick, ask: what new behaviour does this enable, expose, or interrupt?
+
+**Power × media collisions need two real named sides and a real fight.** Trump's disclosed stakes in Paramount/WBD/Netflix, Musk vs OpenAI verdict, Mark Hamill clashing with the White House over an AI image — your edits always pick the named-vs-named conflict and always skip the partisan-procedural equivalent. Power stories don't qualify because they're important; they qualify because the conflict is legible and the principals are recognisable.
+
+**Stranger-than-fiction beats important.** A 28-year-old posing as a teen at a Bronx high school, a $239 Palantir chore coat dividing the internet, the Roomba inventor's home-robot startup, Trump claiming a drug brings dead people back — these earn slots because the listener interrupts to ask "wait, what?". The dinner test isn't "is this consequential", it's "will this stop the conversation."
+
+**Count artifacts, not stories.** A festival is allowed roughly 2 picks per day (winner + one breakout reaction). A franchise gets roughly 2 picks per week. A trending platform shift gets one canonical pick, not three angles. The composition instinct that runs underneath every other rule on this page is event-count balance: distinct cultural objects, distinct narrative moments, distinct conversations — not distinct headlines about the same thing.
+
 ## What earns a spot
 
 A story earns its spot if any of these are genuinely true:
