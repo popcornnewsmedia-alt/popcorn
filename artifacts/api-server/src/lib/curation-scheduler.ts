@@ -9,11 +9,15 @@
  *   Run 3  BKK  7:00am  (UTC 00:00)  pulls 3:00am–7:00am
  *   Run 4  BKK 11:00am  (UTC 04:00)  pulls 7:00am–11:00am
  *   Run 5  BKK  3:00pm  (UTC 08:00)  pulls 11:00am–3:00pm
- *   Run 6  BKK  7:00pm  (UTC 12:00)  pulls full 24h BKK day  ← FINAL (Claude publishes)
+ *   Run 6  BKK  7:00pm  (UTC 12:00)  pulls 3:00pm–7:00pm    ← FINAL (Claude publishes)
  *
- * Runs 1-5: shortlistOnly — accumulate candidates in Supabase, skip Claude.
- * Run 6: window expands to full 24h BKK feed day so Claude sees ALL articles, not just
- *        the last 4h. RSS feeds keep 24-48h of articles so this reliably covers W1-W5.
+ * Runs 1-5: shortlistOnly — per-window consideration pass, accumulate "considered"
+ *           candidates in Supabase, defer final selection.
+ * Run 6: same 4h slice as the others for its own consideration pass, THEN loads the
+ *        full day's accumulated "considered" pool (all 6 windows) from Supabase and runs
+ *        Claude's final cut + enrichment. The 6 windows tile the 24h feed day cleanly
+ *        (only the 30-min boundary overlap). No 24h re-fetch safety net — the final pool
+ *        is exactly what W1-W6 each persisted.
  */
 
 import cron from "node-cron";
@@ -38,12 +42,11 @@ function computeWindow(): { windowStart: Date; windowEnd: Date; shortlistOnly: b
   const windowEndHour = windowEnd.getUTCHours();
   const shortlistOnly = windowEndHour !== 12;
 
-  // Final window (Run 6): expand to the full 24h BKK feed day so Claude sees ALL
-  // articles from the day, not just the last 4h slice.
-  // Shortlist windows (Runs 1-5): standard 4h + 30min overlap.
-  const windowStartMs = shortlistOnly
-    ? windowEndMs - boundaryMs - OVERLAP_SECONDS * 1000
-    : windowEndMs - 24 * 3600 * 1000;
+  // All windows (Runs 1-6) use the same 4h + 30min-overlap slice so they tile the
+  // 24h feed day cleanly. Run 6's own consideration pass covers only 3pm–7pm; its
+  // final selection then reads the full day's accumulated "considered" pool from
+  // Supabase (see rss-enricher.ts W6 final-selection stage), so it still sees every window.
+  const windowStartMs = windowEndMs - boundaryMs - OVERLAP_SECONDS * 1000;
 
   const windowStart = new Date(windowStartMs);
 
