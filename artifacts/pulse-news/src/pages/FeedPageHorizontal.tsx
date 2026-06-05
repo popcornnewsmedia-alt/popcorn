@@ -172,7 +172,7 @@ export function FeedPageHorizontal() {
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
     const isDark = readingArticle || (activeTab === 'feed' && !showSplash);
-    const color = isDark ? '#000000' : '#053980';
+    const color = isDark ? '#000000' : '#042c85';
     if (meta) meta.content = color;
     document.documentElement.style.background = color;
   }, [readingArticle, activeTab, showSplash]);
@@ -742,7 +742,15 @@ export function FeedPageHorizontal() {
       dragging = true;
       isDraggingRef.current = true;
       axis = null;
-      canSwipeHorizontal = startScrollTop <= DIVIDER_EPS;
+      // Allow horizontal day-swipe at the top (date divider) OR at the very
+      // bottom (the "You're all caught up" completion card) — both are snap
+      // ends with nothing further to scroll vertically, so a sideways gesture
+      // should move to the adjacent day instead of being trapped.
+      const atDivider = startScrollTop <= DIVIDER_EPS;
+      const atBottom =
+        activeDay.scrollHeight - (startScrollTop + activeDay.clientHeight) <=
+        DIVIDER_EPS;
+      canSwipeHorizontal = atDivider || atBottom;
       // Kill any residual transition so live drag is immediate.
       rail.style.transition = "";
     };
@@ -930,7 +938,7 @@ export function FeedPageHorizontal() {
 
   if (status === "pending") {
     return (
-      <div className="pn-fullscreen fixed inset-0 overflow-hidden" style={{ background: '#053980' }}>
+      <div className="pn-fullscreen fixed inset-0 overflow-hidden" style={{ background: '#042c85' }}>
         <GrainBackground />
       </div>
     );
@@ -938,14 +946,14 @@ export function FeedPageHorizontal() {
 
   if (status === "error") {
     return (
-      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center p-8 text-center overflow-hidden" style={{ background: '#053980' }}>
+      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center p-8 text-center overflow-hidden" style={{ background: '#042c85' }}>
         <GrainBackground />
         <AlertCircle className="w-10 h-10 text-red-400 mb-6" />
         <h2 className="font-['Manrope'] font-bold text-2xl mb-3" style={{ color: "#fff1cd" }}>Connection lost</h2>
         <p className="font-['Inter'] mb-8 max-w-xs" style={{ color: "rgba(255,241,205,0.65)" }}>
           We couldn't reach the Pulse network. Check your connection and try again.
         </p>
-        <button onClick={() => refetch()} className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm" style={{ background: "#fff1cd", color: "#053980" }}>
+        <button onClick={() => refetch()} className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm" style={{ background: "#fff1cd", color: "#042c85" }}>
           <RefreshCw className="w-4 h-4" />
           Try Again
         </button>
@@ -993,7 +1001,7 @@ export function FeedPageHorizontal() {
 
   return (
     <SavesContext.Provider value={saves}>
-    <div className="pn-fullscreen fixed inset-0" style={{ background: '#053980' }}>
+    <div className="pn-fullscreen fixed inset-0" style={{ background: '#042c85' }}>
       <GrainBackground />
 
       {showSplash && (

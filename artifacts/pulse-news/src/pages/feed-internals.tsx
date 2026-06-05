@@ -207,7 +207,7 @@ export function SavedScreen({
 }) {
   if (articles.length === 0) {
     return (
-      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center px-8 text-center overflow-hidden" style={{ background: "#053980", zIndex: 1 }}>
+      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center px-8 text-center overflow-hidden" style={{ background: "#042c85", zIndex: 1 }}>
         <GrainBackground />
         <div className="relative z-10 flex flex-col items-center gap-5 max-w-xs">
           <div className="w-20 h-20 rounded-full flex items-center justify-center mb-2" style={{ background: "rgba(255,241,205,0.12)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,241,205,0.22)", boxShadow: "0 8px 32px rgba(0,0,0,0.08)" }}>
@@ -217,13 +217,13 @@ export function SavedScreen({
             <h1 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "18px", lineHeight: 1.1, color: "#fff1cd", letterSpacing: "0.02em" }}>Nothing saved yet</h1>
             <p className="font-['Manrope'] leading-relaxed" style={{ fontSize: "14px", color: "rgba(255,241,205,0.48)" }}>Bookmark articles as you scroll to build your reading list.</p>
           </div>
-          <button onClick={onBrowse} className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85" style={{ background: "#fff1cd", color: "#053980" }}>Browse</button>
+          <button onClick={onBrowse} className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85" style={{ background: "#fff1cd", color: "#042c85" }}>Browse</button>
         </div>
       </div>
     );
   }
   return (
-    <div className="pn-fullscreen fixed inset-0 overflow-hidden flex flex-col items-center" style={{ background: "#053980", zIndex: 1 }}>
+    <div className="pn-fullscreen fixed inset-0 overflow-hidden flex flex-col items-center" style={{ background: "#042c85", zIndex: 1 }}>
       <GrainBackground />
       <div className="relative z-10 flex flex-col h-full w-full" style={{ maxWidth: '480px' }}>
         <div className="px-5 pb-4" style={{ paddingTop: 'calc(72px + env(safe-area-inset-top))' }}>
@@ -295,7 +295,7 @@ export function ProfileScreen({
   const isLoggedIn = !!userName || !!userHandle;
   const initial = (userName ?? userHandle ?? "?")[0].toUpperCase();
   return (
-    <div className="pn-fullscreen fixed inset-0 flex flex-col items-center overflow-hidden" style={{ background: "#053980", zIndex: 1 }}>
+    <div className="pn-fullscreen fixed inset-0 flex flex-col items-center overflow-hidden" style={{ background: "#042c85", zIndex: 1 }}>
       <GrainBackground />
       {isLoggedIn ? (
         <div className="relative z-10 flex flex-col h-full overflow-y-auto scrollbar-hide pb-28 mx-auto w-full" style={{ paddingTop: 'calc(72px + env(safe-area-inset-top))', maxWidth: '480px' }}>
@@ -372,7 +372,7 @@ export function ProfileScreen({
           <h1 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "18px", lineHeight: 1, color: "#fff1cd", letterSpacing: "0.02em", marginBottom: 10 }}>Your Profile</h1>
           <p className="font-['Manrope'] leading-relaxed" style={{ fontSize: "14px", color: "rgba(255,241,205,0.48)", maxWidth: 260, marginBottom: 28 }}>Sign in to personalise your feed and keep your reading history in sync.</p>
           <div className="flex flex-col gap-3 w-full" style={{ maxWidth: 280 }}>
-            <button onClick={onSignIn} className="w-full py-3.5 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85" style={{ background: "#fff1cd", color: "#053980" }}>Sign in</button>
+            <button onClick={onSignIn} className="w-full py-3.5 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85" style={{ background: "#fff1cd", color: "#042c85" }}>Sign in</button>
             <button onClick={onCreateAccount} className="w-full py-3.5 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85" style={{ background: "rgba(255,241,205,0.09)", color: "#fff1cd", border: "1px solid rgba(255,241,205,0.14)" }}>Create account</button>
           </div>
         </div>

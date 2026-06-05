@@ -147,7 +147,7 @@ export function ArticleCard({
   // (e.g. CORS-restricted external CDNs like Dexerto that don't send
   // Access-Control-Allow-Origin). Gives each category a meaningful tint
   // instead of always falling back to the app's generic dark blue.
-  const catHex = CATEGORY_COLORS[article.category] ?? '#053980';
+  const catHex = CATEGORY_COLORS[article.category] ?? '#042c85';
   const catRgb = `${parseInt(catHex.slice(1,3),16)},${parseInt(catHex.slice(3,5),16)},${parseInt(catHex.slice(5,7),16)}`;
   useEffect(() => {
     if (!article.imageUrl || !renderContent) return;
@@ -528,7 +528,7 @@ export function ArticleCard({
     return (
       <div
         className="snap-start snap-always"
-        style={{ height: viewportHeight, width: '100vw', position: 'relative', overflow: 'hidden', background: '#053980' }}
+        style={{ height: viewportHeight, width: '100vw', position: 'relative', overflow: 'hidden', background: '#042c85' }}
       />
     );
   }
@@ -664,7 +664,17 @@ export function ArticleCard({
             )}
           </div>
       ) : (
-        <div className="absolute inset-0 ink-diffusion-bg" />
+        (() => {
+          const CATEGORY_FALLBACK_IMGS: Record<string, string> = {
+            "Film & TV": "/category-images/Film-TV.png",
+            "Music":     "/category-images/Music.png",
+            "Internet":  "/category-images/Internet.png",
+          };
+          const catImg = CATEGORY_FALLBACK_IMGS[article.category ?? ""];
+          return catImg
+            ? <img src={catImg} alt="" aria-hidden style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+            : <div className="absolute inset-0 ink-diffusion-bg" />;
+        })()
       )}
 
       {/* Read indicator badge */}
@@ -1020,7 +1030,7 @@ export function ArticleCard({
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
               fontWeight: 600,
-              color: '#053980',
+              color: '#042c85',
               padding: '11px 20px',
               borderRadius: 999,
               background: '#fff1cd',

@@ -376,7 +376,7 @@ export function SplashScreen({
     <div
       className="fixed inset-0 z-[200] flex flex-col overflow-hidden"
       style={{
-        backgroundColor: '#053980',
+        backgroundColor: '#042c85',
         // Match main app's top inset so content doesn't jump down when the
         // splash fades out. TopBar + FeedPage all pad by env(safe-area-inset-top).
         paddingTop: 'env(safe-area-inset-top)',
@@ -579,7 +579,7 @@ export function SplashScreen({
               letterSpacing: '0.10em',
               padding: '13px 20px',
               background: '#fff1cd',
-              color: '#053980',
+              color: '#042c85',
               boxShadow: '0 4px 24px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.35) inset',
             }}
           >

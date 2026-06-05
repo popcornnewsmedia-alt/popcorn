@@ -100,7 +100,7 @@ export function DateDividerCard({
       id={dateId}
       ref={ref}
       className="w-full snap-start snap-always relative overflow-hidden flex flex-col items-center justify-center"
-      style={{ height: viewportHeight ?? '100%', background: "#053980" }}
+      style={{ height: viewportHeight ?? '100%', background: "#042c85" }}
     >
       <GrainBackground />
 

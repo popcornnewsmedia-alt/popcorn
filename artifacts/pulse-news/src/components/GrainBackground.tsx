@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
 // only allocate when a new variant/size combo is actually used.
 const grainCache = new Map<string, ImageData>();
 
-export function GrainBackground({ variant = "light" }: { variant?: "light" | "dark" | "cream" | "pale" | "paper" | "white" | "popcorn-cream" | "popcorn-blue" }) {
+export function GrainBackground({ variant = "light" }: { variant?: "light" | "dark" | "cream" | "pale" | "paper" | "white" | "popcorn-cream" | "popcorn-cream-light" | "popcorn-cream-warm" | "popcorn-cream-fcedd4" | "popcorn-cream-fcefd8" | "popcorn-paper" | "popcorn-blue" | "popcorn-blue-002e6c" | "popcorn-blue-cobalt" | "popcorn-ink" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
       return;
     }
 
-    ctx.fillStyle = variant === "dark" ? '#b32b21' : variant === "cream" ? '#fff1cd' : variant === "pale" ? '#fbf8f2' : variant === "paper" ? '#fdf7e5' : variant === "white" ? '#ffffff' : variant === "popcorn-cream" ? '#FDF1E0' : variant === "popcorn-blue" ? '#053980' : '#053980';
+    ctx.fillStyle = variant === "dark" ? '#b32b21' : variant === "cream" ? '#fff1cd' : variant === "pale" ? '#fbf8f2' : variant === "paper" ? '#fdf7e5' : variant === "white" ? '#ffffff' : variant === "popcorn-cream" ? '#FDF1E0' : variant === "popcorn-cream-light" ? '#FDF6E8' : variant === "popcorn-cream-warm" ? '#FDF0D9' : variant === "popcorn-cream-fcedd4" ? '#FCEDD4' : variant === "popcorn-cream-fcefd8" ? '#FCEFD8' : variant === "popcorn-paper" ? '#FDFDFB' : variant === "popcorn-blue" ? '#042c85' : variant === "popcorn-blue-002e6c" ? '#002E6C' : variant === "popcorn-blue-cobalt" ? '#053980' : variant === "popcorn-ink" ? '#14110b' : '#042c85';
     ctx.fillRect(0, 0, W, H);
 
     const DS = 4;
@@ -80,10 +80,10 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
         const d = (dmap[y0*DW+x0]*(1-tx) + dmap[y0*DW+x0+1]*tx)*(1-ty)
                 + (dmap[(y0+1)*DW+x0]*(1-tx) + dmap[(y0+1)*DW+x0+1]*tx)*ty;
         const density = Math.min(1, d / p90);
-        if (variant !== "pale" && variant !== "paper" && variant !== "white" && variant !== "popcorn-cream" && density < 0.06) continue;
+        if (variant !== "pale" && variant !== "paper" && variant !== "white" && variant !== "popcorn-cream" && variant !== "popcorn-cream-light" && variant !== "popcorn-cream-warm" && variant !== "popcorn-cream-fcedd4" && variant !== "popcorn-paper" && density < 0.06) continue;
 
         // pale/paper/white/popcorn-cream use flat intensity so blobs don't create visible bright/dark patches
-        const effective = variant === "pale" ? 0.45 : variant === "paper" ? 0.40 : variant === "white" ? 0.32 : variant === "popcorn-cream" ? 0.42 : (0.1152 + density * 0.5248);
+        const effective = variant === "pale" ? 0.45 : variant === "paper" ? 0.40 : variant === "white" ? 0.32 : variant === "popcorn-cream" ? 0.42 : variant === "popcorn-cream-light" ? 0.36 : variant === "popcorn-cream-warm" ? 0.18 : variant === "popcorn-cream-fcedd4" ? 0.18 : variant === "popcorn-paper" ? 0.18 : (0.1152 + density * 0.5248);
         const gi = effective * (13 + Math.random() * 9);
         const grain = Math.random() * gi - gi * 0.6;
 
@@ -116,16 +116,76 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
           data[idx]   = Math.max(203, Math.min(255, 253 + Math.round(grain * 2.048 - 2.56)));
           data[idx+1] = Math.max(191, Math.min(255, 241 + Math.round(grain * 1.472 - 1.28)));
           data[idx+2] = Math.max(174, Math.min(255, 224 + Math.round(grain * 1.472 - 1.28)));
+        } else if (variant === "popcorn-cream-light") {
+          // #FDF6E8 — R=253,G=246,B=232 — lighter cream for desktop web. Brand-true
+          // but a touch closer to white. Slightly softer grain so the texture
+          // reads as paper, not as warm peach.
+          data[idx]   = Math.max(213, Math.min(255, 253 + Math.round(grain * 1.792 - 2.24)));
+          data[idx+1] = Math.max(206, Math.min(255, 246 + Math.round(grain * 1.408 - 1.20)));
+          data[idx+2] = Math.max(192, Math.min(255, 232 + Math.round(grain * 1.408 - 1.20)));
+        } else if (variant === "popcorn-cream-warm") {
+          // #FDF0D9 — R=253,G=240,B=217 — warm cream (slightly more golden
+          // than popcorn-cream-light). R dominant. Whisper-light grain
+          // tuned to match the main page texture — very tight clamp range
+          // so the variation reads as paper, not noise.
+          data[idx]   = Math.max(244, Math.min(255, 253 + Math.round(grain * 0.85 - 0.55)));
+          data[idx+1] = Math.max(231, Math.min(255, 240 + Math.round(grain * 0.80 - 0.50)));
+          data[idx+2] = Math.max(208, Math.min(255, 217 + Math.round(grain * 0.80 - 0.50)));
+        } else if (variant === "popcorn-cream-fcedd4") {
+          // #FCEDD4 — R=252,G=237,B=212 — brand cream for the editorial
+          // publication desktop layout. R dominant. Whisper-light grain so
+          // the texture reads as warm paper rather than noise.
+          data[idx]   = Math.max(202, Math.min(255, 252 + Math.round(grain * 0.85 - 0.55)));
+          data[idx+1] = Math.max(187, Math.min(255, 237 + Math.round(grain * 0.80 - 0.50)));
+          data[idx+2] = Math.max(162, Math.min(255, 212 + Math.round(grain * 0.80 - 0.50)));
+        } else if (variant === "popcorn-cream-fcefd8") {
+          // #FCEFD8 — R=252,G=239,B=216 — warm cream for the desktop filter
+          // bar (logo + app ad + category filter). R dominant. Whisper-light
+          // grain so the texture reads as warm paper rather than noise.
+          data[idx]   = Math.max(202, Math.min(255, 252 + Math.round(grain * 0.85 - 0.55)));
+          data[idx+1] = Math.max(189, Math.min(255, 239 + Math.round(grain * 0.80 - 0.50)));
+          data[idx+2] = Math.max(166, Math.min(255, 216 + Math.round(grain * 0.80 - 0.50)));
+        } else if (variant === "popcorn-paper") {
+          // #FDFDFB — R=253,G=253,B=251 — practically white with the
+          // faintest paper warmth. Grain density is intentionally very
+          // low so the canvas reads as crisp white on screen, just barely
+          // textured (The Cut / It's Nice That register).
+          data[idx]   = Math.max(244, Math.min(255, 253 + Math.round(grain * 0.85 - 0.55)));
+          data[idx+1] = Math.max(244, Math.min(255, 253 + Math.round(grain * 0.85 - 0.55)));
+          data[idx+2] = Math.max(242, Math.min(255, 251 + Math.round(grain * 0.80 - 0.50)));
         } else if (variant === "popcorn-blue") {
-          // #053980 — R=5,G=57,B=128 — B dominant, same as default light but explicit
-          data[idx]   = Math.max(0,  Math.min(55,   5 + Math.round(grain * 1.472 - 1.28)));
-          data[idx+1] = Math.max(7,  Math.min(107, 57 + Math.round(grain * 1.472 - 1.28)));
-          data[idx+2] = Math.max(78, Math.min(178, 128 + Math.round(grain * 2.048 - 2.56)));
+          // #042c85 — R=4,G=44,B=133 — B dominant. Stronger grain (≈ +50% variance,
+          // clamps widened to ±75) so the texture reads as a hand-printed paper
+          // on the desktop web masthead/footer/IG tile rather than a flat fill.
+          data[idx]   = Math.max(0,  Math.min(79,    4 + Math.round(grain * 2.20 - 1.92)));
+          data[idx+1] = Math.max(0,  Math.min(119,  44 + Math.round(grain * 2.20 - 1.92)));
+          data[idx+2] = Math.max(58, Math.min(208, 133 + Math.round(grain * 3.00 - 3.75)));
+        } else if (variant === "popcorn-blue-002e6c") {
+          // #002E6C — R=0,G=46,B=108 — deep brand blue for desktop masthead/footer.
+          // B dominant. Clamp range ≈ ±50 so the grain lifts toward a slightly
+          // brighter navy without ever going light, matching the handoff's
+          // "paper-grain over deep blue" feel.
+          data[idx]   = Math.max(0,  Math.min(50,    0 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+1] = Math.max(0,  Math.min(96,   46 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+2] = Math.max(58, Math.min(158, 108 + Math.round(grain * 2.048 - 2.56)));
+        } else if (variant === "popcorn-blue-cobalt") {
+          // #053980 — R=29,G=63,B=191 — vivid cobalt matched to the
+          // popcorn-logo-website.png bucket. B dominant. Clamp ±50.
+          data[idx]   = Math.max(0,   Math.min(79,   29 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+1] = Math.max(13,  Math.min(113,  63 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+2] = Math.max(141, Math.min(241, 191 + Math.round(grain * 2.048 - 2.56)));
+        } else if (variant === "popcorn-ink") {
+          // #14110b — R=20,G=17,B=11 — near-black editorial ground, R dominant.
+          // Clamp range ±50; grain lifts pixels slightly toward warm charcoal
+          // so the texture reads as paper rather than flat ink.
+          data[idx]   = Math.max(0, Math.min(70,  20 + Math.round(grain * 2.048 - 2.56)));
+          data[idx+1] = Math.max(0, Math.min(67,  17 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+2] = Math.max(0, Math.min(61,  11 + Math.round(grain * 1.472 - 1.28)));
         } else {
-          // #053980 — R=5,G=57,B=128 — B dominant
-          data[idx]   = Math.max(0,  Math.min(55,   5 + Math.round(grain * 1.472 - 1.28)));
-          data[idx+1] = Math.max(7,  Math.min(107, 57 + Math.round(grain * 1.472 - 1.28)));
-          data[idx+2] = Math.max(78, Math.min(178, 128 + Math.round(grain * 2.048 - 2.56)));
+          // #042c85 — R=4,G=44,B=133 — B dominant
+          data[idx]   = Math.max(0,  Math.min(54,    4 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+1] = Math.max(0,  Math.min(94,   44 + Math.round(grain * 1.472 - 1.28)));
+          data[idx+2] = Math.max(83, Math.min(183, 133 + Math.round(grain * 2.048 - 2.56)));
         }
       }
     }

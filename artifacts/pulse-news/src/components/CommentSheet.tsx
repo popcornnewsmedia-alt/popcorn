@@ -474,16 +474,17 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
   }, [isOpen, focusCommentId, comments.length]);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      document.body.classList.add("pn-comments-open");
-      if (listRef.current) listRef.current.scrollTop = 0;
-    } else {
-      document.body.style.overflow = "";
-      document.body.classList.remove("pn-comments-open");
-    }
+    if (!isOpen) return;
+    // Capture whatever the parent (e.g. DesktopHome) had set so we can
+    // restore it on close. Resetting to "" falls back to the CSS rule
+    // (overflow:hidden), which breaks desktop scroll after the sheet
+    // closes.
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.body.classList.add("pn-comments-open");
+    if (listRef.current) listRef.current.scrollTop = 0;
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = prev;
       document.body.classList.remove("pn-comments-open");
     };
   }, [isOpen]);
@@ -642,7 +643,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
           to   { opacity: 1; transform: translateY(0);   }
         }
         @keyframes csHighlight {
-          0%   { background: rgba(5,57,128,0.07); }
+          0%   { background: rgba(4,44,133,0.07); }
           100% { background: transparent; }
         }
         .cs-entry { animation: csFadeIn 0.36s cubic-bezier(0.22,1,0.36,1) both; }
@@ -835,8 +836,8 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                         // Own-comment highlight — editorial annotation rather than UI chrome.
                         // A soft tint + inset left rule in the brand ink quietly marks
                         // the current user's posts without breaking the thread rhythm.
-                        background: isOwn ? "rgba(5,57,128,0.045)" : undefined,
-                        boxShadow: isOwn ? "inset 2px 0 0 rgba(5,57,128,0.38)" : undefined,
+                        background: isOwn ? "rgba(4,44,133,0.045)" : undefined,
+                        boxShadow: isOwn ? "inset 2px 0 0 rgba(4,44,133,0.38)" : undefined,
                       }}
                     >
                   <div className="flex gap-3">
@@ -864,7 +865,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                               textTransform: "uppercase",
                               padding: "1px 5px",
                               borderRadius: 3,
-                              background: "rgba(5,57,128,0.10)",
+                              background: "rgba(4,44,133,0.10)",
                               lineHeight: 1.1,
                               alignSelf: "center",
                             }}
@@ -970,8 +971,8 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                             // to overshoot the reply gutter's inset so the tint
                             // reaches the left rule cleanly, then padding to
                             // restore the content position.
-                            background: isOwnReply ? "rgba(5,57,128,0.045)" : undefined,
-                            boxShadow: isOwnReply ? "inset 2px 0 0 rgba(5,57,128,0.38)" : undefined,
+                            background: isOwnReply ? "rgba(4,44,133,0.045)" : undefined,
+                            boxShadow: isOwnReply ? "inset 2px 0 0 rgba(4,44,133,0.38)" : undefined,
                             marginLeft: isOwnReply ? -14 : undefined,
                             paddingLeft: isOwnReply ? 12 : undefined,
                             marginRight: isOwnReply ? -4 : undefined,
@@ -1001,7 +1002,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                                     textTransform: "uppercase",
                                     padding: "1px 4px",
                                     borderRadius: 3,
-                                    background: "rgba(5,57,128,0.10)",
+                                    background: "rgba(4,44,133,0.10)",
                                     lineHeight: 1.1,
                                     alignSelf: "center",
                                   }}
@@ -1097,7 +1098,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
           className="relative z-10 flex-shrink-0 px-4 pt-3"
           style={{
             paddingBottom: "calc(16px + env(safe-area-inset-bottom, 0px))",
-            borderTop: `1px solid ${inputFocused ? "rgba(5,57,128,0.18)" : INK_HAIR}`,
+            borderTop: `1px solid ${inputFocused ? "rgba(4,44,133,0.18)" : INK_HAIR}`,
             transition: "border-color 0.2s",
           }}
         >
@@ -1129,7 +1130,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
                 height: 40,
                 borderRadius: 999,
                 background: inputFocused ? "rgba(8,27,58,0.06)" : INK_SOFT,
-                border: `1px solid ${inputFocused ? "rgba(5,57,128,0.22)" : INK_HAIR}`,
+                border: `1px solid ${inputFocused ? "rgba(4,44,133,0.22)" : INK_HAIR}`,
                 transition: "background 0.18s, border-color 0.18s",
               }}
             >
@@ -1189,7 +1190,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
             padding: 20,
             // Backdrop uses the exact BRAND blue so the modal sits inside
             // the same colour family as the rest of the app.
-            background: "rgba(5,57,128,0.62)",
+            background: "rgba(4,44,133,0.62)",
             backdropFilter: "blur(8px) saturate(1.1)",
             WebkitBackdropFilter: "blur(8px) saturate(1.1)",
             animation: "csBackdropIn 0.22s ease-out both",

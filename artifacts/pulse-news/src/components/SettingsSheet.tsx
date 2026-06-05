@@ -16,7 +16,7 @@ import { APP_VERSION } from "@/pages/feed-internals";
  *      parent unmounts the sheet and returns to the splash/signed-out state.
  *
  * Visual language mirrors LegalSheet + UsernameSheet:
- *   - dark blue (#053980) bg with GrainBackground
+ *   - dark blue (#042c85) bg with GrainBackground
  *   - cream (#fff1cd) copy, Macabro for labels/titles, Inter for body
  *   - box-shadow + GrainBackground gated on isOpen (see MEMORY.md — rainbow
  *     fringing bug from always-mounted sheets).
@@ -226,7 +226,7 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
         style={{
           height: '90dvh',
           maxWidth: '480px',
-          background: '#053980',
+          background: '#042c85',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
           transition: dragOffset > 0 ? 'none' : 'transform 0.38s cubic-bezier(0.32,0.72,0,1)',
@@ -725,7 +725,7 @@ function PrimaryButton({
         fontSize: '12px',
         letterSpacing: '0.10em',
         background: disabled ? 'rgba(255,241,205,0.12)' : '#fff1cd',
-        color: disabled ? 'rgba(255,241,205,0.32)' : '#053980',
+        color: disabled ? 'rgba(255,241,205,0.32)' : '#042c85',
       }}
     >
       {children}

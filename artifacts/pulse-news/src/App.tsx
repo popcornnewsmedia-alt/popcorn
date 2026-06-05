@@ -11,6 +11,8 @@ import { useIsDesktopWeb } from "@/hooks/use-is-desktop-web";
 import NotFound from "@/pages/not-found";
 import { EmailConfirmedScreen } from "@/components/EmailConfirmedScreen";
 import { UsernameSheet } from "@/components/UsernameSheet";
+import { PopcornReadyOverlay } from "@/components/PopcornReadyOverlay";
+import { setupPushNotifications } from "@/lib/push-registration";
 import { supabase } from "@/lib/supabase";
 
 const queryClient = new QueryClient({
@@ -63,6 +65,13 @@ function App() {
 
       const user = session.user;
       const provider = user.app_metadata?.provider;
+
+      // iOS push-notification registration (no-op on web). Triggers the system
+      // permission prompt the first time, silently re-registers thereafter.
+      setupPushNotifications(async () => {
+        const { data } = await supabase.auth.getSession();
+        return data.session?.access_token ?? null;
+      });
 
       // Username gate: fetch profile row; prompt if missing.
       try {
@@ -237,6 +246,7 @@ function App() {
             onComplete={() => setUsernamePrompt(null)}
           />
         )}
+        <PopcornReadyOverlay />
       </TooltipProvider>
     </QueryClientProvider>
   );

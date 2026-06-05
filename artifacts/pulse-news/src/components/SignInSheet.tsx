@@ -172,7 +172,7 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
         className="fixed inset-x-0 bottom-0 z-[220] flex flex-col overflow-hidden mx-auto"
         style={{
           maxWidth: '480px',
-          background: '#053980',
+          background: '#042c85',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
           transition: dragOffset > 0 ? 'none' : 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
@@ -276,7 +276,7 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
               fontSize: '14px',
               letterSpacing: '0.08em',
               background: canSubmit && !loading ? '#fff1cd' : 'rgba(255,241,205,0.12)',
-              color: canSubmit && !loading ? '#053980' : 'rgba(255,241,205,0.28)',
+              color: canSubmit && !loading ? '#042c85' : 'rgba(255,241,205,0.28)',
             }}
           >
             {loading ? "SIGNING IN…" : "SIGN IN"}

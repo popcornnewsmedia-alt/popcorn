@@ -23,6 +23,7 @@ import { mergeFeed, saveCommittedFeed, saveCommittedFeedAsProd, removeArticlesBy
 import { markLive } from "../lib/article-store.js";
 import { processAndUploadImage } from "../lib/image-processor.js";
 import { supabase } from "../lib/supabase-client.js";
+import { broadcastFeedReady } from "../lib/push-broadcast.js";
 import https from "node:https";
 
 const router: IRouter = Router();
@@ -386,6 +387,14 @@ router.post("/curation/promote", async (req, res) => {
   try {
     const { feedDate = new Date().toISOString().slice(0, 10) } = req.body as { feedDate?: string };
     const count = await promoteToProduction(feedDate);
+
+    // Fan-out push notification — fire-and-forget so it never blocks the response.
+    if (count > 0 && process.env.PUSH_ENABLED === "true") {
+      broadcastFeedReady(feedDate).catch(err =>
+        console.error("[push/broadcast] failed:", (err as Error).message),
+      );
+    }
+
     res.json({
       ok: true,
       promoted: count,

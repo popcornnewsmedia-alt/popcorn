@@ -8,7 +8,7 @@ interface DesktopAuthModalProps {
   onCreateAccount: () => void;
 }
 
-const BLUE = "#053980";
+const BLUE = "#042c85";
 const CREAM = "#fff1cd";
 const PAPER = "#fbf4dc";
 const INK = "#0a2a5a";
@@ -56,7 +56,7 @@ export function DesktopAuthModal({
       className="fixed inset-0 z-[100] flex items-center justify-center px-6"
       onClick={onClose}
       style={{
-        background: "rgba(5,57,128,0.55)",
+        background: "rgba(4,44,133,0.55)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
         opacity: mounted ? 1 : 0,
@@ -72,7 +72,7 @@ export function DesktopAuthModal({
           background: PAPER,
           color: INK,
           borderRadius: "2px",
-          boxShadow: "0 30px 80px -20px rgba(5,57,128,0.55), 0 0 0 1px rgba(5,57,128,0.12)",
+          boxShadow: "0 30px 80px -20px rgba(4,44,133,0.55), 0 0 0 1px rgba(4,44,133,0.12)",
           transform: mounted ? "translateY(0) scale(1)" : "translateY(12px) scale(0.985)",
           opacity: mounted ? 1 : 0,
           transition: "transform 420ms cubic-bezier(0.23,1,0.32,1), opacity 320ms ease-out",
@@ -82,7 +82,7 @@ export function DesktopAuthModal({
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-[rgba(5,57,128,0.08)] transition-colors"
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-[rgba(4,44,133,0.08)] transition-colors"
           style={{ color: BLUE }}
         >
           <X size={18} strokeWidth={1.8} />
@@ -91,7 +91,7 @@ export function DesktopAuthModal({
         {/* Top rule + eyebrow */}
         <div className="px-12 pt-12 pb-2">
           <div className="flex items-center gap-4 mb-10">
-            <div className="flex-1 h-px" style={{ background: "rgba(5,57,128,0.25)" }} />
+            <div className="flex-1 h-px" style={{ background: "rgba(4,44,133,0.25)" }} />
             <span
               className="text-[10px] uppercase whitespace-nowrap"
               style={{
@@ -103,7 +103,7 @@ export function DesktopAuthModal({
             >
               Welcome
             </span>
-            <div className="flex-1 h-px" style={{ background: "rgba(5,57,128,0.25)" }} />
+            <div className="flex-1 h-px" style={{ background: "rgba(4,44,133,0.25)" }} />
           </div>
 
           <h2
@@ -151,7 +151,7 @@ export function DesktopAuthModal({
           </button>
 
           <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px" style={{ background: "rgba(5,57,128,0.18)" }} />
+            <div className="flex-1 h-px" style={{ background: "rgba(4,44,133,0.18)" }} />
             <span
               className="text-[10px] uppercase"
               style={{
@@ -164,7 +164,7 @@ export function DesktopAuthModal({
             >
               or
             </span>
-            <div className="flex-1 h-px" style={{ background: "rgba(5,57,128,0.18)" }} />
+            <div className="flex-1 h-px" style={{ background: "rgba(4,44,133,0.18)" }} />
           </div>
 
           <button

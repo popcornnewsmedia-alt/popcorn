@@ -109,7 +109,7 @@ export function UsernameSheet({ isOpen, userId, defaultSeed, onComplete }: Usern
         style={{
           height: '90dvh',
           maxWidth: '480px',
-          background: '#053980',
+          background: '#042c85',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
           transition: 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
@@ -190,7 +190,7 @@ export function UsernameSheet({ isOpen, userId, defaultSeed, onComplete }: Usern
               fontSize: '14px',
               letterSpacing: '0.08em',
               background: canSubmit ? '#fff1cd' : 'rgba(255,241,205,0.12)',
-              color: canSubmit ? '#053980' : 'rgba(255,241,205,0.28)',
+              color: canSubmit ? '#042c85' : 'rgba(255,241,205,0.28)',
             }}
           >
             {submitting ? "SAVING…" : "CLAIM HANDLE"}

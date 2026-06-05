@@ -299,7 +299,7 @@ function SavedScreen({
 }) {
   if (articles.length === 0) {
     return (
-      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center px-8 text-center overflow-hidden" style={{ background: "#053980", zIndex: 1 }}>
+      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center px-8 text-center overflow-hidden" style={{ background: "#042c85", zIndex: 1 }}>
         <GrainBackground />
         <div className="relative z-10 flex flex-col items-center gap-5 max-w-xs">
           <div
@@ -330,7 +330,7 @@ function SavedScreen({
           <button
             onClick={onBrowse}
             className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
-            style={{ background: "#fff1cd", color: "#053980" }}
+            style={{ background: "#fff1cd", color: "#042c85" }}
           >
             Browse
           </button>
@@ -340,7 +340,7 @@ function SavedScreen({
   }
 
   return (
-    <div className="pn-fullscreen fixed inset-0 overflow-hidden flex flex-col items-center" style={{ background: "#053980", zIndex: 1 }}>
+    <div className="pn-fullscreen fixed inset-0 overflow-hidden flex flex-col items-center" style={{ background: "#042c85", zIndex: 1 }}>
       <GrainBackground />
       <div className="relative z-10 flex flex-col h-full w-full" style={{ maxWidth: '480px' }}>
         {/* Header */}
@@ -467,7 +467,7 @@ function ProfileScreen({
   const initial = (userName ?? userEmail ?? "?")[0].toUpperCase();
 
   return (
-    <div className="pn-fullscreen fixed inset-0 flex flex-col items-center overflow-hidden" style={{ background: "#053980", zIndex: 1 }}>
+    <div className="pn-fullscreen fixed inset-0 flex flex-col items-center overflow-hidden" style={{ background: "#042c85", zIndex: 1 }}>
       <GrainBackground />
 
       {isLoggedIn ? (
@@ -637,7 +637,7 @@ function ProfileScreen({
               <button
                 onClick={onSignIn}
                 className="w-full py-3.5 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
-                style={{ background: "#fff1cd", color: "#053980" }}
+                style={{ background: "#fff1cd", color: "#042c85" }}
               >
                 Sign in
               </button>
@@ -741,7 +741,7 @@ export function FeedPage() {
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
     const isDark = readingArticle || (activeTab === 'feed' && !showSplash);
-    const color = isDark ? '#000000' : '#053980';
+    const color = isDark ? '#000000' : '#042c85';
     if (meta) meta.content = color;
     document.documentElement.style.background = color;
   }, [readingArticle, activeTab, showSplash]);
@@ -1272,7 +1272,7 @@ export function FeedPage() {
 
   if (status === "pending") {
     return (
-      <div className="pn-fullscreen fixed inset-0 overflow-hidden" style={{ background: '#053980' }}>
+      <div className="pn-fullscreen fixed inset-0 overflow-hidden" style={{ background: '#042c85' }}>
         <GrainBackground />
       </div>
     );
@@ -1280,7 +1280,7 @@ export function FeedPage() {
 
   if (status === "error") {
     return (
-      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center p-8 text-center overflow-hidden" style={{ background: '#053980' }}>
+      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center p-8 text-center overflow-hidden" style={{ background: '#042c85' }}>
         <GrainBackground />
         <AlertCircle className="w-10 h-10 text-red-400 mb-6" />
         <h2 className="font-['Manrope'] font-bold text-2xl mb-3" style={{ color: "#fff1cd" }}>Connection lost</h2>
@@ -1290,7 +1290,7 @@ export function FeedPage() {
         <button
           onClick={() => refetch()}
           className="flex items-center gap-2 px-6 py-3 rounded-full font-['Inter'] font-semibold text-sm"
-          style={{ background: "#fff1cd", color: "#053980" }}
+          style={{ background: "#fff1cd", color: "#042c85" }}
         >
           <RefreshCw className="w-4 h-4" />
           Try Again
@@ -1320,7 +1320,7 @@ export function FeedPage() {
   };
 
   return (
-    <div className="pn-fullscreen fixed inset-0" style={{ background: '#053980' }}>
+    <div className="pn-fullscreen fixed inset-0" style={{ background: '#042c85' }}>
       {/* Persistent grain behind all fixed content — covers full viewport
           including bottom safe area so the home indicator region shows grain,
           not a flat color that causes rainbow banding. Splash has its own

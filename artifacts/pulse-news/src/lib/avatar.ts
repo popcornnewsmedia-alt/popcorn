@@ -1,10 +1,10 @@
 // Shared avatar palette + helpers for comments / notifications / composer.
 
-export const BRAND = "#053980";
+export const BRAND = "#042c85";
 export const CREAM = "#fff1cd";
 
 // Quiet variations within the blue family. Used to colour commenter avatars.
-const AVATAR_BLUES = ["#053980", "#0c4a98", "#042a62", "#1d5aa6"];
+const AVATAR_BLUES = ["#042c85", "#0c4a98", "#042a62", "#1d5aa6"];
 
 export function avatarColor(name: string): string {
   let hash = 0;

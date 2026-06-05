@@ -7,7 +7,7 @@ input:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px rgba(5,57,128,0.92) inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(4,44,133,0.92) inset !important;
   -webkit-text-fill-color: #fff1cd !important;
   caret-color: #fff1cd;
   transition: background-color 5000s ease-in-out 0s;
@@ -150,7 +150,7 @@ select:focus-visible {
      overflow:hidden prevents bounce-scroll on the page itself. */
   html {
     height: 100%;
-    background: #053980;
+    background: #042c85;
     overflow: hidden;
   }
 

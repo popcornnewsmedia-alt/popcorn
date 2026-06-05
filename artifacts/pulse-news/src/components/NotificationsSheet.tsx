@@ -97,7 +97,7 @@ export function NotificationsSheet({ isOpen, items, loading, onClose, onSelect }
         style={{
           height: '82dvh',
           maxWidth: '480px',
-          background: '#053980',
+          background: '#042c85',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
           transition: dragOffset > 0 ? 'none' : 'transform 0.38s cubic-bezier(0.32,0.72,0,1)',

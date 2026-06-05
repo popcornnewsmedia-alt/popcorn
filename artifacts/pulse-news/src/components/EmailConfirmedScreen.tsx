@@ -23,7 +23,7 @@ export function EmailConfirmedScreen({ onContinue }: EmailConfirmedScreenProps) 
     <div
       className="fixed inset-0 z-[500] flex flex-col"
       style={{
-        background: "#053980",
+        background: "#042c85",
         opacity: visible ? 1 : 0,
         transition: "opacity 0.4s ease",
       }}
@@ -44,7 +44,7 @@ export function EmailConfirmedScreen({ onContinue }: EmailConfirmedScreenProps) 
         >
           <Check
             className="w-7 h-7"
-            style={{ color: "#053980" }}
+            style={{ color: "#042c85" }}
             strokeWidth={2.5}
           />
         </div>
@@ -102,7 +102,7 @@ export function EmailConfirmedScreen({ onContinue }: EmailConfirmedScreenProps) 
             fontSize: "14px",
             letterSpacing: "0.08em",
             background: "#fff1cd",
-            color: "#053980",
+            color: "#042c85",
           }}
         >
           START READING

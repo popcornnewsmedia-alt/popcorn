@@ -1,0 +1,807 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  POPCORN CANDIDATES — 2026-05-26   (7 windows merged)
+  760 articles fetched   724 unique stories   0 selected by Claude
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+── FIRST PASS — Claude's picks (0 selected) ────────────────────────────────────────────────────────────
+  (none selected this run)
+
+── ALL CANDIDATES (sorted by score) ─────────────────────────────────────────────────────────────────
+   #1    11    Billboard                     Sonny Rollins, One of Jazz’s Greatest Saxophonists, Dies at 95
+   #2    11    The Hollywood Reporter        Sonny Rollins, Tenor Sax Legend and Colossus of Jazz, Dies at 95
+   #3    10    Deadline                      Triple Green CineCapital Sets Charlie Nguyen Video Game Adaptation ‘The Scourge’ As First Vietnamese Investment
+   #4    10    The Hollywood Reporter        Russell Crowe Defends Brusque Warning to Autograph Seekers in Viral Video: “What’s Your Problem?”
+   #5    10    Deadline                      ‘Star Wars: Mandalorian & Grogu’ With $100M, ‘Obsession’ With Amorous $30M+ Lead Near $222M Memorial Day Weekend – Update With Chart
+   #6    10    Billboard                     Sombr Rocks 2026 AMAs With Rainy ‘Homewrecker’ Performance — and the Night’s First Win
+   #7    10    Page Six                      Sonny Rollins, saxophonist and restless genius of jazz, dead at 95
+   #8    9     Sky Sports Football           Man Utd latest: Fernandes and Keane clash over PL assists record
+   #9    9     Billboard                     Ludacris On His New “Pull Over” Music Video, Teases New Album & More | AMAs 2026
+   #10   9     Rolling Stone                 How to Watch the 2026 American Music Awards Online for Free
+   #11   9     The Verge                     Ferrari reveals its first EV, with design help from Jony Ive
+   #12   9     IGN                           The 77" LG G5 Gallery Series 4K OLED TV Drops to $2,199 During the Amazon Memorial Day Sale
+   #13   8     Business Insider              Best Memorial Day mattress sales: Deals from Saatva, Leesa, and more
+   #14   8     TechCrunch                    Amazon fulfillment competitor Stord raises $250M at $3B valuation
+   #15   8     Highsnobiety                  Coach’s Collection with Brain Dead Is All About Trinketmaxxing
+   #16   8     Daily Mail                    As UK skin cancer cases hit record high, top dermatologist reveals the SPF mistakes millions make (and the simple fix that could save your life): Our expert SPF guide FREE in the Your Health newsletter
+   #17   8     Daily Mail                    Life's a beach for Ange! Rayner takes a break from Labour chaos as she enjoys May heatwave in Brighton with ex-MP lover - after former deputy PM settles tax bill and awaits Cabinet return
+   #18   8     Daily Mail                    Today is going to be even HOTTER, Met Office warns: UK weather map reveals where mercury is expected to hit 36C - after record breaking May day
+   #19   8     Daily Mail                    Is the heatwave going to bring record-breaking temperatures in YOUR area? Check with our interactive tool
+   #20   8     Daily Mail                    'It's too hot for us to go on': Commuters kicked off train in scorching heat 'after air conditioning stops working in carriages' on record-breaking May day
+   #21   8     Daily Mail                    'Neighbour from hell' who waged 15-year vendetta on couple - spying on them, throwing rotting dead moles over the garden fence and leaving her noisy lawnmower on during their wine and tapas party
+   #22   8     Daily Mail                    Sam caused outrage for daring to say her beauty made other women hate her... So could she learn to stop being so obsessed with her looks?
+   #23   8     Daily Mail                    Love Island 2026 line-up REVEALED: First-class criminology graduate, suave business owner and DJ set to head into the Mallorcan villa looking for romance
+   #24   8     Daily Mail                    The 'unsellable' retirement homes scandal: How Brits are losing millions of pounds as values plunge by up to 95% due to restrictive leases and high service charges
+   #25   8     Page Six                      Fergie has emotional reunion with Black Eyed Peas ‘brothers’ at 2026 AMAs
+   #26   8     Daily Mail                    The most outrageous spending sprees of all time: From Michael Jackson's £4.5 million antiques haul to Imelda Marcos, who spent $35,000 on limos in one day...as Peter Murrell's £400,000 blowout is revealed
+   #27   8     Daily Mail                    The prison meals for the 'living dead': Moment Richard Madeley joins shaven-headed inmates as they eat their dinner of rice and beans at El Salvador's mega jail
+   #28   8     Variety                       Memorial Day Weekend Box Office: ‘Mandalorian and Grogu’ Opens to $100 Million Domestically, $163 Million Globally
+   #29   8     Page Six                      Lizzo addresses claim she was ‘s–t talking’ Taylor Swift with expletive-filled response
+   #30   8     Hypebeast                     IO Interactive's ‘007 First Light’ Launch Trailer Reveals Lenny Kravitz as the Villain
+   #31   8     Daily Mail                    Shocking study reveals truth about Hollywood ageism as talking animals get more screen time than women over 60
+   #32   8     Inc.                          My Wife and I Could Contribute $160,000 a Year to Our Retirement Plans. Here’s Why We Don’t
+   #33   8     Daily Mail                    Fern Britton reveals she is still good friends with sacked This Morning co-host John Leslie and claims girls were 'all over him' 24 years after his career imploded over rape and drug allegations
+   #34   8     Daily Mail                    Wes Streeting says social media firms should be treated like tobacco industry as he piles pressure on Keir Starmer to introduce a ban for under-16s
+   #35   8     Variety                       Netflix Brazil Unveils Its First Medical Series, Plus an Evangelical Special, a Third Melodrama and an Open Marriage Comedy (EXCLUSIVE)
+   #36   8     Page Six                      Martha Stewart’s simple potato salad recipe divides with controversial ingredients
+   #37   8     BBC Sport                     Roberts and Davies return from injury for Wales
+   #38   8     Wired                         The Cookware Industry Has a Major Fight Brewing Over PFAS Claims
+   #39   8     Daily Mail                    The REAL reason behind the BBC's controversial decision to make Johannes a Strictly host: KATIE HIND reveals all in the Spotlight newsletter
+   #40   8     Daily Mail                    Trump stuns Arab leaders into silence in dramatic leaked phone call as President demands 'great deal' from Iran: 'I will blow s*** up'
+   #41   8     Deadline                      Global Box Office Top 10: ‘Mandalorian & Grogu’ $163M WW, ‘Michael’ Nears $800M WW, China’s ‘Dear You’ Touches $151M+
+   #42   8     The Hollywood Reporter        23 of the Most Shocking Character Deaths in Television History
+   #43   8     Daily Mail                    Gisèle Pelicot says she is 'deeply shocked' that three teenage boys were spared jail after raping two schoolgirls in separate attacks
+   #44   8     Page Six                      Tiger Woods resurfaces on social media with first post since DUI arrest
+   #45   8     Daily Mail                    Why never to dismiss waking up with swollen hands and feet as 'just another side effect' of alcohol and hot weather. It can be the first sign of a life-threatening condition...
+   #46   8     Daily Mail                    EastEnders' Letitia Dean, 58, shows off her incredible weight loss and glamorous new look as Sharon Watts makes a dramatic return to the soap
+   #47   8     Daily Mail                    What exactly is the frog poison detox trend? It's beloved by Orlando Bloom but experts warn of terrifying risks as British man, 40, dies
+   #48   8     Daily Mail                    Love Island signs first-class Criminology graduate as bosses reveal glamorous new islander
+   #49   8     Page Six                      Shannon Elizabeth, 52, poses in swimsuit for first time in 25 years after launching OnlyFans
+   #50   8     Dexerto                       Three Scientology speedrunners arrested for causing $10k worth of damage
+   #51   8     Page Six                      Aurora Culpo welcomes baby No. 3, her first with fiancé Zac
+   #52   8     Daily Mail                    Heartwarming moment Air Force father returns from Japan to surprise son on stage at high school graduation
+   #53   8     Daily Mail                    Eight-day-old baby is rushed to hospital and woman, 37, is arrested after 'drink driving' crash
+   #54   8     Daily Mail                    Thousands of pupils hit by A-level grades chaos as physics and maths exams are leaked online
+   #55   8     Billboard                     Demi Lovato Celebrates First Wedding Anniversary With Jordan Lutes
+   #56   8     Rolling Stone                 Keith Richards, Sting, Yungblud Reflect on Eddie Cochran’s Influence in ‘Don’t Forget Me’ Doc Trailer
+   #57   8     Rolling Stone                 Can Local Outrage Over Data Centers Tilt the Midterms?
+   #58   8     Daily Mail                    Brit is arrested after 'hit-and-run crash in Thailand leaves doctor fighting for his life'
+   #59   8     The Hollywood Reporter        BTS Greeted by Screaming Fans in AMAs Return After Four Years
+   #60   8     Dexerto                       Care home goes viral with competitive Wii Bowling team that are undefeated for 5 years
+   #61   8     IGN                           Harry Potter HBO Teaser Shows First Look at Game of Thrones Star Anton Lesser as Ollivander
+   #62   8     Daily Mail                    Ferrari's first EV is here! World's most iconic car firm makes its dramatic leap to electric with the £500k Luce
+   #63   8     Billboard                     The Pussycat Dolls Return to 2026 American Music Awards With Fiery Medley Featuring Busta Rhymes
+   #64   8     Dexerto                       Thai police go viral after disguising themselves as dancers to arrest drug dealer
+   #65   8     Daily Mail                    Trump returns to hospital for THIRD time in 13 months as ex-White House doctors sound alarm
+   #66   8     NME                           Big Freedia to release SOPHIE-produced record this summer
+   #67   8     Daily Mail                    Sonny Rollins dead at 95: Iconic jazz saxophonist passed away at his New York home
+   #68   8     Business Insider              One map shows the highest-paying job in every state
+   #69   8     Business Insider              I'm the first female trainer to win the Kentucky Derby. Being a horse trainer is my identity; I was never interested in being a mom.
+   #70   8     Hypebeast                     Denza and Chopard Built a Jewelry-Clad EV, Then Sold It for $815,000 USD
+   #71   8     Daily Mail                    Noel Gallagher, 58, honours departing boss of his beloved Manchester City at star-studded ceremony - after stepping out for the first time with new love interest Nina Johnson, 28
+   #72   8     Deadline                      “The Evolution Of Late Night Is Here”: Ben Gleib Talks Launching World’s First YouTube-Native Late-Night Talk Show From His House – Comedy Means Business Podcast
+   #73   8     IGN                           Take-Two CEO Pushes Back Against Suggestion Red Dead Online Was a Missed Opportunity
+   #74   8     IGN                           James Bond Meets Khaby Lame in 007 First Light
+   #75   8     Daily Mail                    What next for Emma Raducanu? As British No 1 fights back tears after her latest defeat and claims 'it's very difficult' to go on, here's why this summer is make or break, writes JAMES SHARPE
+   #76   8     Daily Mail                    Britain boils on hottest May day EVER: Up to nine counties see record breaking temperatures in 'historic' 35C heatwave - amid warnings of 'super El Niño' in months to come
+   #77   8     Daily Mail                    Katie Price shares the voice note she sent to her husband Lee Andrews' dad after he went 'missing' - as he claims his son has been arrested in Dubai
+   #78   8     The Hollywood Reporter        Queen Latifah Hypes up Crowd as 2026 AMAs Host, Helps BTS Make Awards Show Return
+   #79   8     NYT Arts                      Opera Philadelphia: Behind Its Comeback
+   #80   8     Daily Mail                    Woman, 30, dies after shooting outside bar in Sheffield: Police arrest three people in connection
+   #81   8     Daily Mail                    Jacob Elordi can't keep his hands off Kendall Jenner in first PDA at cozy dinner
+   #82   8     Variety                       ‘Paddington 4’: Armando Iannucci to Write Bear’s Next Movie, ‘Paddington in Peru’ Director Dougal Wilson in Talks to Return (EXCLUSIVE)
+   #83   8     Inc.                          13 Scientists Are Dead or Missing. Congress Wants Answers
+   #84   8     Daily Mail                    Man and woman fighting for their lives after being stabbed in village - as boy, 17, is arrested
+   #85   8     Engadget                      Huawei claims it will make cutting-edge semiconductors by 2031
+   #86   8     Page Six                      Stephen Colbert takes jab at CBS, Paramount with surprise TV return — 1 day after final ‘Late Show’ episode
+   #87   8     IGN                           Grab the Alienware Aurora RTX 5080 Gaming PC for Just $1,862 at Dell Outlet Before It Goes Out of Stock
+   #88   8     Deadline                      Netflix Unveils First Brazilian Medical Drama ‘MED’ Amid Slate Of New Originals
+   #89   8     IGN                           The Powerful MSI Vector 16" RTX 5070 Ti Gaming Laptop Drops to $1399 for Memorial Day
+   #90   8     Daily Mail                    Prestigious school attended by celeb children is embroiled in kissing club scandal as kids as young as 7 are sexually abused, lawsuit claims
+   #91   8     Daily Mail                    Soft justice makes police 'caretakers for criminals': As thug who battered officer for dead is freed after less than three months, rank and file leader blasts Labour's early release 'reforms'
+   #92   8     Daily Mail                    Penelope Cruz, 52, thought she was 'going to die' when a doctor warned her of a brain aneurysm
+   #93   8     Page Six                      Lindsie Chrisley, 36, arrested on suspicion of DUI — and string of other charges
+   #94   8     Futurism                      Record Label Claims That Bizarre AI-Generated “Viking Rappers” Garnering Millions of Views are Real People
+   #95   8     Daily Mail                    Angry Russell Crowe scolds fans waiting for his autograph outside Paris hotel: 'Don't f***ing push in on me'
+   #96   8     Page Six                      Brooke Hogan claps back after ‘trolls’ claim she mourned late dad Hulk Hogan with a ‘thirst trap’
+   #97   8     Wired                         These Privacy-Conscious Gay Dating Apps Want to Dethrone Grindr
+   #98   8     Variety                       Tegna Names Fox TV Stations Ad Sales Boss Patrick Paolini CEO With Nexstar Merger in Legal Limbo
+   #99   8     Sky Sports                    EFL latest: Tranmere appoint Clarke
+   #100  8     Hypebeast                     HBO Max Debuts New ‘Harry Potter’ Footage in Latest “Coming Soon” Trailer
+   #101  8     Sky Sports                    Bournemouth latest: AC Milan approach Iraola after four-person sacking
+   #102  8     Business Insider              Ferrari just unveiled its first EV. The internet wasted no time roasting it.
+   #103  8     Sky Sports                    Four more years! Shaw to stay at Man City
+   #104  8     BBC Sport                     Knicks reach NBA Finals for first time in 27 years
+   #105  8     Hypebeast                     Bottega Veneta's TOSCA AirPods Case Puts $1,250 USD Worth of Intrecciato Craft on Your Wrist
+   #106  8     Sky Sports                    Can Raducanu get back to aggressive, first-strike style on grass under coach Richardson?
+   #107  8     Variety                       Russell Crowe Warns Crowd of Autograph-Seekers in Paris Not to Push: ‘As Soon as Somebody’s a D–k, I’m Going’
+   #108  8     BBC Sport                     'I hope to inspire' - Monfils bows out of final French Open
+   #109  8     Sky Sports                    Neville: Next step for Arsenal is to win CL - but 'best in Europe' await
+   #110  8     Billboard                     Snubs and Surprises at the 2026 American Music Awards
+   #111  8     Sky Sports                    Forest latest: Gibbs-White opens up on England snub
+   #112  7     Sky Sports                    The PL clubs changing manager... and the others that could follow
+   #113  7     Sky Sports                    From Macclesfield to Leipzig: How Palace reached Conference League final
+   #114  7     Rolling Stone                 Hootie and the Blowfish Hit Big on Their Return to the AMAs Stage With Medley
+   #115  7     Business Insider              'Euphoria' just killed a main character for the first time. Here's what the showrunner said about the 'horrific' scene.
+   #116  7     Billboard                     BTS Wins Artist of the Year at 2026 AMAs: ‘We Made It Once Again’
+   #117  7     Consequence                   “Vegas is Officially Ours”: BTS Return to Sin City as Masters of Intimacy on a Grand Scale
+   #118  7     Semafor                       Pope calls for 'disarming' of AI in first encyclical
+   #119  7     Dexerto                       Twitch claims viewbotting streamers aren’t benefitting much from inflated view counts
+   #120  7     IGN                           Save $950 Off the Massively Powerful Lenovo Legion Pro 7 RTX 5090 Gaming Laptop for Memorial Day
+   #121  7     IGN                           The New 2026 Apple iPad Air with M4 Chip Drops to a New All-Time Low Price for Memorial Day
+   #122  7     Dexerto                       Comedian & podcaster Laura Clery nearly dies after massive fridge falls on top of her
+   #123  7     Polygon                       Exodus: The Helium Sea gets first chapter preview — read it
+   #124  7     IGN                           Tekken Director Katsuhiro Harada Finally Takes a Trip to Waffle House
+   #125  7     BBC Sport                     Crawley stars in Kent comeback win - T20 Blast round-up
+   #126  7     IGN                           Save $2,400 Off the Alienware 16X Aurora RTX 5070 Gaming Laptop Loaded With 64GB of RAM and 4TB SSD
+   #127  7     Engadget                      Epic Games reveals a first look at Unreal Engine 6 with a Rocket League makeover
+   #128  7     The Verge                     Sennheiser’s new Momentum 5 headphones have upgraded ANC and a replaceable battery
+   #129  7     Dexerto                       GTA 6 Police feature may have been accidentally leaked by Rockstar in GTA Online
+   #130  7     Wired                         A Swimmer Broke a World Record at the Enhanced Games
+   #131  7     NYT Arts                      Ryan Speedo Green in ‘Die Walküre’: Preview of the Met Opera
+   #132  7     NYT Arts                      How Art Auctions Choreographed a $2.5 Billion Comeback
+   #133  7     Dexerto                       TikTok star Khaby Lame joins joins 007 First Light in surprise cameo
+   #134  7     BBC Sport                     Shaw signs new Man City deal after contract U-turn
+   #135  7     The Guardian Culture          Thespians review – world’s first actor gets comic kudos from Mischief’s merrymakers
+   #136  7     Sky Sports                    Slot, Alisson, Diomande and Konate - Liverpool's big summer analysed
+   #137  7     Stereogum                     Drake Becomes First Artist To Hold Top Three Albums On Billboard 200
+   #138  7     TechCrunch                    5 days left: Save up to $410 on TechCrunch Disrupt 2026 passes before prices increase
+   #139  7     Futurism                      Two Men Arrested for Creating AI Deepfake Porn
+   #140  7     Dexerto                       France’s Zyn ban sparks backlash after Sweden compares it to banning baguettes
+   #141  6     Deadline                      Pawel Pawlikowski & Ruben Östlund Set For Croatia’s Slano Film Days
+   #142  6     Billboard                     Alysa Liu Looks Back At Her Insane Year at the Olympics & Shares What’s Next | AMAs 2026
+   #143  6     Daily Mail                    Is it really worth splashing out £4 on posh eggs: Experts reveal if pricey brands like Clarence Court are actually healthier... or if own-brand will do
+   #144  6     NME                           ‘Obsession’ has a “plot hole” that “doesn’t make any sense”, says director Curry Barker
+   #145  6     Semafor                       China rails against Japan’s increased defense spending
+   #146  6     Page Six                      Kylie Jenner and Timothée Chalamet celebrate Knicks win with a kiss during Cleveland date night
+   #147  6     Daily Mail                    US bombs Iran missile sites and mine-laying boats to 'protect troops' as Trump pushes fragile peace deal
+   #148  6     Daily Mail                    Stacey Solomon finally addresses speculation about marriage difficulties with husband Joe Swash
+   #149  6     Daily Mail                    Does Rupert Lowe really want to go down in history as the man who made Burnham PM - with Elon Musk's help? LEO MCKINSTRY
+   #150  6     Daily Mail                    Anne Hathaway stuns fans as she reveals secret health battle she endured for 10 YEARS
+   #151  6     Daily Mail                    The Traitors winner Jake Brown reveals he's set to become a dad as he shares sweet baby announcement video with his wife
+   #152  6     Daily Mail                    The Pussycat Dolls enjoy a red hot reunion in matching latex looks as they lead 2026 American Music Awards performances with Karol G
+   #153  6     Engadget                      Spotify is adding long-form articles to its audiobook library
+   #154  6     Daily Mail                    Iran names its price to end war with US after Trump launches new strikes on Tehran - live updates
+   #155  6     Daily Mail                    When Alex suffered a mortifying accident in bed with her new partner, she put it down to an embarrassing one-off. Little did she know she had a condition which is silently affecting thousands of middle aged women
+   #156  6     The Verge                     Spotify is narrating magazine articles now
+   #157  6     Daily Mail                    Personal trainer wins £150,000 payout after being forced to drive from Germany where she was competing in watersports championships for meeting with boss who didn't show up
+   #158  6     Semafor                       Russia warns of major Kyiv attacks
+   #159  6     Daily Mail                    Moment youngsters risk their lives playing on railway tracks as trains speed past
+   #160  6     Daily Mail                    Strictly pro Nikita Kuzmin says new host Johannes Radebe will 'never stop dancing' amid confusion around his role on the show
+   #161  6     Semafor                       Ferrari unveils new EV model
+   #162  6     Daily Mail                    Bella Hadid showcases her jaw-dropping physique in a blue swimsuit as she dances on a boat in Cannes
+   #163  6     Semafor                       How to win an energy war
+   #164  6     Daily Mail                    UFO files reveal new evidence of secret invasion by mysterious silver spheres
+   #165  6     Daily Mail                    What to do if you have bought an 'exploding Volvo': Inside the chaotic electric vehicle recall as soaring heat increases risk of catching fire and drivers demand end to PCP finance deals
+   #166  6     Daily Mail                    Kai Trump is granted restraining order against her alleged 26-year-old stalker
+   #167  6     Daily Mail                    Ozempic and Wegovy can lead to devastating muscle and bone loss... now experts reveal exactly how to fight it
+   #168  6     Daily Mail                    As Nobu opens a most unlikely new branch in Rutland, here's why the 'Notswolds' is the best place for your property money - and where exactly you should be buying
+   #169  6     Billboard                     Nikki Glaser On Her New Tour, Wants to Roast Someone From the Current Administration & More | AMAs 2026
+   #170  6     Daily Mail                    Fears for missing British woman after 'her camper van is stolen while driving back from Spain'
+   #171  6     Daily Mail                    The reason heart disease is more deadly for women - and the simple fix experts say could save lives
+   #172  6     Variety                       NewsNation Readies Podcast Push, Sees Chance to Expand Audience Beyond Cable
+   #173  6     Daily Mail                    Astonishing fight between Nottingham Forest owner and Greek prime minister's nephew is caught on CCTV - with the football boss left with a ripped shirt
+   #174  6     BBC Sport                     Why reluctant 'guru' says Dutch will win World Cup
+   #175  6     Page Six                      Mass exodus at Interview mag as rumors swirl it’s folding — but top editor says no
+   #176  6     Daily Mail                    From Mounjaro, to painkillers, heart pills, even HRT... why some drugs will NEVER work for you
+   #177  6     Daily Mail                    Chaos outside ICE detention center where hundreds of migrants are on hunger strike as protesters storm facility and senator is pepper-sprayed
+   #178  6     Daily Mail                    Star Wars spinoff Mandalorian And Grogu featuring Pedro Pascal hits new low after terrible reviews
+   #179  6     Daily Mail                    Denmark's former queen Margrethe, 86, is rushed to hospital after a fall, royal palace confirms
+   #180  6     Daily Mail                    'Ego trip' that could backfire on Britain: With his party opening the door to a Labour by-election win, Reform hit out at Restore leader's 'vanity'
+   #181  6     Daily Mail                    Daily glass of fresh fruit juice could help beat depression, study shows
+   #182  6     Daily Mail                    Arsenal super fan Piers Morgan mocks Tottenham in hilarious new Paddy Power advert as Premier League champions aim to secure double
+   #183  6     Dazed                         Behind the seams! Designer Javier Guijarro on Charli xcx’s ‘SS26’ look
+   #184  6     Daily Mail                    Is this Britain's loneliest home? Run-down 1960s semi that's NEVER been lived in is one of 265,000 forgotten properties blighting the nation
+   #185  6     Daily Mail                    Mollie King reveals she booked a C-section for her daughter's birth so that her dying father would be able to meet his granddaughter
+   #186  6     Daily Mail                    How dangerous ARE portable chargers on planes? Why an entire easyJet flight was diverted over a power bank - and the other items to avoid packing
+   #187  6     Inc.                          Wendy’s Restaurants Abroad Are About to Break the Biggest Color Rule of Food Branding
+   #188  6     Daily Mail                    How to keep your dignity in the heatwave: Etiquette Queen LAURA WINDSOR reveals what not to wear, the garden gadgets to avoid and the drinking rules you must abide by
+   #189  6     Engadget                      Tether will launch an 'official' stablecoin in Georgia tied to local currency
+   #190  6     Variety                       Films Are More Likely to Star a Man Named Chris or a Talking Animal Than an Older Woman, According to Study
+   #191  6     Variety                       ‘Six Months in a Pink and Blue Building’ Review: A Lush, Poetic Film Rooted in Real Memories
+   #192  6     Daily Mail                    Inside Tom Hardy's 'brutal' past from being expelled from private school for stealing to going 'entirely off the rails' with a crack cocaine addiction - as actor is fired from MobLand
+   #193  6     Daily Mail                    Katie Price 'is desperate to fly to Dubai to track down 'missing' husband Lee Andrews and prepared to launch an international manhunt with TV appeal - but fears he may have ghosted her'
+   #194  6     Daily Mail                    Revealed: Nicola Sturgeon's cherished pendant that her embezzler husband bought for her after telling jeweller 'I'm the man with the money'
+   #195  6     Daily Mail                    Shark PowerDetect Speed Clean and Empty Pet Pro cordless vacuum review: Why I'll never go back to a corded vacuum again after testing the new model from Shark
+   #196  6     Daily Mail                    Duchess Sophie's boho maxi skirt is the ultimate heatwave hero for effortless summer style - here's where to shop her whole outfit
+   #197  6     Dexerto                       Umamusume devs reveal surreal moment when they realized how popular the game really was
+   #198  6     The Atlantic                  Where Are America’s Ambassadors?
+   #199  6     Semafor                       The US relied on a spurned friend during the Iran war: Canada
+   #200  6     Daily Mail                    Fears over half term 'linkup' in Southend after bank holiday chaos erupted in Brighton and Hackney as murder probe launched after teen stabbed to death near house party
+   #201  6     NME                           PlayStation has increased the cost of all three Plus tiers
+   #202  6     NME                           The Big Pink’s Robbie Furze teams up with The Kills’ Jamie Hince and Jamie T for new EP as ‘M.O.T.H.E.R.’
+   #203  6     Variety                       Ira Sachs on ‘The Man I Love,’ Queer Cinema in the Age of Trump and Casting Straight Actors in Gay Roles: ‘I Don’t Ask People Who They’ve Slept With’
+   #204  6     Daily Mail                    Fans go wild as Kyle Richards' forgotten role in ER resurfaces... and it's a long way from RHOBH
+   #205  6     Page Six                      Jennifer Lopez busts a move in lace-up jeans from ‘Ain’t It Funny’ music video 25 years later
+   #206  6     Daily Mail                    RICHARD LITTLEJOHN: However did we survive summer without amber UV alerts and Nanny ordering us to stay indoors, keep hydrated and wear sunscreen?
+   #207  6     Hypebeast                     Spotify's New “Reserved” Feature Wants to Fix Concert Ticketing — and Your Listening History Is Your Ticket
+   #208  6     Daily Mail                    Newlywed who was murdered by her husband would still be alive today if police had not told her to stay in the UK, family says
+   #209  6     Dexerto                       Florida man finds millions of dollars washed up on beach – and actually hands it in
+   #210  6     Dexerto                       New Steam game is literally a scalper simulator where you flip a profit buying up items
+   #211  6     The Hollywood Reporter        She Won Cannes’ Best Documentary Award While Her Country Was at War
+   #212  6     Business of Fashion           Estée Lauder Exits Puig Talks With Firepower for Selective M&A
+   #213  6     Daily Mail                    Supernanny star Jo Frost weighs in on under-fire Russell Crowe after actor was filmed erupting at autograph hunters in Paris
+   #214  6     Daily Mail                    This Morning's Craig Doyle left red-faced and declares co-star Sian Welby needs to 'stop it' as she makes a hilarious dog gaffe
+   #215  6     NME                           Nicolas Cage remembers David Bowie wisdom about “reinventing yourself”
+   #216  6     Page Six                      ‘Euphoria’ fans in disbelief over character dying in ‘most horrific way possible’: ‘My worst nightmare’
+   #217  6     Daily Mail                    The stars who adore Amandaland's real-life 'SoHa', including Louis Theroux and Tamsin Greig - and how a family home in 'gritty' London area is HALF the price of TV alpha-mum's beloved Chiswick
+   #218  6     Page Six                      Bella Hadid’s skimpy swimsuit is completely open on the back and sides
+   #219  6     Sky Sports                    Wolff warns Mercedes may turn Antonelli-Russell battles 'down a notch'
+   #220  6     BBC Sport                     Quiz: Name every team to have been relegated from the Premier League
+   #221  6     Page Six                      Jenny Mollen pens vulnerable essay about struggle to feel ‘worthy and validated’ after Jason Biggs split
+   #222  6     Page Six                      Gwen Stefani gives ‘most supportive husband’ Blake Shelton a shoutout as he ‘finally’ attends No Doubt’s Las Vegas residency
+   #223  6     Deadline                      California and L.A. Candidates To Participate In Jamie’s List Forum With One Week To Primary
+   #224  6     Sky Sports                    Crawley's unbeaten 75 blasts Kent to victory after England omission
+   #225  6     Daily Mail                    Doctor Who's 'Christmas special could be AXED as show bosses struggle to find actor to play the once coveted role that is now a poisoned chalice'
+   #226  6     Daily Mail                    CIA accused of using Ancestry and 23andMe to 'hunt down' alien bloodlines in millions of DNA tests
+   #227  6     Daily Mail                    They were Scotland's ultimate power couple and his spending binges would make Imelda Marcos blush. How could Nicola Sturgeon not know?
+   #228  6     Daily Mail                    Strictly's Amy Dowden reveals how she found out her great gran also had breast cancer in her 30s
+   #229  6     Daily Mail                    Fergie reunites with Black Eyed Peas in surprise appearance at American Music Awards 2026
+   #230  6     Daily Mail                    Have you got your bedclothes in the freezer? Popped your (not-so) hot water bottle in the fridge? Ten things you need to do now to get a good night's sleep in a heatwave
+   #231  6     Daily Mail                    Trump family share candid photos from Don Jr's wedding: Ivanka bonds with Kai as Lara hits the beach with Eric
+   #232  6     Inc.                          Think the Stock Market Is a Bubble? Here’s Why the Bull Market Is Actually Getting Stronger
+   #233  6     Daily Mail                    Why does 30°C in the UK 'hit different'? Scientists blame high humidity and lack of air conditioning for the painful British heat
+   #234  6     Daily Mail                    I'm a doctor, and treat men with premature ejaculation. This is the honest truth about how long sex should REALLY last: DR PHILIPPA KAYE
+   #235  6     Daily Mail                    Think this is bad? Scientists predict just how hot the UK could get this summer - and say the worst is yet to come
+   #236  6     Dexerto                       Sony patents AI feature that can play ads during loading screens
+   #237  6     Polygon                       The Odyssey box office won't matter — it will be the biggest movie of the year regardless
+   #238  6     The Atlantic                  The Great Depopulation
+   #239  6     The Atlantic                  The Antitrust Theory of Everything
+   #240  6     Sky Sports                    Brundle's verdict on Russell 'despair' and 'rejuvenated' Hamilton in Canada
+   #241  6     Sky Sports Football           Wales squad announced for upcoming friendlies
+   #242  6     Inc.                          Wall Street’s AI Race May Come Down to Infrastructure, Not Marketing
+   #243  6     Inc.                          How to Win Over Investors With a Strong Proof of Concept
+   #244  6     Daily Mail                    'They gave me bail - absolute wallies': Fugitive British criminal brags about being allowed to flee country to Thailand's 'Sin City' while awaiting trial for stabbing
+   #245  6     The Guardian Culture          ‘If you try to fix Holmes, you’ll get your arse handed to you’: do we really need another Sherlock remake?
+   #246  6     BBC Sport                     'Outstanding leader' Shinnie to leave Aberdeen
+   #247  6     Daily Mail                    Nuno Espirito Santo set to be sacked by West Ham after Premier League relegation - and with player's wife attacking him after he dropped her husband for 'no particular reason'
+   #248  6     Daily Mail                    Spencer twins' brave faces at Cannes: Lady Kitty and Lady Amelia light up the red carpet days after 'missing their estranged father's fourth wedding in Arizona'
+   #249  6     Page Six                      Ciara Miller completely closes the door on Amanda Batula reconciliation with cutting comment
+   #250  6     Daily Mail                    Stephen Hawking's father feared for his 'lazy' son who 'hung around the house', diary reveals
+   #251  6     Daily Mail                    Prince William reveals Prince George, 12, is already boarding at £10,669-a-term Lambrook ahead of moving to his secondary school
+   #252  6     BBC Sport                     Crowley ruled out of Munster's quarter-final against Bulls
+   #253  6     Page Six                      Former teen heartthrob reveals ‘funny’ reality of residual checks: ‘One cent is not worth my time’
+   #254  6     Daily Mail                    Revealed: Four vape shops are closed a week in Britain for breaking the law
+   #255  6     Daily Mail                    How could Sturgeon NOT know, ask critics as Nicola's husband admits embezzling £400,000 of SNP funds to blow on an extraordinary shopping list - from £35 loo seats to a £125,000 camper van
+   #256  6     Daily Mail                    Too posh for prosecco but not on a champagne budget? Crémant is the answer... as sales of the French sparkling wine soar at Waitrose and Tesco
+   #257  6     Daily Mail                    Mother-of-two, 44, took her own life using 'suicide kit' delivered to her door by Royal Mail, inquest hears
+   #258  6     Semafor                       China bets on rural spenders
+   #259  6     Daily Mail                    New footage of Arsenal's lavish Mayfair celebrations emerges as Martin Odegaard dances with trophy and Mikel Arteta vows: 'We'll be champions of Europe on Saturday!'
+   #260  6     Daily Mail                    Moment Hollyoaks actress confronts 'man following her through London at night'
+   #261  6     Daily Mail                    Spend a night in the past: Cruise line unveils '1896 Cabin' complete with a barrel bar, a Victorian bunk bed…and a vintage wooden toilet seat
+   #262  6     Daily Mail                    Gemma Collins showcases her slimmed-down physique in sexy swimsuit snap - after revealing she was forced to stop taking Ozempic
+   #263  6     Daily Mail                    Another warm welcome for Gaza activists! Austrian cops drag chanting pro-Palestinian supporter away at airport after police waded into anti-Israel mob returning to Spain
+   #264  6     Daily Mail                    There's a new T. rex in town! New species of mosasaur measuring 43 FEET long terrorised the ancient seas
+   #265  6     Page Six                      Beartooth fans praise ‘brave’ Caleb Shomo after metalcore rocker comes out as gay: ‘Happiest version of himself’
+   #266  6     Deadline                      Owen Wilson & Jason Keller On The Impact Of Father Figures On Burgeoning Athletes In ‘Stick’ – Crew Call Podcast
+   #267  6     Billboard                     Sombr Teases AMAs Performance & Reflects On Coachella & Grammys Performance | AMAs 2026
+   #268  6     Daily Mail                    'Childhood has got worse': Major UK survey reveals devastating toll of social media on family life with parents describing addiction, conflict and regret as government consultation on children's online safety closes
+   #269  6     NME                           Lewis Capaldi on feeling “fucking dejected, disappointed, sad and just worthless” after burnout, and never wanting to “phone it in” ever again
+   #270  6     Daily Mail                    I am not overweight enough for fat jabs, but was desperate to shift a few pounds for summer. Then I discovered the miraculous benefits of drinking OIL
+   #271  6     Business Insider              Why your colleagues have stopped talking
+   #272  6     Hypebeast                     New Arrivals From HBX: Paly
+   #273  6     Daily Mail                    The 10p tablet that cured my exhaustion and sleepless nights for GOOD. Dozens of studies suggest this miracle pill can help you sleep longer with no downside: This is how it could help YOU
+   #274  6     Daily Mail                    Wayne Lineker reveals the 'ridiculous' drunken injury that cost him £30k and says he LOST a brand new Bentley as well as 26 pairs of designer sunglasses due to his alcoholism
+   #275  6     Daily Mail                    Moment topless drunk marines twerk and sing karaoke hours before one of them kills man with single punch - and is set to walk free after 'lenient' 17 months behind bars
+   #276  6     Daily Mail                    Fundraising manager, 31, went to doctor for her exhaustion and got diagnosis that left her needing part of her husband's liver
+   #277  6     NME                           RAYE pushed herself to her “limit” with new album and recent touring
+   #278  6     The Hollywood Reporter        Global Powerhouse BTS Takes Over Las Vegas With High-Energy Arirang World Tour
+   #279  6     Daily Mail                    We'll not be throwing the kitchen sink at Makerfield, says Green MP as Polanski comes under pressure to let Labour and Reform duke it out
+   #280  6     Billboard                     Russell Dickerson On How His Fetty Wap Collab Went Down & More | AMAs 2026
+   #281  6     Daily Mail                    Palace has its eye on ex-butler over his 'fake, potentially AI' snap of Prince William and Princess Kate
+   #282  6     Daily Mail                    Dame Jilly Cooper told Rivals writers to stop making her 'macho men' cry
+   #283  6     Daily Mail                    Criminal who was filmed having sex with married prison officer Linda De Sousa says trysts with 'very flirty' guard kicked off 'after she started sneaking in takeaways for him'
+   #284  6     The Hollywood Reporter        Hasbro Unveils ‘Peppa Pig’ Kids Bike With Huffy, to Let Little Viewers Learn to Ride
+   #285  6     Daily Mail                    I'm a gut health doctor - and these are the five popular supermarket items I would NEVER touch
+   #286  6     Daily Mail                    Militant union barons plotting 'winter of discontent' in bid to get inflation-busting pay hikes - but hope 'sympathetic' Andy Burnham will become PM and cave into their demands
+   #287  6     Rolling Stone                 Jack Osbourne Defends AI Ozzy Osbourne: ‘It’s Not Gonna be Fucking Lame’
+   #288  6     Deadline                      Breaking Baz: Hammer’s ‘Horror Of Dracula’ Starring Christopher Lee Is Ready To Sink Its Teeth Into Audiences At Halloween With Censored Scenes Restored – Exclusive Interview
+   #289  6     Sky Sports                    Koepka, Clark withdraw from PGA Tour event at Colonial
+   #290  6     Deadline                      Russell Crowe Defends Gruff Exchange With Autograph Hunters: “What’s Your Problem?”
+   #291  6     Daily Mail                    Mother who abandoned her children blindfolded in Portuguese woods is sent to the country's toughest women's prison - as videos of her partner decrying 'end of the world' emerge
+   #292  6     Billboard                     American Music Awards 2026 Livestream: Here’s Where to Watch the Ceremony Online for Free
+   #293  6     Daily Mail                    Victoria Beckham flashes a hint of her gold bikini as she cosies up to husband David while taking Romeo, Harper and Kim Turnbull on Ibiza yacht trip
+   #294  6     Polygon                       Guess the big 2026 summer movie releases in this tough quiz
+   #295  6     Daily Mail                    Met vows to release body camera footage to show the 'good and bad' in policing as Sir Mark Rowley hits back at 'armchair critics'
+   #296  6     Daily Mail                    Catherine Zeta-Jones, 56, and husband Michael Douglas, 81, are 'so proud' as nepo baby daughter Carys, 23, follows in their footsteps after landing lead role in New York play
+   #297  6     Daily Mail                    Terrifying moment plane crashes into paraglider, sending her spiralling through the air before emergency parachute saves her
+   #298  6     Deadline                      Leo Woodall Opens Up About ‘The Lord Of The Rings: The Hunt For Gollum’ Casting: “It’s A Boyhood Dream For Me”
+   #299  6     Daily Mail                    Marlon Wayans says transgender son Kai's journey taught him 'true, unconditional love'
+   #300  6     Daily Mail                    Rescue teams scouring park after teenage boy 'entered water and never came out' on scorching bank holiday Monday
+   #301  6     Daily Mail                    The telltale signs that are too good to be true - and exactly what to look for when you click on a 'customer's' profile: Utlimate giveaways THAT 'five-star' review is actually a fake
+   #302  6     Highsnobiety                  2026's Best Sneaker Collaborations So Far
+   #303  6     Deadline                      Samantha Bee Sitcom ‘The Ambassador’ Toplines CBC’s Latest Slate
+   #304  6     Semafor                       India tackles energy crisis
+   #305  6     Semafor                       Monthly oil prices set to dip as Iran war reaches stalemate
+   #306  6     Sky Sports Football           Aston Villa latest: Retro home kit revealed!
+   #307  6     Semafor                       US carries out fresh Iran strikes, dimming hopes of deal
+   #308  6     Deadline                      ‘Paddington 4’: Armando Iannucci & Simon Blackwell Confirmed As Co-Writers On Next Feature Inspired By Michael Bond’s Children’s Classic
+   #309  6     Daily Mail                    Moment 'shoplifter' steals cheese from Co-op before bizarrely rolling under bus and 'attacking' police
+   #310  6     Variety                       Wendell Pierce Challenged Himself to an Annual Acting Trifecta. Now He’s Starring in a ‘Jack Ryan’ Movie, ‘Elsbeth’ and ‘Othello’ All at Once
+   #311  6     Billboard                     Diplo Says DJ Set at Son’s Kindergarten Graduation Was One of His ‘Most Important Sets’ of Career
+   #312  6     Rolling Stone                 The Best Moments From Bad Bunny’s Global Tour
+   #313  6     Deadline                      Hannah Einbinder & ‘Hacks’ Creators Bid Farewell To Show, Recall Full-Circle “Coincidence” Filming Paris Finale: “So Proud Of What We’ve Done”
+   #314  6     The Hollywood Reporter        The Pussycat Dolls Deliver Explosive Medley of “Don’t Cha,” More Hits at 2026 AMAs
+   #315  6     Polygon                       This Magic: The Gathering card from Secrets of Strixhaven has an awesome combo with a forgotten Mythic
+   #316  6     NME                           ‘Rick And Morty’ spin-off series about President Curtis coming this summer
+   #317  6     Hypebeast                     Ann Demeulemeester and H. Lorenzo’s SS26 Capsule Arrives With a Limited Vinyl Release
+   #318  6     Deadline                      Slain ‘Virgin River’ Actor Stewart McLean Recalled By Family & Friends: “What A Rockstar He Was, A Loved Guy Everywhere He Went”
+   #319  6     Daily Mail                    British tourist is attacked by locals after he's accused of trying to steal drinks from Thai supermarket
+   #320  6     Daily Mail                    The 5 foods you should NEVER cook in an air fryer, according to experts
+   #321  6     Page Six                      Former Prince Andrew’s vulgar pickup line revealed
+   #322  6     Daily Mail                    King Charles snubs brother Andrew while staying in Sandringham
+   #323  6     NME                           Jack Osbourne responds to fan backlash over Ozzy Osbourne interactive avatar: “He would be into this”
+   #324  6     Polygon                       How Baldur’s Gate 3 almost derailed D&D’s Descent into Avernus adventure
+   #325  6     The Hollywood Reporter        Canada Tripling “Netflix Tax” on U.S. Streamers Draws Skepticism From Local Unions, Creatives
+   #326  6     Daily Mail                    Happy Memorial Day from Hollywood! Kylie, Blanca, Gwyneth and Bethenny enjoy barbecues and bikinis
+   #327  6     Daily Mail                    CHRISTOPHER STEVENS reviews Nobody's Fool: Who is the best quizzer? Dominatrix Melissa looks to have the whip hand
+   #328  6     Daily Mail                    Thai police squad goes undercover in drag to arrest 'methamphetamine supplier'
+   #329  6     Daily Mail                    I evicted my tenants and now they won't let agents in to do viewings: Can they go in without their permission?
+   #330  6     Daily Mail                    I work for the British Government abroad - does my address make it impossible to get a mortgage? DAVID HOLLINGWORTH replies
+   #331  6     Deadline                      Fox Station Vet Patrick Paolini Named Tegna CEO As It Battles Through Nexstar Merger Litigation
+   #332  6     Daily Mail                    Social media 'runfluencers' are behind 'spike in knee injuries'
+   #333  6     Rolling Stone                 TikTok’s AI ‘Text to Song’ Trend May Be a Sign of Music to Come
+   #334  6     IGN                           Robin Williams, Robert Duvall, Tom Selleck, and Brendan Fraser Have All Inexplicably Played the Same Role: Dwight D. Eisenhower
+   #335  6     NME                           Kurt Cobain’s ‘Foxes’ T-shirt is being auctioned off by Hole’s Patty Schemel
+   #336  6     The Hollywood Reporter        ‘I’ll Be Gone in June’ Review: Wispy but Atmospheric Drama Follows a German Student to New Mexico in 2001
+   #337  6     Daily Mail                    Heartwarming moment lost elephant calf is reunited with family after researchers track down her missing herd
+   #338  6     Sky Sports                    England 'settling nicely' ahead of T20 World Cup - but bigger test to come
+   #339  6     BBC Sport                     Monday Night Club: What next for relegated West Ham as Spurs survive?
+   #340  6     Billboard                     XG Is Excited to See KATSEYE Perform, How They Met The Jonas Brothers, Talks The Core World Tour | AMAs 2026
+   #341  6     Daily Mail                    How much actors can make from residuals revealed - after Everybody Loves Raymond fans learnt Ray Romano makes $18M a year from repeats alone
+   #342  6     Daily Mail                    ANDREW NEIL: War in Ukraine and the Gulf. Threats from Russia and China. Yet Burnham's got nothing to say about defence
+   #343  6     Sky Sports                    'Dangerous' Sanchez wants Usyk title fight 'as soon as possible'
+   #344  6     Variety                       Giuseppe Tornatore to Be Honored With Golden Globes Prize for Documentary in Tandem With Artemis Rising Foundation at Italy’s Taormina Film Festival (EXCLUSIVE)
+   #345  6     The Hollywood Reporter        Samantha Bee Getting Her Own Sitcom
+   #346  6     Vanity Fair                   The Wild Case Todd Blanche Can’t Escape, Even Though He’s Trump’s Legal Enforcer for America
+   #347  6     Wired                         Quiz: Will AI Destroy Your Career?
+   #348  6     Wired                         AI Agents Plunged the Tech World Into Chaos. Here’s Exactly How That Happened
+   #349  6     Wired                         AI Is Taking Over the Most Cursed Job in the World
+   #350  6     Wired                         I Spent a Week Recording Myself Doing Chores for Money. Who's the Robot Now?
+   #351  6     Wired                         I’m a Professional Fact-Checker. AI Is Wrong More Often Than You Think
+   #352  6     Wired                         To Land a Job in AI, Try Reading Kant
+   #353  6     Wired                         Take This Mandatory AI Workplace Training Right Now—or Else
+   #354  6     Wired                         7 Ways to Get So Good at AI, People Will Think You Are AI
+   #355  6     The New Yorker                Texas Senate Republican Primary Runoff: Live Results
+   #356  6     The New Yorker                The Despair of the Professor in the Age of A.I.
+   #357  6     The New Yorker                I Am a Woman in My Thirties, and I Am Thriving
+   #358  6     The New Yorker                How a Small-Town Clerk’s Misdeeds Upturned the Murdaugh Verdict
+   #359  6     Polygon                       New One Piece project finally gives Zoro the flashback he deserves
+   #360  6     The Verge                     Uber president says AI spending is getting ‘harder to justify’
+   #361  6     Business Insider              Is the IPO boom a 2021 repeat?
+   #362  6     Daily Mail                    Starmer is toast even if Burnham loses the by-election, warn TWO former ministers after brutally attacking PM in resignation speeches
+   #363  6     Daily Mail                    Police probing Andrew Mountbatten-Windsor over 'sex offences' will 'seek late accuser Virginia Giuffre's files'
+   #364  6     Polygon                       The Vampire Lestat’s showrunner isn’t afraid of Anne Rice’s weirdest material
+   #365  6     Variety                       Lebanese Comic John Achkar’s Special at L’Olympia Hall Acquired by Arabic Streamer MBC Shahid in ‘Milestone’ for Arabic Stand-Up
+   #366  6     Daily Mail                    Are you applying enough sunscreen? An essential guide by this leading dermatologist to stop sunburn and ageing - and how it's helped her stay looking youthful at 54
+   #367  6     Billboard                     Karol G Stunned by Surprise AMAs Win After Accepting International Artist of Excellence: ‘My Life Is Meaningful Because of My Music’
+   #368  6     NME                           Paul McCartney recalls “pinch yourself” moment he met Elvis Presley with The Beatles
+   #369  6     NME                           Nothing But Thieves announce new album ‘Stray Dogs’ with biggest ever headline tour of UK, Europe and North America
+   #370  6     Hypebeast                     Konstantin Chaykin Turns Russia’s Favorite Cartoon Cat Into a Wristwatch
+   #371  6     Dazed                         In pictures: A Palestinian girls football team takes to Mexico
+   #372  6     Business Insider              I'm a doctor — these subtle desk habits could be causing your elbow pain
+   #373  6     Business Insider              Stanley's global president said he was an 'average student.' These are his 3 pieces of advice to college kids.
+   #374  6     The Hollywood Reporter        Tom Ryan’s Murder Mystery ‘The Treasure Hunters Club’ Optioned for TV Adaptation (Exclusive)
+   #375  6     NME                           Pope Leo warns that AI risks accelerating war in new manifesto: “Technology is never neutral”
+   #376  6     Rolling Stone                 Drake Makes Chart History as New Album Trilogy Lands Top Three Spots
+   #377  6     The Hollywood Reporter        ‘Euphoria’ Creator Explains Season 3’s “Horrific” Death Scene in Penultimate Episode, Star Calls It “a Cool Way to Go”
+   #378  6     Page Six                      Kesha’s “Freedom” tour: see all the pics
+   #379  6     Daily Mail                    David Beckham and Gary Neville look glum in scorching Wembley heat as Salford City sink to a comprehensive defeat in League Two play-off final against Notts County
+   #380  6     Daily Mail                    Russia threatens Kyiv with fresh wave of strikes and tells foreign visitors and diplomats to leave Ukraine's capital 'as soon as possible'
+   #381  6     The Hollywood Reporter        2026 American Music Awards Arrivals: Paula Abdul, Ludacris and Hilary Duff Make the Scene in Las Vegas
+   #382  6     Sky Sports                    Bearman has no deadline for 'ultimate target' of Ferrari
+   #383  6     Business Insider              We spent $95 on lunch for 2 from Goop Kitchen. It tasted as healthy as we expected.
+   #384  6     IGN                           Destiny and Warframe Fans Spent a Decade Competing With Each Other — Now They’re United in Saying Goodbye
+   #385  6     Semafor                       Sen. Schiff takes on Trump’s ‘anti-weaponization’ fund
+   #386  6     Semafor                       Republican Congress faces major pileup before midterms
+   #387  6     Semafor                       ‘Life by 1,000 Band-Aids’: Trump has no good options to tame inflation
+   #388  6     Business Insider              What Mark Zuckerberg, Jeff Bezos, Sam Altman, and other tech execs have said about parenting
+   #389  6     Wired                         I Never Liked a Laptop Sleeve Until I Tried the Bellroy Laptop Caddy
+   #390  6     Rolling Stone                 Is the Star Wars Franchise Finally Cooked?
+   #391  6     Variety                       ‘Triptych,’ ‘Dark Hope,’ ‘Naked’ Among Standouts at Conecta Magaluf-Mallorca Pitch Lineup
+   #392  6     Rolling Stone                 ‘The Rest Is History’ Hosts Talk Rome, Trump vs. Obama, and What’s Next for MAGA
+   #393  6     Daily Mail                    Bank Holiday prankster places giant Walnut Whip chocolate bar on head of Queen Victoria
+   #394  6     BBC Sport                     AC Milan sack Allegri after season of 'unequivocal failure'
+   #395  6     Wired                         US Law Enforcement Warns of ‘Anti-Tech Extremism’ as AI Hatred Grows
+   #396  6     Inc.                          Why ‘Let’s Revisit This Next Quarter’ Is the Most Dangerous Phrase in Business
+   #397  6     Dexerto                       Destiny 2 devs found out support was ending when players did
+   #398  6     NME                           Babymetal reveal Resident Evil 30th anniversary merch collab
+   #399  6     NME                           You’re more likely to see talking animal or actor called Chris in a film than a woman over 60, study finds
+   #400  6     Hypebeast                     Official Look at the New Balance 5030 “Rainclound/Black Metallic”
+   #401  6     Daily Mail                    Boy, eight, is among three rushed to hospital after BMW ploughs into picnic table at motorway services
+   #402  6     Business Insider              I'm a dietitian and mom of 2. These are the 9 Trader Joe's staples I buy to make healthy meals in less than 30 minutes.
+   #403  6     Billboard                     Jack Osbourne Responds to Backlash Over AI-Powered Digital Avatar of Ozzy Osbourne
+   #404  6     Daily Mail                    Coronation Street star Olivia Frances Brown, 27, 'splits from her James Bond hopeful fiancé, 37, less than a year after getting engaged'
+   #405  6     Daily Mail                    Pep Guardiola's last dance: A Michael Jordan tribute, trophy lifts from Vincent Kompany and Jack Grealish and a Wonderwall rendition - how Man City boss was given a legendary farewell
+   #406  6     Hypebeast                     Vans Gives the Premium Authentic 44 EXT a World Cup Moment With the “Copa Racing Red”
+   #407  6     Hypebeast                     Toei Animation and Marvel Entertainment's 'Kyoufu Densetsu Kaiki! Frankenstein' Is Getting a 4K Release
+   #408  6     Daily Mail                    Richard Gere's nepo baby son Homer strips off in Euphoria for explicit sex scene with Sydney Sweeney
+   #409  6     Deadline                      ‘Hacks’ Creators Want DVD Box Set To Ensure Show “Stays In Existence” Amid Hollywood Mergers: “It Is Really Scary”
+   #410  6     BBC Sport                     Why does Liverpool's new kit not match?
+   #411  6     BBC Sport                     England World Cup-winning captain Stratford to join Sale
+   #412  6     Hypebeast                     Kith and adidas Football Pay the Ultimate Tribute With Lionel Messi Collaborative Collection
+   #413  6     Daily Mail                    GRAHAM GRANT: We've been taken for fools by Peter Murrell, a fraudster whose greed knew no bounds - while the party he managed told us it was worthy of our trust...
+   #414  6     Page Six                      King Charles gives former Prince Andrew the cold shoulder as he visits royal home in brother’s vicinity
+   #415  6     BBC Sport                     Injured Davies set to miss Canada World Cup opener
+   #416  6     Variety                       Nicolas Cage on Why Christopher Nolan and Other Directors Won’t Work With Him After He Turned Down Their Films: ‘They Get Their Feelings Hurt’
+   #417  6     Billboard                     Glorilla Reveals Collabs On New Summer Album | AMAs 2026
+   #418  6     Billboard                     Leon Thomas On Touring With Bruno Mars, Raves Over Drake’s New Records | AMAs 2026
+   #419  6     Business Insider              Trump's immigration crackdown is contributing to a summer lifeguard shortage
+   #420  6     Business Insider              I've landed jobs and a pay raise using the same 5-minute interview slideshow since 2018. Here's what's in it.
+   #421  6     BBC Sport                     'He showed why good managers need time' - who are this season's over-achievers?
+   #422  6     BBC Sport                     Premier League quiz: Name every title-winning manager
+   #423  6     Business Insider              One part of Jain Global is up in the air as its deal with hedge fund giant Millennium moves ahead
+   #424  6     Sky Sports Football           West Ham latest: Talks ongoing over Nuno's future as Bowen reveals 'pain'
+   #425  6     Deadline                      Gary Lineker’s Goalhanger Launches Ventures Arm
+   #426  6     NYT Arts                      ‘The Maids,’ With Yerin Ha, Asks: Has Life Become One Big Performance?
+   #427  6     Daily Mail                    Venezuela Fury's husband Noah Price, 19, begs fans for money amid their gifted £30K honeymoon leaving his wife, 16, furious and joking she will 'punch him in the mouth'
+   #428  6     BBC Sport                     Forest owner Marinakis shown in heated altercation at Olympiakos basketball game
+   #429  6     Polygon                       Yoshi and the Mysterious Book gives one of Mario's weirdest characters his due
+   #430  6     Business Insider              3 big takeaways from Pope Leo's letter on AI
+   #431  6     Sky Sports                    England cruising towards T20 series win over New Zealand LIVE!
+   #432  6     Daily Mail                    This is more than the squalid fall of a greedy little man in Peter Murrell: it is a veritable graveyard of reputations. And no one, atop the SNP, is entirely undefiled...
+   #433  6     Variety                       Queen Latifah on Hosting the American Music Awards, Releasing New Music This Year and Being a Taylor Swift Fan: ‘She Makes Really Great, Catchy Songs That We Love’
+   #434  6     Sky Sports                    Premier League ins and outs - the confirmed deals so far...
+   #435  6     Variety                       Singapore Microdrama Outfit RisingJoy Hits 50-Platform Milestone, Eyes Move Into Original Production (EXCLUSIVE)
+   #436  6     The Hollywood Reporter        Star Wars Box Office Rebound: ‘The Mandalorian and Grogu’ Makes Major Gains With 100M-Plus Domestic Opening
+   #437  6     NYT Arts                      ‘Armageddon’: The Blockbuster Melodrama That Left Our Heads Spinning
+   #438  6     NYT Arts                      Celebrity Assistants Exist to Indulge Their Bosses, but When Does Duty Cross a Line?
+   #439  6     Business Insider              A lawyer used these 12 slides to raise $9 million for an AI law firm
+   #440  6     Business Insider              Hurry! You can still score the Memorial Day deals our readers are buying right now
+   #441  6     Business Insider              Our survey about vibe coding became a vent session for the AI haters
+   #442  6     Wired                         Cearvol’s Wave Design Fights Off Hearing Loss and Aging Stigma
+   #443  6     MIT Technology Review         A reality check on the AI jobs hysteria
+   #444  6     MIT Technology Review         It’s time to address the looming crisis in entry-level work.
+   #445  6     Inc.                          How 1 Simple Motto Can Turn Random Encounters Into Life-Changing Opportunities
+   #446  6     Inc.                          Boss Still Skeptical of Remote Work? Show Them These Productivity Statistics
+   #447  6     Sky Sports Football           Tottenham latest: 'De Zerbi switched mindset and passion' - Maddison
+   #448  6     Billboard                     Rise Against and Dropkick Murphys Set for Biggest-Ever Australian and New Zealand Shows
+   #449  6     The Verge                     A battery-powered Starlink Mini is likely on the way
+   #450  6     Hypebeast                     Nike Drops the 155-Gram Mercurial Vapor 17 Elite Football Cleat
+   #451  6     Daily Mail                    Timothee Chalamet and Kylie Jenner pack on the PDA courtside as they seal Knicks' victory with a passionate kiss
+   #452  6     Daily Mail                    Netanyahu's war hawks circle as Trump races to unveil Iran peace deal TODAY
+   #453  6     Deadline                      Films Are More Likely To Star Actors Named Chris Or A Talking Animal Than Women Over 60, UK Anti-Ageism Analysis Finds
+   #454  6     Daily Mail                    10 Things I Hate About You star Andrew Keegan reveals harsh reality of residuals checks
+   #455  6     Variety                       Lisa Rinna Says Spencer Pratt ‘Could Be’ Next L.A. Mayor: ‘I’m a Reality Person — You Wouldn’t Want Me as Mayor’
+   #456  6     Variety                       Sombr Makes It Rain at the American Music Awards With Splashy Version of ‘Homewrecker’
+   #457  6     Daily Mail                    Extraordinary shopping list of Nicola Sturgeon's embezzler husband revealed - including £2,600 on salt grinders and £4,225 on a fountain pen
+   #458  6     Business Insider              I've got 4 kids and 1 goal this summer: do less
+   #459  6     Daily Mail                    Trump says he 'laughs at fools who know nothing about my potential deal with Iran' and vows it will be 'exact opposite' of Obama's 'disaster'
+   #460  6     Rolling Stone                 Pope Leo XIV Warns of Dangers of AI, Need to ‘Disarm’ the Technology
+   #461  6     Variety                       ‘Mono 222,’ ‘Dreaming of Lions’ and ‘I Got Bombed at Harvey’s’ Top Mammoth Lakes Film Festival Awards – Film News in Brief
+   #462  6     Variety                       American Music Awards Photo Gallery: See EJAE, Rei Ami, Katseye, Sombr, Karol G, Teyana Taylor and Other Stars on the Red Carpet and Backstage
+   #463  6     Deadline                      Ampere Analysis Sold To Private Equity Firm Goldenpeak & Buys PlumResearch At Same Time
+   #464  6     Deadline                      American Music Awards Full Winners List
+   #465  6     Polygon                       Netflix's I Am Frankelda wouldn't exist without Guillermo Del Toro
+   #466  6     Page Six                      Sydney Sweeney bares it all in raunchy ‘Euphoria’ scene with A-lister’s son
+   #467  6     Polygon                       Rose of Nevada might be the most unconventional time-travel movie of the century
+   #468  6     Daily Mail                    I'm a royal fashion expert and John Lewis' summer collection has so many pieces I know Kate Middleton will love
+   #469  6     NME                           Geddy Lee says he didn’t want ‘Tom Sawyer’ on Rush’s Moving Pictures: “I was so sick of that fucking song”
+   #470  6     Page Six                      How to watch the 2026 AMAs live for free: Time, streaming, nominees
+   #471  6     Daily Mail                    Friendship between Dracula author Bram Stoker and Daily Mail columnist helped iconic vampire novel to global success, writer's family reveal
+   #472  6     Hypebeast                     TAG Heuer Unveils Its Newest Aquaracer 200 & 100 Solargraphs
+   #473  6     Variety                       Naseeruddin Shah, Jim Sarbh Amazon MX Player Series ‘Made in India: A Titan Story’ Sets June Premiere Date (EXCLUSIVE)
+   #474  6     The Guardian Culture          ‘Everyone is equal in this space’: the cosmic world of neurodivergent-friendly club night Robyn’s Rocket
+   #475  6     Variety                       James Gray Says ‘Ad Astra’ Was ‘Taken Away’ From Him and Made Longer by 20th Century Fox: ‘It Would Have Been a Very Different Movie’
+   #476  6     Daily Mail                    Heroic moment baby is rescued from car trapped in waist-high flood water during torrential Texas storm
+   #477  6     IGN                           The Recertified Sonos Memorial Day Sale Has Huge Savings on Subs, Speakers, and Soundbars
+   #478  6     Sky Sports                    England dominate New Zealand to secure 2-1 series victory
+   #479  6     Rolling Stone                 If MAGA Is a Cult, What Happens When It Crumbles?
+   #480  6     IGN                           Today’s Best Deals: Split Fiction, Samsung Galaxy Buds 4 Pro, 77" LG G5 4K TV
+   #481  6     Daily Mail                    Eight spectators at Isle of Man TT are taken to hospital after a rider crashes during practice and suffers injuries too - with incident under investigation
+   #482  6     Hypebeast                     Take an Official Look at the atmos, atmos pink and adidas Handball Spezial “Denim Pack”
+   #483  6     BBC Sport                     Van Gaal fallout made Di Maria 'hate' Man Utd, but he has no regrets
+   #484  6     Daily Mail                    She's an Oscar winner, cheerleader and homecoming queen. Can YOU identify her in this 1968 yearbook photo?
+   #485  6     Engadget                      Pope Leo calls for AI to serve humanity and not concentrate power
+   #486  6     Deadline                      Boots Riley Says ‘I Love Boosters’ Was Rejected By Cannes Along With Other Past Projects; Picked ‘The Idol’ Over ‘I’m A Virgo’
+   #487  6     Business Insider              The anti-social workplace
+   #488  6     Business Insider              A tech worker coalition is piloting a basic income program for AI job losses
+   #489  6     Hypebeast                     GEEKS RULE Collaborates With ‘Elden Ring’ for a Graphic Tee Release
+   #490  6     Deadline                      Philippines Revamps Academy To Bolster Oscars Campaigns & Film Worker Protections
+   #491  6     Daily Mail                    Homeowner is ordered to tear down 'illegally built' 40ft outbuilding at his £800,000 home - after council feared it could be turned into a house
+   #492  6     Daily Mail                    The whispers beginning to swirl about Molly-Mae and Tommy Fury...as friends reveal why her family are 'less than impressed' with the 'MIA' boxer
+   #493  6     Daily Mail                    Gordon Ramsay reveals the lessons he has taught his six children and why they won't be inheriting his millions
+   #494  6     Daily Mail                    Kendall Jenner is 'very affectionate' with beau Jacob Elordi during romantic dinner during Montecito getaway
+   #495  6     Sky Sports                    Championship, L1 & L2 26/27 season - key dates and fixtures day
+   #496  6     Sky Sports Football           Notts County add THIRD against Salford at Wembley on Sky LIVE!
+   #497  6     NME                           TRNSMT 2026 teases “very special secret set” as full stage splits revealed with new acts
+   #498  6     BBC Sport                     Who made Opta's team of the season?
+   #499  6     Daily Mail                    British man facing trial over the death of a bouncer at TOWIE star's Spanish restaurant goes on the run
+   #500  6     Variety                       How Marlon Wayans Survived Hell, Hollywood and Harvey Weinstein
+   #501  6     Deadline                      ‘Backrooms’ Creator Kane Parsons On Becoming A24’s Youngest Director Ever, Adapting His YouTube Series: “A Weird Dream Come True”
+   #502  6     Deadline                      Russell T. Davies Reveals Dream Lead For An American Version Of His Upcoming Queer Drama ‘Tip Toe’
+   #503  6     Deadline                      Banijay Takes On Norway’s ‘The Comedy League’
+   #504  6     Inc.                          Science Says You’re Probably Making Smoothies Wrong, and I’ve Never Felt More Validated
+   #505  6     The Guardian Culture          Fairyland review – moving memoir of queer parenting and new kinds of family in 70s San Francisco
+   #506  6     Daily Mail                    The superfoods that can turbocharge your Ozempic weight loss: The five nutrient-rich staples that will put a rocket under your jabs and boost you over the fat-loss hump
+   #507  6     Variety                       ‘Forever Your Maternal Animal’ Review: Valentina Maurel Makes a Hangout Movie for the Arthouse Crowd
+   #508  6     Daily Mail                    Zoe Ball reveals daughter Nelly, 16, is now living with her ex-husband Fatboy Slim permanently as she laments how quiet the house is now
+   #509  6     Billboard                     Chris Brown Receives Honorary PhD from Harvest Christian University
+   #510  6     Deadline                      Pope Leo Warns That Artificial Intelligence Could Be “New Tower Of Babel”, Cautions Against AI In The Hands Of The Few
+   #511  6     Polygon                       Netflix's biggest thriller of the summer is The Silence of the Lambs for Severance fans
+   #512  6     Hypebeast                     Wazza and Jill Scott Front Palace Skateboards and Nike's New England World Cup Campaign Film
+   #513  6     Business Insider              A 27-year-old woman with extreme cramping lied about having a common colon cancer symptom to get screened sooner. She was later diagnosed at stage 4.
+   #514  6     Daily Mail                    All is forgiven: Church lets off 'Vicar of Tiddly' who damaged his bishop's car while drunk
+   #515  6     Rolling Stone                 The Murdaugh Case Came Apart Amid a True Crime Frenzy. What Happens Next?
+   #516  6     Rolling Stone                 Álvaro Díaz Balanced Bold Sounds and Big Losses — and Made ‘Omakase’
+   #517  6     Daily Mail                    I'm a doctor and am circumcised myself. But I see the REAL devastating sexual consequences of this mutilating procedure every day. Here's what no one tells you...
+   #518  6     Engadget                      Star Citizen has raised $1 billion, remains in early access after nine years
+   #519  6     Semafor                       Kenya’s mobile money tax plans threaten M-Pesa growth
+   #520  6     Business Insider              I have a background in child development, yet I still make mistakes. It took time to let go when my daughter went to college.
+   #521  6     Page Six                      Russell Crowe warns autograph hunters gathered outside his Paris hotel: ‘Don’t f–king push in on me’
+   #522  6     NME                           Paris Paloma is donating part of every UK and European tour ticket to girls’ rights charity Plan International UK
+   #523  6     The Hollywood Reporter        Tom Hanks Just Can’t Quit World War II (and It’s Keeping Him Up at Night)
+   #524  6     Polygon                       Vox Machina gets a new party member to face 'enemies they're not ready for' in season 4
+   #525  6     Hypebeast                     Lionel Messi Eases Injury Fears After Early Exit During Inter Miami-Philadelphia Union Match
+   #526  6     Hypebeast                     GT-R Owners in Australia Are Getting Direct Access to Nismo's Factory Restoration Program
+   #527  6     BBC Sport                     Jordan leads star names at Guardiola leaving party
+   #528  6     Hypebeast                     ‘Tekken 8’ Adds Yūjirō Hanma From ‘Baki’ as Playable Character
+   #529  6     Hypebeast                     NEIGHBORHOOD x goyemon’s .unda Sandals Sports an X-Ray Design
+   #530  6     The Guardian Culture          Untold UK: Vinnie Jones review – this chaotic biopic is an unexpected amount of fun
+   #531  6     Variety                       Vietnamese Video Game Horror Adaptation ‘The Scourge’ Launches Triple Green CineCapital, Chanh Phuong Films Partnership
+   #532  6     Hypebeast                     Iron Maiden and Timex’s 1986 Tribute Watch Has Two Faces, and the Second One Glows Red
+   #533  6     BBC Sport                     What is going on with Ferrari and will Verstappen quit? F1 Q&A
+   #534  6     Inc.                          Want to Remix Your Favorite Songs? Spotify’s New AI Tool Lets You Be the DJ
+   #535  6     Sky Sports                    'There isn't any quit in me' - DeChambeau on major struggles and LIV's future
+   #536  6     BBC Sport                     McTominay backs 'great man' Clarke for Scotland stay
+   #537  6     Hypebeast                     adidas Originals Gives the Handball Spezial a Loafer Makeover in Two New Colorways
+   #538  6     Page Six                      Anne Hathaway’s secret decade-long medical condition left her nearly blind throughout her 30s
+   #539  6     BBC Sport                     24 Hours with Ella Toone coming soon
+   #540  6     The Guardian Culture          Crossing the Wine Dark Sea by Emily Wilson review – a masterclass in translation
+   #541  6     The Guardian Culture          Landmarks review – Lucrecia Martel’s beautiful account of an Indigenous murder case
+   #542  6     The Guardian Culture          Medieval King Arthur manuscript could fetch £2m at auction
+   #543  6     The Guardian Culture          ‘A gift that keeps on giving’: the witty world of Lee Friedlander – in pictures
+   #544  6     BBC Sport                     How Toone is navigating grief through football
+   #545  6     Sky Sports                    Knicks sweep Cavaliers to end 27-year wait for NBA Finals
+   #546  6     Billboard                     Dom Dolla to Headline Marvel Stadium in Melbourne for AFL Grand Final Eve Show
+   #547  6     The Guardian Culture          TV tonight: Tom Hanks’s epic new documentary series
+   #548  6     The Hollywood Reporter        New Kids on the Block Rock Vegas With “You Got It (The Right Stuff)” Performance at 2026 American Music Awards
+   #549  6     Sky Sports                    Has Hamilton really found 'sweet spot' at Ferrari after 'awesome' weekend?
+   #550  6     Business Insider              Def Jam cofounder Rick Rubin, 63, says his success came from being a 'lazy workaholic'
+   #551  6     Business Insider              Jensen Huang says it doesn't matter what kids study in the AI era
+   #552  6     Business Insider              Russia says its new anti-drone turret fires programmable rounds that calculate when to explode
+   #553  6     Billboard                     All of the 2026 AMAs Performances, Ranked
+   #554  6     Business of Fashion           Opinion: Why Don’t More Women Athletes Have Their Own Brands?
+   #555  6     Business of Fashion           Only the Fastest Innovators Are Winning in Beauty
+   #556  6     Business of Fashion           How Ozempic Is Forcing Fashion to Rethink Fit
+   #557  6     Page Six                      Hollywood icon Sally Field reminds a fractured nation of the brilliance of the Constitution
+   #558  6     The Hollywood Reporter        BTS Sweeps American Music Awards as Sombr Wins Two Televised Trophies
+   #559  6     Business Insider              I'm the emergency contact. The school still calls my wife.
+   #560  6     Fast Company                  Punished for parental leave: How generous leave policies can be a trap for working mothers
+   #561  6     Fast Company                  SpaceX’s $2 trillion reality check
+   #562  6     Fast Company                  These AI bots want to help fans navigate World Cup host cities
+   #563  6     Fast Company                  Meet the online superfans who turned their Stan Twitter experience into full-time social media jobs
+   #564  6     Business of Fashion           Inside BoF and Shopify’s Knowledge Breakfast on the Future of AI Commerce
+   #565  6     Inc.                          McDonald’s Just Announced a Bold Solution to a Very Big Problem. (A Harvard Professor Explained It)
+   #566  6     NYT Arts                      He’s Trolling Your Trash, and Turning It Into Art
+   #567  6     The Guardian Culture          Saint Levant: the pop star from Gaza caught between passionate fandom and bitter disapproval
+   #568  6     The Guardian Culture          ‘I’m an absolute gurner. I’m worried’: The Archers stars on their flower power stage show
+   #569  6     Puck                          Hollywood’s Gen Z Gap Is Real… and It’s Growing
+   #570  5     Fast Company                  An Anti-anti-aging eyewear brand bets America is finally ready to embrace getting older
+   #571  5     The Hollywood Reporter        Billy Idol Delivers Empowering Lifetime Achievement Award Acceptance Speech, Closes AMAs With Hit Medley
+   #572  5     Hypebeast                     Nike Is Bringing the Air Rift 2 "Kenya" Back and the Split-Toe Geometry Holds Up
+   #573  5     Variety                       BTS Wins Artist of the Year at American Music Awards, as Katseye, Sombr, ‘Golden’ Also Score Top Honors: Complete Winners List
+   #574  5     Rolling Stone                 Maluma Celebrates Columbia and Joy at the 2026 American Music Awards With ‘Tu Recuerdo’
+   #575  5     Fast Company                  5 leadership resets ambitious executives need now
+   #576  5     Fast Company                  Instead of building from scratch, this NFL team is renovating—and saving $1 billion
+   #577  5     NYT Arts                      Sonny Rollins: 12 Essential Albums
+   #578  5     The Hollywood Reporter        Darius Rucker Honored With Veterans Voice Award, Urges “Every Day” Appreciation for Service Members
+   #579  5     Rolling Stone                 Teddy Swims Brings Down the House With ‘Mr. Know It All’ at American Music Awards
+   #580  5     The Hollywood Reporter        Girl Group KATSEYE Deliver Dance-Heavy “Pinky Up” Performance at 2026 AMAs
+   #581  5     Pitchfork                     Listen to J Mascis and Mike Watt Swap Cover Songs
+   #582  5     Page Six                      John Legend rescues wife Chrissy Teigen from wardrobe malfunction at 2026 AMAs
+   #583  5     Variety                       Katseye Brings the AMAs’ House Down With Beary Exciting ‘Pinky Up’ Performance, Before Winning Best New Artist
+   #584  5     Fast Company                  Everyone wants transparency—until it’s time to take responsibility
+   #585  5     Billboard                     KATSEYE Saturates the Stage at 2026 American Music Awards With Colorful ‘Pinky Up’ Performance
+   #586  5     Rolling Stone                 Katseye Break Through a Giant Pink Teddy Bear to Perform ‘Pinky Up’ at 2026 AMAs
+   #587  5     Page Six                      Who is Homer Gere? Meet the ‘Euphoria’ heartthrob who filmed wildly intimate scene with Sydney Sweeney
+   #588  5     Billboard                     Carlos Vives Pours Colombian Pride Into Miami With Tour Al Sol: ‘It Is Important to Be in This City’
+   #589  5     Page Six                      ‘Mormon Wives’ star Jessi Draper and ‘Vanderpump Villa’ alum Marciano Brunette make red carpet debut at 2026 AMAs
+   #590  5     IGN                           Destiny 2 Changes Reportedly Kept from Most Bungie Staff Ahead of Public Announcement
+   #591  5     Rolling Stone                 Karol G Enchants at 2026 AMAs With Ethereal ‘Ivonny Bonita’ Performance
+   #592  5     Semafor                       Thousands of journalists’ data exposed to dark web
+   #593  5     Semafor                       Google's Nick Fox on remaking its search engine
+   #594  5     Semafor                       California influencer disclosures offer a glimpse at how secret money distorts American politics
+   #595  5     Business Insider              Only 9 artists have topped the Billboard chart with 10 different albums — here they all are
+   #596  5     Fast Company                  Real enterprise transformation with AI requires six foundations, not one. Here’s how to build them all
+   #597  5     Rolling Stone                 Sombr Sings Aching ‘Homewrecker’ Hit in a Rainstorm During AMAs Performance
+   #598  5     Rolling Stone                 BTS Bring ‘Hooligan’ Music Video to Life at the American Music Awards
+   #599  5     BBC Sport                     Inter Miami say Messi went off with muscle fatigue
+   #600  5     Highsnobiety                  New Balance's Milky 204L Sneaker Is a Holy Cow
+   #601  5     BBC Sport                     St Mirren survive - will interim McLeish get the job now?
+   #602  5     Business Insider              78+ deals in the Memorial Day sales we love from Nespresso, Vuori, Dyson, Fenty, and more
+   #603  5     Highsnobiety                  New Balance's All-New Strawberry Dad Shoe Gets Quenched
+   #604  5     Highsnobiety                  Vans High-Texture Authentic Sneaker Brings the Skatepark to the Sea
+   #605  5     BBC Sport                     Spurs rekindle Savinho interest - Tuesday's gossip
+   #606  5     Inc.                          Japan’s Biggest Snack Maker Is Changing Its Iconic Chip Bags Because of a Growing Global Crisis
+   #607  5     Semafor                       Waymo suspends services in six US cities after flooding
+   #608  5     Semafor                       Russia blocks online access to criminal records
+   #609  5     Semafor                       Indian, Chinese firms ramp up foreign acquisitions
+   #610  5     Semafor                       Iran deal status remains uncertain
+   #611  5     Inc.                          Why Estée Lauder and Puig’s Mega-Merger Suddenly Collapsed
+   #612  5     Semafor                       China overhauls hukou system
+   #613  5     BBC Sport                     Ruud 'like a zombie' as he feared heatstroke in tough Paris win
+   #614  5     IGN                           LittleBigPlanet Developer Media Molecule's Next Game Reportedly Features 'Open-World Content'
+   #615  5     Fast Company                  Our fears about AI are really fears about capitalism
+   #616  5     Dexerto                       Every Star Wars movie ranked from worst to best
+   #617  5     Fast Company                  Uber’s Andrew Macdonald on what America’s economy looks like from the driver’s seat
+   #618  5     Sky Sports                    St Mirren retain Premiership status as Fraser volley downs Partick Thistle
+   #619  5     NYT Arts                      Alamo Drafthouse Instituted Mobile Ordering. Super Fans Are Not Pleased.
+   #620  5     Futurism                      Riot Games Denies Using Anti-Cheat Software That Bricks Hackers’ Computers
+   #621  5     Ars Technica                  Citing Gandalf, Pope Leo says we must "disarm" AI
+   #622  5     Wired                         The Electric Ferrari Luce Is Finally Here
+   #623  5     BBC Sport                     GB's Boulter scrapes into French Open second round
+   #624  5     The Guardian Culture          Ian McEwan says pessimism ‘a bigger problem than climate change’
+   #625  5     The Atlantic                  The Olympics These Were Not
+   #626  5     Puck                          Life of Byron
+   #627  5     BBC Sport                     Eight spectators and rider hurt at TT practice
+   #628  5     Polygon                       Grave Seasons is the terrifying Stardew Valley clones you've been waiting for
+   #629  5     Puck                          Putin on the Fritz
+   #630  5     Business Insider              Memorial Day furniture sales and patio picks: CB2, Burrow, and more
+   #631  5     BBC Sport                     Neville leaves MLS strugglers Portland Timbers
+   #632  5     Business Insider              Pope Leo isn't joining Anthropic, but the memes are funny
+   #633  5     Polygon                       Milky Subway is an overlooked sci-fi anime coming to Netflix on June 1
+   #634  5     BBC Sport                     Three ACL injuries later - how Notts County's Jones lit up Wembley
+   #635  5     Sky Sports                    Boulter battles through at French Open but qualifier Samuel bows out
+   #636  5     Stereogum                     Noah Kahan’s Not-That-Unlikely Everyman Stardom
+   #637  5     Puck                          Line Sheet Mailbag: Glossier Futures & A Designer Fantasy Draft
+   #638  5     Sky Sports                    St Helens icons Cunningham and Rudge to retire from rugby league
+   #639  5     Polygon                       The creator of Too Many Cooks is back with the trippiest horror movie of the summer
+   #640  5     Sky Sports Football           Transfer Centre LIVE! Alisson set to stay at Liverpool
+   #641  5     Business Insider              What smart people are saying about Pope Leo's letter on AI
+   #642  5     Highsnobiety                  Finally, Luxury Carhartt
+   #643  5     Dexerto                       Morgpie banned on Twitch after streaming Dark Souls on her feet
+   #644  5     The Verge                     Cox Media fined after bragging it spied on users through their phones
+   #645  5     IGN                           The Secretlab Memorial Day Sale Has Great Deals on Limited Edition Themed Gaming Chairs
+   #646  5     IGN                           The Lokithor J400 12V Cordless Lithium Car Jump Starter Drops to Under $35
+   #647  5     Polygon                       Star City brings KGB intrigue to For All Mankind
+   #648  5     BBC Sport                     Mexico agrees to host Iran at World Cup instead of US
+   #649  5     Vanity Fair                   Taylor Swift and Travis Kelce Cause a Stir With Knicks/Cavs Front Row Appearance
+   #650  5     NYT Arts                      Lizzo Addresses the Backlash and Performs Live at The New York Times
+   #651  5     Polygon                       The Art of Marvel Animation's Your Friendly Neighborhood Spider-Man reveals new Doctor Strange artwork
+   #652  5     BBC Sport                     England's batters are giving me T20 World Cup headache - Edwards
+   #653  5     Wired                         Memorial Day Tech Deals: Sony, Apple, Anker, and More
+   #654  5     IGN                           The Sonos Arc Ultra Soundbar Just Dropped to the Lowest Price Ever During the Sonos Memorial Day Sale
+   #655  5     Business Insider              I didn't want to work in my family's warehouse business. After 14 years, I can't imagine leaving.
+   #656  5     Polygon                       Netflix is about to get one of the best school anime, and you shouldn't miss it
+   #657  5     Fast Company                  Richard Branson says everyone should read this cult-classic novel—it changed how he made decisions
+   #658  5     IGN                           Nintendo's New 'Choose Your Game' Switch 2 Bundle Is Now Available
+   #659  5     BBC Sport                     England beat New Zealand to win T20 series
+   #660  5     NYT Arts                      Letting Her Art (and Birds) Do the Talking
+   #661  5     Business Insider              I visited the 'Hawaii of the Atlantic,' an island chain only 5 hours from Boston. It felt like an unspoiled paradise.
+   #662  5     TechCrunch                    What ClickUp’s mass layoff tells us about the future of work
+   #663  5     Fast Company                  U.S.-Iran deal to end the war is ‘largely negotiated,’ Trump says. Here’s what to know
+   #664  5     Dexerto                       Marathon actor hits back at “sad” people hating on the game and tells them to “just stop”
+   #665  5     The New Yorker                Why Any Plausible Iran Deal Is a Humiliation for Trump
+   #666  5     BBC Sport                     Spurs admit 'football success was not driving decisions'
+   #667  5     Stereogum                     Rivers Cuomo (Accidentally?) Shares 15 Random Covers From His Archives
+   #668  5     Business Insider              Everything Taylor Swift has worn this year, ranked from worst to best
+   #669  5     Business Insider              Read 47 pitch decks that creator-economy startups used to raise millions of dollars
+   #670  5     Consequence                   Paul McCartney Talks About Origins of New Album With Actor Paul Mescal in Amazon Short Film Streaming Now
+   #671  5     Business Insider              I built my toddler a mini man cave. The room design is helping him to be more independent.
+   #672  5     Dexerto                       This free game turns your PS5 into a manga reader
+   #673  5     Business Insider              AI, longevity, and the World Cup: Inside JPMorgan's summer reading list
+   #674  5     TechCrunch                    The pope’s AI encyclical isn’t really about AI
+   #675  5     Dexerto                       Chipotle fans spot new crispy chicken item in rare menu test
+   #676  5     Business Insider              I moved from Europe to New York last year. I wish I'd known a few things before making the leap.
+   #677  5     Consequence                   Kimiko Glenn on Modern Dance, Dating Disasters, and Going from Voice Acting to Pop Confessionals: Podcast
+   #678  5     Business Insider              10 famous women who served in the military
+   #679  5     The Verge                     Pope Leo calls for being ‘profoundly human’ in the age of AI
+   #680  5     Defector                      The Crossword, May 25: Astrobiology (Themeless)
+   #681  5     Stereogum                     Paul Mescal Interviews Paul McCartney
+   #682  5     TechCrunch                    The pitch trick that helped an eSports startup raise $20M when VCs only wanted AI
+   #683  5     Sky Sports Football           Liverpool latest: Juventus rivalling Spurs for Robertson
+   #684  5     Fast Company                  Jim Henson’s once-hidden puppet studio is now open for public tours in New York City
+   #685  5     BBC Sport                     Wawrinka bids fond farewell to French Open
+   #686  5     Consequence                   Linda Perry Says Green Day’s Billie Joe Armstrong is “a Little Pussy” for Dropping Her as American Idiot Follow-Up Producer
+   #687  5     TechCrunch                    Startup Battlefield 200 applications close in days: Apply before May 27
+   #688  5     Defector                      It’s All About Victor Wembanyama
+   #689  5     Dexerto                       Ironmouse fans celebrate major health milestone as VTuber shares update on chronic illness
+   #690  5     Business Insider              The most popular album the year you were born
+   #691  5     The Guardian Culture          ‘Bowie compared us to T Rex. Couldn’t get any better’: the Mekons on how they made Where Were You?
+   #692  5     Business Insider              My mother wanted independence, not assisted living. So we're building her a 2-bedroom home in our backyard.
+   #693  5     Fast Company                  50,000 California residents are waiting to see if officials can keep this chemical tank from exploding
+   #694  5     Business Insider              VHS tapes and landlines are having a resurgence. Here's the '90s tech we want back next.
+   #695  5     The Guardian Culture          Bows, bounce and rule breakers: week two on the red carpet at the Cannes film festival – in pictures
+   #696  5     Wired                         Best Memorial Day Deals: Garmin, Birdfy, Branch (2026)
+   #697  5     The Verge                     Here are our favorite last-minute deals from REI’s giant Anniversary Sale
+   #698  5     Semafor                       Hajj pilgrimage to Mecca begins
+   #699  5     Stereogum                     The Number Ones: BTS’ “Permission To Dance”
+   #700  5     Semafor                       Iranians attend Hajj despite war
+   #701  5     Semafor                       The quiet influence of Qatari minister Al Thawadi
+   #702  5     NYT Arts                      All Quiet at the Kennedy Center
+   #703  5     Dexerto                       New golf ball-sized octopus species discovered & it’s adorable
+   #704  5     Dexerto                       Star Citizen hits $1 billion in crowdfunding 14 years after reveal
+   #705  5     404 Media                     An Incomplete List of Successful Anti-Data Center Legislation
+   #706  5     Inc.                          ‘We Want to Be America’s Best Grocer’: Kroger’s Aggressive Plan to Beat Walmart and Costco
+   #707  5     Inc.                          8 Communication Mistakes That Make Leaders Lose Credibility Fast
+   #708  5     Semafor                       Senegal’s political avalanche
+   #709  5     BBC Sport                     Nuno meeting West Ham hierarchy over future
+   #710  5     Semafor                       Benin's new president focuses on economic prosperity
+   #711  5     Semafor                       South Africa seeks 15-year AGOA extension
+   #712  5     BBC Sport                     Lamine Yamal in Spain squad but no Real Madrid players
+   #713  5     Semafor                       African Development Bank meets amid Iran war, Ebola
+   #714  5     Futurism                      People Are Loading Their Writing With Typos to Prove They’re Not AI
+   #715  5     The Atlantic                  Pope Leo’s Unsettling Vision of the AI Future
+   #716  5     The Atlantic                  The Burden They Carry
+   #717  5     Fast Company                  Albertsons is closing stores: See a list of doomed locations for 2026 as the grocery giant evaluates its footprint
+   #718  5     Dexerto                       Forza Horizon 6 players are making friends just to avoid racing infamous Bowie Knife99 AI
+   #719  5     BBC Sport                     Mercedes team-mates go head-to-head for F1 crown
+   #720  5     BBC Sport                     Why it 'clicked' for Hamilton and Ferrari in Canada
+   #721  5     Ars Technica                  US's big bet on quantum computing may not be entirely legal
+   #722  5     Fast Company                  Glaze turns AI prompts into custom Mac apps in minutes
+   #723  5     The Guardian Culture          Tuner review – Leo Woodall and Dustin Hoffman in sweet harmony in safe-cracking thriller
+   #724  5     The Guardian Culture          Fatiha El-Ghorri: Cockney Stacking Doll review – Taskmaster star’s endearing, earthy tour of the East End
+
+── GROUPED DUPLICATES (excluded from candidate pool) ──────────────────────────────────────────────────
+   Deadline                      Sonny Rollins Dies: Jazz Giant Was 95
+                                ↳ Grouped as duplicate of "Sonny Rollins, Tenor Sax Legend and Colossus of Jazz, Dies a
+   Pitchfork                     Sonny Rollins, Jazz Luminary and Saxophone Legend, Dies at 95
+                                ↳ Grouped as duplicate of "Sonny Rollins, One of Jazz&#8217;s Greatest Saxophonists, Di
+   Rolling Stone                 Sonny Rollins, Jazz’s Saxophone Colossus and Greatest Improvisor, Dead
+                                ↳ Grouped as duplicate of "Sonny Rollins, One of Jazz&#8217;s Greatest Saxophonists, Di
+   The Guardian Culture          Sonny Rollins, colossus of jazz saxophone, dies aged 95
+                                ↳ Grouped as duplicate of "Sonny Rollins, One of Jazz&#8217;s Greatest Saxophonists, Di
+   IGN                           The AMD Radeon 9070 XT Graphics Card Drops to $670 During Amazon's Mem
+                                ↳ Grouped as duplicate of "The 77" LG G5 Gallery Series 4K OLED TV Drops to $2,199 Duri
+   Variety                       Sonny Rollins, Jazz’s ‘Saxophone Colossus,’ Dies at 95
+                                ↳ Grouped as duplicate of "Sonny Rollins, Tenor Sax Legend and Colossus of Jazz, Dies a
+   Deadline                      ‘Star Wars: The Mandalorian & Grogu’ Opens To $163M WW, $100M 4-Day U.
+                                ↳ Grouped as duplicate of "&#8216;Star Wars: Mandalorian &#038; Grogu&#8217; With $100M
+   NYT Arts                      Sonny Rollins, Giant of the Jazz Saxophone, Is Dead at 95
+                                ↳ Grouped as duplicate of "Sonny Rollins, saxophonist and restless genius of jazz, dead
+   BBC Sport                     Man Utd captain Fernandes takes on Keane over 'lie'
+                                ↳ Grouped as duplicate of "Man Utd latest: Fernandes and Keane clash over PL assists re
+   Billboard                     EJAE Teases New Album In the Works & Performing With KATSEYE at Coache
+                                ↳ Grouped as duplicate of "Ludacris On His New &#8220;Pull Over&#8221; Music Video, Tea
+   Billboard                     REI AMI Says “New Music Is Coming Sooner Than You Think & More | AMAs 
+                                ↳ Grouped as duplicate of "Ludacris On His New &#8220;Pull Over&#8221; Music Video, Tea
+   Variety                       How to Watch the 2026 American Music Awards Live Online
+                                ↳ Grouped as duplicate of "How to Watch the 2026 American Music Awards Online for Free"
+   The Hollywood Reporter        Where to Watch the 2026 American Music Awards Live Online
+                                ↳ Grouped as duplicate of "How to Watch the 2026 American Music Awards Online for Free"
+   Engadget                      Ferrari Luce unveiled: Here's the first car from Jony Ive's design hou
+                                ↳ Grouped as duplicate of "Ferrari reveals its first EV, with design help from Jony Ive
+   IGN                           The TSA-Approved 20,000mAh 200W Power Bank Drops to $38.49 During Amaz
+                                ↳ Grouped as duplicate of "The 77" LG G5 Gallery Series 4K OLED TV Drops to $2,199 Duri
+   Wired                         Best Memorial Day Mattress Deals: Helix, Saatva (2026)
+                                ↳ Grouped as duplicate of "Best Memorial Day mattress sales: Deals from Saatva, Leesa, 
+   The Verge                     The best Memorial Day sales you can shop this weekend
+                                ↳ Grouped as duplicate of "Best Memorial Day mattress sales: Deals from Saatva, Leesa, 
+   The Hollywood Reporter        Pawel Pawlikowski, Ruben Östlund Set for Slano Film Days
+                                ↳ Grouped as duplicate of "Pawel Pawlikowski &#038; Ruben Östlund Set For Croatia’s Sla
+   Billboard                     Here Are the 2026 American Music Awards Winners: Full List (Updating L
+                                ↳ Grouped as duplicate of "American Music Awards: The Complete Winners List" (Rolling S
+   Sky Sports Football           EFL latest: Tranmere appoint Clarke
+                                ↳ Grouped as duplicate of "EFL latest: Tranmere appoint Clarke" (Sky Sports)
+   Sky Sports Football           Bournemouth latest: AC Milan approach Iraola after four-person sacking
+                                ↳ Grouped as duplicate of "Bournemouth latest: AC Milan approach Iraola after four-pers
+   BBC Sport                     'Magician' Monfils exits final French Open
+                                ↳ Grouped as duplicate of "'I hope to inspire' - Monfils bows out of final French Open"
+   Sky Sports Football           Neville: Next step for Arsenal is to win CL - but 'best in Europe' awa
+                                ↳ Grouped as duplicate of "Neville: Next step for Arsenal is to win CL - but 'best in E
+   Rolling Stone                 American Music Awards: The Complete Winners List
+                                ↳ Grouped as duplicate of "American Music Awards Winners List: BTS, Huntr/X &#038; Somb
+   Sky Sports                    England rout New Zealand for 80 in T20 series win
+                                ↳ Grouped as duplicate of "England beat New Zealand to win T20 series" (BBC Sport)
+   Billboard                     BTS Wins Artist of the Year at 2026 American Music Awards; Taylor Swif
+                                ↳ Grouped as duplicate of "Snubs and Surprises at the 2026 American Music&#160;Awards" 
+   Sky Sports Football           Notts County ease past Salford to seal promotion to League One
+                                ↳ Grouped as duplicate of "Notts County ease past Salford to seal promotion to League O
+   Sky Sports Football           Forest latest: Gibbs-White opens up on England snub
+                                ↳ Grouped as duplicate of "Forest latest: Gibbs-White opens up on England snub" (Sky Sp
+   Sky Sports Football           The PL clubs changing manager... and the others that could follow
+                                ↳ Grouped as duplicate of "The PL clubs changing manager... and the others that could f
+   Sky Sports Football           From Macclesfield to Leipzig: How Palace reached Conference League fin
+                                ↳ Grouped as duplicate of "From Macclesfield to Leipzig: How Palace reached Conference 
+   Billboard                     KATSEYE Shouts Out BTS for ‘Inspiring Us’ in New Artist of the Year Ac
+                                ↳ Grouped as duplicate of "BTS Wins Artist of the Year at 2026 AMAs: &#8216;We Made It 
+   IGN                           The 2026 MacBook Air With New Apple M5 Chip Drops to the Lowest Price 
+                                ↳ Grouped as duplicate of "The New 2026 Apple iPad Air with M4 Chip Drops to a New All-
+   Dexerto                       Harada finally visits Waffle House after years of Tekken fans demandin
+                                ↳ Grouped as duplicate of "Tekken Director Katsuhiro Harada Finally Takes a Trip to Waf
+   Engadget                      Sennheiser's Momentum 5 headphones are all about the audio and ANC upg
+                                ↳ Grouped as duplicate of "Sennheiser’s new Momentum 5 headphones have upgraded ANC and
+   Sky Sports Football           Shaw signs record-breaking new City deal
+                                ↳ Grouped as duplicate of "Shaw signs new Man City deal after contract U-turn" (BBC Spo
+   Sky Sports Football           Slot, Alisson, Diomande and Konate - Liverpool's big summer analysed
+                                ↳ Grouped as duplicate of "Slot, Alisson, Diomande and Konate - Liverpool's big summer 

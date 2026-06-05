@@ -84,7 +84,7 @@ export function AccountChoiceSheet({ isOpen, onClose, onCreateManually }: Accoun
         className="fixed inset-x-0 bottom-0 z-[220] flex flex-col overflow-hidden mx-auto"
         style={{
           maxWidth: '480px',
-          background: '#053980',
+          background: '#042c85',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
           transition: dragOffset > 0 ? 'none' : 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
@@ -125,7 +125,7 @@ export function AccountChoiceSheet({ isOpen, onClose, onCreateManually }: Accoun
               fontSize: '14px',
               letterSpacing: '0.08em',
               background: '#fff1cd',
-              color: '#053980',
+              color: '#042c85',
             }}
           >
             Create Account

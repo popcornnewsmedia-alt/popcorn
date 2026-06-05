@@ -27,7 +27,7 @@ export function PopcornIcon({
   hasDot = false,
   color = "#fff1cd",
   dotColor = "#e14b3a",
-  haloColor = "#053980",
+  haloColor = "#042c85",
   className,
 }: PopcornIconProps) {
   return (

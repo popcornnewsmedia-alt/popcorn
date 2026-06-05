@@ -228,7 +228,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
         style={{
           height: '90dvh',
           maxWidth: '480px',
-          background: '#053980',
+          background: '#042c85',
           borderRadius: '20px 20px 0 0',
           transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
           transition: dragOffset > 0 ? 'none' : 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
@@ -264,7 +264,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                 className="w-20 h-20 rounded-full flex items-center justify-center"
                 style={{ background: '#fff1cd', animation: 'check-pop 0.5s cubic-bezier(0.22,1,0.36,1) both' }}
               >
-                <Check className="w-9 h-9" style={{ color: '#053980' }} strokeWidth={2.5} />
+                <Check className="w-9 h-9" style={{ color: '#042c85' }} strokeWidth={2.5} />
               </div>
               <div style={{ animation: 'tagline-reveal 0.5s ease 0.35s both' }}>
                 <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '32px', color: '#fff1cd', lineHeight: 1.05, letterSpacing: '0.02em', marginBottom: '10px' }}>
@@ -300,7 +300,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
               <button
                 onClick={handleClose}
                 className="mt-2 px-8 py-3.5 rounded-full transition-opacity hover:opacity-80 active:scale-[0.98]"
-                style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '13px', letterSpacing: '0.08em', background: '#fff1cd', color: '#053980' }}
+                style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '13px', letterSpacing: '0.08em', background: '#fff1cd', color: '#042c85' }}
               >
                 GOT IT
               </button>
@@ -440,7 +440,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                         fontSize: '10px',
                         letterSpacing: '0.06em',
                         background: sel ? '#fff1cd' : 'rgba(255,241,205,0.07)',
-                        color: sel ? '#053980' : 'rgba(255,241,205,0.65)',
+                        color: sel ? '#042c85' : 'rgba(255,241,205,0.65)',
                         border: sel ? '1px solid #fff1cd' : '1px solid rgba(255,241,205,0.18)',
                       }}
                     >
@@ -494,7 +494,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                 fontSize: '14px',
                 letterSpacing: '0.08em',
                 background: canNext && !loading ? '#fff1cd' : 'rgba(255,241,205,0.12)',
-                color: canNext && !loading ? '#053980' : 'rgba(255,241,205,0.28)',
+                color: canNext && !loading ? '#042c85' : 'rgba(255,241,205,0.28)',
               }}
             >
               {loading ? "WORKING…" : step === 2 ? "FINISH" : "CONTINUE"}
@@ -572,7 +572,7 @@ function BrandedSelect({ value, onChange, options, placeholder }: {
         >
           <div
             className="rounded-2xl overflow-hidden flex flex-col mx-4 mb-6 w-full relative"
-            style={{ background: '#053980', maxHeight: '45vh', maxWidth: '320px', border: '1px solid rgba(255,241,205,0.10)' }}
+            style={{ background: '#042c85', maxHeight: '45vh', maxWidth: '320px', border: '1px solid rgba(255,241,205,0.10)' }}
             onClick={(e) => e.stopPropagation()}
           >
             <GrainBackground />
@@ -732,7 +732,7 @@ function NotifToggle({ label, sub, on, onToggle }: { label: string; sub: string;
           className="absolute top-1 w-5 h-5 rounded-full transition-transform duration-200"
           style={{
             transform: on ? 'translateX(24px)' : 'translateX(4px)',
-            background: on ? '#053980' : 'rgba(255,241,205,0.55)',
+            background: on ? '#042c85' : 'rgba(255,241,205,0.55)',
             boxShadow: '0 1px 4px rgba(0,0,0,0.22)',
           }}
         />
