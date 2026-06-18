@@ -421,6 +421,12 @@ function SavedScreen({
 
 const APP_VERSION = "1.0.0";
 
+// Feed-image parallax is skipped entirely under prefers-reduced-motion.
+// Evaluated once at module load — OS-level setting, effectively static.
+const PARALLAX_REDUCED =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 function LegalRow({ label, onClick }: { label: string; onClick: () => void }) {
   return (
     <button
@@ -1017,6 +1023,30 @@ export function FeedPage() {
     if (fill && Math.abs(progress - lastProgressRef.current) > 0.0005) {
       lastProgressRef.current = progress;
       fill.style.transform = `scaleX(${progress})`;
+    }
+
+    // ── Vertical parallax ── each card is exactly clientHeight tall, so
+    // child i sits at screen offset (i − fractionalIdx)·clientHeight. We
+    // write a --pn-pary CSS var on the cards within ±1.5 viewports of the
+    // cursor; ArticleCard's image wrapper consumes it, panning the photo
+    // slightly slower than its card frame (depth cue). Writes are
+    // 0.5px-quantised and change-detected via dataset, so a resting feed
+    // writes nothing. k=0.02 of viewport keeps the max offset inside the
+    // wrapper's scale(1.09) bleed on all device heights.
+    if (!PARALLAX_REDUCED) {
+      const kids = container.children;
+      const lo = Math.max(0, Math.floor(fractionalIdx - 1.5));
+      const hi = Math.min(kids.length - 1, Math.ceil(fractionalIdx + 1.5));
+      for (let i = lo; i <= hi; i++) {
+        const el = kids[i] as HTMLElement;
+        const rel = Math.max(-1.1, Math.min(1.1, i - fractionalIdx));
+        const par = Math.round(-rel * clientHeight * 0.02 * 2) / 2;
+        const key = String(par);
+        if (el.dataset.pary !== key) {
+          el.dataset.pary = key;
+          el.style.setProperty('--pn-pary', `${par}px`);
+        }
+      }
     }
 
     // Date: flip at scroll-snap midpoint. Done here (scroll-listener path) so

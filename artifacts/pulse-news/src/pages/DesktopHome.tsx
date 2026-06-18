@@ -1,18 +1,26 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import type { ReactNode, MouseEvent as ReactMouseEvent } from "react";
-import { ChevronLeft, ChevronRight, Instagram } from "lucide-react";
+import { ChevronLeft, ChevronRight, Instagram, Heart, MessageCircle, Bookmark, Send, X, LogOut, ChevronDown, Settings, Pencil, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { format, startOfDay } from "date-fns";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useAuth } from "@/hooks/use-auth";
-import { SavesContext, useSavesRoot } from "@/hooks/use-saves";
+import { SavesContext, useSavesRoot, useSavedArticles } from "@/hooks/use-saves";
+import { LikesContext, useLikesRoot, useLikedArticles } from "@/hooks/use-likes";
+import { useCommentCount } from "@/hooks/use-comment-count";
+import { CommentSheet } from "@/components/CommentSheet";
+import { ABOUT, PRIVACY, TERMS, type LegalKind, type LegalDoc } from "@/components/LegalSheet";
 import { feedImageUrl } from "@/lib/image-url";
 import { ArticleReader } from "@/components/ArticleReader";
-import { DesktopAuthModal } from "@/components/desktop/DesktopAuthModal";
+import { DesktopAuthGate } from "@/components/desktop/DesktopAuthGate";
+import { DesktopAuthFooter } from "@/components/desktop/DesktopAuthFooter";
 import { SignUpFlow } from "@/components/SignUpFlow";
 import { SignInSheet } from "@/components/SignInSheet";
 import { GrainBackground } from "@/components/GrainBackground";
 import { PopcornIntro } from "@/components/PopcornIntro";
+import { GridFeed } from "./DesktopGridFeed";
+import { CATEGORY_COLORS } from "./feed-internals";
 
 /* ─────────────────────────────────────────────────────────────────────
    Popcorn — Daily Edition (Desktop Web)
@@ -42,6 +50,7 @@ const BLOCK_BLACK = "#101010";         // poster offset-block — black
 
 const SANS  = '"Helvetica Neue", Helvetica, Arial, Inter, sans-serif';
 const SERIF = '"Bodoni Moda", "Didot", "Times New Roman", serif';
+const MACABRO = "'Macabro', 'Anton', sans-serif";
 
 /* Editorial typography — headlines in Kepler3, genre/labels in HelveticaNowText
    (loaded via @font-face in index.css; graceful sans-serif fallback). */
@@ -428,7 +437,7 @@ function InstagramTile() {
   return (
     <a
       className="ptile ig-tile"
-      href="https://instagram.com/popcornmedia"
+      href="https://instagram.com/news.popcorn"
       target="_blank"
       rel="noreferrer"
     >
@@ -436,15 +445,15 @@ function InstagramTile() {
         <div aria-hidden className="ig-grain">
           <GrainBackground variant="popcorn-blue" />
         </div>
-        <div className="ig-icon">
-          <Instagram size={18} strokeWidth={1.6} />
-        </div>
-        <div className="ig-body">
+        <div className="ig-top">
+          <Instagram size={16} strokeWidth={1.6} />
           <span className="ig-cat">Follow Us</span>
-          <h3 className="ig-h">@popcornmedia</h3>
-          <p className="ig-p">
-            <em>Today's pop on Instagram</em> — film, music, fashion, internet.
-          </p>
+        </div>
+        <div className="ig-mid">
+          <span className="ig-logo">
+            <img src="/logo-latest.png" alt="Popcorn" loading="lazy" />
+          </span>
+          <h3 className="ig-h">@news.popcorn</h3>
         </div>
         <div className="ig-foot">
           <span className="ig-foot-cat">Instagram</span>
@@ -464,21 +473,27 @@ function InstagramTile() {
           aspect-ratio: 4/5;
           background: #042c85; color: #fff;
           display: flex; flex-direction: column; justify-content: space-between;
-          padding: 12px 12px 10px; isolation: isolate; }
+          padding: 14px 14px 12px; isolation: isolate; }
         .ig-grain { position: absolute; inset: 0; opacity: 0.55;
           mix-blend-mode: overlay; pointer-events: none; z-index: 0; }
-        .ig-icon { position: relative; z-index: 1; color: #fff; }
-        .ig-cat { display: block; font-family: ${SANS}; font-size: 9.5px;
+        .ig-top { position: relative; z-index: 1; color: #fff;
+          display: flex; align-items: center; gap: 8px; }
+        .ig-cat { font-family: ${SANS}; font-size: 9.5px;
           letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600;
-          color: rgba(255,255,255,0.65); margin-bottom: 6px; }
-        .ig-body { position: relative; z-index: 1; }
+          color: rgba(255,255,255,0.72); }
+        .ig-mid { position: relative; z-index: 1; flex: 1;
+          display: flex; flex-direction: column; align-items: center;
+          justify-content: center; gap: 14px; }
+        .ig-logo { display: flex; align-items: center; justify-content: center;
+          width: 62%; aspect-ratio: 1/1; background: #fff1cd;
+          border-radius: 18px; overflow: hidden;
+          box-shadow: 0 8px 22px rgba(0,0,0,0.20); }
+        .ig-logo img { width: 100%; height: 100%; object-fit: contain;
+          padding: 7%; box-sizing: border-box; display: block; }
         .ig-h { margin: 0; font-family: ${SERIF}; font-style: italic;
-          font-weight: 500; font-size: clamp(17px, 1.5vw, 22px);
+          font-weight: 500; font-size: clamp(16px, 1.4vw, 20px);
           font-variation-settings: "opsz" 28; line-height: 1.04;
-          letter-spacing: -0.008em; color: #fff; }
-        .ig-p { margin: 6px 0 0 0; font-family: ${SERIF}; font-size: 12px;
-          line-height: 1.4; color: rgba(255,255,255,0.78); }
-        .ig-p em { font-style: italic; }
+          letter-spacing: -0.008em; color: #fff; text-align: center; }
         .ig-foot { position: relative; z-index: 1;
           display: flex; align-items: baseline; justify-content: space-between;
           gap: 12px; }
@@ -639,6 +654,15 @@ function Masthead({
   onNext,
   layoutMode,
   onSetLayout,
+  userName,
+  userHandle,
+  userAvatar,
+  userTopics,
+  savedCount,
+  likedCount,
+  onOpenLibrary,
+  onOpenLegal,
+  onOpenSettings,
 }: {
   onSignIn: () => void;
   user: any;
@@ -650,6 +674,15 @@ function Masthead({
   onNext: () => void;
   layoutMode: "classic" | "drag";
   onSetLayout: (m: "classic" | "drag") => void;
+  userName: string | null;
+  userHandle: string | null;
+  userAvatar: string | null;
+  userTopics: string[];
+  savedCount: number;
+  likedCount: number;
+  onOpenLibrary: (tab: "likes" | "saved") => void;
+  onOpenLegal: (kind: LegalKind) => void;
+  onOpenSettings: () => void;
 }) {
   const dateLabel = group ? format(group.date, "EEEE, do MMMM") : "—";
   const navBtnStyle = (enabled: boolean) => ({
@@ -761,18 +794,18 @@ function Masthead({
             })}
           </div>
           {user ? (
-            <button
-              onClick={onSignOut}
-              style={{
-                background: "transparent", border: 0, color: "#fff",
-                fontFamily: "'Macabro', serif", fontSize: 11.5, letterSpacing: "0.06em",
-                fontWeight: 400, cursor: "pointer",
-                padding: 0, display: "flex", alignItems: "center", gap: 6,
-              }}
-            >
-              <span>Sign out</span>
-              <span aria-hidden>↗</span>
-            </button>
+            <ProfileMenu
+              userName={userName}
+              userHandle={userHandle}
+              userAvatar={userAvatar}
+              userTopics={userTopics}
+              savedCount={savedCount}
+              likedCount={likedCount}
+              onOpenLibrary={onOpenLibrary}
+              onOpenLegal={onOpenLegal}
+              onOpenSettings={onOpenSettings}
+              onSignOut={onSignOut}
+            />
           ) : (
             <button
               onClick={onSignIn}
@@ -790,6 +823,793 @@ function Masthead({
         </div>
       </div>
     </header>
+  );
+}
+
+/* ── Signed-in account surface ─────────────────────────────────────────
+   The masthead "Sign out" link is replaced (when authed) by an avatar that
+   opens a blue+cream dropdown — the website's account surface deliberately
+   borrows the app's identity (signature blue, cream ink, Macabro display)
+   so it reads as "your Popcorn" rather than the white editorial grid. It
+   mirrors the app's profile options (Topics · About · Legal · Version ·
+   Sign out) and adds a Library entry (Liked / Saved) — the desktop home for
+   the saved/liked lists the bottom-nav owns in the app. ── */
+const PROFILE_CSS = `
+  .pcd-pm { position: relative; }
+  .pcd-pm-trigger {
+    display: flex; align-items: center; gap: 9px;
+    background: transparent; border: 0; cursor: pointer; padding: 0;
+    color: #fff;
+  }
+  .pcd-pm-av {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    background: rgba(255,241,205,0.10);
+    border: 1.5px solid rgba(255,241,205,0.55);
+    box-shadow: 0 0 0 3px rgba(255,241,205,0.06);
+    transition: border-color .18s ease, box-shadow .18s ease;
+  }
+  .pcd-pm-trigger:hover .pcd-pm-av { border-color: #fff1cd; box-shadow: 0 0 0 3px rgba(255,241,205,0.12); }
+  .pcd-pm-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pcd-pm-av span { font-family: 'Macabro','Anton',sans-serif; font-size: 14px; color: #fff1cd; line-height: 1; }
+  .pcd-pm-name { font-family: 'Macabro', serif; font-size: 11.5px; letter-spacing: 0.06em; color: #fff; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pcd-pm-chev { transition: transform .2s ease; opacity: 0.85; }
+  .pcd-pm-trigger[aria-expanded="true"] .pcd-pm-chev { transform: rotate(180deg); }
+
+  .pcd-pm-panel {
+    position: fixed; z-index: 120;
+    width: 312px; border-radius: 18px; overflow: hidden;
+    background: ${BLUE}; color: #fff1cd; isolation: isolate;
+    border: 1px solid rgba(255,241,205,0.14);
+    box-shadow: 0 22px 60px rgba(4,12,40,0.45), 0 2px 0 rgba(255,255,255,0.06) inset;
+    transform-origin: top right;
+    animation: pcd-pm-in .2s cubic-bezier(0.22,1,0.36,1);
+  }
+  @keyframes pcd-pm-in { from { opacity: 0; transform: translateY(-6px) scale(0.97); } to { opacity: 1; transform: none; } }
+  .pcd-pm-grain { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.6; mix-blend-mode: overlay; }
+  .pcd-pm-body { position: relative; z-index: 1; padding: 18px; }
+  .pcd-pm-head { display: flex; align-items: center; gap: 13px; }
+  .pcd-pm-headav {
+    width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,241,205,0.10); border: 1.5px solid rgba(255,241,205,0.28);
+    box-shadow: 0 0 0 4px rgba(255,241,205,0.05);
+  }
+  .pcd-pm-headav img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pcd-pm-headav span { font-family: 'Macabro','Anton',sans-serif; font-size: 21px; color: #fff1cd; line-height: 1; }
+  .pcd-pm-headname { font-family: 'Macabro','Anton',sans-serif; font-size: 18px; letter-spacing: 0.02em; color: #fff1cd; line-height: 1.1; margin: 0; }
+  .pcd-pm-headhandle { font-family: 'Inter', sans-serif; font-size: 12.5px; color: rgba(255,241,205,0.55); margin: 3px 0 0; }
+  .pcd-pm-rule { height: 1px; background: rgba(255,241,205,0.12); margin: 16px 0; }
+  .pcd-pm-eyebrow { font-family: 'Macabro','Anton',sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,241,205,0.42); margin: 0 0 9px; }
+  .pcd-pm-libtile {
+    width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer;
+    padding: 12px 14px; border-radius: 13px;
+    background: rgba(255,241,205,0.07); border: 1px solid rgba(255,241,205,0.14);
+    color: #fff1cd; transition: background .16s ease, transform .16s ease, border-color .16s ease;
+  }
+  .pcd-pm-libtile:hover { background: rgba(255,241,205,0.13); border-color: rgba(255,241,205,0.28); transform: translateY(-1px); }
+  .pcd-pm-libtile__ic { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; background: rgba(255,241,205,0.10); border: 1px solid rgba(255,241,205,0.16); color: #fff1cd; }
+  .pcd-pm-libtile__txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+  .pcd-pm-libtile__label { font-family: 'Macabro','Anton',sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .pcd-pm-libtile__count { font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,241,205,0.55); }
+  .pcd-pm-topics { display: flex; flex-wrap: wrap; gap: 7px; }
+  .pcd-pm-topic { font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 500; color: #fff1cd; background: rgba(255,241,205,0.08); border: 1px solid rgba(255,241,205,0.12); border-radius: 20px; padding: 5px 11px; }
+  .pcd-pm-link {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: transparent; border: 0; cursor: pointer; padding: 11px 2px;
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 13.5px; color: #fff1cd;
+    transition: opacity .16s ease;
+  }
+  .pcd-pm-link:hover { opacity: 0.7; }
+  .pcd-pm-link__lead { display: inline-flex; align-items: center; gap: 9px; }
+  .pcd-pm-link__lead svg { color: rgba(255,241,205,0.55); }
+  .pcd-pm-signout {
+    display: flex; align-items: center; gap: 8px; background: transparent; border: 0;
+    cursor: pointer; padding: 0; margin-top: 4px;
+    font-family: 'Inter', sans-serif; font-size: 12.5px; color: rgba(255,241,205,0.42);
+    transition: color .16s ease;
+  }
+  .pcd-pm-signout:hover { color: #fff1cd; }
+
+  /* ── Delete-account farewell (shown inside the settings modal) ── */
+  .pcd-del__farewell { position: relative; z-index: 1; padding: 44px 30px 48px; text-align: center; }
+  .pcd-del__farewell h3 { font-family: 'Macabro','Anton',sans-serif; font-size: 24px; color: #fff1cd; margin: 0 0 10px; letter-spacing: 0.02em; }
+  .pcd-del__farewell p { font-family: 'Manrope', sans-serif; font-size: 14px; color: rgba(255,241,205,0.6); margin: 0; }
+
+  /* ── Account settings modal ── */
+  .pcd-set-overlay {
+    position: fixed; inset: 0; z-index: 130; display: flex; align-items: center; justify-content: center;
+    padding: 4vh 24px; background: rgba(4,12,40,0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    animation: pcd-lib-fade .2s ease;
+  }
+  .pcd-set {
+    position: relative; width: min(440px, 100%); max-height: 92vh; display: flex; flex-direction: column;
+    border-radius: 22px; overflow: hidden; isolation: isolate;
+    background: ${BLUE}; color: #fff1cd; border: 1px solid rgba(255,241,205,0.14);
+    box-shadow: 0 30px 90px rgba(4,12,40,0.5);
+    animation: pcd-lib-pop .26s cubic-bezier(0.22,1,0.36,1);
+  }
+  .pcd-set__grain { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55; mix-blend-mode: overlay; }
+  .pcd-set__head { position: relative; z-index: 1; padding: 24px 26px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .pcd-set__eyebrow { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,241,205,0.38); margin: 0 0 9px; }
+  .pcd-set__title { font-family: 'Macabro','Anton',sans-serif; font-size: 26px; letter-spacing: 0.02em; text-transform: uppercase; color: #fff1cd; line-height: 0.96; margin: 0; }
+  .pcd-set__sub { font-family: 'Inter', sans-serif; font-size: 12.5px; color: rgba(255,241,205,0.5); margin: 9px 0 0; }
+  .pcd-set__sub b { color: #fff1cd; font-weight: 500; }
+  .pcd-set__close {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: #fff1cd;
+    background: rgba(255,241,205,0.08); border: 1px solid rgba(255,241,205,0.16);
+    transition: background .16s ease, transform .16s ease;
+  }
+  .pcd-set__close:hover { background: rgba(255,241,205,0.16); transform: rotate(90deg); }
+  .pcd-set__body { position: relative; z-index: 1; padding: 4px 26px 26px; overflow-y: auto; }
+  .pcd-set__seclabel { font-family: 'Macabro','Anton',sans-serif; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,241,205,0.45); margin: 18px 0 11px; padding-left: 2px; }
+  .pcd-set__seclabel.is-danger { color: rgba(255,179,171,0.78); }
+  .pcd-set-row {
+    width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    border-radius: 14px; padding: 12px 14px; margin-bottom: 9px;
+    background: rgba(255,241,205,0.05); border: 1px solid rgba(255,241,205,0.10);
+    transition: background .16s ease, border-color .16s ease;
+  }
+  .pcd-set-row:hover { background: rgba(255,241,205,0.09); border-color: rgba(255,241,205,0.20); }
+  .pcd-set-row.is-open { border-color: rgba(255,241,205,0.24); }
+  .pcd-set-row__label { font-family: 'Macabro','Anton',sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,241,205,0.60); margin: 0 0 4px; }
+  .pcd-set-row__value { font-family: 'Inter', sans-serif; font-size: 14px; color: #fff1cd; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pcd-set-row__ic { flex-shrink: 0; color: rgba(255,241,205,0.5); transition: transform .18s ease; }
+  .pcd-set-row.is-open .pcd-set-row__chev { transform: rotate(90deg); }
+  .pcd-set-panel {
+    border-radius: 14px; padding: 15px 15px 16px; margin: -2px 0 9px;
+    background: rgba(255,241,205,0.03); border: 1px solid rgba(255,241,205,0.10);
+    animation: pcd-set-reveal .24s cubic-bezier(0.32,0.72,0,1);
+  }
+  @keyframes pcd-set-reveal { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+  .pcd-set-panel__label { display: block; font-family: 'Macabro','Anton',sans-serif; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,241,205,0.70); margin: 0 0 7px; }
+  .pcd-set-panel__label + .pcd-set-panel__label { margin-top: 13px; }
+  .pcd-set-input {
+    width: 100%; box-sizing: border-box; padding: 11px 14px; border-radius: 11px;
+    background: rgba(255,241,205,0.07); border: 1px solid rgba(255,241,205,0.13); color: #fff1cd;
+    font-family: 'Inter', sans-serif; font-size: 14.5px; outline: none; transition: border-color .16s ease;
+  }
+  .pcd-set-input:focus { border-color: rgba(255,241,205,0.40); }
+  .pcd-set-input::placeholder { color: rgba(255,241,205,0.3); }
+  .pcd-set-input.is-ok { border-color: rgba(130,220,160,0.40); }
+  .pcd-set-input.is-bad { border-color: rgba(255,150,130,0.40); }
+  .pcd-set-pwwrap { position: relative; }
+  .pcd-set-pweye { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; border: 0; cursor: pointer; padding: 5px; color: rgba(255,241,205,0.5); display: flex; }
+  .pcd-set-pweye:hover { color: #fff1cd; }
+  .pcd-set-msg { font-family: 'Inter', sans-serif; font-size: 12px; margin: 8px 0 0; }
+  .pcd-set-msg.is-err { color: rgba(255,150,130,0.92); }
+  .pcd-set-msg.is-ok { color: rgba(130,220,160,0.92); }
+  .pcd-set-acts { display: flex; align-items: center; gap: 10px; margin-top: 13px; }
+  .pcd-set-btn-ghost {
+    padding: 9px 16px; border-radius: 11px; cursor: pointer; background: transparent;
+    border: 1px solid rgba(255,241,205,0.16); color: rgba(255,241,205,0.72);
+    font-family: 'Macabro','Anton',sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: opacity .16s ease;
+  }
+  .pcd-set-btn-ghost:hover { opacity: 0.7; }
+  .pcd-set-btn-go {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 11px 16px; border-radius: 11px; cursor: pointer; border: 0;
+    background: #fff1cd; color: ${BLUE};
+    font-family: 'Macabro','Anton',sans-serif; font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase;
+    transition: transform .12s ease, opacity .16s ease;
+  }
+  .pcd-set-btn-go:hover:not(:disabled) { transform: translateY(-1px); }
+  .pcd-set-btn-go:disabled { background: rgba(255,241,205,0.12); color: rgba(255,241,205,0.32); cursor: not-allowed; }
+  .pcd-set-danger {
+    width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    border-radius: 14px; padding: 14px;
+    background: rgba(189,69,60,0.08); border: 1px solid rgba(189,69,60,0.22);
+    transition: background .16s ease;
+  }
+  .pcd-set-danger:hover { background: rgba(189,69,60,0.15); }
+  .pcd-set-danger__label { font-family: 'Macabro','Anton',sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #ffb3ab; margin: 0 0 4px; }
+  .pcd-set-danger__p { font-family: 'Inter', sans-serif; font-size: 12.5px; color: rgba(255,241,205,0.55); line-height: 1.45; margin: 0; }
+  .pcd-set-delpanel {
+    border-radius: 14px; padding: 16px; margin-bottom: 9px;
+    background: rgba(189,69,60,0.10); border: 1px solid rgba(189,69,60,0.35);
+    animation: pcd-set-reveal .26s cubic-bezier(0.32,0.72,0,1);
+  }
+  .pcd-set-delpanel__h { font-family: 'Macabro','Anton',sans-serif; font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: #ffd8d2; margin: 0 0 10px; }
+  .pcd-set-delpanel__p { font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.55; color: rgba(255,241,205,0.78); margin: 0 0 14px; }
+  .pcd-set-delpanel__p code { font-family: 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #fff1cd; background: rgba(255,241,205,0.08); padding: 1px 6px; border-radius: 4px; }
+  .pcd-set-delinput {
+    width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 11px; text-align: center;
+    background: rgba(0,0,0,0.24); border: 1px solid rgba(255,241,205,0.14); color: #fff1cd;
+    font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 15px; letter-spacing: 0.10em; outline: none;
+    transition: border-color .16s ease;
+  }
+  .pcd-set-delinput.is-ready { border-color: rgba(255,179,171,0.50); }
+  .pcd-set-delbtn {
+    flex: 1; padding: 12px 16px; border-radius: 11px; cursor: pointer; border: 0;
+    font-family: 'Macabro','Anton',sans-serif; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    background: rgba(189,69,60,0.22); color: rgba(255,241,205,0.40);
+    transition: transform .12s ease;
+  }
+  .pcd-set-delbtn.is-ready { background: #bd453c; color: #fff1cd; box-shadow: 0 4px 18px rgba(189,69,60,0.35); }
+  .pcd-set-delbtn.is-ready:hover { transform: translateY(-1px); }
+  .pcd-set-delbtn:disabled { cursor: not-allowed; }
+
+  /* ── Library overlay ── */
+  .pcd-lib-overlay {
+    position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center;
+    padding: 4vh 20px; background: rgba(4,12,40,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    animation: pcd-lib-fade .22s ease;
+  }
+  @keyframes pcd-lib-fade { from { opacity: 0; } to { opacity: 1; } }
+  .pcd-lib {
+    position: relative; width: min(540px, 100%); max-height: 92vh; display: flex; flex-direction: column;
+    border-radius: 22px; overflow: hidden; isolation: isolate;
+    background: ${BLUE}; color: #fff1cd; border: 1px solid rgba(255,241,205,0.14);
+    box-shadow: 0 30px 90px rgba(4,12,40,0.5);
+    animation: pcd-lib-pop .26s cubic-bezier(0.22,1,0.36,1);
+  }
+  @keyframes pcd-lib-pop { from { opacity: 0; transform: translateY(10px) scale(0.985); } to { opacity: 1; transform: none; } }
+  .pcd-lib__grain { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55; mix-blend-mode: overlay; }
+  .pcd-lib__head { position: relative; z-index: 1; padding: 24px 28px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .pcd-lib__title { font-family: 'Macabro','Anton',sans-serif; font-size: 26px; letter-spacing: 0.02em; color: #fff1cd; line-height: 1; margin: 0; }
+  .pcd-lib__sub { font-family: 'Inter', sans-serif; font-size: 13px; color: rgba(255,241,205,0.55); margin: 6px 0 0; }
+  .pcd-lib__close {
+    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: #fff1cd;
+    background: rgba(255,241,205,0.08); border: 1px solid rgba(255,241,205,0.16);
+    transition: background .16s ease, transform .16s ease;
+  }
+  .pcd-lib__close:hover { background: rgba(255,241,205,0.16); transform: rotate(90deg); }
+  .pcd-lib__tabs { position: relative; z-index: 1; margin: 0 28px; display: flex; background: rgba(255,241,205,0.07); border: 1px solid rgba(255,241,205,0.12); border-radius: 999px; padding: 3px; width: max-content; }
+  .pcd-lib__slider { position: absolute; top: 3px; bottom: 3px; width: calc(50% - 3px); border-radius: 999px; background: #fff1cd; box-shadow: 0 2px 10px rgba(0,0,0,0.18); transition: transform .32s cubic-bezier(0.34,1.4,0.5,1); }
+  .pcd-lib__tab { position: relative; z-index: 1; display: flex; align-items: center; gap: 7px; cursor: pointer; background: transparent; border: 0; padding: 9px 26px; font-family: 'Macabro','Anton',sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; transition: color .2s ease; }
+  .pcd-lib__list { position: relative; z-index: 1; margin-top: 18px; padding: 4px 28px 28px; overflow-y: auto; display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .pcd-lib__list.is-empty { display: block; }
+  .pcd-lib-card {
+    display: flex; gap: 0; text-align: left; cursor: pointer; overflow: hidden;
+    border-radius: 14px; background: rgba(255,241,205,0.07); border: 1px solid rgba(255,241,205,0.10);
+    transition: background .16s ease, transform .16s ease, border-color .16s ease;
+  }
+  .pcd-lib-card:hover { background: rgba(255,241,205,0.13); border-color: rgba(255,241,205,0.24); transform: translateY(-2px); }
+  .pcd-lib-card__img { width: 116px; flex-shrink: 0; align-self: stretch; position: relative; overflow: hidden; background: rgba(0,0,0,0.2); }
+  .pcd-lib-card__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pcd-lib-card__body { flex: 1; min-width: 0; padding: 13px 15px; display: flex; flex-direction: column; gap: 9px; }
+  .pcd-lib-card__meta { display: flex; align-items: center; gap: 7px; }
+  .pcd-lib-card__cat { display: inline-flex; align-items: center; gap: 5px; font-family: 'Macabro','Anton',sans-serif; font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,241,205,0.85); background: rgba(255,241,205,0.10); border: 1px solid rgba(255,241,205,0.16); border-radius: 999px; padding: 3px 8px; }
+  .pcd-lib-card__src { font-family: 'Macabro','Anton',sans-serif; font-size: 8.5px; letter-spacing: 0.08em; color: rgba(255,241,205,0.5); }
+  .pcd-lib-card__title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14.5px; line-height: 1.3; color: #fff1cd; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .pcd-lib__empty { text-align: center; padding: 56px 24px 64px; }
+  .pcd-lib__empty-ic { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; background: rgba(255,241,205,0.10); border: 1px solid rgba(255,241,205,0.20); }
+  .pcd-lib__empty-h { font-family: 'Macabro','Anton',sans-serif; font-size: 19px; letter-spacing: 0.02em; color: #fff1cd; margin: 0 0 8px; }
+  .pcd-lib__empty-p { font-family: 'Manrope', sans-serif; font-size: 14px; color: rgba(255,241,205,0.5); max-width: 320px; margin: 0 auto; line-height: 1.5; }
+  @media (max-width: 720px) {
+    .pcd-lib__list { grid-template-columns: 1fr; }
+  }
+`;
+
+function ProfileMenu({
+  userName,
+  userHandle,
+  userAvatar,
+  userTopics,
+  savedCount,
+  likedCount,
+  onOpenLibrary,
+  onOpenLegal,
+  onOpenSettings,
+  onSignOut,
+}: {
+  userName: string | null;
+  userHandle: string | null;
+  userAvatar: string | null;
+  userTopics: string[];
+  savedCount: number;
+  likedCount: number;
+  onOpenLibrary: (tab: "likes" | "saved") => void;
+  onOpenLegal: (kind: LegalKind) => void;
+  onOpenSettings: () => void;
+  onSignOut: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const initialSource = userName ?? userHandle?.replace(/^@/, "") ?? "?";
+  const initial = (initialSource[0] ?? "?").toUpperCase();
+
+  // Anchor the portalled panel to the trigger (the masthead clips overflow,
+  // so the dropdown is rendered to <body> with fixed coords). Recompute on
+  // open + on scroll/resize so it tracks the sticky masthead.
+  useLayoutEffect(() => {
+    if (!open) return;
+    const place = () => {
+      const r = wrapRef.current?.getBoundingClientRect();
+      if (!r) return;
+      setPos({ top: r.bottom + 12, right: Math.max(12, window.innerWidth - r.right) });
+    };
+    place();
+    window.addEventListener("scroll", place, true);
+    window.addEventListener("resize", place);
+    return () => {
+      window.removeEventListener("scroll", place, true);
+      window.removeEventListener("resize", place);
+    };
+  }, [open]);
+
+  // Close on outside-click / Escape.
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (wrapRef.current?.contains(t)) return;
+      if (panelRef.current?.contains(t)) return;
+      setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("mousedown", onDown);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  const goLibrary = (tab: "likes" | "saved") => { setOpen(false); onOpenLibrary(tab); };
+
+  return (
+    <div className="pcd-pm" ref={wrapRef}>
+      <button
+        type="button"
+        className="pcd-pm-trigger"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="Profile menu"
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span className="pcd-pm-av">
+          {userAvatar ? <img src={userAvatar} alt={userName ?? "Profile"} /> : <span>{initial}</span>}
+        </span>
+        {userName && <span className="pcd-pm-name">{userName}</span>}
+        <ChevronDown className="pcd-pm-chev" size={14} strokeWidth={2} />
+      </button>
+
+      {open && createPortal(
+        <div className="pcd-pm-panel" role="menu" ref={panelRef} style={{ top: pos.top, right: pos.right }}>
+          <div className="pcd-pm-grain" aria-hidden><GrainBackground variant="popcorn-blue" /></div>
+          <div className="pcd-pm-body">
+            <div className="pcd-pm-head">
+              <span className="pcd-pm-headav">
+                {userAvatar ? <img src={userAvatar} alt={userName ?? "Profile"} /> : <span>{initial}</span>}
+              </span>
+              <div style={{ minWidth: 0 }}>
+                {userName && <h2 className="pcd-pm-headname">{userName}</h2>}
+                {userHandle && <p className="pcd-pm-headhandle">{userHandle}</p>}
+              </div>
+            </div>
+
+            <div className="pcd-pm-rule" />
+
+            <p className="pcd-pm-eyebrow">Library</p>
+            <button type="button" className="pcd-pm-libtile" onClick={() => goLibrary("likes")}>
+              <span className="pcd-pm-libtile__ic">
+                <Bookmark size={16} strokeWidth={2} />
+              </span>
+              <span className="pcd-pm-libtile__txt">
+                <span className="pcd-pm-libtile__label">Library</span>
+                <span className="pcd-pm-libtile__count">
+                  {likedCount} liked · {savedCount} saved
+                </span>
+              </span>
+              <ChevronRight size={16} strokeWidth={2} style={{ color: "rgba(255,241,205,0.5)", flexShrink: 0 }} />
+            </button>
+
+            {userTopics.length > 0 && (
+              <>
+                <div className="pcd-pm-rule" />
+                <p className="pcd-pm-eyebrow">Your Topics</p>
+                <div className="pcd-pm-topics">
+                  {userTopics.map((t) => <span key={t} className="pcd-pm-topic">{t}</span>)}
+                </div>
+              </>
+            )}
+
+            <div className="pcd-pm-rule" />
+            <button type="button" className="pcd-pm-link" onClick={() => { setOpen(false); onOpenSettings(); }}>
+              <span className="pcd-pm-link__lead"><Settings size={15} strokeWidth={2} />Account settings</span>
+              <ChevronRight size={15} strokeWidth={2} style={{ color: "rgba(255,241,205,0.5)" }} />
+            </button>
+            <button type="button" className="pcd-pm-link" onClick={() => { setOpen(false); onOpenLegal("about"); }}>
+              <span className="pcd-pm-link__lead">About Popcorn</span>
+              <ChevronRight size={15} strokeWidth={2} style={{ color: "rgba(255,241,205,0.5)" }} />
+            </button>
+
+            <div className="pcd-pm-rule" />
+            <button type="button" className="pcd-pm-signout" onClick={() => { setOpen(false); onSignOut(); }}>
+              <LogOut size={14} strokeWidth={2} />
+              Sign out
+            </button>
+          </div>
+        </div>,
+        document.body,
+      )}
+    </div>
+  );
+}
+
+function LibraryOverlay({
+  initialTab,
+  savedArticles,
+  likedArticles,
+  onReadMore,
+  onClose,
+}: {
+  initialTab: "likes" | "saved";
+  savedArticles: NewsArticle[];
+  likedArticles: NewsArticle[];
+  onReadMore: (a: NewsArticle) => void;
+  onClose: () => void;
+}) {
+  const [tab, setTab] = useState<"likes" | "saved">(initialTab);
+  const list = tab === "likes" ? likedArticles : savedArticles;
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const empty = tab === "likes"
+    ? { Icon: Heart, title: "No likes yet", body: "Tap the heart on any story to keep your favourites here." }
+    : { Icon: Bookmark, title: "Nothing saved yet", body: "Bookmark articles as you read to build your reading list." };
+
+  return (
+    <div className="pcd-lib-overlay" role="dialog" aria-modal="true" aria-label="Library" onClick={onClose}>
+      <div className="pcd-lib" onClick={(e) => e.stopPropagation()}>
+        <div className="pcd-lib__grain" aria-hidden><GrainBackground variant="popcorn-blue" /></div>
+        <div className="pcd-lib__head">
+          <div>
+            <h2 className="pcd-lib__title">Library</h2>
+            <p className="pcd-lib__sub">{list.length} {list.length === 1 ? "article" : "articles"}</p>
+          </div>
+          <button type="button" className="pcd-lib__close" onClick={onClose} aria-label="Close library">
+            <X size={18} strokeWidth={2} />
+          </button>
+        </div>
+
+        <div className="pcd-lib__tabs" role="tablist">
+          <span className="pcd-lib__slider" style={{ transform: tab === "likes" ? "translateX(0)" : "translateX(100%)" }} aria-hidden />
+          {(["likes", "saved"] as const).map((t) => {
+            const active = tab === t;
+            const Icon = t === "likes" ? Heart : Bookmark;
+            return (
+              <button
+                key={t}
+                role="tab"
+                aria-selected={active}
+                className="pcd-lib__tab"
+                onClick={() => setTab(t)}
+                style={{ color: active ? BLUE : "rgba(255,241,205,0.62)" }}
+              >
+                <Icon size={14} strokeWidth={2} fill={active && t === "likes" ? BLUE : "none"} />
+                {t === "likes" ? "Likes" : "Saved"}
+              </button>
+            );
+          })}
+        </div>
+
+        {list.length === 0 ? (
+          <div className="pcd-lib__list is-empty">
+            <div className="pcd-lib__empty">
+              <div className="pcd-lib__empty-ic"><empty.Icon size={30} strokeWidth={1.6} style={{ color: "#fff1cd" }} /></div>
+              <h3 className="pcd-lib__empty-h">{empty.title}</h3>
+              <p className="pcd-lib__empty-p">{empty.body}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="pcd-lib__list" key={tab}>
+            {list.map((a) => (
+              <button key={a.id} type="button" className="pcd-lib-card" onClick={() => { onClose(); onReadMore(a); }}>
+                {a.imageUrl && (
+                  <div className="pcd-lib-card__img">
+                    <img src={feedImageUrl(a.imageUrl)} alt="" loading="lazy" />
+                  </div>
+                )}
+                <div className="pcd-lib-card__body">
+                  <div className="pcd-lib-card__meta">
+                    <span className="pcd-lib-card__cat">
+                      <span style={{ display: "inline-block", width: 5, height: 5, borderRadius: "50%", background: CATEGORY_COLORS[a.category] ?? "rgba(255,241,205,0.4)" }} />
+                      {a.category}
+                    </span>
+                    <span className="pcd-lib-card__src">{a.source}</span>
+                  </div>
+                  <p className="pcd-lib-card__title">{a.title}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** AccountSettingsModal — web equivalent of the app's SettingsSheet. Opens
+ *  from the profile dropdown's "Account settings" row. Lets the user edit
+ *  their display name, change their password, and delete their account, all
+ *  in the same blue+cream surface used across the account UI. */
+function AccountSettingsModal({ onClose }: { onClose: () => void }) {
+  const { user, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
+
+  const initialName = (user?.user_metadata as { full_name?: string } | undefined)?.full_name ?? "";
+  const handle = profile?.username ?? null;
+
+  const [panel, setPanel] = useState<"root" | "name" | "password" | "delete">("root");
+
+  // Display-name form
+  const [nameDraft, setNameDraft] = useState(initialName);
+  const [nameSaving, setNameSaving] = useState(false);
+  const [nameMsg, setNameMsg] = useState<{ kind: "err" | "ok"; text: string } | null>(null);
+
+  // Password form
+  const [pw1, setPw1] = useState("");
+  const [pw2, setPw2] = useState("");
+  const [showPw, setShowPw] = useState(false);
+  const [pwSaving, setPwSaving] = useState(false);
+  const [pwMsg, setPwMsg] = useState<{ kind: "err" | "ok"; text: string } | null>(null);
+
+  // Delete form
+  const [delConfirm, setDelConfirm] = useState("");
+  const [delErr, setDelErr] = useState<string | null>(null);
+  const [delStage, setDelStage] = useState<"idle" | "deleting" | "farewell">("idle");
+  const delReady = delConfirm.trim().toUpperCase() === "DELETE";
+  const locked = delStage === "deleting" || delStage === "farewell";
+
+  // Escape closes (unless mid-delete).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape" && !locked) onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose, locked]);
+
+  const saveName = async () => {
+    const trimmed = nameDraft.trim();
+    if (!trimmed) { setNameMsg({ kind: "err", text: "Name can't be empty." }); return; }
+    if (trimmed === initialName) { setPanel("root"); return; }
+    setNameSaving(true);
+    setNameMsg(null);
+    try {
+      await updateProfile({ full_name: trimmed });
+      setNameMsg({ kind: "ok", text: "Saved." });
+      setTimeout(() => { setNameMsg(null); setPanel("root"); }, 900);
+    } catch (e) {
+      setNameMsg({ kind: "err", text: e instanceof Error ? e.message : "Couldn't save — try again." });
+    } finally {
+      setNameSaving(false);
+    }
+  };
+
+  const savePassword = async () => {
+    if (pw1.length < 8) { setPwMsg({ kind: "err", text: "Password must be at least 8 characters." }); return; }
+    if (pw1 !== pw2) { setPwMsg({ kind: "err", text: "Passwords don't match." }); return; }
+    setPwSaving(true);
+    setPwMsg(null);
+    try {
+      await updatePassword(pw1);
+      setPwMsg({ kind: "ok", text: "Password updated." });
+      setPw1(""); setPw2("");
+      setTimeout(() => { setPwMsg(null); setPanel("root"); }, 1100);
+    } catch (e) {
+      setPwMsg({ kind: "err", text: e instanceof Error ? e.message : "Couldn't update password." });
+    } finally {
+      setPwSaving(false);
+    }
+  };
+
+  const runDelete = async () => {
+    if (!delReady || delStage !== "idle") return;
+    setDelErr(null);
+    setDelStage("deleting");
+    try {
+      await deleteAccount();
+      setDelStage("farewell");
+      // deleteAccount() signs out; reload to return to the signed-out site.
+      setTimeout(() => { window.location.reload(); }, 2600);
+    } catch (e) {
+      setDelStage("idle");
+      setDelErr(e instanceof Error ? e.message : "Couldn't delete account.");
+    }
+  };
+
+  return createPortal(
+    <div
+      className="pcd-set-overlay"
+      onMouseDown={(e) => { if (e.target === e.currentTarget && !locked) onClose(); }}
+    >
+      <div className="pcd-set" role="dialog" aria-modal="true" aria-label="Account settings">
+        <div className="pcd-set__grain" aria-hidden><GrainBackground variant="popcorn-blue" /></div>
+
+        {delStage === "farewell" ? (
+          <div className="pcd-del__farewell">
+            <h3>Sorry to see you go.</h3>
+            <p>Your account has been deleted. We hope you'll be back.</p>
+          </div>
+        ) : (
+          <>
+            <div className="pcd-set__head">
+              <div style={{ minWidth: 0 }}>
+                <p className="pcd-set__eyebrow">Popcorn · Account</p>
+                <h2 className="pcd-set__title">Settings</h2>
+                {handle && <p className="pcd-set__sub">Signed in as <b>@{handle}</b></p>}
+              </div>
+              {!locked && (
+                <button type="button" className="pcd-set__close" aria-label="Close" onClick={onClose}>
+                  <X size={17} strokeWidth={2.25} />
+                </button>
+              )}
+            </div>
+
+            <div className="pcd-set__body">
+              <p className="pcd-set__seclabel">Account</p>
+
+              {/* Display name */}
+              <button
+                type="button"
+                className={`pcd-set-row${panel === "name" ? " is-open" : ""}`}
+                onClick={() => { setNameDraft(initialName); setNameMsg(null); setPanel(panel === "name" ? "root" : "name"); }}
+              >
+                <div style={{ minWidth: 0 }}>
+                  <p className="pcd-set-row__label">Display name</p>
+                  <p className="pcd-set-row__value">{initialName || "Not set"}</p>
+                </div>
+                <Pencil className="pcd-set-row__ic" size={15} strokeWidth={2} />
+              </button>
+
+              {panel === "name" && (
+                <div className="pcd-set-panel">
+                  <label className="pcd-set-panel__label">New name</label>
+                  <input
+                    className={`pcd-set-input${nameMsg?.kind === "ok" ? " is-ok" : nameMsg?.kind === "err" ? " is-bad" : ""}`}
+                    autoFocus
+                    maxLength={60}
+                    value={nameDraft}
+                    placeholder="Your name"
+                    onChange={(e) => setNameDraft(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") void saveName(); }}
+                  />
+                  {nameMsg && <p className={`pcd-set-msg ${nameMsg.kind === "ok" ? "is-ok" : "is-err"}`}>{nameMsg.text}</p>}
+                  <div className="pcd-set-acts">
+                    <button type="button" className="pcd-set-btn-ghost" onClick={() => setPanel("root")}>Cancel</button>
+                    <button
+                      type="button"
+                      className="pcd-set-btn-go"
+                      onClick={() => void saveName()}
+                      disabled={nameSaving || !nameDraft.trim() || nameDraft.trim() === initialName}
+                    >
+                      {nameSaving ? "Saving…" : "Save"}
+                      {!nameSaving && <ArrowRight size={14} strokeWidth={2.5} />}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Password */}
+              <button
+                type="button"
+                className={`pcd-set-row${panel === "password" ? " is-open" : ""}`}
+                onClick={() => { setPwMsg(null); setPanel(panel === "password" ? "root" : "password"); }}
+              >
+                <div style={{ minWidth: 0 }}>
+                  <p className="pcd-set-row__label">Password</p>
+                  <p className="pcd-set-row__value">Change your password</p>
+                </div>
+                <ChevronRight className="pcd-set-row__ic pcd-set-row__chev" size={16} strokeWidth={2.25} />
+              </button>
+
+              {panel === "password" && (
+                <div className="pcd-set-panel">
+                  <label className="pcd-set-panel__label">New password</label>
+                  <div className="pcd-set-pwwrap">
+                    <input
+                      className="pcd-set-input"
+                      type={showPw ? "text" : "password"}
+                      autoFocus
+                      value={pw1}
+                      placeholder="At least 8 characters"
+                      onChange={(e) => setPw1(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="pcd-set-pweye"
+                      aria-label={showPw ? "Hide password" : "Show password"}
+                      onClick={() => setShowPw((v) => !v)}
+                    >
+                      {showPw ? <EyeOff size={16} strokeWidth={2} /> : <Eye size={16} strokeWidth={2} />}
+                    </button>
+                  </div>
+                  <label className="pcd-set-panel__label">Confirm</label>
+                  <input
+                    className={`pcd-set-input${pw2.length > 0 && pw1 === pw2 ? " is-ok" : pw2.length > 0 ? " is-bad" : ""}`}
+                    type={showPw ? "text" : "password"}
+                    value={pw2}
+                    placeholder="Re-type the new password"
+                    onChange={(e) => setPw2(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") void savePassword(); }}
+                  />
+                  {pwMsg && <p className={`pcd-set-msg ${pwMsg.kind === "ok" ? "is-ok" : "is-err"}`}>{pwMsg.text}</p>}
+                  {!pwMsg && pw2.length > 0 && pw1 === pw2 && <p className="pcd-set-msg is-ok">Passwords match.</p>}
+                  <div className="pcd-set-acts">
+                    <button type="button" className="pcd-set-btn-ghost" onClick={() => setPanel("root")}>Cancel</button>
+                    <button
+                      type="button"
+                      className="pcd-set-btn-go"
+                      onClick={() => void savePassword()}
+                      disabled={pwSaving || pw1.length < 8 || pw1 !== pw2}
+                    >
+                      {pwSaving ? "Saving…" : "Update"}
+                      {!pwSaving && <ArrowRight size={14} strokeWidth={2.5} />}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Danger zone */}
+              <p className="pcd-set__seclabel is-danger">Danger zone</p>
+              {panel !== "delete" ? (
+                <button
+                  type="button"
+                  className="pcd-set-danger"
+                  onClick={() => { setDelConfirm(""); setDelErr(null); setDelStage("idle"); setPanel("delete"); }}
+                >
+                  <div style={{ minWidth: 0 }}>
+                    <p className="pcd-set-danger__label">Delete account</p>
+                    <p className="pcd-set-danger__p">Permanently erase your account and all your data.</p>
+                  </div>
+                  <ChevronRight size={16} strokeWidth={2.25} style={{ color: "rgba(255,179,171,0.7)", flexShrink: 0 }} />
+                </button>
+              ) : (
+                <div className="pcd-set-delpanel">
+                  <p className="pcd-set-delpanel__h">This can't be undone.</p>
+                  <p className="pcd-set-delpanel__p">
+                    This permanently deletes your account and all your data — profile, comments, likes, and saved articles.
+                    Type <code>DELETE</code> below to confirm.
+                  </p>
+                  <input
+                    className={`pcd-set-delinput${delReady ? " is-ready" : ""}`}
+                    autoFocus
+                    value={delConfirm}
+                    placeholder="DELETE"
+                    autoCapitalize="characters"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    disabled={delStage === "deleting"}
+                    onChange={(e) => setDelConfirm(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") void runDelete(); }}
+                  />
+                  {delErr && <p className="pcd-set-msg is-err">{delErr}</p>}
+                  <div className="pcd-set-acts">
+                    <button
+                      type="button"
+                      className="pcd-set-btn-ghost"
+                      disabled={delStage === "deleting"}
+                      onClick={() => { setPanel("root"); setDelConfirm(""); setDelErr(null); setDelStage("idle"); }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className={`pcd-set-delbtn${delReady && delStage === "idle" ? " is-ready" : ""}`}
+                      disabled={!delReady || delStage === "deleting"}
+                      onClick={() => void runDelete()}
+                    >
+                      {delStage === "deleting" ? "Deleting…" : "Delete my account"}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -1015,8 +1835,79 @@ function DateStrip({
   );
 }
 
-function Footer() {
+/* Scalloped wave — echoes the popcorn-bucket rim. Renders as a top edge
+   on a coloured strip (the wave bites into the strip from above).
+   When `cutout` is true, the SVG is transparent and the path fills the
+   AREA ABOVE the wave with `bg` — meant to overlay a textured field so
+   the bumps inherit the texture underneath. */
+function ScallopDivider({
+  color = BLUE,
+  bg = PAPER,
+  scallops = 36,
+  height = 22,
+  flip = false,
+  cutout = false,
+}: {
+  color?: string;
+  bg?: string;
+  scallops?: number;
+  height?: number;
+  flip?: boolean;
+  cutout?: boolean;
+}) {
+  const w = 1600;
+  const r = w / scallops / 2;
+  const totalH = height + 40;
+
+  if (cutout) {
+    // Cap that covers the area ABOVE the wave on a transparent SVG.
+    // Bumps poke up from y=height into the cap area; valleys reach y=height.
+    let d = `M 0 0 L ${w} 0 L ${w} ${height} `;
+    for (let i = scallops - 1; i >= 0; i--) {
+      const cx = i * r * 2 + r;
+      d += `Q ${cx} ${height - r * 1.6} ${i * r * 2} ${height} `;
+    }
+    d += `L 0 0 Z`;
+    return (
+      <svg
+        viewBox={`0 0 ${w} ${totalH}`}
+        className="block w-full"
+        style={{ height: totalH, transform: flip ? "scaleY(-1)" : undefined }}
+        preserveAspectRatio="none"
+        aria-hidden
+      >
+        <path d={d} fill={bg} />
+      </svg>
+    );
+  }
+
+  let d = `M0 ${height} `;
+  for (let i = 0; i < scallops; i++) {
+    const cx = i * r * 2 + r;
+    d += `Q ${cx} ${height - r * 1.6} ${cx + r} ${height} `;
+  }
+  d += `L ${w} ${totalH} L 0 ${totalH} Z`;
   return (
+    <svg
+      viewBox={`0 0 ${w} ${totalH}`}
+      className="block w-full"
+      style={{ height: totalH, transform: flip ? "scaleY(-1)" : undefined, background: bg }}
+      preserveAspectRatio="none"
+      aria-hidden
+    >
+      <path d={d} fill={color} />
+    </svg>
+  );
+}
+
+function Footer() {
+  const [legalKind, setLegalKind] = useState<LegalKind | null>(null);
+  const openLegal = (kind: LegalKind) => (e: ReactMouseEvent) => {
+    e.preventDefault();
+    setLegalKind(kind);
+  };
+  return (
+    <>
     <footer
       style={{
         background: BLUE,
@@ -1032,6 +1923,14 @@ function Footer() {
         <GrainBackground variant="popcorn-blue" />
       </div>
       <div aria-hidden style={{ position: "absolute", inset: 0, background: "radial-gradient(80% 100% at 50% 0%, rgba(255,255,255,0.06), transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
+
+      {/* Scalloped rim — paper cutout overlaid on the textured blue so the
+          bumps you see ARE the textured field showing through. Positioned
+          absolutely at the top edge so it shapes the footer without adding
+          height (nothing gets pushed up). */}
+      <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1, pointerEvents: "none" }}>
+        <ScallopDivider cutout bg={PAPER} scallops={42} height={18} />
+      </div>
 
       <div
         className="pcd-foot-top"
@@ -1073,16 +1972,28 @@ function Footer() {
             stories the algorithms missed. Curated every morning in Bangkok.
           </p>
           <img
-            src="/logo-website-contrast.png"
-            alt=""
-            aria-hidden
+            src="/logo-latest.png"
+            alt="Popcorn"
             style={{
-              height: 96,
+              height: 110,
               marginTop: 28,
               display: "block",
-              filter: "brightness(0) invert(1)",
             }}
           />
+          <span
+            style={{
+              display: "block",
+              marginTop: 22,
+              fontFamily: SANS,
+              fontSize: 10.5,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              fontWeight: 500,
+              color: "rgba(255,255,255,0.65)",
+            }}
+          >
+            © Popcorn Media {new Date().getFullYear()}
+          </span>
         </div>
 
         <FooterColumn
@@ -1090,20 +2001,46 @@ function Footer() {
           items={["Film & TV", "Music", "Internet", "Culture", "Fashion", "Tech"]}
         />
 
-        <FooterColumn
-          title="Popcorn"
-          items={["About", "Editorial standards", "Contact", "Press"]}
-        />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <h5
+            style={{
+              fontFamily: MACABRO,
+              fontSize: 15,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              fontWeight: 400,
+              color: "#fff",
+              margin: "0 0 18px",
+            }}
+          >
+            Popcorn
+          </h5>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+            {([["About", "about"], ["Terms", "terms"], ["Privacy", "privacy"]] as [string, LegalKind][]).map(
+              ([label, kind]) => (
+                <li key={kind}>
+                  <a
+                    href="#"
+                    onClick={openLegal(kind)}
+                    style={{ fontFamily: SANS, fontSize: 14, color: "#fff", textDecoration: "none" }}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ),
+            )}
+          </ul>
+        </div>
 
         <div>
           <h5
             style={{
-              fontFamily: SANS,
-              fontSize: 11,
-              letterSpacing: "0.22em",
+              fontFamily: MACABRO,
+              fontSize: 15,
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
-              fontWeight: 600,
-              color: "rgba(255,255,255,0.6)",
+              fontWeight: 400,
+              color: "#fff",
               margin: "0 0 18px",
             }}
           >
@@ -1169,32 +2106,50 @@ function Footer() {
           position: "relative",
           zIndex: 1,
           maxWidth: MAX_W,
-          margin: "56px auto 0",
-          paddingTop: 22,
-          borderTop: "1px solid rgba(255,255,255,0.22)",
+          margin: "28px auto 0",
           display: "flex",
-          justifyContent: "space-between",
-          gap: 24,
-          fontSize: 10.5,
-          letterSpacing: "0.22em",
-          textTransform: "uppercase",
-          color: "rgba(255,255,255,0.65)",
-          fontWeight: 500,
-          fontFamily: SANS,
+          alignItems: "center",
+          justifyContent: "flex-end",
+          gap: 18,
           flexWrap: "wrap",
         }}
       >
-        <span>© Popcorn Media {new Date().getFullYear()}</span>
-        <span>Bangkok · London · New York</span>
-        <span>
-          <a href="#" style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}>Privacy</a>
-          {" · "}
-          <a href="#" style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}>Terms</a>
-          {" · "}
-          <a href="https://instagram.com/popcornmedia" target="_blank" rel="noreferrer" style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}>Instagram</a>
-        </span>
+        <a
+          href="https://instagram.com/news.popcorn"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Popcorn on Instagram"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 38,
+            height: 38,
+            borderRadius: 999,
+            border: "1px solid rgba(255,255,255,0.4)",
+            color: "#fff",
+            transition: "background .25s ease, color .25s ease",
+          }}
+        >
+          <Instagram size={18} strokeWidth={1.8} />
+        </a>
+        <a
+          href="mailto:hello@popcornmedia.org"
+          style={{
+            fontFamily: MACABRO,
+            fontSize: 16,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "#fff",
+            textDecoration: "none",
+          }}
+        >
+          Contact us
+        </a>
       </div>
     </footer>
+    <DragLegalModal kind={legalKind} onClose={() => setLegalKind(null)} />
+    </>
   );
 }
 
@@ -1203,12 +2158,12 @@ function FooterColumn({ title, items }: { title: string; items: string[] }) {
     <div style={{ position: "relative", zIndex: 1 }}>
       <h5
         style={{
-          fontFamily: SANS,
-          fontSize: 11,
-          letterSpacing: "0.22em",
+          fontFamily: MACABRO,
+          fontSize: 15,
+          letterSpacing: "0.14em",
           textTransform: "uppercase",
-          fontWeight: 600,
-          color: "rgba(255,255,255,0.6)",
+          fontWeight: 400,
+          color: "#fff",
           margin: "0 0 18px",
         }}
       >
@@ -1449,6 +2404,39 @@ const EDITORIAL_CSS = `
   .ar-1-1 .img { aspect-ratio: 1/1; }
   .ar-3-2 .img { aspect-ratio: 3/2; }
   .ar-3-4 .img { aspect-ratio: 3/4; }
+
+  /* Framed — one random effect-free story is hung like a piece in a gallery:
+     a cream mat sits behind the image, a thin ink line draws the frame edge,
+     and a soft cast shadow lifts the whole thing off the paper. */
+  .card.framed .img {
+    box-sizing: border-box;
+    padding: clamp(12px, 1.5vw, 22px);
+    background: ${CREAM};
+    border: 1.5px solid ${INK};
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.5) inset,
+      0 18px 34px -20px rgba(10,10,10,0.45),
+      0 4px 12px -8px rgba(10,10,10,0.30);
+    transition: transform .5s cubic-bezier(.22,.61,.36,1),
+                box-shadow .5s cubic-bezier(.22,.61,.36,1);
+  }
+  /* Hairline fillet between the mat and the artwork. */
+  .card.framed .img img {
+    box-shadow: 0 0 0 1px rgba(10,10,10,0.22);
+  }
+  /* Lift the frame on hover instead of zooming the image — keeps the mat pristine. */
+  .card.framed:hover .img { transform: translateY(-5px);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.5) inset,
+      0 28px 46px -22px rgba(10,10,10,0.52),
+      0 8px 18px -10px rgba(10,10,10,0.34);
+  }
+  .card.framed:hover .img img { transform: none; }
+  /* Park the View-story pill on the mat, bottom-right, like a gallery placard. */
+  .card.framed .img::after {
+    bottom: clamp(12px, 1.5vw, 22px);
+    right: clamp(13px, 1.5vw, 23px);
+  }
 
   /* Headline */
   .card .title {
@@ -1880,8 +2868,9 @@ const EDITORIAL_CSS = `
   .pcd-secnav-bar {
     position: relative; z-index: 42;
     display: flex; align-items: center; justify-content: flex-start; gap: 14px;
-    padding: 10px 36px; max-width: ${MAX_W}px; margin: 0 auto;
-    max-height: 168px; overflow: hidden;
+    padding: 8px 36px 0; max-width: ${MAX_W}px; margin: 0 auto;
+    border-bottom: 1px solid ${RULE};
+    max-height: 180px; overflow: hidden;
     transition: max-height .72s cubic-bezier(.22,.61,.36,1),
                 padding-top .72s cubic-bezier(.22,.61,.36,1),
                 padding-bottom .72s cubic-bezier(.22,.61,.36,1),
@@ -1890,13 +2879,13 @@ const EDITORIAL_CSS = `
   /* The app ad is absolutely positioned, so it can't push the bar taller on
      its own. When it's present (drag mode), give the bar a matching min-height
      so the taller ad isn't clipped by overflow:hidden. */
-  .pcd-secnav-bar:has(.pcd-secnav-ad) { min-height: 84px; }
+  .pcd-secnav-bar:has(.pcd-secnav-ad) { min-height: 94px; }
   /* Brand logo parked at the left edge of the filter bar. */
   .pcd-secnav-logo { height: 92px; width: 92px; display: block; flex-shrink: 0; object-fit: cover; object-position: center; }
-  /* Brand logo pinned to the left edge; its auto right-margin pushes the filter button to the right.
-     Negative vertical margins let it stay large without expanding the bar (keeps the bottom rule high).
-     align-self:center keeps it vertically centered against the filter button. */
-  .pcd-secnav-logoR { order: -1; height: 90px; width: auto; display: block; flex-shrink: 0; align-self: center; margin: -32px auto -32px 36px; transform: translateY(3px); }
+  /* Brand logo pinned to the right edge; its auto left-margin pushes the filter button to the left.
+     align-self:center keeps it vertically centered; the bar sizes tightly around it (with the small
+     vertical padding) so the hairline rule sits just beneath it. */
+  .pcd-secnav-logoR { order: 1; height: 100px; width: auto; display: block; flex-shrink: 0; align-self: center; margin: -8px 36px -14px auto; }
   .pcd-secnav.is-collapsed .pcd-secnav-bar {
     max-height: 0; min-height: 0; padding-top: 0; padding-bottom: 0;
     opacity: 0; pointer-events: none;
@@ -1999,14 +2988,18 @@ const DRAG_CSS = `
   /* In drag mode the page owns the viewport — no vertical scroll; the rail
      scrolls horizontally instead. Topnav stays pinned at the top. */
   .pcd-page.is-drag { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-  .pcd-page.is-drag .pcd-stickytop { flex: 0 0 auto; position: static; border-bottom: 1px solid ${RULE}; }
+  .pcd-page.is-drag .pcd-stickytop { flex: 0 0 auto; position: static; border-bottom: 1.25px solid ${INK}; }
   .pcd-page.is-drag .drag-shell { flex: 1 1 auto; min-height: 0; }
 
   .drag-shell {
     --drag-sans: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --drag-display: "Bricolage Grotesque", "Archivo", "Helvetica Neue", sans-serif;
+    --drag-foot-h: 48px;
     position: relative;
     display: flex; flex-direction: column; height: 100%;
+    /* breathing room below the masthead rule so the rail (and any top-aligned
+       slide captions) don't ride flush against the line above it */
+    padding-top: 16px;
     font-family: var(--drag-sans); color: ${INK}; background: ${PAPER};
   }
 
@@ -2021,11 +3014,15 @@ const DRAG_CSS = `
   .drag-stage.is-drag * { pointer-events: none; }
 
   .drag-rail {
+    --rail-gap: clamp(74px, 6.2vw, 124px);
     display: flex; align-items: center; height: 100%;
-    gap: clamp(40px, 4vw, 72px);
-    /* bottom clearance lifts the centered slides clear of the floating
-       control deck so captions never tuck under it */
-    padding: 0 max(36px, 2.5vw) 92px; width: max-content;
+    gap: var(--rail-gap);
+    /* The chevron controls now live on the left/right edges (no bottom deck),
+       so the old 92px floor was dead space. Trim it to a 14px gap — slides end
+       right at the progress hairline (which sits 60px up), and since the frame
+       flex-shrinks rather than spilling, content can never cross it. The
+       reclaimed height keeps photos at their full band height. */
+    padding: 0 max(36px, 2.5vw) 14px; width: max-content;
   }
 
   /* ── INTRO panel ── */
@@ -2039,12 +3036,37 @@ const DRAG_CSS = `
   }
   .drag-intro__grain { position: absolute; inset: 0; opacity: 0.55; mix-blend-mode: overlay; pointer-events: none; z-index: 0; }
   .drag-intro > :not(.drag-intro__grain) { position: relative; z-index: 1; }
-  .drag-intro__edition {
-    display: flex; align-items: center; gap: 14px;
-    font-size: 10.5px; letter-spacing: 0.3em; text-transform: uppercase;
-    font-weight: 600; color: rgba(255,255,255,0.72);
+  /* COVER MOMENT — the edition date as outline-only ghost type, the only
+     date on the cover. In flow (not absolute) so it can never overflow the
+     panel; sized against both viewport and panel width so it always fits. */
+  .drag-intro__big {
+    display: block; margin: 0;
+    font-family: var(--drag-display); font-weight: 800;
+    font-size: clamp(34px, 3.6vw, 58px); line-height: 0.95;
+    letter-spacing: -0.03em; text-transform: uppercase; white-space: nowrap;
+    color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.4);
+    user-select: none;
   }
-  .drag-intro__edition::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.28); }
+  /* the POPCORN masthead — set in the brand wordmark face (Macabro, same as
+     the app masthead), letters tumbling up into place one beat apart */
+  .drag-intro__mast {
+    margin: 0; display: flex; overflow: hidden;
+    font-family: "Macabro", "Bodoni Moda", "Didot", serif; font-weight: 400;
+    font-size: clamp(30px, 3vw, 46px); line-height: 0.95;
+    letter-spacing: 0.02em; color: #fff;
+  }
+  .drag-intro__mast span {
+    display: inline-block;
+    animation: mastIn .8s cubic-bezier(.22,.61,.36,1) both;
+    animation-delay: calc(var(--li, 0) * 60ms + 200ms);
+  }
+  @keyframes mastIn {
+    from { opacity: 0; transform: translateY(0.7em) rotate(5deg); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .drag-intro__mast span { animation: none; }
+  }
   .drag-intro__tag {
     font-weight: 500; font-size: clamp(18px, 1.7vw, 24px);
     line-height: 1.25; letter-spacing: -0.01em; color: #fff;
@@ -2083,10 +3105,19 @@ const DRAG_CSS = `
      never pushed past the rail edges. Captions sit on opposite sides of the
      photo via flex order, alternating slide to slide. */
   .drag-slide {
-    flex: 0 0 auto; height: 100%; box-sizing: border-box;
-    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
-    padding: 2.2vh 0;
+    flex: 0 0 auto; height: 100%; box-sizing: border-box; position: relative;
+    /* Flex column hugging its photo. The frame WIDTH is fixed to the original
+       height-band × aspect (var(--fh) * var(--ar)), so image sizes read exactly
+       as before. Only the frame HEIGHT is allowed to flex-shrink (see below):
+       when a headline wraps to extra lines the photo yields a little height
+       instead of shoving the social row down under the progress bar. The photo
+       never NARROWS, so headlines keep a stable wrap measure. */
+    display: flex; flex-direction: column;
+    justify-content: safe center; align-items: flex-start;
+    padding: 1.2vh 0;
   }
+  /* Captions track the FRAME width (width:0 + min-width:100% means they never
+     expand the slide past its image), so every slide hugs its photo. */
   /* Only the IMAGE carries the float offset, so it staggers gently. transform
      doesn't affect flow, so the stagger can never push a caption off-edge. */
   /* The frame keeps its gentle vertical float (--drag-off) AND a small resting
@@ -2094,29 +3125,87 @@ const DRAG_CSS = `
      while the float is preserved. */
   .drag-frame {
     order: 2; flex: 0 1 auto; min-height: 0; margin: 22px 0;
+    /* Width = original height-band (--fh) × aspect (--ar) — identical sizing to
+       before. Height starts at the same band but flex-shrink (above) lets it
+       give back height when the caption is tall; object-fit: cover crops, so a
+       shrunk frame just reads as a tighter letterbox and the caption + social
+       row always stay above the progress bar. */
+    width: calc(var(--fh, 44vh) * var(--ar, 1.5));
+    height: var(--fh, 44vh);
     position: relative; overflow: hidden; background: #ededed; display: block;
     transform: translateY(var(--drag-off, 0px)) rotate(var(--rot, 0deg));
     box-shadow: 0 26px 50px -30px rgba(20,18,16,0.55);
     transition: transform .5s cubic-bezier(.22,.61,.36,1), box-shadow .5s ease;
   }
   .drag-slide:hover .drag-frame { transform: translateY(var(--drag-off, 0px)) rotate(0deg); }
-  /* Captions track the FRAME width (width:0 + min-width:100% means they never
-     expand the slide past its image), so every slide hugs its photo and the
-     gaps between articles read evenly regardless of image aspect/size. */
+  /* Captions track the FRAME width: width:0 means they contribute nothing to
+     the slide's intrinsic width (so a long headline can never stretch the
+     slide past its photo), then min-width:100% snaps them to the resolved
+     slide width — the frame's. Headlines therefore wrap within the photo. */
   .drag-cat, .drag-title { width: 0; min-width: 100%; flex: 0 0 auto; }
   .drag-cat.is-top, .drag-title.is-top       { order: 1; }
   .drag-cat.is-bottom, .drag-title.is-bottom { order: 3; }
+
+  /* per-slide social bar — travels WITH the caption: when the headline sits
+     above the photo the row + its hairline rule sit up there too (order 1),
+     and when the headline drops below the photo so does the row (order 3).
+     Ink on paper (not white-on-photo). */
+  .drag-social {
+    width: 0; min-width: 100%; flex: 0 0 auto;
+    display: flex; align-items: center; gap: 20px;
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid ${HAIR};
+  }
+  .drag-social.is-top    { order: 1; }
+  .drag-social.is-bottom { order: 3; }
+  .drag-social__btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
+    color: ${INK}; line-height: 1;
+    transition: color .2s ease, transform .18s cubic-bezier(.22,.61,.36,1);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .drag-social__btn:hover  { color: ${BLUE}; }
+  .drag-social__btn:active { transform: scale(0.88); }
+  .drag-social__btn svg    { display: block; }
+  .drag-social__btn.is-liked,
+  .drag-social__btn.is-liked:hover { color: #e11d48; }
+  .drag-social__count {
+    font-family: ${SANS}; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.01em; color: ${INK2}; font-variant-numeric: tabular-nums;
+  }
+  .drag-social__save { margin-left: auto; }
   .drag-frame img {
     width: 100%; height: 100%; object-fit: cover;
     transition: transform .8s cubic-bezier(.22,.61,.36,1), filter .5s ease;
   }
   .drag-slide:hover .drag-frame img { transform: scale(1.04); }
 
+  /* ── PARALLAX — the photo pans a touch slower than its frame as it crosses
+     the stage, so every image reads as a window onto something deeper.
+     Three layers so nothing fights: .drag-par clips (even when the frame
+     itself opens overflow for blackframe/framed treatments), .drag-par__in
+     carries the per-frame --par shift over a small bleed scale (no
+     transition — it's driven every frame), and the img keeps its own slow
+     hover-zoom transition untouched. ── */
+  .drag-par {
+    display: block; width: 100%; height: 100%;
+    overflow: hidden;
+  }
+  .drag-par__in {
+    display: block; width: 100%; height: 100%;
+    transform: translate3d(var(--par, 0px), 0, 0) scale(1.08);
+    will-change: transform;
+  }
+
   /* poster-style offset colour-blocks — a hard, blur-less box-shadow that sits
      down-right of the photo; tightens toward the photo on hover. No tilt. The
      extra right margin keeps the block from eating into the gap to the next
      article, so spacing stays even. */
   .drag-slide.pop, .drag-slide.pop2, .drag-slide.pop3 { margin-right: 18px; }
+  /* the offset block hangs 18px below the photo — reserve that depth so it
+     never rides over the caption / social row beneath */
+  .drag-slide.pop .drag-frame, .drag-slide.pop2 .drag-frame, .drag-slide.pop3 .drag-frame { margin-bottom: 36px; }
   .drag-slide.pop  .drag-frame { box-shadow: 18px 18px 0 ${CREAM}; }
   .drag-slide.pop2 .drag-frame { box-shadow: 18px 18px 0 ${BLOCK_BLUE}; }
   .drag-slide.pop3 .drag-frame { box-shadow: 18px 18px 0 ${BLOCK_BLACK}; }
@@ -2124,19 +3213,73 @@ const DRAG_CSS = `
   .drag-slide.pop2:hover .drag-frame { box-shadow: 10px 10px 0 ${BLOCK_BLUE}; }
   .drag-slide.pop3:hover .drag-frame { box-shadow: 10px 10px 0 ${BLOCK_BLACK}; }
 
+  /* gallery frame — the lead slide is hung like a framed piece: a thin ink
+     line for the frame edge with a transparent gap to the photo, lifted off
+     the paper by a soft cast shadow. Overflow opens up so the gap shows. */
+  .drag-frame.is-framed {
+    box-sizing: border-box; overflow: visible;
+    padding: clamp(6px, 0.7vw, 11px);
+    background: transparent;
+    border: 1.5px solid ${INK};
+    box-shadow:
+      0 30px 54px -28px rgba(20,18,16,0.55),
+      0 8px 20px -12px rgba(20,18,16,0.32);
+  }
+  .drag-frame.is-framed img {
+    box-shadow: 0 0 0 1px rgba(10,10,10,0.22);
+  }
+  /* lift the whole frame on hover instead of zooming the photo */
+  .drag-slide:hover .drag-frame.is-framed { transform: translateY(calc(var(--drag-off, 0px) - 5px)) rotate(0deg); }
+  .drag-slide:hover .drag-frame.is-framed img { transform: none; }
+
+  /* thick black border — a frame that sits OUTSIDE the photo (drawn as a larger
+     box behind it, so the image keeps its full size). Clean straight edges,
+     solid black. */
+  /* the frame is drawn OUTSIDE the photo (up to 20px on every side), so the
+     photo's stock 18px caption margin isn't enough — reserve the frame depth
+     too, or the black band rides over the genre tag / social row */
+  .drag-frame.is-blackframe { overflow: visible; margin: calc(18px + clamp(12px, 1.3vw, 20px)) 0; }
+  .drag-frame.is-blackframe::before {
+    content: ""; position: absolute;
+    inset: calc(-1 * clamp(12px, 1.3vw, 20px));
+    z-index: 0; pointer-events: none;
+    background: ${INK};
+    box-shadow: 0 26px 50px -30px rgba(20,18,16,0.55);
+  }
+  .drag-frame.is-blackframe img { position: relative; z-index: 1; }
+
+
   /* height band — driven by image QUALITY (qualityClass), never collapsing
      to a weak thumbnail. Sharper/higher-res photos sit notably taller. */
-  .drag-slide.d-tall  .drag-frame { height: 57vh; }
-  .drag-slide.d-mid   .drag-frame { height: 44vh; }
-  .drag-slide.d-short .drag-frame { height: 33vh; }
+  /* 50vh (was 57vh): the grid sizes each slide to a definite-height frame, so a
+     tall photo can't flex-shrink — at 57vh a d-tall frame plus a 2-line caption
+     overran the slide height and clipped the headline top/bottom. 50vh leaves
+     headroom for the caption while keeping tall photos visibly taller than d-mid. */
+  /* Heights are quality-banded BUT capped against available height: on a short
+     laptop the raw vh frame + a 2-3 line caption overran the slide and clipped
+     the headline. min(vh, calc(100vh - reserve)) lets the frame shrink only
+     when the viewport is too short to hold both — big monitors keep full size,
+     small ones yield image height to keep captions fully visible. The reserve
+     ≈ top chrome + caption stack + margins + footer breathing room. */
+  /* reserve bumped (+60px) over the pre-social-bar values so the like/comment/
+     share/save row + its rule always clear the footer — the frame yields height
+     to make room rather than letting the social bar slide under the footer. */
+  /* Height band (--fh) — driven by image QUALITY, capped against available
+     height: min(vh, calc(100vh - reserve)). The frame WIDTH = --fh × aspect
+     (--ar), so these bands set the original image sizes; the rendered height
+     is free to flex-shrink below --fh under a tall caption. */
+  .drag-slide.d-tall  { --fh: min(62vh, calc(100vh - 440px)); }
+  .drag-slide.d-mid   { --fh: min(55vh, calc(100vh - 458px)); }
+  .drag-slide.d-short { --fh: min(44vh, calc(100vh - 482px)); }
   /* shape — landscape-dominant: a wide 3/2 and a gentler 4/3 carry the rail,
      with only an occasional square, so frames read as horizontal rectangles
-     on average rather than vertical slivers */
-  .drag-slide.ar-xw .drag-frame { aspect-ratio: 16/9; }
-  .drag-slide.ar-w  .drag-frame { aspect-ratio: 3/2; }
-  .drag-slide.ar-l  .drag-frame { aspect-ratio: 4/3; }
-  .drag-slide.ar-sq .drag-frame { aspect-ratio: 1/1; }
-  .drag-slide.ar-t  .drag-frame { aspect-ratio: 4/5; }
+     on average rather than vertical slivers. Each shape sets a numeric aspect
+     (--ar); frame width = --fh × --ar. */
+  .drag-slide.ar-xw .drag-frame { --ar: 1.7778; }
+  .drag-slide.ar-w  .drag-frame { --ar: 1.5; }
+  .drag-slide.ar-l  .drag-frame { --ar: 1.3333; }
+  .drag-slide.ar-sq .drag-frame { --ar: 1; }
+  .drag-slide.ar-t  .drag-frame { --ar: 0.8; }
 
   /* text feature frame when an article has no image */
   .drag-frame.is-feat {
@@ -2170,8 +3313,146 @@ const DRAG_CSS = `
     font-family: "Bricolage Grotesque", sans-serif;
     font-weight: 600; letter-spacing: -0.005em; text-align: left;
     line-height: 1.05; margin: 0; color: ${INK}; text-wrap: balance;
-    font-size: clamp(21px, 1.7vw, 27px);
+    font-size: clamp(18px, 1.45vw, 23px);
   }
+
+  /* ── LOUD slide — every third-or-so story breaks the whisper register:
+     the headline jumps to display voice (Bricolage 800 caps), sitting flush
+     under the photo like a poster caption. Quiet neighbours stay at the small
+     base size so the rail breathes loud → quiet → quiet → loud.
+     --loud-size is set per-slide from the headline length so long titles step
+     down instead of clipping past the footer. ── */
+  .drag-slide.is-loud .drag-cat::before { width: 34px; }
+  /* loud frames cap a touch shorter so the big display headline + social row
+     always have room; the photo flex-shrinks rather than pushing them off. */
+  .drag-slide.is-loud .drag-frame { --fh: min(53vh, calc(100vh - 474px)); }
+  .drag-slide.is-loud .drag-title {
+    font-family: var(--drag-display); font-weight: 800; text-transform: uppercase;
+    font-size: var(--loud-size, clamp(29px, 2.7vw, 45px));
+    line-height: 0.96; letter-spacing: -0.015em;
+  }
+
+  /* ── POSTER slide — one mid-rail story goes full bleed: floor-to-ceiling
+     photo, no frame, no tilt, headline supersized over the image. The rail's
+     single cinematic beat. ── */
+  .drag-slide.drag-poster { display: block; padding: 0; height: 100%; }
+  .drag-poster__frame {
+    position: relative; display: block; height: 100%;
+    width: clamp(560px, 60vw, 1020px);
+    overflow: hidden; cursor: pointer; background: ${INK};
+  }
+  .drag-poster__frame img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .drag-poster__shade {
+    position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: linear-gradient(0deg, rgba(4,8,22,0.86) 0%, rgba(4,8,22,0.32) 36%, transparent 60%);
+  }
+  .drag-poster__cap {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: clamp(26px, 2.6vw, 46px); color: #fff;
+    display: flex; flex-direction: column; gap: 14px; pointer-events: none;
+  }
+  .drag-poster__cap .tag {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase;
+    font-weight: 700; color: #cdd9f0;
+  }
+  .drag-poster__cap .tag::before { content: ""; width: 26px; height: 2px; background: #cdd9f0; }
+  .drag-poster__cap h3 {
+    font-family: var(--drag-display); font-weight: 800; text-transform: uppercase;
+    line-height: 0.92; letter-spacing: -0.02em;
+    font-size: clamp(38px, 4.2vw, 70px); margin: 0; max-width: 16ch; text-wrap: balance;
+  }
+
+  /* ── INDEX interlude — a photographer's CONTACT SHEET of the edition:
+     the day's stories as small mono frames pinned to the signature-blue
+     panel. Hovering a frame washes it back to colour and surfaces its
+     headline in the caption line below; click jumps straight to the story.
+     Image-led like the rest of the rail — no numbers, no list chrome. ── */
+  .drag-index {
+    flex: 0 0 auto; align-self: center;
+    width: min(40vw, 560px);
+    background: ${BLUE}; color: ${CREAM};
+    display: flex; flex-direction: column; gap: 18px;
+    padding: clamp(24px, 2.4vw, 42px);
+    position: relative; isolation: isolate; overflow: hidden;
+  }
+  .drag-index__grain { position: absolute; inset: 0; opacity: 0.55; mix-blend-mode: overlay; pointer-events: none; z-index: 0; }
+  .drag-index > :not(.drag-index__grain) { position: relative; z-index: 1; }
+  .drag-index__kicker {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 10.5px; letter-spacing: 0.3em; text-transform: uppercase;
+    font-weight: 700; color: #ffffff;
+  }
+  .drag-index__kicker::after { content: ""; flex: 1; height: 1px; background: #ffffff; }
+  .drag-index__sheet {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px;
+  }
+  .drag-index__sheet button {
+    position: relative; display: block; padding: 0; border: 0; background: none;
+    aspect-ratio: 1/1; overflow: hidden; cursor: pointer;
+  }
+  .drag-index__sheet img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: grayscale(1) contrast(1.05); opacity: 0.82;
+    transition: filter .35s ease, opacity .35s ease, transform .55s cubic-bezier(.22,.61,.36,1);
+  }
+  .drag-index__sheet button:hover img { filter: none; opacity: 1; transform: scale(1.07); }
+  .drag-index__caption {
+    margin: 0; min-height: 2.6em;
+    font-family: var(--drag-display); font-weight: 600;
+    font-size: clamp(14px, 1.1vw, 17px); line-height: 1.3; color: #ffffff;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .drag-index__caption.is-idle { color: #ffffff; font-weight: 500; }
+
+  /* ── MONO slide — one story a day runs black & white, washing back to
+     colour on hover. A quiet, art-edition beat. ── */
+  .drag-slide.is-mono .drag-frame img { filter: grayscale(1) contrast(1.06); }
+  .drag-slide.is-mono:hover .drag-frame img { filter: none; }
+
+  /* ── BREAK slide — once a day a headline refuses its column: display-voice
+     type pulled up over the photo's bottom edge and out past its left rim,
+     each line carried on a paper slab (box-decoration clone). ── */
+  .drag-slide.is-break { z-index: 2; }
+  .drag-slide.is-break .drag-frame { --fh: min(53vh, calc(100vh - 474px)); }
+  .drag-slide.is-break .drag-cat::before { width: 34px; }
+  .drag-slide.is-break .drag-title {
+    margin-top: calc(-1 * clamp(34px, 3.4vw, 58px));
+    margin-left: clamp(-44px, -2.6vw, -20px);
+    /* width:0 keeps the headline out of the slide's intrinsic width (it would
+       otherwise stretch the slide to the full unwrapped line); min-width then
+       sets the real wrap measure: photo width + the left pull-out. */
+    width: 0; min-width: calc(100% + clamp(20px, 2.6vw, 44px));
+    position: relative; z-index: 3;
+    font-family: var(--drag-display); font-weight: 800; text-transform: uppercase;
+    font-size: var(--loud-size, clamp(29px, 2.7vw, 45px));
+    line-height: 1.08; letter-spacing: -0.015em;
+  }
+  .drag-slide.is-break .brk-line {
+    background: ${PAPER};
+    box-decoration-break: clone; -webkit-box-decoration-break: clone;
+    padding: 0.08em 0.3em 0.08em 0.12em;
+  }
+
+  /* ── PROGRESS — a whisper-thin hairline floating just above the footer.
+     Absolutely positioned so it costs the rail zero height (it lives inside
+     the rail's existing 40px bottom clearance and can never crowd a slide's
+     social row). The blue fill tracks rail position; click to seek. ── */
+  .drag-progress {
+    position: absolute; z-index: 5;
+    left: max(36px, 2.5vw); right: max(36px, 2.5vw);
+    bottom: calc(var(--drag-foot-h) + 12px);
+    height: 2px; background: rgba(10,10,10,0.08); cursor: pointer;
+  }
+  /* a taller invisible hit area so the 2px line is still easy to grab */
+  .drag-progress::before { content: ""; position: absolute; left: 0; right: 0; top: -7px; bottom: -7px; }
+  .drag-progress__bar {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
+    background: ${BLUE}; opacity: 0.55; transition: opacity .25s ease;
+  }
+  .drag-progress:hover .drag-progress__bar { opacity: 1; }
 
   /* ── LEAD slide ── */
   .drag-lead { position: relative; }
@@ -2199,35 +3480,116 @@ const DRAG_CSS = `
   }
   .drag-lead-cap p { margin: 0; max-width: 48ch; font-size: 15.5px; line-height: 1.5; color: rgba(255,255,255,0.78); }
 
-  /* ── COVER slide (magazine) ── */
+  /* ── COVER slide — full POPCORN magazine cover for ONE hero music / film
+     story. Portrait 3/4 frame with the masthead up top, a serif cover line at
+     the foot, and the same duotone-twinkle / grain / vignette texture stack as
+     the grid edition's comic tile so the brand treatment reads identically. ── */
   .drag-cover { position: relative; }
-  .drag-cover .drag-frame { height: 87%; aspect-ratio: 3/4; background: #222; }
-  .drag-cover .drag-frame::before {
-    content: ""; position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 30%, transparent 58%, rgba(0,0,0,0.78) 100%);
-    pointer-events: none;
+  .drag-cv {
+    position: relative; display: block; cursor: pointer; text-decoration: none;
+    height: min(58vh, calc(100vh - 360px)); aspect-ratio: 3 / 4;
+    background: ${BLUE}; overflow: hidden; isolation: isolate;
+    box-shadow: 0 22px 56px rgba(4,44,133,0.30);
   }
-  .drag-cv-top { position: absolute; top: 0; left: 0; right: 0; z-index: 2; padding: 15px 14px; }
-  .drag-cv-top .wm {
-    font-weight: 900; font-size: clamp(30px, 3vw, 46px); letter-spacing: -0.01em;
-    line-height: 0.9; color: #fff; display: flex; justify-content: space-between;
+  .drag-cv__img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    z-index: 0; filter: contrast(1.08) saturate(0.92) brightness(0.95);
+    animation: dcv-press 11s ease-in-out infinite; will-change: filter, transform;
   }
-  .drag-cv-bot { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; padding: 20px 18px; color: #fff; display: flex; flex-direction: column; gap: 8px; }
-  .drag-cv-bot .cat { font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 700; opacity: 0.85; }
-  .drag-cv-bot .title {
-    font-family: var(--drag-display); font-weight: 600; letter-spacing: -0.005em;
-    text-transform: uppercase; line-height: 1.0; font-size: clamp(16px, 1.2vw, 21px); margin: 0; text-wrap: balance;
+  @keyframes dcv-press {
+    0%   { filter: contrast(1.06) saturate(0.95) brightness(0.97); transform: scale(1.02) translate(0, 0); }
+    50%  { filter: contrast(1.10) saturate(0.92) brightness(0.95); transform: scale(1.025) translate(-0.4%, 0.3%); }
+    100% { filter: contrast(1.06) saturate(0.95) brightness(0.97); transform: scale(1.02) translate(0, 0); }
+  }
+  .drag-cv__duotone {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none; mix-blend-mode: screen;
+    background-image:
+      radial-gradient(circle 3px at 14% 22%, rgba(255,250,232,0.95), transparent 70%),
+      radial-gradient(circle 2px at 28% 68%, rgba(255,250,232,0.90), transparent 70%),
+      radial-gradient(circle 4px at 42% 18%, rgba(255,250,232,1),    transparent 65%),
+      radial-gradient(circle 2px at 56% 84%, rgba(255,250,232,0.85), transparent 70%),
+      radial-gradient(circle 3px at 68% 32%, rgba(255,250,232,0.95), transparent 70%),
+      radial-gradient(circle 2px at 82% 62%, rgba(255,250,232,0.88), transparent 70%),
+      radial-gradient(circle 3px at 92% 14%, rgba(255,250,232,0.92), transparent 70%),
+      radial-gradient(circle 2px at 8%  78%, rgba(255,250,232,0.86), transparent 70%),
+      radial-gradient(circle 4px at 50% 50%, rgba(255,250,232,1),    transparent 60%),
+      radial-gradient(circle 2px at 74% 76%, rgba(255,250,232,0.88), transparent 70%);
+    animation: dcv-twinkle 3.6s ease-in-out infinite;
+  }
+  @keyframes dcv-twinkle {
+    0%, 100% { opacity: 0.35; transform: scale(0.92); filter: blur(0.4px); }
+    25%      { opacity: 1;    transform: scale(1.10); filter: blur(0px);   }
+    50%      { opacity: 0.55; transform: scale(0.98); filter: blur(0.6px); }
+    75%      { opacity: 0.95; transform: scale(1.06); filter: blur(0.2px); }
+  }
+  .drag-cv__grain {
+    position: absolute; inset: -4%; z-index: 3; pointer-events: none;
+    background-image: url("${PCC_NOISE}"); background-size: 240px 240px;
+    opacity: 0.22; mix-blend-mode: overlay; animation: dcv-grain 0.16s steps(5) infinite;
+  }
+  @keyframes dcv-grain {
+    0%   { background-position: 0 0; }
+    25%  { background-position: -40% 30%; }
+    50%  { background-position: 30% -22%; }
+    75%  { background-position: -18% -34%; }
+    100% { background-position: 22% 26%; }
+  }
+  .drag-cv__shade {
+    position: absolute; inset: 0; z-index: 4; pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(3,12,38,0.55) 0%, transparent 26%, transparent 52%, rgba(3,12,38,0.82) 100%),
+      radial-gradient(ellipse at center, transparent 54%, rgba(3,12,38,0.5) 100%);
+  }
+  .drag-cv__mast {
+    position: absolute; top: clamp(16px, 2vw, 26px); left: 0; right: 0; z-index: 6;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    color: #ffffff;
+  }
+  .drag-cv__mast b {
+    font-family: "Macabro", "Bodoni Moda", serif; font-weight: 900;
+    font-size: clamp(30px, 3vw, 46px); line-height: 0.82; letter-spacing: -0.014em;
+    text-transform: uppercase; text-shadow: 0 4px 18px rgba(0,0,0,0.45);
+  }
+  .drag-cv__rule {
+    display: flex; align-items: center; gap: 9px;
+    font-family: var(--drag-sans); font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,241,205,0.92);
+  }
+  .drag-cv__rule::before, .drag-cv__rule::after {
+    content: ""; width: 22px; height: 1px; background: rgba(255,241,205,0.55);
+  }
+  .drag-cv__foot {
+    position: absolute; left: clamp(16px, 2vw, 26px); right: clamp(16px, 2vw, 26px);
+    bottom: clamp(16px, 1.8vw, 24px); z-index: 6; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 9px;
+  }
+  .drag-cv__cat {
+    font-family: var(--drag-sans); font-size: 9px; font-weight: 700;
+    letter-spacing: 0.26em; text-transform: uppercase; color: #fff1cd;
+    padding: 3px 11px; border: 1px solid rgba(255,241,205,0.5); border-radius: 999px;
+  }
+  .drag-cv__title {
+    margin: 0; font-family: "Bodoni Moda", "Newsreader", serif; font-weight: 600;
+    font-size: clamp(17px, 1.5vw, 24px); line-height: 1.2; letter-spacing: 0.06em;
+    color: #ffffff; text-shadow: 0 2px 14px rgba(0,0,0,0.6); text-wrap: balance;
+  }
+  .drag-cv:hover .drag-cv__title {
+    text-decoration: underline; text-decoration-thickness: 1px;
+    text-underline-offset: 6px; text-decoration-color: rgba(255,255,255,0.55);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .drag-cv__img, .drag-cv__duotone, .drag-cv__grain { animation: none !important; }
   }
 
   /* ── Kept panels: app ad + IG pill ── */
   /* App-download ad lives inside the category-filter bar (shares its divider
      line), centered in the bar. */
   .pcd-secnav-ad { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; }
-  .pcd-secnav-ad .promo-top { position: relative; top: auto; grid-column: auto; height: 64px; width: 740px; max-width: 60vw; margin: 0; }
-  .pcd-secnav-ad .promo-top__cta { gap: 22px; }
-  .pcd-secnav-ad .promo-top__wordmark { font-size: clamp(16px, 1.4vw, 22px); white-space: nowrap; text-transform: none; letter-spacing: 0.01em; }
-  .pcd-secnav-ad .promo-top__btn { padding: 9px 16px; font-size: 10px; }
-  .drag-ig { flex: 0 0 auto; width: 300px; display: flex; flex-direction: column; justify-content: center; }
+  .pcd-secnav-ad .promo-top { position: relative; top: auto; grid-column: auto; height: 68px; width: 660px; max-width: 54vw; margin: 0; }
+  .pcd-secnav-ad .promo-top__cta { gap: 20px; }
+  .pcd-secnav-ad .promo-top__wordmark { font-size: clamp(15px, 1.3vw, 20px); white-space: nowrap; text-transform: none; letter-spacing: 0.01em; }
+  .pcd-secnav-ad .promo-top__btn { padding: 8px 15px; font-size: 10px; }
+  .drag-ig { flex: 0 0 auto; width: 248px; display: flex; flex-direction: column; justify-content: center; }
   .drag-ig .ig-bottom, .drag-ig .ptile { margin: 0; }
 
   /* ── END panel ── */
@@ -2246,75 +3608,191 @@ const DRAG_CSS = `
     background: none; border: 0; padding: 0; font-family: var(--drag-sans);
   }
 
-  /* ── CONTROLS — frosted shelf ──
-     Full-width footer: a translucent paper base rising from the bottom with a
-     real backdrop blur on top, both masked so the frost dissolves smoothly
-     into the paper at the top edge — no hard seam. The pager sits on the
-     shelf: ghost chevrons, a hairline seek line with a ringed dot, a tabular
-     index. ── */
-  .drag-controls {
-    position: absolute; left: 0; right: 0; bottom: 0; z-index: 30;
-    display: flex; align-items: center; gap: clamp(20px, 2.4vw, 34px);
-    padding: 32px max(40px, 3vw) 26px;
-    /* neutral paper base */
-    background: linear-gradient(to top,
-      rgba(255,255,255,0.92) 0%,
-      rgba(255,255,255,0.82) 50%,
-      rgba(255,255,255,0) 100%);
-    /* frosted blur on top */
-    -webkit-backdrop-filter: blur(16px) saturate(135%);
-    backdrop-filter: blur(16px) saturate(135%);
-    /* fade the whole material (paper + frost) out toward the top */
-    -webkit-mask-image: linear-gradient(to top, #000 0%, #000 52%, transparent 100%);
-    mask-image: linear-gradient(to top, #000 0%, #000 52%, transparent 100%);
-    pointer-events: none;
+  /* ── EDGE CHEVRONS — side pagers ──
+     The bottom progress shelf was hiding card headlines, so navigation moved to
+     two frosted signature-blue discs pinned to the left/right edges of the
+     stage, vertically centred. They float above the rail without covering any
+     copy. ── */
+  .drag-edge {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 30;
+    width: 46px; height: 46px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(4,44,133,0.12);
+    background: rgba(255,255,255,0.72);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    backdrop-filter: blur(10px) saturate(130%);
+    color: ${BLUE}; cursor: pointer;
+    box-shadow: 0 6px 20px rgba(4,44,133,0.14);
+    transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
   }
-  /* only the controls themselves are interactive — the faded top of the shelf
-     lets a drag started near the bottom of the rail pass straight through */
-  .drag-controls > * { pointer-events: auto; }
-  .drag-arrow {
-    width: 38px; height: 38px; border-radius: 50%;
-    border: 0; background: transparent; color: oklch(0.3 0.03 258);
-    cursor: pointer; flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
-    transition: background .18s ease, color .18s ease, transform .18s ease;
+  .drag-edge:hover  { background: ${BLUE}; color: #fff1cd; box-shadow: 0 8px 26px rgba(4,44,133,0.28); }
+  .drag-edge:active { transform: translateY(-50%) scale(0.94); }
+  .drag-edge:focus-visible { outline: 2px solid rgba(4,44,133,0.5); outline-offset: 2px; }
+  .drag-edge--prev { left: clamp(10px, 1.6vw, 22px); }
+  .drag-edge--next { right: clamp(10px, 1.6vw, 22px); }
+
+  /* ── Drag-edition footer — slim signature-blue strip with scalloped rim
+     and the same minimal links as the app's profile section. ── */
+  .drag-foot {
+    position: relative; flex: 0 0 auto; height: var(--drag-foot-h);
+    background: ${BLUE}; overflow: hidden; isolation: isolate;
+    display: flex; align-items: center; justify-content: center;
   }
-  .drag-arrow:hover  { background: oklch(0.32 0.16 264 / 0.1); color: oklch(0.32 0.16 264); }
-  .drag-arrow:active { transform: scale(0.94); }
-  .drag-arrow:focus-visible { outline: 2px solid oklch(0.32 0.16 264 / 0.5); outline-offset: 2px; }
-  .drag-progress {
-    flex: 1 1 auto; height: 22px; position: relative; cursor: pointer;
-    display: flex; align-items: center;
+  /* soft top highlight — matches the grid footer's radial sheen so the texture
+     reads as a lit, grainy field rather than flat blue */
+  .drag-foot::after {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(90% 130% at 50% 0%, rgba(255,255,255,0.07), transparent 70%);
   }
-  .drag-progress::before {
-    content: ""; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
-    height: 2px; border-radius: 2px; background: oklch(0.5 0.03 258 / 0.2);
+  .drag-foot__grain { position: absolute; inset: 0; opacity: 0.62; mix-blend-mode: overlay; pointer-events: none; z-index: 0; }
+  .drag-foot__scallop { position: absolute; top: 0; left: 0; right: 0; z-index: 1; pointer-events: none; }
+  /* three-column rail: nav links pinned left, copyright dead-centre, and the
+     Instagram badge + contact link grouped on the right. A wider container
+     with slimmer side padding pushes the flanking clusters toward the edges. */
+  .drag-foot__inner {
+    position: relative; z-index: 2; width: 100%; max-width: 1280px;
+    margin: 0 auto; padding: 0 18px; box-sizing: border-box;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 18px;
   }
-  .drag-progress__bar {
-    position: absolute; top: 50%; left: 0; transform: translateY(-50%);
-    height: 2px; border-radius: 2px; width: 0%; background: oklch(0.32 0.16 264);
-    transition: width .35s cubic-bezier(.22,.61,.36,1);
+  .drag-foot__links {
+    justify-self: start;
+    display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px;
+    font-family: "Macabro", "Anton", sans-serif;
+    font-size: 10px; letter-spacing: 0.16em; line-height: 1;
+    text-transform: uppercase;
   }
-  .drag-progress__bar::after {
-    content: ""; position: absolute; right: -5px; top: 50%; width: 10px; height: 10px;
-    border-radius: 50%; background: oklch(0.32 0.16 264);
-    box-shadow: 0 0 0 2.5px rgba(255,255,255,0.9);
-    transform: translateY(-50%);
-    transition: transform .2s cubic-bezier(.22,.61,.36,1);
+  .drag-foot__links a {
+    color: #ffffff; text-decoration: none; padding-left: 0.16em;
+    transition: color .18s ease, opacity .18s ease; opacity: 1;
   }
-  .drag-progress:hover .drag-progress__bar::after { transform: translateY(-50%) scale(1.25); }
-  .drag-count {
-    flex: 0 0 auto; font-family: var(--drag-sans);
-    font-size: 11px; letter-spacing: 0.16em; font-weight: 600;
-    color: oklch(0.55 0.02 258); min-width: 56px; text-align: right;
-    font-variant-numeric: tabular-nums; padding-right: 2px;
+  .drag-foot__links a:hover { opacity: 0.82; }
+  /* separators rendered as tiny centred dots rather than glyph middots, so the
+     spacing reads even regardless of the display face's baseline */
+  .drag-foot__links span {
+    display: inline-block; width: 3px; height: 3px; border-radius: 50%;
+    flex: 0 0 auto; background: rgba(255,255,255,0.4); font-size: 0;
   }
-  .drag-count em { font-style: normal; font-weight: 700; color: oklch(0.2 0.04 258); }
+  /* right cluster: Instagram badge · Contact link */
+  .drag-foot__right { justify-self: end; display: flex; align-items: center; gap: 16px; }
+  .drag-foot__contact {
+    font-family: "Macabro", "Anton", sans-serif;
+    font-size: 10px; letter-spacing: 0.16em; line-height: 1;
+    text-transform: uppercase; text-decoration: none;
+    color: #ffffff; opacity: 1; white-space: nowrap;
+    transition: opacity .18s ease;
+  }
+  .drag-foot__contact:hover { opacity: 0.82; }
+  .drag-foot__copy {
+    justify-self: center; white-space: nowrap;
+    font-family: "Macabro", "Anton", sans-serif;
+    font-size: 10px; letter-spacing: 0.16em; line-height: 1;
+    text-transform: uppercase; color: #ffffff;
+  }
+  /* Instagram badge — outlined circle that fills softly on hover */
+  .drag-foot__ig {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%; color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.34); opacity: 0.85; cursor: pointer;
+    transition: opacity .18s ease, background-color .18s ease, border-color .18s ease;
+  }
+  .drag-foot__ig:hover { opacity: 1; background-color: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.6); }
+  .drag-foot__ig svg { width: 16px; height: 16px; display: block; }
 
   @media (max-width: 760px) {
+    .drag-foot__copy { display: none; }
     .drag-rail { padding: 0 32px 96px; gap: 24px; }
     .drag-intro { width: 78vw; }
     .drag-lead .drag-frame { aspect-ratio: 4/5; }
-    .drag-controls { padding: 28px 22px 20px; gap: 16px; }
+    .drag-edge { width: 40px; height: 40px; }
+  }
+
+  /* ── Legal / About modal — a compact centred card (NOT a full-screen
+       takeover). Reuses the same brand content as the mobile LegalSheet,
+       re-skinned as a desktop dialog: blue paper, grain, cream type. ── */
+  .drag-legal-overlay {
+    position: fixed; inset: 0; z-index: 240;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px;
+    background: rgba(8,12,28,0.58);
+    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+    animation: drag-legal-fade .22s ease forwards;
+  }
+  @keyframes drag-legal-fade { from { opacity: 0; } to { opacity: 1; } }
+  .drag-legal {
+    position: relative; isolation: isolate; overflow: hidden;
+    width: min(520px, 100%); max-height: min(680px, 84vh);
+    display: flex; flex-direction: column;
+    background: ${BLUE}; color: #fff1cd;
+    border-radius: 18px;
+    box-shadow: 0 30px 80px rgba(4,12,40,0.45), 0 2px 0 rgba(255,255,255,0.06) inset;
+    animation: drag-legal-rise .34s cubic-bezier(.22,.61,.36,1) forwards;
+  }
+  @keyframes drag-legal-rise {
+    from { opacity: 0; transform: translateY(16px) scale(0.985); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .drag-legal__grain { position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.55; mix-blend-mode: overlay; }
+  .drag-legal__close {
+    position: absolute; top: 16px; right: 16px; z-index: 3;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border: 0; border-radius: 50%; cursor: pointer;
+    background: rgba(255,241,205,0.12); color: rgba(255,241,205,0.82);
+    transition: background-color .18s ease, color .18s ease;
+  }
+  .drag-legal__close:hover { background: rgba(255,241,205,0.22); color: #fff1cd; }
+  .drag-legal__head { position: relative; z-index: 2; flex: 0 0 auto; padding: 30px 34px 18px; }
+  .drag-legal__eyebrow {
+    margin: 0 0 12px; font-family: ${SANS}; font-weight: 700; font-size: 10px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,241,205,0.40);
+  }
+  .drag-legal__title {
+    margin: 0; font-family: "Macabro", "Anton", sans-serif;
+    font-size: clamp(16px, 1.9vw, 21px); line-height: 0.98; letter-spacing: 0.012em;
+    text-transform: uppercase; color: #fff1cd; white-space: pre-line;
+  }
+  .drag-legal__updated {
+    margin: 12px 0 0; font-family: ${SANS}; font-size: 11px;
+    letter-spacing: 0.02em; color: rgba(255,241,205,0.46);
+  }
+  .drag-legal__rule { position: relative; z-index: 2; flex: 0 0 auto;
+    margin: 0 34px; height: 1px; background: rgba(255,241,205,0.16); }
+  .drag-legal__body {
+    position: relative; z-index: 2; flex: 1 1 auto; min-height: 0;
+    overflow-y: auto; overscroll-behavior: contain;
+    padding: 24px 34px 30px;
+  }
+  .drag-legal__body::-webkit-scrollbar { width: 8px; }
+  .drag-legal__body::-webkit-scrollbar-thumb { background: rgba(255,241,205,0.18); border-radius: 8px; }
+  .drag-legal__intro {
+    margin: 0 0 26px; padding-left: 14px; border-left: 2px solid rgba(255,241,205,0.24);
+    font-family: "Lora", Georgia, serif; font-style: italic; font-size: 13.5px;
+    line-height: 1.7; color: rgba(255,241,205,0.80);
+  }
+  .drag-legal__sec { margin: 0 0 24px; }
+  .drag-legal__h {
+    display: flex; align-items: baseline; gap: 11px; margin: 0 0 10px;
+    font-family: "Macabro", "Anton", sans-serif; font-size: 12px;
+    letter-spacing: 0.10em; text-transform: uppercase; color: #fff1cd;
+  }
+  .drag-legal__num {
+    flex: 0 0 auto; width: 18px; font-family: ${SANS}; font-weight: 700;
+    font-size: 9px; letter-spacing: 0.04em; color: rgba(255,241,205,0.40);
+  }
+  .drag-legal__p {
+    margin: 0 0 12px 29px; font-family: "Lora", Georgia, serif;
+    font-size: 13.5px; line-height: 1.75; color: rgba(255,241,205,0.80);
+  }
+  .drag-legal__p:last-child { margin-bottom: 0; }
+  .drag-legal__foot {
+    margin: 34px 0 0; padding-top: 20px; text-align: center;
+    border-top: 1px solid rgba(255,241,205,0.12);
+    font-family: ${SANS}; font-size: 11px; letter-spacing: 0.03em;
+    line-height: 1.6; color: rgba(255,241,205,0.42);
+  }
+  .drag-legal__foot b { font-weight: 600; color: #fff1cd; }
+  @media (prefers-reduced-motion: reduce) {
+    .drag-legal-overlay, .drag-legal { animation: none; }
   }
 `;
 
@@ -2385,15 +3863,18 @@ function EditorialCard({
   span,
   ratio,
   anim,
+  framed,
 }: {
   article: NewsArticle;
   onOpen: () => void;
   span: "sp-3" | "sp-4" | "sp-6";
   ratio: "ar-4-5" | "ar-1-1" | "ar-3-2" | "ar-3-4";
   anim?: "anim-pick" | "anim-screen" | "anim-signal" | "anim-sport";
+  framed?: boolean;
 }) {
   const src = article.imageUrl ? feedImageUrl(article.imageUrl) : null;
-  const cls = ["card", span, ratio, anim].filter(Boolean).join(" ");
+  // When framed, drop the motion effect — the frame *is* the treatment.
+  const cls = ["card", span, ratio, framed ? "framed" : anim].filter(Boolean).join(" ");
   if (!src) {
     return (
       <a
@@ -2420,7 +3901,7 @@ function EditorialCard({
       onClick={(e) => { e.preventDefault(); onOpen(); }}
     >
       <div className="img">
-        {anim === "anim-screen" && <>
+        {!framed && anim === "anim-screen" && <>
           <span className="bar-top" />
           <span className="bar-bot" />
         </>}
@@ -2644,36 +4125,56 @@ function AppPromoTop() {
 
 const num2 = (n: number) => String(n).padStart(2, "0");
 
-/* Shape measure — landscape-dominant (wide 3/2 + a gentle 4/3, only the
-   occasional square) so frames read as horizontal rectangles on average.
-   The image HEIGHT/size is driven per-article by image quality (see
-   qualityClass); the headline above/below stagger is driven by slide parity
-   (see regularSlide). Variation is intentional, not random. */
-const DRAG_RHYTHM = [
-  "ar-w",
-  "ar-l",
-  "ar-xw",
-  "ar-l",
-  "ar-sq",
-  "ar-w",
-  "ar-t",
-  "ar-w",
-  "ar-l",
-];
+/* ── Seeded per-day randomness ──────────────────────────────────────
+   Photo treatments (tilt / colour-block pop / loud display headline / mono /
+   broken-frame) are dealt from a deterministic PRNG seeded by the day's
+   article-id join (railKey). Same feed → same layout on every render and
+   refresh; new feed day → a fresh, unpatterned deal. Constraints applied
+   while dealing keep the rail readable (no adjacent pops, no adjacent loud
+   slides, exactly one mono + one broken-frame per day). */
+const hashStr = (s: string): number => {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+};
 
-// per-slide photo treatment: a resting tilt (straightens on hover) for most
-// frames, with the occasional poster-style offset colour-block (no tilt).
-const DRAG_TREATMENTS: Array<{ rot?: number; pop?: "pop" | "pop2" | "pop3" }> = [
-  { rot: -2.2 },
-  { rot: 1.8 },
-  { pop: "pop" },
-  { rot: -1.4 },
-  { pop: "pop3" },
-  { rot: 2.3 },
-  { pop: "pop2" },
-  { rot: -1.8 },
-  { rot: 1.5 },
-];
+const mulberry32 = (seed: number) => {
+  let s = seed | 0;
+  return () => {
+    s = (s + 0x6d2b79f5) | 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
+type SlideTreat = {
+  rot: number;
+  pop: "" | "pop" | "pop2" | "pop3";
+  loud: boolean;
+  mono: boolean;
+  brk: boolean;
+  off: number;
+  ar: string;
+};
+
+/* Frame shape follows the REAL image ratio when dimensions are known, so a
+   wide press shot gets a wide frame and a portrait gets a tall one — the
+   photo fills its frame instead of being cropped to an arbitrary cycle.
+   Unknown dimensions fall back to a seeded landscape coin-flip. */
+const aspectClassFor = (a: NewsArticle, rnd: () => number): string => {
+  const w = a.imageWidth ?? 0;
+  const h = a.imageHeight ?? 0;
+  if (w > 0 && h > 0) {
+    const r = w / h;
+    if (r >= 1.65) return "ar-xw";
+    if (r >= 1.32) return "ar-w";
+    if (r >= 1.08) return "ar-l";
+    if (r >= 0.92) return "ar-sq";
+    return "ar-t";
+  }
+  return rnd() < 0.5 ? "ar-w" : "ar-l";
+};
 
 /* Higher-resolution images get a taller frame, lower-res get a shorter one,
    so quality reads as scale on the rail. imageWidth/imageHeight can be
@@ -2686,6 +4187,194 @@ const qualityClass = (a: NewsArticle): string => {
   return "d-short";                        // genuinely small originals
 };
 
+/* Index interlude — a photographer's contact sheet of the day's edition.
+   Small mono thumbnails of every imaged story on the signature-blue panel;
+   hovering washes a frame back to colour and surfaces its headline in the
+   caption line; clicking jumps straight into the story. */
+function DragIndex({ articles, dateLabel, onOpen }: {
+  articles: NewsArticle[];
+  dateLabel: string;
+  onOpen: (a: NewsArticle) => void;
+}) {
+  const [hovered, setHovered] = useState<NewsArticle | null>(null);
+  const sheet = articles.filter((a) => a.imageUrl).slice(0, 12);
+  if (!sheet.length) return null;
+  return (
+    <section className="drag-index">
+      <div className="drag-index__grain" aria-hidden><GrainBackground variant="popcorn-blue" /></div>
+      <span className="drag-index__kicker">Index · {dateLabel}</span>
+      <div className="drag-index__sheet">
+        {sheet.map((a) => (
+          <button
+            key={a.id}
+            type="button"
+            aria-label={a.title}
+            onClick={() => onOpen(a)}
+            onMouseEnter={() => setHovered(a)}
+            onMouseLeave={() => setHovered((h) => (h?.id === a.id ? null : h))}
+          >
+            <img src={feedImageUrl(a.imageUrl!)} alt="" loading="lazy" draggable={false} />
+          </button>
+        ))}
+      </div>
+      <p className={`drag-index__caption${hovered ? "" : " is-idle"}`}>
+        {hovered ? hovered.title : "The day at a glance — tap a frame to jump in."}
+      </p>
+    </section>
+  );
+}
+
+/* Slim signature-blue footer for the Drag edition — scalloped rim on top,
+   minimal links only (mirrors the app's profile section). Sits flush at the
+   bottom of the shell at a fixed short height so it never pushes the rail or
+   hides slide text. */
+function DragFooter({ onLegal }: { onLegal: (kind: LegalKind) => void }) {
+  const open = (kind: LegalKind) => (e: ReactMouseEvent) => { e.preventDefault(); onLegal(kind); };
+  return (
+    <footer className="drag-foot" aria-label="Popcorn footer">
+      <div className="drag-foot__grain" aria-hidden>
+        <GrainBackground variant="popcorn-blue" />
+      </div>
+      <div className="drag-foot__inner">
+        <nav className="drag-foot__links">
+          <a href="#" onClick={open("about")}>About</a>
+          <span aria-hidden>·</span>
+          <a href="#" onClick={open("privacy")}>Privacy</a>
+          <span aria-hidden>·</span>
+          <a href="#" onClick={open("terms")}>Terms</a>
+        </nav>
+        <span className="drag-foot__copy">© Popcorn Media 2026</span>
+        <div className="drag-foot__right">
+          <a
+            className="drag-foot__ig"
+            href="https://instagram.com/news.popcorn"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Popcorn on Instagram"
+          >
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden>
+              <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.8" />
+              <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.8" />
+              <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" />
+            </svg>
+          </a>
+          <a className="drag-foot__contact" href="mailto:hello@popcornmedia.org">Contact us</a>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* Compact centred Legal/About dialog for the drag edition. Reuses the same
+   content as the mobile LegalSheet but renders as a small desktop modal that
+   never covers the whole screen. Closes on backdrop click or Escape. */
+function DragLegalModal({ kind, onClose }: { kind: LegalKind | null; onClose: () => void }) {
+  useEffect(() => {
+    if (!kind) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [kind, onClose]);
+
+  if (!kind) return null;
+  const doc: LegalDoc = kind === "terms" ? TERMS : kind === "privacy" ? PRIVACY : ABOUT;
+  const eyebrow = kind === "about" ? "Popcorn · About" : "Popcorn · Legal";
+  const heading = kind === "terms" ? "Terms" : kind === "privacy" ? "Privacy" : "About";
+
+  return (
+    <div className="drag-legal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={heading}>
+      <div className="drag-legal" onClick={(e) => e.stopPropagation()}>
+        <div className="drag-legal__grain" aria-hidden><GrainBackground variant="popcorn-blue" /></div>
+        <button className="drag-legal__close" onClick={onClose} aria-label="Close">
+          <X size={16} strokeWidth={2} />
+        </button>
+        <div className="drag-legal__head">
+          <p className="drag-legal__eyebrow">{eyebrow}</p>
+          <h2 className="drag-legal__title">{heading}</h2>
+          <p className="drag-legal__updated">Last updated {doc.lastUpdated}</p>
+        </div>
+        <div className="drag-legal__rule" />
+        <div className="drag-legal__body">
+          {doc.intro && <p className="drag-legal__intro">{doc.intro}</p>}
+          {doc.sections.map((s, i) => (
+            <section className="drag-legal__sec" key={i}>
+              <h3 className="drag-legal__h">
+                <span className="drag-legal__num">{String(i + 1).padStart(2, "0")}</span>
+                {s.heading}
+              </h3>
+              {s.paragraphs.map((p, j) => (
+                <p className="drag-legal__p" key={j}>{p}</p>
+              ))}
+            </section>
+          ))}
+          <p className="drag-legal__foot">
+            Questions? Write to us at <b>hello@popcornmedia.org</b>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Ink-on-paper social row for the drag rail — same like/comment/share/save
+// actions as the mobile card (and the same hooks for real persistence), but
+// recoloured for the light magazine rail. The bookmark anchors the far right.
+function DragSocial({
+  article,
+  onComments,
+  pos = "is-bottom",
+}: {
+  article: NewsArticle;
+  onComments: (a: NewsArticle) => void;
+  /** Matches the caption position so the row + rule travel with the headline. */
+  pos?: "is-top" | "is-bottom";
+}) {
+  const { isLiked: isLikedFn, toggleLike } = useLikedArticles();
+  const { isSaved: isSavedFn, toggleSave } = useSavedArticles();
+  const commentCount = useCommentCount(article.id);
+  const liked = isLikedFn(article.id);
+  const isSaved = isSavedFn(article.id);
+  const likeCount = article.likes + (liked ? 1 : 0);
+  const fmt = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`);
+
+  const stop = (e: ReactMouseEvent) => { e.preventDefault(); e.stopPropagation(); };
+  const onLike = (e: ReactMouseEvent) => {
+    stop(e);
+    void toggleLike(article.id);
+  };
+  const onComment = (e: ReactMouseEvent) => { stop(e); onComments(article); };
+  const onSave = (e: ReactMouseEvent) => { stop(e); void toggleSave(article.id); };
+  const onShare = (e: ReactMouseEvent) => {
+    stop(e);
+    if (navigator.share) {
+      navigator.share({ title: article.title, text: article.summary, url: window.location.href }).catch(() => {});
+    } else {
+      navigator.clipboard?.writeText(window.location.href);
+    }
+  };
+
+  return (
+    <div className={`drag-social ${pos}`}>
+      <button className={`drag-social__btn${liked ? " is-liked" : ""}`} onClick={onLike} aria-label="Like">
+        <Heart size={20} strokeWidth={1.8} fill={liked ? "currentColor" : "none"} />
+        <span className="drag-social__count">{fmt(likeCount)}</span>
+      </button>
+      <button className="drag-social__btn" onClick={onComment} aria-label="Comments">
+        <MessageCircle size={20} strokeWidth={1.8} />
+        {commentCount != null && commentCount > 0 && (
+          <span className="drag-social__count">{commentCount}</span>
+        )}
+      </button>
+      <button className="drag-social__btn" onClick={onShare} aria-label="Share">
+        <Send size={19} strokeWidth={1.8} />
+      </button>
+      <button className="drag-social__btn drag-social__save" onClick={onSave} aria-label="Save">
+        <Bookmark size={20} strokeWidth={1.8} fill={isSaved ? "currentColor" : "none"} />
+      </button>
+    </div>
+  );
+}
+
 function DragFeed({
   articles,
   onOpen,
@@ -2695,18 +4384,67 @@ function DragFeed({
   onOpen: (a: NewsArticle) => void;
   group?: DayGroup;
 }) {
+  const [commentArticle, setCommentArticle] = useState<NewsArticle | null>(null);
+  const [legalKind, setLegalKind] = useState<LegalKind | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const countRef = useRef<HTMLElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
   const dateLabel = group ? format(group.date, "EEEE, MMMM d") : "Today";
-  const total = articles.length;
+
+  // Stable identity for the rail's contents — changes only when the actual
+  // set/order of stories changes (day or category switch), NOT when an
+  // optimistic update (like/bookmark) rebuilds the array with the same items.
+  const railKey = useMemo(() => articles.map((a) => a.id).join(","), [articles]);
+
+  // Full-bleed poster pick: the best-quality image in the middle band, so the
+  // cinematic beat lands mid-ribbon rather than at the open.
+  const midBand = articles.slice(5, 13).filter((a) => a.imageUrl);
+  const posterId = midBand.length
+    ? midBand.reduce((best, a) =>
+        (a.imageWidth ?? 0) * (a.imageHeight ?? 0) > (best.imageWidth ?? 0) * (best.imageHeight ?? 0) ? a : best,
+      ).id
+    : null;
+
+  // Deal the day's slide treatments from a PRNG seeded by the feed identity —
+  // stable across re-renders and like/save updates, fresh each day. Dealing
+  // constraints keep the rail readable: pops never sit adjacent, loud display
+  // slides never sit adjacent, and exactly one mono (B&W) + one broken-frame
+  // slide land per day (never on the poster).
+  const deck = useMemo(() => {
+    const rnd = mulberry32(hashStr(railKey));
+    const map = new Map<number, SlideTreat>();
+
+    const imaged = articles.filter((a) => a.imageUrl && a.id !== posterId);
+    const monoId = imaged.length ? imaged[Math.floor(rnd() * imaged.length)].id : null;
+    const brkPool = imaged.filter((a) => a.id !== monoId && a.title.length <= 72);
+    const brkId = brkPool.length ? brkPool[Math.floor(rnd() * brkPool.length)].id : null;
+
+    let prevPop = false;
+    let prevLoud = false;
+    articles.forEach((a) => {
+      const ar = aspectClassFor(a, rnd);
+      const mono = a.id === monoId;
+      const brk = a.id === brkId;
+      const loud = !brk && !prevLoud && a.imageUrl != null && rnd() < 0.34;
+      const pop: SlideTreat["pop"] =
+        !loud && !brk && !prevPop && rnd() < 0.32
+          ? (["pop", "pop2", "pop3"] as const)[Math.floor(rnd() * 3)]
+          : "";
+      const rot = loud || brk || pop ? 0 : (rnd() < 0.5 ? -1 : 1) * (1.2 + rnd() * 1.3);
+      const off = loud || brk ? 0 : Math.round((rnd() * 2 - 1) * 22);
+      map.set(a.id, { rot, pop, loud, mono, brk, off, ar });
+      prevPop = pop !== "";
+      prevLoud = loud || brk;
+    });
+    return map;
+  }, [articles, railKey, posterId]);
 
   // Reset to the start of the rail when the day / category changes.
   useEffect(() => {
     if (stageRef.current) stageRef.current.scrollLeft = 0;
-  }, [articles]);
+  }, [railKey]);
 
   // Port the mockup's vanilla interaction JS: wheel → horizontal pan, pointer
   // drag with click-suppression, arrow paging, keyboard, and a scroll handler
@@ -2785,6 +4523,37 @@ function DragFeed({
       else if (e.key === "End") stage.scrollTo({ left: maxScroll(), behavior: "smooth" });
     };
 
+    // ── Parallax: one rAF loop drives --par per slide so photos pan a touch
+    // slower than their frames. Geometry is cached once (slide offsets are
+    // static after layout) and styles are written only when a value moves a
+    // quantised step — at rest the loop writes nothing at all.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let kinRaf = 0;
+    if (!reduceMotion) {
+      const slides = Array.from(stage.querySelectorAll<HTMLElement>(".drag-slide"));
+      const centers = slides.map((s) => s.offsetLeft + s.offsetWidth / 2);
+      const widths = slides.map((s) => s.offsetWidth);
+      const parLast: number[] = new Array(slides.length).fill(NaN);
+      const kinetics = () => {
+        // pan each visible photo opposite its frame's travel, scaled to the
+        // frame's own width so narrow frames never out-pan their bleed
+        const half = stage.clientWidth / 2;
+        const mid = stage.scrollLeft + half;
+        for (let i = 0; i < slides.length; i++) {
+          const rel = (centers[i] - mid) / half;
+          if (rel > 1.5 || rel < -1.5) continue;
+          const r = Math.max(-1.2, Math.min(1.2, rel));
+          const par = Math.round(-r * widths[i] * 0.028 * 2) / 2; // 0.5px steps
+          if (par !== parLast[i]) {
+            parLast[i] = par;
+            slides[i].style.setProperty("--par", `${par}px`);
+          }
+        }
+        kinRaf = requestAnimationFrame(kinetics);
+      };
+      kinRaf = requestAnimationFrame(kinetics);
+    }
+
     stage.addEventListener("scroll", onScroll, { passive: true });
     stage.addEventListener("wheel", onWheel, { passive: false });
     stage.addEventListener("pointerdown", onPointerDown);
@@ -2796,6 +4565,7 @@ function DragFeed({
     update();
 
     return () => {
+      if (kinRaf) cancelAnimationFrame(kinRaf);
       stage.removeEventListener("scroll", onScroll);
       stage.removeEventListener("wheel", onWheel);
       stage.removeEventListener("pointerdown", onPointerDown);
@@ -2805,7 +4575,7 @@ function DragFeed({
       stage.removeEventListener("click", onClickCapture, true);
       window.removeEventListener("keydown", onKey);
     };
-  }, [articles]);
+  }, [railKey]);
 
   const page = (dir: number) =>
     stageRef.current?.scrollBy({ left: dir * stageRef.current.clientWidth * 0.8, behavior: "smooth" });
@@ -2833,65 +4603,169 @@ function DragFeed({
 
   // Every article renders as the same uniform slide: same-size image on top,
   // category below, headline below — a fully aligned rail.
-  const regularSlide = (a: NewsArticle, keyPrefix: string) => {
+  const regularSlide = (a: NewsArticle, keyPrefix: string, framed = false, blackFrame = false) => {
     seq += 1; const n = seq;
-    const beat = DRAG_RHYTHM[(n - 1) % DRAG_RHYTHM.length];
+    const st = deck.get(a.id) ??
+      { rot: -1.6, pop: "" as const, loud: false, mono: false, brk: false, off: 0, ar: "ar-w" };
     const src = a.imageUrl ? feedImageUrl(a.imageUrl) : null;
     const size = src ? qualityClass(a) : "d-mid";
+    // LOUD: display-voice headline overlapping the photo's bottom edge.
+    // BREAK: oversized headline that escapes the frame's left edge entirely.
+    // Both come from the seeded deck; framed / blackframe slides stay quiet.
+    const loud = !framed && !blackFrame && src != null && st.loud;
+    const brk = !framed && !blackFrame && src != null && st.brk;
+    const mono = src != null && st.mono;
     // category + headline sit together on the SAME side of the image, the pair
-    // alternating side slide to slide: even slides above the photo, odd below.
+    // alternating side slide to slide. Loud/break slides always pin the cat on
+    // top and the headline below the photo so the overlap reads as a paste-up.
     const pairTop = n % 2 === 0;
-    const catPos = pairTop ? "is-top" : "is-bottom";
-    const titlePos = catPos;
+    const catPos = loud || brk ? "is-top" : pairTop ? "is-top" : "is-bottom";
+    const titlePos = loud || brk ? "is-bottom" : catPos;
     // honour detected focal point so cropped frames keep the subject (face) in view
     const ox = a.imageFocalX != null ? `${Math.round(a.imageFocalX * 100)}%` : "50%";
     const oy = a.imageFocalY != null ? `${Math.round(a.imageFocalY * 100)}%` : "50%";
-    // gentle per-slide vertical IMAGE float so frames stagger softly (captions
-    // stay anchored); kept small so the image never collides with its captions
-    const DRAG_OFFSETS = [-20, 14, -6, 22, -16, 4, -24, 12, -10, 18];
-    const off = DRAG_OFFSETS[(n - 1) % DRAG_OFFSETS.length];
-    // per-slide image treatment: most frames carry a small resting tilt (which
-    // straightens on hover); a couple per cycle drop the tilt for a hard, poster
-    // offset colour-block (cream "pop" / blue "pop2") instead.
-    const treat = DRAG_TREATMENTS[(n - 1) % DRAG_TREATMENTS.length];
-    const popCls = treat.pop ? ` ${treat.pop}` : "";
-    const rot = treat.pop ? 0 : treat.rot ?? 0;
+    // loud/break slides drop the image float so the overlap depth is predictable.
+    // Otherwise the float must move the photo AWAY from its caption: when the
+    // caption sits on top (is-top) the photo drifts DOWN, when it sits below the
+    // photo drifts UP — so a negative float can never pull the image up over the
+    // social row above it (the "social feed covered by image" bug).
+    const off = loud || brk ? 0 : (catPos === "is-top" ? Math.abs(st.off) : -Math.abs(st.off));
+    // Framed slides keep their resting tilt — the frame just adds an ink edge.
+    // Loud/break slides sit flat and frameless: the typographic jump IS the
+    // treatment. Pop slides sit flat so the hard offset block stays square.
+    const popCls = framed || loud || brk ? "" : st.pop ? ` ${st.pop}` : "";
+    const rot = loud || brk ? 0 : framed ? (st.rot || -1.8) : st.pop ? 0 : st.rot;
+    // Display type steps down as the headline gets longer, so a five-line
+    // title never pushes the social row under the footer.
+    const tLen = a.title.length;
+    const loudSize =
+      tLen <= 45 ? "clamp(30px, 2.8vw, 46px)" :
+      tLen <= 70 ? "clamp(25px, 2.3vw, 38px)" :
+                   "clamp(21px, 1.9vw, 31px)";
     return (
       <article
         key={`${keyPrefix}-${a.id}`}
-        className={`drag-slide ${size} ${beat}${popCls}`}
+        className={`drag-slide ${loud ? "d-mid ar-w" : `${size} ${st.ar}`}${popCls}${loud ? " is-loud" : ""}${mono ? " is-mono" : ""}${brk ? " is-break" : ""}`}
         data-num={num2(n)}
-        style={{ ["--drag-off" as string]: `${off}px`, ["--rot" as string]: `${rot}deg` }}
+        style={{
+          ["--drag-off" as string]: `${off}px`,
+          ["--rot" as string]: `${rot.toFixed(2)}deg`,
+          ...(loud || brk ? { ["--loud-size" as string]: loudSize } : {}),
+        }}
       >
         <span className={`drag-cat ${catPos}`}>{a.category || "Today"}</span>
-        <a className={`drag-frame${src ? "" : " is-feat"}`} href="#" onClick={(e) => { e.preventDefault(); onOpen(a); }}>
+        <a className={`drag-frame${src ? "" : " is-feat"}${framed ? " is-framed" : ""}${blackFrame ? " is-blackframe" : ""}`} href="#" onClick={(e) => { e.preventDefault(); onOpen(a); }}>
           {src
-            ? <img src={src} alt="" loading="lazy" draggable={false} style={{ objectPosition: `${ox} ${oy}` }} />
+            ? (
+              <span className="drag-par">
+                <span className="drag-par__in">
+                  <img src={src} alt="" loading="lazy" draggable={false} style={{ objectPosition: `${ox} ${oy}` }} />
+                </span>
+              </span>
+            )
             : <h3 className="drag-feat-title">{a.title}</h3>}
         </a>
-        <h3 className={`drag-title ${titlePos}`}>{a.title}</h3>
+        <h3 className={`drag-title ${titlePos}`}>
+          {brk ? <span className="brk-line">{a.title}</span> : a.title}
+        </h3>
+        <DragSocial article={a} onComments={setCommentArticle} pos={titlePos} />
       </article>
     );
   };
+
+  // ONE hero music / film story is promoted to a full POPCORN magazine cover —
+  // masthead up top, serif cover line at the foot, brand texture over the photo.
+  const coverSlide = (a: NewsArticle, keyPrefix: string) => {
+    seq += 1; const n = seq;
+    const src = a.imageUrl ? feedImageUrl(a.imageUrl) : null;
+    const ox = a.imageFocalX != null ? `${Math.round(a.imageFocalX * 100)}%` : "50%";
+    const oy = a.imageFocalY != null ? `${Math.round(a.imageFocalY * 100)}%` : "50%";
+    return (
+      <article key={`${keyPrefix}-${a.id}`} className="drag-slide d-tall drag-cover" data-num={num2(n)}>
+        <a className="drag-cv" href="#" onClick={(e) => { e.preventDefault(); onOpen(a); }}>
+          {src && (
+            <img className="drag-cv__img" src={src} alt="" loading="lazy" draggable={false} style={{ objectPosition: `${ox} ${oy}` }} />
+          )}
+          <div className="drag-cv__duotone" aria-hidden />
+          <div className="drag-cv__grain" aria-hidden />
+          <div className="drag-cv__shade" aria-hidden />
+          <div className="drag-cv__mast">
+            <b>POPCORN</b>
+          </div>
+          <div className="drag-cv__foot">
+            <h3 className="drag-cv__title">{a.title}</h3>
+          </div>
+        </a>
+        <DragSocial article={a} onComments={setCommentArticle} />
+      </article>
+    );
+  };
+
+  // ONE mid-rail story goes full bleed — floor-to-ceiling photo, edge to edge,
+  // headline supersized over the image. Picked as the best-quality image in
+  // the middle band so the cinematic beat lands mid-ribbon, not at the open.
+  const posterSlide = (a: NewsArticle, keyPrefix: string) => {
+    seq += 1; const n = seq;
+    const src = feedImageUrl(a.imageUrl!);
+    const ox = a.imageFocalX != null ? `${Math.round(a.imageFocalX * 100)}%` : "50%";
+    const oy = a.imageFocalY != null ? `${Math.round(a.imageFocalY * 100)}%` : "50%";
+    return (
+      <article key={`${keyPrefix}-${a.id}`} className="drag-slide drag-poster" data-num={num2(n)}>
+        <a className="drag-poster__frame" href="#" onClick={(e) => { e.preventDefault(); onOpen(a); }}>
+          <img src={src} alt="" loading="lazy" draggable={false} style={{ objectPosition: `${ox} ${oy}` }} />
+          <div className="drag-poster__shade" aria-hidden />
+          <div className="drag-poster__cap">
+            <span className="tag">{a.category || "Today"}</span>
+            <h3>{a.title}</h3>
+          </div>
+        </a>
+      </article>
+    );
+  };
+
+  // Magazine cover branding is shelved for now — every story renders as the
+  // uniform regular slide. (coverSlide is kept above for easy re-enable.)
+  const slide = (a: NewsArticle, keyPrefix: string) =>
+    a.id === posterId ? posterSlide(a, keyPrefix) : regularSlide(a, keyPrefix);
 
   const rail: ReactNode[] = [];
   rail.push(
     <section key="intro" className="drag-intro">
       <div className="drag-intro__grain" aria-hidden><GrainBackground variant="popcorn-blue" /></div>
-      <div className="drag-intro__edition"><span>{dateLabel} · Weekday Edition</span></div>
-      <p className="drag-intro__tag">The day’s culture — <em>popped fresh, before lunch.</em></p>
+      <span className="drag-intro__big" aria-hidden>
+        {group ? format(group.date, "MMM d") : "Today"}
+      </span>
+      <h2 className="drag-intro__mast" aria-label={`Popcorn — ${dateLabel}`}>
+        {"POPCORN".split("").map((ch, i) => (
+          <span key={i} style={{ ["--li" as string]: i }}>{ch}</span>
+        ))}
+      </h2>
+      <p className="drag-intro__tag">Culture Curated Daily</p>
       <div className="drag-intro__hint"><span>Drag to explore</span><span className="track" /><span>→</span></div>
     </section>,
   );
   // All story slides in editorial order.
   const storySlides: ReactNode[] = [];
-  if (lead.length) { storySlides.push(regularSlide(lead[0], "d-lead")); }
-  picks.forEach((a) => storySlides.push(regularSlide(a, "d-pick")));
-  screen.forEach((a) => storySlides.push(regularSlide(a, "d-scr")));
-  signal.forEach((a) => storySlides.push(regularSlide(a, "d-sig")));
-  news.forEach((a) => storySlides.push(regularSlide(a, "d-news")));
-  sport.forEach((a) => storySlides.push(regularSlide(a, "d-spt")));
-  also.forEach((a) => storySlides.push(regularSlide(a, "d-also")));
+  if (lead.length) { storySlides.push(slide(lead[0], "d-lead")); }
+  picks.forEach((a, i) => storySlides.push(regularSlide(a, "d-pick", i === 0, i === 2)));
+  screen.forEach((a) => storySlides.push(slide(a, "d-scr")));
+  signal.forEach((a) => storySlides.push(slide(a, "d-sig")));
+  news.forEach((a) => storySlides.push(slide(a, "d-news")));
+  sport.forEach((a) => storySlides.push(slide(a, "d-spt")));
+  also.forEach((a) => storySlides.push(slide(a, "d-also")));
+
+  // Index interlude: a drenched-blue contact sheet just past the rail's
+  // midpoint. The brand colour punctuates the ribbon (the old pull-quote's
+  // job) but earns its slot — a jump-anywhere visual map of the edition
+  // instead of a duplicate of one story.
+  if (storySlides.length >= 4) {
+    const iIdx = Math.min(Math.floor(storySlides.length * 0.62), storySlides.length);
+    storySlides.splice(
+      iIdx,
+      0,
+      <DragIndex key="index" articles={articles} dateLabel={dateLabel} onOpen={onOpen} />,
+    );
+  }
 
   // Drop the IG ad at a spot in the middle band of the rail. Seeded by the day
   // so placement is stable for a given feed but varies day to day (reads as
@@ -2928,18 +4802,22 @@ function DragFeed({
       <div className="drag-stage" ref={stageRef} aria-label="Drag feed">
         <div className="drag-rail">{rail}</div>
       </div>
-      <div className="drag-controls">
-        <button className="drag-arrow" aria-label="Previous" onClick={() => page(-1)}>
-          <ChevronLeft size={17} strokeWidth={2} />
-        </button>
-        <button className="drag-arrow" aria-label="Next" onClick={() => page(1)}>
-          <ChevronRight size={17} strokeWidth={2} />
-        </button>
-        <div className="drag-progress" ref={progressRef} onClick={seek}>
-          <div className="drag-progress__bar" ref={barRef} />
-        </div>
-        <div className="drag-count"><em ref={countRef}>01</em> / {num2(total)}</div>
+      <button className="drag-edge drag-edge--prev" aria-label="Previous story" onClick={() => page(-1)}>
+        <ChevronLeft size={24} strokeWidth={1.75} />
+      </button>
+      <button className="drag-edge drag-edge--next" aria-label="Next story" onClick={() => page(1)}>
+        <ChevronRight size={24} strokeWidth={1.75} />
+      </button>
+      <div className="drag-progress" ref={progressRef} onClick={seek} aria-hidden>
+        <div className="drag-progress__bar" ref={barRef} />
       </div>
+      <DragFooter onLegal={setLegalKind} />
+      <CommentSheet
+        isOpen={commentArticle != null}
+        articleId={commentArticle?.id ?? 0}
+        onClose={() => setCommentArticle(null)}
+      />
+      <DragLegalModal kind={legalKind} onClose={() => setLegalKind(null)} />
     </div>
   );
 }
@@ -2948,10 +4826,27 @@ function DragFeed({
 /* ── Page ──────────────────────────────────────────────────────── */
 
 export function DesktopHome() {
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const saves = useSavesRoot(user);
+  const likes = useLikesRoot(user);
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteNewsFeed();
+
+  // Signed-in identity — mirrors the app's profile derivation so the website
+  // account surface shows the same name / @handle / avatar / topics.
+  const userName =
+    (user?.user_metadata?.full_name as string | undefined)
+      ?? user?.email?.split("@")[0]
+      ?? null;
+  const userHandle = profile?.username ? `@${profile.username}` : null;
+  const userAvatar = (user?.user_metadata?.avatar_url as string | undefined) ?? null;
+  const userTopics: string[] = (user?.user_metadata?.topics as string[] | undefined) ?? [];
+
+  // Library state — which tab the overlay opens to (null = closed) — and the
+  // desktop legal modal, both surfaced from the profile dropdown.
+  const [libraryTab, setLibraryTab] = useState<"likes" | "saved" | null>(null);
+  const [legalKind, setLegalKind] = useState<LegalKind | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Desktop scrolls naturally; release the mobile overflow lock for the
   // lifetime of this page and restore on unmount so resizing back to
@@ -2979,21 +4874,43 @@ export function DesktopHome() {
     };
   }, []);
 
-  // Auto-pop the auth modal once per session for signed-out visitors.
-  const [authOpen, setAuthOpen] = useState(false);
+  // Membership gate (NYT-style): after a preview window, signed-out
+  // visitors see an invitation to sign in. It's dismissible — once
+  // dismissed, a persistent footer bar stays up and article bodies
+  // remain blocked until they sign in.
+  const [gateOpen, setGateOpen] = useState(false);
+  const [gateDismissed, setGateDismissed] = useState(false);
   useEffect(() => {
-    if (user) return;
-    if (sessionStorage.getItem("popcorn_desktop_auth_dismissed")) return;
-    const t = setTimeout(() => setAuthOpen(true), 1200);
+    if (user) { setGateOpen(false); return; }
+    const t = setTimeout(() => setGateOpen(true), 18000);
     return () => clearTimeout(t);
   }, [user]);
 
   const [signUpOpen, setSignUpOpen] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
-  const closeAuth = useCallback(() => {
-    sessionStorage.setItem("popcorn_desktop_auth_dismissed", "1");
-    setAuthOpen(false);
-  }, []);
+
+  // The gate is actually on screen only when it hasn't been dismissed and
+  // no auth sheet is layered above it.
+  const gateVisible = gateOpen && !user && !gateDismissed && !signInOpen && !signUpOpen;
+
+  // Lock page scroll while the gate modal is up so the blurred content
+  // behind can't be scrolled around. The footer does NOT lock scroll.
+  useEffect(() => {
+    if (!gateVisible) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [gateVisible]);
+
+  // Close every auth surface the moment the user becomes authed. The
+  // SignInSheet can't reliably await signIn() to call onClose itself —
+  // supabase-js holds the GoTrue lock through signInWithPassword and fires
+  // onAuthStateChange before that promise resolves, so the await can hang
+  // (symptom: "SIGNING IN…" spins until you manually dismiss the popup, but
+  // you're actually already signed in). Mirrors FeedPageHorizontal's effect.
+  useEffect(() => {
+    if (user) { setGateOpen(false); setSignUpOpen(false); setSignInOpen(false); }
+  }, [user]);
 
   const [readingArticle, setReadingArticle] = useState<NewsArticle | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -3017,6 +4934,16 @@ export function DesktopHome() {
   const allArticles = useMemo<NewsArticle[]>(() => {
     return data?.pages.flatMap((p: any) => p.articles ?? []) ?? [];
   }, [data]);
+
+  // Saved / liked lists for the Library overlay — same filter the app uses.
+  const savedArticles = useMemo(
+    () => allArticles.filter((a) => saves.savedIds.has(a.id)),
+    [allArticles, saves.savedIds],
+  );
+  const likedArticles = useMemo(
+    () => allArticles.filter((a) => likes.likedIds.has(a.id)),
+    [allArticles, likes.likedIds],
+  );
 
   const filteredArticles = useMemo(() => {
     if (!selectedCategory) return allArticles;
@@ -3055,11 +4982,11 @@ export function DesktopHome() {
   }, []);
 
   const articles = activeDay?.articles ?? [];
-  const collage = useMemo(() => buildCollage(articles), [articles]);
 
   return (
     <SavesContext.Provider value={saves}>
-      <style>{PAGE_CSS + EDITORIAL_CSS + DRAG_CSS}</style>
+    <LikesContext.Provider value={likes}>
+      <style>{PAGE_CSS + EDITORIAL_CSS + DRAG_CSS + PROFILE_CSS}</style>
 
       <PopcornIntro />
 
@@ -3079,6 +5006,15 @@ export function DesktopHome() {
             onNext={onNext}
             layoutMode={layoutMode}
             onSetLayout={setLayoutMode}
+            userName={userName}
+            userHandle={userHandle}
+            userAvatar={userAvatar}
+            userTopics={userTopics}
+            savedCount={savedArticles.length}
+            likedCount={likedArticles.length}
+            onOpenLibrary={setLibraryTab}
+            onOpenLegal={setLegalKind}
+            onOpenSettings={() => setSettingsOpen(true)}
           />
           <SectionNav
             selectedCategory={selectedCategory}
@@ -3107,155 +5043,8 @@ export function DesktopHome() {
             Loading today's pop…
           </div>
         ) : (
-          (() => {
-            /* Adaptive section slicing — only render sections that have at
-               least one article. Counter walks the articles array; the IG
-               tile is appended into Also Today regardless. */
-            let cur = 0;
-            const take = (n: number) => {
-              const slice = articles.slice(cur, cur + n);
-              cur += slice.length;
-              return slice;
-            };
-            const lead     = take(1);
-            const picks    = take(4);
-            const screen   = take(3);
-            const signal   = take(2);
-            const news     = take(3);
-            const sport    = take(2);
-            const also     = articles.slice(cur);
-
-            /* Also Today — mix of sp-3 ar-1-1, sp-4 ar-4-5, sp-3 ar-3-4
-               cycling through the leftover items. IG tile goes in slot 0
-               of Also Today (replaces what would have been the first card)
-               so it always lands in the grid. */
-            type AlsoCfg = { span: "sp-3"|"sp-4"; ratio: "ar-1-1"|"ar-4-5"|"ar-3-4" };
-            const ALSO_CYCLE: AlsoCfg[] = [
-              { span: "sp-3", ratio: "ar-1-1" },
-              { span: "sp-3", ratio: "ar-1-1" },
-              { span: "sp-3", ratio: "ar-1-1" },
-              { span: "sp-4", ratio: "ar-4-5" },
-              { span: "sp-4", ratio: "ar-4-5" },
-              { span: "sp-3", ratio: "ar-3-4" },
-              { span: "sp-3", ratio: "ar-3-4" },
-            ];
-
-            return (
-              <main className="feed">
-                <AppPromoTop />
-
-                {lead.length > 0 && (
-                  <>
-                    <SectionHead label="Lead Story" />
-                    <LeadCard article={lead[0]} onOpen={() => openArticle(lead[0])} />
-                  </>
-                )}
-
-                {picks.length > 0 && (
-                  <>
-                    <SectionHead label="Editors' Picks" />
-                    {picks.map((a) => (
-                      <PickCard
-                        key={`pick-${a.id}`}
-                        article={a}
-                        onOpen={() => openArticle(a)}
-                      />
-                    ))}
-                  </>
-                )}
-
-                {screen.length > 0 && (
-                  <>
-                    <SectionHead label="Screen & Sound" />
-                    {screen.map((a) => (
-                      <EditorialCard
-                        key={`scr-${a.id}`}
-                        article={a}
-                        onOpen={() => openArticle(a)}
-                        span="sp-4"
-                        ratio="ar-4-5"
-                        anim="anim-screen"
-                      />
-                    ))}
-                  </>
-                )}
-
-                {signal.length > 0 && (
-                  <>
-                    <SectionHead label="Signal" />
-                    {signal.map((a) => (
-                      <EditorialCard
-                        key={`sig-${a.id}`}
-                        article={a}
-                        onOpen={() => openArticle(a)}
-                        span="sp-6"
-                        ratio="ar-3-2"
-                        anim="anim-signal"
-                      />
-                    ))}
-                  </>
-                )}
-
-                {news.length > 0 && (
-                  <>
-                    <SectionHead label="Newsstand" />
-                    {news.map((a) => (
-                      <CoverCard key={`cov-${a.id}`} article={a} onOpen={() => openArticle(a)} />
-                    ))}
-                  </>
-                )}
-
-                {sport.length > 0 && (
-                  <>
-                    <SectionHead label="Sport" />
-                    {sport.map((a) => (
-                      <EditorialCard
-                        key={`spt-${a.id}`}
-                        article={a}
-                        onOpen={() => openArticle(a)}
-                        span="sp-6"
-                        ratio="ar-3-2"
-                        anim="anim-sport"
-                      />
-                    ))}
-                  </>
-                )}
-
-                {(also.length > 0 || articles.length > 0) && (
-                  <>
-                    <SectionHead label="Also Today" />
-                    {also.map((a, i) => {
-                      const cfg = ALSO_CYCLE[i % ALSO_CYCLE.length];
-                      return (
-                        <EditorialCard
-                          key={`also-${a.id}`}
-                          article={a}
-                          onOpen={() => openArticle(a)}
-                          span={cfg.span}
-                          ratio={cfg.ratio}
-                        />
-                      );
-                    })}
-                  </>
-                )}
-              </main>
-            );
-          })()
+          <GridFeed articles={articles} onOpen={openArticle} />
         )}
-
-        {articles.length > 0 && (
-          <div className="ig-bottom" aria-label="Follow Popcorn on Instagram">
-            <InstagramTile />
-          </div>
-        )}
-
-        {articles.length > 0 && (
-          <div style={{ padding: "20px 36px 60px", display: "flex", justifyContent: "center" }}>
-            <PopcornIOSTicket />
-          </div>
-        )}
-
-        {articles.length > 0 && <AppPromoStrip />}
 
         <Footer />
         </>
@@ -3270,20 +5059,42 @@ export function DesktopHome() {
             .filter((a) => a.id !== readingArticle!.id)
             .slice(0, 3)}
           onSelectArticle={(a) => setReadingArticle(a)}
+          locked={!user}
+          onSignInWithEmail={() => setSignInOpen(true)}
+          onCreateAccount={() => setSignUpOpen(true)}
         />
       )}
 
-      {authOpen && !user && (
-        <DesktopAuthModal
-          onClose={closeAuth}
-          onSignInWithEmail={() => {
-            closeAuth();
-            setSignInOpen(true);
-          }}
-          onCreateAccount={() => {
-            closeAuth();
-            setSignUpOpen(true);
-          }}
+      {libraryTab && (
+        <LibraryOverlay
+          initialTab={libraryTab}
+          savedArticles={savedArticles}
+          likedArticles={likedArticles}
+          onReadMore={setReadingArticle}
+          onClose={() => setLibraryTab(null)}
+        />
+      )}
+
+      <DragLegalModal kind={legalKind} onClose={() => setLegalKind(null)} />
+
+      {settingsOpen && user && (
+        <AccountSettingsModal onClose={() => setSettingsOpen(false)} />
+      )}
+
+      {gateVisible && (
+        <DesktopAuthGate
+          onSignInWithEmail={() => setSignInOpen(true)}
+          onCreateAccount={() => setSignUpOpen(true)}
+          onDismiss={() => setGateDismissed(true)}
+        />
+      )}
+
+      {/* Persistent footer once the gate is dismissed — NYT-style standing
+          reminder. Hidden while an auth sheet is open. */}
+      {!user && gateDismissed && !signInOpen && !signUpOpen && (
+        <DesktopAuthFooter
+          onSignInWithEmail={() => setSignInOpen(true)}
+          onCreateAccount={() => setSignUpOpen(true)}
         />
       )}
 
@@ -3302,6 +5113,7 @@ export function DesktopHome() {
           onSignUpInstead={() => { setSignInOpen(false); setSignUpOpen(true); }}
         />
       )}
+    </LikesContext.Provider>
     </SavesContext.Provider>
   );
 }

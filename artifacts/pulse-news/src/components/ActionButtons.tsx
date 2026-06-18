@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Heart, MessageCircle, Bookmark, Share2 } from "lucide-react";
-import { useLikeArticle } from "@/hooks/use-news";
+import { useLikedArticles } from "@/hooks/use-likes";
 import { useSavedArticles } from "@/hooks/use-saves";
 import { useCommentCount } from "@/hooks/use-comment-count";
 import type { NewsArticle } from "@workspace/api-client-react";
@@ -13,19 +12,17 @@ interface ActionButtonsProps {
 }
 
 export function ActionButtons({ article, onOpenComments, horizontal = false }: ActionButtonsProps) {
-  const [localLiked, setLocalLiked] = useState(false);
-  const { mutate: likeMutation } = useLikeArticle();
-  // Saves are now persisted per-user in Supabase (see use-saves.ts). We
-  // read the live set from context so both this icon and the Saved tab
-  // stay in step, and the state syncs across devices.
+  // Likes are now persisted per-user in Supabase (see use-likes.ts), read from
+  // context so the feed card, the article reader, and the Likes tab all stay
+  // in step and the state syncs across devices.
+  const { isLiked: isLikedFn, toggleLike } = useLikedArticles();
+  // Saves are persisted per-user in Supabase the same way (see use-saves.ts).
   const { isSaved: isSavedFn, toggleSave } = useSavedArticles();
   const commentCount = useCommentCount(article.id);
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const next = !localLiked;
-    setLocalLiked(next);
-    likeMutation({ id: article.id, liked: next });
+    void toggleLike(article.id);
   };
 
   const handleBookmark = (e: React.MouseEvent) => {
@@ -44,12 +41,14 @@ export function ActionButtons({ article, onOpenComments, horizontal = false }: A
 
   const handleComment = (e: React.MouseEvent) => { e.stopPropagation(); onOpenComments(); };
 
-  const isLiked = localLiked;
+  const isLiked = isLikedFn(article.id);
   // Prefer the live set over `article.isBookmarked` so the icon flips
   // instantly on toggle, even if the parent hasn't re-rendered with the
   // updated overlay yet.
   const isSaved = isSavedFn(article.id);
-  const likeCount = article.likes;
+  // Reflect the user's own like in the displayed total on top of the
+  // article's baseline count.
+  const likeCount = article.likes + (isLiked ? 1 : 0);
 
   const iconStyle = { filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.55))' };
 

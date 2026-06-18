@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, ArrowRight } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { useIsDesktopWeb } from "@/hooks/use-is-desktop-web";
 import { GrainBackground } from "@/components/GrainBackground";
 import type { LegalKind } from "@/components/LegalSheet";
 import { apiBase } from "@/lib/api-base";
@@ -21,6 +22,7 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { signIn, signInWithGoogle } = useAuth();
+  const isDesktop = useIsDesktopWeb();
 
   // Pre-fill when redirected from sign-up (existing account detected)
   useEffect(() => {
@@ -169,14 +171,32 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
       />
 
       <div
-        className="fixed inset-x-0 bottom-0 z-[220] flex flex-col overflow-hidden mx-auto"
-        style={{
-          maxWidth: '480px',
-          background: '#042c85',
-          borderRadius: '20px 20px 0 0',
-          transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
-          transition: dragOffset > 0 ? 'none' : 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
-        }}
+        className={
+          isDesktop
+            ? "fixed left-1/2 top-1/2 z-[220] flex flex-col overflow-hidden w-full"
+            : "fixed inset-x-0 bottom-0 z-[220] flex flex-col overflow-hidden mx-auto"
+        }
+        style={
+          isDesktop
+            ? {
+                maxWidth: '440px',
+                background: '#042c85',
+                borderRadius: '20px',
+                opacity: isOpen ? 1 : 0,
+                pointerEvents: isOpen ? 'auto' : 'none',
+                transform: isOpen
+                  ? 'translate(-50%, -50%) scale(1)'
+                  : 'translate(-50%, -48%) scale(0.985)',
+                transition: 'transform 0.36s cubic-bezier(0.32,0.72,0,1), opacity 0.28s ease-out',
+              }
+            : {
+                maxWidth: '480px',
+                background: '#042c85',
+                borderRadius: '20px 20px 0 0',
+                transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)',
+                transition: dragOffset > 0 ? 'none' : 'transform 0.36s cubic-bezier(0.32,0.72,0,1)',
+              }
+        }
         onClick={stopProp}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}

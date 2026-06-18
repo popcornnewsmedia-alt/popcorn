@@ -5,7 +5,7 @@ type Tab = "feed" | "saved" | "profile";
 
 const TABS: { id: Tab; Icon: typeof House; label: string }[] = [
   { id: "feed",    Icon: House,    label: "HOME"  },
-  { id: "saved",   Icon: Bookmark, label: "SAVED" },
+  { id: "saved",   Icon: Bookmark, label: "LIBRARY" },
   { id: "profile", Icon: User,     label: "YOU"   },
 ];
 

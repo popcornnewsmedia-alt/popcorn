@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, Check, Bookmark, Heart, MessageCircle, Share2, ArrowLeft, Instagram } from "lucide-react";
 import { format } from "date-fns";
 import type { NewsArticle } from "@workspace/api-client-react";
-import { useLikeArticle } from "@/hooks/use-news";
+import { useLikedArticles } from "@/hooks/use-likes";
 import { useSavedArticles } from "@/hooks/use-saves";
 import { CommentSheet } from "@/components/CommentSheet";
 import { useCommentCount } from "@/hooks/use-comment-count";
@@ -25,7 +25,7 @@ const DESK_RULE  = "rgba(15,15,16,0.12)";
 // headlines and category eyebrows match the home page exactly.
 const HOME_BLUE     = "#042c85";                 // home masthead signature blue
 const HOME_SANS     = '"Helvetica Neue", Helvetica, Arial, Inter, sans-serif';
-const HEADLINE_FONT = '"Bricolage Grotesque", sans-serif'; // home-feed drag headline
+const HEADLINE_FONT = '"Canela", "Bodoni Moda", serif'; // home-feed headline (matches grid)
 const ARCHIVO       = '"Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif'; // mockup body sans
 
 // Hook: track whether the viewport is desktop-sized (≥1024px). Used to
@@ -109,15 +109,23 @@ interface ArticleReaderProps {
   relatedArticles?: NewsArticle[];
   // Called when the reader user clicks a related article tile — parent swaps in.
   onSelectArticle?: (a: NewsArticle) => void;
+  // When true, the article body is blocked after a preview (signed-out gate).
+  locked?: boolean;
+  // Paywall CTA handlers — open the parent's auth sheets.
+  onSignInWithEmail?: () => void;
+  onCreateAccount?: () => void;
 }
 
-export function ArticleReader({ article, onClose, isRead = false, onMarkRead, initialCommentsOpen = false, focusCommentId = null, onRequireAuth, relatedArticles = [], onSelectArticle }: ArticleReaderProps) {
+export function ArticleReader({ article, onClose, isRead = false, onMarkRead, initialCommentsOpen = false, focusCommentId = null, onRequireAuth, relatedArticles = [], onSelectArticle, locked = false, onSignInWithEmail, onCreateAccount }: ArticleReaderProps) {
   const { isSaved: isSavedFn, toggleSave } = useSavedArticles();
-  const { mutate: likeMutation } = useLikeArticle();
+  const { isLiked: isLikedFn, toggleLike } = useLikedArticles();
   const [imgError, setImgError] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen);
   const commentCount = useCommentCount(article?.id ?? null);
-  const [localLiked, setLocalLiked] = useState(false);
+  // Likes are persisted per-user in Supabase (see use-likes.ts) and read from
+  // context, so the in-article heart agrees with the feed card and the Likes
+  // tab and syncs across devices.
+  const liked = article ? isLikedFn(article.id) : false;
   const scrollRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const isDesktop = useIsDesktop(1024);
@@ -143,7 +151,6 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
 
   useEffect(() => {
     setImgError(false);
-    setLocalLiked(false);
     setCommentsOpen(initialCommentsOpen);
     setScrollY(0);
     setDragOffset(0);
@@ -216,9 +223,8 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
             commentsOpen={commentsOpen}
             setCommentsOpen={setCommentsOpen}
             commentCount={commentCount}
-            localLiked={localLiked}
-            setLocalLiked={setLocalLiked}
-            likeMutation={likeMutation}
+            liked={liked}
+            toggleLike={toggleLike}
             isSavedFn={isSavedFn}
             toggleSave={toggleSave}
             scrollRef={scrollRef}
@@ -230,6 +236,9 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
             onRequireAuth={onRequireAuth}
             relatedArticles={relatedArticles}
             onSelectArticle={onSelectArticle}
+            locked={locked}
+            onSignInWithEmail={onSignInWithEmail}
+            onCreateAccount={onCreateAccount}
           />
         )}
         {article && !isDesktop && (
@@ -264,6 +273,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                 }}
               >
                 <img
+                  key={article.id}
                   src={readerImageUrl(article.imageUrl!)}
                   alt={article.title}
                   style={{
@@ -273,6 +283,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                     objectPosition: typeof article.imageFocalX === 'number' && typeof article.imageFocalY === 'number'
                       ? focalToObjectPosition(article.imageFocalX, article.imageFocalY, article.imageWidth, article.imageHeight, window.innerWidth, HERO_HEIGHT)
                       : 'center 30%',
+                    animation: 'articleImageIn 420ms ease-out',
                   }}
                   onError={() => setImgError(true)}
                 />
@@ -410,12 +421,12 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                   {/* Social actions */}
                   <div className="flex items-center gap-5 mb-8 pb-5" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
                     <button
-                      onClick={() => { const next = !localLiked; setLocalLiked(next); likeMutation({ id: article.id, liked: next }); }}
+                      onClick={() => { void toggleLike(article.id); }}
                       className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
                     >
-                      <Heart style={{ width: 22, height: 22, color: localLiked ? '#e11d48' : '#111111', fill: localLiked ? '#e11d48' : 'none', strokeWidth: 1.6 }} />
-                      <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: localLiked ? '#e11d48' : '#111111' }}>
-                        {article.likes >= 1000 ? `${(article.likes / 1000).toFixed(1)}k` : article.likes}
+                      <Heart style={{ width: 22, height: 22, color: liked ? '#e11d48' : '#111111', fill: liked ? '#e11d48' : 'none', strokeWidth: 1.6 }} />
+                      <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: liked ? '#e11d48' : '#111111' }}>
+                        {(() => { const c = article.likes + (liked ? 1 : 0); return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : c; })()}
                       </span>
                     </button>
                     <button
@@ -530,9 +541,8 @@ function DesktopArticleLayout({
   commentsOpen,
   setCommentsOpen,
   commentCount,
-  localLiked,
-  setLocalLiked,
-  likeMutation,
+  liked,
+  toggleLike,
   isSavedFn,
   toggleSave,
   scrollRef,
@@ -544,6 +554,9 @@ function DesktopArticleLayout({
   onRequireAuth,
   relatedArticles = [],
   onSelectArticle,
+  locked = false,
+  onSignInWithEmail,
+  onCreateAccount,
 }: {
   article: NewsArticle;
   onClose: () => void;
@@ -552,9 +565,8 @@ function DesktopArticleLayout({
   commentsOpen: boolean;
   setCommentsOpen: (b: boolean) => void;
   commentCount: number | null | undefined;
-  localLiked: boolean;
-  setLocalLiked: (b: boolean) => void;
-  likeMutation: (args: { id: string; liked: boolean }) => void;
+  liked: boolean;
+  toggleLike: (id: number) => Promise<void> | void;
   isSavedFn: (id: string) => boolean;
   toggleSave: (id: string) => Promise<void> | void;
   scrollRef: React.RefObject<HTMLDivElement>;
@@ -566,9 +578,19 @@ function DesktopArticleLayout({
   onRequireAuth?: () => void;
   relatedArticles?: NewsArticle[];
   onSelectArticle?: (a: NewsArticle) => void;
+  locked?: boolean;
+  onSignInWithEmail?: () => void;
+  onCreateAccount?: () => void;
 }) {
   const hasImage = article.imageUrl && !imgError;
-  const paragraphs = article.content.split("\n\n").filter(Boolean);
+  const allParagraphs = article.content.split("\n\n").filter(Boolean);
+  // NYT-style preview: signed-out readers get the first couple of
+  // paragraphs, then the body fades into a sign-in wall.
+  const PREVIEW_COUNT = 2;
+  const paragraphs = locked
+    ? allParagraphs.slice(0, PREVIEW_COUNT)
+    : allParagraphs;
+  const isTruncated = locked && allParagraphs.length > PREVIEW_COUNT;
 
   return (
     <motion.div
@@ -587,14 +609,14 @@ function DesktopArticleLayout({
         className="relative w-full"
         style={{ background: "#0a0a0a", color: "#fff", zIndex: 50, flexShrink: 0, isolation: "isolate", overflow: "hidden" }}
       >
-        <div className="relative max-w-[1320px] mx-auto px-10">
+        <div className="relative w-full px-8">
           <div className="grid grid-cols-3 items-center py-4">
             <button
               onClick={onClose}
-              className="group inline-flex items-center gap-2 justify-self-start transition-opacity hover:opacity-80"
+              className="group inline-flex items-center gap-3 justify-self-start transition-opacity hover:opacity-80"
               style={{
                 fontFamily: "'Macabro', serif",
-                fontSize: "clamp(10px, 0.85vw, 14px)",
+                fontSize: "11.5px",
                 letterSpacing: "0.06em",
                 color: "#fff",
                 lineHeight: 1,
@@ -696,13 +718,9 @@ function DesktopArticleLayout({
                     }}
                   />
                 }
-                count={article.likes >= 1000 ? `${(article.likes / 1000).toFixed(1)}k` : String(article.likes)}
-                onClick={() => {
-                  const next = !localLiked;
-                  setLocalLiked(next);
-                  likeMutation({ id: article.id, liked: next });
-                }}
-                active={localLiked}
+                count={(() => { const c = article.likes + (liked ? 1 : 0); return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : String(c); })()}
+                onClick={() => { void toggleLike(article.id); }}
+                active={liked}
                 activeFill="#e11d48"
               />
               <RailCell
@@ -763,8 +781,8 @@ function DesktopArticleLayout({
               style={{
                 fontFamily: HEADLINE_FONT,
                 fontWeight: 700,
-                fontSize: "clamp(34px, 5vw, 62px)",
-                lineHeight: 0.98,
+                fontSize: "clamp(30px, 4.4vw, 54px)",
+                lineHeight: 1.0,
                 letterSpacing: "-0.018em",
                 color: DESK_INK,
                 margin: "18px 0 0 0",
@@ -780,7 +798,7 @@ function DesktopArticleLayout({
                 style={{
                   fontFamily: ARCHIVO,
                   fontWeight: 500,
-                  fontSize: "clamp(18px, 2vw, 22px)",
+                  fontSize: "clamp(16px, 1.7vw, 19px)",
                   lineHeight: 1.45,
                   color: DESK_INK,
                   margin: "22px 0 0 0",
@@ -802,10 +820,11 @@ function DesktopArticleLayout({
                   position: "relative",
                   overflow: "hidden",
                   aspectRatio: "16 / 9",
-                  background: DESK_CREAM,
+                  background: HOME_BLUE,
                 }}
               >
                 <img
+                  key={article.id}
                   src={readerImageUrl(article.imageUrl!)}
                   alt={article.title}
                   onError={() => setImgError(true)}
@@ -818,6 +837,7 @@ function DesktopArticleLayout({
                       typeof article.imageFocalX === "number" && typeof article.imageFocalY === "number"
                         ? `${(article.imageFocalX * 100).toFixed(1)}% ${(article.imageFocalY * 100).toFixed(1)}%`
                         : "center 40%",
+                    animation: "articleImageIn 420ms ease-out",
                   }}
                 />
               </div>
@@ -861,7 +881,7 @@ function DesktopArticleLayout({
                 const midIdx = Math.max(1, Math.floor(paragraphs.length / 2));
                 return paragraphs.map((para, i) => (
                   <Fragment key={i}>
-                    {i === midIdx && (
+                    {!locked && i === midIdx && (
                       <aside
                         aria-label="Follow Popcorn on Instagram"
                         style={{
@@ -965,8 +985,120 @@ function DesktopArticleLayout({
               <div style={{ clear: "both" }} />
             </div>
 
+            {/* ── Paywall — NYT-style fade into a sign-in wall ─────────── */}
+            {isTruncated && (
+              <div style={{ position: "relative" }}>
+                {/* Gradient that fades the last preview paragraph under white */}
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    top: -160,
+                    height: 160,
+                    background:
+                      "linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 55%, #fff 100%)",
+                    pointerEvents: "none",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "relative",
+                    borderTop: `1px solid ${DESK_RULE}`,
+                    paddingTop: 36,
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: ARCHIVO,
+                      fontWeight: 700,
+                      fontSize: "11px",
+                      letterSpacing: "0.26em",
+                      textTransform: "uppercase",
+                      color: HOME_BLUE,
+                      marginBottom: 14,
+                    }}
+                  >
+                    Continue Reading
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: HEADLINE_FONT,
+                      fontWeight: 600,
+                      fontSize: "30px",
+                      lineHeight: 1.12,
+                      letterSpacing: "-0.018em",
+                      color: DESK_INK,
+                      maxWidth: "20ch",
+                      margin: "0 auto 14px",
+                    }}
+                  >
+                    Sign in to read the full story
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "'Newsreader', serif",
+                      fontStyle: "italic",
+                      fontSize: "17px",
+                      lineHeight: 1.45,
+                      color: DESK_MUTE,
+                      maxWidth: "34ch",
+                      margin: "0 auto 26px",
+                    }}
+                  >
+                    It's free — save stories, follow the feed, and pick up right
+                    where you left off.
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      justifyContent: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <button
+                      onClick={() => onCreateAccount?.()}
+                      className="transition-transform hover:scale-[1.02] active:scale-[0.99]"
+                      style={{
+                        background: HOME_BLUE,
+                        color: DESK_CREAM,
+                        fontFamily: "'Manrope', sans-serif",
+                        fontWeight: 700,
+                        fontSize: "14px",
+                        letterSpacing: "0.03em",
+                        padding: "13px 30px",
+                        borderRadius: 999,
+                      }}
+                    >
+                      Create a free account
+                    </button>
+                    <button
+                      onClick={() => onSignInWithEmail?.()}
+                      className="transition-transform hover:scale-[1.02] active:scale-[0.99]"
+                      style={{
+                        background: "transparent",
+                        color: HOME_BLUE,
+                        border: `1.5px solid ${HOME_BLUE}`,
+                        fontFamily: "'Manrope', sans-serif",
+                        fontWeight: 700,
+                        fontSize: "14px",
+                        letterSpacing: "0.03em",
+                        padding: "13px 30px",
+                        borderRadius: 999,
+                      }}
+                    >
+                      Sign in
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* ── UP NEXT — clean 3-card grid of same-day stories ─────── */}
-            {relatedArticles.length > 0 && (
+            {!locked && relatedArticles.length > 0 && (
               <section
                 style={{
                   // Sits at the reading-column width so the cards stay compact

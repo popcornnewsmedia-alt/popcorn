@@ -1,9 +1,10 @@
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { ChevronUp, CheckCircle2 } from "lucide-react";
+import { ChevronUp, CheckCircle2, Heart } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { ActionButtons } from "./ActionButtons";
 import { CommentSheet } from "./CommentSheet";
+import { useLikedArticles } from "@/hooks/use-likes";
 import { isStandalone } from "@/lib/utils";
 import { feedImageUrl, probeImageUrl } from "@/lib/image-url";
 
@@ -21,6 +22,13 @@ const dominantColorCache = new Map<string, string>();
 // up the image's colour mood WITHOUT replicating image shape and
 // WITHOUT a CSS blur filter on every card.
 const topStripGradientCache = new Map<string, string>();
+
+// Module-level cache for the bottom-glow gradient — soft alpha radial
+// gradients sampled from the bottom ~25% of the image. Used by the
+// BOTTOM COLOUR GLOW div so the image's colour mood spills subtly into
+// the panel below the photo. Pure CSS gradients (no image, no blur
+// filter), same zero-cost-per-frame rule as the top strip.
+const bottomGlowGradientCache = new Map<string, string>();
 
 // Desktop threshold — at and above this viewport width, we swap the
 // single-column mobile/iOS poster layout for an editorial side-by-side
@@ -73,6 +81,46 @@ export function ArticleCard({
 }: ArticleCardProps) {
   const hasImage = !!article.imageUrl;
   const [commentsOpen, setCommentsOpen] = useState(false);
+
+  // ── Double-tap-to-like (Instagram/TikTok-style) ──
+  // A double tap on the card "likes" the article (never unlikes — matching
+  // Instagram) and pops a heart at the tap point. To detect the second tap we
+  // defer the single-tap "open reader" action by DOUBLE_TAP_MS; if a second
+  // tap lands within that window we cancel the open and like instead.
+  const { isLiked: isLikedFn, toggleLike } = useLikedArticles();
+  const [heartBurst, setHeartBurst] = useState<{ id: number; x: number; y: number } | null>(null);
+  const lastTapRef = useRef(0);
+  const singleTapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rootElRef = useRef<HTMLDivElement>(null);
+  useEffect(() => () => {
+    if (singleTapTimerRef.current) clearTimeout(singleTapTimerRef.current);
+  }, []);
+
+  const DOUBLE_TAP_MS = 250;
+  const handleCardTap = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = rootElRef.current?.getBoundingClientRect();
+    const x = e.clientX - (rect?.left ?? 0);
+    const y = e.clientY - (rect?.top ?? 0);
+    const now = Date.now();
+    if (now - lastTapRef.current <= DOUBLE_TAP_MS) {
+      // Second tap → like (and replay the burst even if already liked).
+      lastTapRef.current = 0;
+      if (singleTapTimerRef.current) {
+        clearTimeout(singleTapTimerRef.current);
+        singleTapTimerRef.current = null;
+      }
+      if (!isLikedFn(article.id)) void toggleLike(article.id);
+      setHeartBurst({ id: now, x, y });
+      return;
+    }
+    // First tap → defer the reader open in case a second tap follows.
+    lastTapRef.current = now;
+    if (singleTapTimerRef.current) clearTimeout(singleTapTimerRef.current);
+    singleTapTimerRef.current = setTimeout(() => {
+      singleTapTimerRef.current = null;
+      onReadMore(article);
+    }, DOUBLE_TAP_MS);
+  };
 
   // Synchronous cache-hit detection: if the browser already has this image
   // decoded (from our <FeedPage> preloader or a prior render), skip the fade
@@ -142,6 +190,10 @@ export function ArticleCard({
   // paint time (no image, no blur filter), so the strip costs nothing
   // per scroll frame.
   const [topStripGradient, setTopStripGradient] = useState<string | null>(null);
+  // Soft alpha radials sampled from the bottom ~25% of the image — drives
+  // the BOTTOM COLOUR GLOW under the photo. Pure CSS gradient, zero
+  // per-frame cost (same rule as the top strip).
+  const [bottomGlowGradient, setBottomGlowGradient] = useState<string | null>(null);
 
   // Category-derived fallback color used when the dominant-color probe fails
   // (e.g. CORS-restricted external CDNs like Dexerto that don't send
@@ -160,9 +212,11 @@ export function ArticleCard({
     // pre-computed "r,g,b" string straight to state.
     const cached = dominantColorCache.get(probeUrl);
     const cachedTopStrip = topStripGradientCache.get(probeUrl);
+    const cachedBottomGlow = bottomGlowGradientCache.get(probeUrl);
     if (cached) setDominantColor(cached);
     if (cachedTopStrip) setTopStripGradient(cachedTopStrip);
-    if (cached && cachedTopStrip) return;
+    if (cachedBottomGlow) setBottomGlowGradient(cachedBottomGlow);
+    if (cached && cachedTopStrip && cachedBottomGlow) return;
 
     let cancelled = false;
     const probe = new Image();
@@ -200,14 +254,45 @@ export function ArticleCard({
           r += pr * w; g += pg * w; b += pb * w; totalWeight += w;
         }
         const useFallback = totalWeight < 0.5 && fn > 0;
+        let domR: number | null = null, domG = 0, domB = 0;
         if (useFallback || totalWeight >= 0.5) {
           const outR = useFallback ? Math.round(fr / fn) : Math.round(r / totalWeight);
           const outG = useFallback ? Math.round(fg / fn) : Math.round(g / totalWeight);
           const outB = useFallback ? Math.round(fb / fn) : Math.round(b / totalWeight);
+          domR = outR; domG = outG; domB = outB;
           const rgb = `${outR},${outG},${outB}`;
           dominantColorCache.set(probeUrl, rgb);
           setDominantColor(rgb);
         }
+
+        // ── Palette harmoniser ── fixes the two ways a sampled strip
+        // colour reads "off" behind the cream TopBar text:
+        // 1. MUDDY samples — averaging a busy region produces grey/brown
+        //    sludge with no relation to the photo's mood. Rescue: blend
+        //    55% toward the image's saturation-weighted dominant colour,
+        //    so the strip takes on the photo's actual colour identity.
+        // 2. WASHED-OUT samples — bright skies / white studio backdrops
+        //    produce pale strips that clash with the dark feed and kill
+        //    cream-text contrast. Rescue: clamp luma to a cinematic
+        //    ceiling so the strip always reads as a deep, moody tint.
+        // Dark samples are left alone — near-black is moody and fine.
+        const harmonise = (hr: number, hg: number, hb: number): string => {
+          const hmx = Math.max(hr, hg, hb);
+          const hmn = Math.min(hr, hg, hb);
+          const hsat = hmx > 0 ? (hmx - hmn) / hmx : 0;
+          if (hsat < 0.16 && domR !== null) {
+            hr = hr * 0.45 + domR * 0.55;
+            hg = hg * 0.45 + domG * 0.55;
+            hb = hb * 0.45 + domB * 0.55;
+          }
+          const luma = 0.2126 * hr + 0.7152 * hg + 0.0722 * hb;
+          const MAX_LUMA = 112;
+          if (luma > MAX_LUMA) {
+            const k = MAX_LUMA / luma;
+            hr *= k; hg *= k; hb *= k;
+          }
+          return `rgb(${Math.round(hr)},${Math.round(hg)},${Math.round(hb)})`;
+        };
 
         // ── TOP-STRIP COLOUR PALETTE → ATMOSPHERIC GRADIENT ──
         // Sample 4 colours from the top ~25% of the probe image, then
@@ -234,10 +319,8 @@ export function ArticleCard({
           const palette: string[] = [];
           for (let i = 0; i < COLS; i++) {
             const o = i * 4;
-            const sr = Math.round(sd[o] * 0.85);
-            const sg = Math.round(sd[o + 1] * 0.85);
-            const sb = Math.round(sd[o + 2] * 0.85);
-            palette.push(`rgb(${sr},${sg},${sb})`);
+            // ×0.85 dim, then harmonise (muddy rescue + luma ceiling).
+            palette.push(harmonise(sd[o] * 0.85, sd[o + 1] * 0.85, sd[o + 2] * 0.85));
           }
           // Scrambled anchors — palette colours are placed at points that
           // don't correspond to where they came from in the source image.
@@ -249,6 +332,45 @@ export function ArticleCard({
           ].join(', ');
           topStripGradientCache.set(probeUrl, gradient);
           setTopStripGradient(gradient);
+        }
+
+        // ── BOTTOM-STRIP COLOUR PALETTE → SUBTLE GLOW ──
+        // Same scrambled-anchor technique as the top strip, but sampled
+        // from the BOTTOM ~25% of the image and composed as soft ALPHA
+        // radials anchored at the top of the glow zone, fading downward.
+        // The photo's colour mood spills gently into the panel below it
+        // — ambient light, not a reflection — then dissolves into the
+        // blue before reaching the bottom nav. Pure CSS gradients, no
+        // blur filter, zero cost per scroll frame.
+        const glowCanvas = document.createElement('canvas');
+        glowCanvas.width = COLS;
+        glowCanvas.height = 1;
+        const glowCtx = glowCanvas.getContext('2d', { willReadFrequently: false });
+        if (glowCtx) {
+          const srcBottomH = Math.max(1, Math.floor(probe.naturalHeight * 0.25));
+          glowCtx.drawImage(
+            probe,
+            0, probe.naturalHeight - srcBottomH, probe.naturalWidth, srcBottomH,
+            0, 0, COLS, 1,
+          );
+          const gd = glowCtx.getImageData(0, 0, COLS, 1).data;
+          // Partial rgba strings — alpha appended per anchor below.
+          const glowPalette: string[] = [];
+          for (let i = 0; i < COLS; i++) {
+            const o = i * 4;
+            glowPalette.push(`${gd[o]},${gd[o + 1]},${gd[o + 2]}`);
+          }
+          // Anchors hug y=0% (the image's bottom edge) and fade out well
+          // before 100%, so the glow melts out of the photo and dies away
+          // above the bottom nav. Scrambled x-positions as with the top
+          // strip so it never reads as a mirrored stripe of the image.
+          const glow = [
+            `radial-gradient(ellipse 95% 120% at 26% 0%, rgba(${glowPalette[1]},0.62) 0%, transparent 66%)`,
+            `radial-gradient(ellipse 95% 120% at 76% 0%, rgba(${glowPalette[3]},0.55) 0%, transparent 64%)`,
+            `radial-gradient(ellipse 70% 95% at 50% 0%, rgba(${glowPalette[0]},0.46) 0%, transparent 58%)`,
+          ].join(', ');
+          bottomGlowGradientCache.set(probeUrl, glow);
+          setBottomGlowGradient(glow);
         }
       } catch {
         // CORS-tainted canvas — silently fall back to cream veil.
@@ -267,6 +389,16 @@ export function ArticleCard({
     probe.src = probeUrl;
     return () => { cancelled = true; };
   }, [article.imageUrl, renderContent]);
+
+  // ── Dominant-color shadow floor ──
+  // A near-black version of the dominant color (~20% of each channel) used
+  // as the dark end of the bottom vignette + scrim, replacing generic
+  // rgba(0,0,0,…). A concert shot sinks into deep magenta darkness, an
+  // ocean story into deep teal — each card gets its own atmosphere while
+  // staying dark enough (max channel ≈ 51/255) for white text legibility.
+  const shadowRgb = dominantColor
+    ? dominantColor.split(',').map((n) => Math.round(parseInt(n, 10) * 0.20)).join(',')
+    : null;
 
   // Focal point support — when present, anchor the crop to the main subject.
   // This is the ONLY thing that affects how the image is positioned. Every
@@ -535,6 +667,7 @@ export function ArticleCard({
 
   return (
     <div
+      ref={rootElRef}
       className="snap-start snap-always flex flex-col cursor-pointer"
       style={{
         height: viewportHeight,
@@ -542,8 +675,39 @@ export function ArticleCard({
         position: 'relative',
         overflow: 'hidden',
       }}
-      onClick={() => onReadMore(article)}
+      onClick={handleCardTap}
     >
+      {/* ── DOUBLE-TAP LIKE BURST ── Instagram/TikTok-style heart that pops at
+          the tap point on double-tap. Pure CSS keyframe (.heart-burst in
+          index.css); self-clears on animation end; pointer-events:none so it
+          never blocks taps. Keyed by id so each double-tap restarts it. */}
+      {heartBurst && (
+        <div
+          key={heartBurst.id}
+          aria-hidden="true"
+          className="heart-burst"
+          onAnimationEnd={() => setHeartBurst(null)}
+          style={{
+            position: 'absolute',
+            left: heartBurst.x,
+            top: heartBurst.y,
+            transform: 'translate(-50%, -50%)',
+            opacity: 0,
+            zIndex: 30,
+            pointerEvents: 'none',
+          }}
+        >
+          <Heart
+            size={112}
+            style={{
+              color: '#ffffff',
+              fill: '#ffffff',
+              filter: 'drop-shadow(0 2px 14px rgba(0,0,0,0.45))',
+            }}
+          />
+        </div>
+      )}
+
       {/* ── TOP COLOUR BLEED ── Fills y=0 → PLATE_TOP_CSS (the TopBar area)
           with a JS-extracted horizontal gradient sampled from the top
           ~25% of the hero image (see the canvas onload above). The
@@ -564,6 +728,31 @@ export function ArticleCard({
             height: PLATE_TOP_CSS,
             background: topStripGradient,
             zIndex: 8,
+          }}
+        />
+      )}
+
+      {/* ── BOTTOM COLOUR GLOW ── Soft alpha radials sampled from the
+          bottom ~25% of the hero image, anchored at the photo's bottom
+          edge and fading downward into the blue panel. The top ~72px sit
+          UNDER the plate's feathered bottom edge (z=9 < plate z-10, and
+          the plate's mask goes transparent there), so the image appears
+          to melt into its own ambient light rather than hard-stopping.
+          Pure CSS gradients — no image, no blur filter — zero cost per
+          scroll frame. The scrim (z-15) still veils this zone, keeping
+          the headline fully legible. */}
+      {hasImage && !isDesktop && !isWebDesktop && isNearActive && bottomGlowGradient && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: PLATE_BOTTOM_CAP + 72,
+            background: bottomGlowGradient,
+            zIndex: 9,
+            pointerEvents: 'none',
           }}
         />
       )}
@@ -590,6 +779,9 @@ export function ArticleCard({
                   }
                 : isWebDesktop
                 ? {
+                    // overflow:hidden clips the parallax wrapper's scale
+                    // bleed so the photo never paints outside the plate.
+                    overflow: 'hidden',
                     WebkitMaskImage:
                       'linear-gradient(to bottom, transparent 0, black 8px, black 100%)',
                     maskImage:
@@ -598,6 +790,9 @@ export function ArticleCard({
                 : {
                     // Mobile/iOS: subtle bottom feather so the image edge
                     // dissolves rather than hard-cuts into the dark panel.
+                    // overflow:hidden clips the parallax wrapper's scale
+                    // bleed so the photo never paints outside the plate.
+                    overflow: 'hidden',
                     WebkitMaskImage:
                       'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
                     maskImage:
@@ -605,28 +800,80 @@ export function ArticleCard({
                   }),
             }}
           >
-            <img
-              ref={imgRef}
-              src={feedImageUrl(article.imageUrl)}
-              alt={article.title}
-              loading="eager"
-              decoding="async"
-              fetchPriority={isActive ? 'high' : 'auto'}
+            {/* ── Parallax layer ── FeedPage's scroll driver writes a
+                --pn-pary var on each card root; this wrapper consumes it,
+                panning the photo slightly slower than the card so the
+                image reads as a plane BEHIND the card frame. scale(1.05)
+                provides the vertical bleed the offset travels within
+                (clipped by the plate's overflow:hidden). Both the LQIP
+                and the hero live inside so they move as one.
+                Why 1.05 suffices: a plate edge only enters the viewport
+                once the card has scrolled to where the parallax offset is
+                at most k·plateH (k=0.02 in the scroll driver), so the
+                required bleed is 2k = 4% on every device — 5% adds margin
+                (and the plate's bottom feather masks hairlines). Every
+                point of scale is a direct sharpness tax (the image renders
+                above its pixel size), so keep this minimal. */}
+            <span
               style={{
                 position: 'absolute',
                 inset: 0,
-                width: '100%',
-                height: '100%',
-                // Desktop: `contain` to guarantee the WHOLE image is
-                // visible, even if the live decoded AR drifts from the
-                // backend dimensions used to size the plate. Mobile
-                // continues to use `cover` for full-bleed framing.
-                objectFit: isDesktop ? 'contain' : 'cover',
-                objectPosition,
-                opacity: imgReady ? 1 : 0,
-                transition: imgReady ? 'none' : 'opacity 0.18s ease',
+                display: 'block',
+                transform: isDesktop
+                  ? undefined
+                  : 'translate3d(0, var(--pn-pary, 0px), 0) scale(1.05)',
+                willChange: isDesktop ? undefined : 'transform',
               }}
-            />
+            >
+              {/* ── Blur-up placeholder (LQIP) ── the 64px probe variant
+                  (already fetched for the dominant-color sweep, so the
+                  bytes are warm in the HTTP cache) stretched over the
+                  plate and heavily blurred. Visible instantly, then the
+                  full image crossfades over it — the photo "comes into
+                  focus" instead of popping in over flat blue. */}
+              {!isDesktop && (
+                <img
+                  src={probeImageUrl(article.imageUrl)}
+                  alt=""
+                  aria-hidden
+                  draggable={false}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition,
+                    filter: 'blur(28px) saturate(1.08)',
+                    transform: 'scale(1.12)',
+                    opacity: imgReady ? 0 : 1,
+                    transition: 'opacity 0.45s ease',
+                  }}
+                />
+              )}
+              <img
+                ref={imgRef}
+                src={feedImageUrl(article.imageUrl)}
+                alt={article.title}
+                loading="eager"
+                decoding="async"
+                fetchPriority={isActive ? 'high' : 'auto'}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  // Desktop: `contain` to guarantee the WHOLE image is
+                  // visible, even if the live decoded AR drifts from the
+                  // backend dimensions used to size the plate. Mobile
+                  // continues to use `cover` for full-bleed framing.
+                  objectFit: isDesktop ? 'contain' : 'cover',
+                  objectPosition,
+                  opacity: imgReady ? 1 : 0,
+                  transition: imgReady ? 'none' : 'opacity 0.18s ease',
+                }}
+              />
+            </span>
             {/* ── Cinematic bottom-fade vignette (mobile/iOS only) ──
                 The image dissolves into darkness over its bottom 40%, giving
                 the impression the photo ends naturally rather than being
@@ -642,14 +889,19 @@ export function ArticleCard({
                   position: 'absolute',
                   inset: 0,
                   pointerEvents: 'none',
-                  background: dominantColor
+                  // Shadow floor: the dark end of the fade is a near-black
+                  // version of the image's own dominant color (shadowRgb),
+                  // not generic black — each photo dissolves into its own
+                  // atmosphere. Alphas nudged slightly up vs the old black
+                  // stops since the tinted dark carries a little luminance.
+                  background: dominantColor && shadowRgb
                     ? `linear-gradient(to bottom,
                         transparent 0%,
                         transparent 52%,
                         rgba(${dominantColor},0.12) 64%,
-                        rgba(0,0,0,0.42) 76%,
-                        rgba(0,0,0,0.78) 88%,
-                        rgba(0,0,0,0.92) 100%
+                        rgba(${shadowRgb},0.46) 76%,
+                        rgba(${shadowRgb},0.82) 88%,
+                        rgba(${shadowRgb},0.94) 100%
                       )`
                     : `linear-gradient(to bottom,
                         transparent 0%,
@@ -821,8 +1073,19 @@ export function ArticleCard({
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   zIndex: 15,
-                  background: dominantColor
-                    ? `linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(${dominantColor},0.22) 56%, rgba(0,0,0,0.52) 74%, rgba(0,0,0,0.58) 100%)`
+                  // translateZ(0): force this onto its own compositing layer.
+                  // The parallax wrapper inside the plate is GPU-composited
+                  // (translate3d + willChange); iOS WebKit can paint promoted
+                  // layers ABOVE later non-composited siblings regardless of
+                  // z-index. Promoting the scrim/text/actions restores the
+                  // intended paint order on device.
+                  transform: 'translateZ(0)',
+                  // Same shadow-floor treatment as the plate vignette: the
+                  // dark veil is tinted with the image's near-black
+                  // dominant shade so the text zone carries the photo's
+                  // atmosphere instead of cutting to generic black.
+                  background: dominantColor && shadowRgb
+                    ? `linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(${dominantColor},0.22) 56%, rgba(${shadowRgb},0.56) 74%, rgba(${shadowRgb},0.64) 100%)`
                     : `linear-gradient(to bottom, transparent 0%, transparent 60%, rgba(0,0,0,0.52) 78%, rgba(0,0,0,0.60) 100%)`,
                 }}
               />
@@ -830,7 +1093,7 @@ export function ArticleCard({
               {/* TikTok-style action column — right side, anchored above BottomNav */}
               <div
                 className="absolute right-4 z-20"
-                style={{ bottom: CONTENT_BOTTOM }}
+                style={{ bottom: CONTENT_BOTTOM, transform: 'translateZ(0)' }}
                 onClick={(e) => e.stopPropagation()}
               >
                 <ActionButtons article={article} onOpenComments={() => setCommentsOpen(true)} />
@@ -844,6 +1107,8 @@ export function ArticleCard({
                   paddingLeft: '20px',
                   paddingTop: '28px',
                   paddingBottom: isStandalone ? 'calc(env(safe-area-inset-bottom) + 86px)' : '86px',
+                  // Own compositing layer — see scrim comment above.
+                  transform: 'translateZ(0)',
                 }}
               >
                 {/* Pills row */}

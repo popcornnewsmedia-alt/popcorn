@@ -246,7 +246,7 @@ export function LegalSheet({ kind, onClose }: LegalSheetProps) {
 
 // ─── Legal content ──────────────────────────────────────────────────────────
 
-interface LegalDoc {
+export interface LegalDoc {
   title: string;
   lastUpdated: string;
   intro?: string;
@@ -255,7 +255,7 @@ interface LegalDoc {
 
 const LAST_UPDATED = "April 12, 2026";
 
-const ABOUT: LegalDoc = {
+export const ABOUT: LegalDoc = {
   title: "About\nPopcorn",
   lastUpdated: LAST_UPDATED,
   intro: "We built Popcorn because we were tired of doomscrolling feeds that only gave us more of what we already knew about. Here's what makes us different.",
@@ -289,7 +289,7 @@ const ABOUT: LegalDoc = {
   ],
 };
 
-const PRIVACY: LegalDoc = {
+export const PRIVACY: LegalDoc = {
   title: "Privacy\nPolicy",
   lastUpdated: LAST_UPDATED,
   intro:
@@ -357,7 +357,7 @@ const PRIVACY: LegalDoc = {
   ],
 };
 
-const TERMS: LegalDoc = {
+export const TERMS: LegalDoc = {
   title: "Terms &\nConditions",
   lastUpdated: LAST_UPDATED,
   intro:

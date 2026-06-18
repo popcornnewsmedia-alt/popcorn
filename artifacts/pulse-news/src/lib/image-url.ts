@@ -59,14 +59,19 @@ export function imageVariant(url: string | null | undefined, opts: ImageVariantO
 }
 
 /**
- * Feed-card variant: 1080px wide @ q80.
- *   - iPhone 16 Pro Max is 1290 logical px wide; content image fills ~80%
- *     ≈ 1030 logical px. 1080px is ~1:1 with display.
- *   - q80 is the visual-equivalence sweet spot used by Instagram/TikTok.
- *   - Decoded size ≈ 1080 × 1300 × 4 bytes ≈ 5.6MB (vs 22MB for 2400px master).
+ * Feed-card variant: 1440px wide @ q85.
+ *   - iPhone 16 Pro Max is 1290 DEVICE px wide (430pt @3x); the full-bleed
+ *     plate plus the parallax wrapper's scale(1.05) needs ~1355 device px.
+ *     1440 keeps the hero at/above 1:1 so the GPU never upscales it.
+ *     (The previous 1080 was ~25% under device resolution — visibly soft.)
+ *   - q85 sits below the visible-artifact threshold (q80 showed banding on
+ *     skin/gradients from the double encode: master q95 → variant).
+ *   - Decoded size ≈ 1440 × 1730 × 4 bytes ≈ 10MB (vs 22MB for 2400px
+ *     master). ~7 mounted heroes ≈ 70MB — inside the WebView budget that
+ *     originally motivated sizing variants.
  */
 export function feedImageUrl(url: string | null | undefined): string {
-  return imageVariant(url, { width: 1080, quality: 80 });
+  return imageVariant(url, { width: 1440, quality: 85 });
 }
 
 /**

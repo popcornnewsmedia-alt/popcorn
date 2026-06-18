@@ -31,7 +31,12 @@ function HomeRoute() {
   // viewport hook re-evaluates on resize so dev-tools width changes
   // hot-swap layouts.
   const isDesktop = useIsDesktopWeb();
-  return isDesktop ? <DesktopHome /> : <FeedPage />;
+  // DEV override: append ?app=1 to force the mobile app layout inside a
+  // desktop preview browser (which always reports pointer:fine + hover).
+  const forceApp =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("app") === "1";
+  return isDesktop && !forceApp ? <DesktopHome /> : <FeedPage />;
 }
 
 function Router() {

@@ -18,6 +18,7 @@ import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useAuth } from "@/hooks/use-auth";
 import { useNotifications } from "@/hooks/use-notifications";
 import { SavesContext, useSavesRoot } from "@/hooks/use-saves";
+import { LikesContext, useLikesRoot } from "@/hooks/use-likes";
 import { supabase } from "@/lib/supabase";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
@@ -58,6 +59,12 @@ const SPLASH_IDLE_MS = 12 * 60 * 60 * 1000;
 // vertical scrollTop is at or below this (i.e., the user is parked on the
 // DateDividerCard — not mid-article).
 const DIVIDER_EPS = 10;
+
+// Feed-image parallax is skipped entirely under prefers-reduced-motion.
+// Evaluated once at module load — OS-level setting, effectively static.
+const PARALLAX_REDUCED =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export function FeedPageHorizontal() {
   const { user, profile, loading: authLoading, signOut } = useAuth();
@@ -118,14 +125,28 @@ export function FeedPageHorizontal() {
 
   useEffect(() => {
     let resizeTimeout: NodeJS.Timeout | null = null;
+    let lastW = window.innerWidth;
+    let lastH = viewportHeight; // initial mount measurement
     const measure = () => {
       const d = document.createElement('div');
       d.style.cssText = 'position:fixed;top:0;height:100dvh;pointer-events:none;visibility:hidden';
       document.body.appendChild(d);
-      const h = d.offsetHeight;
+      const m = d.offsetHeight;
       d.remove();
-      setViewportHeight(h > 0 ? h : window.innerHeight);
-      setViewportWidth(window.innerWidth);
+      const h = m > 0 ? m : window.innerHeight;
+      const w = window.innerWidth;
+      // iOS keyboard guard: when the keyboard opens (sign-in, comments),
+      // the WKWebView shrinks HEIGHT-ONLY — width never changes. Resizing
+      // the feed for that transient shrink re-renders every mounted
+      // full-screen card mid-keyboard-animation, which is what made the
+      // keyboard feel laggy. The height always restores on dismiss, so
+      // skip the shrink entirely. Real layout changes (rotation, iPad
+      // split-screen) change width and still pass through.
+      if (w === lastW && h < lastH) return;
+      lastW = w;
+      lastH = h;
+      setViewportHeight(h);
+      setViewportWidth(w);
     };
     const throttledMeasure = () => {
       if (resizeTimeout) clearTimeout(resizeTimeout);
@@ -219,6 +240,11 @@ export function FeedPageHorizontal() {
   // so ActionButtons / ArticleReader can read + toggle the same Set.
   const saves = useSavesRoot(user);
 
+  // Likes — backed by the `user_likes` Supabase table, same per-user +
+  // cross-device sync pattern as saves. Broadcast via <LikesContext.Provider>
+  // below so ActionButtons / ArticleReader read + toggle the same Set.
+  const likes = useLikesRoot(user);
+
   // Flat newest-first article list with image URL rewriting (identical to FeedPage).
   // DPR is passed so Supabase / Unsplash / TMDb / Wikipedia / WP URLs are
   // rewritten to variants sized for the device's physical pixel count —
@@ -239,6 +265,11 @@ export function FeedPageHorizontal() {
   const savedArticles = useMemo(
     () => allArticles.filter((a) => saves.savedIds.has(a.id)),
     [allArticles, saves.savedIds]
+  );
+  // Liked tab articles: same approach, filtered against the live likes set.
+  const likedArticles = useMemo(
+    () => allArticles.filter((a) => likes.likedIds.has(a.id)),
+    [allArticles, likes.likedIds]
   );
   const liveReadingArticle = readingArticle
     ? (allArticles.find((a) => a.id === readingArticle.id) ?? readingArticle)
@@ -451,6 +482,33 @@ export function FeedPageHorizontal() {
 
       const total = day.articles.length + 1;
       const fractionalIdx = scrollTop / clientHeight;
+
+      // ── Vertical parallax ── every card in the day scroller is exactly
+      // clientHeight tall, so child i sits at screen offset
+      // (i − fractionalIdx)·clientHeight. Write a --pn-pary var on the
+      // cards within ±1.5 viewports; ArticleCard's image wrapper consumes
+      // it, panning the photo slightly slower than its card frame (depth
+      // cue). Writes are 0.5px-quantised + change-detected, and this only
+      // runs inside the existing scroll-coalesced rAF — zero cost idle.
+      // k=0.02 of viewport keeps the visible offset inside the wrapper's
+      // scale(1.05) bleed on all device heights (a plate edge only enters
+      // view once the offset is ≤ k·plateH, so 2k bleed always covers it).
+      if (!PARALLAX_REDUCED) {
+        const kids = container.children;
+        const lo = Math.max(0, Math.floor(fractionalIdx - 1.5));
+        const hi = Math.min(kids.length - 1, Math.ceil(fractionalIdx + 1.5));
+        for (let i = lo; i <= hi; i++) {
+          const el = kids[i] as HTMLElement;
+          if (!el) continue;
+          const rel = Math.max(-1.1, Math.min(1.1, i - fractionalIdx));
+          const par = Math.round(-rel * clientHeight * 0.02 * 2) / 2;
+          const key = String(par);
+          if (el.dataset.pary !== key) {
+            el.dataset.pary = key;
+            el.style.setProperty('--pn-pary', `${par}px`);
+          }
+        }
+      }
 
       // Drive TopBar dim overlay imperatively — smooth 0→1 fade as user
       // scrolls from the DateDivider (idx 0) into the first article (idx 1),
@@ -891,6 +949,16 @@ export function FeedPageHorizontal() {
           });
         }
 
+        // Land on the LATEST day. A refetch can prepend a brand-new day,
+        // which shifts every dataIdx by one — currentDayIdx then points at
+        // the day AFTER the one on screen (user-visible bug: pull-to-refresh
+        // from an older day jumped one day forward instead of to the front).
+        // Pull-to-refresh semantics are "take me to the fresh feed", so
+        // always slide home to index 0. Deferred a frame so React has
+        // re-rendered with the new dayGroups and landOnDay's refs see the
+        // fresh day list (correct rail offset for the new column count).
+        requestAnimationFrame(() => landOnDay(0, 420));
+
         setRefreshFinishing(true);
         window.setTimeout(() => {
           setIsRefreshing(false);
@@ -902,7 +970,7 @@ export function FeedPageHorizontal() {
       setPullOffset(0);
     }
     isPulling.current = false;
-  }, [pullOffset, isRefreshing, refetch]);
+  }, [pullOffset, isRefreshing, refetch, landOnDay]);
 
   // ── TopBar date pick ────────────────────────────────────────────────────
   // Set currentDayIdx to the day matching the picked date; always land on
@@ -963,7 +1031,7 @@ export function FeedPageHorizontal() {
   }
 
   const renderOverlayTab = () => {
-    if (activeTab === "saved") return <SavedScreen onBrowse={() => setActiveTab("feed")} articles={savedArticles} onReadMore={setReadingArticle} />;
+    if (activeTab === "saved") return <SavedScreen onBrowse={() => setActiveTab("feed")} articles={savedArticles} likedArticles={likedArticles} onReadMore={setReadingArticle} />;
     if (activeTab === "profile") return (
       <ProfileScreen
         onSignIn={() => setSignInOpen(true)}
@@ -1001,6 +1069,7 @@ export function FeedPageHorizontal() {
 
   return (
     <SavesContext.Provider value={saves}>
+    <LikesContext.Provider value={likes}>
     <div className="pn-fullscreen fixed inset-0" style={{ background: '#042c85' }}>
       <GrainBackground />
 
@@ -1212,7 +1281,12 @@ export function FeedPageHorizontal() {
                           isRead={readIds.has(article.id)}
                           viewportHeight={viewportHeight}
                           renderContent={Math.abs((i + 1) - activeViewIdx) <= 1}
-                          isActive={false}
+                          // Real active flag (was hardcoded false): gives the
+                          // focused card's hero image fetchpriority=high.
+                          // activeViewIdx already updates via the scroll
+                          // listener, so this re-renders only on card-index
+                          // changes (same as renderContent).
+                          isActive={(i + 1) === activeViewIdx}
                         />
                       ))}
                       {mountArticles && (() => {
@@ -1302,6 +1376,7 @@ export function FeedPageHorizontal() {
         onSelect={handleSelectNotification}
       />
     </div>
+    </LikesContext.Provider>
     </SavesContext.Provider>
   );
 }

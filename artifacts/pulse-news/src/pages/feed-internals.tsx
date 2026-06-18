@@ -4,7 +4,8 @@
 // When the new feed is promoted, these can be deduped with FeedPage's
 // inline copies.
 
-import { Bookmark, User, LogOut, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Bookmark, Heart, User, LogOut, ChevronRight } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { GrainBackground } from "@/components/GrainBackground";
 import { PopcornIcon } from "@/components/PopcornIcon";
@@ -196,62 +197,116 @@ export function PopcornRefreshAnim({ active, size = 80 }: { active: boolean; siz
 }
 
 // ── Saved tab overlay ───────────────────────────────────────────────────
+// One card row, shared by both the "Likes" and "Saved for later" subtabs.
+function SavedCard({ article, index, onReadMore }: { article: NewsArticle; index: number; onReadMore: (a: NewsArticle) => void }) {
+  return (
+    <button onClick={() => onReadMore(article)} className="w-full text-left rounded-2xl overflow-hidden flex gap-0 active:opacity-70" style={{ background: "rgba(255,241,205,0.07)", border: "1px solid rgba(255,241,205,0.08)", boxShadow: "0 2px 16px rgba(0,0,0,0.10)", opacity: 0, animation: "saved-card-in 0.38s ease forwards", animationDelay: `${index * 0.06}s` }}>
+      {article.imageUrl && (
+        <div className="w-28 self-stretch flex-shrink-0 relative overflow-hidden">
+          <img src={article.imageUrl} alt={article.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }} />
+        </div>
+      )}
+      <div className="flex-1 p-3.5 flex flex-col justify-between min-w-0 gap-2">
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="flex items-center gap-1" style={{ background: 'rgba(255,241,205,0.10)', border: '1px solid rgba(255,241,205,0.16)', borderRadius: 999, paddingLeft: 5, paddingRight: 6, paddingTop: 2, paddingBottom: 2 }}>
+            <span style={{ display: 'inline-block', width: 5, height: 5, borderRadius: '50%', flexShrink: 0, background: CATEGORY_COLORS[article.category] ?? 'rgba(255,241,205,0.4)', boxShadow: `0 0 4px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,241,205,0.3)'}` }} />
+            <span style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "8px", color: "rgba(255,241,205,0.85)", letterSpacing: "0.10em", textTransform: "uppercase" }}>{article.category}</span>
+          </span>
+          <span style={{ background: 'rgba(255,241,205,0.07)', border: '1px solid rgba(255,241,205,0.12)', borderRadius: 999, paddingLeft: 6, paddingRight: 6, paddingTop: 2, paddingBottom: 2, fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "8px", color: "rgba(255,241,205,0.50)", letterSpacing: "0.08em" }}>{article.source}</span>
+        </div>
+        <p className="font-['Manrope'] font-bold leading-snug line-clamp-2" style={{ fontSize: "14px", color: "#fff1cd" }}>{article.title}</p>
+      </div>
+    </button>
+  );
+}
+
+type LibraryTab = "likes" | "saved";
+
 export function SavedScreen({
   onBrowse,
   articles,
+  likedArticles,
   onReadMore,
 }: {
   onBrowse: () => void;
   articles: NewsArticle[];
+  likedArticles: NewsArticle[];
   onReadMore: (article: NewsArticle) => void;
 }) {
-  if (articles.length === 0) {
-    return (
-      <div className="pn-fullscreen fixed inset-0 flex flex-col items-center justify-center px-8 text-center overflow-hidden" style={{ background: "#042c85", zIndex: 1 }}>
-        <GrainBackground />
-        <div className="relative z-10 flex flex-col items-center gap-5 max-w-xs">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-2" style={{ background: "rgba(255,241,205,0.12)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,241,205,0.22)", boxShadow: "0 8px 32px rgba(0,0,0,0.08)" }}>
-            <Bookmark className="w-8 h-8" style={{ color: "#fff1cd", strokeWidth: 1.6 }} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <h1 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "18px", lineHeight: 1.1, color: "#fff1cd", letterSpacing: "0.02em" }}>Nothing saved yet</h1>
-            <p className="font-['Manrope'] leading-relaxed" style={{ fontSize: "14px", color: "rgba(255,241,205,0.48)" }}>Bookmark articles as you scroll to build your reading list.</p>
-          </div>
-          <button onClick={onBrowse} className="mt-3 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85" style={{ background: "#fff1cd", color: "#042c85" }}>Browse</button>
-        </div>
-      </div>
-    );
-  }
+  const [tab, setTab] = useState<LibraryTab>("likes");
+  const list = tab === "likes" ? likedArticles : articles;
+
+  // Empty-state copy per subtab.
+  const empty =
+    tab === "likes"
+      ? { Icon: Heart, title: "No likes yet", body: "Tap the heart on any story to keep your favourites here." }
+      : { Icon: Bookmark, title: "Nothing saved yet", body: "Bookmark articles as you scroll to build your reading list." };
+
   return (
     <div className="pn-fullscreen fixed inset-0 overflow-hidden flex flex-col items-center" style={{ background: "#042c85", zIndex: 1 }}>
       <GrainBackground />
       <div className="relative z-10 flex flex-col h-full w-full" style={{ maxWidth: '480px' }}>
         <div className="px-5 pb-4" style={{ paddingTop: 'calc(72px + env(safe-area-inset-top))' }}>
-          <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "19px", color: "#fff1cd", letterSpacing: "0.02em", lineHeight: 1 }}>Saved</h2>
-          <p className="font-['Inter'] mt-0.5" style={{ fontSize: "13px", color: "rgba(255,241,205,0.6)" }}>{articles.length} {articles.length === 1 ? "article" : "articles"}</p>
-          <div style={{ marginTop: "12px", height: "1px", background: "rgba(255,241,205,0.10)" }} />
+          <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "19px", color: "#fff1cd", letterSpacing: "0.02em", lineHeight: 1 }}>Library</h2>
+          <p className="font-['Inter'] mt-0.5" style={{ fontSize: "13px", color: "rgba(255,241,205,0.6)" }}>{list.length} {list.length === 1 ? "article" : "articles"}</p>
+
+          {/* Likes / Saved segmented control — cream slider over a translucent track */}
+          <div className="relative mt-3.5 flex" role="tablist" style={{ background: "rgba(255,241,205,0.07)", border: "1px solid rgba(255,241,205,0.12)", borderRadius: 999, padding: 3 }}>
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                top: 3,
+                bottom: 3,
+                left: 3,
+                width: "calc(50% - 3px)",
+                borderRadius: 999,
+                background: "#fff1cd",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.18)",
+                transform: tab === "likes" ? "translateX(0)" : "translateX(100%)",
+                transition: "transform 0.32s cubic-bezier(0.34,1.4,0.5,1)",
+              }}
+            />
+            {(["likes", "saved"] as LibraryTab[]).map((t) => {
+              const active = tab === t;
+              const Icon = t === "likes" ? Heart : Bookmark;
+              return (
+                <button
+                  key={t}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setTab(t)}
+                  className="relative z-10 flex-1 flex items-center justify-center gap-1.5 transition-colors"
+                  style={{ paddingTop: 8, paddingBottom: 8, fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: active ? "#042c85" : "rgba(255,241,205,0.62)" }}
+                >
+                  <Icon className="w-3.5 h-3.5" style={{ strokeWidth: 2, fill: active && t === "likes" ? "#042c85" : "none" }} />
+                  {t === "likes" ? "Likes" : "Saved"}
+                </button>
+              );
+            })}
+          </div>
+
+          <div style={{ marginTop: "14px", height: "1px", background: "rgba(255,241,205,0.10)" }} />
         </div>
-        <div className="flex-1 overflow-y-auto px-4 pb-24 scrollbar-hide flex flex-col gap-3">
-          {articles.map((article, i) => (
-            <button key={article.id} onClick={() => onReadMore(article)} className="w-full text-left rounded-2xl overflow-hidden flex gap-0 active:opacity-70" style={{ background: "rgba(255,241,205,0.07)", border: "1px solid rgba(255,241,205,0.08)", boxShadow: "0 2px 16px rgba(0,0,0,0.10)", opacity: 0, animation: "saved-card-in 0.38s ease forwards", animationDelay: `${i * 0.06}s` }}>
-              {article.imageUrl && (
-                <div className="w-28 self-stretch flex-shrink-0 relative overflow-hidden">
-                  <img src={article.imageUrl} alt={article.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }} />
-                </div>
-              )}
-              <div className="flex-1 p-3.5 flex flex-col justify-between min-w-0 gap-2">
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="flex items-center gap-1" style={{ background: 'rgba(255,241,205,0.10)', border: '1px solid rgba(255,241,205,0.16)', borderRadius: 999, paddingLeft: 5, paddingRight: 6, paddingTop: 2, paddingBottom: 2 }}>
-                    <span style={{ display: 'inline-block', width: 5, height: 5, borderRadius: '50%', flexShrink: 0, background: CATEGORY_COLORS[article.category] ?? 'rgba(255,241,205,0.4)', boxShadow: `0 0 4px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,241,205,0.3)'}` }} />
-                    <span style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "8px", color: "rgba(255,241,205,0.85)", letterSpacing: "0.10em", textTransform: "uppercase" }}>{article.category}</span>
-                  </span>
-                  <span style={{ background: 'rgba(255,241,205,0.07)', border: '1px solid rgba(255,241,205,0.12)', borderRadius: 999, paddingLeft: 6, paddingRight: 6, paddingTop: 2, paddingBottom: 2, fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "8px", color: "rgba(255,241,205,0.50)", letterSpacing: "0.08em" }}>{article.source}</span>
-                </div>
-                <p className="font-['Manrope'] font-bold leading-snug line-clamp-2" style={{ fontSize: "14px", color: "#fff1cd" }}>{article.title}</p>
-              </div>
-            </button>
-          ))}
-        </div>
+
+        {list.length === 0 ? (
+          <div className="flex-1 flex flex-col items-center justify-center px-8 text-center pb-24">
+            <div className="w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ background: "rgba(255,241,205,0.12)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,241,205,0.22)", boxShadow: "0 8px 32px rgba(0,0,0,0.08)" }}>
+              <empty.Icon className="w-8 h-8" style={{ color: "#fff1cd", strokeWidth: 1.6 }} />
+            </div>
+            <div className="flex flex-col gap-2 max-w-xs">
+              <h1 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "18px", lineHeight: 1.1, color: "#fff1cd", letterSpacing: "0.02em" }}>{empty.title}</h1>
+              <p className="font-['Manrope'] leading-relaxed" style={{ fontSize: "14px", color: "rgba(255,241,205,0.48)" }}>{empty.body}</p>
+            </div>
+            <button onClick={onBrowse} className="mt-6 px-8 py-3 rounded-full font-['Inter'] font-semibold text-sm tracking-wide transition-opacity hover:opacity-85" style={{ background: "#fff1cd", color: "#042c85" }}>Browse</button>
+          </div>
+        ) : (
+          <div key={tab} className="flex-1 overflow-y-auto px-4 pb-24 scrollbar-hide flex flex-col gap-3">
+            {list.map((article, i) => (
+              <SavedCard key={article.id} article={article} index={i} onReadMore={onReadMore} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
