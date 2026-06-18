@@ -4937,7 +4937,15 @@ export function DesktopHome() {
   const [gateDismissed, setGateDismissed] = useState(false);
   useEffect(() => {
     if (user) { setGateOpen(false); return; }
-    const t = setTimeout(() => setGateOpen(true), 18000);
+    // Once the gate has been shown in a prior visit, bring it straight back
+    // on reload — don't make the reader sit through the preview window again.
+    let alreadyShown = false;
+    try { alreadyShown = localStorage.getItem("popcorn-web-gate-shown") === "1"; } catch { /* ignore */ }
+    if (alreadyShown) { setGateOpen(true); return; }
+    const t = setTimeout(() => {
+      setGateOpen(true);
+      try { localStorage.setItem("popcorn-web-gate-shown", "1"); } catch { /* ignore */ }
+    }, 18000);
     return () => clearTimeout(t);
   }, [user]);
 

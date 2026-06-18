@@ -202,7 +202,7 @@ export function PopcornRefreshAnim({ active, size = 80 }: { active: boolean; siz
 // One card row, shared by both the "Likes" and "Saved for later" subtabs.
 function SavedCard({ article, index, tab, onReadMore, onRemove }: { article: NewsArticle; index: number; tab: LibraryTab; onReadMore: (a: NewsArticle) => void; onRemove: (a: NewsArticle) => void }) {
   return (
-    <div role="button" tabIndex={0} onClick={() => onReadMore(article)} className="relative w-full text-left rounded-2xl overflow-hidden flex gap-0 active:opacity-70" style={{ background: "rgba(255,241,205,0.07)", border: "1px solid rgba(255,241,205,0.08)", boxShadow: "0 2px 16px rgba(0,0,0,0.10)", opacity: 0, animation: "saved-card-in 0.38s ease forwards", animationDelay: `${index * 0.06}s` }}>
+    <div role="button" tabIndex={0} onClick={() => onReadMore(article)} className="relative w-full text-left rounded-2xl overflow-hidden flex gap-0 flex-shrink-0 active:opacity-70" style={{ background: "rgba(255,241,205,0.07)", border: "1px solid rgba(255,241,205,0.08)", boxShadow: "0 2px 16px rgba(0,0,0,0.10)", opacity: 0, animation: "saved-card-in 0.38s ease forwards", animationDelay: `${index * 0.06}s` }}>
       {article.imageUrl && (
         <div className="w-28 self-stretch flex-shrink-0 relative overflow-hidden">
           <img src={article.imageUrl} alt={article.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }} />
