@@ -1107,6 +1107,14 @@ export async function promoteToProduction(feedDate?: string): Promise<number> {
 
   const count = data?.length ?? 0;
   console.log(`[promote] ✓ ${count} articles promoted to prod for ${date}`);
+
+  // Re-sync the in-memory cache for this day from Supabase. promote only flips
+  // the `stage` column in the DB; without this, any rows added to Supabase
+  // after the last mergeFeed/restart (e.g. late manual adds, a second curation
+  // pass) stay invisible to /api/news, so the web/mobile feed shows a stale,
+  // short list even though the DB is correct.
+  await reloadDayFromSupabase(date);
+
   return count;
 }
 
