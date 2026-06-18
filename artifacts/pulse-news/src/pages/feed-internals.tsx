@@ -233,7 +233,7 @@ export function SavedScreen({
   likedArticles: NewsArticle[];
   onReadMore: (article: NewsArticle) => void;
 }) {
-  const [tab, setTab] = useState<LibraryTab>("likes");
+  const [tab, setTab] = useState<LibraryTab>("saved");
   const list = tab === "likes" ? likedArticles : articles;
 
   // Empty-state copy per subtab.
@@ -263,11 +263,11 @@ export function SavedScreen({
                 borderRadius: 999,
                 background: "#fff1cd",
                 boxShadow: "0 2px 10px rgba(0,0,0,0.18)",
-                transform: tab === "likes" ? "translateX(0)" : "translateX(100%)",
+                transform: tab === "saved" ? "translateX(0)" : "translateX(100%)",
                 transition: "transform 0.32s cubic-bezier(0.34,1.4,0.5,1)",
               }}
             />
-            {(["likes", "saved"] as LibraryTab[]).map((t) => {
+            {(["saved", "likes"] as LibraryTab[]).map((t) => {
               const active = tab === t;
               const Icon = t === "likes" ? Heart : Bookmark;
               return (

@@ -475,10 +475,11 @@ export function SplashScreen({
         }
       `}</style>
 
-      {/* Centre — wordmark, tagline, popcorn animation */}
+      {/* Wordmark + tagline pinned near the top; the popcorn stage drops to the
+          vertical middle via the stage marginTop below. */}
       <div
-        className="relative z-10 flex-1 flex flex-col items-center justify-center"
-        style={{ gap: '14px', paddingBottom: '110px' }}
+        className="relative z-10 flex-1 flex flex-col items-center justify-start"
+        style={{ gap: '14px', paddingTop: 'clamp(48px, 12vh, 110px)' }}
       >
         <span
           style={{
@@ -517,9 +518,10 @@ export function SplashScreen({
 
         {/* Stage: spotlight paints behind a non-transforming parent so the
             popcorn's scale-in transition doesn't distort the beam.
-            marginTop pushes the whole stage (spotlight cone + bucket)
-            down below the tagline so they don't crowd the wordmark. */}
-        <div style={{ position: 'relative', marginTop: '90px' }}>
+            marginTop drops the whole stage (spotlight cone + bucket) from the
+            top-pinned wordmark/tagline down to the vertical middle of the
+            screen. */}
+        <div style={{ position: 'relative', marginTop: 'clamp(100px, 16vh, 200px)' }}>
           <Spotlight visible={showSpotlight} settled={contentSettled} />
           <div
             style={{

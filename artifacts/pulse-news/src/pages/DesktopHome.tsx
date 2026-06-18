@@ -1188,14 +1188,14 @@ function ProfileMenu({
             <div className="pcd-pm-rule" />
 
             <p className="pcd-pm-eyebrow">Library</p>
-            <button type="button" className="pcd-pm-libtile" onClick={() => goLibrary("likes")}>
+            <button type="button" className="pcd-pm-libtile" onClick={() => goLibrary("saved")}>
               <span className="pcd-pm-libtile__ic">
                 <Bookmark size={16} strokeWidth={2} />
               </span>
               <span className="pcd-pm-libtile__txt">
                 <span className="pcd-pm-libtile__label">Library</span>
                 <span className="pcd-pm-libtile__count">
-                  {likedCount} liked · {savedCount} saved
+                  {savedCount} saved · {likedCount} liked
                 </span>
               </span>
               <ChevronRight size={16} strokeWidth={2} style={{ color: "rgba(255,241,205,0.5)", flexShrink: 0 }} />
@@ -1275,8 +1275,8 @@ function LibraryOverlay({
         </div>
 
         <div className="pcd-lib__tabs" role="tablist">
-          <span className="pcd-lib__slider" style={{ transform: tab === "likes" ? "translateX(0)" : "translateX(100%)" }} aria-hidden />
-          {(["likes", "saved"] as const).map((t) => {
+          <span className="pcd-lib__slider" style={{ transform: tab === "saved" ? "translateX(0)" : "translateX(100%)" }} aria-hidden />
+          {(["saved", "likes"] as const).map((t) => {
             const active = tab === t;
             const Icon = t === "likes" ? Heart : Bookmark;
             return (
