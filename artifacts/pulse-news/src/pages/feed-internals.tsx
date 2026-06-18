@@ -5,10 +5,12 @@
 // inline copies.
 
 import { useState } from "react";
-import { Bookmark, Heart, User, LogOut, ChevronRight } from "lucide-react";
+import { Bookmark, Heart, User, LogOut, ChevronRight, X } from "lucide-react";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { GrainBackground } from "@/components/GrainBackground";
 import { PopcornIcon } from "@/components/PopcornIcon";
+import { useSavedArticles } from "@/hooks/use-saves";
+import { useLikedArticles } from "@/hooks/use-likes";
 import type { LegalKind } from "@/components/LegalSheet";
 
 export const APP_VERSION = "1.0.0";
@@ -198,15 +200,15 @@ export function PopcornRefreshAnim({ active, size = 80 }: { active: boolean; siz
 
 // ── Saved tab overlay ───────────────────────────────────────────────────
 // One card row, shared by both the "Likes" and "Saved for later" subtabs.
-function SavedCard({ article, index, onReadMore }: { article: NewsArticle; index: number; onReadMore: (a: NewsArticle) => void }) {
+function SavedCard({ article, index, tab, onReadMore, onRemove }: { article: NewsArticle; index: number; tab: LibraryTab; onReadMore: (a: NewsArticle) => void; onRemove: (a: NewsArticle) => void }) {
   return (
-    <button onClick={() => onReadMore(article)} className="w-full text-left rounded-2xl overflow-hidden flex gap-0 active:opacity-70" style={{ background: "rgba(255,241,205,0.07)", border: "1px solid rgba(255,241,205,0.08)", boxShadow: "0 2px 16px rgba(0,0,0,0.10)", opacity: 0, animation: "saved-card-in 0.38s ease forwards", animationDelay: `${index * 0.06}s` }}>
+    <div role="button" tabIndex={0} onClick={() => onReadMore(article)} className="relative w-full text-left rounded-2xl overflow-hidden flex gap-0 active:opacity-70" style={{ background: "rgba(255,241,205,0.07)", border: "1px solid rgba(255,241,205,0.08)", boxShadow: "0 2px 16px rgba(0,0,0,0.10)", opacity: 0, animation: "saved-card-in 0.38s ease forwards", animationDelay: `${index * 0.06}s` }}>
       {article.imageUrl && (
         <div className="w-28 self-stretch flex-shrink-0 relative overflow-hidden">
           <img src={article.imageUrl} alt={article.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }} />
         </div>
       )}
-      <div className="flex-1 p-3.5 flex flex-col justify-between min-w-0 gap-2">
+      <div className="flex-1 p-3.5 pr-10 flex flex-col justify-between min-w-0 gap-2">
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="flex items-center gap-1" style={{ background: 'rgba(255,241,205,0.10)', border: '1px solid rgba(255,241,205,0.16)', borderRadius: 999, paddingLeft: 5, paddingRight: 6, paddingTop: 2, paddingBottom: 2 }}>
             <span style={{ display: 'inline-block', width: 5, height: 5, borderRadius: '50%', flexShrink: 0, background: CATEGORY_COLORS[article.category] ?? 'rgba(255,241,205,0.4)', boxShadow: `0 0 4px 1px ${CATEGORY_COLORS[article.category] ?? 'rgba(255,241,205,0.3)'}` }} />
@@ -216,7 +218,16 @@ function SavedCard({ article, index, onReadMore }: { article: NewsArticle; index
         </div>
         <p className="font-['Manrope'] font-bold leading-snug line-clamp-2" style={{ fontSize: "14px", color: "#fff1cd" }}>{article.title}</p>
       </div>
-    </button>
+      <button
+        type="button"
+        aria-label={tab === "saved" ? "Remove from saved" : "Remove from likes"}
+        onClick={(e) => { e.stopPropagation(); onRemove(article); }}
+        className="absolute flex items-center justify-center active:scale-90"
+        style={{ top: 8, right: 8, width: 28, height: 28, borderRadius: "50%", color: "#fff1cd", background: "rgba(4,12,40,0.55)", border: "1px solid rgba(255,241,205,0.18)", transition: "transform 0.12s ease" }}
+      >
+        <X size={14} strokeWidth={2.6} />
+      </button>
+    </div>
   );
 }
 
@@ -235,6 +246,13 @@ export function SavedScreen({
 }) {
   const [tab, setTab] = useState<LibraryTab>("saved");
   const list = tab === "likes" ? likedArticles : articles;
+  const saves = useSavedArticles();
+  const likes = useLikedArticles();
+
+  const removeArticle = (a: NewsArticle) => {
+    if (tab === "saved") void saves.toggleSave(a.id);
+    else void likes.toggleLike(a.id);
+  };
 
   // Empty-state copy per subtab.
   const empty =
@@ -303,7 +321,7 @@ export function SavedScreen({
         ) : (
           <div key={tab} className="flex-1 overflow-y-auto px-4 pb-24 scrollbar-hide flex flex-col gap-3">
             {list.map((article, i) => (
-              <SavedCard key={article.id} article={article} index={i} onReadMore={onReadMore} />
+              <SavedCard key={article.id} article={article} index={i} tab={tab} onReadMore={onReadMore} onRemove={removeArticle} />
             ))}
           </div>
         )}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import type { ReactNode, MouseEvent as ReactMouseEvent } from "react";
-import { ChevronLeft, ChevronRight, Instagram, Heart, MessageCircle, Bookmark, Send, X, LogOut, ChevronDown, Settings, Pencil, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Instagram, Heart, MessageCircle, Bookmark, Send, X, LogOut, ChevronDown, Settings, Pencil, Eye, EyeOff, ArrowRight, Check } from "lucide-react";
 import { format, startOfDay } from "date-fns";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
@@ -1060,14 +1060,24 @@ const PROFILE_CSS = `
   .pcd-lib__tabs { position: relative; z-index: 1; margin: 0 28px; display: flex; background: rgba(255,241,205,0.07); border: 1px solid rgba(255,241,205,0.12); border-radius: 999px; padding: 3px; width: max-content; }
   .pcd-lib__slider { position: absolute; top: 3px; bottom: 3px; width: calc(50% - 3px); border-radius: 999px; background: #fff1cd; box-shadow: 0 2px 10px rgba(0,0,0,0.18); transition: transform .32s cubic-bezier(0.34,1.4,0.5,1); }
   .pcd-lib__tab { position: relative; z-index: 1; display: flex; align-items: center; gap: 7px; cursor: pointer; background: transparent; border: 0; padding: 9px 26px; font-family: 'Macabro','Anton',sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; transition: color .2s ease; }
-  .pcd-lib__list { position: relative; z-index: 1; margin-top: 18px; padding: 4px 28px 28px; overflow-y: auto; display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .pcd-lib__list { position: relative; z-index: 1; flex: 1; min-height: 0; margin-top: 18px; padding: 4px 28px 28px; overflow-y: auto; display: grid; grid-template-columns: 1fr; grid-auto-rows: max-content; gap: 12px; }
   .pcd-lib__list.is-empty { display: block; }
   .pcd-lib-card {
+    position: relative;
     display: flex; gap: 0; text-align: left; cursor: pointer; overflow: hidden;
     border-radius: 14px; background: rgba(255,241,205,0.07); border: 1px solid rgba(255,241,205,0.10);
     transition: background .16s ease, transform .16s ease, border-color .16s ease;
   }
   .pcd-lib-card:hover { background: rgba(255,241,205,0.13); border-color: rgba(255,241,205,0.24); transform: translateY(-2px); }
+  .pcd-lib-card__remove {
+    position: absolute; top: 8px; right: 8px; z-index: 2;
+    width: 27px; height: 27px; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: #fff1cd;
+    background: rgba(4,12,40,0.62); border: 1px solid rgba(255,241,205,0.20);
+    opacity: 0; transform: scale(0.9); transition: opacity .15s ease, background .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .pcd-lib-card:hover .pcd-lib-card__remove, .pcd-lib-card:focus-within .pcd-lib-card__remove { opacity: 1; transform: scale(1); }
+  .pcd-lib-card__remove:hover { background: #bd453c; border-color: #bd453c; }
   .pcd-lib-card__img { width: 116px; flex-shrink: 0; align-self: stretch; position: relative; overflow: hidden; background: rgba(0,0,0,0.2); }
   .pcd-lib-card__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .pcd-lib-card__body { flex: 1; min-width: 0; padding: 13px 15px; display: flex; flex-direction: column; gap: 9px; }
@@ -1249,6 +1259,13 @@ function LibraryOverlay({
 }) {
   const [tab, setTab] = useState<"likes" | "saved">(initialTab);
   const list = tab === "likes" ? likedArticles : savedArticles;
+  const saves = useSavedArticles();
+  const likes = useLikedArticles();
+
+  const removeArticle = (a: NewsArticle) => {
+    if (tab === "saved") void saves.toggleSave(a.id);
+    else void likes.toggleLike(a.id);
+  };
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -1306,7 +1323,14 @@ function LibraryOverlay({
         ) : (
           <div className="pcd-lib__list" key={tab}>
             {list.map((a) => (
-              <button key={a.id} type="button" className="pcd-lib-card" onClick={() => { onClose(); onReadMore(a); }}>
+              <div
+                key={a.id}
+                role="button"
+                tabIndex={0}
+                className="pcd-lib-card"
+                onClick={() => { onClose(); onReadMore(a); }}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClose(); onReadMore(a); } }}
+              >
                 {a.imageUrl && (
                   <div className="pcd-lib-card__img">
                     <img src={feedImageUrl(a.imageUrl)} alt="" loading="lazy" />
@@ -1322,7 +1346,16 @@ function LibraryOverlay({
                   </div>
                   <p className="pcd-lib-card__title">{a.title}</p>
                 </div>
-              </button>
+                <button
+                  type="button"
+                  className="pcd-lib-card__remove"
+                  aria-label={tab === "saved" ? "Remove from saved" : "Remove from likes"}
+                  title={tab === "saved" ? "Remove from saved" : "Remove from likes"}
+                  onClick={(e) => { e.stopPropagation(); removeArticle(a); }}
+                >
+                  <X size={14} strokeWidth={2.6} />
+                </button>
+              </div>
             ))}
           </div>
         )}
@@ -4826,9 +4859,31 @@ function DragFeed({
 /* ── Page ──────────────────────────────────────────────────────── */
 
 export function DesktopHome() {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut, loading: authLoading } = useAuth();
   const saves = useSavesRoot(user);
   const likes = useLikesRoot(user);
+
+  // Discreet sign-in / sign-out confirmation toast.
+  const [toast, setToast] = useState<{ id: number; msg: string } | null>(null);
+  const showToast = useCallback((msg: string) => setToast({ id: Date.now(), msg }), []);
+
+  // Detect auth transitions (sign-in / sign-out) without firing on the
+  // initial session restore. We wait for auth to settle once to establish a
+  // baseline, then toast only on a genuine change.
+  const authBaselineRef = useRef<string | null | undefined>(undefined);
+  useEffect(() => {
+    if (authLoading) return;
+    const curr = user?.id ?? null;
+    if (authBaselineRef.current === undefined) {
+      authBaselineRef.current = curr; // first settle — no toast
+      return;
+    }
+    if (authBaselineRef.current !== curr) {
+      if (curr) showToast("Signed in");
+      else showToast("You've been signed out");
+      authBaselineRef.current = curr;
+    }
+  }, [user, authLoading, showToast]);
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteNewsFeed();
 
@@ -5113,7 +5168,63 @@ export function DesktopHome() {
           onSignUpInstead={() => { setSignInOpen(false); setSignUpOpen(true); }}
         />
       )}
+
+      {toast && (
+        <AuthToast key={toast.id} message={toast.msg} onDone={() => setToast(null)} />
+      )}
     </LikesContext.Provider>
     </SavesContext.Provider>
+  );
+}
+
+/* ── Discreet auth confirmation toast ──────────────────────────────────── */
+function AuthToast({ message, onDone }: { message: string; onDone: () => void }) {
+  const [shown, setShown] = useState(false);
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
+
+  useEffect(() => {
+    const a = requestAnimationFrame(() => setShown(true));
+    const t1 = setTimeout(() => setShown(false), 2400);
+    const t2 = setTimeout(() => doneRef.current(), 2760);
+    return () => {
+      cancelAnimationFrame(a);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
+
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      style={{
+        position: "fixed",
+        left: "50%",
+        bottom: "34px",
+        zIndex: 300,
+        transform: `translateX(-50%) translateY(${shown ? "0" : "14px"})`,
+        opacity: shown ? 1 : 0,
+        transition:
+          "opacity .32s ease, transform .42s cubic-bezier(0.22,1,0.36,1)",
+        display: "flex",
+        alignItems: "center",
+        gap: 9,
+        padding: "11px 18px",
+        borderRadius: 999,
+        background: "#042c85",
+        color: "#fff1cd",
+        border: "1px solid rgba(255,241,205,0.22)",
+        boxShadow: "0 12px 40px rgba(4,12,40,0.45)",
+        fontFamily: "'Manrope', sans-serif",
+        fontWeight: 600,
+        fontSize: "13.5px",
+        letterSpacing: "0.01em",
+        pointerEvents: "none",
+      }}
+    >
+      <Check size={15} strokeWidth={2.5} style={{ color: "#fff1cd", flexShrink: 0 }} />
+      {message}
+    </div>
   );
 }
