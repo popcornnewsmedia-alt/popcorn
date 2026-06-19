@@ -33,6 +33,11 @@ const ALLOWED_ORIGINS = [
   "https://www.popcornmedia.org",
   "http://localhost:5173",
   "http://192.168.1.38:5173",
+  // Capacitor native webview origins (iOS / Android) — push device registration
+  // is fired directly from the app to this server, so its origin must be allowed.
+  "capacitor://localhost",
+  "https://localhost",
+  "http://localhost",
 ];
 app.use(
   cors({
