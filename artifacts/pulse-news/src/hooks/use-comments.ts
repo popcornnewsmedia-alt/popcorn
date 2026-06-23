@@ -264,7 +264,13 @@ export function useComments(
       })
       .select("*")
       .single();
-    if (error || !data) return null;
+    if (error || !data) {
+      // Surface the real cause instead of swallowing it. The most common one is
+      // an expired/invalid auth session (RLS rejects the insert) — see the
+      // CommentSheet send handler, which restores the text and re-prompts auth.
+      console.error("[postComment] insert failed:", error?.code, error?.message, error);
+      return null;
+    }
     const newRow = data as DBComment;
     // Optimistically append so the sender sees their entry instantly (realtime
     // re-fetch will reconcile, but we avoid the network round-trip delay).

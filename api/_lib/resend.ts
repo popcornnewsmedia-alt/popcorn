@@ -9,46 +9,51 @@ const APP_URL = process.env.APP_URL || "https://popcornmedia.org";
 function verificationHtml(name: string, confirmLink: string): string {
   return `<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/></head>
-<body style="margin:0;padding:0;background:#053980;font-family:'Helvetica Neue',Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#053980;padding:40px 20px;">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/>
+<style>
+@font-face{font-family:'Macabro';src:url('https://popcornmedia.org/fonts/MACABRO.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+</style>
+</head>
+<body style="margin:0;padding:0;background:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;">
     <tr><td align="center">
-      <table width="100%" style="max-width:480px;">
-        <!-- Logo -->
-        <tr><td style="padding-bottom:32px;text-align:center;">
-          <span style="font-size:18px;font-weight:800;letter-spacing:0.06em;color:#fff1cd;text-transform:uppercase;">POPCORN</span>
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
+        <!-- Top strip: blue, logo + wordmark -->
+        <tr><td background="https://popcornmedia.org/email-grain-blue.png" style="background-color:#042c85;background-image:url('https://popcornmedia.org/email-grain-blue.png');background-repeat:repeat;background-position:top center;padding:30px 20px 26px;text-align:center;">
+          <img src="https://popcornmedia.org/logo-latest.png" alt="Popcorn" width="72" height="72" style="display:inline-block;border-radius:16px;"/>
+          <div style="margin-top:14px;font-family:'Macabro','Anton','Helvetica Neue',Arial,sans-serif;font-size:26px;font-weight:800;letter-spacing:0.05em;color:#fff1cd;text-transform:uppercase;">POPCORN</div>
         </td></tr>
-        <!-- Heading -->
-        <tr><td style="padding-bottom:16px;text-align:center;">
-          <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:0.02em;color:#fff1cd;line-height:1.1;text-transform:uppercase;">
-            VERIFY YOUR<br/>EMAIL.
-          </h1>
+        <!-- Body: white -->
+        <tr><td style="background:#ffffff;padding:40px 28px 34px;">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="padding-bottom:16px;text-align:center;">
+              <h1 style="margin:0;font-size:24px;font-weight:800;letter-spacing:0.01em;color:#042c85;line-height:1.15;text-transform:uppercase;">
+                VERIFY YOUR EMAIL.
+              </h1>
+            </td></tr>
+            <tr><td style="padding-bottom:28px;text-align:center;">
+              <p style="margin:0;font-size:15px;color:#4a4a4a;line-height:1.65;">
+                Hey ${name}, thanks for signing up for Popcorn. Click the button below to verify your email and activate your account.
+              </p>
+            </td></tr>
+            <tr><td style="padding-bottom:28px;text-align:center;">
+              <a href="${confirmLink}" style="display:inline-block;padding:14px 38px;background:#042c85;color:#fff1cd;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-radius:999px;">
+                VERIFY EMAIL
+              </a>
+            </td></tr>
+            <tr><td style="text-align:center;">
+              <p style="margin:0;font-size:12px;color:#9aa0a8;line-height:1.6;">
+                If the button doesn't work, copy and paste this link:<br/>
+                <a href="${confirmLink}" style="color:#042c85;word-break:break-all;">${confirmLink}</a>
+              </p>
+            </td></tr>
+          </table>
         </td></tr>
-        <!-- Body -->
-        <tr><td style="padding-bottom:28px;text-align:center;">
-          <p style="margin:0;font-size:14px;color:rgba(255,241,205,0.55);line-height:1.6;">
-            Hey ${name}, thanks for signing up for Popcorn.<br/>
-            Click the button below to verify your email and activate your account.
-          </p>
-        </td></tr>
-        <!-- CTA -->
-        <tr><td style="padding-bottom:32px;text-align:center;">
-          <a href="${confirmLink}" style="display:inline-block;padding:14px 36px;background:#fff1cd;color:#053980;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-radius:999px;">
-            VERIFY EMAIL
-          </a>
-        </td></tr>
-        <!-- Fallback link -->
-        <tr><td style="padding-bottom:28px;text-align:center;">
-          <p style="margin:0;font-size:11px;color:rgba(255,241,205,0.30);line-height:1.6;">
-            If the button doesn't work, copy and paste this link:<br/>
-            <a href="${confirmLink}" style="color:rgba(255,241,205,0.50);word-break:break-all;">${confirmLink}</a>
-          </p>
-        </td></tr>
-        <!-- Footer -->
-        <tr><td style="border-top:1px solid rgba(255,241,205,0.08);padding-top:20px;text-align:center;">
-          <p style="margin:0;font-size:10px;color:rgba(255,241,205,0.22);line-height:1.6;">
-            Popcorn Media &middot; Culture news, curated.<br/>
-            <a href="mailto:hello@popcornmedia.org" style="color:rgba(255,241,205,0.30);text-decoration:none;">hello@popcornmedia.org</a>
+        <!-- Footer: white -->
+        <tr><td style="background:#ffffff;border-top:1px solid #eceae3;padding:24px 20px 32px;text-align:center;">
+          <p style="margin:0;font-size:13px;color:#9aa0a8;line-height:1.7;">
+            Popcorn Media<br/>
+            <a href="mailto:hello@popcornmedia.org" style="color:#9aa0a8;text-decoration:none;">hello@popcornmedia.org</a>
           </p>
         </td></tr>
       </table>
@@ -64,43 +69,61 @@ function welcomeHtml(name: string, appLink?: string): string {
   const link = appLink || APP_URL;
   return `<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/></head>
-<body style="margin:0;padding:0;background:#053980;font-family:'Helvetica Neue',Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#053980;padding:40px 20px;">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/>
+<style>
+@font-face{font-family:'Macabro';src:url('https://popcornmedia.org/fonts/MACABRO.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+</style>
+</head>
+<body style="margin:0;padding:0;background:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;">
     <tr><td align="center">
-      <table width="100%" style="max-width:480px;">
-        <!-- Logo -->
-        <tr><td style="padding-bottom:32px;text-align:center;">
-          <span style="font-size:18px;font-weight:800;letter-spacing:0.06em;color:#fff1cd;text-transform:uppercase;">POPCORN</span>
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
+        <!-- Top strip: blue, logo + wordmark -->
+        <tr><td background="https://popcornmedia.org/email-grain-blue.png" style="background-color:#042c85;background-image:url('https://popcornmedia.org/email-grain-blue.png');background-repeat:repeat;background-position:top center;padding:30px 20px 26px;text-align:center;">
+          <img src="https://popcornmedia.org/logo-latest.png" alt="Popcorn" width="72" height="72" style="display:inline-block;border-radius:16px;"/>
+          <div style="margin-top:14px;font-family:'Macabro','Anton','Helvetica Neue',Arial,sans-serif;font-size:26px;font-weight:800;letter-spacing:0.05em;color:#fff1cd;text-transform:uppercase;">POPCORN</div>
         </td></tr>
-        <!-- Heading -->
-        <tr><td style="padding-bottom:16px;text-align:center;">
-          <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:0.02em;color:#fff1cd;line-height:1.1;text-transform:uppercase;">
-            WELCOME,<br/>${(name || "READER").toUpperCase()}.
-          </h1>
+        <!-- Body: white -->
+        <tr><td style="background:#ffffff;padding:40px 28px 34px;">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="padding-bottom:18px;text-align:center;">
+              <h1 style="margin:0;font-size:24px;font-weight:800;letter-spacing:0.01em;color:#042c85;line-height:1.15;text-transform:uppercase;">
+                WELCOME, ${(name || "READER").toUpperCase()}.
+              </h1>
+            </td></tr>
+            <tr><td style="padding-bottom:14px;text-align:center;">
+              <p style="margin:0;font-size:15px;color:#4a4a4a;line-height:1.7;">
+                You're officially part of Popcorn: culturally relevant stories every day, handpicked for you.
+              </p>
+            </td></tr>
+            <tr><td style="padding-bottom:14px;text-align:center;">
+              <p style="margin:0;font-size:15px;color:#4a4a4a;line-height:1.7;">
+                Every day we gather around <strong style="color:#042c85;">15 of the most relevant stories</strong> from across culture: the surprising, the fascinating, the things worth knowing. In an age of hyper-personalised feeds that just show you more of what you already like, the best discoveries are the ones you weren't looking for. So we keep it organic, a curated mix rather than an echo chamber.
+              </p>
+            </td></tr>
+            <tr><td style="padding-bottom:28px;text-align:center;">
+              <p style="margin:0;font-size:15px;color:#4a4a4a;line-height:1.7;">
+                Skim the headlines for the quick version, or tap in for the full story. Either way, you'll always know what the world's talking about.
+              </p>
+            </td></tr>
+            <tr><td style="padding-bottom:30px;text-align:center;">
+              <a href="${link}" style="display:inline-block;padding:14px 38px;background:#042c85;color:#fff1cd;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-radius:999px;">
+                START READING
+              </a>
+            </td></tr>
+            <tr><td style="text-align:center;">
+              <p style="margin:0;font-size:15px;color:#4a4a4a;line-height:1.6;">
+                See you inside,<br/>
+                <span style="font-family:'Macabro','Anton','Helvetica Neue',Arial,sans-serif;font-size:17px;letter-spacing:0.03em;color:#042c85;">Team Popcorn</span>
+              </p>
+            </td></tr>
+          </table>
         </td></tr>
-        <!-- Body -->
-        <tr><td style="padding-bottom:12px;text-align:center;">
-          <p style="margin:0;font-size:14px;color:rgba(255,241,205,0.55);line-height:1.65;">
-            You're officially part of Popcorn. We curate the most interesting culture stories from around the globe &mdash; the surprising, the fascinating, the things you didn't know you wanted to know.
-          </p>
-        </td></tr>
-        <tr><td style="padding-bottom:28px;text-align:center;">
-          <p style="margin:0;font-size:14px;color:rgba(255,241,205,0.55);line-height:1.65;">
-            Your personalised feed is ready. Dive in.
-          </p>
-        </td></tr>
-        <!-- CTA -->
-        <tr><td style="padding-bottom:32px;text-align:center;">
-          <a href="${link}" style="display:inline-block;padding:14px 36px;background:#fff1cd;color:#053980;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-radius:999px;">
-            START READING
-          </a>
-        </td></tr>
-        <!-- Footer -->
-        <tr><td style="border-top:1px solid rgba(255,241,205,0.08);padding-top:20px;text-align:center;">
-          <p style="margin:0;font-size:10px;color:rgba(255,241,205,0.22);line-height:1.6;">
-            Popcorn Media &middot; Culture news, curated.<br/>
-            <a href="mailto:hello@popcornmedia.org" style="color:rgba(255,241,205,0.30);text-decoration:none;">hello@popcornmedia.org</a>
+        <!-- Footer: white -->
+        <tr><td style="background:#ffffff;border-top:1px solid #eceae3;padding:24px 20px 32px;text-align:center;">
+          <p style="margin:0;font-size:13px;color:#9aa0a8;line-height:1.7;">
+            Popcorn Media<br/>
+            <a href="mailto:hello@popcornmedia.org" style="color:#9aa0a8;text-decoration:none;">hello@popcornmedia.org</a>
           </p>
         </td></tr>
       </table>

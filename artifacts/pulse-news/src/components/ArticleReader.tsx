@@ -387,8 +387,6 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
 
                 <div className="max-w-2xl mx-auto px-5 pt-5 pb-28 sm:px-8">
 
-                  {/* Image credit now rendered as a subtle overlay on the hero image itself */}
-
                   {/* Category + source pills + date */}
                   <div className="flex flex-wrap items-center gap-2 mb-5">
                     <span
@@ -426,7 +424,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                     >
                       <Heart style={{ width: 22, height: 22, color: liked ? '#e11d48' : '#111111', fill: liked ? '#e11d48' : 'none', strokeWidth: 1.6 }} />
                       <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: liked ? '#e11d48' : '#111111' }}>
-                        {(() => { const c = article.likes + (liked ? 1 : 0); return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : c; })()}
+                        {(() => { const c = article.likes; return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : c; })()}
                       </span>
                     </button>
                     <button
@@ -479,10 +477,29 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                     </div>
                   </div>
 
-                  {/* Source footnote */}
-                  <p style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)', fontFamily: "'Inter', sans-serif", marginTop: '32px', marginBottom: '0' }}>
-                    via {article.source}
-                  </p>
+                  {/* Source footnote — publication always shows; "here" links
+                      to the original article when we have its URL. */}
+                  {(() => {
+                    const sourceUrl = (article as { link?: string | null }).link ?? null;
+                    return (
+                      <p style={{ fontSize: '12px', color: 'rgba(0,0,0,0.38)', fontFamily: "'Inter', sans-serif", marginTop: '32px', marginBottom: '0' }}>
+                        Source: {article.source}
+                        {sourceUrl && (
+                          <>
+                            {' — read the full story '}
+                            <a
+                              href={sourceUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{ color: '#042c85', textDecoration: 'underline', textUnderlineOffset: '2px' }}
+                            >
+                              here
+                            </a>
+                          </>
+                        )}
+                      </p>
+                    );
+                  })()}
 
                   {/* Footer CTA */}
                   <div className="mt-16 pt-8 flex items-center justify-center" style={{ borderTop: '1px solid rgba(4,44,133,0.12)' }}>
@@ -718,7 +735,7 @@ function DesktopArticleLayout({
                     }}
                   />
                 }
-                count={(() => { const c = article.likes + (liked ? 1 : 0); return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : String(c); })()}
+                count={(() => { const c = article.likes; return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : String(c); })()}
                 onClick={() => { void toggleLike(article.id); }}
                 active={liked}
                 activeFill="#e11d48"
@@ -841,19 +858,6 @@ function DesktopArticleLayout({
                   }}
                 />
               </div>
-              {article.imageCredit && (
-                <figcaption
-                  style={{
-                    fontFamily: ARCHIVO,
-                    fontSize: "12.5px",
-                    color: DESK_MUTE,
-                    marginTop: 11,
-                    maxWidth: 720,
-                  }}
-                >
-                  {article.imageCredit}
-                </figcaption>
-              )}
             </figure>
           )}
 
@@ -932,6 +936,21 @@ function DesktopArticleLayout({
                             <Instagram size={17} strokeWidth={1.8} />
                           </div>
                           <div
+                            className="absolute inset-0 flex items-center justify-center pointer-events-none transition-transform duration-300 group-hover:scale-105"
+                            style={{ paddingBottom: 18 }}
+                          >
+                            <img
+                              src="/logo-latest.png"
+                              alt="Popcorn"
+                              loading="lazy"
+                              style={{
+                                width: "46%",
+                                height: "auto",
+                                objectFit: "contain",
+                              }}
+                            />
+                          </div>
+                          <div
                             className="absolute inset-x-0 bottom-0 flex items-center justify-center pb-4 px-3 transition-transform duration-300 group-hover:-translate-y-0.5"
                             style={{
                               fontFamily: "'Newsreader', serif",
@@ -984,6 +1003,43 @@ function DesktopArticleLayout({
               {/* Clear the float so subsequent blocks resume full width. */}
               <div style={{ clear: "both" }} />
             </div>
+
+            {/* ── Source attribution — discreet grey line under the story.
+                The publication always shows; "here" links to the original
+                article when we have its URL (article.link). ─────────────── */}
+            {!isTruncated && (() => {
+              const sourceUrl = (article as { link?: string | null }).link ?? null;
+              return (
+                <p
+                  style={{
+                    margin: "30px 0 0",
+                    fontFamily: ARCHIVO,
+                    fontSize: "13px",
+                    lineHeight: 1.5,
+                    color: DESK_MUTE,
+                  }}
+                >
+                  Source: {article.source}
+                  {sourceUrl && (
+                    <>
+                      {" — read the full story "}
+                      <a
+                        href={sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          color: HOME_BLUE,
+                          textDecoration: "underline",
+                          textUnderlineOffset: "2px",
+                        }}
+                      >
+                        here
+                      </a>
+                    </>
+                  )}
+                </p>
+              );
+            })()}
 
             {/* ── Paywall — NYT-style fade into a sign-in wall ─────────── */}
             {isTruncated && (

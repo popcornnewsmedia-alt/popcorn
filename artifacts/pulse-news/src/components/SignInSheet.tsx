@@ -24,10 +24,18 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
   const { signIn, signInWithGoogle } = useAuth();
   const isDesktop = useIsDesktopWeb();
 
-  // Pre-fill when redirected from sign-up (existing account detected)
+  // Reset transient state every time the sheet OPENS. Without this, a previous
+  // sign-in that left `loading` true (e.g. the parent closed the sheet on auth
+  // success without calling reset()) carries over, leaving the button stuck on
+  // "SIGNING IN…" with fields pre-filled on the next open. Pre-fills email when
+  // redirected from sign-up (existing account detected).
   useEffect(() => {
-    if (initialEmail) setIdentifier(initialEmail);
-  }, [initialEmail]);
+    if (!isOpen) return;
+    setIdentifier(initialEmail ?? "");
+    setPassword("");
+    setError(null);
+    setLoading(false);
+  }, [isOpen, initialEmail]);
 
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
   const reset = () => { setIdentifier(""); setPassword(""); setError(null); setLoading(false); };

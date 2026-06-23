@@ -237,7 +237,7 @@ router.post("/curation/reset-image", async (req, res) => {
       source: String(row.source ?? ""),
       readTimeMinutes: Number(row.read_time_minutes ?? 3),
       publishedAt: String(row.published_at ?? ""),
-      likes: Number(row.likes ?? 1000),
+      likes: Number(row.likes ?? 50),
       isBookmarked: false,
       gradientStart: String(row.gradient_start ?? ""),
       gradientEnd: String(row.gradient_end ?? ""),

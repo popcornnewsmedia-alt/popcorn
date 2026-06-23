@@ -155,14 +155,6 @@ export function markLive(): void {
   _isLive = true;
 }
 
-export function updateLike(id: number): EnrichedArticle | null {
-  const articles = getArticles();
-  const article = articles.find((a) => a.id === id);
-  if (!article) return null;
-  article.likes += 1;
-  return article;
-}
-
 export function toggleBookmark(id: number): EnrichedArticle | null {
   const articles = getArticles();
   const article = articles.find((a) => a.id === id);

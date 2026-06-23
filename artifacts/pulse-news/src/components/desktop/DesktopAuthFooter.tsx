@@ -65,7 +65,7 @@ export function DesktopAuthFooter({
             className="leading-[0.92]"
             style={{
               fontFamily: "'Macabro', serif",
-              fontSize: "58px",
+              fontSize: "44px",
               color: CREAM,
               letterSpacing: "-0.01em",
             }}

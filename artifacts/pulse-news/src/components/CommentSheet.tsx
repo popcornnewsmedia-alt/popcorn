@@ -4,6 +4,7 @@ import { X, ChevronUp, ChevronDown, ArrowUp, MoreHorizontal, Trash2 } from "luci
 import { GrainBackground } from "./GrainBackground";
 import { useAuth } from "@/hooks/use-auth";
 import { useComments } from "@/hooks/use-comments";
+import { supabase } from "@/lib/supabase";
 import { avatarColor, YOU, BRAND, CREAM } from "@/lib/avatar";
 
 type Sort = "popular" | "newest" | "oldest";
@@ -536,7 +537,17 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
       targetReplyTo?.id ?? null,
       targetReplyTo?.mentionUserId ?? null,
     );
-    if (id == null) return;
+    if (id == null) {
+      // Post failed — never silently lose the user's words. Restore the text
+      // and reply target, refocus, and (since the most common cause is a
+      // lapsed login session) re-prompt sign-in when the session is gone.
+      setInput(text);
+      setReplyTo(targetReplyTo);
+      requestAnimationFrame(() => inputRef.current?.focus());
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) onRequireAuth?.();
+      return;
+    }
 
     if (targetReplyTo) {
       setExpandedReplies(prev => new Set(prev).add(targetReplyTo.id));

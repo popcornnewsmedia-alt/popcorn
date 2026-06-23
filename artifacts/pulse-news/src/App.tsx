@@ -71,8 +71,9 @@ function App() {
       const user = session.user;
       const provider = user.app_metadata?.provider;
 
-      // iOS push-notification registration (no-op on web). Triggers the system
-      // permission prompt the first time, silently re-registers thereafter.
+      // iOS push-notification registration (no-op on web). Only re-registers
+      // when permission is already granted — never cold-prompts. The first-time
+      // permission ask is handled by the in-app nudge (EnableNotificationsNudge).
       setupPushNotifications(async () => {
         const { data } = await supabase.auth.getSession();
         return data.session?.access_token ?? null;
@@ -118,16 +119,17 @@ function App() {
       if (localStorage.getItem(sentKey)) return;
       localStorage.setItem(sentKey, "1");
 
-      // TODO: Re-enable welcome email once Resend domain is verified (June 2026 domain transfer)
-      // const name = user.user_metadata?.full_name || user.user_metadata?.name || "Reader";
-      // const email = user.email;
-      // if (!email) return;
-      // const apiUrl = import.meta.env.VITE_API_URL ?? "";
-      // fetch(`${apiUrl}/api/auth/send-welcome`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ userId: user.id, email, name }),
-      // }).catch(() => { /* Non-fatal */ });
+      const name = user.user_metadata?.full_name || user.user_metadata?.name || "Reader";
+      const email = user.email;
+      if (!email) return;
+      // send-welcome is a Vercel serverless function on the SAME origin as the
+      // deployed site — call it relative. (Do NOT prefix VITE_API_URL: that
+      // points at the Railway news API, which has no /api/auth/* routes.)
+      void fetch(`/api/auth/send-welcome`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id, email, name }),
+      }).catch(() => { /* Non-fatal */ });
     });
 
     // Also run the gate for the session that already exists when App mounts
@@ -205,19 +207,18 @@ function App() {
         history.replaceState(null, "", window.location.pathname);
       }
 
-      // TODO: Re-enable welcome email once Resend domain is verified (June 2026 domain transfer)
-      // if (flagData.userId && flagData.email && flagData.name) {
-      //   const apiUrl = import.meta.env.VITE_API_URL ?? "";
-      //   fetch(`${apiUrl}/api/auth/send-welcome`, {
-      //     method: "POST",
-      //     headers: { "Content-Type": "application/json" },
-      //     body: JSON.stringify({
-      //       userId: flagData.userId,
-      //       email: flagData.email,
-      //       name: flagData.name,
-      //     }),
-      //   }).catch(() => { /* Non-fatal — welcome email failure shouldn't block the user */ });
-      // }
+      if (flagData.userId && flagData.email && flagData.name) {
+        // Same-origin Vercel function (see note in the Google branch above).
+        void fetch(`/api/auth/send-welcome`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: flagData.userId,
+            email: flagData.email,
+            name: flagData.name,
+          }),
+        }).catch(() => { /* Non-fatal — welcome email failure shouldn't block the user */ });
+      }
 
       setShowConfirmed(true);
     };

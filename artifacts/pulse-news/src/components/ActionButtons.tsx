@@ -46,9 +46,11 @@ export function ActionButtons({ article, onOpenComments, horizontal = false }: A
   // instantly on toggle, even if the parent hasn't re-rendered with the
   // updated overlay yet.
   const isSaved = isSavedFn(article.id);
-  // Reflect the user's own like in the displayed total on top of the
-  // article's baseline count.
-  const likeCount = article.likes + (isLiked ? 1 : 0);
+  // The server returns seed + real likes from all users (additive across
+  // users/devices), refreshed on each feed load — so show it directly. The
+  // heart still flips instantly on tap for immediate feedback; the count
+  // catches up on the next refresh.
+  const likeCount = article.likes;
 
   const iconStyle = { filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.55))' };
 

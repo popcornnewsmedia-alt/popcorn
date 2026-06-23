@@ -107,7 +107,7 @@ export function DesktopAuthGate({
             className="text-center leading-[0.92]"
             style={{
               fontFamily: "'Macabro', serif",
-              fontSize: "52px",
+              fontSize: "40px",
               color: CREAM,
               letterSpacing: "-0.01em",
             }}

@@ -80,7 +80,13 @@ export function GrainBackground({ variant = "light" }: { variant?: "light" | "da
         const d = (dmap[y0*DW+x0]*(1-tx) + dmap[y0*DW+x0+1]*tx)*(1-ty)
                 + (dmap[(y0+1)*DW+x0]*(1-tx) + dmap[(y0+1)*DW+x0+1]*tx)*ty;
         const density = Math.min(1, d / p90);
-        if (variant !== "pale" && variant !== "paper" && variant !== "white" && variant !== "popcorn-cream" && variant !== "popcorn-cream-light" && variant !== "popcorn-cream-warm" && variant !== "popcorn-cream-fcedd4" && variant !== "popcorn-paper" && density < 0.06) continue;
+        // Variants that paint grain on EVERY pixel (no low-density skip). Skipping
+        // low-density pixels leaves the flat base colour showing through as bare
+        // patches — very visible on the blue ground (splash + feed). The cream
+        // family was already exempt; the blue/ink family + the default "light"
+        // (which uses the blue formula) are now exempt too so the texture reads
+        // edge-to-edge. Only the legacy "dark" red variant keeps the skip.
+        if (variant === "dark" && density < 0.06) continue;
 
         // pale/paper/white/popcorn-cream use flat intensity so blobs don't create visible bright/dark patches
         const effective = variant === "pale" ? 0.45 : variant === "paper" ? 0.40 : variant === "white" ? 0.32 : variant === "popcorn-cream" ? 0.42 : variant === "popcorn-cream-light" ? 0.36 : variant === "popcorn-cream-warm" ? 0.18 : variant === "popcorn-cream-fcedd4" ? 0.18 : variant === "popcorn-paper" ? 0.18 : (0.1152 + density * 0.5248);

@@ -104,19 +104,66 @@ export async function setupPushNotifications(
   try {
     attachListenersOnce(getAccessToken);
 
+    // Do NOT cold-prompt on sign-in. We only (re)register here when the user
+    // has ALREADY granted permission — to refresh the APNs token on every
+    // launch. The first-time permission request is deferred to the in-app
+    // "enable notifications" nudge (promptEnablePush), so Apple's one-time
+    // dialog appears with context, on the user's explicit opt-in.
     const perms = await PushNotifications.checkPermissions();
-    let status = perms.receive;
-    if (status === "prompt" || status === "prompt-with-rationale") {
-      const req = await PushNotifications.requestPermissions();
-      status = req.receive;
-    }
-    if (status !== "granted") {
-      console.log("[push] permission not granted:", status);
+    if (perms.receive !== "granted") {
+      console.log("[push] permission not yet granted — deferring to nudge:", perms.receive);
       return;
     }
     await PushNotifications.register();
   } catch (err) {
     console.warn("[push] setup failed:", (err as Error).message);
+  }
+}
+
+export type PushPermissionStatus =
+  | "granted"
+  | "denied"
+  | "prompt"
+  | "prompt-with-rationale"
+  | "unsupported";
+
+/**
+ * Read the current notification permission WITHOUT prompting. Returns
+ * "unsupported" on web (no native push). Used by the in-app nudge to decide
+ * whether to surface the "enable notifications" banner.
+ */
+export async function getPushPermissionStatus(): Promise<PushPermissionStatus> {
+  if (!Capacitor.isNativePlatform()) return "unsupported";
+  try {
+    const perms = await PushNotifications.checkPermissions();
+    return perms.receive as PushPermissionStatus;
+  } catch {
+    return "unsupported";
+  }
+}
+
+/**
+ * Request notification permission (shows the OS dialog when the status is still
+ * "prompt"), then register for APNs on grant. Returns the resulting status so
+ * the caller can update its UI. When the OS status is already "denied" Apple
+ * will NOT show a dialog — the call resolves "denied" immediately and the caller
+ * should point the user at iOS Settings instead.
+ */
+export async function promptEnablePush(
+  getAccessToken: () => Promise<string | null>,
+): Promise<PushPermissionStatus> {
+  if (!Capacitor.isNativePlatform()) return "unsupported";
+  try {
+    attachListenersOnce(getAccessToken);
+    const req = await PushNotifications.requestPermissions();
+    const status = req.receive as PushPermissionStatus;
+    if (status === "granted") {
+      await PushNotifications.register();
+    }
+    return status;
+  } catch (err) {
+    console.warn("[push] promptEnablePush failed:", (err as Error).message);
+    return "unsupported";
   }
 }
 

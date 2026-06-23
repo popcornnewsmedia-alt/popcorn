@@ -2703,7 +2703,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences, no comment
         }
         return new Date().toISOString();
       })(),
-      likes: Math.floor(Math.random() * 4500) + 500,
+      likes: Math.floor(Math.random() * 251) + 50, // seed: plausible early-stage starter likes (50-300); real likes live in user_likes
       isBookmarked: false,
       gradientStart,
       gradientEnd,
@@ -3928,7 +3928,7 @@ Respond with ONLY a valid JSON array — no markdown, no code fences.`;
         }
         return new Date().toISOString();
       })(),
-      likes: Math.floor(Math.random() * 4500) + 500,
+      likes: Math.floor(Math.random() * 251) + 50, // seed: plausible early-stage starter likes (50-300); real likes live in user_likes
       isBookmarked: false,
       gradientStart,
       gradientEnd,

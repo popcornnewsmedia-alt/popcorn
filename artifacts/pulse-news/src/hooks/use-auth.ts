@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { supabase, purgeNativeAuthStorage } from '@/lib/supabase';
 import { apiBase } from '@/lib/api-base';
 
 export interface Profile {
@@ -217,6 +217,10 @@ export function useAuth() {
         if (/^sb-.+-auth-token(\.\d+)?$/.test(k)) localStorage.removeItem(k);
       }
     } catch { /* private-mode / storage-disabled — not fatal */ }
+    // On native builds the session lives in Capacitor Preferences, not
+    // localStorage — clear it there too. Fire-and-forget: the UI is already
+    // being reset by the caller and we don't want to await native I/O.
+    void purgeNativeAuthStorage();
   };
 
   const signOut = async () => {

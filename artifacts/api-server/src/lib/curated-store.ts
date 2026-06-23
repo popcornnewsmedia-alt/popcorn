@@ -96,7 +96,7 @@ function rowToArticle(row: Record<string, unknown>): EnrichedArticle {
     source:           String(row.source ?? ""),
     readTimeMinutes:  Number(row.read_time_minutes) || 3,
     publishedAt:      String(row.published_at ?? new Date().toISOString()),
-    likes:            Number(row.likes) || 1000,
+    likes:            Number(row.likes) || 50,
     isBookmarked:     false,
     gradientStart:    String(row.gradient_start ?? "#080e24"),
     gradientEnd:      String(row.gradient_end ?? "#0e2a5a"),

@@ -6,7 +6,6 @@ import {
   getArticles,
   getIsLive,
   getArticleById,
-  updateLike,
   toggleBookmark,
   triggerRefresh,
   triggerShortlist,
@@ -16,6 +15,7 @@ import {
   updateArticleImageById,
 } from "../lib/article-store.js";
 import { backfillFocalPointsForToday } from "../lib/curated-store.js";
+import { getLikeCountsByArticle } from "../lib/like-counts.js";
 import { selectBestImageForRerun, detectImageFocalPoint, fetchImageDimensions, type EnrichedArticle } from "../lib/rss-enricher.js";
 import { processAndUploadImage } from "../lib/image-processor.js";
 import { supabase } from "../lib/supabase-client.js";
@@ -23,7 +23,7 @@ import { supabase } from "../lib/supabase-client.js";
 const router: IRouter = Router();
 
 // GET /api/news
-router.get("/news", (req, res) => {
+router.get("/news", async (req, res) => {
   const page = parseInt((req.query.page as string) ?? "1") || 1;
   const limit = parseInt((req.query.limit as string) ?? "10") || 10;
   const category = req.query.category as string | undefined;
@@ -33,10 +33,17 @@ router.get("/news", (req, res) => {
     filtered = filtered.filter((a) => a.category === category);
   }
 
+  // Add real likes (from user_likes) on top of each article's seed, so the
+  // displayed count is additive across all users and devices. Updates on the
+  // next feed refresh (see like-counts.ts TTL).
+  const likeCounts = await getLikeCountsByArticle();
+  filtered = filtered.map((a) => ({ ...a, likes: a.likes + (likeCounts.get(a.id) ?? 0) }));
+
   // Compute a feed signature so the mobile client can short-circuit unchanged
   // requests (and so any in-place change — new article, image swap, title
-  // patch — automatically busts cache without manual coordination).
-  const sig = filtered.map((a) => `${a.id}:${a.title}:${a.imageUrl ?? ""}`).join("|");
+  // patch, like-count change — automatically busts cache without manual
+  // coordination).
+  const sig = filtered.map((a) => `${a.id}:${a.title}:${a.imageUrl ?? ""}:${a.likes}`).join("|");
   const version = crypto.createHash("sha1").update(sig).digest("hex").slice(0, 12);
   const etag = `"${version}-p${page}-l${limit}-c${category ?? "All"}"`;
 
@@ -66,25 +73,16 @@ router.get("/news", (req, res) => {
 });
 
 // GET /api/news/:id
-router.get("/news/:id", (req, res) => {
+router.get("/news/:id", async (req, res) => {
   const id = parseInt(req.params.id);
   const article = getArticleById(id);
   if (!article) {
     res.status(404).json({ error: "Article not found" });
     return;
   }
-  res.json(article);
-});
-
-// POST /api/news/:id/like
-router.post("/news/:id/like", (req, res) => {
-  const id = parseInt(req.params.id);
-  const article = updateLike(id);
-  if (!article) {
-    res.status(404).json({ error: "Article not found" });
-    return;
-  }
-  res.json({ id: article.id, likes: article.likes });
+  // Add real likes on top of the seed, consistent with the feed endpoint.
+  const likeCounts = await getLikeCountsByArticle();
+  res.json({ ...article, likes: article.likes + (likeCounts.get(article.id) ?? 0) });
 });
 
 // POST /api/news/:id/bookmark
@@ -445,7 +443,7 @@ router.post("/reprocess", async (req, res) => {
           source: String(row.source ?? ""),
           readTimeMinutes: Number(row.read_time_minutes ?? 3),
           publishedAt: String(row.published_at ?? ""),
-          likes: Number(row.likes ?? 1000),
+          likes: Number(row.likes ?? 50),
           isBookmarked: false,
           gradientStart: String(row.gradient_start ?? ""),
           gradientEnd: String(row.gradient_end ?? ""),

@@ -9,6 +9,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { SavesContext, useSavesRoot, useSavedArticles } from "@/hooks/use-saves";
 import { LikesContext, useLikesRoot, useLikedArticles } from "@/hooks/use-likes";
 import { useCommentCount } from "@/hooks/use-comment-count";
+import { useNotifications } from "@/hooks/use-notifications";
+import { avatarColor } from "@/lib/avatar";
 import { CommentSheet } from "@/components/CommentSheet";
 import { ABOUT, PRIVACY, TERMS, type LegalKind, type LegalDoc } from "@/components/LegalSheet";
 import { feedImageUrl } from "@/lib/image-url";
@@ -837,9 +839,19 @@ function Masthead({
 const PROFILE_CSS = `
   .pcd-pm { position: relative; }
   .pcd-pm-trigger {
+    position: relative;
     display: flex; align-items: center; gap: 9px;
     background: transparent; border: 0; cursor: pointer; padding: 0;
     color: #fff;
+  }
+  /* Unread reply badge — red dot pinned to the avatar's top-right, ringed in
+     the masthead blue so it reads as a notification on the popcorn avatar. */
+  .pcd-pm-dot {
+    position: absolute; top: -2px; left: 23px;
+    width: 11px; height: 11px; border-radius: 50%;
+    background: #f43f5e; border: 2px solid ${BLUE};
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.18);
+    pointer-events: none;
   }
   .pcd-pm-av {
     width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
@@ -881,6 +893,26 @@ const PROFILE_CSS = `
   .pcd-pm-headhandle { font-family: 'Inter', sans-serif; font-size: 12.5px; color: rgba(255,241,205,0.55); margin: 3px 0 0; }
   .pcd-pm-rule { height: 1px; background: rgba(255,241,205,0.12); margin: 16px 0; }
   .pcd-pm-eyebrow { font-family: 'Macabro','Anton',sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,241,205,0.42); margin: 0 0 9px; }
+  /* Reply notifications list inside the dropdown */
+  .pcd-pm-notifs { display: flex; flex-direction: column; gap: 6px; }
+  .pcd-pm-notif {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 11px; border-radius: 12px;
+    background: rgba(255,241,205,0.05); border: 1px solid rgba(255,241,205,0.10);
+  }
+  .pcd-pm-notif.is-unread { background: rgba(255,241,205,0.12); border-color: rgba(255,241,205,0.24); }
+  .pcd-pm-notif__av {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11px; color: #fff;
+  }
+  .pcd-pm-notif__txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+  .pcd-pm-notif__head { font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,241,205,0.62); }
+  .pcd-pm-notif__head strong { color: #fff1cd; font-weight: 600; }
+  .pcd-pm-notif__preview {
+    font-family: 'Inter', sans-serif; font-size: 12.5px; color: #fff1cd;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
   .pcd-pm-libtile {
     width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer;
     padding: 12px 14px; border-radius: 13px;
@@ -1094,6 +1126,19 @@ const PROFILE_CSS = `
   }
 `;
 
+// Compact relative time for the notifications list ("now", "3m", "2h", "5d").
+function relTimeShort(iso: string): string {
+  const secs = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));
+  if (secs < 60) return "now";
+  const mins = Math.floor(secs / 60);
+  if (mins < 60) return `${mins}m`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return `${days}d`;
+  return `${Math.floor(days / 7)}w`;
+}
+
 function ProfileMenu({
   userName,
   userHandle,
@@ -1121,6 +1166,21 @@ function ProfileMenu({
   const [pos, setPos] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
   const wrapRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+
+  // Reply notifications — the web equivalent of the app's red dot over the
+  // profile popcorn. Backed by the same Supabase `notifications` table +
+  // realtime, so a reply lights the dot here exactly like on mobile.
+  const { user } = useAuth();
+  const { items: notifs, unreadCount, markAllRead } = useNotifications(user);
+
+  // Opening the menu surfaces the notifications list, so clear the unread
+  // badge shortly after — long enough to register the highlight, then it
+  // settles to "seen" (mirrors tapping the app's notifications sheet).
+  useEffect(() => {
+    if (!open || unreadCount === 0) return;
+    const t = setTimeout(() => { void markAllRead(); }, 800);
+    return () => clearTimeout(t);
+  }, [open, unreadCount, markAllRead]);
 
   const initialSource = userName ?? userHandle?.replace(/^@/, "") ?? "?";
   const initial = (initialSource[0] ?? "?").toUpperCase();
@@ -1177,6 +1237,7 @@ function ProfileMenu({
         <span className="pcd-pm-av">
           {userAvatar ? <img src={userAvatar} alt={userName ?? "Profile"} /> : <span>{initial}</span>}
         </span>
+        {unreadCount > 0 && <span className="pcd-pm-dot" aria-label={`${unreadCount} new notification${unreadCount > 1 ? "s" : ""}`} />}
         {userName && <span className="pcd-pm-name">{userName}</span>}
         <ChevronDown className="pcd-pm-chev" size={14} strokeWidth={2} />
       </button>
@@ -1196,6 +1257,26 @@ function ProfileMenu({
             </div>
 
             <div className="pcd-pm-rule" />
+
+            {notifs.length > 0 && (
+              <>
+                <p className="pcd-pm-eyebrow">Notifications</p>
+                <div className="pcd-pm-notifs">
+                  {notifs.slice(0, 6).map((n) => (
+                    <div key={n.id} className={`pcd-pm-notif${n.read_at ? "" : " is-unread"}`}>
+                      <span className="pcd-pm-notif__av" style={{ background: avatarColor(n.actor_name) }}>
+                        {n.actor_name.replace(/^@/, "").slice(0, 2).toUpperCase()}
+                      </span>
+                      <span className="pcd-pm-notif__txt">
+                        <span className="pcd-pm-notif__head"><strong>{n.actor_name}</strong> replied · {relTimeShort(n.created_at)}</span>
+                        <span className="pcd-pm-notif__preview">{n.preview}</span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="pcd-pm-rule" />
+              </>
+            )}
 
             <p className="pcd-pm-eyebrow">Library</p>
             <button type="button" className="pcd-pm-libtile" onClick={() => goLibrary("saved")}>
@@ -4367,7 +4448,10 @@ function DragSocial({
   const commentCount = useCommentCount(article.id);
   const liked = isLikedFn(article.id);
   const isSaved = isSavedFn(article.id);
-  const likeCount = article.likes + (liked ? 1 : 0);
+  // Server returns seed + real likes from all users (refreshed each load);
+  // show it directly. The heart flips instantly on tap; the count updates on
+  // the next refresh.
+  const likeCount = article.likes;
   const fmt = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`);
 
   const stop = (e: ReactMouseEvent) => { e.preventDefault(); e.stopPropagation(); };

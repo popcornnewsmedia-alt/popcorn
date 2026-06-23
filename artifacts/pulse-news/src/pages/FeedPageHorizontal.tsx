@@ -14,6 +14,9 @@ import { NotificationsSheet } from "@/components/NotificationsSheet";
 import { DateDividerCard } from "@/components/DateDividerCard";
 import { DayCompletionCard } from "@/components/DayCompletionCard";
 import { GrainBackground } from "@/components/GrainBackground";
+import { EnableNotificationsNudge } from "@/components/EnableNotificationsNudge";
+import { getPushPermissionStatus } from "@/lib/push-registration";
+import { FEED_READY_EVENT } from "@/lib/feed-ready-flag";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useAuth } from "@/hooks/use-auth";
 import { useNotifications } from "@/hooks/use-notifications";
@@ -55,6 +58,14 @@ const HORIZONTAL_SPRING = horizontalSpring(360);
 const SPLASH_TS_KEY = 'popcorn_last_splash';
 const SPLASH_IDLE_MS = 12 * 60 * 60 * 1000;
 
+// "Enable notifications" nudge: respectful frequency gate. Show at most once a
+// day, stop forever after 2 dismissals or once notifications are enabled.
+const NOTIF_NUDGE_DONE_KEY = 'popcorn-notif-nudge-done';
+const NOTIF_NUDGE_DISMISS_KEY = 'popcorn-notif-nudge-dismisses';
+const NOTIF_NUDGE_LAST_KEY = 'popcorn-notif-nudge-last';
+const NOTIF_NUDGE_MAX_DISMISS = 2;
+const NOTIF_NUDGE_DELAY_MS = 10000;
+
 // Threshold: horizontal swipe is only recognised when the active day's
 // vertical scrollTop is at or below this (i.e., the user is parked on the
 // DateDividerCard — not mid-article).
@@ -93,12 +104,70 @@ export function FeedPageHorizontal() {
   const [legalSheet, setLegalSheet] = useState<LegalKind | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [showNotifNudge, setShowNotifNudge] = useState(false);
+  const notifNudgeTriedRef = useRef(false);
   const [readerCommentsOpen, setReaderCommentsOpen] = useState(false);
   const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
   const { items: notifItems, unreadCount, loading: notifLoading, markRead, markAllRead } = useNotifications(user);
   const [selectedDate, setSelectedDate] = useState<Date>(startOfDay(new Date()));
   const [readIds, setReadIds] = useState<Set<number>>(new Set());
   const [pickerOpen, setPickerOpen] = useState(false);
+
+  const getAccessToken = useCallback(async () => {
+    const { data } = await supabase.auth.getSession();
+    return data.session?.access_token ?? null;
+  }, []);
+
+  // ── Enable-notifications nudge gate ──────────────────────────────────────
+  // Once per signed-in session, a few seconds after the feed is up, decide
+  // whether to surface the discreet "turn on notifications" banner. Native
+  // only; skips if already granted, shown today, or stopped (enabled / 2x
+  // dismissed). Runs once per mount via notifNudgeTriedRef.
+  useEffect(() => {
+    if (notifNudgeTriedRef.current) return;
+    if (!user || showSplash) return;
+    notifNudgeTriedRef.current = true;
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    (async () => {
+      try {
+        if (localStorage.getItem(NOTIF_NUDGE_DONE_KEY) === '1') return;
+        const status = await getPushPermissionStatus();
+        if (status === 'unsupported') return;        // web — no native push
+        if (status === 'granted') {                  // already on — never nudge
+          localStorage.setItem(NOTIF_NUDGE_DONE_KEY, '1');
+          return;
+        }
+        const dismisses = Number(localStorage.getItem(NOTIF_NUDGE_DISMISS_KEY) ?? '0');
+        if (dismisses >= NOTIF_NUDGE_MAX_DISMISS) {
+          localStorage.setItem(NOTIF_NUDGE_DONE_KEY, '1');
+          return;
+        }
+        const today = format(new Date(), 'yyyy-MM-dd');
+        if (localStorage.getItem(NOTIF_NUDGE_LAST_KEY) === today) return; // once/day
+        timer = setTimeout(() => {
+          localStorage.setItem(NOTIF_NUDGE_LAST_KEY, today);
+          setShowNotifNudge(true);
+        }, NOTIF_NUDGE_DELAY_MS);
+      } catch {
+        /* localStorage / permission probe failed — skip the nudge silently */
+      }
+    })();
+    return () => { if (timer) clearTimeout(timer); };
+  }, [user, showSplash, getAccessToken]);
+
+  const handleNudgeClose = useCallback((outcome: "enabled" | "dismissed") => {
+    setShowNotifNudge(false);
+    try {
+      if (outcome === 'enabled') {
+        localStorage.setItem(NOTIF_NUDGE_DONE_KEY, '1');
+      } else {
+        const next = Number(localStorage.getItem(NOTIF_NUDGE_DISMISS_KEY) ?? '0') + 1;
+        localStorage.setItem(NOTIF_NUDGE_DISMISS_KEY, String(next));
+        if (next >= NOTIF_NUDGE_MAX_DISMISS) localStorage.setItem(NOTIF_NUDGE_DONE_KEY, '1');
+      }
+    } catch { /* ignore storage errors */ }
+  }, []);
 
   // Horizontal paging state. Newest-first: idx 0 = today, idx N = oldest loaded.
   const [currentDayIdx, setCurrentDayIdx] = useState(0);
@@ -972,6 +1041,23 @@ export function FeedPageHorizontal() {
     isPulling.current = false;
   }, [pullOffset, isRefreshing, refetch, landOnDay]);
 
+  // ── Feed-ready push → auto-refetch ────────────────────────────────────────
+  // When the "Your Popcorn is ready" push fires (foreground) or its banner is
+  // tapped (background resume), push-registration dispatches FEED_READY_EVENT.
+  // The overlay animation plays, but without this the feed keeps showing the
+  // previously-loaded (stale) day until a manual pull-to-refresh. Refetch the
+  // feed and slide to the freshly-promoted latest day so the new edition is on
+  // screen by the time the overlay clears.
+  useEffect(() => {
+    const onFeedReady = () => {
+      refetch().finally(() => {
+        requestAnimationFrame(() => landOnDay(0, 420));
+      });
+    };
+    window.addEventListener(FEED_READY_EVENT, onFeedReady);
+    return () => window.removeEventListener(FEED_READY_EVENT, onFeedReady);
+  }, [refetch, landOnDay]);
+
   // ── TopBar date pick ────────────────────────────────────────────────────
   // Set currentDayIdx to the day matching the picked date; always land on
   // that day's divider (scrollTop = 0).
@@ -1320,6 +1406,9 @@ export function FeedPageHorizontal() {
       {renderOverlayTab()}
 
       {!isIntroScreen && <BottomNav activeTab={activeTab} onTabChange={setActiveTab} hasProfileDot={unreadCount > 0} />}
+      {showNotifNudge && !isIntroScreen && activeTab === "feed" && !readingArticle && (
+        <EnableNotificationsNudge getAccessToken={getAccessToken} onClose={handleNudgeClose} />
+      )}
       <ArticleReader
         article={liveReadingArticle}
         onClose={() => { setReadingArticle(null); setReaderCommentsOpen(false); setFocusCommentId(null); }}
