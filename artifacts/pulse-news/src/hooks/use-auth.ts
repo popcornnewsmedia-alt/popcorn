@@ -179,13 +179,14 @@ export function useAuth() {
     return profile;
   }, [loadProfile, state.user?.id]);
 
-  const signUp = async (email: string, password: string, name: string) => {
+  const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
+    const fullName = [firstName.trim(), lastName.trim()].filter(Boolean).join(" ");
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      // Store first name (first word) alongside full name so email templates
-      // can greet "Hey Bharat" rather than "Hey Bharat Arora".
-      options: { data: { full_name: name, first_name: name.trim().split(/\s+/)[0] || name } },
+      // Store first + last separately (and a combined full_name) so email
+      // templates can greet by first name and we keep structured name data.
+      options: { data: { full_name: fullName, first_name: firstName.trim(), last_name: lastName.trim() } },
     });
     if (error) throw error;
     return data;

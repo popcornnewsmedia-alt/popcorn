@@ -28,7 +28,10 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
   const { signUp, updateProfile, refreshProfile } = useAuth();
 
   const [step, setStep] = useState(0);
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  // Derived full name for storage/display; emails greet with the first name.
+  const name = [firstName.trim(), lastName.trim()].filter(Boolean).join(" ");
   const [username, setUsername] = useState("");
   const [usernameStatus, setUsernameStatus] = useState<
     | { kind: "idle" }
@@ -87,7 +90,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
 
   const reset = () => {
     setStep(0); setDone(false); setEmailSent(false);
-    setName(""); setUsername(""); setUsernameStatus({ kind: "idle" });
+    setFirstName(""); setLastName(""); setUsername(""); setUsernameStatus({ kind: "idle" });
     setDobDay(""); setDobMonth(""); setDobYear(""); setEmail(""); setPassword(""); setConfirmPassword("");
     setTopics(new Set()); setNotifs(new Set());
     setError(null); setLoading(false);
@@ -129,7 +132,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
       try {
         // Use Supabase's built-in auth email service for verification.
         // Custom SMTP (Resend) is disabled until domain is verified.
-        const data = await signUp(email, password, name);
+        const data = await signUp(email, password, firstName.trim(), lastName.trim());
 
         if (data?.user?.identities?.length === 0) {
           // User already exists (Supabase returns empty identities)
@@ -204,7 +207,8 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
   const passwordsMatch = password === confirmPassword;
   const canNext =
     step === 0 ? (
-      name.trim().length > 0 &&
+      firstName.trim().length > 0 &&
+      lastName.trim().length > 0 &&
       usernameStatus.kind === "ok" &&
       !!dobDay && !!dobMonth && !!dobYear &&
       email.includes("@") &&
@@ -268,7 +272,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
               </div>
               <div style={{ animation: 'tagline-reveal 0.5s ease 0.35s both' }}>
                 <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '32px', color: '#fff1cd', lineHeight: 1.05, letterSpacing: '0.02em', marginBottom: '10px' }}>
-                  YOU'RE ALL SET,<br />{(name.trim() || "READER").toUpperCase()}.
+                  YOU'RE ALL SET,<br />{(firstName.trim() || "READER").toUpperCase()}.
                 </h2>
                 <p className="font-['Inter']" style={{ fontSize: '14px', color: 'rgba(255,241,205,0.50)' }}>
                   Your personalised feed is ready.
@@ -315,9 +319,10 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
               </div>
 
               <div className="flex flex-col gap-3.5">
-                {/* Full Name */}
+                {/* Name (first + last), then email */}
                 {[
-                  { label: "Full Name", type: "text", value: name, set: setName, placeholder: "Your full name" },
+                  { label: "First Name", type: "text", value: firstName, set: setFirstName, placeholder: "First name" },
+                  { label: "Last Name", type: "text", value: lastName, set: setLastName, placeholder: "Last name" },
                   { label: "Email", type: "email", value: email, set: setEmail, placeholder: "you@example.com" },
                   { label: "Password", type: "password", value: password, set: setPassword, placeholder: "Min. 8 characters" },
                   { label: "Confirm Password", type: "password", value: confirmPassword, set: setConfirmPassword, placeholder: "Re-enter password" },
@@ -336,7 +341,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                       />
                     </div>
                     {/* Username — inserted after Email */}
-                    {i === 1 && (
+                    {label === "Email" && (
                       <UsernameField
                         key="username"
                         value={username}
@@ -346,7 +351,7 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                       />
                     )}
                     {/* Date of Birth — inserted after Username */}
-                    {i === 1 && (
+                    {label === "Email" && (
                       <div key="dob" className="flex flex-col gap-1.5">
                         <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>Date of Birth</label>
                         <div className="flex gap-2">
