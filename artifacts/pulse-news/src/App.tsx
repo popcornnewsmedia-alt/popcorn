@@ -106,22 +106,20 @@ function App() {
         // Non-fatal — user can continue, profile gate will retry on next sign-in.
       }
 
-      // Welcome-email logic is Google-specific.
-      if (provider !== "google") return;
-
-      // Detect new user: created_at is within the last 2 minutes
-      const createdAt = new Date(user.created_at).getTime();
-      const isNewUser = Date.now() - createdAt < 120_000;
-      if (!isNewUser) return;
-
-      // Prevent duplicate welcome emails
-      const sentKey = `popcorn_welcome_sent_${user.id}`;
-      if (localStorage.getItem(sentKey)) return;
-      localStorage.setItem(sentKey, "1");
-
-      const name = user.user_metadata?.full_name || user.user_metadata?.name || "Reader";
+      // Welcome email — fire on sign-in for any CONFIRMED user (OAuth users are
+      // pre-confirmed; email/password users only after they verify). The
+      // endpoint is idempotent (sends at most once per user via a server-side
+      // flag), so this is safe to call on every sign-in AND works regardless of
+      // which device verifies — e.g. signed up on the app but clicked the
+      // verification link on web (the old localStorage-flag approach missed that).
       const email = user.email;
-      if (!email) return;
+      const confirmed = !!(user.email_confirmed_at || user.confirmed_at);
+      if (!email || !confirmed) return;
+      const name =
+        (user.user_metadata?.first_name as string | undefined) ||
+        (user.user_metadata?.full_name as string | undefined) ||
+        (user.user_metadata?.name as string | undefined) ||
+        "Reader";
       // send-welcome is a Vercel serverless function on the SAME origin as the
       // deployed site — call it relative. (Do NOT prefix VITE_API_URL: that
       // points at the Railway news API, which has no /api/auth/* routes.)
