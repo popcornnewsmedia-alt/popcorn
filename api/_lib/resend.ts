@@ -1,7 +1,9 @@
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM_EMAIL = "noreply@popcornmedia.org";
+// "Popcorn <noreply@…>" so mail clients show the friendly sender name
+// "Popcorn" instead of the bare address (matches the Supabase SMTP sender name).
+const FROM_EMAIL = "Popcorn <noreply@popcornmedia.org>";
 const APP_URL = process.env.APP_URL || "https://popcornmedia.org";
 
 /* ── Verification email ──────────────────────────────────────────────────── */
