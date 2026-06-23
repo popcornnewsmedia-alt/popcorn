@@ -8,7 +8,13 @@ const APP_URL = process.env.APP_URL || "https://popcornmedia.org";
 
 /* ── Verification email ──────────────────────────────────────────────────── */
 
+// First word only — greetings read better as "Hey Bharat" than full name.
+function firstName(name: string | undefined | null, fallback: string): string {
+  return (name || "").trim().split(/\s+/)[0] || fallback;
+}
+
 function verificationHtml(name: string, confirmLink: string): string {
+  const first = firstName(name, "there");
   return `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/>
@@ -35,7 +41,7 @@ function verificationHtml(name: string, confirmLink: string): string {
             </td></tr>
             <tr><td style="padding-bottom:28px;text-align:center;">
               <p style="margin:0;font-size:15px;color:#4a4a4a;line-height:1.65;">
-                Hey ${name}, thanks for signing up for Popcorn. Click the button below to verify your email and activate your account.
+                Hey ${first}, thanks for signing up for Popcorn. Click the button below to verify your email and activate your account.
               </p>
             </td></tr>
             <tr><td style="padding-bottom:28px;text-align:center;">
@@ -69,6 +75,7 @@ function verificationHtml(name: string, confirmLink: string): string {
 
 function welcomeHtml(name: string, appLink?: string): string {
   const link = appLink || APP_URL;
+  const first = firstName(name, "Reader");
   return `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/>
@@ -90,7 +97,7 @@ function welcomeHtml(name: string, appLink?: string): string {
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr><td style="padding-bottom:18px;text-align:center;">
               <h1 style="margin:0;font-size:24px;font-weight:800;letter-spacing:0.01em;color:#042c85;line-height:1.15;text-transform:uppercase;">
-                WELCOME, ${(name || "READER").toUpperCase()}.
+                WELCOME, ${first.toUpperCase()}.
               </h1>
             </td></tr>
             <tr><td style="padding-bottom:14px;text-align:center;">

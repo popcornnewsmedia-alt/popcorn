@@ -183,7 +183,9 @@ export function useAuth() {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: name } },
+      // Store first name (first word) alongside full name so email templates
+      // can greet "Hey Bharat" rather than "Hey Bharat Arora".
+      options: { data: { full_name: name, first_name: name.trim().split(/\s+/)[0] || name } },
     });
     if (error) throw error;
     return data;
