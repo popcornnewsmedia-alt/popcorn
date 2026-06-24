@@ -11,6 +11,7 @@ import { useIsDesktopWeb } from "@/hooks/use-is-desktop-web";
 import NotFound from "@/pages/not-found";
 import { EmailConfirmedScreen } from "@/components/EmailConfirmedScreen";
 import { VerifyEmailGate } from "@/components/VerifyEmailGate";
+import { ResetPasswordScreen } from "@/components/ResetPasswordScreen";
 import { UsernameSheet } from "@/components/UsernameSheet";
 import { PopcornReadyOverlay } from "@/components/PopcornReadyOverlay";
 import { setupPushNotifications } from "@/lib/push-registration";
@@ -48,6 +49,8 @@ function Router() {
       {/* Supabase redirects here after email verification — just render the feed.
           App.tsx's onAuthStateChange will detect the session and show EmailConfirmedScreen. */}
       <Route path="/auth/callback" component={HomeRoute} />
+      {/* Password-reset link lands here — set a new password, then signed in. */}
+      <Route path="/reset-password" component={ResetPasswordScreen} />
       <Route component={NotFound} />
     </Switch>
   );

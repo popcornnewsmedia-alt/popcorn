@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { X, ArrowRight } from "lucide-react";
+import { X, ArrowRight, Mail } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsDesktopWeb } from "@/hooks/use-is-desktop-web";
 import { GrainBackground } from "@/components/GrainBackground";
@@ -21,7 +21,14 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { signIn, signInWithGoogle } = useAuth();
+  // Forgot-password sub-flow: "signin" = normal, "reset" = enter email,
+  // "sent" = confirmation. Lives inline in this sheet so it works identically
+  // on app and web.
+  const [mode, setMode] = useState<"signin" | "reset" | "sent">("signin");
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetErr, setResetErr] = useState<string | null>(null);
+  const [resetLoading, setResetLoading] = useState(false);
+  const { signIn, signInWithGoogle, resetPassword } = useAuth();
   const isDesktop = useIsDesktopWeb();
 
   // Reset transient state every time the sheet OPENS. Without this, a previous
@@ -35,11 +42,53 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
     setPassword("");
     setError(null);
     setLoading(false);
+    setMode("signin");
+    setResetEmail("");
+    setResetErr(null);
+    setResetLoading(false);
   }, [isOpen, initialEmail]);
 
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
   const reset = () => { setIdentifier(""); setPassword(""); setError(null); setLoading(false); };
   const handleClose = (e: React.MouseEvent) => { e.stopPropagation(); reset(); onClose(); };
+
+  // ── Forgot-password sub-flow ────────────────────────────────────────────
+  const openReset = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Prefill the email if the user already typed one (ignore usernames).
+    const typed = identifier.trim().replace(/^@/, "");
+    setResetEmail(typed.includes("@") ? typed : "");
+    setResetErr(null);
+    setMode("reset");
+  };
+  const backToSignIn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setResetErr(null);
+    setMode("signin");
+  };
+  const handleSendReset = async (e?: React.SyntheticEvent) => {
+    e?.stopPropagation?.();
+    setResetErr(null);
+    const email = resetEmail.trim();
+    if (!email.includes("@")) { setResetErr("Enter the email address for your account."); return; }
+    setResetLoading(true);
+    try {
+      await resetPassword(email);
+      // Supabase returns success whether or not the email exists (no account
+      // enumeration), so we always advance to the confirmation.
+      setMode("sent");
+    } catch (err: any) {
+      const msg = (err?.message ?? "").toLowerCase();
+      if (msg.includes("rate") || msg.includes("too many")) {
+        setResetErr("Too many attempts. Please wait a moment and try again.");
+      } else {
+        setResetErr(err?.message ?? "Couldn't send the reset link. Please try again.");
+      }
+    } finally {
+      setResetLoading(false);
+    }
+  };
+  const resetEmailValid = resetEmail.trim().includes("@");
 
   // ── Drag-down-to-close ──────────────────────────────────────────────────
   const dragStartY = useRef<number | null>(null);
@@ -226,6 +275,7 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
           <X className="w-4 h-4" style={{ color: 'rgba(255,241,205,0.65)' }} />
         </button>
 
+        {mode === "signin" && (<>
         {/* Content */}
         <div className="relative z-10 flex flex-col px-6 pt-7 pb-5 gap-6">
           {/* Heading */}
@@ -264,6 +314,14 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
                 style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
               />
             </div>
+
+            <button
+              onClick={openReset}
+              className="self-end -mt-1.5 font-['Inter'] font-medium transition-opacity hover:opacity-100"
+              style={{ fontSize: '12px', color: 'rgba(255,241,205,0.55)' }}
+            >
+              Forgot password?
+            </button>
 
             {error && (
               <p className="font-['Inter']" style={{ fontSize: '13px', color: '#ff8a80' }}>{error}</p>
@@ -355,6 +413,91 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
             </p>
           )}
         </div>
+        </>)}
+
+        {/* ── Forgot password: request a reset link ── */}
+        {mode === "reset" && (<>
+          <div className="relative z-10 flex flex-col px-6 pt-7 pb-2 gap-5">
+            <div>
+              <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '15px', color: '#fff1cd', lineHeight: 1, letterSpacing: '0.02em' }}>
+                RESET PASSWORD.
+              </h2>
+              <p className="font-['Inter']" style={{ marginTop: '10px', fontSize: '13px', color: 'rgba(255,241,205,0.55)', lineHeight: 1.55 }}>
+                Enter your account email and we'll send you a link to set a new password.
+              </p>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff1cd' }}>Email</label>
+              <input
+                type="email"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                value={resetEmail}
+                onChange={e => setResetEmail(e.target.value)}
+                onClick={stopProp}
+                onKeyDown={(e) => { if (e.key === "Enter" && resetEmailValid && !resetLoading) handleSendReset(e); }}
+                placeholder="you@example.com"
+                className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
+                style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
+              />
+            </div>
+            {resetErr && (
+              <p className="font-['Inter']" style={{ fontSize: '13px', color: '#ff8a80' }}>{resetErr}</p>
+            )}
+          </div>
+          <div className="relative z-10 px-6 pb-10 pt-3 flex flex-col gap-3 flex-shrink-0">
+            <button
+              onClick={handleSendReset}
+              disabled={!resetEmailValid || resetLoading}
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl transition-all duration-150 active:scale-[0.98]"
+              style={{
+                fontFamily: "'Macabro', 'Anton', sans-serif",
+                fontSize: '14px',
+                letterSpacing: '0.08em',
+                background: resetEmailValid && !resetLoading ? '#fff1cd' : 'rgba(255,241,205,0.12)',
+                color: resetEmailValid && !resetLoading ? '#042c85' : 'rgba(255,241,205,0.28)',
+              }}
+            >
+              {resetLoading ? "SENDING…" : "SEND RESET LINK"}
+              {!resetLoading && <ArrowRight className="w-4 h-4" strokeWidth={2.5} />}
+            </button>
+            <button
+              onClick={backToSignIn}
+              className="w-full py-2.5 text-center font-['Inter'] font-medium"
+              style={{ fontSize: '13px', color: 'rgba(255,241,205,0.45)' }}
+            >
+              Back to sign in
+            </button>
+          </div>
+        </>)}
+
+        {/* ── Reset link sent confirmation ── */}
+        {mode === "sent" && (<>
+          <div className="relative z-10 flex flex-col items-center justify-center text-center px-8 pt-6 pb-2 gap-5">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,241,205,0.10)', border: '1px solid rgba(255,241,205,0.18)' }}>
+              <Mail className="w-8 h-8" style={{ color: '#fff1cd' }} strokeWidth={1.5} />
+            </div>
+            <div>
+              <h2 style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '22px', color: '#fff1cd', lineHeight: 1.1, letterSpacing: '0.02em', marginBottom: '10px' }}>
+                CHECK YOUR INBOX.
+              </h2>
+              <p className="font-['Inter']" style={{ fontSize: '14px', color: 'rgba(255,241,205,0.55)', lineHeight: 1.6 }}>
+                If an account exists for{" "}
+                <span style={{ color: '#fff1cd', fontWeight: 600 }}>{resetEmail.trim()}</span>, you'll get a link to set a new password. Check your spam folder too.
+              </p>
+            </div>
+          </div>
+          <div className="relative z-10 px-6 pb-10 pt-3 flex flex-col gap-3 flex-shrink-0">
+            <button
+              onClick={backToSignIn}
+              className="w-full flex items-center justify-center py-4 rounded-2xl transition-all duration-150 active:scale-[0.98]"
+              style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '14px', letterSpacing: '0.08em', background: '#fff1cd', color: '#042c85' }}
+            >
+              BACK TO SIGN IN
+            </button>
+          </div>
+        </>)}
       </div>
     </>
   );

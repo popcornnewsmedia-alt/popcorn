@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
+import { Capacitor } from '@capacitor/core';
 import { supabase, purgeNativeAuthStorage } from '@/lib/supabase';
 import { apiBase } from '@/lib/api-base';
 
@@ -198,6 +199,21 @@ export function useAuth() {
     return data;
   };
 
+  /** Send a password-reset email. The link lands on /reset-password where the
+   * user sets a new password and is then signed in. The redirect MUST be the
+   * web app — an email link can't reopen the Capacitor WebView origin — so
+   * native builds point at the production site (the user finishes the reset on
+   * web, then signs into the app with their new password). */
+  const resetPassword = async (email: string) => {
+    const base = Capacitor.isNativePlatform()
+      ? 'https://popcornmedia.org'
+      : window.location.origin;
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${base}/reset-password`,
+    });
+    if (error) throw error;
+  };
+
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -335,6 +351,7 @@ export function useAuth() {
     ...state,
     signUp,
     signIn,
+    resetPassword,
     signInWithGoogle,
     signOut,
     updateProfile,
