@@ -211,13 +211,17 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
   };
 
   const passwordsMatch = password === confirmPassword;
+  // Email shape check (local@domain.tld) — drives the inline hint + the gate.
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailValid = EMAIL_RE.test(email.trim());
+  const emailInvalid = email.trim().length > 0 && !emailValid;
   const canNext =
     step === 0 ? (
       firstName.trim().length > 0 &&
       lastName.trim().length > 0 &&
       usernameStatus.kind === "ok" &&
       !!dobDay && !!dobMonth && !!dobYear &&
-      email.includes("@") &&
+      emailValid &&
       password.length >= 8 && confirmPassword.length > 0 && passwordsMatch
     )
     : step === 1 ? topics.size >= 1
@@ -343,8 +347,13 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
                         onClick={stopProp}
                         placeholder={placeholder}
                         className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
-                        style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
+                        style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: `1px solid ${label === "Email" && emailInvalid ? 'rgba(255,138,128,0.55)' : 'rgba(255,241,205,0.13)'}` }}
                       />
+                      {label === "Email" && emailInvalid && (
+                        <p className="font-['Inter']" style={{ fontSize: '12px', color: '#ff8a80' }}>
+                          Enter a valid email address.
+                        </p>
+                      )}
                     </div>
                     {/* Username — inserted after Email */}
                     {label === "Email" && (
