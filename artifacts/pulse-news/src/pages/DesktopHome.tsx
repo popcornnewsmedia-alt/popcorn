@@ -1543,7 +1543,7 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
         {delStage === "farewell" ? (
           <div className="pcd-del__farewell">
             <h3>Sorry to see you go.</h3>
-            <p>Your account has been deleted. We hope you'll be back.</p>
+            <p>Your account has been deleted. We hope you'll be back soon.</p>
           </div>
         ) : (
           <>

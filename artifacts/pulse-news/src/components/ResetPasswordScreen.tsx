@@ -58,7 +58,14 @@ export function ResetPasswordScreen() {
     if (password !== confirm) { setError("Passwords don't match."); return; }
     setSubmitting(true);
     try {
-      const { error: updErr } = await supabase.auth.updateUser({ password });
+      // Guard against the known Supabase stall where updateUser never resolves
+      // (stale GoTrue/WebView state) — race it against a timeout so the button
+      // can't hang forever, which presented as a frozen screen.
+      const result = await Promise.race([
+        supabase.auth.updateUser({ password }),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("__timeout__")), 12000)),
+      ]);
+      const updErr = (result as { error: { message?: string } | null }).error;
       if (updErr) {
         // Supabase rejects reusing the current password with this message.
         const m = (updErr.message || "").toLowerCase();
@@ -70,11 +77,17 @@ export function ResetPasswordScreen() {
         setSubmitting(false);
         return;
       }
-      // Recovery session is now a full session → the user is signed in.
+      // Recovery session is now a full session → the user is signed in. Hard-
+      // navigate home so the app re-initialises cleanly with the new session
+      // (avoids any SPA-routing edge that could leave the screen stuck).
       setPhase("done");
-      setTimeout(() => setLocation("/"), 1400);
-    } catch {
-      setError("Something went wrong — please try again.");
+      setTimeout(() => { window.location.assign(import.meta.env.BASE_URL || "/"); }, 1400);
+    } catch (e) {
+      setError(
+        e instanceof Error && e.message === "__timeout__"
+          ? "This is taking longer than expected — check your connection and try again."
+          : "Something went wrong — please try again.",
+      );
       setSubmitting(false);
     }
   };

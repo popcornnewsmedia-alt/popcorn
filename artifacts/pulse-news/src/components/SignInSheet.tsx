@@ -88,7 +88,11 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
       setResetLoading(false);
     }
   };
-  const resetEmailValid = resetEmail.trim().includes("@");
+  // Basic but solid email shape check (local@domain.tld). Drives the inline
+  // hint + the button enable state.
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const resetEmailValid = EMAIL_RE.test(resetEmail.trim());
+  const resetEmailInvalid = resetEmail.trim().length > 0 && !resetEmailValid;
 
   // ── Drag-down-to-close ──────────────────────────────────────────────────
   const dragStartY = useRef<number | null>(null);
@@ -439,8 +443,13 @@ export function SignInSheet({ isOpen, onClose, onSignUpInstead, onOpenLegal, ini
                 onKeyDown={(e) => { if (e.key === "Enter" && resetEmailValid && !resetLoading) handleSendReset(e); }}
                 placeholder="you@example.com"
                 className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter'] placeholder-[rgba(255,241,205,0.22)]"
-                style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: '1px solid rgba(255,241,205,0.13)' }}
+                style={{ background: 'rgba(255,241,205,0.07)', fontSize: '15px', color: '#fff1cd', border: `1px solid ${resetEmailInvalid ? 'rgba(255,138,128,0.55)' : 'rgba(255,241,205,0.13)'}` }}
               />
+              {resetEmailInvalid && (
+                <p className="font-['Inter']" style={{ fontSize: '12px', color: '#ff8a80' }}>
+                  Enter a valid email address.
+                </p>
+              )}
             </div>
             {resetErr && (
               <p className="font-['Inter']" style={{ fontSize: '13px', color: '#ff8a80' }}>{resetErr}</p>

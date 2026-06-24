@@ -930,7 +930,7 @@ function FarewellPanel() {
           maxWidth: '320px',
         }}
       >
-        We hope you'll be back.
+        We hope you'll be back soon.
       </p>
 
       <div

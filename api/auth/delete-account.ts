@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { supabase } from "../_lib/supabase";
+import { sendAccountDeletedEmail } from "../_lib/resend";
 
 /**
  * Permanently deletes the signed-in caller's account.
@@ -41,11 +42,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const userId = userData.user.id;
+    // Capture identity BEFORE deletion so we can send the confirmation email.
+    const email = userData.user.email ?? "";
+    const meta = (userData.user.user_metadata ?? {}) as Record<string, unknown>;
+    const name =
+      (meta.first_name as string | undefined) ||
+      (meta.full_name as string | undefined) ||
+      (meta.name as string | undefined) ||
+      "there";
 
     const { error: deleteErr } = await supabase.auth.admin.deleteUser(userId);
     if (deleteErr) {
       console.error("delete-account failed:", deleteErr);
       return res.status(500).json({ error: deleteErr.message ?? "Delete failed" });
+    }
+
+    // Confirmation email — best-effort; never fail the delete on an email error.
+    if (email) {
+      try {
+        await sendAccountDeletedEmail(email, name);
+      } catch (mailErr) {
+        console.error("account-deleted email failed (non-fatal):", mailErr);
+      }
     }
 
     return res.json({ ok: true });
