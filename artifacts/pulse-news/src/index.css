@@ -18,6 +18,15 @@ select:focus-visible {
   box-shadow: none !important;
 }
 
+/* Tailwind v4's reset no longer forces cursor:pointer on buttons, so clickable
+   controls (auth footer, sign-up/sign-in popups, etc.) showed the default arrow
+   on desktop. Restore the hand cursor on enabled buttons; disabled ones keep
+   the arrow. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
 /* Pull-to-refresh spinner */
 @keyframes spin {
   from { transform: rotate(0deg); }
