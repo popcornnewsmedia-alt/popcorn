@@ -56,6 +56,26 @@ function Router() {
   );
 }
 
+// The welcome email is triggered from three places (SIGNED_IN, session restore,
+// and the email-verification flow). For a brand-new user these can fire
+// near-simultaneously — before the server's welcome_sent flag is written — so
+// the server's idempotency check alone can't stop a double send (both requests
+// read welcome_sent=false and both send). Dedupe per app-load with a
+// module-level set so at most ONE request goes out per user; the server flag
+// then prevents re-sends on future loads/devices.
+const welcomeRequested = new Set<string>();
+function requestWelcomeOnce(userId: string, email: string, name: string) {
+  if (welcomeRequested.has(userId)) return;
+  welcomeRequested.add(userId);
+  // Same-origin Vercel function — relative path. (VITE_API_URL points at the
+  // Railway news API, which has no /api/auth/* routes.)
+  void fetch(`/api/auth/send-welcome`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, email, name }),
+  }).catch(() => { /* Non-fatal */ });
+}
+
 function App() {
   const [showConfirmed, setShowConfirmed] = useState(false);
   const [usernamePrompt, setUsernamePrompt] = useState<{ userId: string; seed: string } | null>(null);
@@ -137,14 +157,7 @@ function App() {
         (user.user_metadata?.full_name as string | undefined) ||
         (user.user_metadata?.name as string | undefined) ||
         "Reader";
-      // send-welcome is a Vercel serverless function on the SAME origin as the
-      // deployed site — call it relative. (Do NOT prefix VITE_API_URL: that
-      // points at the Railway news API, which has no /api/auth/* routes.)
-      void fetch(`/api/auth/send-welcome`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.id, email, name }),
-      }).catch(() => { /* Non-fatal */ });
+      requestWelcomeOnce(user.id, email, name);
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -276,16 +289,7 @@ function App() {
       }
 
       if (flagData.userId && flagData.email && flagData.name) {
-        // Same-origin Vercel function (see note in the Google branch above).
-        void fetch(`/api/auth/send-welcome`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: flagData.userId,
-            email: flagData.email,
-            name: flagData.name,
-          }),
-        }).catch(() => { /* Non-fatal — welcome email failure shouldn't block the user */ });
+        requestWelcomeOnce(flagData.userId, flagData.email, flagData.name);
       }
 
       setShowConfirmed(true);
