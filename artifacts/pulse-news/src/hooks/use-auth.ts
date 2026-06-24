@@ -199,19 +199,26 @@ export function useAuth() {
     return data;
   };
 
-  /** Send a password-reset email. The link lands on /reset-password where the
-   * user sets a new password and is then signed in. The redirect MUST be the
-   * web app — an email link can't reopen the Capacitor WebView origin — so
-   * native builds point at the production site (the user finishes the reset on
-   * web, then signs into the app with their new password). */
+  /** Send a BRANDED password-reset email. We hit our own Vercel function
+   * (`/api/auth/send-reset`) which generates the recovery link and delivers it
+   * through our Resend template — instead of `resetPasswordForEmail`, which
+   * sends Supabase's plain default email. The link lands on /reset-password
+   * where the user sets a new password and is signed in. The redirect MUST be
+   * the web app (an email link can't reopen the Capacitor WebView origin), so
+   * native points at the production site. */
   const resetPassword = async (email: string) => {
     const base = Capacitor.isNativePlatform()
-      ? 'https://popcornmedia.org'
+      ? 'https://www.popcornmedia.org'
       : window.location.origin;
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${base}/reset-password`,
+    const resp = await fetch(`${apiBase()}/api/auth/send-reset`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.trim(), redirectTo: `${base}/reset-password` }),
     });
-    if (error) throw error;
+    if (!resp.ok) {
+      const body = await resp.json().catch(() => ({}));
+      throw new Error(body.error ?? 'Could not send the reset email. Please try again.');
+    }
   };
 
   const signInWithGoogle = async () => {
