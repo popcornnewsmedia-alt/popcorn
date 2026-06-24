@@ -10,10 +10,12 @@ import { DesktopHome } from "@/pages/DesktopHome";
 import { useIsDesktopWeb } from "@/hooks/use-is-desktop-web";
 import NotFound from "@/pages/not-found";
 import { EmailConfirmedScreen } from "@/components/EmailConfirmedScreen";
+import { VerifyEmailGate } from "@/components/VerifyEmailGate";
 import { UsernameSheet } from "@/components/UsernameSheet";
 import { PopcornReadyOverlay } from "@/components/PopcornReadyOverlay";
 import { setupPushNotifications } from "@/lib/push-registration";
 import { supabase } from "@/lib/supabase";
+import type { User, Session } from "@supabase/supabase-js";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,6 +56,29 @@ function Router() {
 function App() {
   const [showConfirmed, setShowConfirmed] = useState(false);
   const [usernamePrompt, setUsernamePrompt] = useState<{ userId: string; seed: string } | null>(null);
+  // Email of a signed-in-but-UNVERIFIED user. Supabase grants a session at
+  // sign-up before the email is confirmed, so we wall off the feed until they
+  // verify — null means either signed-out or already verified (no wall).
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
+
+  /* ── Email-verification wall ──────────────────────────────────────────
+     A signed-in user whose email isn't confirmed (email/password sign-ups —
+     Google OAuth users are pre-confirmed) gets a blocking wall over the feed
+     until they verify. Re-evaluated on every auth event so the wall drops the
+     moment a token refresh reports the email as confirmed, and re-appears on a
+     fresh unverified sign-up. */
+  useEffect(() => {
+    const evaluate = (session: Session | null) => {
+      const u = session?.user;
+      const confirmed = !!(u && (u.email_confirmed_at || u.confirmed_at));
+      setUnverifiedEmail(u && !confirmed ? (u.email ?? "your email") : null);
+    };
+    supabase.auth.getSession().then(({ data: { session } }) => evaluate(session));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => evaluate(session),
+    );
+    return () => subscription.unsubscribe();
+  }, []);
 
   /* ── Username gate (runs on every SIGNED_IN) ─────────────────────────
      If the user has no profiles row we force the blocking UsernameSheet
@@ -65,6 +90,34 @@ function App() {
      user cleared their account from another tab/device) would otherwise
      land on UsernameSheet instead of the signed-out splash. */
   useEffect(() => {
+    // Fire the welcome email for a confirmed user, at most once. Two layers
+    // keep this "new users only, never on a returning sign-in":
+    //   1. Client guard — skip if this session already carries welcome_sent.
+    //   2. Server idempotency — /api/auth/send-welcome re-checks the DB flag
+    //      and sends at most once per user.
+    // Called from BOTH the SIGNED_IN handler and the session-restore path
+    // below: a Google OAuth redirect surfaces as either event depending on
+    // timing, so covering both is what makes new-Google-user welcomes reliable.
+    const maybeSendWelcome = (user: User) => {
+      const email = user.email;
+      const confirmed = !!(user.email_confirmed_at || user.confirmed_at);
+      if (!email || !confirmed) return;
+      if (user.user_metadata?.welcome_sent) return; // already welcomed — never re-send
+      const name =
+        (user.user_metadata?.first_name as string | undefined) ||
+        (user.user_metadata?.full_name as string | undefined) ||
+        (user.user_metadata?.name as string | undefined) ||
+        "Reader";
+      // send-welcome is a Vercel serverless function on the SAME origin as the
+      // deployed site — call it relative. (Do NOT prefix VITE_API_URL: that
+      // points at the Railway news API, which has no /api/auth/* routes.)
+      void fetch(`/api/auth/send-welcome`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id, email, name }),
+      }).catch(() => { /* Non-fatal */ });
+    };
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event !== "SIGNED_IN" || !session?.user) return;
 
@@ -106,28 +159,10 @@ function App() {
         // Non-fatal — user can continue, profile gate will retry on next sign-in.
       }
 
-      // Welcome email — fire on sign-in for any CONFIRMED user (OAuth users are
-      // pre-confirmed; email/password users only after they verify). The
-      // endpoint is idempotent (sends at most once per user via a server-side
-      // flag), so this is safe to call on every sign-in AND works regardless of
-      // which device verifies — e.g. signed up on the app but clicked the
-      // verification link on web (the old localStorage-flag approach missed that).
-      const email = user.email;
-      const confirmed = !!(user.email_confirmed_at || user.confirmed_at);
-      if (!email || !confirmed) return;
-      const name =
-        (user.user_metadata?.first_name as string | undefined) ||
-        (user.user_metadata?.full_name as string | undefined) ||
-        (user.user_metadata?.name as string | undefined) ||
-        "Reader";
-      // send-welcome is a Vercel serverless function on the SAME origin as the
-      // deployed site — call it relative. (Do NOT prefix VITE_API_URL: that
-      // points at the Railway news API, which has no /api/auth/* routes.)
-      void fetch(`/api/auth/send-welcome`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.id, email, name }),
-      }).catch(() => { /* Non-fatal */ });
+      // Welcome email (idempotent + client-guarded). Also fired from the
+      // session-restore path below, so Google OAuth new users get it regardless
+      // of which auth event the redirect surfaces.
+      maybeSendWelcome(user);
     });
 
     // Also run the gate for the session that already exists when App mounts
@@ -157,6 +192,12 @@ function App() {
           setUsernamePrompt({ userId: session.user.id, seed });
         }
       } catch { /* Non-fatal */ }
+      // Welcome email for a confirmed session that arrived WITHOUT a SIGNED_IN
+      // event — the common Google OAuth redirect case this comment flags above.
+      // Idempotent + client-guarded, so returning users never re-trigger it.
+      // (The deleted-account branch returns before this, so we never welcome a
+      // purged user.)
+      maybeSendWelcome(session.user);
     });
 
     return () => subscription.unsubscribe();
@@ -242,6 +283,10 @@ function App() {
         {showConfirmed && (
           <EmailConfirmedScreen onContinue={() => setShowConfirmed(false)} />
         )}
+        {/* Block the feed for a signed-in-but-unverified account. Sits below the
+            EmailConfirmedScreen (z-[500]) so the success screen wins once they
+            verify, and above the feed/sign-up sheet so it can't be dismissed. */}
+        {unverifiedEmail && <VerifyEmailGate email={unverifiedEmail} />}
         {usernamePrompt && (
           <UsernameSheet
             isOpen={true}
