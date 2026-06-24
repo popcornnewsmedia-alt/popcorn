@@ -58,6 +58,15 @@ export function ResetPasswordScreen() {
     if (password !== confirm) { setError("Passwords don't match."); return; }
     setSubmitting(true);
     try {
+      // Poke the session first — refreshing stale GoTrue state has reliably
+      // unstuck updateUser stalls (the cause of the frozen reset screen).
+      // Capped so a slow/hung getSession can't itself block the submit.
+      try {
+        await Promise.race([
+          supabase.auth.getSession(),
+          new Promise((resolve) => setTimeout(resolve, 4000)),
+        ]);
+      } catch { /* non-fatal */ }
       // Guard against the known Supabase stall where updateUser never resolves
       // (stale GoTrue/WebView state) — race it against a timeout so the button
       // can't hang forever, which presented as a frozen screen.

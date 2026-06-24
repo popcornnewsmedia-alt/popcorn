@@ -1452,7 +1452,8 @@ function LibraryOverlay({
 function AccountSettingsModal({ onClose }: { onClose: () => void }) {
   const { user, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
 
-  const initialName = (user?.user_metadata as { full_name?: string } | undefined)?.full_name ?? "";
+  const dnMeta = user?.user_metadata as { full_name?: string; name?: string; first_name?: string } | undefined;
+  const initialName = (dnMeta?.full_name || dnMeta?.name || dnMeta?.first_name || "").trim();
   const handle = profile?.username ?? null;
 
   const [panel, setPanel] = useState<"root" | "name" | "password" | "delete">("root");
@@ -1461,6 +1462,13 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
   const [nameDraft, setNameDraft] = useState(initialName);
   const [nameSaving, setNameSaving] = useState(false);
   const [nameMsg, setNameMsg] = useState<{ kind: "err" | "ok"; text: string } | null>(null);
+
+  // This modal's useAuth instance can resolve the user a beat after mount, so
+  // fill the still-empty name draft once it arrives (else the field reads blank
+  // even though the account has a name).
+  useEffect(() => {
+    if (initialName && !nameDraft) setNameDraft(initialName);
+  }, [initialName, nameDraft]);
 
   // Password form
   const [pw1, setPw1] = useState("");

@@ -335,8 +335,17 @@ export function useAuth() {
    * mobile WebView after a POST — exactly what would leave a stale session in
    * localStorage and drop the user into the UsernameSheet on refresh. */
   const deleteAccount = async () => {
-    const token = state.session?.access_token;
-    if (!token) throw new Error("Not signed in");
+    // React state can lag the live client (e.g. right after a token refresh),
+    // so don't conclude "signed out" from state.session alone — pull the
+    // current access token straight from Supabase first.
+    let token = state.session?.access_token;
+    if (!token) {
+      try {
+        const { data } = await withTimeout(supabase.auth.getSession(), 6000, "Session check");
+        token = data.session?.access_token;
+      } catch { /* fall through to the friendly error below */ }
+    }
+    if (!token) throw new Error("You appear to be signed out. Please sign in again, then try deleting.");
     const resp = await fetch(`${apiBase()}/api/auth/delete-account`, {
       method: "POST",
       headers: {

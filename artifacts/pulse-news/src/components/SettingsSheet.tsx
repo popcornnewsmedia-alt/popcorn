@@ -39,7 +39,9 @@ type DeleteStage = "idle" | "confirming" | "deleting" | "farewell";
 export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsSheetProps) {
   const { user, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
 
-  const initialName = (user?.user_metadata as { full_name?: string } | undefined)?.full_name ?? "";
+  // Display name: prefer full_name, then Google's `name`, then `first_name`.
+  const nmeta = user?.user_metadata as { full_name?: string; name?: string; first_name?: string } | undefined;
+  const initialName = (nmeta?.full_name || nmeta?.name || nmeta?.first_name || "").trim();
   const handle = profile?.username ?? null;
 
   const [panel, setPanel] = useState<Panel>("root");
@@ -130,6 +132,13 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
     if (dragLocked) return;
     onClose();
   };
+
+  // If the user object resolves AFTER the sheet is already open, fill the
+  // still-empty name draft from it — otherwise the field can read blank even
+  // though the account has a name.
+  useEffect(() => {
+    if (isOpen && initialName && !nameDraft) setNameDraft(initialName);
+  }, [isOpen, initialName, nameDraft]);
 
   // ── Handlers ────────────────────────────────────────────────────────────
   const saveName = async () => {
