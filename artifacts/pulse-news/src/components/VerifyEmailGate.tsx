@@ -34,12 +34,17 @@ export function VerifyEmailGate({ email }: VerifyEmailGateProps) {
       // which reflects email_confirmed_at if the user has since clicked the
       // link (works even on iOS, where verification happened in Safari and
       // localStorage isn't shared with the WebView).
+      // refreshSession picks up a confirmed session whether it was unconfirmed
+      // before (now refreshed) or freshly written to shared storage by the
+      // verification tab. With no session at all it errors harmlessly → we fall
+      // through to the "not yet" message.
       const { data, error } = await supabase.auth.refreshSession();
       const u = data?.user;
       const confirmed = !!(u && (u.email_confirmed_at || u.confirmed_at));
       if (!error && confirmed) {
         // Reload into a clean state — App re-reads the session, sees it
         // confirmed, drops this wall, and any stale sign-up sheet resets.
+        localStorage.removeItem("popcorn_awaiting_confirm");
         window.location.reload();
         return;
       }
@@ -74,6 +79,7 @@ export function VerifyEmailGate({ email }: VerifyEmailGateProps) {
   const handleUseDifferent = async () => {
     // Sign out locally + purge native storage, then reload to the signed-out
     // splash so the user can sign in / sign up with a different address.
+    localStorage.removeItem("popcorn_awaiting_confirm");
     await supabase.auth.signOut({ scope: "local" }).catch(() => { /* already gone */ });
     void purgeNativeAuthStorage();
     window.location.reload();

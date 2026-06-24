@@ -120,6 +120,12 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
     onClose();
+    // Nudge App to re-evaluate the verify wall: a fresh email/password sign-up
+    // leaves a "popcorn_awaiting_confirm" flag but NO session (Supabase only
+    // issues a session after the email is confirmed), so without this the user
+    // would land on the public preview instead of the "verify your email" wall.
+    // Harmless when no flag is set (App just re-checks and shows nothing).
+    window.dispatchEvent(new Event("popcorn:awaiting-confirm"));
     setTimeout(reset, 400);
   };
 

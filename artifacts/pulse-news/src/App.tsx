@@ -15,7 +15,7 @@ import { UsernameSheet } from "@/components/UsernameSheet";
 import { PopcornReadyOverlay } from "@/components/PopcornReadyOverlay";
 import { setupPushNotifications } from "@/lib/push-registration";
 import { supabase } from "@/lib/supabase";
-import type { User, Session } from "@supabase/supabase-js";
+import type { User } from "@supabase/supabase-js";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,16 +68,42 @@ function App() {
      moment a token refresh reports the email as confirmed, and re-appears on a
      fresh unverified sign-up. */
   useEffect(() => {
-    const evaluate = (session: Session | null) => {
+    let cancelled = false;
+    const recompute = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (cancelled) return;
       const u = session?.user;
       const confirmed = !!(u && (u.email_confirmed_at || u.confirmed_at));
-      setUnverifiedEmail(u && !confirmed ? (u.email ?? "your email") : null);
+      // Verified session → no wall. Unconfirmed session → wall (covers any
+      // config where Supabase DOES issue a pre-verification session).
+      if (u) { setUnverifiedEmail(confirmed ? null : (u.email ?? "your email")); return; }
+      // No session — the common email/password case, since Supabase withholds
+      // the session until the email is confirmed. Show the wall while a fresh
+      // sign-up is still awaiting verification (flag set by SignUpFlow), so the
+      // user can't slip past into the public preview.
+      const raw = localStorage.getItem("popcorn_awaiting_confirm");
+      if (raw) {
+        try {
+          const f = JSON.parse(raw);
+          if (f?.email && Date.now() - (f.ts ?? 0) < 3_600_000) { setUnverifiedEmail(f.email); return; }
+        } catch { /* legacy timestamp-only flag — nothing to show */ }
+      }
+      setUnverifiedEmail(null);
     };
-    supabase.auth.getSession().then(({ data: { session } }) => evaluate(session));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => evaluate(session),
-    );
-    return () => subscription.unsubscribe();
+    recompute();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => recompute());
+    const onAwaiting = () => recompute();
+    const onStorage = (e: StorageEvent) => {
+      if (!e.key || e.key === "popcorn_awaiting_confirm" || e.key.startsWith("sb-")) recompute();
+    };
+    window.addEventListener("popcorn:awaiting-confirm", onAwaiting);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+      window.removeEventListener("popcorn:awaiting-confirm", onAwaiting);
+      window.removeEventListener("storage", onStorage);
+    };
   }, []);
 
   /* ── Username gate (runs on every SIGNED_IN) ─────────────────────────
