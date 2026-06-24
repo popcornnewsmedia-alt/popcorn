@@ -63,8 +63,8 @@ export function ResetPasswordScreen() {
         // Supabase rejects reusing the current password with this message.
         const m = (updErr.message || "").toLowerCase();
         setError(
-          m.includes("different from the old")
-            ? "Choose a password different from your current one."
+          m.includes("different from the old") || m.includes("same")
+            ? "That's the same as your current password. Enter a new one to continue, or try logging in with your old password."
             : updErr.message || "Couldn't update your password — please try again.",
         );
         setSubmitting(false);
