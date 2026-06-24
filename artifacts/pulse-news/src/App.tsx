@@ -16,7 +16,7 @@ import { UsernameSheet } from "@/components/UsernameSheet";
 import { PopcornReadyOverlay } from "@/components/PopcornReadyOverlay";
 import { setupPushNotifications } from "@/lib/push-registration";
 import { supabase } from "@/lib/supabase";
-import type { User } from "@supabase/supabase-js";
+import type { User, Session } from "@supabase/supabase-js";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -92,8 +92,7 @@ function App() {
      fresh unverified sign-up. */
   useEffect(() => {
     let cancelled = false;
-    const recompute = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    const evaluate = (session: Session | null) => {
       if (cancelled) return;
       const u = session?.user;
       const confirmed = !!(u && (u.email_confirmed_at || u.confirmed_at));
@@ -113,18 +112,24 @@ function App() {
       }
       setUnverifiedEmail(null);
     };
-    recompute();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => recompute());
-    const onAwaiting = () => recompute();
-    const onStorage = (e: StorageEvent) => {
-      if (!e.key || e.key === "popcorn_awaiting_confirm" || e.key.startsWith("sb-")) recompute();
-    };
-    window.addEventListener("popcorn:awaiting-confirm", onAwaiting);
+    // One read on mount; thereafter react to the session the EVENT provides.
+    // CRITICAL: do NOT call getSession() inside the auth-change handler. Doing
+    // so on every event (incl. USER_UPDATED / TOKEN_REFRESHED) can feed back
+    // into more events and wedge in-flight auth ops like updateUser — which
+    // surfaced as a frozen "SAVING…/UPDATING…" spinner that never cleared.
+    supabase.auth.getSession().then(({ data: { session } }) => evaluate(session));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => evaluate(session));
+    // Awaiting-confirm flag (no session in hand) — re-read on our own event and
+    // on cross-tab storage changes of that specific key. Rare, so the one-off
+    // getSession here is harmless.
+    const recheck = () => { supabase.auth.getSession().then(({ data: { session } }) => evaluate(session)); };
+    const onStorage = (e: StorageEvent) => { if (!e.key || e.key === "popcorn_awaiting_confirm") recheck(); };
+    window.addEventListener("popcorn:awaiting-confirm", recheck);
     window.addEventListener("storage", onStorage);
     return () => {
       cancelled = true;
       subscription.unsubscribe();
-      window.removeEventListener("popcorn:awaiting-confirm", onAwaiting);
+      window.removeEventListener("popcorn:awaiting-confirm", recheck);
       window.removeEventListener("storage", onStorage);
     };
   }, []);
