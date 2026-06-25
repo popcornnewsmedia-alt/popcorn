@@ -45,8 +45,17 @@ export async function shareArticle(article: ShareableArticle): Promise<ShareResu
     }
   }
 
-  // 2. Mobile web (and any browser exposing the Web Share API) → native sheet.
-  if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+  // Desktop web → always copy the link (the explicit "copy link" affordance),
+  // even though some desktop browsers expose navigator.share. Mirrors the
+  // pointer/hover test in use-is-desktop-web.ts.
+  const isDesktopWeb =
+    !Capacitor.isNativePlatform() &&
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(pointer: fine) and (hover: hover)").matches;
+
+  // 2. Mobile web (touch) with the Web Share API → native sheet.
+  if (!isDesktopWeb && typeof navigator !== "undefined" && typeof navigator.share === "function") {
     try {
       await navigator.share({ title, text, url });
       return "shared";
