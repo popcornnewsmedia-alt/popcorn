@@ -340,8 +340,19 @@ export function useAuth() {
     // current access token straight from Supabase first.
     let token = state.session?.access_token;
     if (!token) {
+      // getSession transparently refreshes an expired access token, which needs
+      // a network round-trip — give it room (a short cap was cutting it off and
+      // wrongly reporting "signed out").
       try {
-        const { data } = await withTimeout(supabase.auth.getSession(), 6000, "Session check");
+        const { data } = await withTimeout(supabase.auth.getSession(), 12000, "Session check");
+        token = data.session?.access_token;
+      } catch { /* try an explicit refresh next */ }
+    }
+    if (!token) {
+      // Last resort: force a refresh in case the access token expired but the
+      // refresh token is still valid.
+      try {
+        const { data } = await withTimeout(supabase.auth.refreshSession(), 12000, "Session refresh");
         token = data.session?.access_token;
       } catch { /* fall through to the friendly error below */ }
     }
