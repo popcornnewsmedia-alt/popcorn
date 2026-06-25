@@ -319,17 +319,32 @@ function useAuthEngine() {
     return session?.access_token ?? state.session?.access_token;
   };
 
+  // POST to a server auth endpoint with a Bearer token. If the server rejects
+  // the token (401 — expired OR revoked, e.g. after a password change, which an
+  // expires_at check can't detect), force a fresh token and retry ONCE.
+  const authedPost = async (path: string, body?: unknown): Promise<Response> => {
+    const send = (token: string) =>
+      fetch(`${apiBase()}${path}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+    const token = await getAccessToken();
+    if (!token) throw new Error("You appear to be signed out. Please sign in again.");
+    let resp = await send(token);
+    if (resp.status === 401) {
+      try {
+        const { data } = await withTimeout(supabase.auth.refreshSession(), 12000, "Session refresh");
+        if (data.session?.access_token) resp = await send(data.session.access_token);
+      } catch { /* return the original 401 below */ }
+    }
+    return resp;
+  };
+
   const updateProfile = async (data: Record<string, unknown>) => {
     // Server-side (admin) metadata write — the client updateUser stalls when
-    // the session is mid-flight (frozen SAVING…). getAccessToken guarantees a
-    // fresh token.
-    const token = await getAccessToken();
-    if (!token) throw new Error("You appear to be signed out. Please sign in again, then save.");
-    const resp = await fetch(`${apiBase()}/api/auth/update-metadata`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ metadata: data }),
-    });
+    // the session is mid-flight (frozen SAVING…).
+    const resp = await authedPost("/api/auth/update-metadata", { metadata: data });
     if (!resp.ok) {
       const body = await resp.json().catch(() => ({}));
       throw new Error(body.error ?? "Couldn't save your changes. Please try again.");
@@ -347,13 +362,7 @@ function useAuthEngine() {
    * endpoint (admin) — the client updateUser stalls in WebViews. The server
    * also sends the "password changed" confirmation email. */
   const updatePassword = async (newPassword: string) => {
-    const token = await getAccessToken();
-    if (!token) throw new Error("You appear to be signed out. Please sign in again, then change your password.");
-    const resp = await fetch(`${apiBase()}/api/auth/set-password`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ password: newPassword }),
-    });
+    const resp = await authedPost("/api/auth/set-password", { password: newPassword });
     if (!resp.ok) {
       const body = await resp.json().catch(() => ({}));
       throw new Error(body.error ?? "Couldn't update your password. Please try again.");
@@ -364,15 +373,7 @@ function useAuthEngine() {
    * /api/auth/delete-account endpoint (service-role; cascades clean up
    * downstream tables). Fires the farewell overlay, then clears local state. */
   const deleteAccount = async () => {
-    const token = await getAccessToken();
-    if (!token) throw new Error("You appear to be signed out. Please sign in again, then try deleting.");
-    const resp = await fetch(`${apiBase()}/api/auth/delete-account`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const resp = await authedPost("/api/auth/delete-account");
     if (!resp.ok) {
       const body = await resp.json().catch(() => ({}));
       throw new Error(body.error ?? `Delete failed (${resp.status})`);

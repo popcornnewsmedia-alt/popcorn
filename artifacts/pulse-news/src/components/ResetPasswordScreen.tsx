@@ -77,11 +77,19 @@ export function ResetPasswordScreen() {
       // Set the password SERVER-SIDE (admin) — the client updateUser stalls in
       // this flow. The recovery session stays valid, so the user remains signed
       // in and we can drop them straight into the feed.
-      const resp = await fetch(`${apiBase()}/api/auth/set-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ password }),
-      });
+      const setPw = (t: string) =>
+        fetch(`${apiBase()}/api/auth/set-password`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${t}` },
+          body: JSON.stringify({ password }),
+        });
+      let resp = await setPw(token);
+      // If the recovery token was rejected (e.g. it sat a while before submit),
+      // force a fresh one and retry once before giving up.
+      if (resp.status === 401) {
+        const { data } = await supabase.auth.refreshSession();
+        if (data.session?.access_token) resp = await setPw(data.session.access_token);
+      }
       if (!resp.ok) {
         const body = await resp.json().catch(() => ({}));
         setError(body.error ?? "Couldn't update your password — please try again.");
