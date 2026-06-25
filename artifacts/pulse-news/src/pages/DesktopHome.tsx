@@ -5101,11 +5101,14 @@ export function DesktopHome() {
     // on reload — don't make the reader sit through the preview window again.
     let alreadyShown = false;
     try { alreadyShown = localStorage.getItem("popcorn-web-gate-shown") === "1"; } catch { /* ignore */ }
-    if (alreadyShown) { setGateOpen(true); return; }
+    // Return visits / post-logout still ease the gate in after a short beat so
+    // it doesn't slam up the instant the page paints. A brand-new first visit
+    // still gets the long NYT-style preview window.
+    const delay = alreadyShown ? 700 : 18000;
     const t = setTimeout(() => {
       setGateOpen(true);
       try { localStorage.setItem("popcorn-web-gate-shown", "1"); } catch { /* ignore */ }
-    }, 18000);
+    }, delay);
     return () => clearTimeout(t);
   }, [user]);
 
