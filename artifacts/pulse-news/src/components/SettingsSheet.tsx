@@ -210,6 +210,10 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted, currentUser }
       setPwError("New password must be at least 8 characters.");
       return;
     }
+    if (pw1 === pwCurrent) {
+      setPwError("Your new password must be different from your current one.");
+      return;
+    }
     if (pw1 !== pw2) {
       setPwError("Passwords don't match.");
       return;

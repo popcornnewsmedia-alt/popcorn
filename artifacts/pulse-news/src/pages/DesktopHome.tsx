@@ -1534,6 +1534,7 @@ function AccountSettingsModal({ onClose, currentUser }: { onClose: () => void; c
   const savePassword = async () => {
     if (!pwCurrent) { setPwMsg({ kind: "err", text: "Enter your current password." }); return; }
     if (pw1.length < 8) { setPwMsg({ kind: "err", text: "New password must be at least 8 characters." }); return; }
+    if (pw1 === pwCurrent) { setPwMsg({ kind: "err", text: "Your new password must be different from your current one." }); return; }
     if (pw1 !== pw2) { setPwMsg({ kind: "err", text: "Passwords don't match." }); return; }
     setPwSaving(true);
     setPwMsg(null);
