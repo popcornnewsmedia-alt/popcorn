@@ -67,9 +67,9 @@ export function EmailConfirmedScreen({ onContinue }: EmailConfirmedScreenProps) 
               marginBottom: "12px",
             }}
           >
-            YOU'RE ALL
+            WELCOME TO
             <br />
-            SIGNED UP.
+            POPCORN.
           </h1>
           <p
             className="font-['Inter']"

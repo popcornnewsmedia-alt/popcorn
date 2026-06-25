@@ -15,6 +15,9 @@ import { ResetPasswordScreen } from "@/components/ResetPasswordScreen";
 import { FarewellScreen } from "@/components/FarewellScreen";
 import { LegalPage } from "@/components/LegalPage";
 import { UsernameSheet } from "@/components/UsernameSheet";
+import { WelcomeScreen } from "@/components/WelcomeScreen";
+import { VerifiedReturnScreen } from "@/components/VerifiedReturnScreen";
+import { Capacitor } from "@capacitor/core";
 import { PopcornReadyOverlay } from "@/components/PopcornReadyOverlay";
 import { setupPushNotifications } from "@/lib/push-registration";
 import { supabase } from "@/lib/supabase";
@@ -70,6 +73,30 @@ function Router() {
 // read welcome_sent=false and both send). Dedupe per app-load with a
 // module-level set so at most ONE request goes out per user; the server flag
 // then prevents re-sends on future loads/devices.
+// Captured at import time, BEFORE Supabase's detectSessionInUrl (or our own
+// history.replaceState cleanup) strips the hash/query — used to detect that
+// this web page load is the landing from an email-verification / auth link.
+const _initialAuthUrl =
+  typeof window !== "undefined" ? `${window.location.hash}${window.location.search}` : "";
+// An auth-link landing carries one of these (signup confirm = #access_token /
+// ?code / token_hash / type=signup). Recovery (password reset) is excluded —
+// it has its own /reset-password screen.
+const AUTH_LANDING =
+  /[#?&](access_token|code|token_hash)=/.test(_initialAuthUrl) || /[#?&]type=signup/.test(_initialAuthUrl);
+const AUTH_RECOVERY = /[#?&]type=recovery/.test(_initialAuthUrl);
+
+// Reject a promise if it doesn't settle in `ms`. Used to guard the profile
+// query in the username gate: right after an OAuth code exchange the Supabase
+// client can be mid-token-refresh and a `.from(...).select()` hangs with no
+// timeout — which previously left the handle-claim sheet un-shown until an app
+// restart. We time out and retry instead.
+function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    p,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error("timeout")), ms)),
+  ]);
+}
+
 const welcomeRequested = new Set<string>();
 function requestWelcomeOnce(userId: string, email: string, name: string) {
   if (welcomeRequested.has(userId)) return;
@@ -86,6 +113,18 @@ function requestWelcomeOnce(userId: string, email: string, name: string) {
 function App() {
   const [showConfirmed, setShowConfirmed] = useState(false);
   const [usernamePrompt, setUsernamePrompt] = useState<{ userId: string; seed: string } | null>(null);
+  // Post-sign-in flow for a brand-new account (Google first sign-in):
+  //   checking → an instant cover hides the feed while we look up the profile
+  //   welcome  → the new-account greeting + "claim my handle" CTA
+  //   handle   → the UsernameSheet slides up
+  //   idle     → nothing (returning user goes straight to the feed)
+  // This ordering (cover BEFORE we know new-vs-returning) is what stops the feed
+  // from flashing for a beat before the welcome appears.
+  const [authStage, setAuthStage] = useState<"idle" | "checking" | "welcome" | "handle">("idle");
+  // Web-only: a verification link opened in a browser that can't finish the
+  // sign-in (account was created in the native app). Show a "you're verified —
+  // return to the app" screen instead of a confusing half-signed-in feed.
+  const [showReturnToApp, setShowReturnToApp] = useState(false);
   // Email of a signed-in-but-UNVERIFIED user. Supabase grants a session at
   // sign-up before the email is confirmed, so we wall off the feed until they
   // verify — null means either signed-out or already verified (no wall).
@@ -183,11 +222,67 @@ function App() {
       requestWelcomeOnce(user.id, email, name);
     };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    // Shared username gate: decide whether this signed-in user still needs to
+    // claim a handle, and if so show the welcome interstitial + the sheet.
+    //
+    // The profile query is timeout-guarded and retried once. Right after a
+    // Google OAuth code-exchange the client can be mid-token-refresh and this
+    // query hangs indefinitely — that's why the claim-handle screen previously
+    // only appeared after an app restart (the restart's getSession path ran the
+    // query against a settled session). The timeout + retry makes it appear
+    // immediately on the first sign-in instead.
+    const evaluateUserGate = async (user: User) => {
+      // async wrapper so withTimeout sees a real Promise (the Supabase query
+      // builder is only a thenable, which trips up the generic inference).
+      const fetchProfile = async () =>
+        await supabase
+          .from("profiles")
+          .select("username")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+      let profile: { username: string } | null = null;
+      let resolved = false;
+      for (let attempt = 0; attempt < 2 && !resolved; attempt++) {
+        try {
+          if (attempt > 0) await new Promise((r) => setTimeout(r, 700));
+          const { data } = await withTimeout(fetchProfile(), 8000);
+          profile = data;
+          resolved = true;
+        } catch {
+          // timeout / transient (session mid-flight) — retry once.
+        }
+      }
+      // Couldn't read the profile at all — drop the cover and let the user into
+      // the feed; the next SIGNED_IN or an app restart re-runs this gate.
+      if (!resolved) { setAuthStage((s) => (s === "checking" ? "idle" : s)); return; }
+      // Has a handle → returning user; clear any cover, straight to the feed.
+      if (profile) { setAuthStage((s) => (s === "checking" ? "idle" : s)); return; }
+
+      // No handle yet. Confirm the session still maps to a real user before
+      // prompting (a deleted-then-rehydrated session should be purged, not
+      // upgraded through UsernameSheet).
+      const { data: live, error: liveErr } = await supabase.auth.getUser();
+      if (liveErr || !live?.user) {
+        await supabase.auth.signOut({ scope: "local" }).catch(() => {});
+        setAuthStage((s) => (s === "checking" ? "idle" : s));
+        return;
+      }
+      const seed =
+        (user.user_metadata?.full_name as string | undefined) ??
+        (user.user_metadata?.name as string | undefined) ??
+        user.email?.split("@")[0] ??
+        "";
+      // Brand-new user → welcome interstitial first, then the handle claim.
+      // Don't yank the user back if they've already advanced to the sheet.
+      setUsernamePrompt((prev) => prev ?? { userId: user.id, seed });
+      setAuthStage((s) => (s === "handle" ? "handle" : "welcome"));
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event !== "SIGNED_IN" || !session?.user) return;
 
       const user = session.user;
-      const provider = user.app_metadata?.provider;
 
       // iOS push-notification registration (no-op on web). Only re-registers
       // when permission is already granted — never cold-prompts. The first-time
@@ -197,32 +292,15 @@ function App() {
         return data.session?.access_token ?? null;
       });
 
-      // Username gate: fetch profile row; prompt if missing.
-      try {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("username")
-          .eq("user_id", user.id)
-          .maybeSingle();
-        if (!profile) {
-          // Before prompting, make sure this session is still backed by a
-          // real user. A stale session for a deleted account should be
-          // purged, not upgraded through UsernameSheet.
-          const { data: live, error: liveErr } = await supabase.auth.getUser();
-          if (liveErr || !live?.user) {
-            await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
-            return;
-          }
-          const seed =
-            (user.user_metadata?.full_name as string | undefined) ??
-            (user.user_metadata?.name as string | undefined) ??
-            user.email?.split("@")[0] ??
-            "";
-          setUsernamePrompt({ userId: user.id, seed });
-        }
-      } catch {
-        // Non-fatal — user can continue, profile gate will retry on next sign-in.
-      }
+      // Cover the feed IMMEDIATELY (same render as the feed mounts, so it never
+      // flashes), then resolve new-vs-returning. Don't downgrade an in-progress
+      // welcome/handle flow back to "checking" if SIGNED_IN re-fires.
+      setAuthStage((s) => (s === "idle" ? "checking" : s));
+
+      // Defer the gate OUT of the auth-event callback: running a Supabase query
+      // synchronously inside the SIGNED_IN handler can wedge right after an
+      // OAuth exchange. setTimeout(…, 0) lets the event return first.
+      setTimeout(() => { void evaluateUserGate(user); }, 0);
 
       // Welcome email (idempotent + client-guarded). Also fired from the
       // session-restore path below, so Google OAuth new users get it regardless
@@ -233,35 +311,12 @@ function App() {
     // Also run the gate for the session that already exists when App mounts
     // (e.g. a returning user refreshing the tab — onAuthStateChange doesn't
     //  always emit SIGNED_IN for rehydrated sessions).
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session?.user) return;
-      try {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("username")
-          .eq("user_id", session.user.id)
-          .maybeSingle();
-        if (!profile) {
-          // Same deleted-user guard as the SIGNED_IN branch: confirm the
-          // session still points at a real user before showing the sheet.
-          const { data: live, error: liveErr } = await supabase.auth.getUser();
-          if (liveErr || !live?.user) {
-            await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
-            return;
-          }
-          const seed =
-            (session.user.user_metadata?.full_name as string | undefined) ??
-            (session.user.user_metadata?.name as string | undefined) ??
-            session.user.email?.split("@")[0] ??
-            "";
-          setUsernamePrompt({ userId: session.user.id, seed });
-        }
-      } catch { /* Non-fatal */ }
+      void evaluateUserGate(session.user);
       // Welcome email for a confirmed session that arrived WITHOUT a SIGNED_IN
-      // event — the common Google OAuth redirect case this comment flags above.
-      // Idempotent + client-guarded, so returning users never re-trigger it.
-      // (The deleted-account branch returns before this, so we never welcome a
-      // purged user.)
+      // event — the common Google OAuth redirect case. Idempotent +
+      // client-guarded, so returning users never re-trigger it.
       maybeSendWelcome(session.user);
     });
 
@@ -329,6 +384,43 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  /* ── Web-only: verification link opened where sign-in can't complete ────
+     If the account was created in the native app and the link is tapped here
+     in the browser, the browser confirms the email but can't log in (it doesn't
+     hold the PKCE key). Rather than leave the user on a confusing half-signed-in
+     public feed, show a "you're verified — return to the app" screen.
+
+     Skipped for: native app, password-recovery links, web sign-ups (they set
+     the awaiting-confirm flag in THIS browser → EmailConfirmedScreen handles
+     them), and any landing where a session DOES materialise (web/Google login —
+     we let the normal flow proceed). */
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) return;
+    if (!AUTH_LANDING || AUTH_RECOVERY) return;
+    if (window.location.pathname.includes("reset-password")) return;
+    if (localStorage.getItem("popcorn_awaiting_confirm")) return;
+
+    let done = false;
+    const finish = (showIt: boolean) => {
+      if (done) return;
+      done = true;
+      if (showIt) setShowReturnToApp(true);
+    };
+    // If Supabase establishes a session here (web sign-up or Google web), bail —
+    // INITIAL_SESSION / SIGNED_IN fires with a session and the normal flow wins.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      if (session) finish(false);
+    });
+    // Otherwise, after giving the code/hash exchange time to run, still no
+    // session ⇒ this browser couldn't sign in ⇒ nudge back to the app.
+    const t = setTimeout(async () => {
+      const { data } = await supabase.auth.getSession();
+      finish(!data.session);
+    }, 2500);
+
+    return () => { done = true; clearTimeout(t); subscription.unsubscribe(); };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -340,17 +432,32 @@ function App() {
         {showConfirmed && (
           <EmailConfirmedScreen onContinue={() => setShowConfirmed(false)} />
         )}
+        {/* Web-only: verified-but-can't-log-in-here (account made in the app). */}
+        {showReturnToApp && (
+          <VerifiedReturnScreen onContinueWeb={() => setShowReturnToApp(false)} />
+        )}
         {/* Block the feed for a signed-in-but-unverified account. Sits below the
             EmailConfirmedScreen (z-[500]) so the success screen wins once they
             verify, and above the feed/sign-up sheet so it can't be dismissed. */}
         {unverifiedEmail && <VerifyEmailGate email={unverifiedEmail} />}
         {showFarewell && <FarewellScreen />}
+        {/* New-account flow. The WelcomeScreen (z-[500]) covers the feed the
+            instant sign-in fires ("checking"), then shows the greeting
+            ("welcome"); the handle sheet stays off-screen until the user taps
+            "Claim my handle" ("handle") — then the cover lifts and it slides up. */}
+        {(authStage === "checking" || authStage === "welcome") && (
+          <WelcomeScreen
+            stage={authStage}
+            name={usernamePrompt?.seed}
+            onContinue={() => setAuthStage("handle")}
+          />
+        )}
         {usernamePrompt && (
           <UsernameSheet
-            isOpen={true}
+            isOpen={authStage === "handle"}
             userId={usernamePrompt.userId}
             defaultSeed={usernamePrompt.seed}
-            onComplete={() => setUsernamePrompt(null)}
+            onComplete={() => { setUsernamePrompt(null); setAuthStage("idle"); }}
           />
         )}
         <PopcornReadyOverlay />

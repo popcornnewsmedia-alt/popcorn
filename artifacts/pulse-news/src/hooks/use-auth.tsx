@@ -9,7 +9,7 @@ import {
 } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { Capacitor } from '@capacitor/core';
-import { supabase, purgeNativeAuthStorage } from '@/lib/supabase';
+import { supabase, purgeNativeAuthStorage, NATIVE_AUTH_REDIRECT } from '@/lib/supabase';
 import { apiBase } from '@/lib/api-base';
 
 export interface Profile {
@@ -177,11 +177,39 @@ function useAuthEngine() {
     };
     window.addEventListener('popcorn:profile-updated', onProfileUpdated);
 
+    // Native deep-link handler: completes OAuth (and any other custom-scheme
+    // auth redirect). After Google sign-in, the system browser redirects to
+    // `org.popcornmedia.app://auth/callback?code=…`, iOS reopens the app, and
+    // Capacitor fires `appUrlOpen` with that URL. We pull the PKCE `code` out
+    // and exchange it for a session; onAuthStateChange above then flips the UI
+    // to signed-in. Finally we close the in-app browser. Web: no-op.
+    let appUrlSub: { remove: () => void } | undefined;
+    if (Capacitor.isNativePlatform()) {
+      void (async () => {
+        const { App } = await import('@capacitor/app');
+        appUrlSub = await App.addListener('appUrlOpen', async ({ url }) => {
+          if (!url.includes('auth/callback')) return;
+          try {
+            const code = new URL(url).searchParams.get('code');
+            if (code) await supabase.auth.exchangeCodeForSession(code);
+          } catch (e) {
+            console.warn('[useAuth] deep-link session exchange failed', e);
+          } finally {
+            try {
+              const { Browser } = await import('@capacitor/browser');
+              await Browser.close();
+            } catch { /* browser may already be closed */ }
+          }
+        });
+      })();
+    }
+
     return () => {
       mounted = false;
       clearTimeout(safety);
       subscription.unsubscribe();
       window.removeEventListener('popcorn:profile-updated', onProfileUpdated);
+      appUrlSub?.remove();
     };
     // loadProfile is stable; state.profile only read for refresh shortcut
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -239,6 +267,30 @@ function useAuthEngine() {
   };
 
   const signInWithGoogle = async () => {
+    // Native (iOS/Android): we must NOT let supabase-js navigate the WKWebView
+    // to Google. Instead we ask it for the auth URL (skipBrowserRedirect),
+    // open it in the system browser (SFSafariViewController), and let Google
+    // redirect back to our custom URL scheme. The appUrlOpen listener in the
+    // effect below catches that redirect and finishes the sign-in. redirectTo
+    // points at the custom scheme so iOS reopens the app instead of stranding
+    // the user on the website in Safari.
+    if (Capacitor.isNativePlatform()) {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: NATIVE_AUTH_REDIRECT,
+          skipBrowserRedirect: true,
+        },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        const { Browser } = await import('@capacitor/browser');
+        await Browser.open({ url: data.url });
+      }
+      return;
+    }
+
+    // Web: redirect the current tab as before.
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: window.location.origin },

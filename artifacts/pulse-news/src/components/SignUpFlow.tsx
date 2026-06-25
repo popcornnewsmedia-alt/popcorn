@@ -1,6 +1,7 @@
 import { Fragment, useState, useRef, useCallback, useEffect } from "react";
 import { X, ArrowRight, Check, Mail, ChevronDown } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { setPendingCredential } from "@/lib/pending-credential";
 import { GrainBackground } from "@/components/GrainBackground";
 import type { LegalKind } from "@/components/LegalSheet";
 import {
@@ -170,6 +171,11 @@ export function SignUpFlow({ isOpen, onClose, onComplete, onOpenLegal, onSignInI
             refreshProfile().catch(() => { /* Non-fatal */ });
           }
         }
+
+        // Stash the credential in memory (NOT disk) so the verify gate can
+        // sign in on this device with one tap once the email is confirmed —
+        // works even if the user clicks the link on a different device.
+        setPendingCredential(email, password);
 
         // Store userId + name so App.tsx can send the welcome email after verification
         localStorage.setItem("popcorn_awaiting_confirm", JSON.stringify({

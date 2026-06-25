@@ -41,6 +41,13 @@ export async function purgeNativeAuthStorage(): Promise<void> {
   }
 }
 
+// Custom URL scheme that lets the OS hand control back to the native app after
+// an external OAuth / email-link round-trip. Registered in
+// ios/App/App/Info.plist (CFBundleURLSchemes) and must ALSO be added to the
+// Supabase dashboard's allowed Redirect URLs. On web we redirect to the page
+// origin as before.
+export const NATIVE_AUTH_REDIRECT = 'org.popcornmedia.app://auth/callback';
+
 export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL ?? '',
   import.meta.env.VITE_SUPABASE_ANON_KEY ?? '',
@@ -48,7 +55,20 @@ export const supabase = createClient(
     auth: {
       // Native builds: store the session token in native storage (see above).
       // Web: omit `storage` so Supabase falls back to localStorage as before.
-      ...(Capacitor.isNativePlatform() ? { storage: nativeSessionStorage } : {}),
+      ...(Capacitor.isNativePlatform()
+        ? {
+            storage: nativeSessionStorage,
+            // The OAuth redirect comes back via the custom URL scheme and is
+            // handled manually by the appUrlOpen listener in use-auth.tsx
+            // (exchangeCodeForSession). Don't also try to parse the WKWebView
+            // URL — there's no auth code there and it would race our handler.
+            detectSessionInUrl: false,
+          }
+        : {}),
+      // PKCE is required for the manual exchangeCodeForSession step on native
+      // (the code verifier is persisted in auth storage). It's also the
+      // supabase-js v2 default on web, so this is a no-op there.
+      flowType: 'pkce',
       persistSession: true,
       autoRefreshToken: true,
       // Disable the default navigator.locks-based inter-tab lock. It causes
