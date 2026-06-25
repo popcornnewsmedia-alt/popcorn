@@ -998,7 +998,7 @@ const PROFILE_CSS = `
   }
   @keyframes pcd-set-reveal { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
   .pcd-set-panel__label { display: block; font-family: 'Macabro','Anton',sans-serif; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,241,205,0.70); margin: 0 0 7px; }
-  .pcd-set-panel__label + .pcd-set-panel__label { margin-top: 13px; }
+  .pcd-set-panel__label:not(:first-child) { margin-top: 14px; }
   .pcd-set-input {
     width: 100%; box-sizing: border-box; padding: 11px 14px; border-radius: 11px;
     background: rgba(255,241,205,0.07); border: 1px solid rgba(255,241,205,0.13); color: #fff1cd;
