@@ -57,47 +57,59 @@ export function ResetPasswordScreen() {
     if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
     if (password !== confirm) { setError("Passwords don't match."); return; }
     setSubmitting(true);
+
+    // updateUser's promise has been observed to hang even after the password
+    // actually changes (the frozen "UPDATING…" spinner). So don't wait on it —
+    // treat the USER_UPDATED auth event as the authoritative success signal and
+    // navigate on that. The promise race below only handles real errors (e.g.
+    // same/weak password) and a hard timeout fallback.
+    let finished = false;
+    const { data: { subscription: sub } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "USER_UPDATED") finish();
+    });
+    function finish() {
+      if (finished) return;
+      finished = true;
+      try { sub.unsubscribe(); } catch { /* ignore */ }
+      setPhase("done");
+      // Hard-navigate home so the app re-initialises cleanly with the new
+      // session (the recovery session is now a full session → signed in).
+      setTimeout(() => window.location.assign(import.meta.env.BASE_URL || "/"), 1200);
+    }
+
     try {
-      // Poke the session first — refreshing stale GoTrue state has reliably
-      // unstuck updateUser stalls (the cause of the frozen reset screen).
-      // Capped so a slow/hung getSession can't itself block the submit.
-      try {
-        await Promise.race([
-          supabase.auth.getSession(),
-          new Promise((resolve) => setTimeout(resolve, 4000)),
-        ]);
-      } catch { /* non-fatal */ }
-      // Guard against the known Supabase stall where updateUser never resolves
-      // (stale GoTrue/WebView state) — race it against a timeout so the button
-      // can't hang forever, which presented as a frozen screen.
       const result = await Promise.race([
         supabase.auth.updateUser({ password }),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("__timeout__")), 12000)),
+        new Promise((resolve) => setTimeout(() => resolve({ __timeout: true }), 8000)),
       ]);
-      const updErr = (result as { error: { message?: string } | null }).error;
-      if (updErr) {
+      if (finished) return; // USER_UPDATED already navigated us away
+      const r = result as { __timeout?: boolean; error?: { message?: string } | null };
+      if (r.__timeout) {
+        sub.unsubscribe();
+        setSubmitting(false);
+        setError("This is taking longer than expected. Your password may already be updated — try signing in with your new password.");
+        return;
+      }
+      if (r.error) {
+        sub.unsubscribe();
         // Supabase rejects reusing the current password with this message.
-        const m = (updErr.message || "").toLowerCase();
+        const m = (r.error.message || "").toLowerCase();
         setError(
           m.includes("different from the old") || m.includes("same")
             ? "That's the same as your current password. Enter a new one to continue, or try logging in with your old password."
-            : updErr.message || "Couldn't update your password — please try again.",
+            : r.error.message || "Couldn't update your password — please try again.",
         );
         setSubmitting(false);
         return;
       }
-      // Recovery session is now a full session → the user is signed in. Hard-
-      // navigate home so the app re-initialises cleanly with the new session
-      // (avoids any SPA-routing edge that could leave the screen stuck).
-      setPhase("done");
-      setTimeout(() => { window.location.assign(import.meta.env.BASE_URL || "/"); }, 1400);
-    } catch (e) {
-      setError(
-        e instanceof Error && e.message === "__timeout__"
-          ? "This is taking longer than expected — check your connection and try again."
-          : "Something went wrong — please try again.",
-      );
-      setSubmitting(false);
+      // Promise resolved success before the event fired — proceed.
+      finish();
+    } catch {
+      if (!finished) {
+        sub.unsubscribe();
+        setError("Something went wrong — please try again.");
+        setSubmitting(false);
+      }
     }
   };
 
