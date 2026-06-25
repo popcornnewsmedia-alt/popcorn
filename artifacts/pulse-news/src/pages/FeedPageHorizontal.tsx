@@ -108,7 +108,7 @@ export function FeedPageHorizontal() {
   const notifNudgeTriedRef = useRef(false);
   const [readerCommentsOpen, setReaderCommentsOpen] = useState(false);
   const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
-  const { items: notifItems, unreadCount, loading: notifLoading, markRead, markAllRead } = useNotifications(user);
+  const { items: notifItems, unreadCount, loading: notifLoading, markRead, markAllRead, deleteOne: deleteNotif, deleteAll: clearAllNotifs } = useNotifications(user);
   const [selectedDate, setSelectedDate] = useState<Date>(startOfDay(new Date()));
   const [readIds, setReadIds] = useState<Set<number>>(new Set());
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -1464,6 +1464,8 @@ export function FeedPageHorizontal() {
         loading={notifLoading}
         onClose={() => setNotifOpen(false)}
         onSelect={handleSelectNotification}
+        onDelete={deleteNotif}
+        onClearAll={clearAllNotifs}
       />
     </div>
     </LikesContext.Provider>

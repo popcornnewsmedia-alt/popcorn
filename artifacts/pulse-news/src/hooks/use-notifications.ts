@@ -9,6 +9,8 @@ interface UseNotificationsResult {
   loading: boolean;
   markRead: (id: number) => Promise<void>;
   markAllRead: () => Promise<void>;
+  deleteOne: (id: number) => Promise<void>;
+  deleteAll: () => Promise<void>;
 }
 
 /**
@@ -79,10 +81,32 @@ export function useNotifications(user: User | null): UseNotificationsResult {
       .is("read_at", null);
   }, [user?.id]);
 
+  // Permanently remove a single notification. Optimistic — drop it locally
+  // first so the row disappears the instant the user swipes/taps delete, then
+  // delete the row (RLS scopes the delete to the owner).
+  const deleteOne = useCallback(async (id: number) => {
+    if (!user) return;
+    setItems(prev => prev.filter(n => n.id !== id));
+    await supabase
+      .from("notifications")
+      .delete()
+      .eq("id", id);
+  }, [user?.id]);
+
+  // Clear the whole list for this recipient. Same optimistic pattern.
+  const deleteAll = useCallback(async () => {
+    if (!user) return;
+    setItems([]);
+    await supabase
+      .from("notifications")
+      .delete()
+      .eq("recipient_id", user.id);
+  }, [user?.id]);
+
   const unreadCount = useMemo(
     () => items.reduce((n, x) => n + (x.read_at ? 0 : 1), 0),
     [items],
   );
 
-  return { items, unreadCount, loading, markRead, markAllRead };
+  return { items, unreadCount, loading, markRead, markAllRead, deleteOne, deleteAll };
 }

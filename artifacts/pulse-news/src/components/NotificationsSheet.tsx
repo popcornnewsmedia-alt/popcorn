@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { X } from "lucide-react";
+import { X, Trash2 } from "lucide-react";
 import { GrainBackground } from "@/components/GrainBackground";
 import { supabase } from "@/lib/supabase";
 import { formatRelative } from "@/lib/identity";
@@ -12,6 +12,8 @@ interface NotificationsSheetProps {
   loading: boolean;
   onClose: () => void;
   onSelect: (n: DBNotification) => void;
+  onDelete?: (id: number) => void;
+  onClearAll?: () => void;
 }
 
 /**
@@ -21,7 +23,7 @@ interface NotificationsSheetProps {
  * as CommentSheet / LegalSheet (boxShadow + backdrop-filter + GrainBackground
  * gated on `isOpen`).
  */
-export function NotificationsSheet({ isOpen, items, loading, onClose, onSelect }: NotificationsSheetProps) {
+export function NotificationsSheet({ isOpen, items, loading, onClose, onSelect, onDelete = () => {}, onClearAll = () => {} }: NotificationsSheetProps) {
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
   const handleClose = (e: React.MouseEvent) => { e.stopPropagation(); onClose(); };
 
@@ -129,28 +131,47 @@ export function NotificationsSheet({ isOpen, items, loading, onClose, onSelect }
         </button>
 
         {/* Header */}
-        <div className="relative z-10 px-6 pt-6 pb-5 flex-shrink-0">
-          <p style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 700,
-            fontSize: '10px',
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,241,205,0.38)',
-            marginBottom: '10px',
-          }}>
-            Popcorn · Activity
-          </p>
-          <h1 style={{
-            fontFamily: "'Macabro', 'Anton', sans-serif",
-            fontSize: 'clamp(16px, 4.5vw, 21px)',
-            lineHeight: 0.94,
-            color: '#fff1cd',
-            letterSpacing: '0.015em',
-            textTransform: 'uppercase',
-          }}>
-            Notifications
-          </h1>
+        <div className="relative z-10 px-6 pt-6 pb-5 flex-shrink-0 flex items-end justify-between gap-3">
+          <div>
+            <p style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 700,
+              fontSize: '10px',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,241,205,0.38)',
+              marginBottom: '10px',
+            }}>
+              Popcorn · Activity
+            </p>
+            <h1 style={{
+              fontFamily: "'Macabro', 'Anton', sans-serif",
+              fontSize: 'clamp(16px, 4.5vw, 21px)',
+              lineHeight: 0.94,
+              color: '#fff1cd',
+              letterSpacing: '0.015em',
+              textTransform: 'uppercase',
+            }}>
+              Notifications
+            </h1>
+          </div>
+          {items.length > 0 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onClearAll(); }}
+              className="flex-shrink-0 transition-opacity hover:opacity-70 active:opacity-50"
+              style={{
+                marginRight: '40px',
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 600,
+                fontSize: '11px',
+                letterSpacing: '0.04em',
+                color: 'rgba(255,241,205,0.55)',
+                padding: '4px 2px',
+              }}
+            >
+              Clear all
+            </button>
+          )}
         </div>
 
         <div className="relative z-10 mx-6" style={{ height: '1px', background: 'rgba(255,241,205,0.14)' }} />
@@ -181,98 +202,202 @@ export function NotificationsSheet({ isOpen, items, loading, onClose, onSelect }
             </div>
           ) : (
             <div className="pb-20">
-              {items.map((n, i) => {
-                const title = titleMap.get(n.article_id);
-                const unread = !n.read_at;
-                return (
-                  <button
-                    key={n.id}
-                    onClick={(e) => { e.stopPropagation(); onSelect(n); }}
-                    className="w-full text-left transition-colors active:opacity-80"
-                    style={{
-                      display: 'flex',
-                      gap: 12,
-                      padding: '14px 20px',
-                      borderBottom: i < items.length - 1 ? '1px solid rgba(255,241,205,0.08)' : 'none',
-                      background: unread ? 'rgba(255,241,205,0.04)' : 'transparent',
-                    }}
-                  >
-                    {/* Actor avatar */}
-                    <div style={{
-                      width: 34, height: 34,
-                      borderRadius: '50%',
-                      background: avatarColor(n.actor_name),
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      flexShrink: 0,
-                    }}>
-                      <span style={{
-                        fontFamily: "'Macabro', 'Anton', sans-serif",
-                        fontSize: 12,
-                        color: '#fff1cd',
-                        letterSpacing: '0.02em',
-                        lineHeight: 1,
-                      }}>
-                        {initialsOf(n.actor_name)}
-                      </span>
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline gap-2" style={{ flexWrap: 'wrap' }}>
-                        <span style={{
-                          fontFamily: "'Macabro', 'Anton', sans-serif",
-                          fontSize: 11,
-                          color: '#fff1cd',
-                          letterSpacing: '0.04em',
-                          textTransform: 'uppercase',
-                        }}>
-                          {n.actor_name}
-                        </span>
-                        <span style={{
-                          fontFamily: "'Manrope', sans-serif",
-                          fontSize: 10.5,
-                          color: 'rgba(255,241,205,0.42)',
-                        }}>
-                          replied · {formatRelative(n.created_at)}
-                        </span>
-                        {unread && (
-                          <span style={{
-                            width: 6, height: 6,
-                            borderRadius: '50%',
-                            background: '#e14b3a',
-                            flexShrink: 0,
-                            marginLeft: 2,
-                          }} />
-                        )}
-                      </div>
-
-                      <p className="font-['Lora']" style={{
-                        marginTop: 4,
-                        fontSize: 13,
-                        lineHeight: 1.5,
-                        color: 'rgba(255,241,205,0.82)',
-                      }}>
-                        {n.preview}
-                      </p>
-
-                      {title && (
-                        <p className="font-['Inter'] truncate" style={{
-                          marginTop: 6,
-                          fontSize: 10.5,
-                          letterSpacing: '0.04em',
-                          color: 'rgba(255,241,205,0.42)',
-                        }}>
-                          on {title}
-                        </p>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
+              {items.map((n, i) => (
+                <SwipeRow
+                  key={n.id}
+                  n={n}
+                  title={titleMap.get(n.article_id)}
+                  isLast={i === items.length - 1}
+                  onSelect={onSelect}
+                  onDelete={onDelete}
+                />
+              ))}
             </div>
           )}
         </div>
       </div>
     </>
+  );
+}
+
+/**
+ * A single notification row that can be swiped left to delete. A red trash
+ * track sits behind the content; dragging left reveals it and releasing past
+ * the threshold removes the row. Horizontal drags lock the axis and stop
+ * propagation so they don't trigger the sheet's drag-to-close / scroll.
+ */
+function SwipeRow({
+  n, title, isLast, onSelect, onDelete,
+}: {
+  n: DBNotification;
+  title: string | undefined;
+  isLast: boolean;
+  onSelect: (n: DBNotification) => void;
+  onDelete: (id: number) => void;
+}) {
+  const unread = !n.read_at;
+  const [offset, setOffset] = useState(0);
+  const [removing, setRemoving] = useState(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<null | "h" | "v">(null);
+  const moved = useRef(false);
+
+  // Past this drag distance, releasing commits the delete.
+  const THRESHOLD = 88;
+
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    startX.current = e.touches[0].clientX;
+    startY.current = e.touches[0].clientY;
+    axis.current = null;
+    moved.current = false;
+  }, []);
+
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
+    const dx = e.touches[0].clientX - startX.current;
+    const dy = e.touches[0].clientY - startY.current;
+    if (axis.current === null) {
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      axis.current = Math.abs(dx) > Math.abs(dy) ? "h" : "v";
+    }
+    if (axis.current !== "h") return; // vertical → let the sheet handle it
+    e.stopPropagation();               // keep the sheet from dragging/closing
+    moved.current = true;
+    // Only allow swiping left (negative); a little rubber-band past 0.
+    setOffset(Math.min(0, dx));
+  }, []);
+
+  const commitDelete = useCallback(() => {
+    setRemoving(true);
+    setOffset(-window.innerWidth);
+    window.setTimeout(() => onDelete(n.id), 180);
+  }, [n.id, onDelete]);
+
+  const onTouchEnd = useCallback(() => {
+    if (axis.current === "h") {
+      if (Math.abs(offset) > THRESHOLD) { commitDelete(); return; }
+      setOffset(0);
+    }
+    axis.current = null;
+  }, [offset, commitDelete]);
+
+  const revealing = Math.abs(offset);
+
+  return (
+    <div
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        maxHeight: removing ? 0 : 200,
+        opacity: removing ? 0 : 1,
+        transition: removing ? 'max-height 0.22s ease, opacity 0.18s ease' : 'none',
+        borderBottom: isLast ? 'none' : '1px solid rgba(255,241,205,0.08)',
+      }}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* Delete track behind the row */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: '#b3261e',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          paddingRight: 24,
+          opacity: revealing > 8 ? 1 : 0,
+        }}
+      >
+        <Trash2 className="w-5 h-5" style={{ color: '#fff1cd', opacity: Math.min(1, revealing / THRESHOLD) }} />
+      </div>
+
+      {/* Foreground content — translates with the swipe */}
+      <button
+        onClick={(e) => { e.stopPropagation(); if (moved.current) return; onSelect(n); }}
+        className="w-full text-left active:opacity-80"
+        style={{
+          position: 'relative',
+          display: 'flex',
+          gap: 12,
+          padding: '14px 20px',
+          background: unread ? '#073a9e' : '#042c85',
+          transform: `translateX(${offset}px)`,
+          transition: axis.current === 'h' && !removing ? 'none' : 'transform 0.28s cubic-bezier(0.32,0.72,0,1)',
+        }}
+      >
+        {/* Actor avatar */}
+        <div style={{
+          width: 34, height: 34,
+          borderRadius: '50%',
+          background: avatarColor(n.actor_name),
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          <span style={{
+            fontFamily: "'Macabro', 'Anton', sans-serif",
+            fontSize: 12,
+            color: '#fff1cd',
+            letterSpacing: '0.02em',
+            lineHeight: 1,
+          }}>
+            {initialsOf(n.actor_name)}
+          </span>
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-baseline gap-2" style={{ flexWrap: 'wrap' }}>
+            <span style={{
+              fontFamily: "'Macabro', 'Anton', sans-serif",
+              fontSize: 11,
+              color: '#fff1cd',
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+            }}>
+              {n.actor_name}
+            </span>
+            <span style={{
+              fontFamily: "'Manrope', sans-serif",
+              fontSize: 10.5,
+              color: 'rgba(255,241,205,0.42)',
+            }}>
+              replied · {formatRelative(n.created_at)}
+            </span>
+            {unread && (
+              <span style={{
+                width: 6, height: 6,
+                borderRadius: '50%',
+                background: '#e14b3a',
+                flexShrink: 0,
+                marginLeft: 2,
+              }} />
+            )}
+          </div>
+
+          <p className="font-['Lora']" style={{
+            marginTop: 4,
+            fontSize: 13,
+            lineHeight: 1.5,
+            color: 'rgba(255,241,205,0.82)',
+          }}>
+            {n.preview}
+          </p>
+
+          {title && (
+            <p className="font-['Inter'] truncate" style={{
+              marginTop: 6,
+              fontSize: 10.5,
+              letterSpacing: '0.04em',
+              color: 'rgba(255,241,205,0.42)',
+            }}>
+              on {title}
+            </p>
+          )}
+        </div>
+      </button>
+    </div>
   );
 }
 

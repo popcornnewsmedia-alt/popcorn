@@ -1,7 +1,7 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import type { ReactNode, MouseEvent as ReactMouseEvent } from "react";
-import { ChevronLeft, ChevronRight, Instagram, Heart, MessageCircle, Bookmark, Send, X, LogOut, ChevronDown, Settings, Pencil, Eye, EyeOff, ArrowRight, Check } from "lucide-react";
+import { ChevronLeft, ChevronRight, Instagram, Heart, MessageCircle, Bookmark, Send, X, LogOut, ChevronDown, Settings, Pencil, Eye, EyeOff, ArrowRight, Check, Bell, Trash2 } from "lucide-react";
 import { format, startOfDay } from "date-fns";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
@@ -13,6 +13,7 @@ import { LikesContext, useLikesRoot, useLikedArticles } from "@/hooks/use-likes"
 import { useCommentCount } from "@/hooks/use-comment-count";
 import { useNotifications } from "@/hooks/use-notifications";
 import { avatarColor } from "@/lib/avatar";
+import type { DBNotification } from "@/lib/comments-types";
 import { CommentSheet } from "@/components/CommentSheet";
 import { ABOUT, PRIVACY, TERMS, type LegalKind, type LegalDoc } from "@/components/LegalSheet";
 import { feedImageUrl } from "@/lib/image-url";
@@ -937,6 +938,12 @@ const PROFILE_CSS = `
   .pcd-pm-link:hover { opacity: 0.7; }
   .pcd-pm-link__lead { display: inline-flex; align-items: center; gap: 9px; }
   .pcd-pm-link__lead svg { color: rgba(255,241,205,0.55); }
+  .pcd-pm-notifcount {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px;
+    background: #e14b3a; color: #fff1cd;
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 10.5px; line-height: 1;
+  }
   .pcd-pm-signout {
     display: flex; align-items: center; gap: 8px; background: transparent; border: 0;
     cursor: pointer; padding: 0; margin-top: 4px;
@@ -977,6 +984,63 @@ const PROFILE_CSS = `
   }
   .pcd-set__close:hover { background: rgba(255,241,205,0.16); transform: rotate(90deg); }
   .pcd-set__body { position: relative; z-index: 1; padding: 4px 26px 26px; overflow-y: auto; }
+
+  /* ── Notifications popup ── */
+  .pcd-ntf-overlay {
+    position: fixed; inset: 0; z-index: 130; display: flex; align-items: center; justify-content: center;
+    padding: 4vh 24px; background: rgba(4,12,40,0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    animation: pcd-lib-fade .2s ease;
+  }
+  .pcd-ntf {
+    position: relative; width: min(400px, 100%); max-height: 78vh; display: flex; flex-direction: column;
+    border-radius: 22px; overflow: hidden; isolation: isolate;
+    background: ${BLUE}; color: #fff1cd; border: 1px solid rgba(255,241,205,0.14);
+    box-shadow: 0 30px 90px rgba(4,12,40,0.5);
+    animation: pcd-lib-pop .26s cubic-bezier(0.22,1,0.36,1);
+  }
+  .pcd-ntf__grain { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55; mix-blend-mode: overlay; }
+  .pcd-ntf__head { position: relative; z-index: 1; padding: 22px 22px 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-shrink: 0; }
+  .pcd-ntf__eyebrow { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,241,205,0.38); margin: 0 0 8px; }
+  .pcd-ntf__title { font-family: 'Macabro','Anton',sans-serif; font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; color: #fff1cd; line-height: 0.96; margin: 0; }
+  .pcd-ntf__clear {
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.03em;
+    color: rgba(255,241,205,0.55); background: transparent; border: 0; cursor: pointer; padding: 4px 2px;
+    transition: color .16s ease; white-space: nowrap;
+  }
+  .pcd-ntf__clear:hover { color: #fff1cd; }
+  .pcd-ntf__close {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: #fff1cd;
+    background: rgba(255,241,205,0.08); border: 1px solid rgba(255,241,205,0.16);
+    transition: background .16s ease, transform .16s ease;
+  }
+  .pcd-ntf__close:hover { background: rgba(255,241,205,0.16); transform: rotate(90deg); }
+  .pcd-ntf__body { position: relative; z-index: 1; padding: 2px 14px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+  .pcd-ntf__empty { text-align: center; padding: 36px 24px 40px; }
+  .pcd-ntf__empty-h { font-family: 'Macabro','Anton',sans-serif; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff1cd; margin: 0 0 8px; }
+  .pcd-ntf__empty-p { font-family: 'Lora', serif; font-size: 13px; line-height: 1.6; color: rgba(255,241,205,0.7); margin: 0; }
+  .pcd-ntf-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 12px; border-radius: 13px;
+    background: rgba(255,241,205,0.05); border: 1px solid rgba(255,241,205,0.10);
+  }
+  .pcd-ntf-row.is-unread { background: rgba(255,241,205,0.12); border-color: rgba(255,241,205,0.24); }
+  .pcd-ntf-row__av {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11px; color: #fff;
+  }
+  .pcd-ntf-row__txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+  .pcd-ntf-row__head { font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,241,205,0.62); }
+  .pcd-ntf-row__head strong { color: #fff1cd; font-weight: 600; }
+  .pcd-ntf-row__preview { font-family: 'Inter', sans-serif; font-size: 12.5px; color: #fff1cd; line-height: 1.45; word-break: break-word; }
+  .pcd-ntf-row__del {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent; border: 0; color: rgba(255,241,205,0.4);
+    transition: background .16s ease, color .16s ease;
+  }
+  .pcd-ntf-row__del:hover { background: rgba(225,75,58,0.18); color: #ff7a6b; }
   .pcd-set__seclabel { font-family: 'Macabro','Anton',sans-serif; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,241,205,0.45); margin: 18px 0 11px; padding-left: 2px; }
   .pcd-set__seclabel.is-danger { color: rgba(255,179,171,0.78); }
   .pcd-set-row {
@@ -1173,16 +1237,19 @@ function ProfileMenu({
   // profile popcorn. Backed by the same Supabase `notifications` table +
   // realtime, so a reply lights the dot here exactly like on mobile.
   const { user } = useAuth();
-  const { items: notifs, unreadCount, markAllRead } = useNotifications(user);
+  const { items: notifs, unreadCount, markAllRead, deleteOne, deleteAll } = useNotifications(user);
 
-  // Opening the menu surfaces the notifications list, so clear the unread
+  // The notifications now live in their own popup (opened from the dropdown).
+  const [notifModalOpen, setNotifModalOpen] = useState(false);
+
+  // Opening the notifications popup surfaces the list, so clear the unread
   // badge shortly after — long enough to register the highlight, then it
   // settles to "seen" (mirrors tapping the app's notifications sheet).
   useEffect(() => {
-    if (!open || unreadCount === 0) return;
+    if (!notifModalOpen || unreadCount === 0) return;
     const t = setTimeout(() => { void markAllRead(); }, 800);
     return () => clearTimeout(t);
-  }, [open, unreadCount, markAllRead]);
+  }, [notifModalOpen, unreadCount, markAllRead]);
 
   const initialSource = userName ?? userHandle?.replace(/^@/, "") ?? "?";
   const initial = (initialSource[0] ?? "?").toUpperCase();
@@ -1260,25 +1327,19 @@ function ProfileMenu({
 
             <div className="pcd-pm-rule" />
 
-            {notifs.length > 0 && (
-              <>
-                <p className="pcd-pm-eyebrow">Notifications</p>
-                <div className="pcd-pm-notifs">
-                  {notifs.slice(0, 6).map((n) => (
-                    <div key={n.id} className={`pcd-pm-notif${n.read_at ? "" : " is-unread"}`}>
-                      <span className="pcd-pm-notif__av" style={{ background: avatarColor(n.actor_name) }}>
-                        {n.actor_name.replace(/^@/, "").slice(0, 2).toUpperCase()}
-                      </span>
-                      <span className="pcd-pm-notif__txt">
-                        <span className="pcd-pm-notif__head"><strong>{n.actor_name}</strong> replied · {relTimeShort(n.created_at)}</span>
-                        <span className="pcd-pm-notif__preview">{n.preview}</span>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <div className="pcd-pm-rule" />
-              </>
-            )}
+            <button
+              type="button"
+              className="pcd-pm-link"
+              onClick={() => { setOpen(false); setNotifModalOpen(true); }}
+            >
+              <span className="pcd-pm-link__lead"><Bell size={15} strokeWidth={2} />Notifications</span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                {unreadCount > 0 && <span className="pcd-pm-notifcount">{unreadCount}</span>}
+                <ChevronRight size={15} strokeWidth={2} style={{ color: "rgba(255,241,205,0.5)" }} />
+              </span>
+            </button>
+
+            <div className="pcd-pm-rule" />
 
             <p className="pcd-pm-eyebrow">Library</p>
             <button type="button" className="pcd-pm-libtile" onClick={() => goLibrary("saved")}>
@@ -1323,7 +1384,91 @@ function ProfileMenu({
         </div>,
         document.body,
       )}
+
+      {notifModalOpen && (
+        <NotificationsModal
+          items={notifs}
+          onClose={() => setNotifModalOpen(false)}
+          onDelete={deleteOne}
+          onClearAll={deleteAll}
+        />
+      )}
     </div>
+  );
+}
+
+/** NotificationsModal — small centered popup listing the user's reply
+ *  notifications. Scrollable, with per-row delete (hover X) and a Clear all
+ *  action. Mirrors the app's NotificationsSheet on the web surface. */
+function NotificationsModal({
+  items, onClose, onDelete, onClearAll,
+}: {
+  items: DBNotification[];
+  onClose: () => void;
+  onDelete: (id: number) => void;
+  onClearAll: () => void;
+}) {
+  // Escape closes.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      className="pcd-ntf-overlay"
+      onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="pcd-ntf" role="dialog" aria-modal="true" aria-label="Notifications">
+        <div className="pcd-ntf__grain" aria-hidden><GrainBackground variant="popcorn-blue" /></div>
+
+        <div className="pcd-ntf__head">
+          <div style={{ minWidth: 0 }}>
+            <p className="pcd-ntf__eyebrow">Popcorn · Activity</p>
+            <h2 className="pcd-ntf__title">Notifications</h2>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {items.length > 0 && (
+              <button type="button" className="pcd-ntf__clear" onClick={onClearAll}>Clear all</button>
+            )}
+            <button type="button" className="pcd-ntf__close" aria-label="Close" onClick={onClose}>
+              <X size={17} strokeWidth={2.25} />
+            </button>
+          </div>
+        </div>
+
+        <div className="pcd-ntf__body">
+          {items.length === 0 ? (
+            <div className="pcd-ntf__empty">
+              <p className="pcd-ntf__empty-h">Quiet for now</p>
+              <p className="pcd-ntf__empty-p">When someone replies to one of your comments, you'll hear about it here.</p>
+            </div>
+          ) : (
+            items.map((n) => (
+              <div key={n.id} className={`pcd-ntf-row${n.read_at ? "" : " is-unread"}`}>
+                <span className="pcd-ntf-row__av" style={{ background: avatarColor(n.actor_name) }}>
+                  {n.actor_name.replace(/^@/, "").slice(0, 2).toUpperCase()}
+                </span>
+                <span className="pcd-ntf-row__txt">
+                  <span className="pcd-ntf-row__head"><strong>{n.actor_name}</strong> replied · {relTimeShort(n.created_at)}</span>
+                  <span className="pcd-ntf-row__preview">{n.preview}</span>
+                </span>
+                <button
+                  type="button"
+                  className="pcd-ntf-row__del"
+                  aria-label="Delete notification"
+                  onClick={() => onDelete(n.id)}
+                >
+                  <Trash2 size={15} strokeWidth={2} />
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body,
   );
 }
 
