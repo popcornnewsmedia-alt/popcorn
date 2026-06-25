@@ -2,6 +2,8 @@ import { Heart, MessageCircle, Bookmark, Share2 } from "lucide-react";
 import { useLikedArticles } from "@/hooks/use-likes";
 import { useSavedArticles } from "@/hooks/use-saves";
 import { useCommentCount } from "@/hooks/use-comment-count";
+import { shareArticle } from "@/lib/share";
+import { toast } from "@/hooks/use-toast";
 import type { NewsArticle } from "@workspace/api-client-react";
 
 interface ActionButtonsProps {
@@ -32,11 +34,9 @@ export function ActionButtons({ article, onOpenComments, horizontal = false }: A
 
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (navigator.share) {
-      navigator.share({ title: article.title, text: article.summary, url: window.location.href }).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-    }
+    void shareArticle(article).then((result) => {
+      if (result === "copied") toast({ description: "Link copied to clipboard" });
+    });
   };
 
   const handleComment = (e: React.MouseEvent) => { e.stopPropagation(); onOpenComments(); };

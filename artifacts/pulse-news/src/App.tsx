@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 // swap this line back to: import { FeedPage } from "@/pages/FeedPage";
 import { FeedPageHorizontal as FeedPage } from "@/pages/FeedPageHorizontal";
 import { DesktopHome } from "@/pages/DesktopHome";
+import { SharedArticleRoute } from "@/pages/SharedArticleRoute";
 import { useIsDesktopWeb } from "@/hooks/use-is-desktop-web";
 import NotFound from "@/pages/not-found";
 import { EmailConfirmedScreen } from "@/components/EmailConfirmedScreen";
@@ -52,6 +53,9 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={HomeRoute} />
+      {/* Shared article deep-link — opens that article on the public website so
+          recipients without the app can read it (no login required). */}
+      <Route path="/a/:id">{(params) => <SharedArticleRoute id={Number(params.id)} />}</Route>
       {/* Supabase redirects here after email verification — just render the feed.
           App.tsx's onAuthStateChange will detect the session and show EmailConfirmedScreen. */}
       <Route path="/auth/callback" component={HomeRoute} />

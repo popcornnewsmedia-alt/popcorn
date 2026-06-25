@@ -4,6 +4,7 @@
   "outputDirectory": "artifacts/pulse-news/dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/a/:id", "destination": "/api/share/:id" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

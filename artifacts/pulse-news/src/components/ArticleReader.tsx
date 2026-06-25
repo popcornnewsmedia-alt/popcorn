@@ -10,6 +10,8 @@ import { CommentSheet } from "@/components/CommentSheet";
 import { useCommentCount } from "@/hooks/use-comment-count";
 import { GrainBackground } from "@/components/GrainBackground";
 import { readerImageUrl } from "@/lib/image-url";
+import { shareArticle } from "@/lib/share";
+import { toast } from "@/hooks/use-toast";
 
 // Desktop editorial palette — mirrors DesktopHome.tsx so the article
 // reader feels like a natural continuation of the home page.
@@ -130,6 +132,16 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
   const fillRef = useRef<HTMLDivElement>(null);
   const isDesktop = useIsDesktop(1024);
 
+  // Share the article via the native sheet (app / mobile web) or copy the link
+  // (desktop). The link points at the public website so app-less recipients can
+  // read it. See lib/share.ts.
+  const handleShare = useCallback(() => {
+    if (!article) return;
+    void shareArticle(article).then((result) => {
+      if (result === "copied") toast({ description: "Link copied to clipboard" });
+    });
+  }, [article]);
+
   // ESC key closes the reader (desktop convention). Active whenever an
   // article is open, regardless of viewport.
   useEffect(() => {
@@ -239,6 +251,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
             locked={locked}
             onSignInWithEmail={onSignInWithEmail}
             onCreateAccount={onCreateAccount}
+            onShare={handleShare}
           />
         )}
         {article && !isDesktop && (
@@ -444,13 +457,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                       <Bookmark style={{ width: 22, height: 22, color: '#111111', fill: isSavedFn(article.id) ? '#111111' : 'none', strokeWidth: 1.4 }} />
                     </button>
                     <button
-                      onClick={() => {
-                        if (navigator.share) {
-                          navigator.share({ title: article.title, text: article.summary, url: window.location.href }).catch(() => {});
-                        } else {
-                          navigator.clipboard.writeText(window.location.href);
-                        }
-                      }}
+                      onClick={handleShare}
                       className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
                     >
                       <Share2 style={{ width: 22, height: 22, color: '#111111', strokeWidth: 1.4 }} />
@@ -574,6 +581,7 @@ function DesktopArticleLayout({
   locked = false,
   onSignInWithEmail,
   onCreateAccount,
+  onShare,
 }: {
   article: NewsArticle;
   onClose: () => void;
@@ -598,6 +606,7 @@ function DesktopArticleLayout({
   locked?: boolean;
   onSignInWithEmail?: () => void;
   onCreateAccount?: () => void;
+  onShare: () => void;
 }) {
   const hasImage = article.imageUrl && !imgError;
   const allParagraphs = article.content.split("\n\n").filter(Boolean);
@@ -762,13 +771,7 @@ function DesktopArticleLayout({
               <RailCell
                 icon={<Share2 style={{ width: 18, height: 18, strokeWidth: 1.5 }} />}
                 count=""
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({ title: article.title, text: article.summary, url: window.location.href }).catch(() => {});
-                  } else {
-                    navigator.clipboard.writeText(window.location.href).catch(() => {});
-                  }
-                }}
+                onClick={onShare}
               />
             </div>
           </aside>
