@@ -17,7 +17,9 @@ import { supabase } from "@/lib/supabase";
 export interface UseLikesResult {
   likedIds: Set<number>;
   isLiked: (articleId: number) => boolean;
-  toggleLike: (articleId: number) => Promise<void>;
+  /** Toggle the like. Pass the currently-displayed count so the number can
+   *  move instantly (optimistically), reconciled by the RPC's true count. */
+  toggleLike: (articleId: number, currentCount?: number) => Promise<void>;
   /** Manually refresh from the server (e.g. after reconnect / focus). */
   refresh: () => Promise<void>;
   loading: boolean;
@@ -143,13 +145,17 @@ export function useLikesRoot(user: User | null): UseLikesResult {
     likedIdsRef.current = mirror;
   }, []);
 
-  const toggleLike = useCallback(async (articleId: number) => {
+  const toggleLike = useCallback(async (articleId: number, currentCount?: number) => {
     if (!userId) return;
     const wasLiked = likedIdsRef.current.has(articleId);
 
-    // Flip the heart immediately for snappy feedback; the count snaps to the
-    // RPC's authoritative total a moment later.
+    // Flip the heart AND bump the count immediately for instant feedback; both
+    // reconcile to the RPC's authoritative values a moment later.
     applyHeart(articleId, !wasLiked);
+    if (typeof currentCount === "number") {
+      const optimistic = Math.max(0, currentCount + (wasLiked ? -1 : 1));
+      setCountOverrides((prev) => new Map(prev).set(articleId, optimistic));
+    }
 
     // One atomic server call does the like/unlike AND returns the true count —
     // mirrors `cast_vote` for comments. SECURITY DEFINER, so the write always
@@ -161,6 +167,9 @@ export function useLikesRoot(user: User | null): UseLikesResult {
     if (error) {
       console.warn("[useLikes] toggle_article_like failed — reverting", error.message);
       applyHeart(articleId, wasLiked);
+      if (typeof currentCount === "number") {
+        setCountOverrides((prev) => new Map(prev).set(articleId, currentCount));
+      }
       return;
     }
 

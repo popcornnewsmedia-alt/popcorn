@@ -433,7 +433,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                   {/* Social actions */}
                   <div className="flex items-center gap-5 mb-8 pb-5" style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
                     <button
-                      onClick={() => { void toggleLike(article.id); }}
+                      onClick={() => { void toggleLike(article.id, likeCountFor(article)); }}
                       className="flex items-center gap-1.5 transition-all duration-200 active:scale-90"
                     >
                       <Heart style={{ width: 22, height: 22, color: liked ? '#e11d48' : '#111111', fill: liked ? '#e11d48' : 'none', strokeWidth: 1.6 }} />
@@ -593,7 +593,7 @@ function DesktopArticleLayout({
   setCommentsOpen: (b: boolean) => void;
   commentCount: number | null | undefined;
   liked: boolean;
-  toggleLike: (id: number) => Promise<void> | void;
+  toggleLike: (id: number, currentCount?: number) => Promise<void> | void;
   likeCountFor: (article: { id: number; likes: number }) => number;
   isSavedFn: (id: string) => boolean;
   toggleSave: (id: string) => Promise<void> | void;
@@ -748,7 +748,7 @@ function DesktopArticleLayout({
                   />
                 }
                 count={(() => { const c = likeCountFor(article); return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : String(c); })()}
-                onClick={() => { void toggleLike(article.id); }}
+                onClick={() => { void toggleLike(article.id, likeCountFor(article)); }}
                 active={liked}
                 activeFill="#e11d48"
               />

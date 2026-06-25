@@ -87,7 +87,7 @@ export function ArticleCard({
   // Instagram) and pops a heart at the tap point. To detect the second tap we
   // defer the single-tap "open reader" action by DOUBLE_TAP_MS; if a second
   // tap lands within that window we cancel the open and like instead.
-  const { isLiked: isLikedFn, toggleLike } = useLikedArticles();
+  const { isLiked: isLikedFn, toggleLike, likeCountFor } = useLikedArticles();
   const [heartBurst, setHeartBurst] = useState<{ id: number; x: number; y: number } | null>(null);
   const lastTapRef = useRef(0);
   const singleTapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -109,7 +109,7 @@ export function ArticleCard({
         clearTimeout(singleTapTimerRef.current);
         singleTapTimerRef.current = null;
       }
-      if (!isLikedFn(article.id)) void toggleLike(article.id);
+      if (!isLikedFn(article.id)) void toggleLike(article.id, likeCountFor(article));
       setHeartBurst({ id: now, x, y });
       return;
     }

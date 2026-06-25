@@ -24,7 +24,7 @@ export function ActionButtons({ article, onOpenComments, horizontal = false }: A
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    void toggleLike(article.id);
+    void toggleLike(article.id, likeCountFor(article));
   };
 
   const handleBookmark = (e: React.MouseEvent) => {

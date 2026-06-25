@@ -1492,7 +1492,7 @@ function LibraryOverlay({
 
   const removeArticle = (a: NewsArticle) => {
     if (tab === "saved") void saves.toggleSave(a.id);
-    else void likes.toggleLike(a.id);
+    else void likes.toggleLike(a.id, likes.likeCountFor(a));
   };
 
   useEffect(() => {
@@ -4678,7 +4678,7 @@ function DragSocial({
   const stop = (e: ReactMouseEvent) => { e.preventDefault(); e.stopPropagation(); };
   const onLike = (e: ReactMouseEvent) => {
     stop(e);
-    void toggleLike(article.id);
+    void toggleLike(article.id, likeCount);
   };
   const onComment = (e: ReactMouseEvent) => { stop(e); onComments(article); };
   const onSave = (e: ReactMouseEvent) => { stop(e); void toggleSave(article.id); };
