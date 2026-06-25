@@ -295,7 +295,7 @@ export function FeedPageHorizontal() {
 
   const pickerTouchStartYRef = useRef(0);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch, dataUpdatedAt } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch } =
     useInfiniteNewsFeed(undefined);
 
   useEffect(() => {
@@ -313,11 +313,6 @@ export function FeedPageHorizontal() {
   // cross-device sync pattern as saves. Broadcast via <LikesContext.Provider>
   // below so ActionButtons / ArticleReader read + toggle the same Set.
   const likes = useLikesRoot(user);
-
-  // Each time fresh feed data lands (initial load, pull-to-refresh, feed-ready
-  // push), the server counts are authoritative and already include the viewer's
-  // likes — so drop the optimistic count adjustments to avoid double-counting.
-  useEffect(() => { likes.clearLikeDeltas(); }, [dataUpdatedAt]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Flat newest-first article list with image URL rewriting (identical to FeedPage).
   // DPR is passed so Supabase / Unsplash / TMDb / Wikipedia / WP URLs are
@@ -987,6 +982,9 @@ export function FeedPageHorizontal() {
     if (pullOffset > 60 && !isRefreshing) {
       setIsRefreshing(true);
       setPullOffset(96);
+      // Drop per-article like overrides so the freshly-fetched counts (which
+      // include other accounts' likes) take over.
+      likes.clearLikeCounts();
       const minDelay = new Promise(r => setTimeout(r, 1800));
       Promise.all([refetch(), minDelay]).finally(() => {
         // Reset the active day's vertical scroll to the top. Pull-to-refresh

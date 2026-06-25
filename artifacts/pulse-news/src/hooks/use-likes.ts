@@ -22,15 +22,16 @@ export interface UseLikesResult {
   refresh: () => Promise<void>;
   loading: boolean;
   /**
-   * The like count to DISPLAY for an article: the server's count plus the
-   * viewer's own optimistic adjustment, so a tap bumps the number instantly.
-   * The adjustment is dropped on the next feed fetch (clearLikeDeltas), where
-   * the server count becomes authoritative — so it never double-counts.
+   * The like count to DISPLAY for an article. After the viewer toggles, the
+   * `toggle_article_like` RPC returns the authoritative total and we store it
+   * as an override so the number is correct immediately. Falls back to the
+   * feed's `article.likes` when there's no override. Overrides are dropped on
+   * a manual feed refresh (clearLikeCounts) so cross-account likes show.
    */
   likeCountFor: (article: { id: number; likes: number }) => number;
-  /** Clears all optimistic count adjustments. Call when fresh feed data
-   *  arrives (the server count then already includes the viewer's likes). */
-  clearLikeDeltas: () => void;
+  /** Drops all per-article count overrides. Call on a manual feed refresh so
+   *  the freshly-fetched server counts (incl. other accounts) take over. */
+  clearLikeCounts: () => void;
 }
 
 const EMPTY_SET: Set<number> = new Set();
@@ -42,7 +43,7 @@ const LikesContext = createContext<UseLikesResult>({
   refresh: async () => {},
   loading: false,
   likeCountFor: (a) => a.likes,
-  clearLikeDeltas: () => {},
+  clearLikeCounts: () => {},
 });
 
 /** Root hook — call this ONCE in the page (single Supabase query), then
@@ -51,10 +52,9 @@ const LikesContext = createContext<UseLikesResult>({
 export function useLikesRoot(user: User | null): UseLikesResult {
   const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(false);
-  // Per-article optimistic count adjustment (+1 like / -1 unlike) layered on
-  // top of the server's count, so a tap moves the number immediately. Cleared
-  // on the next feed fetch, when the server count already reflects the change.
-  const [likeDeltas, setLikeDeltas] = useState<Map<number, number>>(new Map());
+  // Per-article authoritative like count returned by the toggle RPC, shown in
+  // place of the (possibly stale) feed count until the next manual refresh.
+  const [countOverrides, setCountOverrides] = useState<Map<number, number>>(new Map());
   // Ref mirror so `toggleLike` can read the freshest set without listing
   // `likedIds` as a dep (which would rebuild the callback on every flip).
   const likedIdsRef = useRef(likedIds);
@@ -106,64 +106,69 @@ export function useLikesRoot(user: User | null): UseLikesResult {
     };
   }, [userId, refresh]);
 
-  // Adjust the optimistic count for an article by +1 / -1 (or undo on revert).
-  const bumpDelta = useCallback((articleId: number, by: number) => {
-    setLikeDeltas((prev) => {
-      const next = new Map(prev);
-      next.set(articleId, (next.get(articleId) ?? 0) + by);
+  // Flip the heart locally (instant), with a mirror update for the ref.
+  const applyHeart = useCallback((articleId: number, liked: boolean) => {
+    setLikedIds((prev) => {
+      const next = new Set(prev);
+      if (liked) next.add(articleId); else next.delete(articleId);
       return next;
     });
+    const mirror = new Set(likedIdsRef.current);
+    if (liked) mirror.add(articleId); else mirror.delete(articleId);
+    likedIdsRef.current = mirror;
   }, []);
 
   const toggleLike = useCallback(async (articleId: number) => {
     if (!userId) return;
     const wasLiked = likedIdsRef.current.has(articleId);
 
-    // Optimistic local flip so the heart fills instantly.
-    const applyOptimistic = (liked: boolean) => {
-      setLikedIds((prev) => {
-        const next = new Set(prev);
-        if (liked) next.add(articleId); else next.delete(articleId);
-        return next;
-      });
-      const mirror = new Set(likedIdsRef.current);
-      if (liked) mirror.add(articleId); else mirror.delete(articleId);
-      likedIdsRef.current = mirror;
-    };
-    const dir = wasLiked ? -1 : 1; // unlike removes one, like adds one
-    applyOptimistic(!wasLiked);
-    bumpDelta(articleId, dir);
+    // Flip the heart immediately for snappy feedback; the count snaps to the
+    // RPC's authoritative total a moment later.
+    applyHeart(articleId, !wasLiked);
 
-    const { error } = wasLiked
-      ? await supabase
-          .from("user_likes")
-          .delete()
-          .eq("user_id", userId)
-          .eq("article_id", articleId)
-      : await supabase
-          .from("user_likes")
-          .insert({ user_id: userId, article_id: articleId });
+    // One atomic server call does the like/unlike AND returns the true count —
+    // mirrors `cast_vote` for comments. SECURITY DEFINER, so the write always
+    // lands regardless of row-level-security policies on user_likes.
+    const { data, error } = await supabase.rpc("toggle_article_like", {
+      p_article_id: articleId,
+    });
 
     if (error) {
-      console.warn("[useLikes] toggle failed — reverting", error.message);
-      applyOptimistic(wasLiked);
-      bumpDelta(articleId, -dir);
+      console.warn("[useLikes] toggle_article_like failed — reverting", error.message);
+      applyHeart(articleId, wasLiked);
+      return;
     }
-  }, [userId, bumpDelta]);
+
+    // Table-returning RPC → array of one row { likes, liked }.
+    const row = (Array.isArray(data) ? data[0] : data) as
+      | { likes: number | string; liked: boolean }
+      | undefined;
+    if (!row) return;
+
+    // Reconcile both the heart and the displayed count with the server truth.
+    applyHeart(articleId, !!row.liked);
+    setCountOverrides((prev) => {
+      const next = new Map(prev);
+      next.set(articleId, Number(row.likes) || 0);
+      return next;
+    });
+  }, [userId, applyHeart]);
 
   const isLiked = useCallback((articleId: number) => likedIds.has(articleId), [likedIds]);
 
   const likeCountFor = useCallback(
     (article: { id: number; likes: number }) =>
-      Math.max(0, (article.likes ?? 0) + (likeDeltas.get(article.id) ?? 0)),
-    [likeDeltas],
+      countOverrides.has(article.id)
+        ? (countOverrides.get(article.id) as number)
+        : (article.likes ?? 0),
+    [countOverrides],
   );
 
-  const clearLikeDeltas = useCallback(() => {
-    setLikeDeltas((prev) => (prev.size === 0 ? prev : new Map()));
+  const clearLikeCounts = useCallback(() => {
+    setCountOverrides((prev) => (prev.size === 0 ? prev : new Map()));
   }, []);
 
-  return { likedIds, isLiked, toggleLike, refresh, loading, likeCountFor, clearLikeDeltas };
+  return { likedIds, isLiked, toggleLike, refresh, loading, likeCountFor, clearLikeCounts };
 }
 
 /** Exported so the page can render `<LikesContext.Provider value={likes}>`

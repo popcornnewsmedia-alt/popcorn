@@ -5189,12 +5189,8 @@ export function DesktopHome() {
       authBaselineRef.current = curr;
     }
   }, [user, authLoading, showToast]);
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, dataUpdatedAt } =
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteNewsFeed();
-
-  // Fresh feed data is authoritative (already includes the viewer's likes), so
-  // drop optimistic like-count adjustments to avoid double-counting.
-  useEffect(() => { likes.clearLikeDeltas(); }, [dataUpdatedAt]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Signed-in identity — mirrors the app's profile derivation so the website
   // account surface shows the same name / @handle / avatar / topics.
