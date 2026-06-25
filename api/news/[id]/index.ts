@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { supabase, mapRow } from "../../_lib/supabase";
+import { getLikeCountsByArticle } from "../../_lib/like-counts";
 
 /**
  * GET /api/news/:id — a single article by id.
@@ -27,5 +28,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (error) return res.status(500).json({ error: error.message });
   if (!data) return res.status(404).json({ error: "Not found" });
 
-  res.json({ article: mapRow(data) });
+  // Seed + real likes, consistent with the feed endpoint.
+  const article = mapRow(data);
+  const likeCounts = await getLikeCountsByArticle();
+  article.likes = ((article.likes as number) ?? 0) + (likeCounts.get(article.id as number) ?? 0);
+
+  res.json({ article });
 }

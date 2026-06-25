@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { supabase, mapRow, sevenDaysAgo } from "../_lib/supabase";
+import { getLikeCountsByArticle } from "../_lib/like-counts";
 
 /**
  * Interleaves articles by category so no two consecutive articles share the same genre.
@@ -70,8 +71,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const start = (page - 1) * limit;
   const paged = interleaved.slice(start, start + limit);
 
+  // Add real likes (from user_likes) on top of each article's seed, so likes
+  // are additive across users/devices. Mirrors the Railway feed endpoint.
+  const likeCounts = await getLikeCountsByArticle();
+  const articles = paged.map(mapRow).map((a) => ({
+    ...a,
+    likes: ((a.likes as number) ?? 0) + (likeCounts.get(a.id as number) ?? 0),
+  }));
+
   res.json({
-    articles: paged.map(mapRow),
+    articles,
     total:    count ?? 0,
     page,
     limit,
