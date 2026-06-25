@@ -25,6 +25,7 @@ export const mapRow = (row: Record<string, unknown>) => ({
   content:         row.content,
   category:        row.category,
   source:          row.source,
+  link:            row.source_link ?? null,
   readTimeMinutes: row.read_time_minutes,
   publishedAt:     row.published_at,
   likes:           (row.likes as number) ?? 0,
