@@ -17,7 +17,7 @@ export function ActionButtons({ article, onOpenComments, horizontal = false }: A
   // Likes are now persisted per-user in Supabase (see use-likes.ts), read from
   // context so the feed card, the article reader, and the Likes tab all stay
   // in step and the state syncs across devices.
-  const { isLiked: isLikedFn, toggleLike } = useLikedArticles();
+  const { isLiked: isLikedFn, toggleLike, likeCountFor } = useLikedArticles();
   // Saves are persisted per-user in Supabase the same way (see use-saves.ts).
   const { isSaved: isSavedFn, toggleSave } = useSavedArticles();
   const commentCount = useCommentCount(article.id);
@@ -50,7 +50,7 @@ export function ActionButtons({ article, onOpenComments, horizontal = false }: A
   // users/devices), refreshed on each feed load — so show it directly. The
   // heart still flips instantly on tap for immediate feedback; the count
   // catches up on the next refresh.
-  const likeCount = article.likes;
+  const likeCount = likeCountFor(article);
 
   const iconStyle = { filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.55))' };
 

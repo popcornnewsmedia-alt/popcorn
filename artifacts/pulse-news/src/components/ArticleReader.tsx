@@ -120,7 +120,7 @@ interface ArticleReaderProps {
 
 export function ArticleReader({ article, onClose, isRead = false, onMarkRead, initialCommentsOpen = false, focusCommentId = null, onRequireAuth, relatedArticles = [], onSelectArticle, locked = false, onSignInWithEmail, onCreateAccount }: ArticleReaderProps) {
   const { isSaved: isSavedFn, toggleSave } = useSavedArticles();
-  const { isLiked: isLikedFn, toggleLike } = useLikedArticles();
+  const { isLiked: isLikedFn, toggleLike, likeCountFor } = useLikedArticles();
   const [imgError, setImgError] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen);
   const commentCount = useCommentCount(article?.id ?? null);
@@ -252,6 +252,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
             onSignInWithEmail={onSignInWithEmail}
             onCreateAccount={onCreateAccount}
             onShare={handleShare}
+            likeCountFor={likeCountFor}
           />
         )}
         {article && !isDesktop && (
@@ -437,7 +438,7 @@ export function ArticleReader({ article, onClose, isRead = false, onMarkRead, in
                     >
                       <Heart style={{ width: 22, height: 22, color: liked ? '#e11d48' : '#111111', fill: liked ? '#e11d48' : 'none', strokeWidth: 1.6 }} />
                       <span className="font-['Inter'] font-semibold" style={{ fontSize: '13px', color: liked ? '#e11d48' : '#111111' }}>
-                        {(() => { const c = article.likes; return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : c; })()}
+                        {(() => { const c = likeCountFor(article); return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : c; })()}
                       </span>
                     </button>
                     <button
@@ -567,6 +568,7 @@ function DesktopArticleLayout({
   commentCount,
   liked,
   toggleLike,
+  likeCountFor,
   isSavedFn,
   toggleSave,
   scrollRef,
@@ -592,6 +594,7 @@ function DesktopArticleLayout({
   commentCount: number | null | undefined;
   liked: boolean;
   toggleLike: (id: number) => Promise<void> | void;
+  likeCountFor: (article: { id: number; likes: number }) => number;
   isSavedFn: (id: string) => boolean;
   toggleSave: (id: string) => Promise<void> | void;
   scrollRef: React.RefObject<HTMLDivElement>;
@@ -744,7 +747,7 @@ function DesktopArticleLayout({
                     }}
                   />
                 }
-                count={(() => { const c = article.likes; return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : String(c); })()}
+                count={(() => { const c = likeCountFor(article); return c >= 1000 ? `${(c / 1000).toFixed(1)}k` : String(c); })()}
                 onClick={() => { void toggleLike(article.id); }}
                 active={liked}
                 activeFill="#e11d48"

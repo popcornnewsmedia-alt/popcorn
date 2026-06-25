@@ -4664,15 +4664,15 @@ function DragSocial({
   /** Matches the caption position so the row + rule travel with the headline. */
   pos?: "is-top" | "is-bottom";
 }) {
-  const { isLiked: isLikedFn, toggleLike } = useLikedArticles();
+  const { isLiked: isLikedFn, toggleLike, likeCountFor } = useLikedArticles();
   const { isSaved: isSavedFn, toggleSave } = useSavedArticles();
   const commentCount = useCommentCount(article.id);
   const liked = isLikedFn(article.id);
   const isSaved = isSavedFn(article.id);
-  // Server returns seed + real likes from all users (refreshed each load);
-  // show it directly. The heart flips instantly on tap; the count updates on
-  // the next refresh.
-  const likeCount = article.likes;
+  // Server count (seed + real likes from all users) plus the viewer's own
+  // optimistic adjustment, so a tap moves the number instantly; reconciled on
+  // the next feed fetch.
+  const likeCount = likeCountFor(article);
   const fmt = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`);
 
   const stop = (e: ReactMouseEvent) => { e.preventDefault(); e.stopPropagation(); };
@@ -5189,8 +5189,12 @@ export function DesktopHome() {
       authBaselineRef.current = curr;
     }
   }, [user, authLoading, showToast]);
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, dataUpdatedAt } =
     useInfiniteNewsFeed();
+
+  // Fresh feed data is authoritative (already includes the viewer's likes), so
+  // drop optimistic like-count adjustments to avoid double-counting.
+  useEffect(() => { likes.clearLikeDeltas(); }, [dataUpdatedAt]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Signed-in identity — mirrors the app's profile derivation so the website
   // account surface shows the same name / @handle / avatar / topics.

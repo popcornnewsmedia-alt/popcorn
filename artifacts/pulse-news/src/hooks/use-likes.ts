@@ -21,6 +21,16 @@ export interface UseLikesResult {
   /** Manually refresh from the server (e.g. after reconnect / focus). */
   refresh: () => Promise<void>;
   loading: boolean;
+  /**
+   * The like count to DISPLAY for an article: the server's count plus the
+   * viewer's own optimistic adjustment, so a tap bumps the number instantly.
+   * The adjustment is dropped on the next feed fetch (clearLikeDeltas), where
+   * the server count becomes authoritative — so it never double-counts.
+   */
+  likeCountFor: (article: { id: number; likes: number }) => number;
+  /** Clears all optimistic count adjustments. Call when fresh feed data
+   *  arrives (the server count then already includes the viewer's likes). */
+  clearLikeDeltas: () => void;
 }
 
 const EMPTY_SET: Set<number> = new Set();
@@ -31,6 +41,8 @@ const LikesContext = createContext<UseLikesResult>({
   toggleLike: async () => {},
   refresh: async () => {},
   loading: false,
+  likeCountFor: (a) => a.likes,
+  clearLikeDeltas: () => {},
 });
 
 /** Root hook — call this ONCE in the page (single Supabase query), then
@@ -39,6 +51,10 @@ const LikesContext = createContext<UseLikesResult>({
 export function useLikesRoot(user: User | null): UseLikesResult {
   const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(false);
+  // Per-article optimistic count adjustment (+1 like / -1 unlike) layered on
+  // top of the server's count, so a tap moves the number immediately. Cleared
+  // on the next feed fetch, when the server count already reflects the change.
+  const [likeDeltas, setLikeDeltas] = useState<Map<number, number>>(new Map());
   // Ref mirror so `toggleLike` can read the freshest set without listing
   // `likedIds` as a dep (which would rebuild the callback on every flip).
   const likedIdsRef = useRef(likedIds);
@@ -90,6 +106,15 @@ export function useLikesRoot(user: User | null): UseLikesResult {
     };
   }, [userId, refresh]);
 
+  // Adjust the optimistic count for an article by +1 / -1 (or undo on revert).
+  const bumpDelta = useCallback((articleId: number, by: number) => {
+    setLikeDeltas((prev) => {
+      const next = new Map(prev);
+      next.set(articleId, (next.get(articleId) ?? 0) + by);
+      return next;
+    });
+  }, []);
+
   const toggleLike = useCallback(async (articleId: number) => {
     if (!userId) return;
     const wasLiked = likedIdsRef.current.has(articleId);
@@ -105,7 +130,9 @@ export function useLikesRoot(user: User | null): UseLikesResult {
       if (liked) mirror.add(articleId); else mirror.delete(articleId);
       likedIdsRef.current = mirror;
     };
+    const dir = wasLiked ? -1 : 1; // unlike removes one, like adds one
     applyOptimistic(!wasLiked);
+    bumpDelta(articleId, dir);
 
     const { error } = wasLiked
       ? await supabase
@@ -120,12 +147,23 @@ export function useLikesRoot(user: User | null): UseLikesResult {
     if (error) {
       console.warn("[useLikes] toggle failed — reverting", error.message);
       applyOptimistic(wasLiked);
+      bumpDelta(articleId, -dir);
     }
-  }, [userId]);
+  }, [userId, bumpDelta]);
 
   const isLiked = useCallback((articleId: number) => likedIds.has(articleId), [likedIds]);
 
-  return { likedIds, isLiked, toggleLike, refresh, loading };
+  const likeCountFor = useCallback(
+    (article: { id: number; likes: number }) =>
+      Math.max(0, (article.likes ?? 0) + (likeDeltas.get(article.id) ?? 0)),
+    [likeDeltas],
+  );
+
+  const clearLikeDeltas = useCallback(() => {
+    setLikeDeltas((prev) => (prev.size === 0 ? prev : new Map()));
+  }, []);
+
+  return { likedIds, isLiked, toggleLike, refresh, loading, likeCountFor, clearLikeDeltas };
 }
 
 /** Exported so the page can render `<LikesContext.Provider value={likes}>`
