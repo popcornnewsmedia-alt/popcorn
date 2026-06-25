@@ -2,6 +2,8 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { X, ChevronRight, Pencil, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { GrainBackground } from "@/components/GrainBackground";
 import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/lib/supabase";
+import type { User } from "@supabase/supabase-js";
 import { APP_VERSION } from "@/pages/feed-internals";
 
 /**
@@ -37,14 +39,35 @@ type Panel = "root" | "name" | "password" | "delete";
 type DeleteStage = "idle" | "confirming" | "deleting" | "farewell";
 
 export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsSheetProps) {
-  const { user, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
+  const { user: authUser, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
+
+  // Each useAuth() is a separate instance whose user can be null while it
+  // resolves — which left the email blank and the Google check failing. Read
+  // the session fresh when the sheet opens and prefer that authoritative user.
+  const [liveUser, setLiveUser] = useState<User | null>(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    let active = true;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (active && session?.user) setLiveUser(session.user);
+    });
+    return () => { active = false; };
+  }, [isOpen]);
+  const user = liveUser ?? authUser;
 
   // Display name: prefer full_name, then Google's `name`, then `first_name`.
   const nmeta = user?.user_metadata as { full_name?: string; name?: string; first_name?: string } | undefined;
   const initialName = (nmeta?.full_name || nmeta?.name || nmeta?.first_name || "").trim();
-  const userEmail = user?.email ?? "";
+  // Email: top-level first, then user_metadata.email (always set for Google).
+  const userEmail = user?.email || (user?.user_metadata as { email?: string } | undefined)?.email || "";
+  // Google detection: identities is the most reliable, with app_metadata as a
+  // fallback (top-level provider fields can be absent on some session objects).
   const appMeta = user?.app_metadata as { provider?: string; providers?: string[] } | undefined;
-  const isGoogle = appMeta?.provider === "google" || (appMeta?.providers ?? []).includes("google");
+  const identities = (user?.identities ?? []) as { provider?: string }[];
+  const isGoogle =
+    identities.some((i) => i.provider === "google") ||
+    appMeta?.provider === "google" ||
+    (appMeta?.providers ?? []).includes("google");
   const handle = profile?.username ?? null;
 
   const [panel, setPanel] = useState<Panel>("root");

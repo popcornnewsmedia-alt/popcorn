@@ -6,6 +6,8 @@ import { format, startOfDay } from "date-fns";
 import type { NewsArticle } from "@workspace/api-client-react";
 import { useInfiniteNewsFeed } from "@/hooks/use-news";
 import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/lib/supabase";
+import type { User as SupaUser } from "@supabase/supabase-js";
 import { SavesContext, useSavesRoot, useSavedArticles } from "@/hooks/use-saves";
 import { LikesContext, useLikesRoot, useLikedArticles } from "@/hooks/use-likes";
 import { useCommentCount } from "@/hooks/use-comment-count";
@@ -1450,14 +1452,31 @@ function LibraryOverlay({
  *  their display name, change their password, and delete their account, all
  *  in the same blue+cream surface used across the account UI. */
 function AccountSettingsModal({ onClose }: { onClose: () => void }) {
-  const { user, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
+  const { user: authUser, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
+
+  // This modal's useAuth instance can hand back a null user while it resolves;
+  // read the session fresh on mount and prefer that so email/Google-detection
+  // aren't blank.
+  const [liveUser, setLiveUser] = useState<SupaUser | null>(null);
+  useEffect(() => {
+    let active = true;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (active && session?.user) setLiveUser(session.user);
+    });
+    return () => { active = false; };
+  }, []);
+  const user = liveUser ?? authUser;
 
   const dnMeta = user?.user_metadata as { full_name?: string; name?: string; first_name?: string } | undefined;
   const initialName = (dnMeta?.full_name || dnMeta?.name || dnMeta?.first_name || "").trim();
   const handle = profile?.username ?? null;
-  const userEmail = user?.email ?? "";
+  const userEmail = user?.email || (user?.user_metadata as { email?: string } | undefined)?.email || "";
   const dnApp = user?.app_metadata as { provider?: string; providers?: string[] } | undefined;
-  const isGoogle = dnApp?.provider === "google" || (dnApp?.providers ?? []).includes("google");
+  const dnIdentities = (user?.identities ?? []) as { provider?: string }[];
+  const isGoogle =
+    dnIdentities.some((i) => i.provider === "google") ||
+    dnApp?.provider === "google" ||
+    (dnApp?.providers ?? []).includes("google");
 
   const [panel, setPanel] = useState<"root" | "name" | "password" | "delete">("root");
 
