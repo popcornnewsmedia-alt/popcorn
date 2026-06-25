@@ -17,6 +17,7 @@ import { UsernameSheet } from "@/components/UsernameSheet";
 import { PopcornReadyOverlay } from "@/components/PopcornReadyOverlay";
 import { setupPushNotifications } from "@/lib/push-registration";
 import { supabase } from "@/lib/supabase";
+import { AuthProvider } from "@/hooks/use-auth";
 import type { User, Session } from "@supabase/supabase-js";
 
 const queryClient = new QueryClient({
@@ -326,6 +327,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <AuthProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <Router />
         </WouterRouter>
@@ -347,6 +349,7 @@ function App() {
           />
         )}
         <PopcornReadyOverlay />
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

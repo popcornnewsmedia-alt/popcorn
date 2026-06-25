@@ -1,4 +1,12 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  type ReactNode,
+} from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { Capacitor } from '@capacitor/core';
 import { supabase, purgeNativeAuthStorage } from '@/lib/supabase';
@@ -15,7 +23,16 @@ interface AuthState {
   loading: boolean;
 }
 
-export function useAuth() {
+// ── The auth engine ────────────────────────────────────────────────────────
+// This used to be the exported `useAuth` hook, which meant EVERY component that
+// called useAuth() spun up its own session resolver + onAuthStateChange
+// subscription + token-refresh interplay. With ~11 consumers all running this
+// concurrently, two of them could collide on a token refresh and wedge a
+// client call (the "frozen spinner / works after refresh" class of bug).
+//
+// Now it runs ONCE, inside <AuthProvider>, and every useAuth() reads that one
+// shared value via context. The body below is unchanged from the old hook.
+function useAuthEngine() {
   const [state, setState] = useState<AuthState>({
     user: null,
     session: null,
@@ -143,7 +160,7 @@ export function useAuth() {
     });
 
     // Cross-component profile refresh: UsernameSheet dispatches this after
-    // a successful insert so every useAuth instance reloads the profiles row
+    // a successful insert so the shared auth value reloads the profiles row
     // without needing a page reload.
     const onProfileUpdated = async () => {
       try {
@@ -266,29 +283,15 @@ export function useAuth() {
     });
   };
 
-  // Race a supabase promise against a hard timeout so settings saves can't
-  // hang the UI forever. Supabase's updateUser has been observed to stall in
-  // the browser (notably after HMR / stale GoTrue state), leaving the
-  // SAVING… button spinner spinning until the user reloads. 10s gives a
-  // healthy network plenty of headroom while still surfacing a retryable
-  // error if something's stuck.
-  const withTimeout = <T>(p: Promise<T>, ms = 10000, label = "request"): Promise<T> =>
+  // Race a supabase promise against a hard timeout so calls can't hang the UI
+  // forever.
+  const withTimeout = <T,>(p: Promise<T>, ms = 10000, label = "request"): Promise<T> =>
     Promise.race<T>([
       p,
       new Promise<T>((_, reject) =>
         setTimeout(() => reject(new Error(`${label} timed out — check your connection and try again.`)), ms),
       ),
     ]);
-
-  // Mobile WebViews have been observed to wedge `supabase.auth.updateUser`
-  // when the session token is stale but still valid — the client queues the
-  // call behind a refresh that never fires. Poking getSession first forces
-  // the client to surface/refresh the current session before we attempt the
-  // update, which has reliably unstuck mobile saves. Cheap on desktop.
-  const primeSession = async () => {
-    try { await withTimeout(supabase.auth.getSession(), 4000, "Session check"); }
-    catch { /* swallow — if the update hangs we'll still time it out below */ }
-  };
 
   // Resolve a valid access token, tolerating a lagging React state and an
   // expired-but-refreshable session (getSession refreshes, refreshSession is
@@ -332,8 +335,8 @@ export function useAuth() {
       throw new Error(body.error ?? "Couldn't save your changes. Please try again.");
     }
     // Reflect locally right away, and refresh the session in the background so
-    // the JWT — and other useAuth instances via TOKEN_REFRESHED — pick up the
-    // new metadata. Fire-and-forget so a slow refresh can't re-stall the save.
+    // the JWT picks up the new metadata. Fire-and-forget so a slow refresh
+    // can't re-stall the save.
     setState(prev => prev.user
       ? { ...prev, user: { ...prev.user, user_metadata: { ...(prev.user.user_metadata ?? {}), ...data } } }
       : prev);
@@ -357,21 +360,10 @@ export function useAuth() {
     }
   };
 
-  /** Permanently deletes the signed-in user's account. Hits the server-side
-   * /api/auth/delete-account endpoint (which uses the service-role key to
-   * purge from auth.users); Postgres ON DELETE CASCADE then cleans up every
-   * downstream table (profiles, comments, comment_votes, notifications,
-   * saved_articles). Signs the user out on success.
-   *
-   * We mirror `signOut()`'s pattern: clear local state + storage instantly
-   * (fire-and-forget the Supabase call) so the UI can advance to the farewell
-   * screen immediately. Awaiting the client-side `signOut` can wedge on the
-   * mobile WebView after a POST — exactly what would leave a stale session in
-   * localStorage and drop the user into the UsernameSheet on refresh. */
+  /** Permanently deletes the signed-in user's account via the server-side
+   * /api/auth/delete-account endpoint (service-role; cascades clean up
+   * downstream tables). Fires the farewell overlay, then clears local state. */
   const deleteAccount = async () => {
-    // React state can lag the live client (e.g. right after a token refresh),
-    // so don't conclude "signed out" from state.session alone — pull the
-    // current access token straight from Supabase first.
     const token = await getAccessToken();
     if (!token) throw new Error("You appear to be signed out. Please sign in again, then try deleting.");
     const resp = await fetch(`${apiBase()}/api/auth/delete-account`, {
@@ -407,4 +399,26 @@ export function useAuth() {
     deleteAccount,
     refreshProfile,
   };
+}
+
+// ── Context wiring ─────────────────────────────────────────────────────────
+type AuthValue = ReturnType<typeof useAuthEngine>;
+
+const AuthContext = createContext<AuthValue | null>(null);
+
+/** Runs the auth engine ONCE and shares it with the whole app. Mount near the
+ *  root, above every component that calls useAuth(). */
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const value = useAuthEngine();
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+/** Read the shared auth value. Identical shape to the old per-component hook,
+ *  so all existing call sites work unchanged. */
+export function useAuth(): AuthValue {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error('useAuth must be used within <AuthProvider>');
+  }
+  return ctx;
 }
