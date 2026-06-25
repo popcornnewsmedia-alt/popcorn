@@ -1001,7 +1001,7 @@ const PROFILE_CSS = `
   .pcd-ntf__grain { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55; mix-blend-mode: overlay; }
   .pcd-ntf__head { position: relative; z-index: 1; padding: 22px 22px 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-shrink: 0; }
   .pcd-ntf__eyebrow { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,241,205,0.38); margin: 0 0 8px; }
-  .pcd-ntf__title { font-family: 'Macabro','Anton',sans-serif; font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; color: #fff1cd; line-height: 0.96; margin: 0; }
+  .pcd-ntf__title { font-family: 'Macabro','Anton',sans-serif; font-size: 17px; letter-spacing: 0.02em; text-transform: uppercase; color: #fff1cd; line-height: 0.96; margin: 0; }
   .pcd-ntf__clear {
     font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.03em;
     color: rgba(255,241,205,0.55); background: transparent; border: 0; cursor: pointer; padding: 4px 2px;

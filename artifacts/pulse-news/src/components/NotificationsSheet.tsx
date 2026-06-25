@@ -356,7 +356,7 @@ function SwipeRow({
               letterSpacing: '0.04em',
               textTransform: 'uppercase',
             }}>
-              {n.actor_name}
+              {n.actor_name.replace(/^@/, "")}
             </span>
             <span style={{
               fontFamily: "'Manrope', sans-serif",
@@ -402,6 +402,7 @@ function SwipeRow({
 }
 
 function initialsOf(name: string): string {
-  const parts = name.trim().split(/\s+/).slice(0, 2);
+  const clean = name.replace(/^@/, "").trim();
+  const parts = clean.split(/\s+/).slice(0, 2);
   return parts.map(p => p[0]?.toUpperCase() ?? "").join("") || "?";
 }

@@ -1259,7 +1259,7 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
               id="cs-delete-title"
               style={{
                 fontFamily: "'Macabro', 'Anton', sans-serif",
-                fontSize: 22,
+                fontSize: 17,
                 lineHeight: 1.05,
                 letterSpacing: "-0.005em",
                 color: CREAM,
