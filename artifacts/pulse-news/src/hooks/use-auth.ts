@@ -294,16 +294,26 @@ export function useAuth() {
   // expired-but-refreshable session (getSession refreshes, refreshSession is
   // the explicit fallback). Returns undefined only when truly signed out.
   const getAccessToken = async (): Promise<string | undefined> => {
-    if (state.session?.access_token) return state.session.access_token;
+    // Read the current session (getSession returns what's stored, which may be
+    // expired). Never blindly trust a cached token — a stale one makes the
+    // server reject the request as "invalid or expired session".
+    let session: Session | null = null;
     try {
       const { data } = await withTimeout(supabase.auth.getSession(), 12000, "Session check");
-      if (data.session?.access_token) return data.session.access_token;
-    } catch { /* try explicit refresh */ }
+      session = data.session;
+    } catch { /* fall through to refresh */ }
+    const stillValid =
+      !!session?.access_token &&
+      !!session.expires_at &&
+      session.expires_at * 1000 > Date.now() + 60_000; // 60s clock skew
+    if (stillValid) return session!.access_token;
+    // Expired, near-expiry, or unreadable → force a refresh to get a fresh token.
     try {
       const { data } = await withTimeout(supabase.auth.refreshSession(), 12000, "Session refresh");
       if (data.session?.access_token) return data.session.access_token;
     } catch { /* give up */ }
-    return undefined;
+    // Last resort — whatever token we have (the server will be the final judge).
+    return session?.access_token ?? state.session?.access_token;
   };
 
   const updateProfile = async (data: Record<string, unknown>) => {
