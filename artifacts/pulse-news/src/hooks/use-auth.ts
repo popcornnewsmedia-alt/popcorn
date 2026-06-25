@@ -317,18 +317,27 @@ export function useAuth() {
   };
 
   const updateProfile = async (data: Record<string, unknown>) => {
-    await primeSession();
-    const { data: res, error } = await withTimeout(
-      supabase.auth.updateUser({ data }),
-      10000,
-      "Save",
-    );
-    if (error) throw error;
-    // Mirror the new metadata into local state immediately so the "You"
-    // screen and settings row reflect the change even if the USER_UPDATED
-    // auth event is delayed (or swallowed by a concurrent token refresh).
-    const nextUser = res?.user ?? null;
-    if (nextUser) setState(prev => ({ ...prev, user: nextUser }));
+    // Server-side (admin) metadata write — the client updateUser stalls when
+    // the session is mid-flight (frozen SAVING…). getAccessToken guarantees a
+    // fresh token.
+    const token = await getAccessToken();
+    if (!token) throw new Error("You appear to be signed out. Please sign in again, then save.");
+    const resp = await fetch(`${apiBase()}/api/auth/update-metadata`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ metadata: data }),
+    });
+    if (!resp.ok) {
+      const body = await resp.json().catch(() => ({}));
+      throw new Error(body.error ?? "Couldn't save your changes. Please try again.");
+    }
+    // Reflect locally right away, and refresh the session in the background so
+    // the JWT — and other useAuth instances via TOKEN_REFRESHED — pick up the
+    // new metadata. Fire-and-forget so a slow refresh can't re-stall the save.
+    setState(prev => prev.user
+      ? { ...prev, user: { ...prev.user, user_metadata: { ...(prev.user.user_metadata ?? {}), ...data } } }
+      : prev);
+    void supabase.auth.refreshSession().catch(() => { /* non-fatal */ });
   };
 
   /** Update the signed-in user's password via the server-side set-password
