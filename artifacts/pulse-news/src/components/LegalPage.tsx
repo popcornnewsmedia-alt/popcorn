@@ -13,8 +13,13 @@ export function LegalPage({ kind }: { kind: LegalKind }) {
   const doc = DOCS[kind];
   const eyebrow = kind === "about" ? "Popcorn · About" : "Popcorn · Legal";
   return (
-    <div className="fixed inset-0 overflow-y-auto" style={{ background: "#042c85" }}>
-      <GrainBackground />
+    <div className="relative min-h-screen w-full" style={{ background: "#042c85" }}>
+      {/* Fixed full-viewport grain layer so the texture stays behind the
+          content the whole way down (the canvas is sized to its parent, so a
+          fixed viewport-sized parent keeps it covering every scroll position). */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <GrainBackground />
+      </div>
       <div className="relative z-10 mx-auto px-6 py-10 pb-24" style={{ maxWidth: 720 }}>
         <a
           href="/"

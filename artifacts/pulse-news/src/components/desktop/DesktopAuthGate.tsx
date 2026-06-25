@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
+import type { LegalKind } from "@/components/LegalSheet";
 
 interface DesktopAuthGateProps {
   onSignInWithEmail: () => void;
   onCreateAccount: () => void;
   onDismiss: () => void;
+  /** Opens the legal doc as an in-app modal; links keep a real href for
+   *  crawlability + new-tab, but a normal click opens the popup. */
+  onOpenLegal?: (kind: LegalKind) => void;
 }
 
 const BLUE = "#042c85";
@@ -27,8 +31,12 @@ export function DesktopAuthGate({
   onSignInWithEmail,
   onCreateAccount,
   onDismiss,
+  onOpenLegal,
 }: DesktopAuthGateProps) {
   const { signInWithGoogle } = useAuth();
+  const legalClick = (kind: LegalKind) => (e: React.MouseEvent) => {
+    if (onOpenLegal) { e.preventDefault(); onOpenLegal(kind); }
+  };
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -236,11 +244,11 @@ export function DesktopAuthGate({
             className="text-center mt-6"
             style={{ fontFamily: "'Manrope', sans-serif", fontSize: "12px", color: CREAM, opacity: 0.55 }}
           >
-            <a href="/about" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>About</a>
+            <a href="/about" onClick={legalClick("about")} style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>About</a>
             <span style={{ opacity: 0.6 }}>{"   ·   "}</span>
-            <a href="/privacy" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Privacy</a>
+            <a href="/privacy" onClick={legalClick("privacy")} style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Privacy</a>
             <span style={{ opacity: 0.6 }}>{"   ·   "}</span>
-            <a href="/terms" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Terms</a>
+            <a href="/terms" onClick={legalClick("terms")} style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Terms</a>
           </p>
         </div>
       </div>

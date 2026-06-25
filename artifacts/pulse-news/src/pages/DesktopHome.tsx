@@ -5312,6 +5312,7 @@ export function DesktopHome() {
           onSignInWithEmail={() => setSignInOpen(true)}
           onCreateAccount={() => setSignUpOpen(true)}
           onDismiss={() => setGateDismissed(true)}
+          onOpenLegal={setLegalKind}
         />
       )}
 
@@ -5321,6 +5322,7 @@ export function DesktopHome() {
         <DesktopAuthFooter
           onSignInWithEmail={() => setSignInOpen(true)}
           onCreateAccount={() => setSignUpOpen(true)}
+          onOpenLegal={setLegalKind}
         />
       )}
 

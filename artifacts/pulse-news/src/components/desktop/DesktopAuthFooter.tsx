@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { GrainBackground } from "@/components/GrainBackground";
+import type { LegalKind } from "@/components/LegalSheet";
 
 interface DesktopAuthFooterProps {
   onSignInWithEmail: () => void;
   onCreateAccount: () => void;
+  /** Opens the legal doc as an in-app modal. The links still carry a real
+   *  href (so they're crawlable + open in a new tab on middle-click), but a
+   *  normal click opens the popup instead of navigating away. */
+  onOpenLegal?: (kind: LegalKind) => void;
 }
 
 const BLUE = "#042c85";
@@ -24,7 +29,11 @@ const CREAM = "#fff1cd";
 export function DesktopAuthFooter({
   onSignInWithEmail,
   onCreateAccount,
+  onOpenLegal,
 }: DesktopAuthFooterProps) {
+  const legalClick = (kind: LegalKind) => (e: React.MouseEvent) => {
+    if (onOpenLegal) { e.preventDefault(); onOpenLegal(kind); }
+  };
   const { signInWithGoogle } = useAuth();
   const [mounted, setMounted] = useState(false);
 
@@ -145,11 +154,11 @@ export function DesktopAuthFooter({
             className="mt-6"
             style={{ fontFamily: "'Manrope', sans-serif", fontSize: "12px", color: CREAM, opacity: 0.62 }}
           >
-            <a href="/about" className="hover:opacity-100" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>About</a>
+            <a href="/about" onClick={legalClick("about")} className="hover:opacity-100" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>About</a>
             <span style={{ opacity: 0.5 }}>{"   ·   "}</span>
-            <a href="/privacy" className="hover:opacity-100" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Privacy</a>
+            <a href="/privacy" onClick={legalClick("privacy")} className="hover:opacity-100" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Privacy</a>
             <span style={{ opacity: 0.5 }}>{"   ·   "}</span>
-            <a href="/terms" className="hover:opacity-100" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Terms</a>
+            <a href="/terms" onClick={legalClick("terms")} className="hover:opacity-100" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Terms</a>
           </p>
         </div>
       </div>
