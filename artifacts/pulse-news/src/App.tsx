@@ -102,6 +102,11 @@ function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
 }
 
 const welcomeRequested = new Set<string>();
+// The id of the user we've already run the sign-in gate for. Supabase re-fires
+// SIGNED_IN whenever the tab/app regains focus; without this guard that would
+// re-show the full-screen "checking" cover (WelcomeScreen) on every focus for
+// an already-signed-in user. Reset on SIGNED_OUT.
+let gatedUserId: string | null = null;
 function requestWelcomeOnce(userId: string, email: string, name: string) {
   if (welcomeRequested.has(userId)) return;
   welcomeRequested.add(userId);
@@ -284,6 +289,7 @@ function App() {
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") { gatedUserId = null; return; }
       if (event !== "SIGNED_IN" || !session?.user) return;
 
       const user = session.user;
@@ -295,6 +301,13 @@ function App() {
         const { data } = await supabase.auth.getSession();
         return data.session?.access_token ?? null;
       });
+
+      // A SIGNED_IN re-fire for a user we've already gated (Supabase emits this
+      // on every tab focus / app resume) must NOT re-show the "checking" cover
+      // or re-run the gate — that's the split-second blue loading flash on
+      // return. Only a genuinely new sign-in proceeds past here.
+      if (gatedUserId === user.id) { maybeSendWelcome(user); return; }
+      gatedUserId = user.id;
 
       // Cover the feed IMMEDIATELY (same render as the feed mounts, so it never
       // flashes), then resolve new-vs-returning. Don't downgrade an in-progress
@@ -317,6 +330,9 @@ function App() {
     //  always emit SIGNED_IN for rehydrated sessions).
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session?.user) return;
+      // Mark this user as gated so the focus-triggered SIGNED_IN re-fire above
+      // is recognised and doesn't flash the "checking" cover.
+      gatedUserId = session.user.id;
       void evaluateUserGate(session.user);
       // Welcome email for a confirmed session that arrived WITHOUT a SIGNED_IN
       // event — the common Google OAuth redirect case. Idempotent +
