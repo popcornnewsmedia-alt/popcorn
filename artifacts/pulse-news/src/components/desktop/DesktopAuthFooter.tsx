@@ -138,6 +138,19 @@ export function DesktopAuthFooter({
               Create an account
             </button>
           </p>
+
+          {/* Real, crawlable legal links (also satisfies Google's homepage
+              "link to your privacy policy" requirement for OAuth verification). */}
+          <p
+            className="mt-6"
+            style={{ fontFamily: "'Manrope', sans-serif", fontSize: "12px", color: CREAM, opacity: 0.62 }}
+          >
+            <a href="/about" className="hover:opacity-100" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>About</a>
+            <span style={{ opacity: 0.5 }}>{"   ·   "}</span>
+            <a href="/privacy" className="hover:opacity-100" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Privacy</a>
+            <span style={{ opacity: 0.5 }}>{"   ·   "}</span>
+            <a href="/terms" className="hover:opacity-100" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Terms</a>
+          </p>
         </div>
       </div>
     </div>

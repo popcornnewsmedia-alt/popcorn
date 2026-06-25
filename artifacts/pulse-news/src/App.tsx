@@ -13,6 +13,7 @@ import { EmailConfirmedScreen } from "@/components/EmailConfirmedScreen";
 import { VerifyEmailGate } from "@/components/VerifyEmailGate";
 import { ResetPasswordScreen } from "@/components/ResetPasswordScreen";
 import { FarewellScreen } from "@/components/FarewellScreen";
+import { LegalPage } from "@/components/LegalPage";
 import { UsernameSheet } from "@/components/UsernameSheet";
 import { PopcornReadyOverlay } from "@/components/PopcornReadyOverlay";
 import { setupPushNotifications } from "@/lib/push-registration";
@@ -53,6 +54,10 @@ function Router() {
       <Route path="/auth/callback" component={HomeRoute} />
       {/* Password-reset link lands here — set a new password, then signed in. */}
       <Route path="/reset-password" component={ResetPasswordScreen} />
+      {/* Real, crawlable legal pages (also shown in-app as the LegalSheet modal). */}
+      <Route path="/privacy">{() => <LegalPage kind="privacy" />}</Route>
+      <Route path="/terms">{() => <LegalPage kind="terms" />}</Route>
+      <Route path="/about">{() => <LegalPage kind="about" />}</Route>
       <Route component={NotFound} />
     </Switch>
   );

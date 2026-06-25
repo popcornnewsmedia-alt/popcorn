@@ -229,6 +229,19 @@ export function DesktopAuthGate({
           >
             Keep browsing →
           </button>
+
+          {/* Real, crawlable legal links (also satisfies Google's homepage
+              "link to your privacy policy" requirement for OAuth verification). */}
+          <p
+            className="text-center mt-6"
+            style={{ fontFamily: "'Manrope', sans-serif", fontSize: "12px", color: CREAM, opacity: 0.55 }}
+          >
+            <a href="/about" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>About</a>
+            <span style={{ opacity: 0.6 }}>{"   ·   "}</span>
+            <a href="/privacy" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Privacy</a>
+            <span style={{ opacity: 0.6 }}>{"   ·   "}</span>
+            <a href="/terms" style={{ color: CREAM, textDecoration: "underline", textUnderlineOffset: "3px" }}>Terms</a>
+          </p>
         </div>
       </div>
     </div>
