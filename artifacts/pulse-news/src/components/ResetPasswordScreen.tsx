@@ -193,6 +193,12 @@ export function ResetPasswordScreen() {
                 />
               </div>
 
+              {confirm.length > 0 && (
+                <p className="font-['Inter']" style={{ fontSize: "12px", color: password === confirm ? "rgba(150,220,170,0.92)" : "#ff8a80" }}>
+                  {password === confirm ? "Passwords match." : "Passwords don't match."}
+                </p>
+              )}
+
               {error && (
                 <p className="font-['Inter']" style={{ fontSize: "13px", color: "#ff8a80" }}>{error}</p>
               )}

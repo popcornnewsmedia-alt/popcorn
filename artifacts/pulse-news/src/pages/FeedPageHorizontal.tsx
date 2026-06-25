@@ -1444,6 +1444,7 @@ export function FeedPageHorizontal() {
       <LegalSheet kind={legalSheet} onClose={() => setLegalSheet(null)} />
       <SettingsSheet
         isOpen={settingsOpen}
+        currentUser={user}
         onClose={() => setSettingsOpen(false)}
         onAccountDeleted={() => {
           // Mirror the sign-out flow: close any sheets/overlays that might

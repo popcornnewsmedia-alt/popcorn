@@ -1451,7 +1451,7 @@ function LibraryOverlay({
  *  from the profile dropdown's "Account settings" row. Lets the user edit
  *  their display name, change their password, and delete their account, all
  *  in the same blue+cream surface used across the account UI. */
-function AccountSettingsModal({ onClose }: { onClose: () => void }) {
+function AccountSettingsModal({ onClose, currentUser }: { onClose: () => void; currentUser?: SupaUser | null }) {
   const { user: authUser, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
 
   // This modal's useAuth instance can hand back a null user while it resolves;
@@ -1465,7 +1465,7 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
     });
     return () => { active = false; };
   }, []);
-  const user = liveUser ?? authUser;
+  const user = currentUser ?? liveUser ?? authUser;
 
   const dnMeta = user?.user_metadata as { full_name?: string; name?: string; first_name?: string } | undefined;
   const initialName = (dnMeta?.full_name || dnMeta?.name || dnMeta?.first_name || "").trim();
@@ -1493,6 +1493,7 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
   }, [initialName, nameDraft]);
 
   // Password form
+  const [pwCurrent, setPwCurrent] = useState("");
   const [pw1, setPw1] = useState("");
   const [pw2, setPw2] = useState("");
   const [showPw, setShowPw] = useState(false);
@@ -1531,14 +1532,33 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
   };
 
   const savePassword = async () => {
-    if (pw1.length < 8) { setPwMsg({ kind: "err", text: "Password must be at least 8 characters." }); return; }
+    if (!pwCurrent) { setPwMsg({ kind: "err", text: "Enter your current password." }); return; }
+    if (pw1.length < 8) { setPwMsg({ kind: "err", text: "New password must be at least 8 characters." }); return; }
     if (pw1 !== pw2) { setPwMsg({ kind: "err", text: "Passwords don't match." }); return; }
     setPwSaving(true);
     setPwMsg(null);
     try {
+      // Verify the current password first (re-auth), timeout-guarded.
+      const verify = await Promise.race([
+        supabase.auth.signInWithPassword({ email: userEmail, password: pwCurrent }),
+        new Promise<{ error: { message: string } }>((resolve) =>
+          setTimeout(() => resolve({ error: { message: "__timeout__" } }), 12000),
+        ),
+      ]);
+      if ((verify as { error: { message?: string } | null }).error) {
+        const vmsg = ((verify as { error: { message?: string } }).error.message || "").toLowerCase();
+        setPwMsg({
+          kind: "err",
+          text: vmsg.includes("__timeout__")
+            ? "This is taking longer than expected — please try again."
+            : "Your current password is incorrect.",
+        });
+        setPwSaving(false);
+        return;
+      }
       await updatePassword(pw1);
       setPwMsg({ kind: "ok", text: "Password updated." });
-      setPw1(""); setPw2("");
+      setPwCurrent(""); setPw1(""); setPw2("");
       setTimeout(() => { setPwMsg(null); setPanel("root"); }, 1100);
     } catch (e) {
       setPwMsg({ kind: "err", text: e instanceof Error ? e.message : "Couldn't update password." });
@@ -1663,12 +1683,20 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
                     </p>
                   ) : (
                     <>
+                  <label className="pcd-set-panel__label">Current password</label>
+                  <input
+                    className="pcd-set-input"
+                    type={showPw ? "text" : "password"}
+                    autoFocus
+                    value={pwCurrent}
+                    placeholder="Your current password"
+                    onChange={(e) => setPwCurrent(e.target.value)}
+                  />
                   <label className="pcd-set-panel__label">New password</label>
                   <div className="pcd-set-pwwrap">
                     <input
                       className="pcd-set-input"
                       type={showPw ? "text" : "password"}
-                      autoFocus
                       value={pw1}
                       placeholder="At least 8 characters"
                       onChange={(e) => setPw1(e.target.value)}
@@ -1693,13 +1721,14 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
                   />
                   {pwMsg && <p className={`pcd-set-msg ${pwMsg.kind === "ok" ? "is-ok" : "is-err"}`}>{pwMsg.text}</p>}
                   {!pwMsg && pw2.length > 0 && pw1 === pw2 && <p className="pcd-set-msg is-ok">Passwords match.</p>}
+                  {!pwMsg && pw2.length > 0 && pw1 !== pw2 && <p className="pcd-set-msg is-err">Passwords don't match.</p>}
                   <div className="pcd-set-acts">
                     <button type="button" className="pcd-set-btn-ghost" onClick={() => setPanel("root")}>Cancel</button>
                     <button
                       type="button"
                       className="pcd-set-btn-go"
                       onClick={() => void savePassword()}
-                      disabled={pwSaving || pw1.length < 8 || pw1 !== pw2}
+                      disabled={pwSaving || !pwCurrent || pw1.length < 8 || pw1 !== pw2}
                     >
                       {pwSaving ? "Saving…" : "Update"}
                       {!pwSaving && <ArrowRight size={14} strokeWidth={2.5} />}
@@ -5271,7 +5300,7 @@ export function DesktopHome() {
       <DragLegalModal kind={legalKind} onClose={() => setLegalKind(null)} />
 
       {settingsOpen && user && (
-        <AccountSettingsModal onClose={() => setSettingsOpen(false)} />
+        <AccountSettingsModal onClose={() => setSettingsOpen(false)} currentUser={user} />
       )}
 
       {gateVisible && (

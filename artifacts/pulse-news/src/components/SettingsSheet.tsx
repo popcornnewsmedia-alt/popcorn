@@ -30,6 +30,10 @@ interface SettingsSheetProps {
   /** Called after the account has been permanently deleted and the user
    *  has been signed out. Parent should route back to splash/sign-in. */
   onAccountDeleted: () => void;
+  /** The parent's already-resolved user — passed so display fields (name,
+   *  email) render immediately instead of dashes while this sheet's own
+   *  useAuth instance is still resolving. */
+  currentUser?: User | null;
 }
 
 type Panel = "root" | "name" | "password" | "delete";
@@ -38,7 +42,7 @@ type Panel = "root" | "name" | "password" | "delete";
 // sheet after deletion succeeds — there's no "back" action from it.
 type DeleteStage = "idle" | "confirming" | "deleting" | "farewell";
 
-export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsSheetProps) {
+export function SettingsSheet({ isOpen, onClose, onAccountDeleted, currentUser }: SettingsSheetProps) {
   const { user: authUser, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
 
   // Each useAuth() is a separate instance whose user can be null while it
@@ -53,7 +57,7 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
     });
     return () => { active = false; };
   }, [isOpen]);
-  const user = liveUser ?? authUser;
+  const user = currentUser ?? liveUser ?? authUser;
 
   // Display name: prefer full_name, then Google's `name`, then `first_name`.
   const nmeta = user?.user_metadata as { full_name?: string; name?: string; first_name?: string } | undefined;
@@ -80,6 +84,7 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
   const [nameSuccess, setNameSuccess] = useState(false);
 
   // ── Password form ───────────────────────────────────────────────────────
+  const [pwCurrent, setPwCurrent] = useState("");
   const [pw1, setPw1] = useState("");
   const [pw2, setPw2] = useState("");
   const [showPw, setShowPw] = useState(false);
@@ -104,6 +109,7 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
       setDeleteStage("idle");
       setNameError(null);
       setNameSuccess(false);
+      setPwCurrent("");
       setPw1("");
       setPw2("");
       setShowPw(false);
@@ -196,8 +202,12 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
   };
 
   const savePassword = async () => {
+    if (!pwCurrent) {
+      setPwError("Enter your current password.");
+      return;
+    }
     if (pw1.length < 8) {
-      setPwError("Password must be at least 8 characters.");
+      setPwError("New password must be at least 8 characters.");
       return;
     }
     if (pw1 !== pw2) {
@@ -207,8 +217,27 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
     setPwSaving(true);
     setPwError(null);
     try {
+      // Verify the current password first (re-auth). Timeout-guarded so a stuck
+      // call can't freeze the save.
+      const verify = await Promise.race([
+        supabase.auth.signInWithPassword({ email: userEmail, password: pwCurrent }),
+        new Promise<{ error: { message: string } }>((resolve) =>
+          setTimeout(() => resolve({ error: { message: "__timeout__" } }), 12000),
+        ),
+      ]);
+      if ((verify as { error: { message?: string } | null }).error) {
+        const vmsg = ((verify as { error: { message?: string } }).error.message || "").toLowerCase();
+        setPwError(
+          vmsg.includes("__timeout__")
+            ? "This is taking longer than expected — please try again."
+            : "Your current password is incorrect.",
+        );
+        setPwSaving(false);
+        return;
+      }
       await updatePassword(pw1);
       setPwSuccess(true);
+      setPwCurrent("");
       setPw1("");
       setPw2("");
       setTimeout(() => {
@@ -435,11 +464,26 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
                       </p>
                     ) : (
                       <>
-                    <FieldLabel>New password</FieldLabel>
+                    <FieldLabel>Current password</FieldLabel>
+                    <input
+                      type={showPw ? "text" : "password"}
+                      autoFocus
+                      value={pwCurrent}
+                      onChange={(e) => setPwCurrent(e.target.value)}
+                      placeholder="Your current password"
+                      className="w-full rounded-xl px-4 py-3.5 outline-none font-['Inter']"
+                      style={{
+                        background: 'rgba(255,241,205,0.07)',
+                        fontSize: '15px',
+                        color: '#fff1cd',
+                        border: '1px solid rgba(255,241,205,0.13)',
+                      }}
+                    />
+
+                    <FieldLabel style={{ marginTop: '14px' }}>New password</FieldLabel>
                     <div className="relative">
                       <input
                         type={showPw ? "text" : "password"}
-                        autoFocus
                         value={pw1}
                         onChange={(e) => setPw1(e.target.value)}
                         placeholder="At least 8 characters"
@@ -482,13 +526,16 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
                     {pw2.length > 0 && pw1 === pw2 && !pwError && (
                       <InlineSuccess>Passwords match.</InlineSuccess>
                     )}
+                    {pw2.length > 0 && pw1 !== pw2 && !pwError && (
+                      <InlineError>Passwords don't match.</InlineError>
+                    )}
                     {pwError && <InlineError>{pwError}</InlineError>}
                     {pwSuccess && <InlineSuccess>Password updated.</InlineSuccess>}
                     <div className="flex items-center gap-3 mt-3">
                       <GhostButton onClick={() => setPanel("root")}>Cancel</GhostButton>
                       <PrimaryButton
                         onClick={savePassword}
-                        disabled={pwSaving || pw1.length < 8 || pw1 !== pw2}
+                        disabled={pwSaving || !pwCurrent || pw1.length < 8 || pw1 !== pw2}
                       >
                         {pwSaving ? "SAVING…" : "UPDATE"}
                       </PrimaryButton>
