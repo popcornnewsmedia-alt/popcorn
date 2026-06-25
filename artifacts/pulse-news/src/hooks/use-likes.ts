@@ -88,6 +88,31 @@ export function useLikesRoot(user: User | null): UseLikesResult {
   // Initial load + reload when the signed-in user changes.
   useEffect(() => { void refresh(); }, [refresh]);
 
+  // Realtime: a like on ANY device updates `articles.real_likes`, which fires a
+  // postgres UPDATE here. We layer the fresh total (seed + real_likes) over the
+  // feed's count so likes cross devices live — the same mechanism comment votes
+  // use. No user filter: article counts are public, every client wants them.
+  useEffect(() => {
+    const ch = supabase
+      .channel("likes:articles")
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "articles" },
+        (payload) => {
+          const row = payload.new as { id?: number; likes?: number | string; real_likes?: number | string };
+          if (row?.id == null) return;
+          const total = (Number(row.likes) || 0) + (Number(row.real_likes) || 0);
+          setCountOverrides((prev) => {
+            const next = new Map(prev);
+            next.set(Number(row.id), total);
+            return next;
+          });
+        },
+      )
+      .subscribe();
+    return () => { void supabase.removeChannel(ch); };
+  }, []);
+
   // Cross-device sync: re-fetch on visibility / focus / reconnect. Realtime
   // would be nicer but polling on focus is enough for a likes list.
   useEffect(() => {
