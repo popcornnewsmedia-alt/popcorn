@@ -13,14 +13,13 @@ export function LegalPage({ kind }: { kind: LegalKind }) {
   const doc = DOCS[kind];
   const eyebrow = kind === "about" ? "Popcorn · About" : "Popcorn · Legal";
   return (
-    <div className="relative min-h-screen w-full" style={{ background: "#042c85" }}>
-      {/* Fixed full-viewport grain layer so the texture stays behind the
-          content the whole way down (the canvas is sized to its parent, so a
-          fixed viewport-sized parent keeps it covering every scroll position). */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <GrainBackground />
-      </div>
-      <div className="relative z-10 mx-auto px-6 py-10 pb-24" style={{ maxWidth: 720 }}>
+    <div className="fixed inset-0 flex flex-col" style={{ background: "#042c85" }}>
+      {/* Grain covers the fixed viewport (stays put); the content scrolls in the
+          inner pane below — same pattern as the in-app LegalSheet, so the
+          texture never tapers and the page still scrolls. */}
+      <GrainBackground />
+      <div className="relative z-10 flex-1 overflow-y-auto overscroll-contain">
+        <div className="mx-auto px-6 py-10 pb-24" style={{ maxWidth: 720 }}>
         <a
           href="/"
           className="font-['Inter']"
@@ -69,6 +68,7 @@ export function LegalPage({ kind }: { kind: LegalKind }) {
               Questions? Write to us at <span style={{ color: "#fff1cd" }}>hello@popcornmedia.org</span>
             </p>
           </div>
+        </div>
         </div>
       </div>
     </div>
