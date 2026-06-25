@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { Lock, ArrowRight, Check } from "lucide-react";
 import { GrainBackground } from "@/components/GrainBackground";
 import { supabase } from "@/lib/supabase";
+import { apiBase } from "@/lib/api-base";
 
 type Phase = "loading" | "ready" | "invalid" | "done";
 
@@ -57,59 +58,43 @@ export function ResetPasswordScreen() {
     if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
     if (password !== confirm) { setError("Passwords don't match."); return; }
     setSubmitting(true);
-
-    // updateUser's promise has been observed to hang even after the password
-    // actually changes (the frozen "UPDATING…" spinner). So don't wait on it —
-    // treat the USER_UPDATED auth event as the authoritative success signal and
-    // navigate on that. The promise race below only handles real errors (e.g.
-    // same/weak password) and a hard timeout fallback.
-    let finished = false;
-    const { data: { subscription: sub } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "USER_UPDATED") finish();
-    });
-    function finish() {
-      if (finished) return;
-      finished = true;
-      try { sub.unsubscribe(); } catch { /* ignore */ }
-      setPhase("done");
-      // Hard-navigate home so the app re-initialises cleanly with the new
-      // session (the recovery session is now a full session → signed in).
-      setTimeout(() => window.location.assign(import.meta.env.BASE_URL || "/"), 1200);
-    }
-
     try {
-      const result = await Promise.race([
-        supabase.auth.updateUser({ password }),
-        new Promise((resolve) => setTimeout(() => resolve({ __timeout: true }), 8000)),
+      // Get the recovery session's access token (local read; cap it so a stuck
+      // getSession can't hang the submit).
+      const sessionRes = await Promise.race([
+        supabase.auth.getSession(),
+        new Promise<{ data: { session: null } }>((resolve) =>
+          setTimeout(() => resolve({ data: { session: null } }), 5000),
+        ),
       ]);
-      if (finished) return; // USER_UPDATED already navigated us away
-      const r = result as { __timeout?: boolean; error?: { message?: string } | null };
-      if (r.__timeout) {
-        sub.unsubscribe();
-        setSubmitting(false);
-        setError("This is taking longer than expected. Your password may already be updated — try signing in with your new password.");
-        return;
-      }
-      if (r.error) {
-        sub.unsubscribe();
-        // Supabase rejects reusing the current password with this message.
-        const m = (r.error.message || "").toLowerCase();
-        setError(
-          m.includes("different from the old") || m.includes("same")
-            ? "That's the same as your current password. Enter a new one to continue, or try logging in with your old password."
-            : r.error.message || "Couldn't update your password — please try again.",
-        );
+      const token = sessionRes.data.session?.access_token;
+      if (!token) {
+        setError("Your reset link has expired or is invalid. Please request a new one.");
         setSubmitting(false);
         return;
       }
-      // Promise resolved success before the event fired — proceed.
-      finish();
+
+      // Set the password SERVER-SIDE (admin) — the client updateUser stalls in
+      // this flow. The recovery session stays valid, so the user remains signed
+      // in and we can drop them straight into the feed.
+      const resp = await fetch(`${apiBase()}/api/auth/set-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ password }),
+      });
+      if (!resp.ok) {
+        const body = await resp.json().catch(() => ({}));
+        setError(body.error ?? "Couldn't update your password — please try again.");
+        setSubmitting(false);
+        return;
+      }
+
+      setPhase("done");
+      // Hard-navigate home so the app re-initialises cleanly with the session.
+      setTimeout(() => window.location.assign(import.meta.env.BASE_URL || "/"), 1200);
     } catch {
-      if (!finished) {
-        sub.unsubscribe();
-        setError("Something went wrong — please try again.");
-        setSubmitting(false);
-      }
+      setError("Something went wrong — please try again.");
+      setSubmitting(false);
     }
   };
 
