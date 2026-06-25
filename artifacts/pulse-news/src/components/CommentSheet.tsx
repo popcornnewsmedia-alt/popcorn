@@ -316,6 +316,13 @@ const INK_FAINT    = "rgba(8,27,58,0.36)";      // faint / inactive icons
 const INK_HAIR     = "rgba(8,27,58,0.08)";      // hairlines
 const INK_SOFT     = "rgba(8,27,58,0.04)";      // soft fills
 
+// Like / dislike accents — subtle muted green (up) and brick red (down) so the
+// two vote directions read at a glance. Faint at rest, full-strength once cast.
+const VOTE_UP        = "rgb(46,120,74)";         // muted green — like
+const VOTE_UP_FAINT  = "rgba(46,120,74,0.48)";
+const VOTE_DOWN      = "rgb(168,59,46)";         // brick red — dislike (= DELETE_RED)
+const VOTE_DOWN_FAINT = "rgba(168,59,46,0.48)";
+
 interface CommentSheetProps {
   isOpen: boolean;
   articleId: number;
@@ -617,28 +624,28 @@ export function CommentSheet({ isOpen, articleId, onClose, focusCommentId, onReq
       <button onClick={onUp} className="flex items-center gap-1 active:scale-90 transition-transform">
         <ChevronUp style={{
           width: small ? 12.5 : 13.5, height: small ? 12.5 : 13.5,
-          color: vote === "up" ? BRAND : INK_FAINT,
+          color: vote === "up" ? VOTE_UP : VOTE_UP_FAINT,
           strokeWidth: 2.2, transition: "color 0.15s",
         }} />
         <span style={{
           fontFamily: "'Manrope', sans-serif",
           fontWeight: 600,
           fontSize: small ? 10.5 : 11,
-          color: vote === "up" ? BRAND : INK_ACTION,
+          color: vote === "up" ? VOTE_UP : INK_ACTION,
           transition: "color 0.15s",
         }}>{upvotes}</span>
       </button>
       <button onClick={onDown} className="flex items-center gap-1 active:scale-90 transition-transform">
         <ChevronDown style={{
           width: small ? 12.5 : 13.5, height: small ? 12.5 : 13.5,
-          color: vote === "down" ? "rgba(8,27,58,0.70)" : INK_FAINT,
+          color: vote === "down" ? VOTE_DOWN : VOTE_DOWN_FAINT,
           strokeWidth: 2.2, transition: "color 0.15s",
         }} />
         <span style={{
           fontFamily: "'Manrope', sans-serif",
           fontWeight: 600,
           fontSize: small ? 10.5 : 11,
-          color: vote === "down" ? "rgba(8,27,58,0.70)" : INK_ACTION,
+          color: vote === "down" ? VOTE_DOWN : INK_ACTION,
           transition: "color 0.15s",
         }}>{downvotes}</span>
       </button>
