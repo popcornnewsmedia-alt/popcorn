@@ -290,6 +290,22 @@ export function useAuth() {
     catch { /* swallow — if the update hangs we'll still time it out below */ }
   };
 
+  // Resolve a valid access token, tolerating a lagging React state and an
+  // expired-but-refreshable session (getSession refreshes, refreshSession is
+  // the explicit fallback). Returns undefined only when truly signed out.
+  const getAccessToken = async (): Promise<string | undefined> => {
+    if (state.session?.access_token) return state.session.access_token;
+    try {
+      const { data } = await withTimeout(supabase.auth.getSession(), 12000, "Session check");
+      if (data.session?.access_token) return data.session.access_token;
+    } catch { /* try explicit refresh */ }
+    try {
+      const { data } = await withTimeout(supabase.auth.refreshSession(), 12000, "Session refresh");
+      if (data.session?.access_token) return data.session.access_token;
+    } catch { /* give up */ }
+    return undefined;
+  };
+
   const updateProfile = async (data: Record<string, unknown>) => {
     await primeSession();
     const { data: res, error } = await withTimeout(
@@ -305,22 +321,21 @@ export function useAuth() {
     if (nextUser) setState(prev => ({ ...prev, user: nextUser }));
   };
 
-  /** Update the signed-in user's password. Supabase sends a reauth email under
-   * the hood only if the session is stale; for a fresh session this is a
-   * silent update. */
+  /** Update the signed-in user's password via the server-side set-password
+   * endpoint (admin) — the client updateUser stalls in WebViews. The server
+   * also sends the "password changed" confirmation email. */
   const updatePassword = async (newPassword: string) => {
-    await primeSession();
-    const { data: res, error } = await withTimeout(
-      supabase.auth.updateUser({ password: newPassword }),
-      10000,
-      "Password update",
-    );
-    if (error) throw error;
-    // Keep local user state in sync so subsequent session checks see the
-    // post-update user object (and so the next sign-in with the new
-    // password uses fresh credentials).
-    const nextUser = res?.user ?? null;
-    if (nextUser) setState(prev => ({ ...prev, user: nextUser }));
+    const token = await getAccessToken();
+    if (!token) throw new Error("You appear to be signed out. Please sign in again, then change your password.");
+    const resp = await fetch(`${apiBase()}/api/auth/set-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ password: newPassword }),
+    });
+    if (!resp.ok) {
+      const body = await resp.json().catch(() => ({}));
+      throw new Error(body.error ?? "Couldn't update your password. Please try again.");
+    }
   };
 
   /** Permanently deletes the signed-in user's account. Hits the server-side
@@ -338,24 +353,7 @@ export function useAuth() {
     // React state can lag the live client (e.g. right after a token refresh),
     // so don't conclude "signed out" from state.session alone — pull the
     // current access token straight from Supabase first.
-    let token = state.session?.access_token;
-    if (!token) {
-      // getSession transparently refreshes an expired access token, which needs
-      // a network round-trip — give it room (a short cap was cutting it off and
-      // wrongly reporting "signed out").
-      try {
-        const { data } = await withTimeout(supabase.auth.getSession(), 12000, "Session check");
-        token = data.session?.access_token;
-      } catch { /* try an explicit refresh next */ }
-    }
-    if (!token) {
-      // Last resort: force a refresh in case the access token expired but the
-      // refresh token is still valid.
-      try {
-        const { data } = await withTimeout(supabase.auth.refreshSession(), 12000, "Session refresh");
-        token = data.session?.access_token;
-      } catch { /* fall through to the friendly error below */ }
-    }
+    const token = await getAccessToken();
     if (!token) throw new Error("You appear to be signed out. Please sign in again, then try deleting.");
     const resp = await fetch(`${apiBase()}/api/auth/delete-account`, {
       method: "POST",

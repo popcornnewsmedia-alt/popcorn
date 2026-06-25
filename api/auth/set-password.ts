@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { supabase } from "../_lib/supabase";
+import { sendPasswordChangedEmail } from "../_lib/resend";
 
 /**
  * Sets a new password for the caller during the password-reset flow.
@@ -47,6 +48,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (updErr) {
       console.error("set-password failed:", updErr);
       return res.status(500).json({ error: updErr.message ?? "Couldn't update your password." });
+    }
+
+    // Security confirmation email — best-effort; never fail the change on it.
+    const email = userData.user.email ?? "";
+    if (email) {
+      const meta = (userData.user.user_metadata ?? {}) as Record<string, unknown>;
+      const name =
+        (meta.first_name as string | undefined) ||
+        (meta.full_name as string | undefined) ||
+        (meta.name as string | undefined) ||
+        "there";
+      try {
+        await sendPasswordChangedEmail(email, name);
+      } catch (mailErr) {
+        console.error("password-changed email failed (non-fatal):", mailErr);
+      }
     }
 
     return res.json({ ok: true });

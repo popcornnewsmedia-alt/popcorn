@@ -373,3 +373,82 @@ export async function sendResetPasswordEmail(
     return { success: false, error: message };
   }
 }
+
+/* ── Password-changed confirmation email ─────────────────────────────────── */
+
+function passwordChangedHtml(name: string): string {
+  const first = firstName(name, "there");
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/>
+<style>
+@font-face{font-family:'Macabro';src:url('https://popcornmedia.org/fonts/MACABRO.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+</style>
+</head>
+<body style="margin:0;padding:0;background:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
+        <!-- Top strip: blue, logo + wordmark -->
+        <tr><td background="https://popcornmedia.org/email-grain-blue.png" style="background-color:#042c85;background-image:url('https://popcornmedia.org/email-grain-blue.png');background-repeat:repeat;background-position:top center;padding:30px 20px 26px;text-align:center;">
+          <img src="https://popcornmedia.org/logo-latest.png" alt="Popcorn" width="72" height="72" style="display:inline-block;border-radius:16px;"/>
+          <div style="margin-top:14px;font-family:'Macabro','Anton','Helvetica Neue',Arial,sans-serif;font-size:26px;font-weight:800;letter-spacing:0.05em;color:#fff1cd;text-transform:uppercase;">POPCORN</div>
+        </td></tr>
+        <!-- Body: white -->
+        <tr><td style="background:#ffffff;padding:40px 28px 34px;">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="padding-bottom:16px;text-align:center;">
+              <h1 style="margin:0;font-size:24px;font-weight:800;letter-spacing:0.01em;color:#042c85;line-height:1.15;text-transform:uppercase;">
+                YOUR PASSWORD WAS CHANGED.
+              </h1>
+            </td></tr>
+            <tr><td style="padding-bottom:14px;text-align:center;">
+              <p style="margin:0;font-size:15px;color:#4a4a4a;line-height:1.7;">
+                Hey ${first}, this is a quick confirmation that your Popcorn password was just changed. If this was you, you're all set — nothing else to do.
+              </p>
+            </td></tr>
+            <tr><td style="padding-top:6px;text-align:center;">
+              <p style="margin:0;font-size:13px;color:#9aa0a8;line-height:1.6;">
+                Didn't change it? Reset your password right away and contact us at
+                <a href="mailto:hello@popcornmedia.org" style="color:#042c85;">hello@popcornmedia.org</a>.
+              </p>
+            </td></tr>
+          </table>
+        </td></tr>
+        <!-- Footer: white -->
+        <tr><td style="background:#ffffff;border-top:1px solid #eceae3;padding:24px 20px 32px;text-align:center;">
+          <p style="margin:0;font-size:13px;color:#9aa0a8;line-height:1.7;">
+            Popcorn Media<br/>
+            <a href="mailto:hello@popcornmedia.org" style="color:#9aa0a8;text-decoration:none;">hello@popcornmedia.org</a>
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+export async function sendPasswordChangedEmail(
+  email: string,
+  name: string,
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const result = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: "Your Popcorn password was changed",
+      html: passwordChangedHtml(name),
+    });
+    if (result.error) {
+      console.error("Resend error:", result.error);
+      return { success: false, error: result.error.message };
+    }
+    console.log(`Password-changed email sent to ${email}`, result.data);
+    return { success: true };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Failed to send password-changed email:", message);
+    return { success: false, error: message };
+  }
+}
