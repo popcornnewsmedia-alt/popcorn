@@ -42,6 +42,9 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
   // Display name: prefer full_name, then Google's `name`, then `first_name`.
   const nmeta = user?.user_metadata as { full_name?: string; name?: string; first_name?: string } | undefined;
   const initialName = (nmeta?.full_name || nmeta?.name || nmeta?.first_name || "").trim();
+  const userEmail = user?.email ?? "";
+  const appMeta = user?.app_metadata as { provider?: string; providers?: string[] } | undefined;
+  const isGoogle = appMeta?.provider === "google" || (appMeta?.providers ?? []).includes("google");
   const handle = profile?.username ?? null;
 
   const [panel, setPanel] = useState<Panel>("root");
@@ -334,6 +337,19 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
                 {/* ── ACCOUNT ──────────────────────────────────────────── */}
                 <SectionLabel>Account</SectionLabel>
 
+                {/* Email — read-only (the address you're signed in with) */}
+                <div
+                  className="mb-2.5 rounded-2xl px-4 py-3.5"
+                  style={{ background: 'rgba(255,241,205,0.04)', border: '1px solid rgba(255,241,205,0.10)' }}
+                >
+                  <div style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,241,205,0.42)', marginBottom: '4px' }}>
+                    Email
+                  </div>
+                  <div className="font-['Inter']" style={{ fontSize: '14px', color: 'rgba(255,241,205,0.72)', wordBreak: 'break-all' }}>
+                    {userEmail || "—"}
+                  </div>
+                </div>
+
                 <SettingsRow
                   label="Display name"
                   value={initialName || "Not set"}
@@ -380,7 +396,7 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
 
                 <SettingsRow
                   label="Password"
-                  value="Change your password"
+                  value={isGoogle ? "Signed in with Google" : "Change your password"}
                   onClick={() => {
                     setPwError(null);
                     setPanel(panel === "password" ? "root" : "password");
@@ -390,6 +406,12 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
 
                 {panel === "password" && (
                   <InlinePanel>
+                    {isGoogle ? (
+                      <p className="font-['Inter']" style={{ fontSize: '13.5px', lineHeight: 1.6, color: 'rgba(255,241,205,0.65)' }}>
+                        You signed in with Google, so there's no Popcorn password to change. Manage your password in your Google Account.
+                      </p>
+                    ) : (
+                      <>
                     <FieldLabel>New password</FieldLabel>
                     <div className="relative">
                       <input
@@ -448,6 +470,8 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted }: SettingsShe
                         {pwSaving ? "SAVING…" : "UPDATE"}
                       </PrimaryButton>
                     </div>
+                      </>
+                    )}
                   </InlinePanel>
                 )}
 

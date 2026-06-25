@@ -357,6 +357,10 @@ export function useAuth() {
       const body = await resp.json().catch(() => ({}));
       throw new Error(body.error ?? `Delete failed (${resp.status})`);
     }
+    // Trigger the App-level farewell overlay BEFORE clearing the session —
+    // signing out unmounts the settings UI, so the farewell can't live there.
+    try { localStorage.setItem("popcorn_farewell", "1"); } catch { /* ignore */ }
+    window.dispatchEvent(new Event("popcorn:farewell"));
     purgeSupabaseStorage();
     loadedProfileForRef.current = null;
     setState({ user: null, session: null, profile: null, loading: false });

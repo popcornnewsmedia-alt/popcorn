@@ -1455,6 +1455,9 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
   const dnMeta = user?.user_metadata as { full_name?: string; name?: string; first_name?: string } | undefined;
   const initialName = (dnMeta?.full_name || dnMeta?.name || dnMeta?.first_name || "").trim();
   const handle = profile?.username ?? null;
+  const userEmail = user?.email ?? "";
+  const dnApp = user?.app_metadata as { provider?: string; providers?: string[] } | undefined;
+  const isGoogle = dnApp?.provider === "google" || (dnApp?.providers ?? []).includes("google");
 
   const [panel, setPanel] = useState<"root" | "name" | "password" | "delete">("root");
 
@@ -1532,8 +1535,8 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
     try {
       await deleteAccount();
       setDelStage("farewell");
-      // deleteAccount() signs out; reload to return to the signed-out site.
-      setTimeout(() => { window.location.reload(); }, 2600);
+      // The App-level farewell overlay takes over (deleteAccount fires it);
+      // its "Back to Popcorn" button reloads into the signed-out site.
     } catch (e) {
       setDelStage("idle");
       setDelErr(e instanceof Error ? e.message : "Couldn't delete account.");
@@ -1570,6 +1573,14 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
 
             <div className="pcd-set__body">
               <p className="pcd-set__seclabel">Account</p>
+
+              {/* Email — read-only (the address you're signed in with) */}
+              <div className="pcd-set-row" style={{ cursor: "default" }}>
+                <div style={{ minWidth: 0 }}>
+                  <p className="pcd-set-row__label">Email</p>
+                  <p className="pcd-set-row__value" style={{ wordBreak: "break-all" }}>{userEmail || "—"}</p>
+                </div>
+              </div>
 
               {/* Display name */}
               <button
@@ -1620,13 +1631,19 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
               >
                 <div style={{ minWidth: 0 }}>
                   <p className="pcd-set-row__label">Password</p>
-                  <p className="pcd-set-row__value">Change your password</p>
+                  <p className="pcd-set-row__value">{isGoogle ? "Signed in with Google" : "Change your password"}</p>
                 </div>
                 <ChevronRight className="pcd-set-row__ic pcd-set-row__chev" size={16} strokeWidth={2.25} />
               </button>
 
               {panel === "password" && (
                 <div className="pcd-set-panel">
+                  {isGoogle ? (
+                    <p className="pcd-set-msg" style={{ color: "rgba(255,241,205,0.65)", lineHeight: 1.6 }}>
+                      You signed in with Google, so there's no Popcorn password to change. Manage your password in your Google Account.
+                    </p>
+                  ) : (
+                    <>
                   <label className="pcd-set-panel__label">New password</label>
                   <div className="pcd-set-pwwrap">
                     <input
@@ -1669,6 +1686,8 @@ function AccountSettingsModal({ onClose }: { onClose: () => void }) {
                       {!pwSaving && <ArrowRight size={14} strokeWidth={2.5} />}
                     </button>
                   </div>
+                    </>
+                  )}
                 </div>
               )}
 

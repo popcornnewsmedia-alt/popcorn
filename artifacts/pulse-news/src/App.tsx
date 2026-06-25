@@ -12,6 +12,7 @@ import NotFound from "@/pages/not-found";
 import { EmailConfirmedScreen } from "@/components/EmailConfirmedScreen";
 import { VerifyEmailGate } from "@/components/VerifyEmailGate";
 import { ResetPasswordScreen } from "@/components/ResetPasswordScreen";
+import { FarewellScreen } from "@/components/FarewellScreen";
 import { UsernameSheet } from "@/components/UsernameSheet";
 import { PopcornReadyOverlay } from "@/components/PopcornReadyOverlay";
 import { setupPushNotifications } from "@/lib/push-registration";
@@ -83,6 +84,17 @@ function App() {
   // sign-up before the email is confirmed, so we wall off the feed until they
   // verify — null means either signed-out or already verified (no wall).
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
+  // Show the farewell overlay after an account is deleted (set by
+  // useAuth.deleteAccount via flag + event, since the settings UI unmounts).
+  const [showFarewell, setShowFarewell] = useState(false);
+  useEffect(() => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("popcorn_farewell")) {
+      setShowFarewell(true);
+    }
+    const onFarewell = () => setShowFarewell(true);
+    window.addEventListener("popcorn:farewell", onFarewell);
+    return () => window.removeEventListener("popcorn:farewell", onFarewell);
+  }, []);
 
   /* ── Email-verification wall ──────────────────────────────────────────
      A signed-in user whose email isn't confirmed (email/password sign-ups —
@@ -325,6 +337,7 @@ function App() {
             EmailConfirmedScreen (z-[500]) so the success screen wins once they
             verify, and above the feed/sign-up sheet so it can't be dismissed. */}
         {unverifiedEmail && <VerifyEmailGate email={unverifiedEmail} />}
+        {showFarewell && <FarewellScreen />}
         {usernamePrompt && (
           <UsernameSheet
             isOpen={true}
