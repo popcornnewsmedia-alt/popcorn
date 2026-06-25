@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { ArrowRight, Check, X } from "lucide-react";
 import { GrainBackground } from "@/components/GrainBackground";
-import { supabase } from "@/lib/supabase";
 import {
   checkAvailability,
+  reserveUsername,
   validateUsernameFormat,
   seedUsername,
   type AvailabilityReason,
@@ -62,16 +62,28 @@ export function UsernameSheet({ isOpen, userId, defaultSeed, onComplete }: Usern
     setSubmitting(true);
     try {
       const candidate = username.trim().toLowerCase();
-      const { error } = await supabase
-        .from("profiles")
-        .insert({ user_id: userId, username: candidate });
-      if (error) {
-        const code = (error as { code?: string }).code;
-        if (code === "23505") {
+      // Reserve via the server (service-role) rather than a client
+      // profiles.insert. The client insert needs the auth session attached, and
+      // right after Google OAuth the client can be mid-token-refresh — the
+      // insert then hangs with no timeout and the sheet freezes. A plain server
+      // fetch has no such dependency.
+      const result = await reserveUsername(userId, candidate);
+      if (!result.ok) {
+        if (result.reason === "taken") {
           setStatus({ kind: "unavailable", reason: "taken" });
           return;
         }
-        setSubmitError(error.message || "Something went wrong — try again.");
+        if (result.reason === "already_has_profile") {
+          // Profile already exists (e.g. a double-submit) — treat as done.
+          window.dispatchEvent(new CustomEvent("popcorn:profile-updated"));
+          onComplete();
+          return;
+        }
+        setSubmitError(
+          result.reason === "network"
+            ? "Couldn't reach the server — check your connection and try again."
+            : "Something went wrong — try again.",
+        );
         return;
       }
       // Notify listeners (useAuth) so the "You" screen + comment-author snapshot
