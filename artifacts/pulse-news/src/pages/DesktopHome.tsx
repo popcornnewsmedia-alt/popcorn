@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
-import type { ReactNode, MouseEvent as ReactMouseEvent } from "react";
+import type { ReactNode, MouseEvent as ReactMouseEvent, FormEvent as ReactFormEvent } from "react";
 import { ChevronLeft, ChevronRight, Instagram, Heart, MessageCircle, Bookmark, Send, X, LogOut, ChevronDown, Settings, Pencil, Eye, EyeOff, ArrowRight, Check, Bell, Trash2 } from "lucide-react";
 import { format, startOfDay } from "date-fns";
 import type { NewsArticle } from "@workspace/api-client-react";
@@ -17,9 +17,11 @@ import type { DBNotification } from "@/lib/comments-types";
 import { CommentSheet } from "@/components/CommentSheet";
 import { ABOUT, PRIVACY, TERMS, type LegalKind, type LegalDoc } from "@/components/LegalSheet";
 import { feedImageUrl } from "@/lib/image-url";
+import { apiBase } from "@/lib/api-base";
 import { ArticleReader } from "@/components/ArticleReader";
 import { DesktopAuthGate } from "@/components/desktop/DesktopAuthGate";
 import { DesktopAuthFooter } from "@/components/desktop/DesktopAuthFooter";
+import { NewsletterTab } from "@/components/desktop/NewsletterTab";
 import { SignUpFlow } from "@/components/SignUpFlow";
 import { SignInSheet } from "@/components/SignInSheet";
 import { GrainBackground } from "@/components/GrainBackground";
@@ -2241,6 +2243,34 @@ function Footer() {
     e.preventDefault();
     setLegalKind(kind);
   };
+
+  // Footer newsletter signup — posts to the same endpoint as the side tab.
+  const [footEmail, setFootEmail] = useState("");
+  const [footState, setFootState] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [footErr, setFootErr] = useState("");
+  const submitFooter = async (e: ReactFormEvent) => {
+    e.preventDefault();
+    if (footState === "loading") return;
+    setFootErr("");
+    setFootState("loading");
+    try {
+      const res = await fetch(`${apiBase()}/api/newsletter/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: footEmail, source: "website-footer" }),
+      });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setFootState("error");
+        setFootErr(d?.error || "Couldn't sign you up — please try again.");
+        return;
+      }
+      setFootState("done");
+    } catch {
+      setFootState("error");
+      setFootErr("Network error — please try again.");
+    }
+  };
   return (
     <>
     <footer
@@ -2392,47 +2422,76 @@ function Footer() {
           >
             One email, every morning. Today's pop in your inbox before coffee.
           </p>
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            style={{
-              display: "flex",
-              marginTop: 12,
-              border: "1px solid rgba(255,255,255,0.4)",
-              background: "transparent",
-            }}
-          >
-            <input
-              type="email"
-              placeholder="you@email.com"
+          {footState === "done" ? (
+            <p
               style={{
-                flex: 1,
-                background: "transparent",
-                border: 0,
-                padding: "10px 12px",
-                fontSize: 13,
-                outline: "none",
+                fontFamily: SERIF,
+                fontStyle: "italic",
+                fontSize: 15,
                 color: "#fff",
-                fontFamily: SANS,
-              }}
-            />
-            <button
-              type="submit"
-              style={{
-                background: "#fff",
-                color: BLUE,
-                border: 0,
-                padding: "10px 16px",
-                fontSize: 11,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                fontWeight: 600,
-                cursor: "pointer",
-                fontFamily: SANS,
+                marginTop: 14,
               }}
             >
-              Join
-            </button>
-          </form>
+              You're in — see you in your inbox.
+            </p>
+          ) : (
+            <>
+              <form
+                onSubmit={submitFooter}
+                style={{
+                  display: "flex",
+                  marginTop: 12,
+                  border: "1px solid rgba(255,255,255,0.4)",
+                  background: "transparent",
+                }}
+              >
+                <input
+                  type="email"
+                  required
+                  value={footEmail}
+                  onChange={(e) => {
+                    setFootEmail(e.target.value);
+                    if (footState === "error") setFootState("idle");
+                  }}
+                  placeholder="you@email.com"
+                  style={{
+                    flex: 1,
+                    background: "transparent",
+                    border: 0,
+                    padding: "10px 12px",
+                    fontSize: 13,
+                    outline: "none",
+                    color: "#fff",
+                    fontFamily: SANS,
+                  }}
+                />
+                <button
+                  type="submit"
+                  disabled={footState === "loading"}
+                  style={{
+                    background: "#fff",
+                    color: BLUE,
+                    border: 0,
+                    padding: "10px 16px",
+                    fontSize: 11,
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    fontWeight: 600,
+                    cursor: footState === "loading" ? "default" : "pointer",
+                    opacity: footState === "loading" ? 0.7 : 1,
+                    fontFamily: SANS,
+                  }}
+                >
+                  {footState === "loading" ? "…" : "Join"}
+                </button>
+              </form>
+              {footState === "error" && (
+                <p style={{ fontFamily: SANS, fontSize: 12, color: "#ffd9d4", margin: "8px 0 0" }}>
+                  {footErr}
+                </p>
+              )}
+            </>
+          )}
         </div>
       </div>
 
@@ -5490,6 +5549,11 @@ export function DesktopHome() {
       {toast && (
         <AuthToast key={toast.id} message={toast.msg} onDone={() => setToast(null)} />
       )}
+
+      {/* Ambient, always-reachable newsletter signup — a discreet blue tab on
+          the right edge that opens into a join card. Distinct from the footer
+          form; remembers dismissal / prior signup so it never nags. */}
+      <NewsletterTab />
     </LikesContext.Provider>
     </SavesContext.Provider>
   );
