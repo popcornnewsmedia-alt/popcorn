@@ -12,6 +12,7 @@ import { SavesContext, useSavesRoot, useSavedArticles } from "@/hooks/use-saves"
 import { LikesContext, useLikesRoot, useLikedArticles } from "@/hooks/use-likes";
 import { useCommentCount } from "@/hooks/use-comment-count";
 import { useNotifications } from "@/hooks/use-notifications";
+import { useNewsletter } from "@/hooks/use-newsletter";
 import { avatarColor } from "@/lib/avatar";
 import type { DBNotification } from "@/lib/comments-types";
 import { CommentSheet } from "@/components/CommentSheet";
@@ -1598,6 +1599,59 @@ function LibraryOverlay({
  *  from the profile dropdown's "Account settings" row. Lets the user edit
  *  their display name, change their password, and delete their account, all
  *  in the same blue+cream surface used across the account UI. */
+/* Brand toggle switch — cream track + blue knob when on. Used for the
+   newsletter subscription row in the account modal. */
+function ProfileSwitch({
+  on,
+  busy,
+  disabled,
+  onClick,
+}: {
+  on: boolean;
+  busy: boolean;
+  disabled?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label="Toggle daily newsletter"
+      disabled={disabled || busy}
+      onClick={onClick}
+      style={{
+        position: "relative",
+        flexShrink: 0,
+        width: 50,
+        height: 30,
+        borderRadius: 999,
+        background: on ? "#fff1cd" : "rgba(255,241,205,0.16)",
+        border: `1px solid ${on ? "#fff1cd" : "rgba(255,241,205,0.22)"}`,
+        opacity: disabled ? 0.5 : 1,
+        cursor: disabled || busy ? "default" : "pointer",
+        transition: "background .2s ease, border-color .2s ease",
+      }}
+    >
+      <span
+        style={{
+          position: "absolute",
+          top: "50%",
+          width: 22,
+          height: 22,
+          borderRadius: "50%",
+          background: on ? "#042c85" : "rgba(255,241,205,0.82)",
+          left: on ? 24 : 3,
+          transform: "translateY(-50%)",
+          transition: "left .2s cubic-bezier(0.32,0.72,0,1), background .2s ease",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.25)",
+          opacity: busy ? 0.5 : 1,
+        }}
+      />
+    </button>
+  );
+}
+
 function AccountSettingsModal({ onClose, currentUser }: { onClose: () => void; currentUser?: SupaUser | null }) {
   const { user: authUser, profile, updateProfile, updatePassword, deleteAccount } = useAuth();
 
@@ -1653,6 +1707,9 @@ function AccountSettingsModal({ onClose, currentUser }: { onClose: () => void; c
   const [delStage, setDelStage] = useState<"idle" | "deleting" | "farewell">("idle");
   const delReady = delConfirm.trim().toUpperCase() === "DELETE";
   const locked = delStage === "deleting" || delStage === "farewell";
+
+  // Newsletter subscription — uses the signed-in account's email, no typing.
+  const newsletter = useNewsletter(!!userEmail, "web-profile");
 
   // Escape closes (unless mid-delete).
   useEffect(() => {
@@ -1886,6 +1943,33 @@ function AccountSettingsModal({ onClose, currentUser }: { onClose: () => void; c
                   )}
                 </div>
               )}
+
+              {/* Newsletter */}
+              <p className="pcd-set__seclabel">Newsletter</p>
+              <div className="pcd-set-row" style={{ cursor: "default", alignItems: "center" }}>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <p className="pcd-set-row__label">The Daily Pop</p>
+                  <p
+                    className="pcd-set-row__value"
+                    style={{ whiteSpace: "normal", color: "rgba(255,241,205,0.62)", fontSize: 13, lineHeight: 1.5 }}
+                  >
+                    {newsletter.subscribed === null
+                      ? "Checking your subscription…"
+                      : newsletter.subscribed
+                        ? "You're subscribed — one email every morning."
+                        : "One short email every morning. Today's pop in your inbox."}
+                  </p>
+                  {newsletter.error && (
+                    <p className="pcd-set-msg is-err" style={{ marginTop: 6 }}>{newsletter.error}</p>
+                  )}
+                </div>
+                <ProfileSwitch
+                  on={newsletter.subscribed === true}
+                  busy={newsletter.busy}
+                  disabled={newsletter.subscribed === null}
+                  onClick={() => void newsletter.setSubscription(!newsletter.subscribed)}
+                />
+              </div>
 
               {/* Danger zone */}
               <p className="pcd-set__seclabel is-danger">Danger zone</p>

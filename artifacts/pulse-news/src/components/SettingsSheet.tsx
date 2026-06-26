@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { X, ChevronRight, Pencil, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { GrainBackground } from "@/components/GrainBackground";
 import { useAuth } from "@/hooks/use-auth";
+import { useNewsletter } from "@/hooks/use-newsletter";
 import { supabase } from "@/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 import { APP_VERSION } from "@/pages/feed-internals";
@@ -76,6 +77,9 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted, currentUser }
 
   const [panel, setPanel] = useState<Panel>("root");
   const [deleteStage, setDeleteStage] = useState<DeleteStage>("idle");
+
+  // Newsletter subscription (uses the signed-in account's email — no typing).
+  const newsletter = useNewsletter(isOpen && !!userEmail, "app-profile");
 
   // ── Display-name form ───────────────────────────────────────────────────
   const [nameDraft, setNameDraft] = useState(initialName);
@@ -549,6 +553,16 @@ export function SettingsSheet({ isOpen, onClose, onAccountDeleted, currentUser }
                   </InlinePanel>
                 )}
 
+                {/* ── NEWSLETTER ──────────────────────────────────────── */}
+                <div style={{ height: '34px' }} />
+                <SectionLabel>Newsletter</SectionLabel>
+                <NewsletterRow
+                  subscribed={newsletter.subscribed}
+                  busy={newsletter.busy}
+                  error={newsletter.error}
+                  onToggle={() => newsletter.setSubscription(!newsletter.subscribed)}
+                />
+
                 {/* ── DANGER ZONE ─────────────────────────────────────── */}
                 <div style={{ height: '34px' }} />
                 <SectionLabel danger>Danger zone</SectionLabel>
@@ -718,6 +732,109 @@ function SettingsRow({ label, value, onClick, open, icon }: SettingsRowProps) {
           )}
         </div>
       </div>
+    </button>
+  );
+}
+
+// ─── Newsletter subscription row ───────────────────────────────────────────
+
+interface NewsletterRowProps {
+  subscribed: boolean | null;
+  busy: boolean;
+  error: string | null;
+  onToggle: () => void;
+}
+
+function NewsletterRow({ subscribed, busy, error, onToggle }: NewsletterRowProps) {
+  const on = subscribed === true;
+  return (
+    <div
+      className="rounded-2xl px-4 py-3.5"
+      style={{
+        background: 'rgba(255,241,205,0.05)',
+        border: `1px solid ${on ? 'rgba(255,241,205,0.22)' : 'rgba(255,241,205,0.10)'}`,
+        transition: 'border-color 200ms ease',
+      }}
+    >
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <p
+            style={{
+              fontFamily: "'Macabro', 'Anton', sans-serif",
+              fontSize: '10px',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,241,205,0.60)',
+              marginBottom: '4px',
+            }}
+          >
+            The Daily Pop
+          </p>
+          <p
+            className="font-['Inter']"
+            style={{ fontSize: '13px', color: 'rgba(255,241,205,0.62)', lineHeight: 1.5 }}
+          >
+            {subscribed === null
+              ? 'Checking your subscription…'
+              : on
+                ? "You're subscribed — one email every morning."
+                : 'One short email every morning. Today’s pop in your inbox.'}
+          </p>
+        </div>
+        <Switch on={on} busy={busy} disabled={subscribed === null} onClick={onToggle} />
+      </div>
+      {error && <InlineError>{error}</InlineError>}
+    </div>
+  );
+}
+
+function Switch({
+  on,
+  busy,
+  disabled,
+  onClick,
+}: {
+  on: boolean;
+  busy: boolean;
+  disabled?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label="Toggle daily newsletter"
+      disabled={disabled || busy}
+      onClick={onClick}
+      className="relative flex-shrink-0 transition-all duration-200 active:scale-[0.97]"
+      style={{
+        width: '50px',
+        height: '30px',
+        borderRadius: '999px',
+        background: on ? '#fff1cd' : 'rgba(255,241,205,0.16)',
+        border: `1px solid ${on ? '#fff1cd' : 'rgba(255,241,205,0.22)'}`,
+        opacity: disabled ? 0.5 : 1,
+        cursor: disabled || busy ? 'default' : 'pointer',
+      }}
+    >
+      <span
+        className="absolute top-1/2"
+        style={{
+          width: '22px',
+          height: '22px',
+          borderRadius: '50%',
+          background: on ? '#042c85' : 'rgba(255,241,205,0.82)',
+          left: on ? '24px' : '3px',
+          transform: 'translateY(-50%)',
+          transition: 'left 200ms cubic-bezier(0.32,0.72,0,1), background 200ms ease',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
+          animation: busy ? 'popcorn-switch-pulse 0.9s ease-in-out infinite' : 'none',
+        }}
+      />
+      <style>{`
+        @keyframes popcorn-switch-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+      `}</style>
     </button>
   );
 }
