@@ -120,7 +120,7 @@ export function NewsletterTab() {
             >
               <span className="pc-nl-tab-grain" aria-hidden />
               <Mail size={15} strokeWidth={2} className="pc-nl-tab-icon" />
-              <span className="pc-nl-tab-label">The Daily Pop</span>
+              <span className="pc-nl-tab-label">Newsletter</span>
             </motion.button>
           )}
         </AnimatePresence>
@@ -154,9 +154,9 @@ export function NewsletterTab() {
                 <span className="pc-nl-head-grain" aria-hidden />
                 <span className="pc-nl-kicker">Popcorn Newsletter</span>
                 <h3 className="pc-nl-title">
-                  Today's pop,
+                  The stories
                   <br />
-                  before coffee.
+                  worth knowing.
                 </h3>
               </div>
 
@@ -182,8 +182,8 @@ export function NewsletterTab() {
                 ) : (
                   <>
                     <p className="pc-nl-pitch">
-                      A short, daily dispatch of the culture stories worth knowing —
-                      surprising, fascinating, the things people are talking about.
+                      One short email every morning — the culture everyone's
+                      talking about, handpicked. No noise, no algorithm.
                     </p>
                     <form className="pc-nl-form" onSubmit={submit} noValidate>
                       {/* Honeypot — visually hidden, off-screen, not for humans. */}
@@ -241,7 +241,10 @@ export function NewsletterTab() {
 /* ── Scoped styles ──────────────────────────────────────────────────────── */
 const NEWSLETTER_TAB_CSS = `
 .pc-nl-root{
-  position:fixed; right:0; top:50%; transform:translateY(-50%);
+  /* Anchored to the lower-right corner so it stays clear of the feed's
+     reading column. Tab + card both align to this bottom edge; the card
+     grows upward. */
+  position:fixed; right:0; bottom:26px;
   z-index:1200; font-family:${SANS};
 }
 
@@ -251,8 +254,8 @@ const NEWSLETTER_TAB_CSS = `
   display:flex; flex-direction:column; align-items:center; gap:9px;
   padding:16px 9px 18px; border:0; cursor:pointer;
   background:${BLUE};
-  color:${CREAM};
-  border-radius:12px 0 0 12px;
+  color:#fff;
+  border-radius:0;
   box-shadow:-6px 8px 26px rgba(4,44,133,0.30), inset 0 0 0 1px rgba(255,241,205,0.14);
   overflow:hidden;
   -webkit-tap-highlight-color:transparent;
@@ -264,7 +267,7 @@ const NEWSLETTER_TAB_CSS = `
 }
 .pc-nl-tab-icon{ position:relative; z-index:1; }
 .pc-nl-tab-label{
-  position:relative; z-index:1;
+  position:relative; z-index:1; color:#fff;
   writing-mode:vertical-rl; text-orientation:mixed;
   font-family:${MACABRO}; font-size:13px; letter-spacing:0.18em;
   text-transform:uppercase; line-height:1;
@@ -274,7 +277,7 @@ const NEWSLETTER_TAB_CSS = `
 .pc-nl-card{
   position:relative; width:332px; max-width:calc(100vw - 24px);
   background:${PAPER}; color:${INK};
-  border-radius:16px 0 0 16px;
+  border-radius:0;
   box-shadow:-14px 18px 48px rgba(4,44,133,0.26), inset 0 0 0 1px rgba(4,44,133,0.10);
   overflow:hidden;
 }
@@ -316,7 +319,7 @@ const NEWSLETTER_TAB_CSS = `
 .pc-nl-trap{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
 .pc-nl-input{
   flex:1; min-width:0; background:#fff;
-  border:1px solid rgba(4,44,133,0.22); border-radius:10px;
+  border:1px solid rgba(4,44,133,0.22); border-radius:0;
   padding:11px 13px; font-size:13.5px; font-family:${SANS}; color:${INK};
   outline:none; transition:border-color .2s ease, box-shadow .2s ease;
 }
@@ -326,7 +329,7 @@ const NEWSLETTER_TAB_CSS = `
 }
 .pc-nl-submit{
   display:inline-flex; align-items:center; gap:6px;
-  background:${BLUE}; color:${CREAM}; border:0; border-radius:10px;
+  background:${BLUE}; color:${CREAM}; border:0; border-radius:0;
   padding:0 16px; font-size:12px; font-weight:700; letter-spacing:0.06em;
   text-transform:uppercase; cursor:pointer; white-space:nowrap;
   transition:background .2s ease, transform .12s ease;
@@ -362,7 +365,7 @@ const NEWSLETTER_TAB_CSS = `
 }
 .pc-nl-ghost{
   background:transparent; border:1px solid rgba(4,44,133,0.3); color:${BLUE};
-  border-radius:999px; padding:8px 22px; font-size:11px; font-weight:700;
+  border-radius:0; padding:8px 22px; font-size:11px; font-weight:700;
   letter-spacing:0.12em; text-transform:uppercase; cursor:pointer;
   transition:background .2s ease;
 }
