@@ -1245,6 +1245,10 @@ function ProfileMenu({
   // The notifications now live in their own popup (opened from the dropdown).
   const [notifModalOpen, setNotifModalOpen] = useState(false);
 
+  // Newsletter subscription — read when the menu opens; uses the signed-in
+  // account's email (no typing).
+  const newsletter = useNewsletter(open, "web-profile");
+
   // Opening the notifications popup surfaces the list, so clear the unread
   // badge shortly after — long enough to register the highlight, then it
   // settles to "seen" (mirrors tapping the app's notifications sheet).
@@ -1377,6 +1381,30 @@ function ProfileMenu({
               <span className="pcd-pm-link__lead">About Popcorn</span>
               <ChevronRight size={15} strokeWidth={2} style={{ color: "rgba(255,241,205,0.5)" }} />
             </button>
+
+            <div className="pcd-pm-rule" />
+            <p className="pcd-pm-eyebrow">Newsletter</p>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "2px 0" }}>
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <p style={{ fontFamily: SANS, fontSize: 13.5, color: "#fff1cd", margin: "0 0 2px" }}>The Daily Pop</p>
+                <p style={{ fontFamily: SANS, fontSize: 11.5, color: "rgba(255,241,205,0.5)", lineHeight: 1.45, margin: 0 }}>
+                  {newsletter.subscribed === null
+                    ? "Checking…"
+                    : newsletter.subscribed
+                      ? "Subscribed — one email every morning."
+                      : "One short email every morning."}
+                </p>
+                {newsletter.error && (
+                  <p style={{ fontFamily: SANS, fontSize: 11.5, color: "#ffb3ab", margin: "5px 0 0" }}>{newsletter.error}</p>
+                )}
+              </div>
+              <ProfileSwitch
+                on={newsletter.subscribed === true}
+                busy={newsletter.busy}
+                disabled={newsletter.subscribed === null}
+                onClick={() => void newsletter.setSubscription(!newsletter.subscribed)}
+              />
+            </div>
 
             <div className="pcd-pm-rule" />
             <button type="button" className="pcd-pm-signout" onClick={() => { setOpen(false); onSignOut(); }}>
@@ -1708,9 +1736,6 @@ function AccountSettingsModal({ onClose, currentUser }: { onClose: () => void; c
   const delReady = delConfirm.trim().toUpperCase() === "DELETE";
   const locked = delStage === "deleting" || delStage === "farewell";
 
-  // Newsletter subscription — uses the signed-in account's email, no typing.
-  const newsletter = useNewsletter(!!userEmail, "web-profile");
-
   // Escape closes (unless mid-delete).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape" && !locked) onClose(); };
@@ -1943,33 +1968,6 @@ function AccountSettingsModal({ onClose, currentUser }: { onClose: () => void; c
                   )}
                 </div>
               )}
-
-              {/* Newsletter */}
-              <p className="pcd-set__seclabel">Newsletter</p>
-              <div className="pcd-set-row" style={{ cursor: "default", alignItems: "center" }}>
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <p className="pcd-set-row__label">The Daily Pop</p>
-                  <p
-                    className="pcd-set-row__value"
-                    style={{ whiteSpace: "normal", color: "rgba(255,241,205,0.62)", fontSize: 13, lineHeight: 1.5 }}
-                  >
-                    {newsletter.subscribed === null
-                      ? "Checking your subscription…"
-                      : newsletter.subscribed
-                        ? "You're subscribed — one email every morning."
-                        : "One short email every morning. Today's pop in your inbox."}
-                  </p>
-                  {newsletter.error && (
-                    <p className="pcd-set-msg is-err" style={{ marginTop: 6 }}>{newsletter.error}</p>
-                  )}
-                </div>
-                <ProfileSwitch
-                  on={newsletter.subscribed === true}
-                  busy={newsletter.busy}
-                  disabled={newsletter.subscribed === null}
-                  onClick={() => void newsletter.setSubscription(!newsletter.subscribed)}
-                />
-              </div>
 
               {/* Danger zone */}
               <p className="pcd-set__seclabel is-danger">Danger zone</p>

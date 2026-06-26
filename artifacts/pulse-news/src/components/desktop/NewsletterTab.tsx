@@ -7,7 +7,6 @@ import { apiBase } from "@/lib/api-base";
 const BLUE = "#042c85";
 const BLUE_DEEP = "#03205f";
 const CREAM = "#fff1cd";
-const PAPER = "#fbf7ec";
 const INK = "#14110a";
 const MACABRO = "'Macabro', 'Anton', sans-serif";
 const SANS = '"Helvetica Neue", Helvetica, Arial, sans-serif';
@@ -119,7 +118,7 @@ export function NewsletterTab() {
               whileHover={{ y: -3 }}
             >
               <span className="pc-nl-tab-grain" aria-hidden />
-              <Mail size={15} strokeWidth={2} className="pc-nl-tab-icon" />
+              <Mail size={14} strokeWidth={2} className="pc-nl-tab-icon" />
               <span className="pc-nl-tab-label">Newsletter</span>
             </motion.button>
           )}
@@ -153,11 +152,6 @@ export function NewsletterTab() {
               <div className="pc-nl-head">
                 <span className="pc-nl-head-grain" aria-hidden />
                 <span className="pc-nl-kicker">Popcorn Newsletter</span>
-                <h3 className="pc-nl-title">
-                  The stories
-                  <br />
-                  worth knowing.
-                </h3>
               </div>
 
               {/* Body */}
@@ -252,7 +246,7 @@ const NEWSLETTER_TAB_CSS = `
 .pc-nl-tab{
   position:relative;
   display:inline-flex; flex-direction:row; align-items:center; gap:9px;
-  padding:13px 18px; border:0; cursor:pointer;
+  padding:10px 15px; border:0; cursor:pointer;
   background:${BLUE};
   color:#fff;
   border-radius:0;
@@ -268,14 +262,14 @@ const NEWSLETTER_TAB_CSS = `
 .pc-nl-tab-icon{ position:relative; z-index:1; }
 .pc-nl-tab-label{
   position:relative; z-index:1; color:#fff;
-  font-family:${MACABRO}; font-size:14px; letter-spacing:0.14em;
+  font-family:${MACABRO}; font-size:12.5px; letter-spacing:0.13em;
   text-transform:uppercase; line-height:1;
 }
 
 /* Expanded card */
 .pc-nl-card{
   position:relative; width:332px; max-width:calc(100vw - 24px);
-  background:${PAPER}; color:${INK};
+  background:#fff; color:${INK};
   border-radius:0;
   box-shadow:-14px 18px 48px rgba(4,44,133,0.26), inset 0 0 0 1px rgba(4,44,133,0.10);
   overflow:hidden;
@@ -294,21 +288,14 @@ const NEWSLETTER_TAB_CSS = `
 
 .pc-nl-head{
   position:relative; background:${BLUE};
-  padding:26px 24px 22px; overflow:hidden;
+  padding:16px 24px; overflow:hidden;
 }
 .pc-nl-kicker{
   position:relative; z-index:1;
-  display:inline-block; font-size:10px; letter-spacing:0.22em;
+  display:inline-block; font-size:11px; letter-spacing:0.22em;
   text-transform:uppercase; font-weight:600;
-  color:rgba(255,241,205,0.72); margin-bottom:10px;
+  color:#fff; margin-bottom:0;
 }
-.pc-nl-title{
-  position:relative; z-index:1; margin:0;
-  font-family:${SERIF}; font-style:italic; font-weight:600;
-  font-size:27px; line-height:1.04; color:${CREAM};
-  letter-spacing:0.01em;
-}
-
 .pc-nl-body{ padding:20px 24px 22px; }
 .pc-nl-pitch{
   margin:0 0 16px; font-size:13.5px; line-height:1.58;

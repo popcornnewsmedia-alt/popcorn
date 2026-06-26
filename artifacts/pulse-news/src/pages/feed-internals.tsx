@@ -11,6 +11,7 @@ import { GrainBackground } from "@/components/GrainBackground";
 import { PopcornIcon } from "@/components/PopcornIcon";
 import { useSavedArticles } from "@/hooks/use-saves";
 import { useLikedArticles } from "@/hooks/use-likes";
+import { useNewsletter } from "@/hooks/use-newsletter";
 import type { LegalKind } from "@/components/LegalSheet";
 
 export const APP_VERSION = "1.0.0";
@@ -340,6 +341,39 @@ function LegalRow({ label, onClick }: { label: string; onClick: () => void }) {
 }
 
 // ── Profile tab overlay ─────────────────────────────────────────────────
+/* Brand toggle switch — cream track + blue knob when on. */
+function ProfileToggle({ on, busy, disabled, onClick }: { on: boolean; busy: boolean; disabled?: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label="Toggle daily newsletter"
+      disabled={disabled || busy}
+      onClick={onClick}
+      className="relative flex-shrink-0 transition-all active:scale-95"
+      style={{
+        width: 50, height: 30, borderRadius: 999,
+        background: on ? "#fff1cd" : "rgba(255,241,205,0.16)",
+        border: `1px solid ${on ? "#fff1cd" : "rgba(255,241,205,0.22)"}`,
+        opacity: disabled ? 0.5 : 1,
+        cursor: disabled || busy ? "default" : "pointer",
+      }}
+    >
+      <span
+        style={{
+          position: "absolute", top: "50%", width: 22, height: 22, borderRadius: "50%",
+          background: on ? "#042c85" : "rgba(255,241,205,0.82)",
+          left: on ? 24 : 3, transform: "translateY(-50%)",
+          transition: "left .2s cubic-bezier(0.32,0.72,0,1), background .2s ease",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.25)",
+          opacity: busy ? 0.5 : 1,
+        }}
+      />
+    </button>
+  );
+}
+
 export function ProfileScreen({
   onSignIn,
   onCreateAccount,
@@ -367,6 +401,7 @@ export function ProfileScreen({
 }) {
   const isLoggedIn = !!userName || !!userHandle;
   const initial = (userName ?? userHandle ?? "?")[0].toUpperCase();
+  const newsletter = useNewsletter(isLoggedIn, "app-profile");
   return (
     <div className="pn-fullscreen fixed inset-0 flex flex-col items-center overflow-hidden" style={{ background: "#042c85", zIndex: 1 }}>
       <GrainBackground />
@@ -415,6 +450,32 @@ export function ProfileScreen({
               <ChevronRight className="w-3.5 h-3.5" style={{ color: "rgba(255,241,205,0.50)" }} strokeWidth={2} />
             </button>
           </div>
+          <div className="px-5 mb-6">
+            <div style={{ height: "1px", background: "rgba(255,241,205,0.08)", marginBottom: 16 }} />
+            <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "12px", color: "#fff1cd", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>Newsletter</p>
+            <div style={{ borderRadius: 16, background: "rgba(255,241,205,0.05)", border: "1px solid rgba(255,241,205,0.10)", overflow: "hidden", padding: "14px 16px", display: "flex", alignItems: "center", gap: 14 }}>
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,241,205,0.60)", margin: "0 0 4px" }}>The Daily Pop</p>
+                <p className="font-['Inter']" style={{ fontSize: "13px", color: "rgba(255,241,205,0.62)", lineHeight: 1.5, margin: 0 }}>
+                  {newsletter.subscribed === null
+                    ? "Checking your subscription…"
+                    : newsletter.subscribed
+                      ? "You're subscribed — one email every morning."
+                      : "One short email every morning, in your inbox."}
+                </p>
+                {newsletter.error && (
+                  <p className="font-['Inter']" style={{ fontSize: "12px", color: "rgba(255,150,130,0.90)", margin: "8px 0 0" }}>{newsletter.error}</p>
+                )}
+              </div>
+              <ProfileToggle
+                on={newsletter.subscribed === true}
+                busy={newsletter.busy}
+                disabled={newsletter.subscribed === null}
+                onClick={() => void newsletter.setSubscription(!newsletter.subscribed)}
+              />
+            </div>
+          </div>
+
           <div className="px-5 mb-6">
             <div style={{ height: "1px", background: "rgba(255,241,205,0.08)", marginBottom: 16 }} />
             <p style={{ fontFamily: "'Macabro', 'Anton', sans-serif", fontSize: "12px", color: "#fff1cd", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>Legal</p>
