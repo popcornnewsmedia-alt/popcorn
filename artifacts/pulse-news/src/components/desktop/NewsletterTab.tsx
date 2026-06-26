@@ -112,11 +112,11 @@ export function NewsletterTab() {
               className="pc-nl-tab"
               onClick={() => setOpen(true)}
               aria-label="Open newsletter signup"
-              initial={{ x: 64, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 64, opacity: 0 }}
+              initial={{ y: 56, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 56, opacity: 0 }}
               transition={{ type: "spring", stiffness: 320, damping: 30 }}
-              whileHover={{ x: -4 }}
+              whileHover={{ y: -3 }}
             >
               <span className="pc-nl-tab-grain" aria-hidden />
               <Mail size={15} strokeWidth={2} className="pc-nl-tab-icon" />
@@ -133,9 +133,9 @@ export function NewsletterTab() {
               className="pc-nl-card"
               role="dialog"
               aria-label="Join the Popcorn newsletter"
-              initial={{ x: 40, opacity: 0, scale: 0.96 }}
-              animate={{ x: 0, opacity: 1, scale: 1 }}
-              exit={{ x: 40, opacity: 0, scale: 0.96 }}
+              initial={{ y: 30, opacity: 0, scale: 0.97 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 30, opacity: 0, scale: 0.97 }}
               transition={{ type: "spring", stiffness: 300, damping: 28 }}
             >
               <span className="pc-nl-card-grain" aria-hidden />
@@ -241,22 +241,22 @@ export function NewsletterTab() {
 /* ── Scoped styles ──────────────────────────────────────────────────────── */
 const NEWSLETTER_TAB_CSS = `
 .pc-nl-root{
-  /* Anchored to the lower-right corner so it stays clear of the feed's
-     reading column. Tab + card both align to this bottom edge; the card
-     grows upward. */
-  position:fixed; right:0; bottom:26px;
+  /* Anchored to the bottom-right corner so it stays clear of the feed's
+     reading column. Tab + card both align here; the card grows upward. */
+  position:fixed; right:24px; bottom:24px;
   z-index:1200; font-family:${SANS};
+  display:flex; justify-content:flex-end;
 }
 
-/* Collapsed vertical tab */
+/* Collapsed button — horizontal, sits flat in the corner */
 .pc-nl-tab{
-  position:relative; right:0;
-  display:flex; flex-direction:column; align-items:center; gap:9px;
-  padding:16px 9px 18px; border:0; cursor:pointer;
+  position:relative;
+  display:inline-flex; flex-direction:row; align-items:center; gap:9px;
+  padding:13px 18px; border:0; cursor:pointer;
   background:${BLUE};
   color:#fff;
   border-radius:0;
-  box-shadow:-6px 8px 26px rgba(4,44,133,0.30), inset 0 0 0 1px rgba(255,241,205,0.14);
+  box-shadow:0 10px 28px rgba(4,44,133,0.30), inset 0 0 0 1px rgba(255,241,205,0.14);
   overflow:hidden;
   -webkit-tap-highlight-color:transparent;
 }
@@ -268,8 +268,7 @@ const NEWSLETTER_TAB_CSS = `
 .pc-nl-tab-icon{ position:relative; z-index:1; }
 .pc-nl-tab-label{
   position:relative; z-index:1; color:#fff;
-  writing-mode:vertical-rl; text-orientation:mixed;
-  font-family:${MACABRO}; font-size:13px; letter-spacing:0.18em;
+  font-family:${MACABRO}; font-size:14px; letter-spacing:0.14em;
   text-transform:uppercase; line-height:1;
 }
 
@@ -371,9 +370,10 @@ const NEWSLETTER_TAB_CSS = `
 }
 .pc-nl-ghost:hover{ background:rgba(4,44,133,0.07); }
 
-/* On small viewports the tab can collide with content — keep it but slimmer */
+/* On small viewports keep the corner button a touch more compact */
 @media (max-width:560px){
-  .pc-nl-tab-label{ font-size:11px; letter-spacing:0.14em; }
+  .pc-nl-tab{ padding:11px 15px; }
+  .pc-nl-tab-label{ font-size:12.5px; letter-spacing:0.12em; }
 }
 @media (prefers-reduced-motion:reduce){
   .pc-nl-spin{ animation-duration:1.4s; }
