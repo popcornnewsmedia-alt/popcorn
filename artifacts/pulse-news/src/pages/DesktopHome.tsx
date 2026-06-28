@@ -2320,12 +2320,6 @@ function ScallopDivider({
 }
 
 function Footer() {
-  const [legalKind, setLegalKind] = useState<LegalKind | null>(null);
-  const openLegal = (kind: LegalKind) => (e: ReactMouseEvent) => {
-    e.preventDefault();
-    setLegalKind(kind);
-  };
-
   // Footer newsletter signup — posts to the same endpoint as the side tab.
   const [footEmail, setFootEmail] = useState("");
   const [footState, setFootState] = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -2467,8 +2461,7 @@ function Footer() {
               ([label, kind]) => (
                 <li key={kind}>
                   <a
-                    href="#"
-                    onClick={openLegal(kind)}
+                    href={`https://popcornmedia.org/${kind}`}
                     style={{ fontFamily: SANS, fontSize: 14, color: "#fff", textDecoration: "none" }}
                   >
                     {label}
@@ -2624,7 +2617,6 @@ function Footer() {
         </a>
       </div>
     </footer>
-    <DragLegalModal kind={legalKind} onClose={() => setLegalKind(null)} />
     </>
   );
 }
@@ -4704,8 +4696,7 @@ function DragIndex({ articles, dateLabel, onOpen }: {
    minimal links only (mirrors the app's profile section). Sits flush at the
    bottom of the shell at a fixed short height so it never pushes the rail or
    hides slide text. */
-function DragFooter({ onLegal }: { onLegal: (kind: LegalKind) => void }) {
-  const open = (kind: LegalKind) => (e: ReactMouseEvent) => { e.preventDefault(); onLegal(kind); };
+function DragFooter() {
   return (
     <footer className="drag-foot" aria-label="Popcorn footer">
       <div className="drag-foot__grain" aria-hidden>
@@ -4713,11 +4704,11 @@ function DragFooter({ onLegal }: { onLegal: (kind: LegalKind) => void }) {
       </div>
       <div className="drag-foot__inner">
         <nav className="drag-foot__links">
-          <a href="#" onClick={open("about")}>About</a>
+          <a href="https://popcornmedia.org/about">About</a>
           <span aria-hidden>·</span>
-          <a href="#" onClick={open("privacy")}>Privacy</a>
+          <a href="https://popcornmedia.org/privacy">Privacy</a>
           <span aria-hidden>·</span>
-          <a href="#" onClick={open("terms")}>Terms</a>
+          <a href="https://popcornmedia.org/terms">Terms</a>
         </nav>
         <span className="drag-foot__copy">© Popcorn Media 2026</span>
         <div className="drag-foot__right">
@@ -5290,7 +5281,7 @@ function DragFeed({
       <div className="drag-progress" ref={progressRef} onClick={seek} aria-hidden>
         <div className="drag-progress__bar" ref={barRef} />
       </div>
-      <DragFooter onLegal={setLegalKind} />
+      <DragFooter />
       <CommentSheet
         isOpen={commentArticle != null}
         articleId={commentArticle?.id ?? 0}
